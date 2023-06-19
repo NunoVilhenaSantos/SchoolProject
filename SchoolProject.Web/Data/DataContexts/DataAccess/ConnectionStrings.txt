@@ -1,0 +1,7 @@
+﻿"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MyLeasing;Trusted_Connection=True;MultipleActiveResultSets=true",
+"IdentityConnection": "Server=(localdb)\\mssqllocaldb;Database=MyLeasing;Trusted_Connection=True;MultipleActiveResultSets=true",
+"DataAccessConnection": "Server=(localdb)\\mssqllocaldb;Database=MyLeasing;Trusted_Connection=True;MultipleActiveResultSets=true",
+"LocalMySQLConnection": "Server=localhost:3306;Database=MyLeasing;Uid=root;Pwd=;",
+"WEBMySQLConnection": "Server=localhost:3306;Database=MyLeasing;Uid=root;Pwd=;",
+"SqliteConnection": "Data Source=MyLeasing.sqlite;Version=3;",
+"SomeeConnection":"workstation id=MyLeasing-NunoVilhenaSantos.mssql.somee.com;packet size=4096;user id=MyLeasing_SQLLogin_1;pwd=h849grt3qo;data source=MyLeasing-NunoVilhenaSantos.mssql.somee.com;persist security info=False;initial catalog=MyLeasing-NunoVilhenaSantos;MultipleActiveResultSets=true",

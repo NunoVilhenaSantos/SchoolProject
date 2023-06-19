@@ -1,0 +1,16 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using MyLeasing.Common.Data.Entities;
+
+namespace MyLeasing.Common.Data;
+
+public class DataContextSQLite : IdentityDbContext<User>
+// public class DataContextSQLite : DbContext
+{
+    public DataContextSQLite(DbContextOptions<DataContextSQLite> options) :
+        base(options)
+    {
+    }
+
+    public DbSet<Owner> Owners { get; set; }
+}
