@@ -6,13 +6,6 @@ namespace SchoolProject.Web.Data.Entities;
 
 public class User : IdentityUser
 {
-    [DisplayName("Document")]
-    [MaxLength(20,
-        ErrorMessage = "The {0} field can not have more than {1} characters.")]
-    [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public string Document { get; set; }
-
-
     [DisplayName("First Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
@@ -36,18 +29,12 @@ public class User : IdentityUser
     public string FullName => $"{FirstName} {LastName}";
 
 
-    [Display(Name = "Full Name with Document")]
-    public string FullNameWithDocument =>
-        $"{FirstName} {LastName} - {Document}";
+    public Guid ProfilePhotoId { get; set; }
 
-
-    [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
-
-
-    public string? ProfilePhotoFullUrl =>
-        string.IsNullOrEmpty(ProfilePhotoUrl)
-            ? null
-            : $"https://supermarketapi.azurewebsites.net{ProfilePhotoUrl[1..]}";
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://myleasingnunostorage.blob.core.windows.net/lessees/" +
+          ProfilePhotoId;
 
 
     // [Display(Name = "Thumbnail")]

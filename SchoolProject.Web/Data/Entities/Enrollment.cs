@@ -1,12 +1,7 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿namespace SchoolProject.Web.Data.Entities;
 
-namespace SchoolProject.Web.Data.Entities;
-
-public class Enrollment  : IEntity //: INotifyPropertyChanged
+public class Enrollment : IEntity //: INotifyPropertyChanged
 {
-
-
     public decimal? Grade { get; set; }
 
 

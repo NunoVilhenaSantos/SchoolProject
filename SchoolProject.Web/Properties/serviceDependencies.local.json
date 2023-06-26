@@ -1,21 +1,29 @@
 {
   "dependencies": {
     "secrets1": {
+      "secretStore": null,
+      "resourceId": null,
       "type": "secrets.user",
-      "dynamicId": null
+      "connectionId": null
     },
-    "storage1": {
-      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/westeurope/connectors/AzureStorageSchoolProjectStorageNuno_1E6DE790C9",
-      "secretStore": "LocalSecretsFile",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/schoolprojectstoragenuno",
-      "type": "storage.azure",
-      "connectionId": "AzureStorage:SchoolProjectStorageNuno"
+    "appInsights1": {
+      "secretStore": null,
+      "resourceId": null,
+      "type": "appInsights.sdk",
+      "connectionId": null
     },
     "mssql1": {
       "serviceConnectorResourceId": "",
       "secretStore": "LocalSecretsFile",
+      "resourceId": null,
       "type": "mssql.onprem",
-      "connectionId": "ConnectionStrings:SchoolProjectNunoAzureDB"
+      "connectionId": "ConnectionStrings:SchoolProject-mssql.somee.com"
+    },
+    "sqlite1": {
+      "secretStore": "LocalSecretsFile",
+      "resourceId": null,
+      "type": "sqlite.local",
+      "connectionId": "ConnectionStrings:SchoolProject-SQLite"
     }
   }
 }

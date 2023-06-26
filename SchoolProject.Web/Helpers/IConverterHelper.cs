@@ -1,42 +1,46 @@
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Helpers;
 
 public interface IConverterHelper
 {
-    Owner ToOwner(OwnerViewModel ownerViewModel, string? filePath, Guid fileStorageId, bool isNew);
+    // Owner ToOwner(OwnerViewModel ownerViewModel, string? filePath,
+    //     Guid fileStorageId, bool isNew);
+    //
+    // OwnerViewModel ToOwnerViewModel(Owner owner);
+    //
+    // Lessee ToLessee(LesseeViewModel lesseeViewModel, string? filePath,
+    //     Guid fileStorageId, bool isNew);
+    //
+    // LesseeViewModel ToLesseeViewModel(Lessee lessee);
 
-    OwnerViewModel ToOwnerViewModel(Owner owner);
 
-    Lessee ToLessee(LesseeViewModel lesseeViewModel, string? filePath, Guid fileStorageId, bool isNew);
+    // --- Course ---- //
 
-    LesseeViewModel ToLesseeViewModel(Lessee lessee);
-
-
-
-
-    Course ToCourse(CourseViewModel courseViewModel, string? filePath, Guid fileStorageId, bool isNew);
+    Course ToCourse(CourseViewModel courseViewModel, string? filePath,
+        Guid fileStorageId, bool isNew);
 
     CourseViewModel ToCourseViewModel(Course course);
 
 
-
-    SchoolClass ToSchoolClass(SchoolClassViewModel schoolClassViewModel, string? filePath, Guid fileStorageId, bool isNew);
+    // --- SchoolClass ---- //
+    SchoolClass ToSchoolClass(SchoolClassViewModel schoolClassViewModel,
+        string? filePath, Guid fileStorageId, bool isNew);
 
     SchoolClassViewModel ToSchoolClassViewModel(SchoolClass schoolClass);
 
-    public DbSet<SchoolClass> SchoolClasses { get; set; }
 
-
-    Student ToStudent(StudentViewModel studentViewModel, string? filePath, Guid fileStorageId, bool isNew);
+    // --- Student ---- //
+    Student ToStudent(StudentViewModel studentViewModel, string? filePath,
+        Guid fileStorageId, bool isNew);
 
     StudentViewModel ToStudentViewModel(Student student);
-    public DbSet<Student> Students { get; set; }
 
 
-    Enrollment ToEnrollment(EnrollmentViewModel enrollmentViewModel, string? filePath, Guid fileStorageId, bool isNew);
+    // --- Teacher ---- //
+    Teacher ToTeacher(TeacherViewModel teacherViewModel,
+        string? filePath, Guid fileStorageId, bool isNew);
 
-    EnrollmentViewModel ToEnrollmentViewModel(Enrollment enrollment);
-    public DbSet<Teacher> Teachers { get; set; }
+    TeacherViewModel ToTeacherViewModel(Teacher teacher);
 }

@@ -2,13 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities;
 
+
+
+
 namespace SchoolProject.Web.Data.DataContexts;
 
-public class DataContext : IdentityDbContext<User>
-// public class DataContext : DbContext
+
+public class DataContextMySQL : IdentityDbContext<User>
 {
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
+    public DataContextMySQL(DbContextOptions<DataContextMySQL> options) : base(options)
     {
+
     }
 
     // public DbSet<Owner> Owners { get; set; }

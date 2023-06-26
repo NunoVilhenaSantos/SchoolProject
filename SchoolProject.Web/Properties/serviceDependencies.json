@@ -2,15 +2,19 @@
   "dependencies": {
     "secrets1": {
       "type": "secrets",
-      "dynamicId": null
+      "connectionId": null
     },
-    "storage1": {
-      "type": "storage",
-      "connectionId": "AzureStorage:SchoolProjectStorageNuno"
+    "appInsights1": {
+      "type": "appInsights",
+      "connectionId": null
     },
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:SchoolProjectNunoAzureDB"
+      "connectionId": "ConnectionStrings:SchoolProject-mssql.somee.com"
+    },
+    "sqlite1": {
+      "type": "sqlite",
+      "connectionId": "ConnectionStrings:SchoolProject-SQLite"
     }
   }
 }

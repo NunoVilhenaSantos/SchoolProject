@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -7,14 +9,45 @@ namespace SchoolProject.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HomeController(ILogger<HomeController> logger)
+
+    public HomeController(
+        ILogger<HomeController> logger,
+        IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
     }
+
 
     public IActionResult Index()
     {
+        // Verificar a conectividade de rede
+        if (_httpContextAccessor.HttpContext != null)
+        {
+            var connectivityChecker =
+                _httpContextAccessor.HttpContext
+                    .RequestServices.GetRequiredService<IConnectivityChecker>();
+
+            var isConnected = connectivityChecker.ConnectivityCheckingEnabled;
+            var conneted = connectivityChecker.ForceCheck();
+
+            if (conneted.IsFailed)
+            {
+
+            }
+
+            // Registrar no log
+            _logger.LogInformation(
+                $"Conectividade de rede: " +
+                $"{(isConnected ? "Conectado" : "Desconectado")}");
+        }
+        else
+        {
+        }
+
+        // Resto da lógica do controlador
         return View();
     }
 

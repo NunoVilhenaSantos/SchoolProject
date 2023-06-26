@@ -6,8 +6,10 @@ namespace SchoolProject.Web.Data.Entities;
 
 public class Owner : IEntity, IPerson
 {
+    [Key] public int Id { get; set; }
+    public bool WasDeleted { get; set; }
 
-    [Required][DisplayName("Document*")] public string Document { get; set; }
+    [Required] [DisplayName("Document*")] public string Document { get; set; }
 
 
     [Required]
@@ -15,7 +17,7 @@ public class Owner : IEntity, IPerson
     public string FirstName { get; set; }
 
 
-    [Required][DisplayName("Last Name*")] public string LastName { get; set; }
+    [Required] [DisplayName("Last Name*")] public string LastName { get; set; }
 
 
     [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
@@ -60,6 +62,4 @@ public class Owner : IEntity, IPerson
 
 
     [Required] public User? User { get; set; }
-    [Key] public int Id { get; set; }
-    public bool WasDeleted { get; set; }
 }

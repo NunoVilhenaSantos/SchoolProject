@@ -1,37 +1,50 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace SchoolProject.Web.Data.Entities;
 
 public class Student : IEntity //: INotifyPropertyChanged
 {
-    [Key] public int IdStudent { get; set; }
-
-    public string Name { get; set; }
-
-    public string LastName { get; set; }
-
-    public string Address { get; set; }
+    private string _genre;
+    [Required] [DisplayName("First Name")] public string FirstName { get; set; }
 
 
+    [Required] [DisplayName("Last Name")] public string LastName { get; set; }
+
+
+    [DisplayName("Full Name")]
+    public string FullName => $"{FirstName} {LastName}";
+
+
+    [Required] public string Address { get; set; }
+
+
+    [Required]
+    [DisplayName("Postal Code")]
     public string PostalCode { get; set; }
 
+    [Required] public string City { get; set; }
 
-    public string City { get; set; }
+    [Required]
+    [DisplayName("Mobile Phone")]
+    public string MobilePhone { get; set; }
 
-    public string Phone { get; set; }
 
-
+    [Required]
+    [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
 
-    public bool Active { get; set; }
+    [Required] public bool Active { get; set; }
 
-
-    public static readonly List<string> Genreslist = new()
-        {"Male", "Female", "Non Binary", "Prefer not to say"};
-
-    public string Genre { get; set; }
+    [Required]
+    public string Genre
+    {
+        get => _genre;
+        set
+        {
+            if (Enum.TryParse(value, out Genres genre)) _genre = value;
+        }
+    }
 
 
     public DateOnly DateOfBirth { get; set; }
@@ -61,6 +74,14 @@ public class Student : IEntity //: INotifyPropertyChanged
 
     public DateOnly EnrollDate { get; set; }
 
+
+    public Guid ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://myleasingnunostorage.blob.core.windows.net/lessees/" +
+          GetType().BaseType?.Name +
+          ProfilePhotoId;
 
     [Required] public User User { get; set; }
 

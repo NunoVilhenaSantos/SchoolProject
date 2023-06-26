@@ -1,79 +1,111 @@
 ﻿using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Helpers;
 
 public class ConverterHelper : IConverterHelper
 {
-    public Owner ToOwner(OwnerViewModel ownerViewModel,
+    // public Owner ToOwner(OwnerViewModel ownerViewModel,
+    //     string? filePath, Guid fileStorageId, bool isNew)
+    // {
+    //     return new Owner
+    //     {
+    //         Id = isNew ? 0 : ownerViewModel.Id,
+    //         Document = ownerViewModel.Document,
+    //         FirstName = ownerViewModel.FirstName,
+    //         LastName = ownerViewModel.LastName,
+    //         ProfilePhotoUrl = filePath,
+    //         ProfilePhotoId = fileStorageId,
+    //         FixedPhone = ownerViewModel.FixedPhone,
+    //         CellPhone = ownerViewModel.CellPhone,
+    //         Address = ownerViewModel.Address,
+    //         User = ownerViewModel.User
+    //     };
+    // }
+
+
+    // public OwnerViewModel ToOwnerViewModel(Owner owner)
+    // {
+    //     return new OwnerViewModel
+    //     {
+    //         Id = owner.Id,
+    //         Document = owner.Document,
+    //         FirstName = owner.FirstName,
+    //         LastName = owner.LastName,
+    //         ProfilePhotoUrl = owner.ProfilePhotoUrl,
+    //         ProfilePhotoId = owner.ProfilePhotoId,
+    //         FixedPhone = owner.FixedPhone,
+    //         CellPhone = owner.CellPhone,
+    //         Address = owner.Address,
+    //         User = owner.User
+    //     };
+    // }
+
+
+    public Course ToCourse(CourseViewModel courseViewModel, string? filePath,
+        Guid fileStorageId, bool isNew)
+    {
+        return new Course
+        {
+            Name = courseViewModel.Name,
+            WorkLoad = courseViewModel.WorkLoad,
+            Credits = courseViewModel.Credits,
+            StudentsCount = courseViewModel.StudentsCount,
+            Id = isNew ? 0 : courseViewModel.Id,
+            WasDeleted = courseViewModel.WasDeleted
+        };
+    }
+
+
+    public CourseViewModel ToCourseViewModel(Course course)
+    {
+        return new CourseViewModel
+        {
+            Name = course.Name,
+            WorkLoad = course.WorkLoad,
+            Credits = course.Credits,
+            StudentsCount = course.StudentsCount,
+            Id = course.Id,
+            WasDeleted = course.WasDeleted,
+            ImageFile = null
+        };
+    }
+
+
+    public SchoolClass ToSchoolClass(SchoolClassViewModel schoolClassViewModel,
         string? filePath, Guid fileStorageId, bool isNew)
     {
-        return new Owner
-        {
-            Id = isNew ? 0 : ownerViewModel.Id,
-            Document = ownerViewModel.Document,
-            FirstName = ownerViewModel.FirstName,
-            LastName = ownerViewModel.LastName,
-            ProfilePhotoUrl = filePath,
-            ProfilePhotoId = fileStorageId,
-            FixedPhone = ownerViewModel.FixedPhone,
-            CellPhone = ownerViewModel.CellPhone,
-            Address = ownerViewModel.Address,
-            User = ownerViewModel.User
-        };
+        throw new NotImplementedException();
     }
 
 
-    public OwnerViewModel ToOwnerViewModel(Owner owner)
+    public SchoolClassViewModel ToSchoolClassViewModel(SchoolClass schoolClass)
     {
-        return new OwnerViewModel
-        {
-            Id = owner.Id,
-            Document = owner.Document,
-            FirstName = owner.FirstName,
-            LastName = owner.LastName,
-            ProfilePhotoUrl = owner.ProfilePhotoUrl,
-            ProfilePhotoId = owner.ProfilePhotoId,
-            FixedPhone = owner.FixedPhone,
-            CellPhone = owner.CellPhone,
-            Address = owner.Address,
-            User = owner.User
-        };
+        throw new NotImplementedException();
     }
 
-
-    public Lessee ToLessee(LesseeViewModel lesseeViewModel,
+    public Student ToStudent(StudentViewModel studentViewModel,
         string? filePath, Guid fileStorageId, bool isNew)
     {
-        return new Lessee
-        {
-            Id = isNew ? 0 : lesseeViewModel.Id,
-            Document = lesseeViewModel.Document,
-            FirstName = lesseeViewModel.FirstName,
-            LastName = lesseeViewModel.LastName,
-            ProfilePhotoUrl = filePath,
-            ProfilePhotoId = fileStorageId,
-            FixedPhone = lesseeViewModel.FixedPhone,
-            CellPhone = lesseeViewModel.CellPhone,
-            Address = lesseeViewModel.Address,
-            User = lesseeViewModel.User
-        };
+        throw new NotImplementedException();
     }
 
 
-    public LesseeViewModel ToLesseeViewModel(Lessee lessee)
+    public StudentViewModel ToStudentViewModel(Student student)
     {
-        return new LesseeViewModel
-        {
-            Id = lessee.Id,
-            Document = lessee.Document,
-            FirstName = lessee.FirstName,
-            LastName = lessee.LastName,
-            ProfilePhotoUrl = lessee.ProfilePhotoUrl,
-            ProfilePhotoId = lessee.ProfilePhotoId,
-            FixedPhone = lessee.FixedPhone,
-            CellPhone = lessee.CellPhone,
-            Address = lessee.Address,
-            User = lessee.User
-        };
+        throw new NotImplementedException();
+    }
+
+
+    public Teacher ToTeacher(TeacherViewModel teacherViewModel,
+        string? filePath, Guid fileStorageId, bool isNew)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public TeacherViewModel ToTeacherViewModel(Teacher teacher)
+    {
+        throw new NotImplementedException();
     }
 }

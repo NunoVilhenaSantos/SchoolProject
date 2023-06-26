@@ -9,7 +9,7 @@ public class SeedDb
 {
     public SeedDb(
         IUserHelper userHelper,
-        DataContext dataContext,
+        DataContextMSSQL dataContext,
         IWebHostEnvironment hostingEnvironment
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager
@@ -194,9 +194,9 @@ public class SeedDb
             {
                 user = role switch
                 {
-                    "Owner" => new User
+                    "Student" => new User
                     {
-                        Document = document,
+                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -204,9 +204,9 @@ public class SeedDb
                         Email = email,
                         PhoneNumber = phoneNumber
                     },
-                    "Lessee" => new User
+                    "Teacher" => new User
                     {
-                        Document = document,
+                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -214,9 +214,19 @@ public class SeedDb
                         Email = email,
                         PhoneNumber = phoneNumber
                     },
-                    "User" => new User
+                    "Functionary" => new User
                     {
-                        Document = document,
+                        
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Address = address,
+                        UserName = userName,
+                        Email = email,
+                        PhoneNumber = phoneNumber
+                    },
+                    "SuperUser" => new User
+                    {
+                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -226,7 +236,7 @@ public class SeedDb
                     },
                     "Admin" => new User
                     {
-                        Document = document,
+                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -260,9 +270,10 @@ public class SeedDb
     }
 
 
-    private async Task<IdentityResult> CreateRoleAsync(string? admin)
+    private async Task<IdentityResult> CreateRoleAsync(string role)
     {
-        return await _roleManager.CreateAsync(new IdentityRole("Admin"));
+        // return await _roleManager.CreateAsync(new IdentityRole("Admin"));
+        return await _roleManager.CreateAsync(new IdentityRole(role));
     }
 
 
@@ -274,25 +285,27 @@ public class SeedDb
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
 
-        _dataContext.Students.Add(new Student()
-            {
-                Document = document,
-                FirstName = firstName,
-                LastName = lastName,
-                FixedPhone = fixedPhone,
-                CellPhone = cellPhone,
-                Address = addressFull,
-                User = await CheckUserAsync(
-                    firstName, lastName,
-                    $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    $"{cellPhone}", "Owner",
-                    document, addressFull
-                )
-            }
-        );
+        //_dataContext.Students.Add(new Student
+        //    {
+        //        Document = document,
+        //        FirstName = firstName,
+        //        LastName = lastName,
+        //        FixedPhone = fixedPhone,
+        //        CellPhone = cellPhone,
+        //        Address = addressFull,
+        //        User = await CheckUserAsync(
+        //            firstName, lastName,
+        //            $"{firstName}.{lastName}@rouba_a_descarada.com",
+        //            $"{firstName}.{lastName}@rouba_a_descarada.com",
+        //            $"{cellPhone}", "Owner",
+        //            document, addressFull
+        //        )
+        //    }
+        //);
 
         // await _dataContext.SaveChangesAsync();
+
+        _dataContext.Students.Add(new Student { } );
     }
 
 
@@ -304,13 +317,13 @@ public class SeedDb
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
 
-        _dataContext.Teachers.Add(new Teacher()
+        _dataContext.Teachers.Add(new Teacher
             {
-                Document = document,
+                // Document = document,
                 FirstName = firstName,
                 LastName = lastName,
-                FixedPhone = fixedPhone,
-                CellPhone = cellPhone,
+                // FixedPhone = fixedPhone,
+                // CellPhone = cellPhone,
                 Address = addressFull,
                 User = await CheckUserAsync(
                     firstName, lastName,
@@ -329,7 +342,7 @@ public class SeedDb
     #region Attributes
 
     private readonly Random _random = new();
-    private readonly DataContext _dataContext;
+    private readonly DataContextMSSQL _dataContext;
 
     private readonly IUserHelper _userHelper;
 

@@ -3,39 +3,40 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "provider": "cdnjs",
       "library": "bootstrap@5.3.0",
       "destination": "wwwroot/lib/bootstrap/"
     },
-    {
-      "provider": "cdnjs",
-      "library": "jquery@3.7.0",
-      "destination": "wwwroot/lib/jquery/"
+	{
+      "library": "bootstrap-icons@1.10.5",
+      "destination": "wwwroot/lib/bootstrap-icons/"
     },
     {
-      "provider": "cdnjs",
-      "library": "jquery-validate@1.19.5",
-      "destination": "wwwroot/lib/jquery-validate/"
+      "library": "bootstrap-table@1.22.0",
+      "destination": "wwwroot/lib/bootstrap-table/"
     },
     {
-      "provider": "cdnjs",
-      "library": "jQuery-Validation-Engine@2.6.4",
-      "destination": "wwwroot/lib/jQuery-Validation-Engine/"
-    },
-    {
-      "provider": "cdnjs",
-      "library": "jquery-validation-unobtrusive@4.0.0",
-      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
-    },
-    {
-      "provider": "cdnjs",
       "library": "font-awesome@6.4.0",
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
-      "provider": "cdnjs",
       "library": "font-awesome-animation@1.1.0",
       "destination": "wwwroot/lib/font-awesome-animation/"
-    }
+    },
+    {
+      "library": "jquery@3.7.0",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "jquery-validate@1.19.5",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "library": "jQuery-Validation-Engine@2.6.4",
+      "destination": "wwwroot/lib/jQuery-Validation-Engine/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
   ]
 }

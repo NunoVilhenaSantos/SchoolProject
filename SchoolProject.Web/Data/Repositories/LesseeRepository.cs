@@ -6,7 +6,7 @@ namespace SchoolProject.Web.Data.Repositories;
 
 public class LesseeRepository : GenericRepository<Lessee>, ILesseeRepository
 {
-    public LesseeRepository(DataContext dataContext) : base(dataContext)
+    public LesseeRepository(DataContextMSSQL dataContext) : base(dataContext)
     {
     }
 }

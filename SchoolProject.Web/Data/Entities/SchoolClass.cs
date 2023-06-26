@@ -1,13 +1,7 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+﻿namespace SchoolProject.Web.Data.Entities;
 
-namespace SchoolProject.Web.Data.Entities;
-
-public class SchoolClass  : IEntity //: INotifyPropertyChanged
+public class SchoolClass : IEntity //: INotifyPropertyChanged
 {
-    [Key] public int IdSchoolClass { get; set; }
-
     public string ClassAcronym { get; set; }
 
 
@@ -44,6 +38,16 @@ public class SchoolClass  : IEntity //: INotifyPropertyChanged
     public decimal? HighestGrade { get; set; }
 
     public decimal? LowestGrade { get; set; }
+
+
+    public Guid ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://myleasingnunostorage.blob.core.windows.net/lessees/" +
+          ProfilePhotoId;
+
+
     public int Id { get; set; }
     public bool WasDeleted { get; set; }
 }
