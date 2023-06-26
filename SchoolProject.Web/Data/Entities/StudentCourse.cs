@@ -1,7 +1,12 @@
-﻿namespace SchoolProject.Web.Data.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class StudentCourse
+namespace SchoolProject.Web.Data.Entities;
+
+public class StudentCourse : IEntity
 {
-    public int StudentId { get; set; }
-    public int CourseId { get; set; }
+    [Required] public int StudentId { get; set; }
+    [Required] public int CourseId { get; set; }
+
+    [Required] [Key] public int Id { get; set; }
+    [Required] public bool WasDeleted { get; set; }
 }

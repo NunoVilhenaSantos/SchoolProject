@@ -6,6 +6,8 @@ namespace SchoolProject.Web.Data.Entities;
 public class Student : IEntity //: INotifyPropertyChanged
 {
     private string _genre;
+    private string _nationality;
+    private string _birthplace;
 
 
     [Required] [DisplayName("First Name")] public string FirstName { get; set; }
@@ -36,7 +38,7 @@ public class Student : IEntity //: INotifyPropertyChanged
     [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
 
-    [Required] public bool Active { get; set; }
+    [Required] public bool Active { get; set; } = true;
 
     [Required]
     public string Genre
@@ -48,33 +50,58 @@ public class Student : IEntity //: INotifyPropertyChanged
         }
     }
 
+    [Required]
+    [DisplayName("Date Of Birth")]
+    [DataType(DataType.Date)]
+    public DateTime DateOfBirth { get; set; }
 
-    public DateOnly DateOfBirth { get; set; }
-
+    [Required]
+    [DisplayName("Identification Number")]
     public string IdentificationNumber { get; set; }
 
 
-    public DateOnly ExpirationDateIn { get; set; }
+    [Required]
+    [DisplayName("Expiration Date Identification Number")]
+    [DataType(DataType.Date)]
+    public DateTime ExpirationDateIdentificationNumber { get; set; }
 
 
+    [Required]
+    [DisplayName("Tax Identification Number")]
     public string TaxIdentificationNumber { get; set; }
 
 
-    public string Nationality { get; set; }
+    [Required]
+    public string Nationality
+    {
+        get => _nationality;
+        set
+        {
+            if (Enum.TryParse(value, out Countries countries))
+                _nationality = value;
+        }
+    }
 
-    public string Birthplace { get; set; }
+    [Required]
+    public string Birthplace
+    {
+        get => _birthplace;
+        set
+        {
+            if (Enum.TryParse(value, out Countries countries))
+                _birthplace = value;
+        }
+    }
 
 
-    public string Photo { get; set; }
+    [DisplayName("Courses Count")] public int CoursesCount { get; set; }
 
+    [DisplayName("total Work Hours")] public int TotalWorkHours { get; set; }
 
-    public int CoursesCount { get; set; }
-
-
-    public int TotalWorkHours { get; set; }
-
-
-    public DateOnly EnrollDate { get; set; }
+    [Required]
+    [DisplayName("Enroll Date")]
+    [DataType(DataType.Date)]
+    public DateTime EnrollDate { get; set; }
 
 
     [Required] public User User { get; set; }

@@ -7,25 +7,83 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDb
 {
+
+
+
+
+    public const string MyLeasingAdminsNuno =
+        "nuno.santos.26288@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsDiogo =
+        "diogo.alves.28645@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsRuben =
+        "ruben.corrreia.28257@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsTatiane =
+        "tatiane.avellar.24718@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsJorge =
+        "jorge.pinto.28720@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsJoel =
+        "joel.rangel.22101@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsLicinio =
+        "licinio.do.rosario@formandos.cinel.pt";
+
+
+    private readonly DataContextMSSQL _dataContextMssql;
+    private readonly DataContextMySQL _dataContextMySql;
+    private readonly DataContextSQLite _dataContextSqLite;
+
+
+    // Injeção de dependência do IWebHostEnvironment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly Random _random = new();
+
+    // private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    private readonly IUserHelper _userHelper;
+
+    public string PlaceHolders;
+
+
+
+
     public SeedDb(
         IUserHelper userHelper,
-        DataContextMSSQL dataContext,
+
+        DataContextMSSQL dataContextMssql,
+        DataContextMySQL dataContextMySql,
+        DataContextSQLite dataContextSqLite,
+      
         IWebHostEnvironment hostingEnvironment
+
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager
+
     )
     {
         _userHelper = userHelper;
-        _dataContext = dataContext;
+
+        _dataContextMssql = dataContextMssql;
+        _dataContextMySql = dataContextMySql;
+        _dataContextSqLite = dataContextSqLite;
+
         _hostingEnvironment = hostingEnvironment;
         // _userManager = userManager;
         // _roleManager = roleManager;
+
     }
 
 
     public async Task SeedAsync()
     {
-        await _dataContext.Database.EnsureCreatedAsync();
+        await _dataContextMssql.Database.EnsureCreatedAsync();
+        await _dataContextMySql.Database.EnsureCreatedAsync();
+        await _dataContextSqLite.Database.EnsureCreatedAsync();
 
 
         await AddUsers(MyLeasingAdminsJorge,
@@ -54,7 +112,7 @@ public class SeedDb
 
         // await CheckRolesAsync(user);
 
-        if (!_dataContext.Students.Any())
+        if (!_dataContextMssql.Students.Any())
         {
             await AddStudent(
                 "Juan", "Zuluaga", "Calle Luna", user);
@@ -79,7 +137,7 @@ public class SeedDb
         }
 
 
-        if (!_dataContext.Teachers.Any())
+        if (!_dataContextMssql.Teachers.Any())
         {
             await AddTeacher(
                 "Roberto", "Rossellini", "Calle Luna", user);
@@ -114,7 +172,7 @@ public class SeedDb
         AddPlaceHolders();
 
 
-        await _dataContext.SaveChangesAsync();
+        await _dataContextMssql.SaveChangesAsync();
     }
 
     private void AddPlaceHolders()
@@ -255,12 +313,14 @@ public class SeedDb
         return user;
     }
 
+
     private async Task<IdentityResult?> CheckRolesAsync(User user)
     {
         return await _roleManager.FindByIdAsync(user.Id) switch
         {
             null => await CreateRoleAsync(user.UserName),
-            _ => null
+            _ =>  null
+            
         };
     }
 
@@ -280,27 +340,26 @@ public class SeedDb
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
 
-        //_dataContext.Students.Add(new Student
-        //    {
-        //        Document = document,
-        //        FirstName = firstName,
-        //        LastName = lastName,
-        //        FixedPhone = fixedPhone,
-        //        CellPhone = cellPhone,
-        //        Address = addressFull,
-        //        User = await CheckUserAsync(
-        //            firstName, lastName,
-        //            $"{firstName}.{lastName}@rouba_a_descarada.com",
-        //            $"{firstName}.{lastName}@rouba_a_descarada.com",
-        //            $"{cellPhone}", "Owner",
-        //            document, addressFull
-        //        )
-        //    }
-        //);
+        _dataContextMssql.Students.Add(new Student
+        {
+            //Document = document,
+            FirstName = firstName,
+            LastName = lastName,
+            //FixedPhone = fixedPhone,
+            //CellPhone = cellPhone,
+            Address = addressFull,
+            User = await CheckUserAsync(
+                    firstName, lastName,
+                    $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    $"{cellPhone}", "Owner",
+                    document, addressFull
+                )
+        }
+        );
 
-        // await _dataContext.SaveChangesAsync();
+        // await _dataContextMssql.SaveChangesAsync();
 
-        _dataContext.Students.Add(new Student());
     }
 
 
@@ -312,7 +371,7 @@ public class SeedDb
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
 
-        _dataContext.Teachers.Add(new Teacher
+        _dataContextMssql.Teachers.Add(new Teacher
             {
                 // Document = document,
                 FirstName = firstName,
@@ -330,50 +389,8 @@ public class SeedDb
             }
         );
 
-        // await _dataContext.SaveChangesAsync();
+        // await _dataContextMssql.SaveChangesAsync();
     }
 
 
-    #region Attributes
-
-    private readonly Random _random = new();
-    private readonly DataContextMSSQL _dataContext;
-
-    private readonly IUserHelper _userHelper;
-
-    // private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-
-    #region AdminSeedersConstants
-
-    public const string MyLeasingAdminsNuno =
-        "nuno.santos.26288@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsDiogo =
-        "diogo.alves.28645@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsRuben =
-        "ruben.corrreia.28257@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsTatiane =
-        "tatiane.avellar.24718@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsJorge =
-        "jorge.pinto.28720@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsJoel =
-        "joel.rangel.22101@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsLicinio =
-        "licinio.do.rosario@formandos.cinel.pt";
-
-    #endregion
-
-    // Injeção de dependência do IWebHostEnvironment
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    public string PlaceHolders;
-
-    #endregion
 }

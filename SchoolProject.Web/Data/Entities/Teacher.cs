@@ -6,23 +6,41 @@ namespace SchoolProject.Web.Data.Entities;
 public class Teacher : IEntity //: INotifyPropertyChanged
 {
     private string _genre;
-    public string FirstName { get; set; }
+    private string _nationality;
+    private string _birthplace;
 
-    public string LastName { get; set; }
+
+    [Required] [DisplayName("First Name")] public string FirstName { get; set; }
 
 
-    public string Address { get; set; }
+    [Required] [DisplayName("Last Name")] public string LastName { get; set; }
 
+
+    [DisplayName("Full Name")]
+    public string FullName => $"{FirstName} {LastName}";
+
+
+    [Required] public string Address { get; set; }
+
+
+    [Required]
+    [DisplayName("Postal Code")]
     public string PostalCode { get; set; }
 
-    public string City { get; set; }
+    [Required] public string City { get; set; }
 
-    public string Phone { get; set; }
+    [Required]
+    [DisplayName("Mobile Phone")]
+    public string MobilePhone { get; set; }
 
+
+    [Required]
+    [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
 
-    public bool Active { get; set; }
+    [Required] public bool Active { get; set; } = true;
 
+    [Required]
     public string Genre
     {
         get => _genre;
@@ -32,32 +50,61 @@ public class Teacher : IEntity //: INotifyPropertyChanged
         }
     }
 
+    [Required]
+    [DisplayName("Date Of Birth")]
+    [DataType(DataType.Date)]
+    public DateTime DateOfBirth { get; set; }
 
-    public DateOnly DateOfBirth { get; set; }
-
-
+    [Required]
+    [DisplayName("Identification Number")]
     public string IdentificationNumber { get; set; }
 
 
-    public DateOnly ExpirationDateIdentificationNumber { get; set; }
+    [Required]
+    [DisplayName("Expiration Date Identification Number")]
+    [DataType(DataType.Date)]
+    public DateTime ExpirationDateIdentificationNumber { get; set; }
 
 
+    [Required]
+    [DisplayName("Tax Identification Number")]
     public string TaxIdentificationNumber { get; set; }
 
 
-    public string Nationality { get; set; }
+    [Required]
+    public string Nationality
+    {
+        get => _nationality;
+        set
+        {
+            if (Enum.TryParse(value, out Countries countries))
+                _nationality = value;
+        }
+    }
+
+    [Required]
+    public string Birthplace
+    {
+        get => _birthplace;
+        set
+        {
+            if (Enum.TryParse(value, out Countries countries))
+                _birthplace = value;
+        }
+    }
 
 
-    public string Birthplace { get; set; }
+    [DisplayName("Courses Count")] public int CoursesCount { get; set; }
 
+    [DisplayName("Total Work Hours")] public int TotalWorkHours { get; set; }
 
-    public int CoursesCount { get; set; }
+    [Required]
+    [DisplayName("Enroll Date")]
+    [DataType(DataType.Date)]
+    public DateTime EnrollDate { get; set; }
 
-    public int TotalWorkHours { get; set; }
 
     [Required] public User User { get; set; }
-
-
 
 
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
