@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 
-
 namespace SchoolProject.Web.Data.Entities;
 
 public class CountryData

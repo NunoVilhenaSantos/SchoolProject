@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
 
-
 namespace SchoolProject.Web.Helpers.Services;
 
 public class ConnectivityService
@@ -58,8 +57,8 @@ public class ConnectivityService
         {
             using Ping ping = new();
 
-            string hostName = "stackoverflow.com";
-            PingReply reply = await ping.SendPingAsync(hostName);
+            var hostName = "stackoverflow.com";
+            var reply = await ping.SendPingAsync(hostName);
             Console.WriteLine($"Ping status for ({hostName}): {reply.Status}");
             if (reply is {Status: IPStatus.Success})
             {

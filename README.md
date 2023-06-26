@@ -66,7 +66,6 @@ Criar contas e adicionar outros utilizadores X
 CRUD de cursos X			
 CRUD de disciplinas/ufcd’s X			
 CRUD de alunos e notas X
-
 CRUD de disciplinas/ufcd’s X		
 Modificar perfil X X X
 Recuperar password X X X

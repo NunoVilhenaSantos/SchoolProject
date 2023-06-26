@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace SchoolProject.Web.Data.Entities;
 
-public class User : IdentityUser
+public class User : IdentityUser, IEntity //: INotifyPropertyChanged
 {
     [DisplayName("First Name")]
     [MaxLength(50,
@@ -44,4 +44,9 @@ public class User : IdentityUser
     //     string.IsNullOrEmpty(ImageThumbnailUrl)
     //         ? null
     //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
+
+
+    [Required] [Key] public int Id { get; set; }
+
+    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
 }

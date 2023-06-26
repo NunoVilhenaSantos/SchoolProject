@@ -1,13 +1,13 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SchoolProject.Web.Data.Entities;
 
 public interface IEntity
 {
-    [Key] int Id { get; set; }
+    [Required] [Key] public int Id { get; set; }
 
-
-    bool WasDeleted { get; set; }
+    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
 
 
     // string Name { get; set; }

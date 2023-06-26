@@ -6,6 +6,8 @@ namespace SchoolProject.Web.Data.Entities;
 public class Student : IEntity //: INotifyPropertyChanged
 {
     private string _genre;
+
+
     [Required] [DisplayName("First Name")] public string FirstName { get; set; }
 
 
@@ -75,17 +77,18 @@ public class Student : IEntity //: INotifyPropertyChanged
     public DateOnly EnrollDate { get; set; }
 
 
-    public Guid ProfilePhotoId { get; set; }
-
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://myleasingnunostorage.blob.core.windows.net/lessees/" +
-          GetType().BaseType?.Name +
-          ProfilePhotoId;
-
     [Required] public User User { get; set; }
 
 
-    public int Id { get; set; }
-    public bool WasDeleted { get; set; }
+    [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://storage.googleapis.com/supershoptpsicet77-nuno/courses/" +
+          ProfilePhotoId;
+
+
+    [Required] [Key] public int Id { get; set; }
+
+    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
 }

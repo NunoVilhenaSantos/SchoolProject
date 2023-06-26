@@ -2,17 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities;
 
-
-
-
 namespace SchoolProject.Web.Data.DataContexts;
-
 
 public class DataContextMySQL : IdentityDbContext<User>
 {
-    public DataContextMySQL(DbContextOptions<DataContextMySQL> options) : base(options)
+    public DataContextMySQL(DbContextOptions<DataContextMySQL> options) :
+        base(options)
     {
-
     }
 
     // public DbSet<Owner> Owners { get; set; }
@@ -20,13 +16,25 @@ public class DataContextMySQL : IdentityDbContext<User>
     // public DbSet<Lessee> Lessees { get; set; }
 
 
-    public DbSet<Course> Courses { get; set; }
-
-    public DbSet<Enrollment> Enrollments { get; set; }
-
-    public DbSet<SchoolClass> SchoolClasses { get; set; }
-
     public DbSet<Student> Students { get; set; }
 
     public DbSet<Teacher> Teachers { get; set; }
+
+
+    public DbSet<Course> Courses { get; set; }
+
+
+    public DbSet<SchoolClass> SchoolClasses { get; set; }
+
+
+    //
+    // muitos para muitos
+    //
+    public DbSet<Enrollment> Enrollments { get; set; }
+
+    public DbSet<SchoolClassCourse> SchoolClassCourses { get; set; }
+
+    public DbSet<StudentCourse> StudentCourses { get; set; }
+
+    public DbSet<TeacherCourse> TeacherCourses { get; set; }
 }

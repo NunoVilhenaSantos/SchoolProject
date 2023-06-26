@@ -196,7 +196,6 @@ public class SeedDb
                 {
                     "Student" => new User
                     {
-                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -206,7 +205,6 @@ public class SeedDb
                     },
                     "Teacher" => new User
                     {
-                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -216,7 +214,6 @@ public class SeedDb
                     },
                     "Functionary" => new User
                     {
-                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -226,7 +223,6 @@ public class SeedDb
                     },
                     "SuperUser" => new User
                     {
-                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -236,7 +232,6 @@ public class SeedDb
                     },
                     "Admin" => new User
                     {
-                        
                         FirstName = firstName,
                         LastName = lastName,
                         Address = address,
@@ -305,7 +300,7 @@ public class SeedDb
 
         // await _dataContext.SaveChangesAsync();
 
-        _dataContext.Students.Add(new Student { } );
+        _dataContext.Students.Add(new Student());
     }
 
 
