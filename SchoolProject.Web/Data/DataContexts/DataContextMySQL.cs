@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Enrollments;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Teachers;
 
 namespace SchoolProject.Web.Data.DataContexts;
 

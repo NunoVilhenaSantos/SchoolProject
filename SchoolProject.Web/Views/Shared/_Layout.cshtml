@@ -197,32 +197,32 @@
                         <i class="fas fa-envelope"></i> About
                     </a>
 
-                    <a class="nav-link @(currentAction == "Contacts" && currentController == "Home" ? "active" : "")"
+                    <a class="nav-link @(currentAction == "Contact" && currentController == "Home" ? "active" : "")"
                        asp-area="" asp-controller="Home" asp-action="Contact">
                         <i class="fas fa-envelope"></i> Contacts
                     </a>
 
                     <a class="nav-link @(currentController == "Course" ? "active" : "")"
                        asp-area="" asp-controller="Course" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Owners
+                        <i class="fas fa-person-shelter"></i> Courses
                     </a>
 
                     <a class="nav-link @(currentController == "SchoolClass" ? "active" : "")"
                        asp-area="" asp-controller="SchoolClass" asp-action="Index">
-                        <i class="fas fa-person-through-window"></i> Lessees
+                        <i class="fas fa-person-through-window"></i> SchoolClasses
                     </a>
 
                     <a class="nav-link @(currentController == "Student" ? "active" : "")"
                        asp-area="" asp-controller="Student" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Owners
+                        <i class="fas fa-person-shelter"></i> Students
                     </a>
 
                     <a class="nav-link @(currentController == "Teacher" ? "active" : "")"
                        asp-area="" asp-controller="Teacher" asp-action="Index">
-                        <i class="fas fa-person-through-window"></i> Lessees
+                        <i class="fas fa-person-through-window"></i> Teachers
                     </a>
 
-                    </div>
+                </div>
             </div>
 
 
@@ -248,19 +248,19 @@
                                 <i class="bi bi-person-fill"></i>
                                 <span class="material-symbols-outlined">person</span>Users
                             </a>
-                    </li>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
-                    </li>
+                        </li>
                         <li>
                             <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
                                asp-area="" asp-controller="" asp-action="">
                                 <i class="bi bi-people-fill"></i>
                                 <i class="material-symbols-outlined">group</i>Roles
                             </a>
-                    </li>
-                </ul>
-            </div>
+                        </li>
+                    </ul>
+                </div>
             }
 
 

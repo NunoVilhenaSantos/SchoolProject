@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolProject.Web.Data.Entities;
+namespace SchoolProject.Web.Data.Entities.Teachers;
 
 public class Teacher : IEntity //: INotifyPropertyChanged
 {
+    private string _birthplace;
     private string _genre;
     private string _nationality;
-    private string _birthplace;
 
 
     [Required] [DisplayName("First Name")] public string FirstName { get; set; }
@@ -111,7 +111,7 @@ public class Teacher : IEntity //: INotifyPropertyChanged
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/courses/" +
+        : "https://storage.googleapis.com/supershoptpsicet77-nuno/teachers/" +
           ProfilePhotoId;
 
 

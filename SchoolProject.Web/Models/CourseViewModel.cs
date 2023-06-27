@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Data.Entities.Courses;
 
 namespace SchoolProject.Web.Models;
 

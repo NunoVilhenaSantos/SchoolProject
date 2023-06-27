@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SchoolProject.Web.Data.Entities;
+namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
 public class SchoolClass : IEntity //: INotifyPropertyChanged
 {
@@ -9,9 +10,7 @@ public class SchoolClass : IEntity //: INotifyPropertyChanged
     [DisplayName("Class Acronym")]
     public string ClassAcronym { get; set; }
 
-    [Required]
-    [DisplayName("Class Name")]
-    public string ClassName { get; set; }
+    [Required] [DisplayName("Class Name")] public string ClassName { get; set; }
 
 
     // old version
@@ -70,11 +69,17 @@ public class SchoolClass : IEntity //: INotifyPropertyChanged
 
     [DisplayName("Students Count")] public int? StudentsCount { get; set; }
 
-    [DisplayName("Class Average")] public decimal? ClassAverage { get; set; }
+    [DisplayName("Class Average")]
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal? ClassAverage { get; set; }
 
-    [DisplayName("Highest Grade")] public decimal? HighestGrade { get; set; }
+    [DisplayName("Highest Grade")]
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal? HighestGrade { get; set; }
 
-    [DisplayName("Lowest Grade")] public decimal? LowestGrade { get; set; }
+    [DisplayName("Lowest Grade")]
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal? LowestGrade { get; set; }
 
 
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }

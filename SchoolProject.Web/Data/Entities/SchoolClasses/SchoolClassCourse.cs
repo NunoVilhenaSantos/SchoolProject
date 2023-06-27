@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SchoolProject.Web.Data.Entities;
+namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
-public class StudentCourse : IEntity
+public class SchoolClassCourse : IEntity
 {
-    [Required] public int StudentId { get; set; }
+    [Required] public int SchoolClassId { get; set; }
+
     [Required] public int CourseId { get; set; }
 
     [Required] [Key] public int Id { get; set; }

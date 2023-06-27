@@ -1,4 +1,7 @@
-using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Helpers;

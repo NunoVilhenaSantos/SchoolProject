@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
-namespace SchoolProject.Web.Data.Entities;
+namespace SchoolProject.Web.Data.Entities.Courses;
 
 public class Course : IEntity // : INotifyPropertyChanged
 {

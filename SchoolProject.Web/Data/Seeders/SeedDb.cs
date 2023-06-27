@@ -7,10 +7,6 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDb
 {
-
-
-
-
     public const string MyLeasingAdminsNuno =
         "nuno.santos.26288@formandos.cinel.pt";
 
@@ -50,20 +46,15 @@ public class SeedDb
     public string PlaceHolders;
 
 
-
-
     public SeedDb(
         IUserHelper userHelper,
-
         DataContextMSSQL dataContextMssql,
         DataContextMySQL dataContextMySql,
         DataContextSQLite dataContextSqLite,
-      
         IWebHostEnvironment hostingEnvironment
 
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager
-
     )
     {
         _userHelper = userHelper;
@@ -75,7 +66,6 @@ public class SeedDb
         _hostingEnvironment = hostingEnvironment;
         // _userManager = userManager;
         // _roleManager = roleManager;
-
     }
 
 
@@ -319,8 +309,7 @@ public class SeedDb
         return await _roleManager.FindByIdAsync(user.Id) switch
         {
             null => await CreateRoleAsync(user.UserName),
-            _ =>  null
-            
+            _ => null
         };
     }
 
@@ -341,25 +330,24 @@ public class SeedDb
         var addressFull = address + ", " + _random.Next(1, 9999);
 
         _dataContextMssql.Students.Add(new Student
-        {
-            //Document = document,
-            FirstName = firstName,
-            LastName = lastName,
-            //FixedPhone = fixedPhone,
-            //CellPhone = cellPhone,
-            Address = addressFull,
-            User = await CheckUserAsync(
+            {
+                //Document = document,
+                FirstName = firstName,
+                LastName = lastName,
+                //FixedPhone = fixedPhone,
+                //CellPhone = cellPhone,
+                Address = addressFull,
+                User = await CheckUserAsync(
                     firstName, lastName,
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
                     $"{cellPhone}", "Owner",
                     document, addressFull
                 )
-        }
+            }
         );
 
         // await _dataContextMssql.SaveChangesAsync();
-
     }
 
 
@@ -391,6 +379,4 @@ public class SeedDb
 
         // await _dataContextMssql.SaveChangesAsync();
     }
-
-
 }
