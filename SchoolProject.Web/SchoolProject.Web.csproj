@@ -387,6 +387,7 @@
         <Content Include="obj\SchoolProject.Web.csproj.nuget.g.props" />
         <Content Include="obj\SchoolProject.Web.csproj.nuget.g.targets" />
         <Content Remove="obj\Debug\**" />
+        <Content Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -400,16 +401,19 @@
         <Compile Include="obj\Debug\net7.0\SchoolProject.Web.GlobalUsings.g.cs" />
         <Compile Include="obj\Debug\net7.0\SchoolProject.Web.RazorAssemblyInfo.cs" />
         <Compile Remove="obj\Debug\**" />
+        <Compile Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Remove="bin\**" />
         <EmbeddedResource Remove="obj\Debug\**" />
+        <EmbeddedResource Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="bin\**" />
         <None Remove="obj\Debug\**" />
+        <None Remove="obj\**" />
     </ItemGroup>
 
 </Project>

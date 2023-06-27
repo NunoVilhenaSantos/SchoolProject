@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Helpers;
 
 namespace SchoolProject.Web.Data.Seeders;

@@ -14,11 +14,10 @@ public static class XFilesRelations
 
     private static Regex _myRegex2 = new("^[a-zA-Z]+:$");
 
-    #region Constants
 
-    //  static string COURSES_FILENAME = XFiles.FilesFolder +"courses.csv";
-    //  static string STUDENTS_FILENAME = XFiles.FilesFolder +"students.csv";
-    //  static string CLASSES_FILENAME =XFiles.FilesFolder +"classes.csv";
+    private static readonly string DICTIONARIES_FILENAME =
+        XFiles.FilesFolder + "dictionaries.csv";
+
 
     private static string COURSE_CLASSES_FILENAME =
         XFiles.FilesFolder + "course_classes.csv";
@@ -32,9 +31,6 @@ public static class XFilesRelations
     private static string COURSE_TEACHERS_FILENAME =
         XFiles.FilesFolder + "course_teacher.csv";
 
-    private static readonly string DICTIONARIES_FILENAME =
-        XFiles.FilesFolder + "dictionaries.csv";
-
     private static string SchoolClassCourseFilePath =
         XFiles.FilesFolder + "SchoolClassCourse.csv";
 
@@ -44,9 +40,8 @@ public static class XFilesRelations
     private static string TeacherCourseFilePath =
         XFiles.FilesFolder + "TeacherCourse.csv";
 
-    //private const string lineSeparator = ";";
 
-    #endregion
+    //private const string lineSeparator = ";";
 
 
     #region ManagingData
@@ -95,46 +90,7 @@ public static class XFilesRelations
             Teachers.Teachers.TeachersDictionary
                 .OrderBy(kvp => kvp.Key);
 
-        // Order the dictionaries by their keys
-        // var sortedCourses =
-        //     SchoolDatabase.Courses
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
-        //
-        // var sortedStudents =
-        //     SchoolDatabase.Students
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
-        //
-        // var sortedTeachers =
-        //     SchoolDatabase.Teachers
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
-        //
-        // var sortedSchoolClasses =
-        //     SchoolDatabase.SchoolClasses
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
 
-        // var sortedCourseClasses =
-        //     SchoolDatabase.CourseClasses
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
-        //
-        // var sortedCourseStudents =
-        //     SchoolDatabase.CourseStudents
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
-        //
-        // var sortedCourseTeacher =
-        //     SchoolDatabase.CourseTeacher
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
-        //
-        // var sortedStudentClass =
-        //     SchoolDatabase.StudentClass
-        //         .OrderBy(x => x.Key)
-        //         .ToDictionary(x => x.Key, x => x.Value);
 
 
         var sortedCourseClasses =
@@ -264,7 +220,7 @@ public static class XFilesRelations
                     continue;
 
                 // Define a regular expression to match letters followed by a colon
-                //var regex = MyRegex();
+                // var regex = MyRegex();
 
                 // Get the index of the colon
                 var colonIndex = line.IndexOf(':');
@@ -715,7 +671,7 @@ public static class XFilesRelations
     //
     //     public static bool SaveToCsvExtenso(string filePath, out string myString)
     //     {
-    //         //
+    //
     //         // constructor for the reading files
     //         // with a try and catch
     //         // and also returning the messages

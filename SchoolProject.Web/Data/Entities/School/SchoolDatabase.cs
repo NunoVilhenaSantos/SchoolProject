@@ -426,7 +426,7 @@ public class SchoolDatabase
     ///     enroll a student in a list of courses
     /// </summary>
     /// <param name="listOfCourses"></param>
-    /// <param name="Id"></param>
+    /// <param name="student"></param>
     public static void EnrollStudentInCourses(
         List<Course> listOfCourses, Student student)
     {
@@ -473,7 +473,7 @@ public class SchoolDatabase
     ///     enroll a student in a list of courses, using a HashSet
     /// </summary>
     /// <param name="listOfCourses"></param>
-    /// <param name="Id"></param>
+    /// <param name="student"></param>
     public static void EnrollStudentInCourses(
         HashSet<int> listOfCourses, Student student)
     {
@@ -487,8 +487,7 @@ public class SchoolDatabase
                 continue;
             }
 
-            if (!Courses.Courses.CoursesDictionary
-                    .ContainsKey(course))
+            if (!Courses.Courses.CoursesDictionary.ContainsKey(course))
             {
                 Log.Error("Invalid course ID: " +
                           "{CourseId}", course);
@@ -516,6 +515,21 @@ public class SchoolDatabase
 
             CourseStudents[student.Id].Add(course);
         }
+    }
+
+
+    /// <summary>
+    ///     enroll a student in a list of courses, using a HashSet
+    /// </summary>
+    /// <param name="listOfCourses"></param>
+    /// <param name="studentId"></param>
+    public static void EnrollStudentInCourses(
+        HashSet<int> listOfCourses, int studentId)
+    {
+        _ = Students.Students.StudentsDictionary
+            .TryGetValue(studentId, out var studentStudent);
+        if (studentStudent != null)
+            EnrollStudentInCourses(listOfCourses, studentStudent);
     }
 
     #endregion

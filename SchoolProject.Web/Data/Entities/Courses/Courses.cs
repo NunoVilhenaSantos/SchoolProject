@@ -51,12 +51,13 @@ public static class Courses
     {
         var course = CoursesList.FirstOrDefault(a => a.Id == id);
 
-        if (course == null)
-            // The course does not exist in the list.
-            return "O curso não existe";
+        // The course does not exist in the list.
+        if (course == null) return "O curso não existe";
 
         // Remove the course from the course list.
+        // Remove the course from the database.
         CoursesList.Remove(course);
+
         // The course was successfully deleted.
         return "O curso foi apagado";
     }
@@ -196,7 +197,7 @@ public static class Courses
     ///     The index of the last course in the course list,
     ///     or -1 if the list is empty.
     /// </returns>
-    public static int GetLastIndex()
+    private static int GetLastIndex()
     {
         // Get the last course in the course list, if it exists.
         var lastCourse = CoursesList.LastOrDefault();
@@ -240,21 +241,19 @@ public static class Courses
     ///     The full name of the course or an error message
     ///     if it doesn't exist or the course list is empty.
     /// </returns>
-    public static string GetFullName(int id)
+    private static string GetFullName(int id)
     {
         // If the course list is empty, return an error message
-        if (CoursesList.Count < 1)
-            return "A lista está vazia";
+        if (CoursesList.Count < 1) return "A lista está vazia";
 
         // Find the course with the given ID or null if it doesn't exist
         var course = CoursesList.FirstOrDefault(a => a.Id == id);
 
         // If the course doesn't exist, return an error message
-        if (course == null)
-            return "O curso não existe!";
-
-        // Return the full name of the course
-        return $"{course.Id,5} | {course.Name} {course.Credits}";
+        // else, Return the full name of the course
+        return course == null
+            ? "O curso não existe!"
+            : $"{course.Id,5} | {course.Name} {course.Credits}";
     }
 
 
@@ -270,19 +269,16 @@ public static class Courses
     /// </returns>
     public static string GetFullInfo(int id)
     {
-        if (CoursesList.Count < 1)
-            return "A lista está vazia";
+        if (CoursesList.Count < 1) return "A lista está vazia";
 
         // Find the course with the specified ID in the course list
         var course = CoursesList.FirstOrDefault(a => a.Id == id);
 
-        if (course == null)
-            return "A turma não existe!";
-
         // Return a string containing the course name, credits,
         // workload, and number of students enrolled
-        return
-            $"{GetFullName(id)} | {course.WorkLoad} - {course.StudentsCount}";
+        return course == null
+            ? "A turma não existe!"
+            : $"{GetFullName(id)} | {course.WorkLoad} - {course.StudentsCount}";
     }
 
     /// <summary>
@@ -294,7 +290,7 @@ public static class Courses
     ///     A string indicating that the
     ///     calculations have been executed.
     /// </returns>
-    public static string GetStudentsCount()
+    private static string GetStudentsCount()
     {
         if (CoursesList.Count < 1)
             return "A lista está vazia";

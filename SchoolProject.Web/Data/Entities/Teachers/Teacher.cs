@@ -118,4 +118,21 @@ public class Teacher : IEntity //: INotifyPropertyChanged
     [Required] [Key] public int Id { get; set; }
 
     [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
+
+
+    public void CountCourses()
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public void GetTotalWorkHourLoad()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CalculateTotalWorkHours()
+    {
+        throw new NotImplementedException();
+    }
 }

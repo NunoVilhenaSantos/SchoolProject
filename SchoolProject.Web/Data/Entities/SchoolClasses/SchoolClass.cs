@@ -93,4 +93,18 @@ public class SchoolClass : IEntity //: INotifyPropertyChanged
     [Required] [Key] public int Id { get; set; }
 
     [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
+
+
+
+
+    public void GetStudentsCount()
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public void GetWorkHourLoad()
+    {
+        throw new NotImplementedException();
+    }
 }

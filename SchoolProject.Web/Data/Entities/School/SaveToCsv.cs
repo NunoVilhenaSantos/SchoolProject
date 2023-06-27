@@ -1,6 +1,12 @@
-﻿using CsvHelper;
+﻿using System.Globalization;
+using CsvHelper;
 using CsvHelper.Configuration;
 using System.IO;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.School;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Teachers;
 
 
 namespace ClassLibrary.School;
@@ -9,23 +15,27 @@ public static class SaveToCsv
 {
     public static void SaveTo(string filePath)
     {
+        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ";"
+        };
         using (var writer = new StreamWriter(filePath))
-        using (var csv = new CsvWriter(writer, new CsvConfiguration()))
+        using (var csv = new CsvWriter(writer, csvConfig))
         {
             // Write the courses to the CSV file
-            csv.WriteRecords(_courses.Values);
+            csv.WriteRecords(Courses.CoursesList);
 
             // Write the school classes to the CSV file
-            csv.WriteRecords(_schoolClasses.Values);
+            csv.WriteRecords(SchoolClasses.SchoolClassesList);
 
             // Write the students to the CSV file
-            csv.WriteRecords(_students.Values);
+            csv.WriteRecords(Students.StudentsList);
 
             // Write the teachers to the CSV file
-            csv.WriteRecords(_teachers.Values);
+            csv.WriteRecords(Teachers.TeachersList);
 
             // Write the school class courses to the CSV file
-            foreach (var kvp in _schoolClassCourses)
+            foreach (var kvp in SchoolDatabase.CourseClasses)
             {
                 foreach (var courseId in kvp.Value)
                 {
@@ -39,7 +49,7 @@ public static class SaveToCsv
             }
 
             // Write the student courses to the CSV file
-            foreach (var kvp in _studentCourses)
+            foreach (var kvp in SchoolDatabase.CourseStudents)
             {
                 foreach (var courseId in kvp.Value)
                 {
@@ -53,7 +63,7 @@ public static class SaveToCsv
             }
 
             // Write the teacher courses to the CSV file
-            foreach (var kvp in _teacherCourses)
+            foreach (var kvp in SchoolDatabase.CourseTeacher)
             {
                 foreach (var courseId in kvp.Value)
                 {
