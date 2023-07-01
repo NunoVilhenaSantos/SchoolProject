@@ -4,8 +4,6 @@ using Microsoft.Extensions.Azure;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -20,7 +18,6 @@ builder.Logging.AddJsonConsole();
 builder.Logging.AddConsole();
 
 builder.Services.AddControllersWithViews();
-
 
 
 //builder.WebHost.ConfigureKestrel(options =>
@@ -62,7 +59,6 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 // Database connection via data-context
 //
 // -----------------------------------------------------------------------------
-
 
 
 // Add services to the container.

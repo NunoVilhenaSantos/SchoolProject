@@ -206,7 +206,7 @@ public class Students
         if (enrollmentDate != default)
             query = query.Where(a => a.EnrollDate == enrollmentDate);
 
-        List<Student> students = query.ToList();
+        var students = query.ToList();
         return students;
     }
 

@@ -5,8 +5,8 @@ using SchoolProject.Web.Data.Repositories.Interfaces;
 
 namespace SchoolProject.Web.Data.Repositories;
 
-public class GenericRepository<T> :
-    IGenericRepository<T> where T : class, IEntity
+public class GenericRepository<T> : IGenericRepository<T>
+    where T : class, IEntity
 {
     private readonly DataContextMSSQL _dataContext;
 
@@ -28,6 +28,14 @@ public class GenericRepository<T> :
         // return await _dataContext.Set<T>().FindAsync(id).AsTask();
         return await _dataContext.Set<T>().AsNoTracking()
             .FirstOrDefaultAsync(e => e.Id == id);
+    }
+
+
+    public async Task<T?> GetByIdGuidAsync(Guid idGuid)
+    {
+        return await _dataContext.Set<T>().AsNoTracking()
+            .FirstOrDefaultAsync(e => e.IdGuid == idGuid);
+        throw new NotImplementedException();
     }
 
 

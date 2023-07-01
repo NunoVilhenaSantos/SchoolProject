@@ -91,8 +91,6 @@ public static class XFilesRelations
                 .OrderBy(kvp => kvp.Key);
 
 
-
-
         var sortedCourseClasses =
             SchoolDatabase.CourseClasses
                 .OrderBy(x => x.Key)
