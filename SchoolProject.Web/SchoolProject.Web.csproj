@@ -20,6 +20,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.8" />
         <PackageReference Include="Microsoft.Build.Framework" Version="17.6.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
@@ -39,6 +40,7 @@
         <Folder Include="Controllers\API\" />
         <Folder Include="Data\DataContexts\DataAccess\" />
         <Folder Include="Docs\" />
+        <Folder Include="Migrations\" />
         <Folder Include="obj\Debug\net6.0\refint\" />
         <Folder Include="obj\Debug\net6.0\ref\" />
         <Folder Include="obj\Debug\net6.0\staticwebassets\" />
@@ -348,6 +350,7 @@
         <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll" />
         <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
         <Content Remove="bin\**" />
+        <Content Include="libman.json.bak" />
         <Content Include="obj\Debug\net6.0\SchoolProject.Web.AssemblyInfoInputs.cache" />
         <Content Include="obj\Debug\net6.0\SchoolProject.Web.assets.cache" />
         <Content Include="obj\Debug\net6.0\SchoolProject.Web.csproj.AssemblyReference.cache" />
@@ -414,6 +417,10 @@
         <None Remove="bin\**" />
         <None Remove="obj\Debug\**" />
         <None Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="libman.json.bak" />
     </ItemGroup>
 
 </Project>

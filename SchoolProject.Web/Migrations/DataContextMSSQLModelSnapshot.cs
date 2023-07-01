@@ -155,7 +155,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Course", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -187,7 +187,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollment", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollments.Enrollment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -216,7 +216,28 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClass", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genre");
+                });
+
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -285,7 +306,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("SchoolClasses");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClassCourse", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClassCourse", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,7 +328,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("SchoolClassCourses");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Student", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -398,7 +419,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.StudentCourse", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.StudentCourse", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -420,7 +441,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("StudentCourses");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teacher", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.Teacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -511,7 +532,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.TeacherCourse", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.TeacherCourse", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -669,15 +690,15 @@ namespace SchoolProject.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollment", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollments.Enrollment", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Course", "Course")
+                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.Student", "Student")
+                    b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -688,7 +709,7 @@ namespace SchoolProject.Web.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Student", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.User", "User")
                         .WithMany()
@@ -699,7 +720,7 @@ namespace SchoolProject.Web.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teacher", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.Teacher", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.User", "User")
                         .WithMany()

@@ -116,8 +116,23 @@ public class Student : IEntity //: INotifyPropertyChanged
 
 
     [Required] [Key] public int Id { get; set; }
+    [Required] [Key] public Guid IdGuid { get; set; }
 
-    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+    [Required]
+    [DisplayName("Created At")]
+    public DateTime CreatedAt { get; set; }
+
+    public User CreatedBy { get; set; }
+
+    [Required]
+    [DisplayName("Update At")]
+    public DateTime UpdatedAt { get; set; }
+
+    public User UpdatedBy { get; set; }
 
 
     public void CalculateTotalWorkHours()

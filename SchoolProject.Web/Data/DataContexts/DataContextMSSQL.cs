@@ -16,9 +16,12 @@ public class DataContextMSSQL : IdentityDbContext<User>
     {
     }
 
-    // public DbSet<Owner> Owners { get; set; }
+
+    // ---------------------------------------------------------------------- //
     //
-    // public DbSet<Lessee> Lessees { get; set; }
+    // um para muitos
+    //
+    // ---------------------------------------------------------------------- //
 
 
     public DbSet<Student> Students { get; set; }
@@ -32,9 +35,11 @@ public class DataContextMSSQL : IdentityDbContext<User>
     public DbSet<SchoolClass> SchoolClasses { get; set; }
 
 
+    // ---------------------------------------------------------------------- //
     //
     // muitos para muitos
     //
+    // ---------------------------------------------------------------------- //
     public DbSet<Enrollment> Enrollments { get; set; }
 
     public DbSet<SchoolClassCourse> SchoolClassCourses { get; set; }
@@ -42,4 +47,26 @@ public class DataContextMSSQL : IdentityDbContext<User>
     public DbSet<StudentCourse> StudentCourses { get; set; }
 
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
+
+    public DbSet<Genre> Genre { get; set; } =
+        default!;
+
+
+
+    // ---------------------------------------------------------------------- //
+    //
+    // OnDelete de muitos para muitos para Restrict
+    //
+    // ---------------------------------------------------------------------- //
+
+    protected override void OnModelCreating(ModelBuilder modelbuilder)
+    {
+        foreach (
+            var relationship in
+            modelbuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
+        base.OnModelCreating(modelbuilder);
+    }
 }

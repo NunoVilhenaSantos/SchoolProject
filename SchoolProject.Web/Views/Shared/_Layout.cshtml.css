@@ -40,14 +40,25 @@ button.accept-policy {
     line-height: inherit;
 }
 
+
+/*.footer {*/
+/*    position: relative;*/
+/*    bottom: 5px;*/
+/*    padding: 10px;*/
+/*    width: 100%;*/
+/*    white-space: nowrap;*/
+/*    line-height: 60px;*/
+/*}*/
+
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    margin-top: auto;
+    padding: 1rem;
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
 }
-
 
 /* ---------------------------------------- */
 /* ---------------------------------------- */

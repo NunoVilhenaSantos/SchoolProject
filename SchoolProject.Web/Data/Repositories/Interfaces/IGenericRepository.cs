@@ -10,6 +10,9 @@ public interface IGenericRepository<T> where T : class, IEntity
     Task<T?> GetByIdAsync(int id);
 
 
+    Task<T?> GetByIdGuidAsync(Guid idGuid);
+
+
     Task<bool> CreateAsync(T entity);
 
 

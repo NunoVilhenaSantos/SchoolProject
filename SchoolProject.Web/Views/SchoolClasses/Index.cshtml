@@ -1,0 +1,132 @@
+﻿@model IEnumerable<SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassAcronym)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartHour)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndHour)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CoursesCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkHourLoad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentsCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassAverage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HighestGrade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LowestGrade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfilePhotoId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WasDeleted)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassAcronym)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartHour)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndHour)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Area)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CoursesCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkHourLoad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentsCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassAverage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HighestGrade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LowestGrade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfilePhotoId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WasDeleted)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

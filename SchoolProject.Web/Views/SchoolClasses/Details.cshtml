@@ -1,0 +1,120 @@
+﻿@model SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SchoolClass</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClassAcronym)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClassAcronym)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClassName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartHour)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartHour)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndHour)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndHour)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Area)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Area)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CoursesCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CoursesCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkHourLoad)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WorkHourLoad)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StudentsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StudentsCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClassAverage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClassAverage)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HighestGrade)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HighestGrade)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LowestGrade)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LowestGrade)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProfilePhotoId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProfilePhotoId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WasDeleted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WasDeleted)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
