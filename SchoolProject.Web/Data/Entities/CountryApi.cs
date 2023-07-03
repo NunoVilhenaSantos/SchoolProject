@@ -5,7 +5,7 @@ namespace SchoolProject.Web.Data.Entities;
 public static class CountryApi
 {
     private const string ApiUrl = "https://restcountries.com/v3.1/all";
-    public static List<CountryData> countryList { get; set; }
+    public static List<CountryData>? countryList { get; set; }
 
 
     private static async Task<List<CountryData>?> GetAllCountries()

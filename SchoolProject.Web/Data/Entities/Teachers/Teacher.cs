@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Data.Entities.Teachers;
@@ -112,40 +113,51 @@ public class Teacher : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [DisplayName("Courses Count")] public int CoursesCount { get; set; }
+    [Required] public int Id { get; init; }
+    [Required] [Key] [Column("TeacherId")] public Guid IdGuid { get; init; }
 
-    [DisplayName("Total Work Hours")] public int TotalWorkHours { get; set; }
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    public DateTime CreatedAt { get; init; }
+
+    [DisplayName("Created By")] public User CreatedBy { get; init; }
 
 
-    [Required] public int Id { get; set; }
-    [Required] [Key] public Guid IdGuid { get; set; }
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    public DateTime? UpdatedAt { get; set; }
 
-    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public User CreatedBy { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public User UpdatedBy { get; set; }
+    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
-    public ICollection<TeacherCourse> TeacherCourses { get; set; }
-    public ICollection<StudentCourse> StudentCourses { get; set; }
-
+    public ICollection<TeacherCourse>? TeacherCourses { get; set; }
+    // public ICollection<StudentCourse>? StudentCourses { get; set; }
     // public ICollection<StudentSubject> StudentSubjects { get; set; }
 
 
-    public void CountCourses()
-    {
-        throw new NotImplementedException();
-    }
 
 
-    public void GetTotalWorkHourLoad()
-    {
-        throw new NotImplementedException();
-    }
 
-    public void CalculateTotalWorkHours()
-    {
-        throw new NotImplementedException();
-    }
+
+
+    [DisplayName("Courses Count")]
+    public int CoursesCount => TeacherCourses?.Count ?? 0;
+
+    [DisplayName("Total Work Hours")]
+    public int TotalWorkHours =>
+        TeacherCourses?.Sum(t => t.Course.WorkLoad) ?? 0;
+
+
+
+
+
+
+
+
 }

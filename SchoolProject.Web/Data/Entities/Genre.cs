@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolProject.Web.Data.Entities;
 
@@ -8,15 +9,24 @@ public class Genre : IEntity
         ErrorMessage =
             "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
-
     public string Name { get; set; }
 
-    public int Id { get; set; }
-    public Guid IdGuid { get; set; }
 
-    public bool WasDeleted { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public User CreatedBy { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public User UpdatedBy { get; set; }
+    [Required] public int Id { get; init; }
+
+
+    [Required] [Key] [Column("GenreId")] public Guid IdGuid { get; init; }
+
+
+    [Required] [Column("Was Deleted?")] public bool WasDeleted { get; set; }
+
+
+    [DataType(DataType.Date)] public DateTime CreatedAt { get; init; }
+
+    public User CreatedBy { get; init; }
+
+
+    [DataType(DataType.Date)] public DateTime? UpdatedAt { get; set; }
+
+    public User? UpdatedBy { get; set; }
 }

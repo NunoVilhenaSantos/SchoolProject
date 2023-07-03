@@ -26,12 +26,25 @@ public class Course : IEntity // : INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [Required]  public int Id { get; set; }
-    [Required] [Key] [Column("StudentId")] public Guid IdGuid { get; set; }
+    [Required] public int Id { get; init; }
+    [Required] [Key] [Column("CourseId")] public Guid IdGuid { get; init; }
 
-    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public User CreatedBy { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public User UpdatedBy { get; set; }
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    public DateTime CreatedAt { get; init; }
+
+    [DisplayName("Created By")] public User CreatedBy { get; init; }
+
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    public DateTime? UpdatedAt { get; set; }
+
+    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 }

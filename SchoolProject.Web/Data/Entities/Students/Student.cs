@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 
@@ -94,10 +95,6 @@ public class Student : IEntity //: INotifyPropertyChanged
     }
 
 
-    [DisplayName("Courses Count")] public int CoursesCount { get; set; }
-
-    [DisplayName("total Work Hours")] public int TotalWorkHours { get; set; }
-
     [Required]
     [DisplayName("Enroll Date")]
     [DataType(DataType.Date)]
@@ -115,34 +112,30 @@ public class Student : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [Required] [Key] public int Id { get; set; }
-    [Required] [Key] public Guid IdGuid { get; set; }
+    [Required] public int Id { get; init; }
+    [Required] [Key] [Column("StudentId")] public Guid IdGuid { get; init; }
 
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
     [Required]
+    [DataType(DataType.Date)]
     [DisplayName("Created At")]
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
-    public User CreatedBy { get; set; }
+    [DisplayName("Created By")] public User CreatedBy { get; init; }
+
 
     [Required]
+    [DataType(DataType.Date)]
     [DisplayName("Update At")]
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
-    public User UpdatedBy { get; set; }
-
-
-    public void CalculateTotalWorkHours()
-    {
-        throw new NotImplementedException();
-    }
+    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
-    public void CountCourses()
-    {
-        throw new NotImplementedException();
-    }
+    [DisplayName("Courses Count")] public int CoursesCount { get; set; }
+
+    [DisplayName("total Work Hours")] public int TotalWorkHours { get; set; }
 }

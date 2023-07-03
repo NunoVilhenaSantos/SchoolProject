@@ -52,9 +52,8 @@ public static class Teachers
             Nationality = nationality,
             Birthplace = birthplace,
             ProfilePhotoId = profilePhotoId,
-            CoursesCount = coursesCount,
-            TotalWorkHours = totalWorkHours
-            //Courses = courses
+            // CoursesCount = coursesCount,
+            // TotalWorkHours = totalWorkHours
         };
         TeachersList.Add(teacher);
 
@@ -92,33 +91,28 @@ public static class Teachers
 
         if (teacher == null) return "Professor(a) não existe";
 
-        TeachersList.FirstOrDefault(a => a.Id == id)!.FirstName = firstname;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.LastName = lastName;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.Address = address;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.PostalCode = postalCode;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.City = city;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.MobilePhone = mobilePhone;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.Email = email;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.Active = active;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.Genre = genre;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.DateOfBirth = dateOfBirth;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.IdentificationNumber =
-            identificationNumber;
-        TeachersList.FirstOrDefault(a => a.Id == id)!
-            .ExpirationDateIdentificationNumber = expirationDateIn;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.TaxIdentificationNumber =
-            taxIdentificationNumber;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.Nationality = nationality;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.Birthplace = birthplace;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.ProfilePhotoId =
-            profilePhotoId;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.TotalWorkHours =
-            totalWorkHours;
-        TeachersList.FirstOrDefault(a => a.Id == id)!.CoursesCount =
-            coursesCount;
+        teacher.FirstName = firstname;
+        teacher.LastName = lastName;
+        teacher.Address = address;
+        teacher.PostalCode = postalCode;
+        teacher.City = city;
+        teacher.MobilePhone = mobilePhone;
+        teacher.Email = email;
+        teacher.Active = active;
+        teacher.Genre = genre;
+        teacher.DateOfBirth = dateOfBirth;
+        teacher.IdentificationNumber = identificationNumber;
+        teacher.ExpirationDateIdentificationNumber = expirationDateIn;
+        teacher.TaxIdentificationNumber = taxIdentificationNumber;
+        teacher.Nationality = nationality;
+        teacher.Birthplace = birthplace;
+        teacher.ProfilePhotoId = profilePhotoId;
 
-        TeachersList[id].CountCourses();
-        TeachersList[id].GetTotalWorkHourLoad();
+        // teacher.TotalWorkHours = totalWorkHours;
+        // teacher.CoursesCount = coursesCount;
+
+        // TeachersList[id].CountCourses();
+        // TeachersList[id].GetTotalWorkHourLoad();
 
         return "Professor(a) alterado(a) com sucesso";
     }
@@ -226,6 +220,74 @@ public static class Teachers
     }
 
 
+    public static IEnumerable<Teacher> FilterTeachers(
+        string name, string lastName, string address, string postalCode,
+        string city, string phone, string email, bool active, string genre,
+        DateTime dateOfBirth, string identificationNumber,
+        DateTime expirationDateIn, string taxIdentificationNumber,
+        string nationality, string birthplace, Guid profilePhotoId,
+        int totalWorkHours)
+    {
+        IQueryable<Teacher> query = TeachersList.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(name))
+            query = query.Where(a => a.FirstName == name);
+
+        if (!string.IsNullOrWhiteSpace(lastName))
+            query = query.Where(a => a.LastName == lastName);
+
+        if (!string.IsNullOrWhiteSpace(address))
+            query = query.Where(a => a.Address == address);
+
+        if (!string.IsNullOrWhiteSpace(postalCode))
+            query = query.Where(a => a.PostalCode == postalCode);
+
+        if (!string.IsNullOrWhiteSpace(city))
+            query = query.Where(a => a.City == city);
+
+        if (!string.IsNullOrWhiteSpace(phone))
+            query = query.Where(a => a.MobilePhone == phone);
+
+        if (!string.IsNullOrWhiteSpace(email))
+            query = query.Where(a => a.Email == email);
+
+        query = query.Where(a => a.Active == active);
+
+        if (!string.IsNullOrWhiteSpace(genre))
+            query = query.Where(a => a.Genre == genre);
+
+        if (dateOfBirth != default)
+            query = query.Where(a => a.DateOfBirth == dateOfBirth);
+
+        if (!string.IsNullOrWhiteSpace(identificationNumber))
+            query = query.Where(a =>
+                a.IdentificationNumber == identificationNumber);
+
+        if (expirationDateIn != default)
+            query = query.Where(a =>
+                a.ExpirationDateIdentificationNumber == expirationDateIn);
+
+        if (!string.IsNullOrWhiteSpace(taxIdentificationNumber))
+            query = query.Where(a =>
+                a.TaxIdentificationNumber == taxIdentificationNumber);
+
+        if (!string.IsNullOrWhiteSpace(nationality))
+            query = query.Where(a => a.Nationality == nationality);
+
+        if (!string.IsNullOrWhiteSpace(birthplace))
+            query = query.Where(a => a.Birthplace == birthplace);
+
+        if (profilePhotoId != Guid.Empty)
+            query = query.Where(a => a.ProfilePhotoId == profilePhotoId);
+
+        if (!int.IsNegative(totalWorkHours))
+            query = query.Where(a => a.TotalWorkHours == totalWorkHours);
+
+
+        return query.ToList();
+    }
+
+
     public static List<Teacher> ConsultTeachers(
         string selectedProperty, object selectedValue)
     {
@@ -257,7 +319,7 @@ public static class Teachers
     }
 
 
-    public static int GetLastIndex()
+    private static int GetLastIndex()
     {
         var lastTeachers = TeachersList.LastOrDefault();
         if (lastTeachers != null)
@@ -288,14 +350,17 @@ public static class Teachers
 
         foreach (var teacher in TeachersList)
         {
-            teacher.CalculateTotalWorkHours();
-            teacher.CountCourses();
-            //teacher.CalculateWorkloadPerCourse();
+            // teacher.CalculateTotalWorkHours();
+            // teacher.CountCourses();
+            // teacher.CalculateWorkloadPerCourse();
 
             Log.Information(
-                $"Metrics for {teacher.FirstName}: " +
-                $"Total work hours = {teacher.TotalWorkHours}, " +
-                $"Course count = {teacher.CoursesCount}, ");
+                "Metrics for {TeacherFirstName}: " +
+                "Total work hours = {TeacherTotalWorkHours}, " +
+                "Course count = {TeacherCoursesCount}, ",
+                teacher.FirstName,
+                teacher.TotalWorkHours,
+                teacher.CoursesCount);
             // $"Workload per course = {teacher.workloadPerCourse}.");
         }
 
@@ -303,7 +368,7 @@ public static class Teachers
     }
 
 
-    public static string GetFullName(int id)
+    private static string GetFullName(int id)
     {
         if (TeachersList.Count < 1)
             return "A lista está vazia";

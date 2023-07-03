@@ -1,6 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Enrollments;
+using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
@@ -63,25 +67,6 @@ public class SchoolClass : IEntity //: INotifyPropertyChanged
     public string Area { get; set; }
 
 
-    [DisplayName("Courses Count")] public int? CoursesCount { get; set; }
-
-    [DisplayName("Work Hour Load")] public int? WorkHourLoad { get; set; }
-
-    [DisplayName("Students Count")] public int? StudentsCount { get; set; }
-
-    [DisplayName("Class Average")]
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal? ClassAverage { get; set; }
-
-    [DisplayName("Highest Grade")]
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal? HighestGrade { get; set; }
-
-    [DisplayName("Lowest Grade")]
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal? LowestGrade { get; set; }
-
-
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
@@ -90,24 +75,65 @@ public class SchoolClass : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [Required] [Key] public int Id { get; set; }
-    public Guid IdGuid { get; set; }
+    [Required] public int Id { get; init; }
 
-    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public User CreatedBy { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public User UpdatedBy { get; set; }
+    [Required]
+    [Key]
+    [Column("SchoolClassId")]
+    public Guid IdGuid { get; init; }
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    public DateTime CreatedAt { get; init; }
+
+    [DisplayName("Created By")] public User CreatedBy { get; init; }
 
 
-    public void GetStudentsCount()
-    {
-        throw new NotImplementedException();
-    }
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    public DateTime? UpdatedAt { get; set; }
+
+    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
-    public void GetWorkHourLoad()
-    {
-        throw new NotImplementedException();
-    }
+    public ICollection<Course> Courses { get; set; } = new List<Course>();
+    public ICollection<Student> Students { get; set; } = new List<Student>();
+
+    public ICollection<Enrollment> Enrollments { get; set; } =
+        new List<Enrollment>();
+
+
+    [DisplayName("Courses Count")]
+    public int? CoursesCount => Courses?.Count ?? 0;
+
+    [DisplayName("Work Hour Load")]
+    public int? WorkHourLoad => Courses?.Sum(c => c.WorkLoad) ?? 0;
+
+    [DisplayName("Students Count")]
+    public int? StudentsCount => Students?.Count ?? 0;
+
+
+    [DisplayName("Class Average")]
+    // [Column(TypeName = "decimal(18,2)")]
+    [Precision(18, 2)]
+    public decimal? ClassAverage =>
+        Enrollments?.Average(e => e.Grade) ?? 0;
+
+
+    [DisplayName("Highest Grade")]
+    // [Column(TypeName = "decimal(18,2)")]
+    [Precision(18, 2)]
+    public decimal? HighestGrade => Enrollments?.Max(e => e.Grade) ?? 0;
+
+
+    [DisplayName("Lowest Grade")]
+    // [Column(TypeName = "decimal(18,2)")]
+    [Precision(18, 2)]
+    public decimal? LowestGrade => Enrollments?.Min(e => e.Grade) ?? 0;
 }

@@ -69,13 +69,12 @@ public class Students
 
     public static string DeleteStudent(int id)
     {
-        var student =
-            StudentsList.FirstOrDefault(a => a.Id == id);
+        var student = StudentsList.FirstOrDefault(s => s.Id == id);
 
-        if (student == null)
-            return "O estudante não existe!";
+        if (student == null) return "O estudante não existe!";
 
         StudentsList.Remove(student);
+
         return "O estudante foi apagado!";
     }
 
@@ -110,32 +109,27 @@ public class Students
         if (student == null)
             return "O estudante não existe!";
 
-        StudentsList.FirstOrDefault(a => a.Id == id)!.FirstName = firstName;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.LastName = lastName;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.Address = address;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.PostalCode = postalCode;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.City = city;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.MobilePhone = phone;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.Email = email;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.Active = active;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.Genre = genre;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.DateOfBirth = dateOfBirth;
-        StudentsList.FirstOrDefault(a => a.Id == id)!
-            .IdentificationNumber = identificationNumber;
-        StudentsList.FirstOrDefault(a => a.Id == id)!
-            .ExpirationDateIdentificationNumber = expirationDateIn;
-        StudentsList.FirstOrDefault(a => a.Id == id)!
-            .TaxIdentificationNumber = taxIdentificationNumber;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.Nationality = nationality;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.Birthplace = birthplace;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.ProfilePhotoId = photo;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.TotalWorkHours =
-            totalWorkHours;
-        StudentsList.FirstOrDefault(a => a.Id == id)!.EnrollDate =
-            enrollmentDate;
+        student.FirstName = firstName;
+        student.LastName = lastName;
+        student.Address = address;
+        student.PostalCode = postalCode;
+        student.City = city;
+        student.MobilePhone = phone;
+        student.Email = email;
+        student.Active = active;
+        student.Genre = genre;
+        student.DateOfBirth = dateOfBirth;
+        student.IdentificationNumber = identificationNumber;
+        student.ExpirationDateIdentificationNumber = expirationDateIn;
+        student.TaxIdentificationNumber = taxIdentificationNumber;
+        student.Nationality = nationality;
+        student.Birthplace = birthplace;
+        student.ProfilePhotoId = photo;
+        student.TotalWorkHours = totalWorkHours;
+        student.EnrollDate = enrollmentDate;
 
-        StudentsList[id].CalculateTotalWorkHours();
-        StudentsList[id].CountCourses();
+        // StudentsList[id].CalculateTotalWorkHours();
+        // StudentsList[id].CountCourses();
 
         return "Estudante alterado com sucesso";
     }
@@ -166,47 +160,66 @@ public class Students
 
         if (id != 0)
             query = query.Where(a => a.Id == id);
+
         if (!string.IsNullOrWhiteSpace(firstName))
             query = query.Where(a => a.FirstName == firstName);
+
         if (!string.IsNullOrWhiteSpace(lastName))
             query = query.Where(a => a.LastName == lastName);
+
         if (!string.IsNullOrWhiteSpace(address))
             query = query.Where(a => a.Address == address);
+
         if (!string.IsNullOrWhiteSpace(postalCode))
             query = query.Where(a => a.PostalCode == postalCode);
+
         if (!string.IsNullOrWhiteSpace(city))
             query = query.Where(a => a.City == city);
+
         if (!string.IsNullOrWhiteSpace(phone))
             query = query.Where(a => a.MobilePhone == phone);
+
         if (!string.IsNullOrWhiteSpace(email))
             query = query.Where(a => a.Email == email);
+
         if (active)
             query = query.Where(a => a.Active == active);
+
         if (!string.IsNullOrWhiteSpace(genre))
             query = query.Where(a => a.Genre == genre);
+
         if (dateOfBirth != default)
             query = query.Where(a => a.DateOfBirth == dateOfBirth);
+
         if (!string.IsNullOrWhiteSpace(identificationNumber))
             query = query.Where(a =>
                 a.IdentificationNumber == identificationNumber);
+
         if (expirationDateIn != default)
             query = query.Where(a =>
                 a.ExpirationDateIdentificationNumber == expirationDateIn);
+
         if (!string.IsNullOrWhiteSpace(taxIdentificationNumber))
             query = query.Where(a =>
                 a.TaxIdentificationNumber == taxIdentificationNumber);
+
         if (!string.IsNullOrWhiteSpace(nationality))
             query = query.Where(a => a.Nationality == nationality);
+
         if (!string.IsNullOrWhiteSpace(birthplace))
             query = query.Where(a => a.Birthplace == birthplace);
+
         if (photo != Guid.Empty)
             query = query.Where(a => a.ProfilePhotoId == photo);
+
         if (totalWorkHours >= 0)
             query = query.Where(a => a.TotalWorkHours == totalWorkHours);
+
         if (enrollmentDate != default)
             query = query.Where(a => a.EnrollDate == enrollmentDate);
 
         var students = query.ToList();
+
         return students;
     }
 
@@ -288,9 +301,9 @@ public class Students
 
         foreach (var student in StudentsList)
         {
-            student.CalculateTotalWorkHours();
-            student.CountCourses();
-            //teacher.CalculateWorkloadPerCourse();
+            // student.CalculateTotalWorkHours();
+            // student.CountCourses();
+            // teacher.CalculateWorkloadPerCourse();
 
             Log.Information(
                 string.Format(

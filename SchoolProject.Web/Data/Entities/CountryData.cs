@@ -1,7 +1,15 @@
-﻿namespace SchoolProject.Web.Data.Entities;
+﻿using System.Collections;
+using Microsoft.Build.Framework;
 
-public class CountryData // : IEnumerable
+namespace SchoolProject.Web.Data.Entities;
+
+public class CountryData
 {
-    public string Name { get; set; }
-    public bool Independent { get; set; }
+    [Required] public string Name { get; set; }
+
+    [Required] public bool Independent { get; set; }
+
+    public class CountryDataCollection : List<CountryData>
+    {
+    }
 }

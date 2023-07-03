@@ -37,15 +37,10 @@ public static class SchoolClasses
                 EndHour = endHour,
                 Location = location,
                 Type = type,
-                Area = area
-                //StudentsCount = studentsCount,
-                //CoursesList = courses
+                Area = area,
             }
         );
         SchoolDatabase.AddSchoolClass(SchoolClassesList[^1]);
-
-        SchoolClassesList[^1].GetStudentsCount();
-        SchoolClassesList[^1].GetWorkHourLoad();
     }
 
 
@@ -102,9 +97,6 @@ public static class SchoolClasses
             a => a.Id == id)!.Area = area;
 
 
-        SchoolClassesList[^1].GetStudentsCount();
-        SchoolClassesList[^1].GetWorkHourLoad();
-
         return "Turma alterada com sucesso";
     }
 
@@ -120,26 +112,37 @@ public static class SchoolClasses
         var query = SchoolClassesList.AsQueryable();
 
         if (id.HasValue) query = query.Where(a => a.Id == id.Value);
+
         if (!string.IsNullOrWhiteSpace(classAcronym))
             query = query.Where(a => a.ClassAcronym == classAcronym);
+
         if (!string.IsNullOrWhiteSpace(className))
             query = query.Where(a => a.ClassName == className);
+
         if (startDate.HasValue)
             query = query.Where(a => a.StartDate == startDate.Value);
-        if (endDate.HasValue && endDate.Value > startDate)
+
+        if (endDate.HasValue)
             query = query.Where(a => a.EndDate == endDate.Value);
+
         if (startHour.HasValue)
             query = query.Where(a => a.StartHour == startHour.Value);
-        if (endHour.HasValue && endHour.Value > startHour)
+
+        if (endHour.HasValue)
             query = query.Where(a => a.EndHour == endHour.Value);
+
         if (!string.IsNullOrWhiteSpace(location))
             query = query.Where(a => a.Location == location);
+
         if (!string.IsNullOrWhiteSpace(type))
             query = query.Where(a => a.Type == type);
+
         if (!string.IsNullOrWhiteSpace(area))
             query = query.Where(a => a.Area == area);
-        if (studentsCount.HasValue && studentsCount >= 0)
-            query = query.Where(a => a.StudentsCount == studentsCount.Value);
+
+        if (studentsCount is >= 0)
+            query = query.Where(a =>
+                a.StudentsCount == studentsCount.Value);
 
         var schoolClasses = query.ToList();
         return schoolClasses;
@@ -297,13 +300,14 @@ public static class SchoolClasses
                     .Select(e => e.Student.Id.ToString()));
             }
 
-            schoolClass.CoursesCount = coursesCount;
-            schoolClass.WorkHourLoad = workHourLoad;
-            schoolClass.StudentsCount = students.Count;
-            schoolClass.ClassAverage =
-                coursesCount > 0 ? classTotal / coursesCount : 0;
-            schoolClass.HighestGrade = highestGrade;
-            schoolClass.LowestGrade = lowestGrade;
+            // schoolClass.CoursesCount = coursesCount;
+            // schoolClass.WorkHourLoad = workHourLoad;
+            // schoolClass.StudentsCount = students.Count;
+
+            // schoolClass.ClassAverage =
+            //     coursesCount > 0 ? classTotal / coursesCount : 0;
+            // schoolClass.HighestGrade = highestGrade;
+            // schoolClass.LowestGrade = lowestGrade;
         }
     }
 
