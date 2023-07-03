@@ -53,7 +53,7 @@ Os utilizadores anónimos apenas podem consultar os cursos, turmas disponíveis,
 
 ## Matriz de funcionalidades
 
-|----------------------------------------------|-------|-------------|-------|---------|
+
 | Funcionalidade                               | Admin | Funcionário | Aluno | Anónimo |
 |----------------------------------------------|-------|-------------|-------|---------|
 | Login                                        |   X   |      X      |   X   |         |
@@ -66,7 +66,7 @@ Os utilizadores anónimos apenas podem consultar os cursos, turmas disponíveis,
 | Consultar notas                              |       |      X      |       |         |
 | Consultar as suas notas                      |       |             |   X   |         |
 | Visualizar cursos e disciplinas disponíveis  |       |             |       |    X    |
-|----------------------------------------------|-------|-------------|-------|---------|
+
 
 
 ## Outros aspetos relevantes
