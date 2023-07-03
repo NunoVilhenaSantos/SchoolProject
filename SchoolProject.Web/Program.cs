@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
@@ -7,15 +8,29 @@ using SchoolProject.Web.Data.DataContexts;
 var builder = WebApplication.CreateBuilder(args);
 
 
+//
+// Add Application Insights services into service collection
+//
+// builder.Services.AddApplicationInsightsTelemetry(
+//     builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
+// or
 builder.Services.AddApplicationInsightsTelemetry(
-    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+    options => options.ConnectionString =
+        "APPLICATIONINSIGHTS_CONNECTION_STRING"
+);
 
 
 // Configure JSON logging to the console.
-builder.Logging.AddJsonConsole();
+// builder.Logging.AddJsonConsole();
 
 // Configure logging to the console.
+builder.Logging.AddDebug();
 builder.Logging.AddConsole();
+// builder.Logging.AddEventLog();
+builder.Logging.AddEventSourceLogger();
+builder.Logging.AddApplicationInsights();
+
 
 builder.Services.AddControllersWithViews();
 
@@ -77,19 +92,19 @@ builder.Services.AddAzureClients(clientBuilder =>
 //     options.UseSqlServer(
 //         builder.Configuration.GetConnectionString("SchoolProjectConnection")));
 
-builder.Services.AddDbContext<DataContextMSSQL>(options =>
+builder.Services.AddDbContext<DataContextMssql>(options =>
     options.UseSqlServer(
         builder.Configuration
             .GetConnectionString("SchoolProject-mssql.somee.com")));
 
 
-builder.Services.AddDbContext<DataContextMySQL>(options =>
+builder.Services.AddDbContext<DataContextMySql>(options =>
     options.UseMySQL(
         builder.Configuration
             .GetConnectionString("SchoolProject-MySQL")));
 
 
-builder.Services.AddDbContext<DataContextSQLite>(options =>
+builder.Services.AddDbContext<DataContextSqLite>(options =>
     options.UseSqlite(
         builder.Configuration
             .GetConnectionString("SchoolProject-SQLite")));

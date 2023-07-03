@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
 
@@ -25,8 +26,8 @@ public class Course : IEntity // : INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [Required] [Key] public int Id { get; set; }
-    public Guid IdGuid { get; set; }
+    [Required]  public int Id { get; set; }
+    [Required] [Key] [Column("StudentId")] public Guid IdGuid { get; set; }
 
     [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
     public DateTime CreatedAt { get; set; }

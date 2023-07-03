@@ -6,7 +6,7 @@ namespace SchoolProject.Web.Data.Repositories;
 
 public class GenreRepository : GenericRepository<Genre>, IGenreRepository
 {
-    public GenreRepository(DataContextMSSQL dataContext) : base(dataContext)
+    public GenreRepository(DataContextMssql dataContext) : base(dataContext)
     {
     }
 }

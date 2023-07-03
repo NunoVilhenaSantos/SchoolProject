@@ -11,7 +11,7 @@ using SchoolProject.Web.Data.DataContexts;
 
 namespace SchoolProject.Web.Migrations
 {
-    [DbContext(typeof(DataContextMSSQL))]
+    [DbContext(typeof(DataContextMssql))]
     [Migration("20230701005006_DBInit")]
     partial class DBInit
     {

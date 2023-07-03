@@ -2,30 +2,28 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities;
-using SchoolProject.Web.Data.Entities.Students;
-using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Helpers;
 
 namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDb
 {
-    private readonly DataContextMSSQL _dataContextMssql;
-    private readonly DataContextMySQL _dataContextMySql;
-    private readonly DataContextSQLite _dataContextSqLite;
-
-    private readonly IUserHelper _userHelper;
+    private readonly DataContextMssql _dataContextMssql;
+    private readonly DataContextMySql _dataContextMySql;
+    private readonly DataContextSqLite _dataContextSqLite;
 
 
     // private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
+    private readonly IUserHelper _userHelper;
+
 
     public SeedDb(
         IUserHelper userHelper,
-        DataContextMSSQL dataContextMssql,
-        DataContextMySQL dataContextMySql,
-        DataContextSQLite dataContextSqLite
+        DataContextMssql dataContextMssql,
+        DataContextMySql dataContextMySql,
+        DataContextSqLite dataContextSqLite
 
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager

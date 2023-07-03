@@ -10,7 +10,7 @@ using SchoolProject.Web.Data.DataContexts;
 
 namespace SchoolProject.Web.Migrations
 {
-    [DbContext(typeof(DataContextMSSQL))]
+    [DbContext(typeof(DataContextMssql))]
     partial class DataContextMSSQLModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

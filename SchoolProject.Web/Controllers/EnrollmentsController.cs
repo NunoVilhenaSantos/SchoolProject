@@ -7,9 +7,9 @@ namespace SchoolProject.Web.Controllers;
 
 public class EnrollmentsController : Controller
 {
-    private readonly DataContextMSSQL _context;
+    private readonly DataContextMssql _context;
 
-    public EnrollmentsController(DataContextMSSQL context)
+    public EnrollmentsController(DataContextMssql context)
     {
         _context = context;
     }

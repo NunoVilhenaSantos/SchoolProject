@@ -7,9 +7,9 @@ namespace SchoolProject.Web.Controllers;
 
 public class GenresController : Controller
 {
-    private readonly DataContextMSSQL _context;
+    private readonly DataContextMssql _context;
 
-    public GenresController(DataContextMSSQL context)
+    public GenresController(DataContextMssql context)
     {
         _context = context;
     }

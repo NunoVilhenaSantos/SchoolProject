@@ -9,32 +9,33 @@ using SchoolProject.Web.Data.Entities.Teachers;
 
 namespace SchoolProject.Web.Data.DataContexts;
 
-public class DataContextSQLite : IdentityDbContext<User>
+public class DataContextSqLite : IdentityDbContext<User>
 {
-    public DataContextSQLite(
-        DbContextOptions<DataContextSQLite> options) : base(options)
+    public DataContextSqLite(
+        DbContextOptions<DataContextSqLite> options) : base(options)
     {
     }
 
-    // public DbSet<Owner> Owners { get; set; }
+
+    // ---------------------------------------------------------------------- //
     //
-    // public DbSet<Lessee> Lessees { get; set; }
-
-
+    // um para muitos
+    //
+    // ---------------------------------------------------------------------- //
     public DbSet<Student> Students { get; set; }
 
     public DbSet<Teacher> Teachers { get; set; }
 
-
     public DbSet<Course> Courses { get; set; }
-
 
     public DbSet<SchoolClass> SchoolClasses { get; set; }
 
 
+    // ---------------------------------------------------------------------- //
     //
     // muitos para muitos
     //
+    // ---------------------------------------------------------------------- //
     public DbSet<Enrollment> Enrollments { get; set; }
 
     public DbSet<SchoolClassCourse> SchoolClassCourses { get; set; }
@@ -42,4 +43,23 @@ public class DataContextSQLite : IdentityDbContext<User>
     public DbSet<StudentCourse> StudentCourses { get; set; }
 
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
+
+    public DbSet<Genre> Genre { get; set; } = default!;
+
+
+    // ---------------------------------------------------------------------- //
+    //
+    // OnDelete de muitos para muitos para Restrict
+    //
+    // ---------------------------------------------------------------------- //
+    protected override void OnModelCreating(ModelBuilder modelbuilder)
+    {
+        foreach (
+            var relationship in
+            modelbuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
+        base.OnModelCreating(modelbuilder);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Data.Entities.Teachers;
 
@@ -116,14 +117,20 @@ public class Teacher : IEntity //: INotifyPropertyChanged
     [DisplayName("Total Work Hours")] public int TotalWorkHours { get; set; }
 
 
-    [Required] [Key] public int Id { get; set; }
-    public Guid IdGuid { get; set; }
+    [Required] public int Id { get; set; }
+    [Required] [Key] public Guid IdGuid { get; set; }
 
     [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
     public DateTime CreatedAt { get; set; }
     public User CreatedBy { get; set; }
     public DateTime UpdatedAt { get; set; }
     public User UpdatedBy { get; set; }
+
+
+    public ICollection<TeacherCourse> TeacherCourses { get; set; }
+    public ICollection<StudentCourse> StudentCourses { get; set; }
+
+    // public ICollection<StudentSubject> StudentSubjects { get; set; }
 
 
     public void CountCourses()

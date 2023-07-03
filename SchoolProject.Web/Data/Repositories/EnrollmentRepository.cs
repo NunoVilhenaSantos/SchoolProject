@@ -7,7 +7,7 @@ namespace SchoolProject.Web.Data.Repositories;
 public class EnrollmentRepository : GenericRepository<Enrollment>,
     IEnrollmentRepository
 {
-    protected EnrollmentRepository(DataContextMSSQL dataContext) :
+    protected EnrollmentRepository(DataContextMssql dataContext) :
         base(dataContext)
     {
     }

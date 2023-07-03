@@ -9,9 +9,9 @@ using SchoolProject.Web.Data.Entities.Teachers;
 
 namespace SchoolProject.Web.Data.DataContexts;
 
-public class DataContextMSSQL : IdentityDbContext<User>
+public class DataContextMssql : IdentityDbContext<User>
 {
-    public DataContextMSSQL(DbContextOptions<DataContextMSSQL> options) :
+    public DataContextMssql(DbContextOptions<DataContextMssql> options) :
         base(options)
     {
     }
@@ -22,15 +22,11 @@ public class DataContextMSSQL : IdentityDbContext<User>
     // um para muitos
     //
     // ---------------------------------------------------------------------- //
-
-
     public DbSet<Student> Students { get; set; }
 
     public DbSet<Teacher> Teachers { get; set; }
 
-
     public DbSet<Course> Courses { get; set; }
-
 
     public DbSet<SchoolClass> SchoolClasses { get; set; }
 
@@ -48,9 +44,7 @@ public class DataContextMSSQL : IdentityDbContext<User>
 
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
 
-    public DbSet<Genre> Genre { get; set; } =
-        default!;
-
+    public DbSet<Genre> Genre { get; set; } = default!;
 
 
     // ---------------------------------------------------------------------- //
@@ -58,7 +52,6 @@ public class DataContextMSSQL : IdentityDbContext<User>
     // OnDelete de muitos para muitos para Restrict
     //
     // ---------------------------------------------------------------------- //
-
     protected override void OnModelCreating(ModelBuilder modelbuilder)
     {
         foreach (

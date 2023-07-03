@@ -7,9 +7,9 @@ namespace SchoolProject.Web.Controllers;
 
 public class StudentsController : Controller
 {
-    private readonly DataContextMSSQL _context;
+    private readonly DataContextMssql _context;
 
-    public StudentsController(DataContextMSSQL context)
+    public StudentsController(DataContextMssql context)
     {
         _context = context;
     }

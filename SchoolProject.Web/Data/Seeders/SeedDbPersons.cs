@@ -10,7 +10,7 @@ public static class SeedDbPersons
 {
     private static Random _random;
     private static IUserHelper _userHelper;
-    private static DataContextMSSQL _dataContextMssql;
+    private static DataContextMssql _dataContextMssql;
 
 
     internal static async Task AddingData()
@@ -21,34 +21,34 @@ public static class SeedDbPersons
 
         if (!_dataContextMssql.Students.Any())
         {
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Juan", "Zuluaga",
                 "Calle Luna", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Joaquim", "Alvenaria",
                 "Calle Sol", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Alberto", "Domingues",
                 "Calle Luna", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Mariana", "Alvarez",
                 "Calle Sol", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Lucia", "Liu",
                 "Calle Luna", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Renee", "Arriaga",
                 "Calle Sol", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Marcia", "Zuluaga",
                 "Calle Luna", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Ernesto", "Guevara",
                 "Calle Sol", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "El", "Che",
                 "Calle Luna", user);
-            await SeedDbPersons.AddStudent(
+            await AddStudent(
                 "Claudia", "Arroz",
                 "Calle Sol", user);
         }
@@ -59,37 +59,37 @@ public static class SeedDbPersons
 
         if (!_dataContextMssql.Teachers.Any())
         {
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Roberto", "Rossellini",
                 "Calle Luna", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Giuseppe", "Tornatore",
                 "Calle Luna", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Federico", "Fellini",
                 "Rimini", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Ingrid", "Bergman",
                 "Calle Sol", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Gina", "Lollobrigida",
                 "Calle Sol", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Isabella", "Rossellini",
                 "Calle Luna", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Monica", "Bellucci",
                 "Calle Sol", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Giovanna", "Ralli",
                 "Calle Luna", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Valeria", "Golino",
                 "Calle Sol", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Sophia", "Loren",
                 "Calle Luna", user);
-            await SeedDbPersons.AddTeacher(
+            await AddTeacher(
                 "Claudia", "Cardinale",
                 "Calle Sol", user);
         }

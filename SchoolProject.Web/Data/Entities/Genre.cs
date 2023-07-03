@@ -11,8 +11,9 @@ public class Genre : IEntity
 
     public string Name { get; set; }
 
-    [Key] public int Id { get; set; }
+    public int Id { get; set; }
     public Guid IdGuid { get; set; }
+
     public bool WasDeleted { get; set; }
     public DateTime CreatedAt { get; set; }
     public User CreatedBy { get; set; }

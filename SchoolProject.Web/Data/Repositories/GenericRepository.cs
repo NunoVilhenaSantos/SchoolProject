@@ -8,10 +8,10 @@ namespace SchoolProject.Web.Data.Repositories;
 public class GenericRepository<T> : IGenericRepository<T>
     where T : class, IEntity
 {
-    private readonly DataContextMSSQL _dataContext;
+    private readonly DataContextMssql _dataContext;
 
 
-    protected GenericRepository(DataContextMSSQL dataContext)
+    protected GenericRepository(DataContextMssql dataContext)
     {
         _dataContext = dataContext;
     }
