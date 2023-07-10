@@ -6,7 +6,7 @@ namespace SchoolProject.Web.Data.Entities.Courses;
 
 public class Course : IEntity // : INotifyPropertyChanged
 {
-    [Required] public string Name { get; set; }
+    [Required] public required string Name { get; set; }
 
 
     [Required] public int WorkLoad { get; set; }
@@ -38,7 +38,7 @@ public class Course : IEntity // : INotifyPropertyChanged
     [DisplayName("Created At")]
     public DateTime CreatedAt { get; init; }
 
-    [DisplayName("Created By")] public User CreatedBy { get; init; }
+    [DisplayName("Created By")] public required User CreatedBy { get; init; }
 
 
     [Required]

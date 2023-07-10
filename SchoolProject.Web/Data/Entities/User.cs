@@ -2,7 +2,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
+
 namespace SchoolProject.Web.Data.Entities;
+
 
 public class User : IdentityUser //: INotifyPropertyChanged
 {
@@ -10,14 +12,14 @@ public class User : IdentityUser //: INotifyPropertyChanged
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
 
 
     [DisplayName("Last Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public string LastName { get; set; }
+    public required string LastName { get; set; }
 
 
     [MaxLength(100,

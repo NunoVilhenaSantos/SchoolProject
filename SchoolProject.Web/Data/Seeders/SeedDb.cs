@@ -106,7 +106,7 @@ public class SeedDb
         // adding physical persons to the database and also is user
         //
         // ------------------------------------------------------------------ //
-        SeedDbPersons.AddingData();
+        await SeedDbPersons.AddingData();
 
 
         // verificar se existem os placeholders no sistema
@@ -127,7 +127,7 @@ public class SeedDb
     }
 
 
-    private async Task<IdentityResult> CreateRoleAsync(string role)
+    private async Task<IdentityResult> CreateRoleAsync(string? role)
     {
         // return await _roleManager.CreateAsync(new IdentityRole("Admin"));
         return await _roleManager.CreateAsync(new IdentityRole(role));

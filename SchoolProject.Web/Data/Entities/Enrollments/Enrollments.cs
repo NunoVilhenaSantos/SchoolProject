@@ -76,7 +76,8 @@ public static class Enrollments
         {
             Grade = grade,
             Student = student,
-            Course = course
+            Course = course,
+            CreatedBy = _,
         };
         ListEnrollments.Add(newEnrollment);
 

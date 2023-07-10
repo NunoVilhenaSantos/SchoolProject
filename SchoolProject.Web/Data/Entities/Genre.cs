@@ -9,7 +9,7 @@ public class Genre : IEntity
         ErrorMessage =
             "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
 
     [Required] public int Id { get; init; }
@@ -23,7 +23,7 @@ public class Genre : IEntity
 
     [DataType(DataType.Date)] public DateTime CreatedAt { get; init; }
 
-    public User CreatedBy { get; init; }
+    public required User CreatedBy { get; init; }
 
 
     [DataType(DataType.Date)] public DateTime? UpdatedAt { get; set; }

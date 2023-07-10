@@ -101,7 +101,7 @@ builder.Services.AddDbContext<DataContextMssql>(options =>
 builder.Services.AddDbContext<DataContextMySql>(options =>
     options.UseMySQL(
         builder.Configuration
-            .GetConnectionString("SchoolProject-MySQL")));
+            .GetConnectionString("SchoolProject-MySQL") ?? string.Empty));
 
 
 builder.Services.AddDbContext<DataContextSqLite>(options =>

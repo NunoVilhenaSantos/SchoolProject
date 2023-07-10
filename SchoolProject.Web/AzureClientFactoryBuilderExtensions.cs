@@ -9,7 +9,7 @@ internal static class AzureClientFactoryBuilderExtensions
 {
     public static IAzureClientBuilder<BlobServiceClient, BlobClientOptions>
         AddBlobServiceClient(this AzureClientFactoryBuilder builder,
-            string serviceUriOrConnectionString, bool preferMsi)
+            string? serviceUriOrConnectionString, bool preferMsi)
     {
         return preferMsi && Uri.TryCreate(serviceUriOrConnectionString,
             UriKind.Absolute, out var serviceUri)
@@ -19,7 +19,7 @@ internal static class AzureClientFactoryBuilderExtensions
 
     public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions>
         AddQueueServiceClient(this AzureClientFactoryBuilder builder,
-            string serviceUriOrConnectionString, bool preferMsi)
+            string? serviceUriOrConnectionString, bool preferMsi)
     {
         return preferMsi && Uri.TryCreate(serviceUriOrConnectionString,
             UriKind.Absolute, out var serviceUri)

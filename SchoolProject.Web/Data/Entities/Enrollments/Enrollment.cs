@@ -9,12 +9,12 @@ namespace SchoolProject.Web.Data.Entities.Enrollments;
 
 public class Enrollment : IEntity //: INotifyPropertyChanged
 {
-    public int StudentId { get; set; }
-    [Required] public Student Student { get; set; }
+    [Required] public int StudentId { get; set; }
+    [Required] public required Student Student { get; set; }
 
 
-    public int CourseId { get; set; }
-    [Required] public Course Course { get; set; }
+    [Required] public int CourseId { get; set; }
+    [Required] public required Course Course { get; set; }
 
 
     // [Column(TypeName = "decimal(18,2)")]
@@ -25,19 +25,21 @@ public class Enrollment : IEntity //: INotifyPropertyChanged
     [Required] public int Id { get; init; }
     [Required] [Key] [Column("EnrollmentId")] public Guid IdGuid { get; init; }
 
+
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
+
 
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     public DateTime CreatedAt { get; init; }
 
-    [DisplayName("Created By")] public User CreatedBy { get; init; }
+    [DisplayName("Created By")] public required User CreatedBy { get; init; }
 
 
-    [Required]
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     public DateTime? UpdatedAt { get; set; }
