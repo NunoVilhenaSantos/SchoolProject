@@ -1,4 +1,6 @@
-﻿using SchoolProject.Web.Data.Entities.Courses;
+﻿using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.School;
 using Serilog;
 
@@ -6,41 +8,46 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 
 public static class Teachers
 {
-    public static readonly Dictionary<int, Teacher> TeachersDictionary = new();
     public static List<Teacher> TeachersList { get; set; } = new();
+
+    public static readonly Dictionary<int, Teacher> TeachersDictionary = new();
 
 
     public static void AddTeacher(
-        int id,
         string firstName,
         string lastName,
         string address,
         string postalCode,
-        string city,
+        City city,
+        Country country,
         string mobilePhone,
         string email,
         bool active,
-        string genre,
+        Genre genre,
         DateTime dateOfBirth,
         string identificationNumber,
         DateTime expirationDateIn,
         string taxIdentificationNumber,
-        string nationality,
-        string birthplace,
+        Country countryOfNationality,
+        Nationality nationality,
+        Country birthplace,
         Guid profilePhotoId,
-        int coursesCount,
-        int totalWorkHours,
         List<Course> courses
     )
     {
+        User user = AuthenticatedUser.GetUser().Result ??
+                    throw new InvalidOperationException();
+
         var teacher = new Teacher
         {
-            //Id = id,
+            Id = TeachersList.Count + 1,
+            IdGuid = Guid.NewGuid(),
             FirstName = firstName,
             LastName = lastName,
             Address = address,
             PostalCode = postalCode,
             City = city,
+            Country = country,
             MobilePhone = mobilePhone,
             Email = email,
             Active = active,
@@ -49,11 +56,20 @@ public static class Teachers
             IdentificationNumber = identificationNumber,
             ExpirationDateIdentificationNumber = expirationDateIn,
             TaxIdentificationNumber = taxIdentificationNumber,
-            Nationality = nationality,
+            CountryOfNationality = countryOfNationality,
             Birthplace = birthplace,
-            ProfilePhotoId = profilePhotoId,
-            // CoursesCount = coursesCount,
-            // TotalWorkHours = totalWorkHours
+            EnrollDate = DateTime.Now.ToUniversalTime(),
+            CreatedAt = DateTime.Now.ToUniversalTime(),
+            CreatedBy = user,
+            // UpdatedAt = DateTime.Now.ToUniversalTime(),
+            // UpdatedBy = user,
+            User = new User
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                UserName = $"{firstName}.{lastName}@mail.pt",
+                WasDeleted = false
+            },
         };
         TeachersList.Add(teacher);
 
@@ -67,17 +83,17 @@ public static class Teachers
         string lastName,
         string address,
         string postalCode,
-        string city,
+        City city,
         string mobilePhone,
         string email,
         bool active,
-        string genre,
+        Genre genre,
         DateTime dateOfBirth,
         string identificationNumber,
         DateTime expirationDateIn,
         string taxIdentificationNumber,
-        string nationality,
-        string birthplace,
+        Nationality nationality,
+        Country birthplace,
         Guid profilePhotoId,
         int coursesCount,
         int totalWorkHours,
@@ -104,15 +120,9 @@ public static class Teachers
         teacher.IdentificationNumber = identificationNumber;
         teacher.ExpirationDateIdentificationNumber = expirationDateIn;
         teacher.TaxIdentificationNumber = taxIdentificationNumber;
-        teacher.Nationality = nationality;
+
         teacher.Birthplace = birthplace;
         teacher.ProfilePhotoId = profilePhotoId;
-
-        // teacher.TotalWorkHours = totalWorkHours;
-        // teacher.CoursesCount = coursesCount;
-
-        // TeachersList[id].CountCourses();
-        // TeachersList[id].GetTotalWorkHourLoad();
 
         return "Professor(a) alterado(a) com sucesso";
     }
@@ -135,17 +145,17 @@ public static class Teachers
         string lastName,
         string address,
         string postalCode,
-        string city,
+        City city,
         string phone,
         string email,
         bool active,
-        string genre,
+        Genre genre,
         DateTime dateOfBirth,
         string identificationNumber,
         DateTime expirationDateIn,
         string taxIdentificationNumber,
-        string nationality,
-        string birthplace,
+        Nationality nationality,
+        Country birthplace,
         Guid profilePhotoId,
         int totalWorkHours,
         List<Course> courses
@@ -166,9 +176,10 @@ public static class Teachers
         if (!string.IsNullOrWhiteSpace(postalCode))
             teachers = TeachersList
                 .Where(a => a.PostalCode == postalCode).ToList();
-        if (!string.IsNullOrWhiteSpace(city))
-            teachers = TeachersList
-                .Where(a => a.City == city).ToList();
+
+        teachers = TeachersList
+            .Where(a => a.City == city).ToList();
+
         if (!string.IsNullOrWhiteSpace(phone))
             teachers = TeachersList
                 .Where(a => a.MobilePhone == phone).ToList();
@@ -177,9 +188,10 @@ public static class Teachers
                 .Where(a => a.Email == email).ToList();
         teachers = TeachersList
             .Where(a => a.Active == active).ToList();
-        if (!string.IsNullOrWhiteSpace(genre))
-            teachers = TeachersList
-                .Where(a => a.Genre == genre).ToList();
+
+        teachers = TeachersList
+            .Where(a => a.Genre == genre).ToList();
+
         if (dateOfBirth != default)
             teachers = TeachersList
                 .Where(a => a.DateOfBirth == dateOfBirth)
@@ -199,14 +211,15 @@ public static class Teachers
                 .Where(a =>
                     a.TaxIdentificationNumber == taxIdentificationNumber)
                 .ToList();
-        if (!string.IsNullOrWhiteSpace(nationality))
-            teachers = TeachersList
-                .Where(a => a.Nationality == nationality)
-                .ToList();
-        if (!string.IsNullOrWhiteSpace(birthplace))
-            teachers = TeachersList
-                .Where(a => a.Birthplace == birthplace)
-                .ToList();
+
+        teachers = TeachersList
+            .Where(a => a.Nationality == nationality)
+            .ToList();
+
+        teachers = TeachersList
+            .Where(a => a.Birthplace == birthplace)
+            .ToList();
+
         if (profilePhotoId != Guid.Empty)
             teachers = TeachersList
                 .Where(a => a.ProfilePhotoId == profilePhotoId)
@@ -222,13 +235,13 @@ public static class Teachers
 
     public static IEnumerable<Teacher> FilterTeachers(
         string name, string lastName, string address, string postalCode,
-        string city, string phone, string email, bool active, string genre,
+        City city, string phone, string email, bool active, Genre genre,
         DateTime dateOfBirth, string identificationNumber,
         DateTime expirationDateIn, string taxIdentificationNumber,
-        string nationality, string birthplace, Guid profilePhotoId,
+        Nationality nationality, Country birthplace, Guid profilePhotoId,
         int totalWorkHours)
     {
-        IQueryable<Teacher> query = TeachersList.AsQueryable();
+        var query = TeachersList.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(name))
             query = query.Where(a => a.FirstName == name);
@@ -242,8 +255,7 @@ public static class Teachers
         if (!string.IsNullOrWhiteSpace(postalCode))
             query = query.Where(a => a.PostalCode == postalCode);
 
-        if (!string.IsNullOrWhiteSpace(city))
-            query = query.Where(a => a.City == city);
+        query = query.Where(a => a.City == city);
 
         if (!string.IsNullOrWhiteSpace(phone))
             query = query.Where(a => a.MobilePhone == phone);
@@ -253,8 +265,7 @@ public static class Teachers
 
         query = query.Where(a => a.Active == active);
 
-        if (!string.IsNullOrWhiteSpace(genre))
-            query = query.Where(a => a.Genre == genre);
+        query = query.Where(a => a.Genre == genre);
 
         if (dateOfBirth != default)
             query = query.Where(a => a.DateOfBirth == dateOfBirth);
@@ -271,11 +282,9 @@ public static class Teachers
             query = query.Where(a =>
                 a.TaxIdentificationNumber == taxIdentificationNumber);
 
-        if (!string.IsNullOrWhiteSpace(nationality))
-            query = query.Where(a => a.Nationality == nationality);
+        query = query.Where(a => a.Nationality == nationality);
 
-        if (!string.IsNullOrWhiteSpace(birthplace))
-            query = query.Where(a => a.Birthplace == birthplace);
+        query = query.Where(a => a.Birthplace == birthplace);
 
         if (profilePhotoId != Guid.Empty)
             query = query.Where(a => a.ProfilePhotoId == profilePhotoId);
@@ -314,7 +323,8 @@ public static class Teachers
         }
 
         return TeachersList
-            .Where(t => property.GetValue(t)?.Equals(convertedValue) == true)
+            .Where(t => property
+                .GetValue(t)?.Equals(convertedValue) == true)
             .ToList();
     }
 
@@ -349,11 +359,9 @@ public static class Teachers
             Log.Warning("No teachers found in the directory");
 
         foreach (var teacher in TeachersList)
-        {
             // teacher.CalculateTotalWorkHours();
             // teacher.CountCourses();
             // teacher.CalculateWorkloadPerCourse();
-
             Log.Information(
                 "Metrics for {TeacherFirstName}: " +
                 "Total work hours = {TeacherTotalWorkHours}, " +
@@ -361,9 +369,7 @@ public static class Teachers
                 teacher.FirstName,
                 teacher.TotalWorkHours,
                 teacher.CoursesCount);
-            // $"Workload per course = {teacher.workloadPerCourse}.");
-        }
-
+        // $"Workload per course = {teacher.workloadPerCourse}.");
         Log.Information("Teacher metrics calculation completed");
     }
 

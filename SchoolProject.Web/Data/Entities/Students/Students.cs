@@ -1,19 +1,15 @@
-﻿using SchoolProject.Web.Data.Entities.School;
+﻿using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.School;
 using Serilog;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 
 public class Students
 {
-    #region Properties
-
     public static List<Student> StudentsList { get; set; } = new();
     public static readonly Dictionary<int, Student> StudentsDictionary = new();
 
-    #endregion
-
-
-    #region Methods
 
     public static void AddStudent(
         int id,
@@ -21,31 +17,37 @@ public class Students
         string lastName,
         string address,
         string postalCode,
-        string city,
+        City city,
+        Country country,
         string phone,
         string email,
         bool active,
-        string genre,
+        Genre genre,
         DateTime dateOfBirth,
         string identificationNumber,
         DateTime expirationDateIn,
         string taxIdentificationNumber,
-        string nationality,
-        string birthplace,
+        Country countryOfNationality,
+        Country birthplace,
         Guid profilePhotoId,
         int courseCount,
         int totalWorkHours,
         DateTime enrollDate
     )
     {
+        User user = AuthenticatedUser.GetUser().Result ??
+                    throw new InvalidOperationException();
+
         StudentsList.Add(new Student
             {
-                //Id = id,
+                Id = StudentsList[^1].Id,
+                IdGuid = Guid.NewGuid(),
                 FirstName = firstName,
                 LastName = lastName,
                 Address = address,
                 PostalCode = postalCode,
                 City = city,
+                Country = country,
                 MobilePhone = phone,
                 Email = email,
                 Active = active,
@@ -54,12 +56,23 @@ public class Students
                 IdentificationNumber = identificationNumber,
                 ExpirationDateIdentificationNumber = expirationDateIn,
                 TaxIdentificationNumber = taxIdentificationNumber,
-                Nationality = nationality,
+                CountryOfNationality = countryOfNationality,
                 Birthplace = birthplace,
                 ProfilePhotoId = profilePhotoId,
                 CoursesCount = courseCount,
                 TotalWorkHours = totalWorkHours,
-                EnrollDate = enrollDate
+                EnrollDate = enrollDate,
+                CreatedAt = DateTime.Now,
+                CreatedBy = user,
+                UpdatedAt = DateTime.Now,
+
+                User = new User
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    UserName = $"{firstName}.{lastName}@mail.pt",
+                    WasDeleted = false
+                },
             }
         );
         SchoolDatabase.AddStudent(StudentsList.LastOrDefault());
@@ -85,17 +98,17 @@ public class Students
         string lastName,
         string address,
         string postalCode,
-        string city,
+        City city,
         string phone,
         string email,
         bool active,
-        string genre,
+        Genre genre,
         DateTime dateOfBirth,
         string identificationNumber,
         DateTime expirationDateIn,
         string taxIdentificationNumber,
-        string nationality,
-        string birthplace,
+        Country countryOfNationality,
+        Country birthplace,
         Guid photo,
         int courseCount,
         int totalWorkHours,
@@ -122,7 +135,7 @@ public class Students
         student.IdentificationNumber = identificationNumber;
         student.ExpirationDateIdentificationNumber = expirationDateIn;
         student.TaxIdentificationNumber = taxIdentificationNumber;
-        student.Nationality = nationality;
+        student.CountryOfNationality = countryOfNationality;
         student.Birthplace = birthplace;
         student.ProfilePhotoId = photo;
         student.TotalWorkHours = totalWorkHours;
@@ -140,17 +153,17 @@ public class Students
         string lastName,
         string address,
         string postalCode,
-        string city,
+        City city,
         string phone,
         string email,
         bool active,
-        string genre,
+        Genre genre,
         DateTime dateOfBirth,
         string identificationNumber,
         DateTime expirationDateIn,
         string taxIdentificationNumber,
-        string nationality,
-        string birthplace,
+        Country countryOfNationality,
+        Country birthplace,
         Guid photo,
         int totalWorkHours,
         DateTime enrollmentDate
@@ -173,7 +186,7 @@ public class Students
         if (!string.IsNullOrWhiteSpace(postalCode))
             query = query.Where(a => a.PostalCode == postalCode);
 
-        if (!string.IsNullOrWhiteSpace(city))
+        if (!string.IsNullOrWhiteSpace(city.Name))
             query = query.Where(a => a.City == city);
 
         if (!string.IsNullOrWhiteSpace(phone))
@@ -185,8 +198,7 @@ public class Students
         if (active)
             query = query.Where(a => a.Active == active);
 
-        if (!string.IsNullOrWhiteSpace(genre))
-            query = query.Where(a => a.Genre == genre);
+        query = query.Where(a => a.Genre == genre);
 
         if (dateOfBirth != default)
             query = query.Where(a => a.DateOfBirth == dateOfBirth);
@@ -203,11 +215,10 @@ public class Students
             query = query.Where(a =>
                 a.TaxIdentificationNumber == taxIdentificationNumber);
 
-        if (!string.IsNullOrWhiteSpace(nationality))
-            query = query.Where(a => a.Nationality == nationality);
+        query = query.Where(a =>
+            a.CountryOfNationality == countryOfNationality);
 
-        if (!string.IsNullOrWhiteSpace(birthplace))
-            query = query.Where(a => a.Birthplace == birthplace);
+        query = query.Where(a => a.Birthplace == birthplace);
 
         if (photo != Guid.Empty)
             query = query.Where(a => a.ProfilePhotoId == photo);
@@ -279,7 +290,7 @@ public class Students
     }
 
 
-    public static string GetFullName(int id)
+    private static string GetFullName(int id)
     {
         return $"{StudentsList[id].FirstName} {StudentsList[id].LastName}";
     }
@@ -300,11 +311,9 @@ public class Students
             Log.Warning("No teachers found in the directory");
 
         foreach (var student in StudentsList)
-        {
             // student.CalculateTotalWorkHours();
             // student.CountCourses();
             // teacher.CalculateWorkloadPerCourse();
-
             Log.Information(
                 string.Format(
                     "Metrics for {0}: " +
@@ -313,10 +322,7 @@ public class Students
                     "Workload per course = {3}.",
                     student.FirstName, student.TotalWorkHours,
                     student.CoursesCount));
-        }
 
         Log.Information("Teacher metrics calculation completed");
     }
-
-    #endregion
 }

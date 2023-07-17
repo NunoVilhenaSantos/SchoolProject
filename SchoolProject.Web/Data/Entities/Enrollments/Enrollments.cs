@@ -1,13 +1,80 @@
-﻿using SchoolProject.Web.Data.Entities.Courses;
+﻿using Microsoft.AspNetCore.Authentication;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.School;
 using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Helpers;
 using Serilog;
 
 namespace SchoolProject.Web.Data.Entities.Enrollments;
 
 public static class Enrollments
 {
-    public static List<Enrollment> ListEnrollments = new();
+    public static readonly List<Enrollment> ListEnrollments = new();
+
+
+    private static IUserHelper? _userHelper;
+    private static IHttpContextAccessor? _httpContextAccessor;
+    private static IAuthenticationService? _authenticationService;
+
+
+    public static void Initialize(
+        IUserHelper userHelper,
+        IHttpContextAccessor httpContextAccessor,
+        IAuthenticationService authenticationService
+    )
+    {
+        _userHelper = userHelper;
+        _authenticationService = authenticationService;
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+
+    // Restante do código...
+
+
+    /// <summary>
+    ///     Obter o usuário autenticado
+    /// </summary>
+    /// <returns> Retorna uma tarefa assíncrona com o usuário autenticado</returns>
+    private static async Task<User> GetAuthenticatedUserAsync()
+    {
+        // Obtenha o usuário autenticado
+        var httpContext = _httpContextAccessor?.HttpContext;
+        var user = httpContext?.User;
+
+
+        string message;
+        // if (user?.Identity == null) return null;
+        if (user?.Identity == null &&
+            user?.Identity is {IsAuthenticated: false})
+        {
+            // O usuário não está autenticado, faça o tratamento apropriado
+            // Resto do código...
+
+            message = "User is not authenticated";
+            Log.Error(message);
+            Console.WriteLine(message);
+
+            return null;
+        }
+
+        // O usuário está autenticado,
+        // então você pode acessar o nome do usuário
+        var userName = user.Identity?.Name;
+        if (userName != null)
+        {
+            var userByEmail = await _userHelper?.GetUserByEmailAsync(userName);
+
+            return userByEmail;
+        }
+
+        message = "User is not authenticated";
+        Log.Error(message);
+        Console.WriteLine(message);
+
+        return null;
+    }
 
 
     /// <summary>
@@ -24,6 +91,7 @@ public static class Enrollments
             Courses.Courses.CoursesDictionary[course.Id] = course;
     }
 
+
     /// <summary>
     ///     enroll students in courses
     /// </summary>
@@ -34,13 +102,14 @@ public static class Enrollments
             SchoolDatabase.EnrollStudentInCourse(e.Student, e.Course);
     }
 
+
     /// <summary>
     ///     Enroll a student in a course
     /// </summary>
     /// <param name="studentId"></param>
     /// <param name="courseId"></param>
     /// <param name="grade"></param>
-    public static void EnrollStudent(
+    public static async Task EnrollStudentAsync(
         Student student, Course course, decimal? grade = null)
     {
         // Check if the student ID is valid
@@ -71,13 +140,18 @@ public static class Enrollments
             return;
         }
 
+        var user = GetAuthenticatedUserAsync().Result;
+
         // Create a new enrollment and add it to the list
         var newEnrollment = new Enrollment
         {
             Grade = grade,
             Student = student,
             Course = course,
-            CreatedBy = _,
+            IdGuid = new Guid(),
+            WasDeleted = false,
+            CreatedBy = user,
+            CreatedAt = DateTime.Now.ToUniversalTime()
         };
         ListEnrollments.Add(newEnrollment);
 
@@ -112,6 +186,7 @@ public static class Enrollments
             "has been unenrolled from course {CourseId}",
             student.Id, course.Id);
     }
+
 
     /// <summary>
     ///     remove an enrollment from the list
@@ -171,6 +246,7 @@ public static class Enrollments
 
         return enrollments;
     }
+
 
     /// <summary>
     ///     Searching an enrollment

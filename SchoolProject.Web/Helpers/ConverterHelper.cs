@@ -45,7 +45,8 @@ public class ConverterHelper : IConverterHelper
     // }
 
 
-    public Course ToCourse(CourseViewModel courseViewModel, string? filePath,
+    public Course ToCourse(
+        CourseViewModel courseViewModel, string? filePath,
         Guid fileStorageId, bool isNew)
     {
         return new Course
@@ -53,9 +54,14 @@ public class ConverterHelper : IConverterHelper
             Name = courseViewModel.Name,
             WorkLoad = courseViewModel.WorkLoad,
             Credits = courseViewModel.Credits,
-            StudentsCount = courseViewModel.StudentsCount,
-            Id = isNew ? 0 : courseViewModel.Id,
-            WasDeleted = courseViewModel.WasDeleted
+            Enrollments = courseViewModel.Enrollments,
+            Id = isNew
+                ? 0
+                : courseViewModel.Id,
+            WasDeleted = courseViewModel.WasDeleted,
+            CreatedBy = courseViewModel.CreatedBy,
+            IdGuid = courseViewModel.IdGuid,
+            CreatedAt = courseViewModel.CreatedAt
         };
     }
 
@@ -67,10 +73,13 @@ public class ConverterHelper : IConverterHelper
             Name = course.Name,
             WorkLoad = course.WorkLoad,
             Credits = course.Credits,
-            StudentsCount = course.StudentsCount,
+            Enrollments = course.Enrollments,
             Id = course.Id,
             WasDeleted = course.WasDeleted,
-            ImageFile = null
+            ImageFile = null,
+            CreatedBy = course.CreatedBy,
+            IdGuid = course.IdGuid,
+            CreatedAt = course.CreatedAt,
         };
     }
 

@@ -1,9 +1,26 @@
-﻿using SchoolProject.Web.Data.Entities.School;
+﻿using Microsoft.AspNetCore.Authentication;
+using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.School;
+using SchoolProject.Web.Helpers;
+using Serilog;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
 
 public static class Courses
 {
+    #region Constructor
+
+    public static void Initialize(
+        IUserHelper userHelper,
+        IHttpContextAccessor httpContextAccessor
+    )
+    {
+        _userHelper = userHelper;
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    #endregion
+
     #region Properties
 
     public static List<Course> CoursesList { get; set; } = new();
@@ -12,30 +29,115 @@ public static class Courses
     #endregion
 
 
+    #region Attributes
+
+    private static IUserHelper _userHelper;
+    private static IHttpContextAccessor _httpContextAccessor;
+
+    #endregion
+
+
+    // Restante do código...
+
+
     #region Methods
 
     /// <summary>
-    ///     Adds a new course to the course list.
+    ///     Obter o usuário autenticado
     /// </summary>
-    /// <param name="id">The course's ID.</param>
-    /// <param name="name">The course's name.</param>
-    /// <param name="workLoad">The course's work load.</param>
-    /// <param name="credits">The course's credits.</param>
-    public static void AddCourse(int id, string name, int workLoad, int credits)
+    /// <returns> Retorna uma tarefa assíncrona com o usuário autenticado</returns>
+    public static async Task<User> GetAuthenticatedUserAsync()
     {
-        CoursesList.Add(
-            new Course
+        // Obtenha o usuário autenticado
+        var httpContext = _httpContextAccessor.HttpContext;
+        var user = httpContext.User;
+
+
+        // Verifique se o usuário está autenticado
+        if (!user.Identity.IsAuthenticated)
+        {
+            // O usuário não está autenticado, faça o tratamento apropriado
+            // Resto do código...
+
+            const string message = "User is not authenticated";
+            Log.Error(message);
+            Console.WriteLine(message);
+
+            return null;
+        }
+
+        // O usuário está autenticado, então você pode acessar o nome do usuário
+        var userName = user.Identity.Name;
+        var userByEmail = await _userHelper.GetUserByEmailAsync(userName);
+
+        return userByEmail;
+    }
+
+
+    /// <summary>
+    ///   Adiciona um novo alunos a lista de alunos.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="idGuid"></param>
+    /// <param name="name"></param>
+    /// <param name="workLoad"></param>
+    /// <param name="credits"></param>
+    /// <param name="wasDeleted"></param>
+    /// <param name="createdAt"></param>
+    /// <param name="createdBy"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static void AddCourse(
+        int id, Guid idGuid, string name, int workLoad, int credits,
+        bool wasDeleted, DateTime createdAt, User createdBy
+    )
+    {
+        // var user = GetAuthenticatedUserAsync().Result;
+
+        User user = AuthenticatedUser.GetUser().Result ??
+                    throw new InvalidOperationException();
+
+        CoursesList.Add(new Course
             {
-                //Id_Course = id,
+                // Id = id,
+                IdGuid = idGuid,
                 Name = name,
                 WorkLoad = workLoad,
-                Credits = credits
+                Credits = credits,
+                WasDeleted = wasDeleted,
+                CreatedAt = createdAt,
+                CreatedBy = createdBy,
             }
         );
         // Add course to the database.
         SchoolDatabase.AddCourse(CoursesList[^1]);
+
         // Update the number of students for the new course.
-        GetStudentsCount();
+        // GetStudentsCount();
+    }
+
+    public static async Task AddCourse(
+        int id, Guid idGuid, string name, int workLoad, int credits,
+        bool wasDeleted, DateTime? createdAt, User? createdBy)
+    {
+        User user = await AuthenticatedUser.GetUser() ??
+                    throw new InvalidOperationException();
+
+        Course newCourse = new Course
+        {
+            IdGuid = idGuid,
+            Name = name,
+            WorkLoad = workLoad,
+            Credits = credits,
+            WasDeleted = wasDeleted,
+            CreatedAt = createdAt ?? DateTime.Now.ToUniversalTime(),
+            CreatedBy = createdBy ?? user
+        };
+
+        // Add course to the course list.
+        CoursesList.Add(newCourse);
+
+        // Add course to the database.
+        SchoolDatabase.AddCourse(newCourse);
     }
 
 
@@ -292,16 +394,15 @@ public static class Courses
     /// </returns>
     private static string GetStudentsCount()
     {
-        if (CoursesList.Count < 1)
-            return "A lista está vazia";
+        if (CoursesList.Count < 1) return "A lista está vazia";
 
         // Calculate the number of students enrolled in each course
-        foreach (var course in CoursesList)
-            course.StudentsCount =
-                Enrollments.Enrollments.ListEnrollments?
-                    .Where(x => x.Id == course.Id)
-                    .Distinct()
-                    .Count() ?? 0;
+        // foreach (var course in CoursesList)
+        //     course.StudentsCount =
+        //         Enrollments.Enrollments.ListEnrollments?
+        //             .Where(x => x.Id == course.Id)
+        //             .Distinct()
+        //             .Count() ?? 0;
 
         // Return a string indicating that the calculations have been executed
         return "Cálculos executados.";

@@ -2,11 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 
 public class StudentCourse : IEntity
 {
+    public StudentCourse()
+    {
+        IdGuid = Guid.NewGuid();
+        CreatedAt = DateTime.Now;
+    }
+
     [Required] public int StudentId { get; set; }
     [Required] public Student Student { get; set; }
 
@@ -15,9 +22,12 @@ public class StudentCourse : IEntity
     [Required] public Course Course { get; set; }
 
 
+    [Required] public int Id { get; set; }
 
-    [Required] public int Id { get; init; }
-    [Required] [Key] [Column("StudentCourseId")] public Guid IdGuid { get; init; }
+    [Required]
+    [Key]
+    [Column("StudentCourseId")]
+    public Guid IdGuid { get; set; }
 
     [Required]
     [DisplayName("Was Deleted?")]
@@ -26,9 +36,9 @@ public class StudentCourse : IEntity
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
-    public DateTime CreatedAt { get; init; }
+    public DateTime CreatedAt { get; set; }
 
-    [DisplayName("Created By")] public User CreatedBy { get; init; }
+    [DisplayName("Created By")] public User CreatedBy { get; set; }
 
 
     [Required]
@@ -37,14 +47,4 @@ public class StudentCourse : IEntity
     public DateTime? UpdatedAt { get; set; }
 
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
-
-
-    public StudentCourse()
-    {
-        IdGuid = Guid.NewGuid();
-        CreatedAt = DateTime.Now;
-    }
-
-
 }

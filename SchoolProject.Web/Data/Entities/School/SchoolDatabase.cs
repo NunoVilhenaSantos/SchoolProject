@@ -228,7 +228,7 @@ public class SchoolDatabase
                 continue;
             }
 
-            Enrollments.Enrollments.EnrollStudent(student, course);
+            Enrollments.Enrollments.EnrollStudentAsync(student, course);
 
             if (!CourseStudents.ContainsKey(student.Id))
                 CourseStudents.Add(student.Id, new HashSet<int>());
@@ -271,7 +271,7 @@ public class SchoolDatabase
             return;
         }
 
-        Enrollments.Enrollments.EnrollStudent(student, course);
+        Enrollments.Enrollments.EnrollStudentAsync(student, course);
 
         if (!CourseStudents.ContainsKey(student.Id))
             CourseStudents.Add(student.Id, new HashSet<int>());
@@ -315,7 +315,7 @@ public class SchoolDatabase
                 continue;
             }
 
-            Enrollments.Enrollments.EnrollStudent(student, course);
+            Enrollments.Enrollments.EnrollStudentAsync(student, course);
 
             if (!CourseStudents.ContainsKey(student.Id))
                 CourseStudents.Add(student.Id, new HashSet<int>());
@@ -459,7 +459,7 @@ public class SchoolDatabase
                 continue;
             }
 
-            Enrollments.Enrollments.EnrollStudent(student, course);
+            Enrollments.Enrollments.EnrollStudentAsync(student, course);
 
             if (!CourseStudents.ContainsKey(student.Id))
                 CourseStudents.Add(student.Id, new HashSet<int>());
@@ -508,7 +508,8 @@ public class SchoolDatabase
             _ = Courses.Courses.CoursesDictionary
                 .TryGetValue(course, out var courseCourse);
             if (courseCourse != null)
-                Enrollments.Enrollments.EnrollStudent(student, courseCourse);
+                Enrollments.Enrollments.EnrollStudentAsync(student,
+                    courseCourse);
 
             if (!CourseStudents.ContainsKey(student.Id))
                 CourseStudents.Add(student.Id, new HashSet<int>());

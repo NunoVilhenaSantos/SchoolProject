@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 
 namespace SchoolProject.Web.Helpers;
 

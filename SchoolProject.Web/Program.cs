@@ -1,4 +1,3 @@
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
@@ -92,7 +91,7 @@ builder.Services.AddAzureClients(clientBuilder =>
 //     options.UseSqlServer(
 //         builder.Configuration.GetConnectionString("SchoolProjectConnection")));
 
-builder.Services.AddDbContext<DataContextMssql>(options =>
+builder.Services.AddDbContext<DataContextMsSql>(options =>
     options.UseSqlServer(
         builder.Configuration
             .GetConnectionString("SchoolProject-mssql.somee.com")));

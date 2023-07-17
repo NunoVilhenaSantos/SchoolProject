@@ -1,42 +1,47 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Data.Entities.Enrollments;
 
-public class Enrollment : IEntity //: INotifyPropertyChanged
+public class Enrollment : IEntity, INotifyPropertyChanged
 {
-    [Required] public int StudentId { get; set; }
     [Required] public required Student Student { get; set; }
+    [Required] public int StudentId => Student.Id;
 
 
-    [Required] public int CourseId { get; set; }
     [Required] public required Course Course { get; set; }
+    [Required] public int CourseId => Course.Id;
 
 
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)] public decimal? Grade { get; set; }
 
 
+    [Required] public int Id { get; set; }
 
-    [Required] public int Id { get; init; }
-    [Required] [Key] [Column("EnrollmentId")] public Guid IdGuid { get; init; }
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("EnrollmentId")]
+    public required Guid IdGuid { get; set; }
 
 
     [Required]
     [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
+    public required bool WasDeleted { get; set; }
 
 
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
-    [DisplayName("Created By")] public required User CreatedBy { get; init; }
+    [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
     // [Required]
@@ -47,7 +52,23 @@ public class Enrollment : IEntity //: INotifyPropertyChanged
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
+    public event PropertyChangedEventHandler? PropertyChanged;
 
 
+    protected virtual void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
+    }
 
+
+    protected bool SetField<T>(ref T field, T value,
+        [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }

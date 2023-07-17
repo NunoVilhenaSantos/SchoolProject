@@ -1,12 +1,11 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Identity;
 
+namespace SchoolProject.Web.Data.Entities.ExtraTables;
 
-namespace SchoolProject.Web.Data.Entities;
-
-
-public class User : IdentityUser //: INotifyPropertyChanged
+public class User : IdentityUser, INotifyPropertyChanged
 {
     [DisplayName("First Name")]
     [MaxLength(50,
@@ -48,7 +47,26 @@ public class User : IdentityUser //: INotifyPropertyChanged
     //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
 
 
-    // [Required] [Key] public int Id { get; set; }
+    [DisplayName("Was Deleted?")] public required bool WasDeleted { get; set; }
 
-    [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+
+    private void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
+    }
+
+
+    private bool SetField<T>(ref T field, T value,
+        [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }

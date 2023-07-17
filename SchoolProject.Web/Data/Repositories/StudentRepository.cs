@@ -6,7 +6,7 @@ namespace SchoolProject.Web.Data.Repositories;
 
 public class StudentRepository : GenericRepository<Student>, IStudentRepository
 {
-    protected StudentRepository(DataContextMssql dataContext) :
+    protected StudentRepository(DataContextMsSql dataContext) :
         base(dataContext)
     {
     }

@@ -6,7 +6,7 @@ namespace SchoolProject.Web.Data.Repositories;
 
 public class CourseRepository : GenericRepository<Course>, ICourseRepository
 {
-    public CourseRepository(DataContextMssql dataContext) : base(dataContext)
+    public CourseRepository(DataContextMsSql dataContext) : base(dataContext)
     {
     }
 }

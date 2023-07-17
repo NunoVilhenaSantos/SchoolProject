@@ -1,14 +1,15 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 
 namespace SchoolProject.Web.Data.Entities;
 
 public interface IEntity
 {
-    [Required] [Key] public int Id { get; init; }
+    [Required] [Key] public int Id { get; set; }
 
 
-    [Required] [Key] public Guid IdGuid { get; init; }
+    [Required] [Key] public Guid IdGuid { get; set; }
 
 
     [DisplayName("Was Deleted?")] public bool WasDeleted { get; set; }
@@ -17,10 +18,10 @@ public interface IEntity
     [Required]
     [DisplayName("Created At")]
     [DataType(DataType.Date)]
-    public DateTime CreatedAt { get; init; }
+    public DateTime CreatedAt { get; set; }
 
 
-    [Required] [DisplayName("Created By")] public User CreatedBy { get; init; }
+    [Required] [DisplayName("Created By")] public User CreatedBy { get; set; }
 
 
     [Required]

@@ -1,5 +1,9 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿/*
+
+ Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+ for details on configuring this project to bundle and minify static web assets.
+
+ */
 
 a.navbar-brand {
     white-space: normal;
@@ -50,6 +54,7 @@ button.accept-policy {
 /*    line-height: 60px;*/
 /*}*/
 
+
 .footer {
     position: fixed;
     bottom: 0;
@@ -59,6 +64,7 @@ button.accept-policy {
     white-space: nowrap;
     line-height: 60px;
 }
+
 
 /* ---------------------------------------- */
 /* ---------------------------------------- */
@@ -71,6 +77,7 @@ button.accept-policy {
 /*<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />*/
 /*<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />*/
 /*<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />*/
+
 
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 0,

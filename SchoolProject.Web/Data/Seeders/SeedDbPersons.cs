@@ -1,5 +1,8 @@
-﻿using SchoolProject.Web.Data.DataContexts;
-using SchoolProject.Web.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Helpers;
@@ -10,7 +13,7 @@ public static class SeedDbPersons
 {
     private static Random _random;
     private static IUserHelper _userHelper;
-    private static DataContextMssql _dataContextMssql;
+    private static DataContextMsSql _dataContextMssql;
 
 
     internal static async Task AddingData()
@@ -106,22 +109,40 @@ public static class SeedDbPersons
 
         _dataContextMssql.Students.Add(new Student
             {
-                //Document = document,
-                FirstName = firstName,
-                LastName = lastName,
-                //FixedPhone = fixedPhone,
-                //CellPhone = cellPhone,
-                Address = addressFull,
                 User = await SeedDbUsers.CheckUserAsync(
-                    firstName, lastName,
-                    $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    $"{cellPhone}", "Owner",
-                    document, addressFull
-                )
+                    // firstName,
+                    // lastName,
+                    // $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    // $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    // $"{cellPhone}",
+                    // "Owner",
+                    // document,
+                    // addressFull
+                ),
+                FirstName = null,
+                LastName = null,
+                Address = null,
+                PostalCode = null,
+                City = null,
+                Country = null,
+                MobilePhone = null,
+                Email = null,
+                Active = false,
+                Genre = null,
+                DateOfBirth = default,
+                IdentificationNumber = null,
+                ExpirationDateIdentificationNumber = default,
+                TaxIdentificationNumber = null,
+                CountryOfNationality = null,
+                Birthplace = null,
+                EnrollDate = default,
+                IdGuid = default,
+                CreatedAt = default,
+                CreatedBy = null
             }
         );
     }
+
 
     internal static async Task AddTeacher(
         string firstName, string lastName, string address, User user)
@@ -130,23 +151,153 @@ public static class SeedDbPersons
         var fixedPhone = _random.Next(1000000, 99999999).ToString();
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
+        var email = $"{firstName}.{lastName}@mail.pt";
+        var identificationNumber = _random.Next(100000, 999999999).ToString();
+        var vatNumber = _random.Next(100000, 999999999).ToString();
+        DateTime dateOfBirth = GenerateRandomDateOfBirth();
 
-        _dataContextMssql.Teachers.Add(new Teacher
+        var postalCode =
+            _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
+
+
+        const string userRole = "Teacher";
+
+
+        var emailRole =
+            _dataContextMssql.Teachers.Add(new Teacher
+                {
+                    User = await SeedDbUsers.CheckUserAsync(
+                        firstName,
+                        lastName,
+                        email,
+                        email,
+                        fixedPhone,
+                        userRole,
+                        document,
+                        addressFull
+                    ),
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Address = addressFull,
+                    PostalCode = postalCode,
+                    City = await _dataContextMssql.Cities
+                        .FindAsync("Porto") ?? new City
+                    {
+                        Name = "Porto",
+                        Id = 0,
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    Country = await _dataContextMssql.Countries
+                        .FindAsync("Portugal") ?? new Country
+                    {
+                        Name = "Portugal",
+                        Nationality = await _dataContextMssql.Nationalities
+                            .FindAsync("Português") ?? new Nationality
+                        {
+                            Name = "Português",
+                            IdGuid = new Guid(),
+                            WasDeleted = false,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedBy = user
+                        },
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    MobilePhone = cellPhone,
+                    Email = email,
+                    Active = true,
+                    Genre = await _dataContextMssql.Genres
+                        .FindAsync("Female") ?? new Genre
+                    {
+                        Name = "Female",
+                        IdGuid = new Guid(),
+                        WasDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user
+                    },
+                    DateOfBirth = dateOfBirth,
+                    IdentificationNumber = identificationNumber.ToString(),
+                    IdentificationType = "BI",
+                    ExpirationDateIdentificationNumber = default,
+                    TaxIdentificationNumber = vatNumber,
+                    CountryOfNationality = await _dataContextMssql.Countries
+                        .FindAsync("Portugal") ?? new Country
+                    {
+                        Name = "Portugal",
+                        Nationality = await _dataContextMssql.Nationalities
+                            .FindAsync("Português") ?? new Nationality
+                        {
+                            Name = "Português",
+                            IdGuid = new Guid(),
+                            WasDeleted = false,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedBy = user
+                        },
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    Birthplace = await _dataContextMssql.Countries
+                        .FindAsync("França") ?? new Country
+                    {
+                        Name = "França",
+                        Nationality = await _dataContextMssql.Nationalities
+                            .FindAsync("Françês") ?? new Nationality
+                        {
+                            Name = "Françês",
+                            IdGuid = new Guid(),
+                            WasDeleted = false,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedBy = user
+                        },
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    EnrollDate = DateTime.UtcNow,
+                    Id = 0,
+                    IdGuid = new Guid(),
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = user,
+                }
+            );
+
+
+        var user = await _dataContextMssql.Users
+            .FirstOrDefaultAsync(u => u.Email == emailRole.Entity.Email);
+        var role = await _dataContextMssql.Roles
+            .FirstOrDefaultAsync(r => r.Name == userRole);
+
+        _dataContextMssql.UserRoles.Add(
+            new Microsoft.AspNetCore.Identity.IdentityUserRole<string>
             {
-                // Document = document,
-                FirstName = firstName,
-                LastName = lastName,
-                // FixedPhone = fixedPhone,
-                // CellPhone = cellPhone,
-                Address = addressFull,
-                User = await SeedDbUsers.CheckUserAsync(
-                    firstName, lastName,
-                    $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    $"{cellPhone}", "Lessee",
-                    document, addressFull
-                )
-            }
-        );
+                UserId = user.Id,
+                RoleId = role.Id,
+            });
+    }
+
+
+    public static DateTime GenerateRandomDateOfBirth()
+    {
+        Random random = new Random();
+
+        int startYear = 1950;
+        int endYear = 2000;
+
+
+        int year = random.Next(startYear, endYear + 1);
+        int month = random.Next(1, 13);
+        int maxDay = DateTime.DaysInMonth(year, month);
+        int day = random.Next(1, maxDay + 1);
+
+        Console.WriteLine(new DateTime(year, month, day));
+        return new DateTime(year, month, day);
     }
 }

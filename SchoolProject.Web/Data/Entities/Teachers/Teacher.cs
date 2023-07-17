@@ -1,108 +1,103 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using SchoolProject.Web.Data.Entities.Students;
+using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 
 namespace SchoolProject.Web.Data.Entities.Teachers;
 
-public class Teacher : IEntity //: INotifyPropertyChanged
+public class Teacher : IEntity, INotifyPropertyChanged
 {
-    private string _birthplace;
-    private string _genre;
-    private string _nationality;
+    private ICollection<TeacherCourse>? _teacherCourses;
+
+    [Required]
+    [DisplayName("First Name")]
+    public required string FirstName { get; set; }
 
 
-    [Required] [DisplayName("First Name")] public string FirstName { get; set; }
-
-
-    [Required] [DisplayName("Last Name")] public string LastName { get; set; }
+    [Required]
+    [DisplayName("Last Name")]
+    public required string LastName { get; set; }
 
 
     [DisplayName("Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
 
-    [Required] public string Address { get; set; }
+    [Required] public required string Address { get; set; }
 
 
     [Required]
     [DisplayName("Postal Code")]
-    public string PostalCode { get; set; }
+    public required string PostalCode { get; set; }
 
-    [Required] public string City { get; set; }
+
+    [Required] public required City City { get; set; }
+
+
+    [Required] public required Country Country { get; set; }
+    [Required] public int CountryId => Country.Id;
+    [Required] public Guid CountryGuidId => Country.IdGuid;
+
 
     [Required]
     [DisplayName("Mobile Phone")]
-    public string MobilePhone { get; set; }
+    public required string MobilePhone { get; set; }
 
 
     [Required]
     [DataType(DataType.EmailAddress)]
-    public string Email { get; set; }
+    public required string Email { get; set; }
 
-    [Required] public bool Active { get; set; } = true;
+    [Required] public required bool Active { get; set; } = true;
 
-    [Required]
-    public string Genre
-    {
-        get => _genre;
-        set
-        {
-            if (Enum.TryParse(value, out Genres genre)) _genre = value;
-        }
-    }
+    [Required] public required Genre Genre { get; set; }
+
 
     [Required]
     [DisplayName("Date Of Birth")]
     [DataType(DataType.Date)]
-    public DateTime DateOfBirth { get; set; }
+    public required DateTime DateOfBirth { get; set; }
 
     [Required]
     [DisplayName("Identification Number")]
-    public string IdentificationNumber { get; set; }
+    public required string IdentificationNumber { get; set; }
+
+    public required string IdentificationType { get; set; }
 
 
     [Required]
     [DisplayName("Expiration Date Identification Number")]
     [DataType(DataType.Date)]
-    public DateTime ExpirationDateIdentificationNumber { get; set; }
+    public required DateTime ExpirationDateIdentificationNumber { get; set; }
 
 
     [Required]
     [DisplayName("Tax Identification Number")]
-    public string TaxIdentificationNumber { get; set; }
+    public required string TaxIdentificationNumber { get; set; }
 
 
     [Required]
-    public string Nationality
-    {
-        get => _nationality;
-        set
-        {
-            if (Enum.TryParse(value, out Countries countries))
-                _nationality = value;
-        }
-    }
+    [DisplayName("Country Of Nationality")]
+    public required Country CountryOfNationality { get; set; }
 
     [Required]
-    public string Birthplace
-    {
-        get => _birthplace;
-        set
-        {
-            if (Enum.TryParse(value, out Countries countries))
-                _birthplace = value;
-        }
-    }
+    public Nationality Nationality => CountryOfNationality.Nationality;
+
+    // [Required] public required Nationality Nationality { get; set; }
+
+
+    [Required] public required Country Birthplace { get; set; }
 
 
     [Required]
     [DisplayName("Enroll Date")]
     [DataType(DataType.Date)]
-    public DateTime EnrollDate { get; set; }
+    public required DateTime EnrollDate { get; set; }
 
 
-    [Required] public User User { get; set; }
+    [Required] public required User User { get; set; }
 
 
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
@@ -113,37 +108,20 @@ public class Teacher : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [Required] public int Id { get; init; }
-    [Required] [Key] [Column("TeacherId")] public Guid IdGuid { get; init; }
-
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    public DateTime CreatedAt { get; init; }
-
-    [DisplayName("Created By")] public User CreatedBy { get; init; }
-
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    public DateTime? UpdatedAt { get; set; }
-
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
-
-    public ICollection<TeacherCourse>? TeacherCourses { get; set; }
+    public ICollection<TeacherCourse>? TeacherCourses
+    {
+        get => _teacherCourses;
+        set
+        {
+            if (Equals(value, _teacherCourses)) return;
+            _teacherCourses = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(CoursesCount));
+            OnPropertyChanged(nameof(TotalWorkHours));
+        }
+    }
     // public ICollection<StudentCourse>? StudentCourses { get; set; }
     // public ICollection<StudentSubject> StudentSubjects { get; set; }
-
-
-
-
-
 
 
     [DisplayName("Courses Count")]
@@ -154,10 +132,47 @@ public class Teacher : IEntity //: INotifyPropertyChanged
         TeacherCourses?.Sum(t => t.Course.WorkLoad) ?? 0;
 
 
+    [Required] public required int Id { get; set; }
+    [Required] [Column("TeacherId")] public required Guid IdGuid { get; set; }
+
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    public required DateTime CreatedAt { get; set; }
+
+    [DisplayName("Created By")] public required User CreatedBy { get; set; }
+
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    public DateTime? UpdatedAt { get; set; }
+
+    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
 
+    public event PropertyChangedEventHandler? PropertyChanged;
 
+    protected virtual void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
+    }
 
-
+    protected bool SetField<T>(ref T field, T value,
+        [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }

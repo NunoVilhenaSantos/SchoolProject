@@ -1,10 +1,13 @@
 ﻿using System.Reflection;
 using System.Text;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Enrollments;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
+using SchoolProject.Web.Helpers;
 
 namespace SchoolProject.Web.Data.Entities.School;
 
@@ -16,6 +19,8 @@ public static class XFiles
     //
 
     #region Properties
+
+    private static IUserHelper _userHelper;
 
     // public static Logger Logger1 =
     //     new LoggerConfiguration().CreateLogger();
@@ -674,9 +679,7 @@ public static class XFiles
             // read a line
             var line = streamReader.ReadLine();
 
-            // validating the line,
-            // if is not null or empty,
-            // else will continue
+            // validating the line, if is not null or empty, else will continue
             if (string.IsNullOrEmpty(line)) continue;
 
             // split the line into an array of strings
@@ -688,11 +691,22 @@ public static class XFiles
             if (campos[0].ToLower().Contains("id")) continue;
 
             _ = int.TryParse(campos[0], out var id);
-            _ = int.TryParse(campos[2], out var workLoad);
-            _ = int.TryParse(campos[3], out var credits);
+            _ = Guid.TryParse(campos[1], out var idGuid);
+            _ = int.TryParse(campos[3], out var workLoad);
+            _ = int.TryParse(campos[4], out var credits);
+            _ = bool.TryParse(campos[5], out var wasDeleted);
+            _ = DateTime.TryParse(campos[6], out var createdAt);
+
+
+            if (createdAt == default(DateTime))
+                createdAt = DateTime.Now.ToUniversalTime();
+
+            User createdBy = _userHelper.GetUserByIdAsync(campos[7]).Result ??
+                             throw new InvalidOperationException();
 
             Courses.Courses.AddCourse(
-                id, campos[1], workLoad, credits
+                id, idGuid, campos[2], workLoad,
+                credits, wasDeleted, createdAt, createdBy
             );
         }
 
@@ -781,9 +795,10 @@ public static class XFiles
                 campos[2],
                 campos[3],
                 campos[4],
-                campos[5],
+                City.(campos[5]),
                 campos[6],
                 campos[7],
+                campos[8],
                 active,
                 campos[9],
                 dateOfBirth,
@@ -917,7 +932,7 @@ public static class XFiles
         if (!Courses.Courses.CoursesDictionary
                 .TryGetValue(courseId, out var course)) return;
 
-        Enrollments.Enrollments.EnrollStudent(
+        Enrollments.Enrollments.EnrollStudentAsync(
             student,
             course,
             grade

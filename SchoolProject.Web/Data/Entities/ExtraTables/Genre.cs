@@ -2,52 +2,26 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using Microsoft.AspNetCore.Identity;
 
-namespace SchoolProject.Web.Data.Entities.Courses;
+namespace SchoolProject.Web.Data.Entities.ExtraTables;
 
-public class Course : IEntity, INotifyPropertyChanged
+public class Genre : IEntity, INotifyPropertyChanged
 {
-    private string _name;
-
-    [Required]
-    public required string Name
-    {
-        get => _name;
-        set
-        {
-            if (value == _name) return;
-            _name = value;
-            OnPropertyChanged();
-        }
-    }
-
-
-    [Required] public required int WorkLoad { get; set; }
-
-
-    [Required] public required int Credits { get; set; }
-
-
-    [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
-
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/courses/" +
-          ProfilePhotoId;
-
-
-    public ICollection<Enrollment>? Enrollments { get; set; }
-
-
-    [DisplayName("Students Count")]
-    public int? StudentsCount =>
-        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
+    [MaxLength(20,
+        ErrorMessage =
+            "The {0} field can not have more than {1} characters.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required string Name { get; set; }
 
 
     [Required] public int Id { get; set; }
-    [Required] [Column("CourseId")] public required Guid IdGuid { get; set; }
+
+
+    [Required]
+    [Column("GenreId")]
+    public required Guid IdGuid { get; set; } = new();
+
 
     [Required]
     [DisplayName("Was Deleted?")]
@@ -57,6 +31,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     public required DateTime CreatedAt { get; set; }
+
 
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 

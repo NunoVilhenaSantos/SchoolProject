@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Helpers;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -57,7 +57,8 @@ public static class SeedDbUsers
                         Address = address,
                         UserName = userName,
                         Email = email,
-                        PhoneNumber = phoneNumber
+                        PhoneNumber = phoneNumber,
+                        WasDeleted = false
                     },
                     "Teacher" => new User
                     {
@@ -66,7 +67,8 @@ public static class SeedDbUsers
                         Address = address,
                         UserName = userName,
                         Email = email,
-                        PhoneNumber = phoneNumber
+                        PhoneNumber = phoneNumber,
+                        WasDeleted = false
                     },
                     "Functionary" => new User
                     {
@@ -75,7 +77,8 @@ public static class SeedDbUsers
                         Address = address,
                         UserName = userName,
                         Email = email,
-                        PhoneNumber = phoneNumber
+                        PhoneNumber = phoneNumber,
+                        WasDeleted = false
                     },
                     "Admin" => new User
                     {
@@ -84,7 +87,8 @@ public static class SeedDbUsers
                         Address = address,
                         UserName = userName,
                         Email = email,
-                        PhoneNumber = phoneNumber
+                        PhoneNumber = phoneNumber,
+                        WasDeleted = false
                     },
                     "SuperUser" => new User
                     {
@@ -93,7 +97,8 @@ public static class SeedDbUsers
                         Address = address,
                         UserName = userName,
                         Email = email,
-                        PhoneNumber = phoneNumber
+                        PhoneNumber = phoneNumber,
+                        WasDeleted = false
                     },
                     _ => throw new InvalidOperationException(
                         "The role is not valid")

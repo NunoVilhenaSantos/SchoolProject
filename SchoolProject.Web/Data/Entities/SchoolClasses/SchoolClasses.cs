@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.School;
 
 namespace SchoolProject.Web.Data.Entities.SchoolClasses;
@@ -19,16 +20,20 @@ public static class SchoolClasses
     #region Methods
 
     public static void AddSchoolClass(
-        int id, string classAcronym, string className,
+        string classAcronym, string className,
         DateTime startDate, DateTime endDate,
         TimeSpan startHour, TimeSpan endHour,
         string location, string type, string area, int studentsCount,
         List<Course>? courses
     )
     {
+        User user = AuthenticatedUser.GetUser().Result ??
+                    throw new InvalidOperationException();
+
         SchoolClassesList.Add(new SchoolClass
             {
-                Id = id,
+                Id = SchoolClassesList[^1].Id + 1,
+                IdGuid = new Guid(),
                 ClassAcronym = classAcronym,
                 ClassName = className,
                 StartDate = startDate,
@@ -38,6 +43,9 @@ public static class SchoolClasses
                 Location = location,
                 Type = type,
                 Area = area,
+                WasDeleted = false,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CreatedBy = user
             }
         );
         SchoolDatabase.AddSchoolClass(SchoolClassesList[^1]);

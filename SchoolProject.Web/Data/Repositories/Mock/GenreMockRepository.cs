@@ -1,4 +1,4 @@
-﻿using SchoolProject.Web.Data.Entities;
+﻿using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Repositories.Interfaces;
 
 namespace SchoolProject.Web.Data.Repositories.Mock;

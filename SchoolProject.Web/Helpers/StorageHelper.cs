@@ -1,10 +1,7 @@
-﻿using Azure;
-using Azure.Storage.Blobs;
+﻿using Azure.Storage.Blobs;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
-using Microsoft.Extensions.Options;
 using Serilog;
-
 
 namespace SchoolProject.Web.Helpers;
 
@@ -12,9 +9,9 @@ public class StorageHelper : IStorageHelper
 {
     private readonly IConfiguration _configuration;
 
-    private readonly GoogleCredential _googleCredentialsNuno;
-
     private readonly GoogleCredential _googleCredentialsJorge;
+
+    private readonly GoogleCredential _googleCredentialsNuno;
 
     public StorageHelper(IConfiguration configuration)
     {
