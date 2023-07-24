@@ -64,6 +64,8 @@ public class Student : IEntity //: INotifyPropertyChanged
     [DisplayName("Identification Number")]
     public required string IdentificationNumber { get; set; }
 
+    public required string IdentificationType { get; set; }
+
 
     [Required]
     [DisplayName("Expiration Date Identification Number")]

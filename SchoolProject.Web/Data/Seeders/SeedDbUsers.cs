@@ -10,8 +10,8 @@ public static class SeedDbUsers
 
 
     internal static async Task AddUsers(
-        string email, string address,
-        string role, string password = "123456"
+        string firstName, string lastName, string email,
+        string address, string role, string password = "123456"
     )
     {
         var random = new Random();
@@ -21,15 +21,12 @@ public static class SeedDbUsers
         var document = random.Next(100000, 999999999).ToString();
         var fixedPhone = random.Next(1000000, 99999999).ToString();
         var cellPhone = random.Next(1000000, 99999999).ToString();
-        var addressFull = address + ", " + random.Next(1, 9999);
+        var fullAddress = address + ", " + random.Next(1, 9999);
 
         await CheckUserAsync(
-            userSplit[0], userSplit[1],
-            email,
-            email,
-            cellPhone, role,
-            document,
-            addressFull, password
+            firstName, lastName,
+            email, email, cellPhone,
+            role, document, fullAddress, password
         );
     }
 

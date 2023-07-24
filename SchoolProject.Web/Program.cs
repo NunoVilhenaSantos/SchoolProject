@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
+using Microsoft.AspNetCore.Identity;
+using SchoolProject.Web.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +97,8 @@ builder.Services.AddDbContext<DataContextMsSql>(options =>
     options.UseSqlServer(
         builder.Configuration
             .GetConnectionString("SchoolProject-mssql.somee.com")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityDataContext>();
 
 
 builder.Services.AddDbContext<DataContextMySql>(options =>

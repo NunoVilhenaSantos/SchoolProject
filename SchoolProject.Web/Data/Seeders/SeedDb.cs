@@ -139,12 +139,15 @@ public class SeedDb
     private static async Task SeedingDataSuperUsers()
     {
         await SeedDbUsers.AddUsers(
+            "Nuno","Vilhena Santos",
             "nunovilhenasantos@msn.com",
             "Calle Luna", "SuperUser", "Passw0rd");
         await SeedDbUsers.AddUsers(
+            "Nuno","Santos",
             "nuno.santos.26288@formandos.cinel.pt",
             "Calle Luna", "SuperUser", "Passw0rd");
         await SeedDbUsers.AddUsers(
+            "Rafael","Santos",
             "rafael.santos@cinel.pt",
             "Calle Luna", "SuperUser", "Passw0rd");
     }
@@ -153,14 +156,17 @@ public class SeedDb
     private static async Task SeedingDataAdminUsers()
     {
         await SeedDbUsers.AddUsers(
+            "Jorge","Pinto",
             "jorge.pinto.28720@formandos.cinel.pt",
             "Calle Luna", "Admin");
 
         await SeedDbUsers.AddUsers(
+            "Ruben","Correia",
             "ruben.corrreia.28257@formandos.cinel.pt",
             "Calle Luna", "Admin");
 
         await SeedDbUsers.AddUsers(
+            "Tatiane","Avellar",
             "tatiane.avellar.24718@formandos.cinel.pt",
             "Calle Luna", "Admin", "Passw0rd");
     }
@@ -169,14 +175,17 @@ public class SeedDb
     private static async Task SeedingDataFunctionaryUsers()
     {
         await SeedDbUsers.AddUsers(
+            "Licinio","Rosario",
             "licinio.do.rosario@formandos.cinel.pt",
             "Calle Luna", "Functionary");
 
         await SeedDbUsers.AddUsers(
+            "Joel","Rangel",
             "joel.rangel.22101@formandos.cinel.pt",
             "Calle Luna", "Functionary");
 
         await SeedDbUsers.AddUsers(
+            "Diogo","Alves",
             "diogo.alves.28645@formandos.cinel.pt",
             "Calle Luna", "Functionary", "Passw0rd");
     }

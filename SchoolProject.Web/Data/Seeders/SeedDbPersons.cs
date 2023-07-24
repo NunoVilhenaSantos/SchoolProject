@@ -106,41 +106,138 @@ public static class SeedDbPersons
         var fixedPhone = _random.Next(1000000, 99999999).ToString();
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
+        var email = $"{firstName}.{lastName}@mail.pt";
+        var identificationNumber = _random.Next(100000, 999999999).ToString();
+        var vatNumber = _random.Next(100000, 999999999).ToString();
 
-        _dataContextMssql.Students.Add(new Student
+        DateTime dateOfBirth = GenerateRandomDateOfBirth();
+
+        var postalCode =
+            _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
+
+        const string userRole = "Student";
+
+        var studentWithRole =
+            _dataContextMssql.Students.Add(new Student
+                {
+                    User = await SeedDbUsers.CheckUserAsync(
+                        firstName,
+                        lastName,
+                        email,
+                        email,
+                        fixedPhone,
+                        userRole,
+                        document,
+                        addressFull
+                    ),
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Address = addressFull,
+                    PostalCode = postalCode,
+                    City = await _dataContextMssql.Cities
+                        .FindAsync("Porto") ?? new City
+                    {
+                        Name = "Porto",
+                        Id = 0,
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    Country = await _dataContextMssql.Countries
+                        .FindAsync("Portugal") ?? new Country
+                    {
+                        Name = "Portugal",
+                        Nationality = await _dataContextMssql.Nationalities
+                            .FindAsync("Português") ?? new Nationality
+                        {
+                            Name = "Português",
+                            IdGuid = new Guid(),
+                            WasDeleted = false,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedBy = user
+                        },
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    MobilePhone = cellPhone,
+                    Email = email,
+                    Active = true,
+                    Genre = await _dataContextMssql.Genres
+                        .FindAsync("Female") ?? new Genre
+                    {
+                        Name = "Female",
+                        IdGuid = new Guid(),
+                        WasDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user
+                    },
+                    DateOfBirth = dateOfBirth,
+                    IdentificationNumber = identificationNumber.ToString(),
+                    IdentificationType = "BI",
+                    ExpirationDateIdentificationNumber = default,
+                    TaxIdentificationNumber = vatNumber,
+                    CountryOfNationality = await _dataContextMssql.Countries
+                        .FindAsync("Portugal") ?? new Country
+                    {
+                        Name = "Portugal",
+                        Nationality = await _dataContextMssql.Nationalities
+                            .FindAsync("Português") ?? new Nationality
+                        {
+                            Name = "Português",
+                            IdGuid = new Guid(),
+                            WasDeleted = false,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedBy = user
+                        },
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    Birthplace = await _dataContextMssql.Countries
+                        .FindAsync("França") ?? new Country
+                    {
+                        Name = "França",
+                        Nationality = await _dataContextMssql.Nationalities
+                            .FindAsync("Françês") ?? new Nationality
+                        {
+                            Name = "Françês",
+                            IdGuid = new Guid(),
+                            WasDeleted = false,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedBy = user
+                        },
+                        IdGuid = new Guid(),
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = user,
+                        WasDeleted = false
+                    },
+                    EnrollDate = DateTime.UtcNow,
+                    Id = 0,
+                    IdGuid = new Guid(),
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = user,
+                }
+            );
+
+
+        var newUser = await _dataContextMssql.Users
+            .FirstOrDefaultAsync(u =>
+                u.Email == studentWithRole.Entity.Email);
+
+        var role = await _dataContextMssql.Roles
+            .FirstOrDefaultAsync(r =>
+                r.Name == userRole);
+
+        _dataContextMssql.UserRoles.Add(
+            new Microsoft.AspNetCore.Identity.IdentityUserRole<string>
             {
-                User = await SeedDbUsers.CheckUserAsync(
-                    // firstName,
-                    // lastName,
-                    // $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    // $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    // $"{cellPhone}",
-                    // "Owner",
-                    // document,
-                    // addressFull
-                ),
-                FirstName = null,
-                LastName = null,
-                Address = null,
-                PostalCode = null,
-                City = null,
-                Country = null,
-                MobilePhone = null,
-                Email = null,
-                Active = false,
-                Genre = null,
-                DateOfBirth = default,
-                IdentificationNumber = null,
-                ExpirationDateIdentificationNumber = default,
-                TaxIdentificationNumber = null,
-                CountryOfNationality = null,
-                Birthplace = null,
-                EnrollDate = default,
-                IdGuid = default,
-                CreatedAt = default,
-                CreatedBy = null
-            }
-        );
+                UserId = newUser?.Id ?? string.Empty,
+                RoleId = role?.Id ?? string.Empty,
+            });
     }
 
 
@@ -159,11 +256,9 @@ public static class SeedDbPersons
         var postalCode =
             _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
 
-
         const string userRole = "Teacher";
 
-
-        var emailRole =
+        var teacherWithRole =
             _dataContextMssql.Teachers.Add(new Teacher
                 {
                     User = await SeedDbUsers.CheckUserAsync(
@@ -270,16 +365,19 @@ public static class SeedDbPersons
             );
 
 
-        var user = await _dataContextMssql.Users
-            .FirstOrDefaultAsync(u => u.Email == emailRole.Entity.Email);
+        var newUser = await _dataContextMssql.Users
+            .FirstOrDefaultAsync(u =>
+                u.Email == teacherWithRole.Entity.Email);
+
         var role = await _dataContextMssql.Roles
-            .FirstOrDefaultAsync(r => r.Name == userRole);
+            .FirstOrDefaultAsync(r =>
+                r.Name == userRole);
 
         _dataContextMssql.UserRoles.Add(
             new Microsoft.AspNetCore.Identity.IdentityUserRole<string>
             {
-                UserId = user.Id,
-                RoleId = role.Id,
+                UserId = newUser?.Id ?? string.Empty,
+                RoleId = role?.Id ?? string.Empty,
             });
     }
 

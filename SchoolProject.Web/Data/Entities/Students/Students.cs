@@ -40,7 +40,8 @@ public class Students
 
         StudentsList.Add(new Student
             {
-                Id = StudentsList[^1].Id,
+                Id = StudentsList[^1]
+                    .Id,
                 IdGuid = Guid.NewGuid(),
                 FirstName = firstName,
                 LastName = lastName,
@@ -54,6 +55,7 @@ public class Students
                 Genre = genre,
                 DateOfBirth = dateOfBirth,
                 IdentificationNumber = identificationNumber,
+                IdentificationType = null,
                 ExpirationDateIdentificationNumber = expirationDateIn,
                 TaxIdentificationNumber = taxIdentificationNumber,
                 CountryOfNationality = countryOfNationality,
@@ -320,7 +322,8 @@ public class Students
                     "Total work hours = {1}, " +
                     "Course count = {2}, " +
                     "Workload per course = {3}.",
-                    student.FirstName, student.TotalWorkHours,
+                    student.FirstName,
+                    student.TotalWorkHours,
                     student.CoursesCount));
 
         Log.Information("Teacher metrics calculation completed");

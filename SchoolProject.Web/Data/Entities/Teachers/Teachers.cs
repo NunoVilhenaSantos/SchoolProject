@@ -54,6 +54,7 @@ public static class Teachers
             Genre = genre,
             DateOfBirth = dateOfBirth,
             IdentificationNumber = identificationNumber,
+            IdentificationType = null,
             ExpirationDateIdentificationNumber = expirationDateIn,
             TaxIdentificationNumber = taxIdentificationNumber,
             CountryOfNationality = countryOfNationality,
