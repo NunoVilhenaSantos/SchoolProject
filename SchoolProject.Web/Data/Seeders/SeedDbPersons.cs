@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -110,7 +111,7 @@ public static class SeedDbPersons
         var identificationNumber = _random.Next(100000, 999999999).ToString();
         var vatNumber = _random.Next(100000, 999999999).ToString();
 
-        DateTime dateOfBirth = GenerateRandomDateOfBirth();
+        var dateOfBirth = GenerateRandomDateOfBirth();
 
         var postalCode =
             _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
@@ -175,7 +176,7 @@ public static class SeedDbPersons
                         CreatedBy = user
                     },
                     DateOfBirth = dateOfBirth,
-                    IdentificationNumber = identificationNumber.ToString(),
+                    IdentificationNumber = identificationNumber,
                     IdentificationType = "BI",
                     ExpirationDateIdentificationNumber = default,
                     TaxIdentificationNumber = vatNumber,
@@ -219,7 +220,7 @@ public static class SeedDbPersons
                     Id = 0,
                     IdGuid = new Guid(),
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = user,
+                    CreatedBy = user
                 }
             );
 
@@ -233,10 +234,10 @@ public static class SeedDbPersons
                 r.Name == userRole);
 
         _dataContextMssql.UserRoles.Add(
-            new Microsoft.AspNetCore.Identity.IdentityUserRole<string>
+            new IdentityUserRole<string>
             {
                 UserId = newUser?.Id ?? string.Empty,
-                RoleId = role?.Id ?? string.Empty,
+                RoleId = role?.Id ?? string.Empty
             });
     }
 
@@ -251,7 +252,7 @@ public static class SeedDbPersons
         var email = $"{firstName}.{lastName}@mail.pt";
         var identificationNumber = _random.Next(100000, 999999999).ToString();
         var vatNumber = _random.Next(100000, 999999999).ToString();
-        DateTime dateOfBirth = GenerateRandomDateOfBirth();
+        var dateOfBirth = GenerateRandomDateOfBirth();
 
         var postalCode =
             _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
@@ -316,7 +317,7 @@ public static class SeedDbPersons
                         CreatedBy = user
                     },
                     DateOfBirth = dateOfBirth,
-                    IdentificationNumber = identificationNumber.ToString(),
+                    IdentificationNumber = identificationNumber,
                     IdentificationType = "BI",
                     ExpirationDateIdentificationNumber = default,
                     TaxIdentificationNumber = vatNumber,
@@ -360,7 +361,7 @@ public static class SeedDbPersons
                     Id = 0,
                     IdGuid = new Guid(),
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = user,
+                    CreatedBy = user
                 }
             );
 
@@ -374,26 +375,26 @@ public static class SeedDbPersons
                 r.Name == userRole);
 
         _dataContextMssql.UserRoles.Add(
-            new Microsoft.AspNetCore.Identity.IdentityUserRole<string>
+            new IdentityUserRole<string>
             {
                 UserId = newUser?.Id ?? string.Empty,
-                RoleId = role?.Id ?? string.Empty,
+                RoleId = role?.Id ?? string.Empty
             });
     }
 
 
     public static DateTime GenerateRandomDateOfBirth()
     {
-        Random random = new Random();
+        var random = new Random();
 
-        int startYear = 1950;
-        int endYear = 2000;
+        var startYear = 1950;
+        var endYear = 2000;
 
 
-        int year = random.Next(startYear, endYear + 1);
-        int month = random.Next(1, 13);
-        int maxDay = DateTime.DaysInMonth(year, month);
-        int day = random.Next(1, maxDay + 1);
+        var year = random.Next(startYear, endYear + 1);
+        var month = random.Next(1, 13);
+        var maxDay = DateTime.DaysInMonth(year, month);
+        var day = random.Next(1, maxDay + 1);
 
         Console.WriteLine(new DateTime(year, month, day));
         return new DateTime(year, month, day);

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.School;
 
 namespace SchoolProject.Web.Data.Entities.SchoolClasses;
@@ -27,8 +26,8 @@ public static class SchoolClasses
         List<Course>? courses
     )
     {
-        User user = AuthenticatedUser.GetUser().Result ??
-                    throw new InvalidOperationException();
+        var user = AuthenticatedUser.GetUser().Result ??
+                   throw new InvalidOperationException();
 
         SchoolClassesList.Add(new SchoolClass
             {

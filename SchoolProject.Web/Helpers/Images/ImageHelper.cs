@@ -1,4 +1,4 @@
-﻿namespace SchoolProject.Web.Helpers;
+﻿namespace SchoolProject.Web.Helpers.Images;
 
 public class ImageHelper : IImageHelper
 {

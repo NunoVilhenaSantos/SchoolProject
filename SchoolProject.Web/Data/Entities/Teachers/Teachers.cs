@@ -8,9 +8,8 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 
 public static class Teachers
 {
-    public static List<Teacher> TeachersList { get; set; } = new();
-
     public static readonly Dictionary<int, Teacher> TeachersDictionary = new();
+    public static List<Teacher> TeachersList { get; set; } = new();
 
 
     public static void AddTeacher(
@@ -35,8 +34,8 @@ public static class Teachers
         List<Course> courses
     )
     {
-        User user = AuthenticatedUser.GetUser().Result ??
-                    throw new InvalidOperationException();
+        var user = AuthenticatedUser.GetUser().Result ??
+                   throw new InvalidOperationException();
 
         var teacher = new Teacher
         {
@@ -70,7 +69,7 @@ public static class Teachers
                 LastName = lastName,
                 UserName = $"{firstName}.{lastName}@mail.pt",
                 WasDeleted = false
-            },
+            }
         };
         TeachersList.Add(teacher);
 

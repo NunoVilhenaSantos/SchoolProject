@@ -3,7 +3,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Serilog;
 
-namespace SchoolProject.Web.Helpers;
+namespace SchoolProject.Web.Helpers.Storages;
 
 public class StorageHelper : IStorageHelper
 {

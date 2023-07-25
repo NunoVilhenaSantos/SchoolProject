@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SchoolProject.Web.Data.Entities.ExtraTables;
 
 namespace SchoolProject.Web.Areas.Identity.Data;
 
-public class IdentityDataContext : IdentityDbContext<IdentityUser>
+// public class IdentityDataContext : IdentityDbContext<IdentityUser>
+public class IdentityDataContext : IdentityDbContext<User>
 {
     public IdentityDataContext(DbContextOptions<IdentityDataContext> options)
         : base(options)

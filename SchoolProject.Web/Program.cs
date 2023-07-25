@@ -1,83 +1,54 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Microsoft.Identity.Web.UI;
+using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
-using Microsoft.AspNetCore.Identity;
-using SchoolProject.Web.Areas.Identity.Data;
+using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Seeders;
+using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Images;
+using SchoolProject.Web.Helpers.Storages;
+using SchoolProject.Web.Helpers.Users;
 
+
+// Helper method to generate a random
+// string with specified length and characters.
+static string GenerateRandomString(
+    int length = 64, bool withSpecialCharacters = true)
+{
+    var characterSet =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    if (withSpecialCharacters) characterSet += "!@#$%^&*()_-+=[]{}|;:,.<>?";
+
+    var random = new Random();
+    var sb = new StringBuilder(length);
+
+    for (var i = 0; i < length; i++)
+    {
+        var index = random.Next(characterSet.Length);
+        var randomCharacter = characterSet[index];
+        sb.Append(randomCharacter);
+    }
+
+    var randomString = sb.ToString();
+    Console.WriteLine(
+        randomString); // Print the generated string to the console
+    return randomString;
+}
+
+
+// Create a new web application using the WebApplicationBuilder.
 var builder = WebApplication.CreateBuilder(args);
 
 
-//
-// Add Application Insights services into service collection
-//
-// builder.Services.AddApplicationInsightsTelemetry(
-//     builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-
-// or
-builder.Services.AddApplicationInsightsTelemetry(
-    options => options.ConnectionString =
-        "APPLICATIONINSIGHTS_CONNECTION_STRING"
-);
-
-
-// Configure JSON logging to the console.
-// builder.Logging.AddJsonConsole();
-
-// Configure logging to the console.
-builder.Logging.AddDebug();
-builder.Logging.AddConsole();
-// builder.Logging.AddEventLog();
-builder.Logging.AddEventSourceLogger();
-builder.Logging.AddApplicationInsights();
-
-
-builder.Services.AddControllersWithViews();
-
-
-//builder.WebHost.ConfigureKestrel(options =>
-//{
-//    options.ListenAnyIP(9999, listenOptions =>
-//    {
-//        listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3;
-
-//        listenOptions.UseHttps(new TlsHandshakeCallbackOptions
-//        {
-//            OnConnection = context =>
-//            {
-//                var options = new SslServerAuthenticationOptions
-//                {
-//                    ServerCertificate =
-//                         MyResolveCertForHost(context.ClientHelloInfo.ServerName)
-//                };
-//                return new ValueTask<SslServerAuthenticationOptions>(options);
-//            },
-//        });
-//    });
-//});
-
-
-builder.Services.AddRazorPages();
-builder.Services.Configure<CookiePolicyOptions>(options =>
-{
-    options.CheckConsentNeeded = context => true;
-    options.MinimumSameSitePolicy = SameSiteMode.None;
-    options.ConsentCookie.IsEssential = true;
-    options.ConsentCookie.Expiration = TimeSpan.FromDays(30);
-    options.ConsentCookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.ConsentCookie.HttpOnly = true;
-});
-
-
-// -----------------------------------------------------------------------------
-//
-// Database connection via data-context
-//
-// -----------------------------------------------------------------------------
-
-
-// Add services to the container.
+// Configuring Azure services for Blob and Queue clients.
 builder.Services.AddAzureClients(clientBuilder =>
 {
     clientBuilder.AddBlobServiceClient(
@@ -89,62 +60,216 @@ builder.Services.AddAzureClients(clientBuilder =>
 });
 
 
-// builder.Services.AddDbContext<SchoolProjectDbContext>(options =>
-//     options.UseSqlServer(
-//         builder.Configuration.GetConnectionString("SchoolProjectConnection")));
-
-builder.Services.AddDbContext<DataContextMsSql>(options =>
-    options.UseSqlServer(
-        builder.Configuration
-            .GetConnectionString("SchoolProject-mssql.somee.com")));
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityDataContext>();
-
-
-builder.Services.AddDbContext<DataContextMySql>(options =>
-    options.UseMySQL(
-        builder.Configuration
-            .GetConnectionString("SchoolProject-MySQL") ?? string.Empty));
-
-
-builder.Services.AddDbContext<DataContextSqLite>(options =>
-    options.UseSqlite(
-        builder.Configuration
-            .GetConnectionString("SchoolProject-SQLite")));
-
-
-builder.Services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+// Configuring database connections using DbContext for MSSQL, MySQL, and SQLite.
+builder.Services.AddDbContext<DataContextMsSql>(
+    cfg =>
     {
-        options.LoginPath = "/Account/Login";
-        options.LogoutPath = "/Account/Logout";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+        cfg.UseSqlServer(
+            builder.Configuration.GetConnectionString(
+                "SchoolProject-mssql.somee.com"), options =>
+            {
+                options.EnableRetryOnFailure();
+                options.MigrationsAssembly("SchoolProject.Web");
+                options.MigrationsHistoryTable("_MyMigrationsHistory");
+            });
+    });
+
+builder.Services.AddDbContext<DataContextMySql>(
+    cfg =>
+    {
+        cfg.UseMySQL(
+            builder.Configuration.GetConnectionString("SchoolProject-MySQL") ??
+            string.Empty, options =>
+            {
+                options.MigrationsAssembly("SchoolProject.Web");
+                options.MigrationsHistoryTable("_MyMigrationsHistory");
+            });
+    });
+
+builder.Services.AddDbContext<DataContextSqLite>(
+    cfg =>
+    {
+        cfg.UseSqlite(
+            builder.Configuration.GetConnectionString("SchoolProject-SQLite"),
+            options =>
+            {
+                options.MigrationsAssembly("SchoolProject.Web");
+                options.MigrationsHistoryTable("_MyMigrationsHistory");
+            });
+    });
+
+// Configure Identity service with user settings,
+// password settings, and token settings.
+// builder.Services.AddIdentity<IdentityUser, IdentityRole>(
+builder.Services.AddIdentity<User, IdentityRole>(
+        cfg =>
+        {
+            // User settings.
+            cfg.User.RequireUniqueEmail = true;
+
+            // Password settings.
+            cfg.Password.RequireDigit = false;
+            cfg.Password.RequiredLength = 6;
+            cfg.Password.RequiredUniqueChars = 0;
+            cfg.Password.RequireUppercase = false;
+            cfg.Password.RequireLowercase = false;
+            cfg.Password.RequireNonAlphanumeric = false;
+
+            // SignIn settings.
+            cfg.SignIn.RequireConfirmedEmail = true;
+            cfg.SignIn.RequireConfirmedAccount = false;
+            cfg.SignIn.RequireConfirmedPhoneNumber = false;
+
+            // Token settings.
+            cfg.Tokens.AuthenticatorTokenProvider =
+                TokenOptions.DefaultAuthenticatorProvider;
+        })
+    .AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<DataContextMsSql>()
+    .AddEntityFrameworkStores<DataContextMySql>()
+    .AddEntityFrameworkStores<DataContextSqLite>();
+
+
+// Configure Application Insights for telemetry.
+builder.Services.AddApplicationInsightsTelemetry(options =>
+{
+    options.ConnectionString = "APPLICATIONINSIGHTS_CONNECTION_STRING";
+});
+
+
+// Configure JWT authentication.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddCookie()
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Tokens:Issuer"],
+            ValidAudience = builder.Configuration["Tokens:Audience"],
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(
+                        builder.Configuration["Tokens:Key"] ??
+                        GenerateRandomString(128, false)
+                    )
+                )
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                if (context.Exception.GetType() ==
+                    typeof(SecurityTokenExpiredException))
+                    context.Response.Headers.Add("Token-Expired", "true");
+
+                return Task.CompletedTask;
+            }
+        };
     });
 
 
-builder.Services.AddLogging();
+// Configure Cookie authentication.
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth",
+        config =>
+        {
+            config.Cookie.Name = "SuperShop.Cookie";
+            config.LoginPath = "/Home/Authenticate";
+            config.AccessDeniedPath = "/Home/Authenticate";
+        });
 
-builder.Services.AddAuthorization(options =>
+
+// Configure application cookie settings with sliding expiration.
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.AddPolicy(
-        "IsAdmin", policy => policy.RequireClaim("IsAdmin"));
-    options.AddPolicy(
-        "IsUser", policy => policy.RequireClaim("IsUser"));
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(15);
+    options.LoginPath = "/Account/NotAuthorized";
+    options.AccessDeniedPath = "/Account/NotAuthorized";
+    options.SlidingExpiration = true;
 });
 
-builder.Services.AddAntiforgery();
-builder.Services.AddApplicationInsightsTelemetry();
+
+// Configure consent cookie options.
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.ConsentCookie.IsEssential = true;
+    options.ConsentCookie.Expiration = TimeSpan.FromDays(30);
+    options.ConsentCookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.ConsentCookie.HttpOnly = true;
+});
 
 
-var app = builder.Build();
+// Add authorization policies for different user roles.
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("IsAdmin",
+        policy => policy.RequireClaim("IsAdmin"));
 
-app.Logger.LogInformation("The app started");
+    options.AddPolicy("IsStudent",
+        policy => policy.RequireClaim("IsStudent"));
+
+    options.AddPolicy("IsTeacher",
+        policy => policy.RequireClaim("IsTeacher"));
+
+    options.AddPolicy("IsParent",
+        policy => policy.RequireClaim("IsParent"));
+
+    options.AddPolicy("IsUser",
+        policy => policy.RequireClaim("IsUser"));
+
+    options.AddPolicy("IsAnonymous",
+        policy => policy.RequireClaim("IsAnonymous"));
+});
+
+
+// Add localization and view localization to the application.
+builder.Services.AddLocalization(options =>
+    options.ResourcesPath = "Resources");
+builder.Services.AddMvc().AddViewLocalization();
+builder.Services.AddMvcCore().AddViewLocalization();
+builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();
+
+
+// Add logging providers for debugging and application insights.
+builder.Services.AddLogging();
+builder.Logging.AddDebug();
+builder.Logging.AddConsole();
+builder.Logging.AddEventSourceLogger();
+builder.Logging.AddApplicationInsights();
+
+
+// Add seeding for the database.
+builder.Services.AddTransient<SeedDb>();
+// builder.Services.AddTransient<SeedDbMsSql>();
+// builder.Services.AddTransient<SeedDbMySql>();
+// builder.Services.AddTransient<SeedDbSqLite>();
+
+
+// Inject repositories and helpers.
+builder.Services.AddScoped<UserManager<User>>();
+builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<IEmailSender, EmailHelper>();
+builder.Services.AddScoped<IImageHelper, ImageHelper>();
+builder.Services.AddScoped<IStorageHelper, StorageHelper>();
+builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 
 // Configure the HTTP request pipeline.
+var app = builder.Build();
+
+
+// Exception handling and HTTPS redirection for non-development environments.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+
     // The default HSTS value is 30 days.
     // You may want to change this for production scenarios,
     // see https://aka.ms/aspnetcore-hsts.
@@ -152,16 +277,25 @@ if (!app.Environment.IsDevelopment())
 }
 
 
+// Enable HTTPS redirection and serve static files.
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
 
+// Configure routing, authentication, and authorization middleware.
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+// Map controller routes and Razor pages.
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
 
+
+app.MapRazorPages();
+
+
+// Run the application.
 app.Run();

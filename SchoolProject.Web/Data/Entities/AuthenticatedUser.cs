@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Entities;
 
@@ -12,7 +13,8 @@ public class AuthenticatedUser
 
     public AuthenticatedUser(
         IUserHelper userHelper,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor
+    )
     {
         _userHelper = userHelper;
         _httpContextAccessor = httpContextAccessor;

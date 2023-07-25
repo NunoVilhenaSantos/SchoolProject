@@ -7,8 +7,8 @@ namespace SchoolProject.Web.Data.Entities.Students;
 
 public class Students
 {
-    public static List<Student> StudentsList { get; set; } = new();
     public static readonly Dictionary<int, Student> StudentsDictionary = new();
+    public static List<Student> StudentsList { get; set; } = new();
 
 
     public static void AddStudent(
@@ -35,8 +35,8 @@ public class Students
         DateTime enrollDate
     )
     {
-        User user = AuthenticatedUser.GetUser().Result ??
-                    throw new InvalidOperationException();
+        var user = AuthenticatedUser.GetUser().Result ??
+                   throw new InvalidOperationException();
 
         StudentsList.Add(new Student
             {
@@ -74,7 +74,7 @@ public class Students
                     LastName = lastName,
                     UserName = $"{firstName}.{lastName}@mail.pt",
                     WasDeleted = false
-                },
+                }
             }
         );
         SchoolDatabase.AddStudent(StudentsList.LastOrDefault());

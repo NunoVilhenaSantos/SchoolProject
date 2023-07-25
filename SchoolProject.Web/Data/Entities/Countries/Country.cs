@@ -41,7 +41,6 @@ public class Country : IEntity, INotifyPropertyChanged
     [Required] public required bool WasDeleted { get; set; }
 
 
-
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged(

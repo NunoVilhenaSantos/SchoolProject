@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+﻿using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.School;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using Serilog;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
@@ -75,7 +75,7 @@ public static class Courses
 
 
     /// <summary>
-    ///   Adiciona um novo alunos a lista de alunos.
+    ///     Adiciona um novo alunos a lista de alunos.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="idGuid"></param>
@@ -93,8 +93,8 @@ public static class Courses
     {
         // var user = GetAuthenticatedUserAsync().Result;
 
-        User user = AuthenticatedUser.GetUser().Result ??
-                    throw new InvalidOperationException();
+        var user = AuthenticatedUser.GetUser().Result ??
+                   throw new InvalidOperationException();
 
         CoursesList.Add(new Course
             {
@@ -105,7 +105,7 @@ public static class Courses
                 Credits = credits,
                 WasDeleted = wasDeleted,
                 CreatedAt = createdAt,
-                CreatedBy = createdBy,
+                CreatedBy = createdBy
             }
         );
         // Add course to the database.
@@ -119,10 +119,10 @@ public static class Courses
         int id, Guid idGuid, string name, int workLoad, int credits,
         bool wasDeleted, DateTime? createdAt, User? createdBy)
     {
-        User user = await AuthenticatedUser.GetUser() ??
-                    throw new InvalidOperationException();
+        var user = await AuthenticatedUser.GetUser() ??
+                   throw new InvalidOperationException();
 
-        Course newCourse = new Course
+        var newCourse = new Course
         {
             IdGuid = idGuid,
             Name = name,

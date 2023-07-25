@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
@@ -10,7 +11,9 @@ using SchoolProject.Web.Data.Entities.Teachers;
 
 namespace SchoolProject.Web.Data.DataContexts;
 
-public class DataContextMsSql : IdentityDbContext<User>
+// public class DataContextMsSql : IdentityDbContext<User>
+public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
+// public class DataContextMsSql : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public DataContextMsSql(DbContextOptions<DataContextMsSql> options) :
         base(options)
@@ -62,10 +65,9 @@ public class DataContextMsSql : IdentityDbContext<User>
     // ---------------------------------------------------------------------- //
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        foreach (
-            var relationship in
-            builder.Model.GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys()))
+        foreach (var relationship
+                 in builder.Model.GetEntityTypes()
+                     .SelectMany(e => e.GetForeignKeys()))
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
 
         base.OnModelCreating(builder);

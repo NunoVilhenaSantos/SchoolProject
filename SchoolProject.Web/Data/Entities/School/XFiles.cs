@@ -1,26 +1,10 @@
-﻿using System.Reflection;
-using System.Text;
-using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.ExtraTables;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
-using SchoolProject.Web.Data.Entities.Students;
-using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Helpers;
+﻿using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Entities.School;
 
 public static class XFiles
 {
-    //
-    // Global Properties for the windows forms
-    // to store the data into files of class
-    //
-
-
-    private static readonly IUserHelper _userHelper;
-
     // public static Logger Logger1 =
     //     new LoggerConfiguration().CreateLogger();
     //
@@ -28,6 +12,13 @@ public static class XFiles
     //     new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
     internal const string Delimiter = ";";
+    //
+    // Global Properties for the windows forms
+    // to store the data into files of class
+    //
+
+
+    private static readonly IUserHelper _userHelper;
 
     private static readonly string ProjectFolder =
         Directory.GetCurrentDirectory();

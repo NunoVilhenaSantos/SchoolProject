@@ -1,8 +1,8 @@
-namespace SchoolProject.Web.Models;
+namespace SchoolProject.Web.Models.Errors;
 
 public class ErrorViewModel
 {
-    public string? RequestId { get; set; }
+    public string RequestId { get; set; }
 
     public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }

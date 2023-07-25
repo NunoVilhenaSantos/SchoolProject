@@ -1,6 +1,6 @@
 ﻿using Google.Cloud.Storage.V1;
 
-namespace SchoolProject.Web.Helpers;
+namespace SchoolProject.Web.Helpers.Storages;
 
 public interface IStorageHelper
 {

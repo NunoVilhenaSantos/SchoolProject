@@ -2,9 +2,12 @@
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Models;
+using SchoolProject.Web.Models.Course;
+using SchoolProject.Web.Models.SchoolClass;
+using SchoolProject.Web.Models.Student;
+using SchoolProject.Web.Models.Teacher;
 
-namespace SchoolProject.Web.Helpers;
+namespace SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 
 public class ConverterHelper : IConverterHelper
 {
@@ -79,7 +82,7 @@ public class ConverterHelper : IConverterHelper
             ImageFile = null,
             CreatedBy = course.CreatedBy,
             IdGuid = course.IdGuid,
-            CreatedAt = course.CreatedAt,
+            CreatedAt = course.CreatedAt
         };
     }
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -11,32 +12,29 @@ public class SeedDb
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
-
-
-    // private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
+
     private readonly IUserHelper _userHelper;
+    private readonly UserManager<User> _userManager;
 
 
     public SeedDb(
         IUserHelper userHelper,
+        UserManager<User> userManager,
+        RoleManager<IdentityRole> roleManager,
         DataContextMsSql dataContextMsSql,
         DataContextMySql dataContextMySql,
         DataContextSqLite dataContextSqLite
-
-        // UserManager<User> userManager,
-        // RoleManager<IdentityRole> roleManager
     )
     {
         _userHelper = userHelper;
+        _userManager = userManager;
+        _roleManager = roleManager;
 
         _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
         _dataContextSqLite = dataContextSqLite;
-
-        // _userManager = userManager;
-        // _roleManager = roleManager;
     }
 
 
@@ -139,15 +137,15 @@ public class SeedDb
     private static async Task SeedingDataSuperUsers()
     {
         await SeedDbUsers.AddUsers(
-            "Nuno","Vilhena Santos",
+            "Nuno", "Vilhena Santos",
             "nunovilhenasantos@msn.com",
             "Calle Luna", "SuperUser", "Passw0rd");
         await SeedDbUsers.AddUsers(
-            "Nuno","Santos",
+            "Nuno", "Santos",
             "nuno.santos.26288@formandos.cinel.pt",
             "Calle Luna", "SuperUser", "Passw0rd");
         await SeedDbUsers.AddUsers(
-            "Rafael","Santos",
+            "Rafael", "Santos",
             "rafael.santos@cinel.pt",
             "Calle Luna", "SuperUser", "Passw0rd");
     }
@@ -156,17 +154,17 @@ public class SeedDb
     private static async Task SeedingDataAdminUsers()
     {
         await SeedDbUsers.AddUsers(
-            "Jorge","Pinto",
+            "Jorge", "Pinto",
             "jorge.pinto.28720@formandos.cinel.pt",
             "Calle Luna", "Admin");
 
         await SeedDbUsers.AddUsers(
-            "Ruben","Correia",
+            "Ruben", "Correia",
             "ruben.corrreia.28257@formandos.cinel.pt",
             "Calle Luna", "Admin");
 
         await SeedDbUsers.AddUsers(
-            "Tatiane","Avellar",
+            "Tatiane", "Avellar",
             "tatiane.avellar.24718@formandos.cinel.pt",
             "Calle Luna", "Admin", "Passw0rd");
     }
@@ -175,17 +173,17 @@ public class SeedDb
     private static async Task SeedingDataFunctionaryUsers()
     {
         await SeedDbUsers.AddUsers(
-            "Licinio","Rosario",
+            "Licinio", "Rosario",
             "licinio.do.rosario@formandos.cinel.pt",
             "Calle Luna", "Functionary");
 
         await SeedDbUsers.AddUsers(
-            "Joel","Rangel",
+            "Joel", "Rangel",
             "joel.rangel.22101@formandos.cinel.pt",
             "Calle Luna", "Functionary");
 
         await SeedDbUsers.AddUsers(
-            "Diogo","Alves",
+            "Diogo", "Alves",
             "diogo.alves.28645@formandos.cinel.pt",
             "Calle Luna", "Functionary", "Passw0rd");
     }

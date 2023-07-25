@@ -4,6 +4,7 @@ using SchoolProject.Web.Data.Entities.ExtraTables;
 using SchoolProject.Web.Data.Entities.School;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using Serilog;
 
 namespace SchoolProject.Web.Data.Entities.Enrollments;

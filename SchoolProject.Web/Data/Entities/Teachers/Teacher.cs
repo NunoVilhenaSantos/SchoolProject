@@ -157,7 +157,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
-
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged(

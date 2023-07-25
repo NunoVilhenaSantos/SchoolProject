@@ -1,8 +1,19 @@
-﻿@model dynamic
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model dynamic
+
+@inject IViewLocalizer Localizer
+
+
 
 @{
-    ViewBag.Title = "About";
+    ViewData["Title"] = Localizer["About"];
     Layout = "_Layout";
 }
 
-<h2>@ViewBag.Title</h2>
+
+<h2>@ViewData["Title"].</h2>
+
+<h3>@ViewData["Message"]</h3>
+
+
+<p>@Localizer["Use this area to provide additional information."]</p>
