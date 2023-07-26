@@ -11,7 +11,7 @@
       "secretStore": "LocalSecretsFile",
       "resourceId": null,
       "type": "mssql.onprem",
-      "connectionId": "ConnectionStrings:SchoolProject-mssql.somee.com"
+      "connectionId": "ConnectionStrings:SchoolProject-Somee"
     },
     "sqlite1": {
       "secretStore": "LocalSecretsFile",

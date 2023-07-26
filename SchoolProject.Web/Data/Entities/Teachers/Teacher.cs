@@ -35,10 +35,13 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     [Required] public required City City { get; set; }
 
+    [Required]
+    //[ForeignKey("CountryId")] 
+    public required Country Country { get; set; }
+    // public int CountryId => Country.Id;
+    public Guid CountryGuidId => Country.IdGuid;
 
-    [Required] public required Country Country { get; set; }
-    [Required] public int CountryId => Country.Id;
-    [Required] public Guid CountryGuidId => Country.IdGuid;
+
 
 
     [Required]

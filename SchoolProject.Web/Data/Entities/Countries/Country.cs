@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 
@@ -20,9 +21,14 @@ public class Country : IEntity, INotifyPropertyChanged
     public int NumberCities => Cities?.Count ?? 0;
 
 
-    [Required] public required Nationality Nationality { get; set; }
+    [Required]
+    // [ForeignKey("NationalityId")]
+    public required Nationality Nationality { get; set; }
+    // public int NationalityId => Nationality.Id;
+    public Guid NationalityGuidId => Nationality.IdGuid;
 
 
+    
     [Key] [Required] public int Id { get; set; }
 
 

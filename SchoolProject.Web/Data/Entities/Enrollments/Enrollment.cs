@@ -11,12 +11,18 @@ namespace SchoolProject.Web.Data.Entities.Enrollments;
 
 public class Enrollment : IEntity, INotifyPropertyChanged
 {
+
+    // [ForeignKey("StudentId")]
     [Required] public required Student Student { get; set; }
-    [Required] public int StudentId => Student.Id;
+    // public int StudentId => Student.Id;
+    public Guid StudentGuidId => Student.IdGuid;
 
 
+    // [ForeignKey("CourseId")]
     [Required] public required Course Course { get; set; }
-    [Required] public int CourseId => Course.Id;
+    // public int CourseId => Course.Id;
+    public Guid CourseGuidId => Course.IdGuid;
+
 
 
     // [Column(TypeName = "decimal(18,2)")]

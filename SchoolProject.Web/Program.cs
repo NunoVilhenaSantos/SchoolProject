@@ -67,7 +67,7 @@ builder.Services.AddDbContext<DataContextMsSql>(
     {
         cfg.UseSqlServer(
             builder.Configuration.GetConnectionString(
-                "SchoolProject-mssql.somee.com"), options =>
+                "SchoolProject-somee"), options =>
             {
                 options.EnableRetryOnFailure();
                 options.MigrationsAssembly("SchoolProject.Web");

@@ -6,7 +6,7 @@
     },
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:SchoolProject-mssql.somee.com"
+      "connectionId": "ConnectionStrings:SchoolProject-Somee"
     },
     "sqlite1": {
       "type": "sqlite",
