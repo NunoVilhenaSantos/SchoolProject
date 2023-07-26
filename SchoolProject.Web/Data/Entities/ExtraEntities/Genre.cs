@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
-namespace SchoolProject.Web.Data.Entities.ExtraTables;
+namespace SchoolProject.Web.Data.Entities.ExtraEntities;
 
 public class Genre : IEntity, INotifyPropertyChanged
 {

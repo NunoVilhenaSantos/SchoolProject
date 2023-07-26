@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.ExtraEntities;
 
 namespace SchoolProject.Web.Data.Entities.Teachers;
 

@@ -6,12 +6,6 @@
       "type": "secrets.user",
       "connectionId": null
     },
-    "appInsights1": {
-      "secretStore": null,
-      "resourceId": null,
-      "type": "appInsights.sdk",
-      "connectionId": null
-    },
     "mssql1": {
       "serviceConnectorResourceId": "",
       "secretStore": "LocalSecretsFile",
@@ -24,6 +18,12 @@
       "resourceId": null,
       "type": "sqlite.local",
       "connectionId": "ConnectionStrings:SchoolProject-SQLite"
+    },
+    "appInsights1": {
+      "secretStore": null,
+      "resourceId": null,
+      "type": "appInsights.sdk",
+      "connectionId": null
     }
   }
 }

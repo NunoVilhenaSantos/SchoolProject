@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Data.Entities.Enrollments;

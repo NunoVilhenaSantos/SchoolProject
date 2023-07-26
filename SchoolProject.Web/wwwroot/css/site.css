@@ -6,18 +6,18 @@ html {
 
 @media (min-width: 768px) {
     html {
-        font-size: 1.2rem;
+        font-size: 1.0rem;
     }
 }
 
 @media (min-width: 1920px) {
     html {
-        font-size: 1.0rem;
+        font-size: 0.8rem;
     }
 }
 
 @media (min-width: 3860px) {
     html {
-        font-size: 1.6rem;
+        font-size: 2rem;
     }
 }

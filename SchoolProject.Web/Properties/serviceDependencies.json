@@ -4,10 +4,6 @@
       "type": "secrets",
       "connectionId": null
     },
-    "appInsights1": {
-      "type": "appInsights",
-      "connectionId": null
-    },
     "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:SchoolProject-mssql.somee.com"
@@ -15,6 +11,10 @@
     "sqlite1": {
       "type": "sqlite",
       "connectionId": "ConnectionStrings:SchoolProject-SQLite"
+    },
+    "appInsights1": {
+      "type": "appInsights",
+      "connectionId": null
     }
   }
 }

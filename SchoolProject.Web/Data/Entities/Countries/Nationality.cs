@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.ExtraEntities;
 
 namespace SchoolProject.Web.Data.Entities.Countries;
 

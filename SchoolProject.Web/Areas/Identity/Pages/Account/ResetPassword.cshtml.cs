@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.ExtraEntities;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 

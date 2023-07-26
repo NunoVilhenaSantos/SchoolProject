@@ -1,16 +1,17 @@
+using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Seeders;
-using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
@@ -198,13 +199,69 @@ builder.Services.ConfigureApplicationCookie(options =>
 // Configure consent cookie options.
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
-    options.CheckConsentNeeded = context => true;
+    options.CheckConsentNeeded = _ => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
     options.ConsentCookie.IsEssential = true;
     options.ConsentCookie.Expiration = TimeSpan.FromDays(30);
     options.ConsentCookie.SecurePolicy = CookieSecurePolicy.Always;
     options.ConsentCookie.HttpOnly = true;
 });
+
+
+// de forma individual
+//
+// builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
+// {
+//     facebookOptions.AppId =
+//         builder.Configuration["Authentication:Facebook:AppId"];
+//     facebookOptions.AppSecret =
+//         builder.Configuration["Authentication:Facebook:AppSecret"];
+// });
+
+
+// de forma coletiva
+//
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        IConfigurationSection googleAuthSection =
+            builder.Configuration.GetSection("Authentication:Google");
+
+        options.ClientId = googleAuthSection["ClientId"];
+        options.ClientSecret = googleAuthSection["ClientSecret"];
+    })
+    .AddFacebook(options =>
+    {
+        IConfigurationSection fbAuthSection =
+            builder.Configuration.GetSection("Authentication:Facebook");
+
+        options.ClientId = fbAuthSection["AppId"];
+        options.ClientSecret = fbAuthSection["AppSecret"];
+    })
+    .AddMicrosoftAccount(microsoftOptions =>
+    {
+        IConfigurationSection googleAuthSection =
+            builder.Configuration.GetSection("Authentication:Microsoft");
+
+        microsoftOptions.ClientId =
+            builder.Configuration["Authentication:Microsoft:ClientId"];
+
+        microsoftOptions.ClientSecret =
+            builder.Configuration["Authentication:Microsoft:ClientSecret"];
+    })
+    .AddTwitter(twitterOptions =>
+    {
+        IConfigurationSection googleAuthSection =
+            builder.Configuration.GetSection("Authentication:Twitter");
+
+        twitterOptions.ConsumerKey =
+            builder.Configuration["Authentication:Twitter:ConsumerKey"];
+
+        twitterOptions.ConsumerSecret =
+            builder.Configuration["Authentication:Twitter:ConsumerSecret"];
+
+        twitterOptions.RetrieveUserDetails = true;
+    });
 
 
 // Add authorization policies for different user roles.
@@ -230,9 +287,33 @@ builder.Services.AddAuthorization(options =>
 });
 
 
+
+
 // Add localization and view localization to the application.
 builder.Services.AddLocalization(options =>
     options.ResourcesPath = "Resources");
+
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+    {
+        var supportedCultures = new[]
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("pt-PT"),
+            new CultureInfo("pt-BR"),
+        };
+
+        options.DefaultRequestCulture = new RequestCulture("en-US");
+
+        options.SupportedCultures = supportedCultures;
+        options.SupportedUICultures = supportedCultures;
+    });
+
+
+
+
+
+
 builder.Services.AddMvc().AddViewLocalization();
 builder.Services.AddMvcCore().AddViewLocalization();
 builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();

@@ -1,6 +1,6 @@
 ﻿using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.School;
 using Serilog;
 

@@ -1,18 +1,26 @@
 ﻿using System.Diagnostics;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
+
 using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Errors;
 
+
+
 namespace SchoolProject.Web.Controllers;
+
+
 
 public class HomeController : Controller
 {
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<HomeController> _logger;
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
+    
+
 
 
     public HomeController(
@@ -59,24 +67,43 @@ public class HomeController : Controller
         // ViewData["htmlLocalizer"] =
         //     _htmlLocalizer["<b>Hello</b><i> {0}</i>", name];
 
+            ViewData["WelcomeMessage"] = _stringLocalizer["WelcomeMessage"];
+            return View();
+
+
         // Resto da lógica do controlador
         return View();
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+
 
     public IActionResult About()
     {
         return View();
     }
 
+
+
     public IActionResult Contact()
     {
         return View();
     }
+
+
+
+
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
+
+
+    public IActionResult Legal()
+    {
+        return View();
+    }
+
 
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None,

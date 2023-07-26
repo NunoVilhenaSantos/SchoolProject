@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.ExtraTables;
+using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 
 namespace SchoolProject.Web.Data.Entities.Students;
