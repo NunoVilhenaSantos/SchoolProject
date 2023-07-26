@@ -1,10 +1,12 @@
-﻿@{
+﻿@model dynamic
+
+@{
     ViewData["Title"] = "Privacy Policy";
 
 
     // Variáveis do lado do servidor com os valores necessários
-    string projectName = "Gestão Escolar Web";
-    string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+    const string projectName = "Gestão Escolar Web";
+    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
 }
 
 
@@ -14,8 +16,8 @@
 <p>Use this page to detail your site's privacy policy.</p>
 
 
-<br />
-<br />
+<br/>
+<br/>
 <h1>Política de Privacidade</h1>
 <p>
     No @projectName, estamos comprometidos em proteger sua privacidade e garantir a segurança de seus dados pessoais.
@@ -24,18 +26,16 @@
 </p>
 
 
-<br />
-<br />
+<br/>
+<br/>
 <h2>Controlador de Dados</h2>
 <p>
     O @projectName é o controlador de dados responsável pelo processamento das informações pessoais em nossa plataforma de gestão escolar.
 </p>
 
 
-
-
-<br />
-<br />
+<br/>
+<br/>
 <p>
     <ul>
         <li>[Seu Projeto]</li>
@@ -46,81 +46,80 @@
 </p>
 
 
-<br />
-<br />
+<br/>
+<br/>
 <h2>Informações que Coletamos e Usamos</h2>
-    <p>
-        Coletamos e processamos dados pessoais para os seguintes fins e bases legais:
-    </p>
-
-
-<br />
-<br />
-<ul>
-        <li>
-            <b>Registro de Conta e Uso:</b> Quando você se registra para uma conta em nossa plataforma, coletamos seu nome, endereço de e-mail e outros detalhes necessários para configurar sua conta. Esses dados são usados para fornecer acesso aos nossos serviços e gerenciar nosso relacionamento contratual com você.
-        </li>
-
-    <br />
-    <br />
-    <li>
-            <b>Informações de Alunos e Pais:</b> Como parte de nossos serviços de gestão escolar, coletamos e armazenamos informações sobre alunos e seus pais ou responsáveis. Esses dados são usados para gerenciar a matrícula de alunos, presença, progresso acadêmico e comunicação com os pais ou responsáveis.
-        </li>
-
-    <br />
-    <br />
-    <li>
-            <b>Informações de Professores e Funcionários:</b> Coletamos e processamos dados relacionados a professores e membros da equipe para gerenciar recursos humanos, folha de pagamento e fins administrativos.
-        </li>
-
-    <br />
-    <br />
-    <li>
-            <b>Comunicação e Suporte:</b> Podemos coletar e usar suas informações de contato para comunicar com você sobre nossos serviços, atualizações e solicitações de suporte.
-        </li>
-
-    <br />
-    <br />
-    <li>
-            <b>Interesses Legítimos:</b> Podemos processar seus dados para nossos interesses legítimos, como melhorar nossos serviços, conduzir pesquisas e personalizar sua experiência em nossa plataforma.
-        </li>
-    </ul>
-
-<br />
-<br />
-
-    <h2>Retenção de Dados</h2>
-    <p>
-        Manteremos seus dados pessoais apenas pelo tempo necessário para cumprir os fins para os quais foram coletados e de acordo com as leis aplicáveis. Uma vez cumprido o propósito do processamento, excluiremos ou anonimizaremos seus dados de forma segura, a menos que sejamos obrigados a retê-los por motivos legais ou contratuais.
-    </p>
-
-    <!-- Incluir aqui os demais pontos da Política de Privacidade conforme o texto que forneci anteriormente. -->
-
-
-<br />
-<br />
-<h2>Alterações à Política de Privacidade</h2>
-    <p>
-        Podemos atualizar esta Política de Privacidade periodicamente para refletir mudanças em nossas práticas de processamento de dados. Quaisquer atualizações serão efetivas a partir da data de publicação.
-    </p>
-
-
-<br />
 <p>
-        Ao usar nossa plataforma de gestão escolar, você consente o processamento de seus dados pessoais conforme descrito nesta Política de Privacidade.
-    </p>
+    Coletamos e processamos dados pessoais para os seguintes fins e bases legais:
+</p>
 
 
+<br/>
+<br/>
+<ul>
+    <li>
+        <b>Registro de Conta e Uso:</b> Quando você se registra para uma conta em nossa plataforma, coletamos seu nome, endereço de e-mail e outros detalhes necessários para configurar sua conta. Esses dados são usados para fornecer acesso aos nossos serviços e gerenciar nosso relacionamento contratual com você.
+    </li>
 
-<br />
-<br />
+    <br/>
+    <br/>
+    <li>
+        <b>Informações de Alunos e Pais:</b> Como parte de nossos serviços de gestão escolar, coletamos e armazenamos informações sobre alunos e seus pais ou responsáveis. Esses dados são usados para gerenciar a matrícula de alunos, presença, progresso acadêmico e comunicação com os pais ou responsáveis.
+    </li>
+
+    <br/>
+    <br/>
+    <li>
+        <b>Informações de Professores e Funcionários:</b> Coletamos e processamos dados relacionados a professores e membros da equipe para gerenciar recursos humanos, folha de pagamento e fins administrativos.
+    </li>
+
+    <br/>
+    <br/>
+    <li>
+        <b>Comunicação e Suporte:</b> Podemos coletar e usar suas informações de contato para comunicar com você sobre nossos serviços, atualizações e solicitações de suporte.
+    </li>
+
+    <br/>
+    <br/>
+    <li>
+        <b>Interesses Legítimos:</b> Podemos processar seus dados para nossos interesses legítimos, como melhorar nossos serviços, conduzir pesquisas e personalizar sua experiência em nossa plataforma.
+    </li>
+</ul>
+
+<br/>
+<br/>
+
+<h2>Retenção de Dados</h2>
+<p>
+    Manteremos seus dados pessoais apenas pelo tempo necessário para cumprir os fins para os quais foram coletados e de acordo com as leis aplicáveis. Uma vez cumprido o propósito do processamento, excluiremos ou anonimizaremos seus dados de forma segura, a menos que sejamos obrigados a retê-los por motivos legais ou contratuais.
+</p>
+
+<!-- Incluir aqui os demais pontos da Política de Privacidade conforme o texto que forneci anteriormente. -->
+
+
+<br/>
+<br/>
+<h2>Alterações à Política de Privacidade</h2>
+<p>
+    Podemos atualizar esta Política de Privacidade periodicamente para refletir mudanças em nossas práticas de processamento de dados. Quaisquer atualizações serão efetivas a partir da data de publicação.
+</p>
+
+
+<br/>
+<p>
+    Ao usar nossa plataforma de gestão escolar, você consente o processamento de seus dados pessoais conforme descrito nesta Política de Privacidade.
+</p>
+
+
+<br/>
+<br/>
 <p>
     Última Atualização: @currentDate
 </p>
 
 
-<br />
-<br />
+<br/>
+<br/>
 <p>
     @projectName - Todos os direitos reservados.
 </p>

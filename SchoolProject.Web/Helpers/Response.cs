@@ -1,11 +1,9 @@
-﻿namespace SchoolProject.Web.Helpers
+﻿namespace SchoolProject.Web.Helpers;
+
+public class Response
 {
-    public class Response
-    {
-        public bool IsSuccess { get; set; }
+    public object Results;
+    public bool IsSuccess { get; set; }
 
-        public string Message { get; set; }
-
-        public object Results;
-    }
+    public string Message { get; set; }
 }

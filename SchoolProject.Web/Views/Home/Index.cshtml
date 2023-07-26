@@ -1,6 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using Microsoft.Extensions.Localization;
-@using SchoolProject.Web.Controllers;
+﻿@using SchoolProject.Web.Controllers
+@using Microsoft.Extensions.Localization
 @inject IStringLocalizer<HomeController> Localizer
 
 
@@ -9,9 +8,7 @@
 }
 
 
-
 <h1>@ViewData["WelcomeMessage"]</h1>
-
 
 
 <h1>@Localizer["WelcomeMessage"]</h1>

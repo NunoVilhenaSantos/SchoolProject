@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
-using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;

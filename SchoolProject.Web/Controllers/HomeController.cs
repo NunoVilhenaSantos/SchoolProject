@@ -1,26 +1,17 @@
 ﻿using System.Diagnostics;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
-
-using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Errors;
-
-
 
 namespace SchoolProject.Web.Controllers;
 
-
-
 public class HomeController : Controller
 {
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<HomeController> _logger;
-    
-
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
 
 
     public HomeController(
@@ -67,14 +58,13 @@ public class HomeController : Controller
         // ViewData["htmlLocalizer"] =
         //     _htmlLocalizer["<b>Hello</b><i> {0}</i>", name];
 
-            ViewData["WelcomeMessage"] = _stringLocalizer["WelcomeMessage"];
-            return View();
+        ViewData["WelcomeMessage"] = _stringLocalizer["WelcomeMessage"];
+        return View();
 
 
         // Resto da lógica do controlador
         return View();
     }
-
 
 
     public IActionResult About()
@@ -83,13 +73,10 @@ public class HomeController : Controller
     }
 
 
-
     public IActionResult Contact()
     {
         return View();
     }
-
-
 
 
     public IActionResult Privacy()
@@ -98,6 +85,17 @@ public class HomeController : Controller
     }
 
 
+    public IActionResult CookiesPrivacy()
+    {
+        return View();
+    }
+
+
+    public IActionResult Cookies()
+    {
+        return View();
+    }
+
 
     public IActionResult Legal()
     {
@@ -105,9 +103,8 @@ public class HomeController : Controller
     }
 
 
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None,
-        NoStore = true)]
+    [ResponseCache(
+        Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel

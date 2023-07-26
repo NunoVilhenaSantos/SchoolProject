@@ -1,8 +1,7 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
+using System.Text;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Configuration;
 
 namespace SchoolProject.Web.Helpers.Email;
 
@@ -41,8 +40,8 @@ public class EmailHelper : IEmailSender
                 Subject = subject,
                 Body = htmlMessage,
                 IsBodyHtml = true,
-                BodyEncoding = System.Text.Encoding.UTF8,
-                To = {emailTo},
+                BodyEncoding = Encoding.UTF8,
+                To = {emailTo}
             };
 
             Console.WriteLine(
@@ -57,7 +56,7 @@ public class EmailHelper : IEmailSender
             {
                 Console.WriteLine(
                     "Exception caught in CreateTestMessage4(): {0}",
-                    ex.ToString());
+                    ex);
 
                 return Task.CompletedTask;
             }

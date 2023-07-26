@@ -1,5 +1,4 @@
-﻿using SchoolProject.Web.Helpers;
-using SchoolProject.Web.Helpers.Users;
+﻿using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Entities.School;
 

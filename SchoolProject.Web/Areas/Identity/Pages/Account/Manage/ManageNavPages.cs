@@ -10,7 +10,6 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 /// <summary>
 ///     This API supports the ASP.NET Core Identity default UI infrastructure
 ///     and is not intended to be used directly from your code.
-///
 ///     This API may change or be removed in future releases.
 /// </summary>
 public static class ManageNavPages
@@ -18,7 +17,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string Index => "Index";
@@ -27,7 +25,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string Email => "Email";
@@ -36,7 +33,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string ChangePassword => "ChangePassword";
@@ -45,7 +41,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string DownloadPersonalData => "DownloadPersonalData";
@@ -54,7 +49,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string DeletePersonalData => "DeletePersonalData";
@@ -63,7 +57,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string ExternalLogins => "ExternalLogins";
@@ -72,7 +65,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string PersonalData => "PersonalData";
@@ -81,7 +73,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string TwoFactorAuthentication => "TwoFactorAuthentication";
@@ -90,7 +81,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string IndexNavClass(ViewContext viewContext)
@@ -102,7 +92,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string EmailNavClass(ViewContext viewContext)
@@ -114,7 +103,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string ChangePasswordNavClass(ViewContext viewContext)
@@ -126,7 +114,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string DownloadPersonalDataNavClass(ViewContext viewContext)
@@ -138,7 +125,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string DeletePersonalDataNavClass(ViewContext viewContext)
@@ -150,7 +136,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string ExternalLoginsNavClass(ViewContext viewContext)
@@ -162,7 +147,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string PersonalDataNavClass(ViewContext viewContext)
@@ -174,7 +158,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string TwoFactorAuthenticationNavClass(
@@ -187,7 +170,6 @@ public static class ManageNavPages
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure
     ///     and is not intended to be used directly from your code.
-    ///
     ///     This API may change or be removed in future releases.
     /// </summary>
     public static string PageNavClass(ViewContext viewContext, string page)

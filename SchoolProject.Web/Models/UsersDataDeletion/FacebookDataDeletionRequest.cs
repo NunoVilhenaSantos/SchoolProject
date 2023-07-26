@@ -1,7 +1,6 @@
-﻿namespace SchoolProject.Web.Models.UsersDataDeletion
+﻿namespace SchoolProject.Web.Models.UsersDataDeletion;
+
+public class FacebookDataDeletionRequest
 {
-    public class FacebookDataDeletionRequest
-    {
-        public string SignedRequest { get; set; }
-    }
+    public string SignedRequest { get; set; }
 }

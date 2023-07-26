@@ -224,7 +224,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
-        IConfigurationSection googleAuthSection =
+        var googleAuthSection =
             builder.Configuration.GetSection("Authentication:Google");
 
         options.ClientId = googleAuthSection["ClientId"];
@@ -232,7 +232,7 @@ builder.Services.AddAuthentication()
     })
     .AddFacebook(options =>
     {
-        IConfigurationSection fbAuthSection =
+        var fbAuthSection =
             builder.Configuration.GetSection("Authentication:Facebook");
 
         options.ClientId = fbAuthSection["AppId"];
@@ -240,7 +240,7 @@ builder.Services.AddAuthentication()
     })
     .AddMicrosoftAccount(microsoftOptions =>
     {
-        IConfigurationSection googleAuthSection =
+        var googleAuthSection =
             builder.Configuration.GetSection("Authentication:Microsoft");
 
         microsoftOptions.ClientId =
@@ -251,7 +251,7 @@ builder.Services.AddAuthentication()
     })
     .AddTwitter(twitterOptions =>
     {
-        IConfigurationSection googleAuthSection =
+        var googleAuthSection =
             builder.Configuration.GetSection("Authentication:Twitter");
 
         twitterOptions.ConsumerKey =
@@ -287,31 +287,25 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-
-
 // Add localization and view localization to the application.
 builder.Services.AddLocalization(options =>
     options.ResourcesPath = "Resources");
 
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
     {
-        var supportedCultures = new[]
-        {
-            new CultureInfo("en-US"),
-            new CultureInfo("pt-PT"),
-            new CultureInfo("pt-BR"),
-        };
+        new CultureInfo("en-US"),
+        new CultureInfo("pt-PT"),
+        new CultureInfo("pt-BR")
+    };
 
-        options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.DefaultRequestCulture = new RequestCulture("en-US");
 
-        options.SupportedCultures = supportedCultures;
-        options.SupportedUICultures = supportedCultures;
-    });
-
-
-
-
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 
 builder.Services.AddMvc().AddViewLocalization();

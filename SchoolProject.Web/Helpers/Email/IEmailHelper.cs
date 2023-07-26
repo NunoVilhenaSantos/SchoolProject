@@ -1,9 +1,6 @@
-﻿using SchoolProject.Web.Helpers;
+﻿namespace SchoolProject.Web.Helpers.Email;
 
-namespace SchoolProject.Web.Helpers.Email
+public interface IEmailHelper
 {
-    public interface IEmailHelper
-    {
-        Response SendEmail(string emailTo, string subject, string htmlMessage);
-    }
+    Response SendEmail(string emailTo, string subject, string htmlMessage);
 }

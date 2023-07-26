@@ -1,0 +1,75 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Cookies";
+
+    Layout = "_Layout";
+    Layout = null; // Define que esta página não utilizará um layout compartilhado
+
+    // Variáveis do lado do servidor com os valores necessários
+    const string projectName = "Gestão Escolar Web";
+    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+<!DOCTYPE html>
+
+<html lang="pt">
+
+<head>
+    <title>Política de Cookies</title>
+</head>
+
+<body>
+<h1>@ViewData["Title"]</h1>
+<h1>Política de Cookies</h1>
+<p>Utilizamos cookies para melhorar a sua experiência em nosso site.</p>
+<p>Os cookies são pequenos arquivos de texto armazenados no seu computador que nos ajudam a fornecer uma experiência personalizada e melhorar nosso site.</p>
+<p>Ao continuar a utilizar este site, você concorda com o uso de cookies de acordo com nossa política.</p>
+
+<h2>Opções de Cookies</h2>
+<p>Para gerenciar suas preferências de cookies, você pode ajustar as configurações do seu navegador.</p>
+<p>Tenha em conta que, ao rejeitar os cookies, algumas funcionalidades do site podem ficar comprometidas.</p>
+
+<h2>Política de Cookies da @projectName</h2>
+
+
+<h2>Configurações de Cookies</h2>
+<!-- Insira um botão que permita ao utilizador aceitar os cookies e outro para rejeitá-los -->
+<button onclick="acceptCookies()">Aceitar Cookies</button>
+<button onclick="rejectCookies()">Rejeitar Cookies</button>
+
+
+<script>
+        // Funções JavaScript para definir as preferências de cookies do utilizador
+        function acceptCookies() {
+            // Aqui você pode adicionar lógica para definir os cookies aceitos pela aplicação
+            // Exemplo: setCookie("cookieAccepted", "true", 365);
+            setCookie("cookieAccepted", "true", 365);
+            alert("Cookies aceitos. Obrigado!");
+        }
+
+        function rejectCookies() {
+            // Aqui você pode adicionar lógica para definir os cookies rejeitados pela aplicação
+            // Exemplo: setCookie("cookieAccepted", "false", 365);
+            setCookie("cookieAccepted", "false", 365);
+            alert("Cookies rejeitados. Algumas funcionalidades podem ficar comprometidas.");
+        }
+
+        // Função para definir cookies
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+    </script>
+
+</body>
+
+</html>

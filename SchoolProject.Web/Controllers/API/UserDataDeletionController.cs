@@ -1,40 +1,32 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Models.UsersDataDeletion;
 
-namespace SchoolProject.Web.Controllers.API
+namespace SchoolProject.Web.Controllers.API;
+
+[Route("api/[controller]")]
+[ApiController]
+public class UserDataDeletionController : ControllerBase
 {
+    //public IActionResult Index()
+    //{
+    //    return View();
+    //}
 
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserDataDeletionController : ControllerBase
+    [HttpPost("/datadeletion")]
+    public IActionResult HandleDataDeletionRequest(
+        [FromBody] FacebookDataDeletionRequest request)
     {
-    
-        
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        // Implement the data deletion process here
+        // ...
 
-
-
-        [HttpPost("/datadeletion")]
-        public IActionResult HandleDataDeletionRequest([FromBody] FacebookDataDeletionRequest request)
+        // Generate the response JSON
+        var response = new FacebookDataDeletionResponse
         {
-            // Implement the data deletion process here
-            // ...
+            Url = "https://www.<your_website>.com/deletion?id=abc123",
+            ConfirmationCode = "abc123"
+        };
 
-            // Generate the response JSON
-            var response = new FacebookDataDeletionResponse
-            {
-                Url = "https://www.<your_website>.com/deletion?id=abc123",
-                ConfirmationCode = "abc123"
-            };
-
-            return Ok(response);
-        }
+        return Ok(response);
     }
-    
-
 }

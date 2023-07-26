@@ -3,7 +3,6 @@ using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.School;
 using SchoolProject.Web.Data.Entities.Students;
-using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.Users;
 using Serilog;
 

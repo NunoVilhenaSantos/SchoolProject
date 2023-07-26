@@ -1,0 +1,11 @@
+﻿<footer class="footer bg-body-tertiary position-fixed bottom-0 py-4  ">
+
+    <div class="container">
+        <span class="text-body-secondary">Place sticky footer content here.</span>
+        @DateTime.Now | @DateTime.Today.Year - @ViewData["AssemblyName"] &copy; - Versão: @ViewData["AssemblyVersion"] | Web -
+        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+
+    <partial name="_LayoutDarkModeButton"/>
+
+</footer>

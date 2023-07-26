@@ -113,10 +113,7 @@ public class ExternalLoginModel : PageModel
             return LocalRedirect(returnUrl);
         }
 
-        if (result.IsLockedOut)
-        {
-            return RedirectToPage("./Lockout");
-        }
+        if (result.IsLockedOut) return RedirectToPage("./Lockout");
 
         // If the user does not have an account, then ask the user to create an account.
         ReturnUrl = returnUrl;
