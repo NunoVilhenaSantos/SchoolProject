@@ -6,91 +6,91 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
-using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Controllers
 {
-    public class CountriesController : Controller
+    public class StudentsController : Controller
     {
         private readonly DataContextMsSql _context;
 
-        public CountriesController(DataContextMsSql context)
+        public StudentsController(DataContextMsSql context)
         {
             _context = context;
         }
 
-        // GET: Countries
+        // GET: Students
         public async Task<IActionResult> Index()
         {
-              return _context.Countries != null ? 
-                          View(await _context.Countries.ToListAsync()) :
-                          Problem("Entity set 'DataContextMsSql.Countries'  is null.");
+              return _context.Students != null ? 
+                          View(await _context.Students.ToListAsync()) :
+                          Problem("Entity set 'DataContextMsSql.Students'  is null.");
         }
 
-        // GET: Countries/Details/5
+        // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries
+            var student = await _context.Students
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(student);
         }
 
-        // GET: Countries/Create
+        // GET: Students/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Countries/Create
+        // POST: Students/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,IdGuid,CreatedAt,UpdatedAt,WasDeleted")] Country country)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,CoursesCount,TotalWorkHours,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Student student)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(country);
+                _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(student);
         }
 
-        // GET: Countries/Edit/5
+        // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries.FindAsync(id);
-            if (country == null)
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
-            return View(country);
+            return View(student);
         }
 
-        // POST: Countries/Edit/5
+        // POST: Students/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IdGuid,CreatedAt,UpdatedAt,WasDeleted")] Country country)
+        public async Task<IActionResult> Edit(int id, [Bind("FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,CoursesCount,TotalWorkHours,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Student student)
         {
-            if (id != country.Id)
+            if (id != student.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace SchoolProject.Web.Controllers
             {
                 try
                 {
-                    _context.Update(country);
+                    _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CountryExists(country.Id))
+                    if (!StudentExists(student.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace SchoolProject.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(student);
         }
 
-        // GET: Countries/Delete/5
+        // GET: Students/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null || _context.Students == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries
+            var student = await _context.Students
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(student);
         }
 
-        // POST: Countries/Delete/5
+        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Countries == null)
+            if (_context.Students == null)
             {
-                return Problem("Entity set 'DataContextMsSql.Countries'  is null.");
+                return Problem("Entity set 'DataContextMsSql.Students'  is null.");
             }
-            var country = await _context.Countries.FindAsync(id);
-            if (country != null)
+            var student = await _context.Students.FindAsync(id);
+            if (student != null)
             {
-                _context.Countries.Remove(country);
+                _context.Students.Remove(student);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CountryExists(int id)
+        private bool StudentExists(int id)
         {
-          return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Students?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -10,87 +10,87 @@ using SchoolProject.Web.Data.Entities.Countries;
 
 namespace SchoolProject.Web.Controllers
 {
-    public class CountriesController : Controller
+    public class CitiesController : Controller
     {
         private readonly DataContextMsSql _context;
 
-        public CountriesController(DataContextMsSql context)
+        public CitiesController(DataContextMsSql context)
         {
             _context = context;
         }
 
-        // GET: Countries
+        // GET: Cities
         public async Task<IActionResult> Index()
         {
-              return _context.Countries != null ? 
-                          View(await _context.Countries.ToListAsync()) :
-                          Problem("Entity set 'DataContextMsSql.Countries'  is null.");
+              return _context.Cities != null ? 
+                          View(await _context.Cities.ToListAsync()) :
+                          Problem("Entity set 'DataContextMsSql.Cities'  is null.");
         }
 
-        // GET: Countries/Details/5
+        // GET: Cities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null || _context.Cities == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries
+            var city = await _context.Cities
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (city == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(city);
         }
 
-        // GET: Countries/Create
+        // GET: Cities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Countries/Create
+        // POST: Cities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,IdGuid,CreatedAt,UpdatedAt,WasDeleted")] Country country)
+        public async Task<IActionResult> Create([Bind("Name,Id,IdGuid,CreatedAt,UpdatedAt,WasDeleted")] City city)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(country);
+                _context.Add(city);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(city);
         }
 
-        // GET: Countries/Edit/5
+        // GET: Cities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null || _context.Cities == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries.FindAsync(id);
-            if (country == null)
+            var city = await _context.Cities.FindAsync(id);
+            if (city == null)
             {
                 return NotFound();
             }
-            return View(country);
+            return View(city);
         }
 
-        // POST: Countries/Edit/5
+        // POST: Cities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IdGuid,CreatedAt,UpdatedAt,WasDeleted")] Country country)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IdGuid,CreatedAt,UpdatedAt,WasDeleted")] City city)
         {
-            if (id != country.Id)
+            if (id != city.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace SchoolProject.Web.Controllers
             {
                 try
                 {
-                    _context.Update(country);
+                    _context.Update(city);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CountryExists(country.Id))
+                    if (!CityExists(city.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace SchoolProject.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(city);
         }
 
-        // GET: Countries/Delete/5
+        // GET: Cities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null || _context.Cities == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries
+            var city = await _context.Cities
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
+            if (city == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            return View(city);
         }
 
-        // POST: Countries/Delete/5
+        // POST: Cities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Countries == null)
+            if (_context.Cities == null)
             {
-                return Problem("Entity set 'DataContextMsSql.Countries'  is null.");
+                return Problem("Entity set 'DataContextMsSql.Cities'  is null.");
             }
-            var country = await _context.Countries.FindAsync(id);
-            if (country != null)
+            var city = await _context.Cities.FindAsync(id);
+            if (city != null)
             {
-                _context.Countries.Remove(country);
+                _context.Cities.Remove(city);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CountryExists(int id)
+        private bool CityExists(int id)
         {
-          return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
