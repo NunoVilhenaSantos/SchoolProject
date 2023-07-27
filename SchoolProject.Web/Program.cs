@@ -323,6 +323,8 @@ builder.Logging.AddApplicationInsights();
 
 // Add seeding for the database.
 builder.Services.AddTransient<SeedDb>();
+// builder.Services.AddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();
+// builder.Services.AddTransient<SeedDb>().Configure();
 // builder.Services.AddTransient<SeedDbMsSql>();
 // builder.Services.AddTransient<SeedDbMySql>();
 // builder.Services.AddTransient<SeedDbSqLite>();
@@ -335,6 +337,65 @@ builder.Services.AddScoped<IEmailSender, EmailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
 builder.Services.AddScoped<IStorageHelper, StorageHelper>();
 builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
+
+
+// -------------------------------------------------------------------------- //
+//
+// Seed the database (optional, depends on your application's requirements).
+//
+// -------------------------------------------------------------------------- //
+
+//
+// Method 1
+//
+
+// Seed the database (optional, depends on your application's requirements).
+// SeedDb seedDb;
+// using (var scope = builder?.Services?.BuildServiceProvider().CreateScope())
+// {
+//     // Call SeedDbUsers.Initialize with the IUserHelper instance
+//     var serviceProvider = builder.Services.BuildServiceProvider();
+//     var userHelper = serviceProvider.GetRequiredService<IUserHelper>();
+//     SeedDbUsers.Initialize(userHelper);
+//
+//     seedDb = scope.ServiceProvider.GetService<SeedDb>();
+//     seedDb.SeedAsync().Wait();
+// }
+
+
+//
+// Method 2
+//
+using var scope = builder?.Services?.BuildServiceProvider().CreateScope();
+var serviceProvider = builder.Services.BuildServiceProvider();
+var userHelper = serviceProvider.GetRequiredService<IUserHelper>();
+var uDataContextMsSql = serviceProvider.GetRequiredService<DataContextMsSql>();
+var uDataContextMySql = serviceProvider.GetRequiredService<DataContextMySql>();
+var uDataContextSqLite =
+    serviceProvider.GetRequiredService<DataContextSqLite>();
+
+SeedDbUsers.Initialize(userHelper);
+SeedDbPersons.Initialize(userHelper, uDataContextMsSql);
+
+var seedDb = scope.ServiceProvider.GetRequiredService<SeedDb>();
+await seedDb.SeedAsync();
+
+
+//
+// Method 3
+//
+
+// Seed the database.
+// seedDb = builder?.Services?.BuildServiceProvider().GetService<SeedDb>();
+// seedDb.SeedAsync().Wait();
+
+
+// -------------------------------------------------------------------------- //
+//
+// Seed the database (optional, depends on your application's requirements).
+//
+// -------------------------------------------------------------------------- //
+
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();

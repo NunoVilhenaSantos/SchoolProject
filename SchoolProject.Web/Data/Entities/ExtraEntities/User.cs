@@ -34,8 +34,9 @@ public class User : IdentityUser, INotifyPropertyChanged
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://myleasingnunostorage.blob.core.windows.net/lessees/" +
+        : "https://storage.googleapis.com/storage-nuno/users/" +
           ProfilePhotoId;
+    //     https://storage.googleapis.com/storage-nuno/products/130cd374-c068-47ca-b542-3af5ddb9f478
 
 
     // [Display(Name = "Thumbnail")]

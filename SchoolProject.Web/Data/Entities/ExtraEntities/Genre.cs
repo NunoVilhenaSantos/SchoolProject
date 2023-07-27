@@ -35,7 +35,7 @@ public class Genre : IEntity, INotifyPropertyChanged
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
-    [Required]
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     public DateTime? UpdatedAt { get; set; }

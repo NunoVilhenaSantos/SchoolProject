@@ -13,7 +13,7 @@ public class City : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
-    [Key] [Required] public required int Id { get; set; }
+    [Key] [Required] public  int Id { get; set; }
 
 
     [DisplayName("CityId")] [Required] public required Guid IdGuid { get; set; }

@@ -6,12 +6,21 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public static class SeedDbUsers
 {
+    // Add a private field to hold the IUserHelper instance
     private static IUserHelper _userHelper;
+
+    // Add a constructor to receive IUserHelper through dependency injection
+    public static void Initialize(IUserHelper userHelper)
+    {
+        _userHelper = userHelper;
+    }
 
 
     internal static async Task AddUsers(
-        string firstName, string lastName, string email,
-        string address, string role, string password = "123456"
+        string firstName, string lastName,
+        string email,
+        string address,
+        string role, string password = "123456"
     )
     {
         var random = new Random();
@@ -23,23 +32,34 @@ public static class SeedDbUsers
         var cellPhone = random.Next(1000000, 99999999).ToString();
         var fullAddress = address + ", " + random.Next(1, 9999);
 
-        await CheckUserAsync(
+        Console.WriteLine(
+            $"Seeding the user {firstName} {lastName} with the email {email}");
+
+        await VerifyUserAsync(
             firstName, lastName,
-            email, email, cellPhone,
-            role, document, fullAddress, password
+            email,
+            email,
+            cellPhone, role,
+            document,
+            fullAddress, password
         );
     }
 
 
-    internal static async Task<User> CheckUserAsync(
+    internal static async Task<User> VerifyUserAsync(
         string firstName, string lastName,
         string userName,
         string email,
         string phoneNumber, string role,
-        string document, string address,
+        string document,
+        string address,
         string password = "123456")
     {
         var user = await _userHelper.GetUserByEmailAsync(email);
+
+        Console.WriteLine(
+            $"Seeding the user {firstName} {lastName} " +
+            $"with the email {email} and the role {role}.");
 
         switch (user)
         {
