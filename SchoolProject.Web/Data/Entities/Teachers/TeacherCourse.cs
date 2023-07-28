@@ -18,11 +18,14 @@ public class TeacherCourse : IEntity
     [Required] public required Course Course { get; set; }
 
 
-    [Required] public int Id { get; set; }
-
-    [Required]
     [Key]
-    [Column("TeacherCourseId")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("TeacherCourseId")]
     public Guid IdGuid { get; set; }
 
 

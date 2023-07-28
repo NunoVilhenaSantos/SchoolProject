@@ -76,20 +76,26 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/courses/" +
+        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
           ProfilePhotoId;
 
 
-    public ICollection<Course> Courses { get; set; } = new List<Course>();
+    public ICollection<Course>? Courses { get; set; } = new List<Course>();
+
 
     [DisplayName("Courses Count")]
     public int? CoursesCount => Courses?.Count ?? 0;
+
+
+    [DisplayName("SchoolClass Credits")]
+    public int? SchoolClassCredits => Courses?.Sum(c => c.Credits) ?? 0;
+
 
     [DisplayName("Work Hour Load")]
     public int? WorkHourLoad => Courses?.Sum(c => c.WorkLoad) ?? 0;
 
 
-    public ICollection<Student> Students { get; set; } = new List<Student>();
+    public ICollection<Student>? Students { get; set; } = new List<Student>();
 
 
     [DisplayName("Students Count")]
@@ -99,6 +105,7 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     [DisplayName("Enrollment")]
     public IEnumerable<Enrollment>? Enrollment { get; set; }
 
+
     [DisplayName("Class Average")]
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
@@ -106,11 +113,13 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
         Enrollment?.Where(e => e.Grade.HasValue)
             .Average(e => e.Grade);
 
+
     [DisplayName("Highest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
     public decimal? HighestGrade =>
         Enrollment?.Max(e => e.Grade);
+
 
     [DisplayName("Lowest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
@@ -118,24 +127,30 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     public decimal? LowestGrade =>
         Enrollment?.Min(e => e.Grade);
 
+
     [DisplayName("Courses Count")]
     public int ECoursesCount =>
         Enrollment?.Select(e => e.Course).Distinct().Count() ?? 0;
 
+
     [DisplayName("Work Hour Load")]
     public int EWorkHourLoad =>
         Enrollment?.Sum(e => e.Course.WorkLoad) ?? 0;
+
 
     [DisplayName("Students Count")]
     public int EStudentsCount =>
         Enrollment?.Select(e => e.Student).Distinct().Count() ?? 0;
 
 
-    [Required] public required int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public required int Id { get; set; }
 
-    [Required]
-    [Column("SchoolClassId")]
-    public required Guid IdGuid { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("SchoolClassId")]
+    public Guid IdGuid { get; set; }
 
 
     [Required]

@@ -34,7 +34,7 @@ public class Course : IEntity, INotifyPropertyChanged
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/courses/" +
+        : "https://storage.googleapis.com/storage-nuno/courses/" +
           ProfilePhotoId;
 
 
@@ -46,8 +46,15 @@ public class Course : IEntity, INotifyPropertyChanged
         Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
 
 
-    [Required] public int Id { get; set; }
-    [Required] [Column("CourseId")] public required Guid IdGuid { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("CourseId")]
+    public Guid IdGuid { get; set; }
+
 
     [Required]
     [DisplayName("Was Deleted?")]

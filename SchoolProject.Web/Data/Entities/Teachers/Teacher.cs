@@ -9,8 +9,6 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 
 public class Teacher : IEntity, INotifyPropertyChanged
 {
-    private ICollection<TeacherCourse>? _teacherCourses;
-
     [Required]
     [DisplayName("First Name")]
     public required string FirstName { get; set; }
@@ -36,7 +34,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [Required] public required City City { get; set; }
 
     [Required]
-    //[ForeignKey("CountryId")] 
+    //[ForeignKey("CountryId")]
     public required Country Country { get; set; }
 
     // public int CountryId => Country.Id;
@@ -106,22 +104,12 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/teachers/" +
+        : "https://storage.googleapis.com/storage-nuno/teachers/" +
           ProfilePhotoId;
 
 
-    public ICollection<TeacherCourse>? TeacherCourses
-    {
-        get => _teacherCourses;
-        set
-        {
-            if (Equals(value, _teacherCourses)) return;
-            _teacherCourses = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(CoursesCount));
-            OnPropertyChanged(nameof(TotalWorkHours));
-        }
-    }
+    public ICollection<TeacherCourse>? TeacherCourses { get; set; }
+
     // public ICollection<StudentCourse>? StudentCourses { get; set; }
     // public ICollection<StudentSubject> StudentSubjects { get; set; }
 
@@ -134,8 +122,14 @@ public class Teacher : IEntity, INotifyPropertyChanged
         TeacherCourses?.Sum(t => t.Course.WorkLoad) ?? 0;
 
 
-    [Required] public required int Id { get; set; }
-    [Required] [Column("TeacherId")] public required Guid IdGuid { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("TeacherId")]
+    public Guid IdGuid { get; set; }
 
 
     [Required]
@@ -148,14 +142,19 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DisplayName("Created At")]
     public required DateTime CreatedAt { get; set; }
 
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
-
 
     [Required]
+    [DisplayName("Created By")]
+    public required User CreatedBy { get; set; }
+
+
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     public DateTime? UpdatedAt { get; set; }
 
+
+    // [Required]
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 

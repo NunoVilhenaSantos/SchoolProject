@@ -12,6 +12,7 @@ using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Seeders;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
@@ -313,6 +314,10 @@ builder.Services.AddMvcCore().AddViewLocalization();
 builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();
 
 
+// Configuração do serviço DatabaseConnectionVerifier
+builder.Services.AddSingleton<DatabaseConnectionVerifier>();
+
+
 // Add logging providers for debugging and application insights.
 builder.Services.AddLogging();
 builder.Logging.AddDebug();
@@ -345,28 +350,8 @@ builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 //
 // -------------------------------------------------------------------------- //
 
-//
-// Method 1
-//
 
-// Seed the database (optional, depends on your application's requirements).
-// SeedDb seedDb;
-// using (var scope = builder?.Services?.BuildServiceProvider().CreateScope())
-// {
-//     // Call SeedDbUsers.Initialize with the IUserHelper instance
-//     var serviceProvider = builder.Services.BuildServiceProvider();
-//     var userHelper = serviceProvider.GetRequiredService<IUserHelper>();
-//     SeedDbUsers.Initialize(userHelper);
-//
-//     seedDb = scope.ServiceProvider.GetService<SeedDb>();
-//     seedDb.SeedAsync().Wait();
-// }
-
-
-//
-// Method 2
-//
-using var scope = builder?.Services?.BuildServiceProvider().CreateScope();
+using var scope = builder.Services.BuildServiceProvider().CreateScope();
 var serviceProvider = builder.Services.BuildServiceProvider();
 var userHelper = serviceProvider.GetRequiredService<IUserHelper>();
 var uDataContextMsSql = serviceProvider.GetRequiredService<DataContextMsSql>();
@@ -377,22 +362,20 @@ var uDataContextSqLite =
 SeedDbUsers.Initialize(userHelper);
 SeedDbPersons.Initialize(userHelper, uDataContextMsSql);
 
+
+// Verificação de conexão com o banco de dados
+var connectionVerifier =
+    serviceProvider.GetRequiredService<DatabaseConnectionVerifier>();
+while (!await connectionVerifier.CheckDatabaseConnectionAsync())
+    Console.WriteLine(
+        "Falha na conexão com o banco de dados. Tentando novamente...");
+
+
 var seedDb = scope.ServiceProvider.GetRequiredService<SeedDb>();
 await seedDb.SeedAsync();
 
 
-//
-// Method 3
-//
-
-// Seed the database.
-// seedDb = builder?.Services?.BuildServiceProvider().GetService<SeedDb>();
-// seedDb.SeedAsync().Wait();
-
-
 // -------------------------------------------------------------------------- //
-//
-// Seed the database (optional, depends on your application's requirements).
 //
 // -------------------------------------------------------------------------- //
 

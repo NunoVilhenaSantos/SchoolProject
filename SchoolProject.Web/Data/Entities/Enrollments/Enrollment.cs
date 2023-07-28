@@ -29,12 +29,14 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     [Precision(18, 2)] public decimal? Grade { get; set; }
 
 
-    [Required] public int Id { get; set; }
-
-    [Required]
+    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("EnrollmentId")]
-    public required Guid IdGuid { get; set; }
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("EnrollmentId")]
+    public Guid IdGuid { get; set; }
 
 
     [Required]

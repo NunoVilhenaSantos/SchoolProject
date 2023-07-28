@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 
 namespace SchoolProject.Web.Data.Entities.Countries;
 
+// [PrimaryKey(nameof(Id), nameof(IdGuid))]
 public class City : IEntity, INotifyPropertyChanged
 {
     [Required]
@@ -13,10 +15,14 @@ public class City : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
-    [Key] [Required] public  int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
 
-    [DisplayName("CityId")] [Required] public required Guid IdGuid { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [DisplayName("CityId")]
+    public Guid IdGuid { get; set; }
 
 
     [Required] public required DateTime CreatedAt { get; set; }

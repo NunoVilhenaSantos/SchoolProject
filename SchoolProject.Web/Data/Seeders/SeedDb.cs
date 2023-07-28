@@ -11,11 +11,11 @@ public class SeedDb
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     public SeedDb(

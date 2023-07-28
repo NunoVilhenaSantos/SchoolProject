@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 
@@ -28,12 +29,14 @@ public class Country : IEntity, INotifyPropertyChanged
     public Guid NationalityGuidId => Nationality.IdGuid;
 
 
-    [Key] [Required] public int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
 
-    [Required]
-    [DisplayName("CountryId")]
-    public required Guid IdGuid { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [DisplayName("CountryId")]
+    public Guid IdGuid { get; set; }
 
 
     [Required] public required DateTime CreatedAt { get; set; }

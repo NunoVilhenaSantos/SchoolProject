@@ -1,8 +1,6 @@
 ﻿@using System.Diagnostics
 @using System.Reflection
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-
-
 <!DOCTYPE html>
 
 @inject IWebHostEnvironment HostingEnvironment
@@ -37,215 +35,215 @@
 
 <header>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs">
-        @{
-            var currentController = ViewContext.RouteData.Values["controller"] as string;
-            var currentAction = ViewContext.RouteData.Values["action"] as string;
-        }
-        <div class="container-fluid">
+<nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs">
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+}
+<div class="container-fluid">
 
-            @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@ViewData["Title"] - </a> *@
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                @ViewData["AssemblyName"] - @ViewData["AssemblyVersion"]
+@* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@ViewData["Title"] - </a> *@
+<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+    @ViewData["AssemblyName"] - @ViewData["AssemblyVersion"]
+</a>
+
+
+<div class="navbar-collapse collapse justify-content-between" id="navbarNavAltMarkup">
+
+    <div class="navbar-nav flex-grow-1">
+
+        <a class="nav-link @(currentAction == "Index" && currentController == "Home" ? "active" : "")"
+           asp-area="" asp-controller="Home" asp-action="Index" aria-current="page">
+            <i class="fas fa-house"></i> Home
+        </a>
+
+        <a class="nav-link @(currentAction == "About" && currentController == "Home" ? "active" : "")"
+           asp-area="" asp-controller="Home" asp-action="About">
+            <i class="fas fa-envelope"></i> About
+        </a>
+
+        <a class="nav-link @(currentAction == "Contact" && currentController == "Home" ? "active" : "")"
+           asp-area="" asp-controller="Home" asp-action="Contact">
+            <i class="fas fa-envelope"></i> Contacts
+        </a>
+
+        <a class="nav-link @(currentAction == "Cookies" && currentController == "Home" ? "active" : "")"
+           asp-area="" asp-controller="Home" asp-action="Cookies">
+            <i class="fas fa-envelope"></i> Cookies
+        </a>
+
+        <a class="nav-link @(currentAction == "CookiesPrivacy" && currentController == "Home" ? "active" : "")"
+           asp-area="" asp-controller="Home" asp-action="CookiesPrivacy">
+            <i class="fas fa-envelope"></i> Cookies Privacy
+        </a>
+
+        <a class="nav-link @(currentAction == "Legal" && currentController == "Home" ? "active" : "")"
+           asp-area="" asp-controller="Home" asp-action="Legal">
+            <i class="fas fa-envelope"></i> Legal
+        </a>
+
+        <a class="nav-link @(currentAction == "Privacy" && currentController == "Home" ? "active" : "")"
+           asp-area="" asp-controller="Home" asp-action="Privacy">
+            <i class="fas fa-envelope"></i> Privacy
+        </a>
+
+        <a class="nav-link @(currentController == "Cities" ? "active" : "")"
+           asp-area="" asp-controller="Cities" asp-action="Index">
+            <i class="fas fa-person-shelter"></i> Cities
+        </a>
+
+        <a class="nav-link @(currentController == "Countries" ? "active" : "")"
+           asp-area="" asp-controller="Countries" asp-action="Index">
+            <i class="fas fa-person-shelter"></i> Countries
+        </a>
+
+        <a class="nav-link @(currentController == "Courses" ? "active" : "")"
+           asp-area="" asp-controller="Courses" asp-action="Index">
+            <i class="fas fa-person-shelter"></i> Courses
+        </a>
+
+        <a class="nav-link @(currentController == "Enrollments" ? "active" : "")"
+           asp-area="" asp-controller="Enrollments" asp-action="Index">
+            <i class="fas fa-person-through-window"></i> Enrollments
+        </a>
+
+        <a class="nav-link @(currentController == "Genres" ? "active" : "")"
+           asp-area="" asp-controller="Genres" asp-action="Index">
+            <i class="fas fa-person-shelter"></i> Genres
+        </a>
+
+        <a class="nav-link @(currentController == "Nationalities" ? "active" : "")"
+           asp-area="" asp-controller="Nationalities" asp-action="Index">
+            <i class="fas fa-person-shelter"></i> Nationalities
+        </a>
+
+        <a class="nav-link @(currentController == "SchoolClassCourses" ? "active" : "")"
+           asp-area="" asp-controller="SchoolClassCourses" asp-action="Index">
+            <i class="fas fa-person-through-window"></i> SchoolClassCourses
+        </a>
+
+        <a class="nav-link @(currentController == "SchoolClasses" ? "active" : "")"
+           asp-area="" asp-controller="SchoolClasses" asp-action="Index">
+            <i class="fas fa-person-through-window"></i> SchoolClasses
+        </a>
+
+        <a class="nav-link @(currentController == "StudentCourses" ? "active" : "")"
+           asp-area="" asp-controller="StudentCourses" asp-action="Index">
+            <i class="fas fa-person-shelter"></i> StudentCourses
+        </a>
+
+        <a class="nav-link @(currentController == "Students" ? "active" : "")"
+           asp-area="" asp-controller="Students" asp-action="Index">
+            <i class="fas fa-person-shelter"></i> Students
+        </a>
+
+        <a class="nav-link @(currentController == "TeacherCourses" ? "active" : "")"
+           asp-area="" asp-controller="TeacherCourses" asp-action="Index">
+            <i class="fas fa-person-through-window"></i> TeacherCourses
+        </a>
+
+        <a class="nav-link @(currentController == "Teachers" ? "active" : "")"
+           asp-area="" asp-controller="Teachers" asp-action="Index">
+            <i class="fas fa-person-through-window"></i> Teachers
+        </a>
+
+    </div>
+</div>
+
+
+@* Verifica se o User está autenticado e se é o Admin!! *@
+@* cria um dropdown com as opções de Users e Roles *@
+@{
+    Debug.Assert(User.Identity != null, "User.Identity != null");
+}
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="dropdown">
+        @* <span class="material-symbols-outlined">settings</span> *@
+        <a class="nav-link dropdown-toggle" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="material-symbols-outlined">admin_panel_settings</i>
+            Admin
+        </a>
+
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="" asp-action="">
+                    <i class="bi bi-person-fill"></i>
+                    <span class="material-symbols-outlined">person</span>Users
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="" asp-action="">
+                    <i class="bi bi-people-fill"></i>
+                    <i class="material-symbols-outlined">group</i>Roles
+                </a>
+            </li>
+        </ul>
+    </div>
+}
+
+
+<div class="d-flex ms-auto">
+
+    <div class="navbar-nav">
+        @* <a class="nav-link active" aria-current="page" href="#">Home</a> *@
+        @* <a class="nav-link" href="#">Features</a> *@
+        @* <a class="nav-link" href="#">Pricing</a> *@
+        @* <a class="nav-link disabled">Disabled</a> *@
+
+        @{
+            Debug.Assert(User.Identity != null, "User.Identity != null");
+        }
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="ChangeUser">
+                <span class="material-symbols-outlined">settings_account_box</span>@User.Identity?.Name
             </a>
 
+            <a class="nav-link @(currentAction == "LogOut" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="LogOut">
+                <span class="material-symbols-outlined">logout</span>Logout
+            </a>
+        }
+        else
+        {
+            <a class="nav-link @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="Register">
+                <span class="material-symbols-outlined">person_add</span>Register
+            </a>
+            <a class="nav-link @(currentAction == "Login" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="Login">
+                <span class="material-symbols-outlined">login</span>Login
+            </a>
+        }
+    </div>
 
-            <div class="navbar-collapse collapse justify-content-between" id="navbarNavAltMarkup">
+    <partial name="_LoginPartial"/>
 
-                <div class="navbar-nav flex-grow-1">
-
-                    <a class="nav-link @(currentAction == "Index" && currentController == "Home" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Index" aria-current="page">
-                        <i class="fas fa-house"></i> Home
-                    </a>
-
-                    <a class="nav-link @(currentAction == "About" && currentController == "Home" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="About">
-                        <i class="fas fa-envelope"></i> About
-                    </a>
-
-                    <a class="nav-link @(currentAction == "Contact" && currentController == "Home" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Contact">
-                        <i class="fas fa-envelope"></i> Contacts
-                    </a>
-
-                    <a class="nav-link @(currentAction == "Cookies" && currentController == "Home" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Cookies">
-                        <i class="fas fa-envelope"></i> Cookies
-                    </a>
-
-                    <a class="nav-link @(currentAction == "CookiesPrivacy" && currentController == "Home" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="CookiesPrivacy">
-                        <i class="fas fa-envelope"></i> Cookies Privacy
-                    </a>
-
-                    <a class="nav-link @(currentAction == "Legal" && currentController == "Home" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Legal">
-                        <i class="fas fa-envelope"></i> Legal
-                    </a>
-
-                    <a class="nav-link @(currentAction == "Privacy" && currentController == "Home" ? "active" : "")"
-                       asp-area="" asp-controller="Home" asp-action="Privacy">
-                        <i class="fas fa-envelope"></i> Privacy
-                    </a>
-
-                    <a class="nav-link @(currentController == "Cities" ? "active" : "")"
-                       asp-area="" asp-controller="Cities" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Cities
-                    </a>
-
-                    <a class="nav-link @(currentController == "Countries" ? "active" : "")"
-                       asp-area="" asp-controller="Countries" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Countries
-                    </a>
-
-                    <a class="nav-link @(currentController == "Courses" ? "active" : "")"
-                       asp-area="" asp-controller="Courses" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Courses
-                    </a>
-
-                    <a class="nav-link @(currentController == "Enrollments" ? "active" : "")"
-                       asp-area="" asp-controller="Enrollments" asp-action="Index">
-                        <i class="fas fa-person-through-window"></i> Enrollments
-                    </a>
-
-                    <a class="nav-link @(currentController == "Genres" ? "active" : "")"
-                       asp-area="" asp-controller="Genres" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Genres
-                    </a>
-
-                    <a class="nav-link @(currentController == "Nationalities" ? "active" : "")"
-                       asp-area="" asp-controller="Nationalities" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Nationalities
-                    </a>
-
-                    <a class="nav-link @(currentController == "SchoolClassCourses" ? "active" : "")"
-                       asp-area="" asp-controller="SchoolClassCourses" asp-action="Index">
-                        <i class="fas fa-person-through-window"></i> SchoolClassCourses
-                    </a>
-
-                    <a class="nav-link @(currentController == "SchoolClasses" ? "active" : "")"
-                       asp-area="" asp-controller="SchoolClasses" asp-action="Index">
-                        <i class="fas fa-person-through-window"></i> SchoolClasses
-                    </a>
-
-                    <a class="nav-link @(currentController == "StudentCourses" ? "active" : "")"
-                       asp-area="" asp-controller="StudentCourses" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> StudentCourses
-                    </a>
-
-                    <a class="nav-link @(currentController == "Students" ? "active" : "")"
-                       asp-area="" asp-controller="Students" asp-action="Index">
-                        <i class="fas fa-person-shelter"></i> Students
-                    </a>
-
-                    <a class="nav-link @(currentController == "TeacherCourses" ? "active" : "")"
-                       asp-area="" asp-controller="TeacherCourses" asp-action="Index">
-                        <i class="fas fa-person-through-window"></i> TeacherCourses
-                    </a>
-
-                    <a class="nav-link @(currentController == "Teachers" ? "active" : "")"
-                       asp-area="" asp-controller="Teachers" asp-action="Index">
-                        <i class="fas fa-person-through-window"></i> Teachers
-                    </a>
-
-                </div>
-            </div>
-
-
-            @* Verifica se o User está autenticado e se é o Admin!! *@
-            @* cria um dropdown com as opções de Users e Roles *@
-            @{
-                Debug.Assert(User.Identity != null, "User.Identity != null");
-            }
-            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-            {
-                <div class="dropdown">
-                    @* <span class="material-symbols-outlined">settings</span> *@
-                    <a class="nav-link dropdown-toggle" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="material-symbols-outlined">admin_panel_settings</i>
-                        Admin
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
-                               asp-area="" asp-controller="" asp-action="">
-                                <i class="bi bi-person-fill"></i>
-                                <span class="material-symbols-outlined">person</span>Users
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
-                               asp-area="" asp-controller="" asp-action="">
-                                <i class="bi bi-people-fill"></i>
-                                <i class="material-symbols-outlined">group</i>Roles
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            }
-
-
-            <div class="d-flex ms-auto">
-
-                <div class="navbar-nav">
-                    @* <a class="nav-link active" aria-current="page" href="#">Home</a> *@
-                    @* <a class="nav-link" href="#">Features</a> *@
-                    @* <a class="nav-link" href="#">Pricing</a> *@
-                    @* <a class="nav-link disabled">Disabled</a> *@
-
-                    @{
-                        Debug.Assert(User.Identity != null, "User.Identity != null");
-                    }
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
-                           asp-area="" asp-controller="Account" asp-action="ChangeUser">
-                            <span class="material-symbols-outlined">settings_account_box</span>@User.Identity?.Name
-                        </a>
-
-                        <a class="nav-link @(currentAction == "LogOut" && currentController == "Account" ? "active" : "")"
-                           asp-area="" asp-controller="Account" asp-action="LogOut">
-                            <span class="material-symbols-outlined">logout</span>Logout
-                        </a>
-                    }
-                    else
-                    {
-                        <a class="nav-link @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
-                           asp-area="" asp-controller="Account" asp-action="Register">
-                            <span class="material-symbols-outlined">person_add</span>Register
-                        </a>
-                        <a class="nav-link @(currentAction == "Login" && currentController == "Account" ? "active" : "")"
-                           asp-area="" asp-controller="Account" asp-action="Login">
-                            <span class="material-symbols-outlined">login</span>Login
-                        </a>
-                    }
-                </div>
-
-                <partial name="_LoginPartial"/>
-
-                <div class="form-check form-switch me-2">
-                    <div class="d-flex flex-column">
-                        <input class="form-check-input order-1 align-self-center" type="checkbox" id="darkModeSwitch">
-                        <label class="form-check-label order-2 align-self-center" for="darkModeSwitch">Dark Mode</label>
-                    </div>
-                </div>
-
-                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNavAltMarkup"
-                        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-            </div>
-
+    <div class="form-check form-switch me-2">
+        <div class="d-flex flex-column">
+            <input class="form-check-input order-1 align-self-center" type="checkbox" id="darkModeSwitch">
+            <label class="form-check-label order-2 align-self-center" for="darkModeSwitch">Dark Mode</label>
         </div>
-    </nav>
+    </div>
+
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+</div>
+
+</div>
+</nav>
 </header>
 
 

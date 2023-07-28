@@ -61,8 +61,8 @@ public class Students
                 CountryOfNationality = countryOfNationality,
                 Birthplace = birthplace,
                 ProfilePhotoId = profilePhotoId,
-                CoursesCount = courseCount,
-                TotalWorkHours = totalWorkHours,
+                // CoursesCount = courseCount,
+                // TotalWorkHours = totalWorkHours,
                 EnrollDate = enrollDate,
                 CreatedAt = DateTime.Now,
                 CreatedBy = user,
@@ -140,7 +140,7 @@ public class Students
         student.CountryOfNationality = countryOfNationality;
         student.Birthplace = birthplace;
         student.ProfilePhotoId = photo;
-        student.TotalWorkHours = totalWorkHours;
+        // student.TotalWorkHours = totalWorkHours;
         student.EnrollDate = enrollmentDate;
 
         // StudentsList[id].CalculateTotalWorkHours();

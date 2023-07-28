@@ -46,7 +46,8 @@ public class GenresController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Genre genre)
+        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        Genre genre)
     {
         if (ModelState.IsValid)
         {
@@ -74,7 +75,8 @@ public class GenresController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Genre genre)
+        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        Genre genre)
     {
         if (id != genre.Id) return NotFound();
 

@@ -10,15 +10,15 @@ public class User : IdentityUser, INotifyPropertyChanged
     [DisplayName("First Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
-    [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public required string FirstName { get; set; }
+    // [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required string FirstName { get; init; }
 
 
     [DisplayName("Last Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
-    [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public required string LastName { get; set; }
+    // [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required string LastName { get; init; }
 
 
     [MaxLength(100,

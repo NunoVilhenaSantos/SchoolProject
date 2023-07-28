@@ -12,10 +12,7 @@ namespace SchoolProject.Web.Data.Seeders;
 public static class SeedDbPersons
 {
     private static Random _random;
-
-    // Add a private field to hold the IUserHelper instance
     private static IUserHelper _userHelper;
-
     private static DataContextMsSql _dataContextMssql;
 
 
@@ -255,7 +252,7 @@ public static class SeedDbPersons
 
                     // todo: Set the UpdatedAt property to null
                     // the 'UpdatedAt' property
-                    UpdatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 }
             );
 
@@ -271,7 +268,7 @@ public static class SeedDbPersons
             ?? new IdentityRole
             {
                 // Set the name for the role
-                Name = "Student",
+                Name = "Student"
                 // Set the normalized name for the role
                 // NormalizedName = "STUDENT"
             };
@@ -297,7 +294,9 @@ public static class SeedDbPersons
 
 
     private static async Task AddTeacher(
-        string firstName, string lastName, string address, User user)
+        string firstName, string lastName, string address,
+        User user,
+        string userRole = "Teacher", string password = "123456")
     {
         var document = _random.Next(100000, 999999999).ToString();
         var fixedPhone = _random.Next(1000000, 99999999).ToString();
@@ -306,12 +305,40 @@ public static class SeedDbPersons
         var email = $"{firstName}.{lastName}@mail.pt";
         var identificationNumber = _random.Next(100000, 999999999).ToString();
         var vatNumber = _random.Next(100000, 999999999).ToString();
+
         var dateOfBirth = GenerateRandomDateOfBirth();
 
         var postalCode =
             _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
 
-        const string userRole = "Teacher";
+        // const string userRole = "Teacher";
+
+
+        var city = await _dataContextMssql.Cities
+            .FirstOrDefaultAsync(c => c.Name == "Porto");
+
+        var country = await _dataContextMssql.Countries
+            .FirstOrDefaultAsync(c => c.Name == "Portugal");
+
+        var nationality = await _dataContextMssql.Nationalities
+            .FirstOrDefaultAsync(n => n.Name == "Português");
+
+        var genre = await _dataContextMssql.Genres
+            .FirstOrDefaultAsync(g => g.Name == "Female");
+
+        var countryOfNationality = await _dataContextMssql.Countries
+            .FirstOrDefaultAsync(c => c.Name == "Portugal");
+
+        var countryOfNationalityNationality = await _dataContextMssql
+            .Nationalities
+            .FirstOrDefaultAsync(n => n.Name == "Português");
+
+        var birthplace = await _dataContextMssql.Countries
+            .FirstOrDefaultAsync(c => c.Name == "França");
+
+        var birthplaceNationality = await _dataContextMssql.Nationalities
+            .FirstOrDefaultAsync(n => n.Name == "Françês");
+
 
         var teacherWithRole =
             _dataContextMssql.Teachers.Add(new Teacher
@@ -330,90 +357,91 @@ public static class SeedDbPersons
                     LastName = lastName,
                     Address = addressFull,
                     PostalCode = postalCode,
-                    City = await _dataContextMssql.Cities
-                        .FindAsync("Porto") ?? new City
+
+                    City = city ?? new City
                     {
                         Name = "Porto",
-                        Id = 0,
-                        IdGuid = new Guid(),
+                        // Id = 0,
+                        // IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
                     },
-                    Country = await _dataContextMssql.Countries
-                        .FindAsync("Portugal") ?? new Country
+
+                    Country = country ?? new Country
                     {
                         Name = "Portugal",
-                        Nationality = await _dataContextMssql.Nationalities
-                            .FindAsync("Português") ?? new Nationality
+                        Nationality = nationality ?? new Nationality
                         {
                             Name = "Português",
-                            IdGuid = new Guid(),
+                            // IdGuid = new Guid(),
                             WasDeleted = false,
                             CreatedAt = DateTime.UtcNow,
                             CreatedBy = user
                         },
-                        IdGuid = new Guid(),
+                        // IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
                     },
+
                     MobilePhone = cellPhone,
                     Email = email,
                     Active = true,
-                    Genre = await _dataContextMssql.Genres
-                        .FindAsync("Female") ?? new Genre
+
+                    Genre = genre ?? new Genre
                     {
                         Name = "Female",
-                        IdGuid = new Guid(),
+                        // IdGuid = new Guid(),
                         WasDeleted = false,
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user
                     },
+
                     DateOfBirth = dateOfBirth,
                     IdentificationNumber = identificationNumber,
                     IdentificationType = "BI",
                     ExpirationDateIdentificationNumber = default,
                     TaxIdentificationNumber = vatNumber,
-                    CountryOfNationality = await _dataContextMssql.Countries
-                        .FindAsync("Portugal") ?? new Country
+
+                    CountryOfNationality = countryOfNationality ?? new Country
                     {
                         Name = "Portugal",
-                        Nationality = await _dataContextMssql.Nationalities
-                            .FindAsync("Português") ?? new Nationality
-                        {
-                            Name = "Português",
-                            IdGuid = new Guid(),
-                            WasDeleted = false,
-                            CreatedAt = DateTime.UtcNow,
-                            CreatedBy = user
-                        },
-                        IdGuid = new Guid(),
+                        Nationality =
+                            countryOfNationalityNationality ?? new Nationality
+                            {
+                                Name = "Português",
+                                // IdGuid = new Guid(),
+                                WasDeleted = false,
+                                CreatedAt = DateTime.UtcNow,
+                                CreatedBy = user
+                            },
+                        // IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
                     },
-                    Birthplace = await _dataContextMssql.Countries
-                        .FindAsync("França") ?? new Country
+
+                    Birthplace = birthplace ?? new Country
                     {
                         Name = "França",
-                        Nationality = await _dataContextMssql.Nationalities
-                            .FindAsync("Françês") ?? new Nationality
+                        Nationality = birthplaceNationality ?? new Nationality
                         {
                             Name = "Françês",
-                            IdGuid = new Guid(),
+                            // IdGuid = new Guid(),
                             WasDeleted = false,
                             CreatedAt = DateTime.UtcNow,
                             CreatedBy = user
                         },
-                        IdGuid = new Guid(),
+                        // IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
                     },
+
                     EnrollDate = DateTime.UtcNow,
-                    Id = 0,
-                    IdGuid = new Guid(),
+                    // Id = 0,
+                    // IdGuid = new Guid(),
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = user
                 }
@@ -421,19 +449,38 @@ public static class SeedDbPersons
 
 
         var newUser = await _dataContextMssql.Users
-            .FirstOrDefaultAsync(u =>
-                u.Email == teacherWithRole.Entity.Email);
+            .FirstOrDefaultAsync(
+                u => u.Email == teacherWithRole.Entity.Email);
 
-        var role = await _dataContextMssql.Roles
-            .FirstOrDefaultAsync(r =>
-                r.Name == userRole);
+        // Check if the role already exists in the database
+        var role =
+            await _dataContextMssql.Roles
+                .FirstOrDefaultAsync(iR => iR.Name == userRole)
+            ?? new IdentityRole
+            {
+                // Set the name for the role
+                Name = "Student"
+                // Set the normalized name for the role
+                // NormalizedName = "STUDENT"
+            };
+
+        _dataContextMssql.Roles.Add(role);
+        // await _dataContextMssql.SaveChangesAsync();
+
 
         _dataContextMssql.UserRoles.Add(
             new IdentityUserRole<string>
             {
-                UserId = newUser?.Id ?? string.Empty,
-                RoleId = role?.Id ?? string.Empty
+                UserId = newUser.Id,
+                RoleId = role.Id
             });
+
+        // Assign the role to the user
+        await _userHelper.AddUserAsync(newUser, password);
+
+        // Save the changes to the student entity, including the 'UpdatedAt' property
+        // studentWithRole.Entity.UpdatedAt = DateTime.UtcNow;
+        await _dataContextMssql.SaveChangesAsync();
     }
 
 

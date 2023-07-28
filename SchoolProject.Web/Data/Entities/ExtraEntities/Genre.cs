@@ -14,12 +14,14 @@ public class Genre : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
-    [Required] public int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
 
-    [Required]
-    [Column("GenreId")]
-    public required Guid IdGuid { get; set; } = new();
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("GenreId")]
+    public Guid IdGuid { get; set; }
 
 
     [Required]

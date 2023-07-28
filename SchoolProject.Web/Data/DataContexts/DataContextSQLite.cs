@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
@@ -10,10 +11,10 @@ using SchoolProject.Web.Data.Entities.Teachers;
 
 namespace SchoolProject.Web.Data.DataContexts;
 
-public class DataContextSqLite : IdentityDbContext<User>
+public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 {
-    public DataContextSqLite(
-        DbContextOptions<DataContextSqLite> options) : base(options)
+    public DataContextSqLite(DbContextOptions<DataContextSqLite> options) :
+        base(options)
     {
     }
 
@@ -57,17 +58,47 @@ public class DataContextSqLite : IdentityDbContext<User>
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
 
 
-    // ---------------------------------------------------------------------- //
-    // OnDelete de muitos para muitos para Restrict
-    // ---------------------------------------------------------------------- //
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        foreach (
-            var relationship in
-            builder.Model.GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys()))
+        //
+        // Set DeleteBehavior to Restrict for all relationships
+        //
+        foreach (var relationship
+                 in modelBuilder.Model.GetEntityTypes()
+                     .SelectMany(e => e.GetForeignKeys()))
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
+        // ------------------------------------------------------------------ //
 
-        base.OnModelCreating(builder);
+
+        //
+        // Set ValueGeneratedOnAdd for IdGuid properties in entities
+        //
+        // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        // {
+        //     // Verifica se a entidade possui a propriedade "IdGuid" do tipo Guid
+        //     var idGuidProperty =
+        //         entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
+        //     if (idGuidProperty != null)
+        //     {
+        //         // Configura a propriedade "IdGuid" para ser gerada automaticamente
+        //         modelBuilder.Entity(entityType.ClrType)
+        //             .Property("IdGuid")
+        //             .ValueGeneratedOnAdd();
+        //     }
+        // }
+        // ------------------------------------------------------------------ //
+
+
+        // Modify table names for all entities (excluding "AspNet" tables)
+        // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        // {
+        //     var table = entityType.GetTableName();
+        //     if (table.StartsWith("AspNet")) continue;
+        //     entityType.SetTableName(table[0..^1]);
+        // }
+        // ------------------------------------------------------------------ //
+
+
+        base.OnModelCreating(modelBuilder);
     }
 }

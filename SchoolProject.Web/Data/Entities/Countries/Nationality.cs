@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 
@@ -13,12 +14,14 @@ public class Nationality : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
-    [Required]
-    [DisplayName("NationalityId")]
-    public required Guid IdGuid { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [DisplayName("NationalityId")]
+    public Guid IdGuid { get; set; }
 
 
     public required bool WasDeleted { get; set; }

@@ -22,12 +22,15 @@ public class StudentCourse : IEntity
     [Required] public Course Course { get; set; }
 
 
-    [Required] public int Id { get; set; }
-
-    [Required]
     [Key]
-    [Column("StudentCourseId")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("StudentCourseId")]
     public Guid IdGuid { get; set; }
+
 
     [Required]
     [DisplayName("Was Deleted?")]

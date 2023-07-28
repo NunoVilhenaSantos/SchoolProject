@@ -9,420 +9,421 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.17.0" />
-        <PackageReference Include="Azure.Storage.Files.Shares" Version="12.15.0" />
-        <PackageReference Include="Azure.Storage.Queues" Version="12.15.0" />
-        <PackageReference Include="CsvHelper" Version="30.0.1" />
-        <PackageReference Include="DnsClient" Version="1.7.0" />
-        <PackageReference Include="Google.Apis.Storage.v1" Version="1.61.0.3112" />
-        <PackageReference Include="Google.Cloud.Storage.V1" Version="4.6.0" />
-        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.9" />
-        <PackageReference Include="Microsoft.Build.Framework" Version="17.6.3" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.17.0"/>
+        <PackageReference Include="Azure.Storage.Files.Shares" Version="12.15.0"/>
+        <PackageReference Include="Azure.Storage.Queues" Version="12.15.0"/>
+        <PackageReference Include="CsvHelper" Version="30.0.1"/>
+        <PackageReference Include="DnsClient" Version="1.7.0"/>
+        <PackageReference Include="Google.Apis.Storage.v1" Version="1.61.0.3112"/>
+        <PackageReference Include="Google.Cloud.Storage.V1" Version="4.6.0"/>
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.Build.Framework" Version="17.6.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.9"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.9" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.9" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.9"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
-        <PackageReference Include="Microsoft.Identity.Web" Version="2.13.1" />
-        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.1" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
-        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
-        <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.5" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Serilog" Version="3.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3"/>
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.13.1"/>
+        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8"/>
+        <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175"/>
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.5"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Serilog" Version="3.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Data\DataContexts\DataAccess\" />
-        <Folder Include="Docs\" />
-        <Folder Include="wwwroot\images\" />
+        <Folder Include="Data\DataContexts\DataAccess\"/>
+        <Folder Include="Docs\"/>
+        <Folder Include="wwwroot\images\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="bin\Debug\net7.0\af\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\appsettings.Development.json" />
-        <Content Include="bin\Debug\net7.0\appsettings.json" />
-        <Content Include="bin\Debug\net7.0\ar\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\Azure.Core.dll" />
-        <Content Include="bin\Debug\net7.0\Azure.Identity.dll" />
-        <Content Include="bin\Debug\net7.0\Azure.Storage.Blobs.dll" />
-        <Content Include="bin\Debug\net7.0\Azure.Storage.Common.dll" />
-        <Content Include="bin\Debug\net7.0\Azure.Storage.Files.Shares.dll" />
-        <Content Include="bin\Debug\net7.0\Azure.Storage.Queues.dll" />
-        <Content Include="bin\Debug\net7.0\az\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\bg\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\bn-BD\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\BouncyCastle.Crypto.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\da\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\DnsClient.dll" />
-        <Content Include="bin\Debug\net7.0\dotnet-aspnet-codegenerator-design.dll" />
-        <Content Include="bin\Debug\net7.0\el\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fa\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fi-FI\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr-BE\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Api.Gax.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Api.Gax.Rest.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Apis.Auth.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Apis.Auth.PlatformServices.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Apis.Core.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Apis.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Apis.Storage.v1.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Cloud.Storage.V1.dll" />
-        <Content Include="bin\Debug\net7.0\Google.Protobuf.dll" />
-        <Content Include="bin\Debug\net7.0\he\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\hr\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\Humanizer.dll" />
-        <Content Include="bin\Debug\net7.0\hu\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\hy\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\id\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\is\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\K4os.Compression.LZ4.dll" />
-        <Content Include="bin\Debug\net7.0\K4os.Compression.LZ4.Streams.dll" />
-        <Content Include="bin\Debug\net7.0\K4os.Hash.xxHash.dll" />
-        <Content Include="bin\Debug\net7.0\ko-KR\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ku\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\libman.json" />
-        <Content Include="bin\Debug\net7.0\lv\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AI.DependencyCollector.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AI.EventCounterCollector.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AI.PerfCounterCollector.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AI.ServerTelemetryChannel.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AI.WindowsServer.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.ApplicationInsights.AspNetCore.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.ApplicationInsights.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Razor.Language.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Build.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Build.Framework.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.Features.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Elfie.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Features.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Razor.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Scripting.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Workspaces.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Data.SqlClient.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Data.Sqlite.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.DiaSymReader.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.DotNet.Scaffolding.Shared.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Sqlite.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.SqlServer.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Azure.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Logging.ApplicationInsights.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Options.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Identity.Client.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Identity.Client.Extensions.Msal.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.NET.StringTools.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.SqlServer.Server.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll" />
-        <Content Include="bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll" />
-        <Content Include="bin\Debug\net7.0\Mono.TextTemplating.dll" />
-        <Content Include="bin\Debug\net7.0\ms-MY\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\mt\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\MySql.Data.dll" />
-        <Content Include="bin\Debug\net7.0\MySql.EntityFrameworkCore.dll" />
-        <Content Include="bin\Debug\net7.0\nb-NO\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\nb\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\Newtonsoft.Json.dll" />
-        <Content Include="bin\Debug\net7.0\nl\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.Common.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.Configuration.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.DependencyResolver.Core.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.Frameworks.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.LibraryModel.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.Packaging.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.ProjectModel.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.Protocol.dll" />
-        <Content Include="bin\Debug\net7.0\NuGet.Versioning.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\pt\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ro\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\alpine-arm64\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\alpine-arm\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\alpine-x64\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\browser-wasm\nativeassets\net7.0\e_sqlite3.a" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-arm64\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-armel\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-arm\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-mips64\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-musl-arm\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-musl-x64\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-ppc64le\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-s390x\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-x64\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\linux-x86\native\libe_sqlite3.so" />
-        <Content Include="bin\Debug\net7.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib" />
-        <Content Include="bin\Debug\net7.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib" />
-        <Content Include="bin\Debug\net7.0\runtimes\osx-arm64\native\libe_sqlite3.dylib" />
-        <Content Include="bin\Debug\net7.0\runtimes\osx-x64\native\libe_sqlite3.dylib" />
-        <Content Include="bin\Debug\net7.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-arm64\native\e_sqlite3.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-arm\native\e_sqlite3.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\comerr64.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\e_sqlite3.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\gssapi64.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\k5sprt64.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\krb5_64.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\krbcc64.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x86\native\e_sqlite3.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll" />
-        <Content Include="bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\SchoolProject.Web.deps.json" />
-        <Content Include="bin\Debug\net7.0\SchoolProject.Web.dll" />
-        <Content Include="bin\Debug\net7.0\SchoolProject.Web.exe" />
-        <Content Include="bin\Debug\net7.0\SchoolProject.Web.pdb" />
-        <Content Include="bin\Debug\net7.0\SchoolProject.Web.runtimeconfig.json" />
-        <Content Include="bin\Debug\net7.0\SchoolProject.Web.staticwebassets.runtime.json" />
-        <Content Include="bin\Debug\net7.0\sk\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\sl\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\SQLitePCLRaw.batteries_v2.dll" />
-        <Content Include="bin\Debug\net7.0\SQLitePCLRaw.core.dll" />
-        <Content Include="bin\Debug\net7.0\SQLitePCLRaw.provider.e_sqlite3.dll" />
-        <Content Include="bin\Debug\net7.0\sr-Latn\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\sr\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\sv\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\System.CodeDom.dll" />
-        <Content Include="bin\Debug\net7.0\System.Composition.AttributedModel.dll" />
-        <Content Include="bin\Debug\net7.0\System.Composition.Convention.dll" />
-        <Content Include="bin\Debug\net7.0\System.Composition.Hosting.dll" />
-        <Content Include="bin\Debug\net7.0\System.Composition.Runtime.dll" />
-        <Content Include="bin\Debug\net7.0\System.Composition.TypedParts.dll" />
-        <Content Include="bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll" />
-        <Content Include="bin\Debug\net7.0\System.Diagnostics.PerformanceCounter.dll" />
-        <Content Include="bin\Debug\net7.0\System.Drawing.Common.dll" />
-        <Content Include="bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll" />
-        <Content Include="bin\Debug\net7.0\System.IO.Hashing.dll" />
-        <Content Include="bin\Debug\net7.0\System.Memory.Data.dll" />
-        <Content Include="bin\Debug\net7.0\System.Reflection.MetadataLoadContext.dll" />
-        <Content Include="bin\Debug\net7.0\System.Runtime.Caching.dll" />
-        <Content Include="bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll" />
-        <Content Include="bin\Debug\net7.0\System.Security.Permissions.dll" />
-        <Content Include="bin\Debug\net7.0\System.Windows.Extensions.dll" />
-        <Content Include="bin\Debug\net7.0\th-TH\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\uk\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\uz-Cyrl-UZ\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\uz-Latn-UZ\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\vi\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-CN\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Humanizer.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll" />
-        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
-        <Content Remove="bin\**" />
-        <Content Include="libman.json.bak" />
-        <Content Include="obj\Debug\net6.0\SchoolProject.Web.AssemblyInfoInputs.cache" />
-        <Content Include="obj\Debug\net6.0\SchoolProject.Web.assets.cache" />
-        <Content Include="obj\Debug\net6.0\SchoolProject.Web.csproj.AssemblyReference.cache" />
-        <Content Include="obj\Debug\net6.0\SchoolProject.Web.GeneratedMSBuildEditorConfig.editorconfig" />
-        <Content Include="obj\Debug\net6.0\SchoolProject.Web.RazorAssemblyInfo.cache" />
-        <Content Include="obj\Debug\net7.0\apphost.exe" />
-        <Content Include="obj\Debug\net7.0\refint\SchoolProject.Web.dll" />
-        <Content Include="obj\Debug\net7.0\ref\SchoolProject.Web.dll" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.AssemblyInfoInputs.cache" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.assets.cache" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.AssemblyReference.cache" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.CopyComplete" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.CoreCompileInputs.cache" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.FileListAbsolute.txt" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.dll" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.GeneratedMSBuildEditorConfig.editorconfig" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.genruntimeconfig.cache" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.MvcApplicationPartsAssemblyInfo.cache" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.pdb" />
-        <Content Include="obj\Debug\net7.0\SchoolProject.Web.RazorAssemblyInfo.cache" />
-        <Content Include="obj\Debug\net7.0\scopedcss\bundle\SchoolProject.Web.styles.css" />
-        <Content Include="obj\Debug\net7.0\scopedcss\projectbundle\SchoolProject.Web.bundle.scp.css" />
-        <Content Include="obj\Debug\net7.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css" />
-        <Content Include="obj\Debug\net7.0\staticwebassets.build.json" />
-        <Content Include="obj\Debug\net7.0\staticwebassets.development.json" />
-        <Content Include="obj\Debug\net7.0\staticwebassets.pack.json" />
-        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.build.SchoolProject.Web.props" />
-        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.SchoolProject.Web.props" />
-        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.SchoolProject.Web.props" />
-        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.SchoolProject.Web.Microsoft.AspNetCore.StaticWebAssets.props" />
-        <Content Include="obj\project.assets.json" />
-        <Content Include="obj\project.nuget.cache" />
-        <Content Include="obj\project.packagespec.json" />
-        <Content Include="obj\rider.project.restore.info" />
-        <Content Include="obj\SchoolProject.Web.csproj.EntityFrameworkCore.targets" />
-        <Content Include="obj\SchoolProject.Web.csproj.nuget.dgspec.json" />
-        <Content Include="obj\SchoolProject.Web.csproj.nuget.g.props" />
-        <Content Include="obj\SchoolProject.Web.csproj.nuget.g.targets" />
-        <Content Remove="obj\**" />
+        <Content Include="bin\Debug\net7.0\af\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\appsettings.Development.json"/>
+        <Content Include="bin\Debug\net7.0\appsettings.json"/>
+        <Content Include="bin\Debug\net7.0\ar\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\Azure.Core.dll"/>
+        <Content Include="bin\Debug\net7.0\Azure.Identity.dll"/>
+        <Content Include="bin\Debug\net7.0\Azure.Storage.Blobs.dll"/>
+        <Content Include="bin\Debug\net7.0\Azure.Storage.Common.dll"/>
+        <Content Include="bin\Debug\net7.0\Azure.Storage.Files.Shares.dll"/>
+        <Content Include="bin\Debug\net7.0\Azure.Storage.Queues.dll"/>
+        <Content Include="bin\Debug\net7.0\az\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\bg\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\bn-BD\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\BouncyCastle.Crypto.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\da\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\DnsClient.dll"/>
+        <Content Include="bin\Debug\net7.0\dotnet-aspnet-codegenerator-design.dll"/>
+        <Content Include="bin\Debug\net7.0\el\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fa\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fi-FI\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr-BE\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Api.Gax.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Api.Gax.Rest.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Apis.Auth.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Apis.Auth.PlatformServices.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Apis.Core.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Apis.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Apis.Storage.v1.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Cloud.Storage.V1.dll"/>
+        <Content Include="bin\Debug\net7.0\Google.Protobuf.dll"/>
+        <Content Include="bin\Debug\net7.0\he\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\hr\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\Humanizer.dll"/>
+        <Content Include="bin\Debug\net7.0\hu\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\hy\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\id\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\is\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\K4os.Compression.LZ4.dll"/>
+        <Content Include="bin\Debug\net7.0\K4os.Compression.LZ4.Streams.dll"/>
+        <Content Include="bin\Debug\net7.0\K4os.Hash.xxHash.dll"/>
+        <Content Include="bin\Debug\net7.0\ko-KR\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ku\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\libman.json"/>
+        <Content Include="bin\Debug\net7.0\lv\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AI.DependencyCollector.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AI.EventCounterCollector.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AI.PerfCounterCollector.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AI.ServerTelemetryChannel.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AI.WindowsServer.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.ApplicationInsights.AspNetCore.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.ApplicationInsights.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.AspNetCore.Razor.Language.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Build.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Build.Framework.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.Features.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Elfie.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Features.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Razor.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Scripting.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.CodeAnalysis.Workspaces.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Data.SqlClient.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Data.Sqlite.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.DiaSymReader.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.DotNet.Scaffolding.Shared.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Sqlite.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.EntityFrameworkCore.SqlServer.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Azure.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Logging.ApplicationInsights.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Extensions.Options.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Identity.Client.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Identity.Client.Extensions.Msal.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.NET.StringTools.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.SqlServer.Server.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll"/>
+        <Content Include="bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll"/>
+        <Content Include="bin\Debug\net7.0\Mono.TextTemplating.dll"/>
+        <Content Include="bin\Debug\net7.0\ms-MY\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\mt\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\MySql.Data.dll"/>
+        <Content Include="bin\Debug\net7.0\MySql.EntityFrameworkCore.dll"/>
+        <Content Include="bin\Debug\net7.0\nb-NO\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\nb\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\Newtonsoft.Json.dll"/>
+        <Content Include="bin\Debug\net7.0\nl\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.Common.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.Configuration.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.DependencyResolver.Core.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.Frameworks.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.LibraryModel.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.Packaging.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.ProjectModel.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.Protocol.dll"/>
+        <Content Include="bin\Debug\net7.0\NuGet.Versioning.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\pt\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ro\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\alpine-arm64\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\alpine-arm\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\alpine-x64\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\browser-wasm\nativeassets\net7.0\e_sqlite3.a"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-arm64\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-armel\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-arm\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-mips64\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-musl-arm\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-musl-x64\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-ppc64le\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-s390x\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-x64\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\linux-x86\native\libe_sqlite3.so"/>
+        <Content Include="bin\Debug\net7.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib"/>
+        <Content Include="bin\Debug\net7.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib"/>
+        <Content Include="bin\Debug\net7.0\runtimes\osx-arm64\native\libe_sqlite3.dylib"/>
+        <Content Include="bin\Debug\net7.0\runtimes\osx-x64\native\libe_sqlite3.dylib"/>
+        <Content Include="bin\Debug\net7.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-arm64\native\e_sqlite3.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-arm\native\e_sqlite3.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\comerr64.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\e_sqlite3.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\gssapi64.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\k5sprt64.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\krb5_64.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\krbcc64.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x86\native\e_sqlite3.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll"/>
+        <Content Include="bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\SchoolProject.Web.deps.json"/>
+        <Content Include="bin\Debug\net7.0\SchoolProject.Web.dll"/>
+        <Content Include="bin\Debug\net7.0\SchoolProject.Web.exe"/>
+        <Content Include="bin\Debug\net7.0\SchoolProject.Web.pdb"/>
+        <Content Include="bin\Debug\net7.0\SchoolProject.Web.runtimeconfig.json"/>
+        <Content Include="bin\Debug\net7.0\SchoolProject.Web.staticwebassets.runtime.json"/>
+        <Content Include="bin\Debug\net7.0\sk\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\sl\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\SQLitePCLRaw.batteries_v2.dll"/>
+        <Content Include="bin\Debug\net7.0\SQLitePCLRaw.core.dll"/>
+        <Content Include="bin\Debug\net7.0\SQLitePCLRaw.provider.e_sqlite3.dll"/>
+        <Content Include="bin\Debug\net7.0\sr-Latn\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\sr\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\sv\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\System.CodeDom.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Composition.AttributedModel.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Composition.Convention.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Composition.Hosting.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Composition.Runtime.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Composition.TypedParts.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Diagnostics.PerformanceCounter.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Drawing.Common.dll"/>
+        <Content Include="bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll"/>
+        <Content Include="bin\Debug\net7.0\System.IO.Hashing.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Memory.Data.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Reflection.MetadataLoadContext.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Runtime.Caching.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Security.Permissions.dll"/>
+        <Content Include="bin\Debug\net7.0\System.Windows.Extensions.dll"/>
+        <Content Include="bin\Debug\net7.0\th-TH\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\uk\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\uz-Cyrl-UZ\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\uz-Latn-UZ\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\vi\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-CN\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Humanizer.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll"/>
+        <Content Include="bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll"/>
+        <Content Remove="bin\**"/>
+        <Content Include="libman.json.bak"/>
+        <Content Include="obj\Debug\net6.0\SchoolProject.Web.AssemblyInfoInputs.cache"/>
+        <Content Include="obj\Debug\net6.0\SchoolProject.Web.assets.cache"/>
+        <Content Include="obj\Debug\net6.0\SchoolProject.Web.csproj.AssemblyReference.cache"/>
+        <Content Include="obj\Debug\net6.0\SchoolProject.Web.GeneratedMSBuildEditorConfig.editorconfig"/>
+        <Content Include="obj\Debug\net6.0\SchoolProject.Web.RazorAssemblyInfo.cache"/>
+        <Content Include="obj\Debug\net7.0\apphost.exe"/>
+        <Content Include="obj\Debug\net7.0\refint\SchoolProject.Web.dll"/>
+        <Content Include="obj\Debug\net7.0\ref\SchoolProject.Web.dll"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.AssemblyInfoInputs.cache"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.assets.cache"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.AssemblyReference.cache"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.CopyComplete"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.CoreCompileInputs.cache"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.csproj.FileListAbsolute.txt"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.dll"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.GeneratedMSBuildEditorConfig.editorconfig"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.genruntimeconfig.cache"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.MvcApplicationPartsAssemblyInfo.cache"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.pdb"/>
+        <Content Include="obj\Debug\net7.0\SchoolProject.Web.RazorAssemblyInfo.cache"/>
+        <Content Include="obj\Debug\net7.0\scopedcss\bundle\SchoolProject.Web.styles.css"/>
+        <Content Include="obj\Debug\net7.0\scopedcss\projectbundle\SchoolProject.Web.bundle.scp.css"/>
+        <Content Include="obj\Debug\net7.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css"/>
+        <Content Include="obj\Debug\net7.0\staticwebassets.build.json"/>
+        <Content Include="obj\Debug\net7.0\staticwebassets.development.json"/>
+        <Content Include="obj\Debug\net7.0\staticwebassets.pack.json"/>
+        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.build.SchoolProject.Web.props"/>
+        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.SchoolProject.Web.props"/>
+        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.SchoolProject.Web.props"/>
+        <Content Include="obj\Debug\net7.0\staticwebassets\msbuild.SchoolProject.Web.Microsoft.AspNetCore.StaticWebAssets.props"/>
+        <Content Include="obj\project.assets.json"/>
+        <Content Include="obj\project.nuget.cache"/>
+        <Content Include="obj\project.packagespec.json"/>
+        <Content Include="obj\rider.project.restore.info"/>
+        <Content Include="obj\SchoolProject.Web.csproj.EntityFrameworkCore.targets"/>
+        <Content Include="obj\SchoolProject.Web.csproj.nuget.dgspec.json"/>
+        <Content Include="obj\SchoolProject.Web.csproj.nuget.g.props"/>
+        <Content Include="obj\SchoolProject.Web.csproj.nuget.g.targets"/>
+        <Content Remove="obj\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="bin\**" />
-        <Compile Include="obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" />
-        <Compile Include="obj\Debug\net6.0\SchoolProject.Web.AssemblyInfo.cs" />
-        <Compile Include="obj\Debug\net6.0\SchoolProject.Web.GlobalUsings.g.cs" />
-        <Compile Include="obj\Debug\net6.0\SchoolProject.Web.RazorAssemblyInfo.cs" />
-        <Compile Include="obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" />
-        <Compile Include="obj\Debug\net7.0\SchoolProject.Web.AssemblyInfo.cs" />
-        <Compile Include="obj\Debug\net7.0\SchoolProject.Web.GlobalUsings.g.cs" />
-        <Compile Include="obj\Debug\net7.0\SchoolProject.Web.RazorAssemblyInfo.cs" />
-        <Compile Remove="obj\**" />
+        <Compile Remove="bin\**"/>
+        <Compile Include="obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs"/>
+        <Compile Include="obj\Debug\net6.0\SchoolProject.Web.AssemblyInfo.cs"/>
+        <Compile Include="obj\Debug\net6.0\SchoolProject.Web.GlobalUsings.g.cs"/>
+        <Compile Include="obj\Debug\net6.0\SchoolProject.Web.RazorAssemblyInfo.cs"/>
+        <Compile Include="obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs"/>
+        <Compile Include="obj\Debug\net7.0\SchoolProject.Web.AssemblyInfo.cs"/>
+        <Compile Include="obj\Debug\net7.0\SchoolProject.Web.GlobalUsings.g.cs"/>
+        <Compile Include="obj\Debug\net7.0\SchoolProject.Web.RazorAssemblyInfo.cs"/>
+        <Compile Remove="obj\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Remove="bin\**" />
-        <EmbeddedResource Remove="obj\**" />
+        <EmbeddedResource Remove="bin\**"/>
+        <EmbeddedResource Remove="obj\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="bin\**" />
-        <None Remove="obj\**" />
+        <None Remove="bin\**"/>
+        <None Remove="obj\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="libman.json.bak" />
+        <None Remove="libman.json.bak"/>
     </ItemGroup>
 
 </Project>

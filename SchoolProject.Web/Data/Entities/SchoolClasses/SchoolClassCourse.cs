@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 
@@ -19,13 +20,14 @@ public class SchoolClassCourse : IEntity
     public Guid CourseGuidId => Course.IdGuid;
 
 
-    [Required] public int Id { get; set; }
-
-
     [Key]
-    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     // [Column("SchoolClassCourseId")]
-    public required Guid IdGuid { get; set; }
+    public Guid IdGuid { get; set; }
 
 
     [Required]

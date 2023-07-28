@@ -13,7 +13,6 @@ namespace SchoolProject.Web.Data.DataContexts;
 
 // public class DataContextMsSql : IdentityDbContext<User>
 public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
-// public class DataContextMsSql : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public DataContextMsSql(DbContextOptions<DataContextMsSql> options) :
         base(options)
@@ -60,16 +59,47 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
 
 
-    // ---------------------------------------------------------------------- //
-    // OnDelete de muitos para muitos para Restrict
-    // ---------------------------------------------------------------------- //
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //
+        // Set DeleteBehavior to Restrict for all relationships
+        //
         foreach (var relationship
-                 in builder.Model.GetEntityTypes()
+                 in modelBuilder.Model.GetEntityTypes()
                      .SelectMany(e => e.GetForeignKeys()))
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
+        // ------------------------------------------------------------------ //
 
-        base.OnModelCreating(builder);
+
+        //
+        // Set ValueGeneratedOnAdd for IdGuid properties in entities
+        //
+        // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        // {
+        //     // Verifica se a entidade possui a propriedade "IdGuid" do tipo Guid
+        //     var idGuidProperty =
+        //         entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
+        //     if (idGuidProperty != null)
+        //     {
+        //         // Configura a propriedade "IdGuid" para ser gerada automaticamente
+        //         modelBuilder.Entity(entityType.ClrType)
+        //             .Property("IdGuid")
+        //             .ValueGeneratedOnAdd();
+        //     }
+        // }
+        // ------------------------------------------------------------------ //
+
+
+        // Modify table names for all entities (excluding "AspNet" tables)
+        // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        // {
+        //     var table = entityType.GetTableName();
+        //     if (table.StartsWith("AspNet")) continue;
+        //     entityType.SetTableName(table[0..^1]);
+        // }
+        // ------------------------------------------------------------------ //
+
+
+        base.OnModelCreating(modelBuilder);
     }
 }

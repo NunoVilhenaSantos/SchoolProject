@@ -107,37 +107,53 @@ public class Student : IEntity //: INotifyPropertyChanged
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/students/" +
+        : "https://storage.googleapis.com/storage-nuno/students/" +
           ProfilePhotoId;
 
 
     [DisplayName("Courses")]
-    public ICollection<SchoolClass> SchoolClasses { get; set; } =
+    public ICollection<SchoolClass>? SchoolClasses { get; set; } =
         new List<SchoolClass>();
 
     [DisplayName("Courses")]
-    public ICollection<StudentCourse> StudentCourses { get; set; } =
+    public ICollection<StudentCourse>? StudentCourses { get; set; } =
         new List<StudentCourse>();
 
 
-    [DisplayName("Courses Count")] public int CoursesCount { get; set; }
+    [DisplayName("Courses Count")]
+    public int CoursesCount =>
+        SchoolClasses?.Where(s => s.CoursesCount > 0).Count() ?? 0;
 
-    [DisplayName("total Work Hours")] public int TotalWorkHours { get; set; }
+
+    [DisplayName("Total Work Hours")]
+    public int TotalWorkHours =>
+        SchoolClasses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
 
 
-    [Required] public int Id { get; set; }
-    [Required] [Column("StudentId")] public required Guid IdGuid { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [Column("StudentId")]
+    public Guid IdGuid { get; set; }
+
 
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
+
 
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     public required DateTime CreatedAt { get; set; }
 
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
+
+    [Required]
+    [DisplayName("Created By")]
+    public required User CreatedBy { get; set; }
 
 
     // [Required]
@@ -145,5 +161,7 @@ public class Student : IEntity //: INotifyPropertyChanged
     [DisplayName("Update At")]
     public DateTime? UpdatedAt { get; set; }
 
+
+    // [Required]
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 }
