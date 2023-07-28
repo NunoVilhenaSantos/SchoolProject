@@ -130,14 +130,15 @@ public class Student : IEntity //: INotifyPropertyChanged
         SchoolClasses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
 
 
+
+
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    // [Column("StudentId")]
-    public Guid IdGuid { get; set; }
+    public required Guid IdGuid { get; set; }
 
 
     [Required]
@@ -148,20 +149,20 @@ public class Student : IEntity //: INotifyPropertyChanged
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
-    public required DateTime CreatedAt { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
     [Required]
-    [DisplayName("Created By")]
-    public required User CreatedBy { get; set; }
-
-
-    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
-    public DateTime? UpdatedAt { get; set; }
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-
-    // [Required]
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+
+
+
 }

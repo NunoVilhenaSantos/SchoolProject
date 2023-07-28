@@ -1,66 +1,92 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using SchoolProject.Web.Data.DataContexts;
 
-namespace SchoolProject.Web.Data.Entities.School;
-
-public static class SaveToCsv
+namespace SchoolProject.Web.Data.Entities.School
 {
-    public static void SaveTo(string filePath)
+    public static class SaveToCsv
     {
-        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        // Set the base path here
+        static string _filePath = "Data Source=.\\Data\\";
+
+        public static void SaveTo(DataContextMsSql dataContext)
         {
-            Delimiter = ";"
-        };
-        using (var writer = new StreamWriter(filePath))
-        using (var csv = new CsvWriter(writer, csvConfig))
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ";"
+            };
+
+
+            SaveEntitiesToCsv(
+                dataContext.Cities,
+                "Cities.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.Countries,
+                "Countries.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.Nationalities,
+                "Nationalities.csv", csvConfig);
+
+
+            SaveEntitiesToCsv(
+                dataContext.Genres,
+                "Genres.csv", csvConfig);
+
+
+            SaveEntitiesToCsv(
+                dataContext.Users,
+                "Users.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.UserClaims,
+                "UserClaims.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.UserLogins,
+                "UserLogins.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.UserRoles,
+                "UserRoles.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.UserTokens,
+                "UserTokens.csv", csvConfig);
+
+
+            SaveEntitiesToCsv(
+                dataContext.Courses,
+                "Courses.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.SchoolClasses,
+                "SchoolClasses.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.Students,
+                "Students.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.Teachers,
+                "Teachers.csv", csvConfig);
+
+
+            SaveEntitiesToCsv(
+                dataContext.Enrollments,
+                "Enrollments.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.SchoolClassCourses,
+                "SchoolClassCourses.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.StudentCourses,
+                "StudentCourses.csv", csvConfig);
+            SaveEntitiesToCsv(
+                dataContext.TeacherCourses,
+                "TeacherCourses.csv", csvConfig);
+        }
+
+        private static void SaveEntitiesToCsv<T>(IEnumerable<T> entities,
+            string fileName, CsvConfiguration csvConfig)
         {
-            // Write the courses to the CSV file
-            csv.WriteRecords(Courses.Courses.CoursesList);
-
-            // Write the school classes to the CSV file
-            csv.WriteRecords(SchoolClasses.SchoolClasses.SchoolClassesList);
-
-            // Write the students to the CSV file
-            csv.WriteRecords(Students.Students.StudentsList);
-
-            // Write the teachers to the CSV file
-            csv.WriteRecords(Teachers.Teachers.TeachersList);
-
-            // Write the school class courses to the CSV file
-            foreach (var kvp in SchoolDatabase.CourseClasses)
-            foreach (var courseId in kvp.Value)
+            string filePath = Path.Combine(_filePath, fileName);
+            using (var writer = new StreamWriter(filePath))
+            using (var csv = new CsvWriter(writer, csvConfig))
             {
-                csv.WriteRecord(new
-                {
-                    SchoolClassId = kvp.Key,
-                    CourseId = courseId
-                });
-                csv.NextRecord();
-            }
-
-            // Write the student courses to the CSV file
-            foreach (var kvp in SchoolDatabase.CourseStudents)
-            foreach (var courseId in kvp.Value)
-            {
-                csv.WriteRecord(new
-                {
-                    StudentId = kvp.Key,
-                    CourseId = courseId
-                });
-                csv.NextRecord();
-            }
-
-            // Write the teacher courses to the CSV file
-            foreach (var kvp in SchoolDatabase.CourseTeacher)
-            foreach (var courseId in kvp.Value)
-            {
-                csv.WriteRecord(new
-                {
-                    TeacherId = kvp.Key,
-                    CourseId = courseId
-                });
-                csv.NextRecord();
+                csv.WriteRecords(entities);
             }
         }
     }

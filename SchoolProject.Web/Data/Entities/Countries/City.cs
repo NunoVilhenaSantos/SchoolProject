@@ -21,19 +21,30 @@ public class City : IEntity, INotifyPropertyChanged
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    // [DisplayName("CityId")]
-    public Guid IdGuid { get; set; }
+    public required Guid IdGuid { get; set; }
 
 
-    [Required] public required DateTime CreatedAt { get; set; }
-    [Required] public required User CreatedBy { get; set; }
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
 
 
-    public DateTime? UpdatedAt { get; set; }
-    public User? UpdatedBy { get; set; }
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
-    [Required] public required bool WasDeleted { get; set; }
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -15,6 +15,10 @@
     "appInsights1": {
       "type": "appInsights",
       "connectionId": null
+    },
+    "sqlite2": {
+      "type": "sqlite",
+      "connectionId": "ConnectionStrings:Testes-SQLite"
     }
   }
 }

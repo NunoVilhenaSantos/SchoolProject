@@ -24,6 +24,11 @@
       "resourceId": null,
       "type": "appInsights.sdk",
       "connectionId": null
+    },
+    "sqlite2": {
+      "secretStore": "LocalSecretsFile",
+      "type": "sqlite.local",
+      "connectionId": "ConnectionStrings:Testes-SQLite"
     }
   }
 }

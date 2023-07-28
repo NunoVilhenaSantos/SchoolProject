@@ -14,6 +14,7 @@ namespace SchoolProject.Web.Data.DataContexts;
 // public class DataContextMsSql : IdentityDbContext<User>
 public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 {
+    /// <inheritdoc />
     public DataContextMsSql(DbContextOptions<DataContextMsSql> options) :
         base(options)
     {
@@ -74,19 +75,21 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         //
         // Set ValueGeneratedOnAdd for IdGuid properties in entities
         //
-        // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        // {
-        //     // Verifica se a entidade possui a propriedade "IdGuid" do tipo Guid
-        //     var idGuidProperty =
-        //         entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
-        //     if (idGuidProperty != null)
-        //     {
-        //         // Configura a propriedade "IdGuid" para ser gerada automaticamente
-        //         modelBuilder.Entity(entityType.ClrType)
-        //             .Property("IdGuid")
-        //             .ValueGeneratedOnAdd();
-        //     }
-        // }
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            // Verifica se a entidade possui a propriedade "IdGuid" do tipo Guid
+            var idGuidProperty =
+                entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
+
+            if (idGuidProperty != null)
+            {
+                // Configura a propriedade "IdGuid" para ser gerada automaticamente
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property("IdGuid")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("newsequentialid()");
+            }
+        }
         // ------------------------------------------------------------------ //
 
 

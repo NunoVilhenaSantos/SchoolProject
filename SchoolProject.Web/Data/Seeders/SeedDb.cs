@@ -8,20 +8,21 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDb
 {
+    private readonly IUserHelper _userHelper;
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
+
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-
-    private readonly IUserHelper _userHelper;
-    private readonly UserManager<User> _userManager;
-
 
     public SeedDb(
         IUserHelper userHelper,
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
+        IWebHostEnvironment hostingEnvironment,
         DataContextMsSql dataContextMsSql,
         DataContextMySql dataContextMySql,
         DataContextSqLite dataContextSqLite
@@ -30,6 +31,8 @@ public class SeedDb
         _userHelper = userHelper;
         _userManager = userManager;
         _roleManager = roleManager;
+
+        _hostingEnvironment = hostingEnvironment;
 
         _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
@@ -46,6 +49,17 @@ public class SeedDb
         await _dataContextMySql.Database.MigrateAsync();
         await _dataContextSqLite.Database.MigrateAsync();
 
+
+        // ------------------------------------------------------------------ //
+        // initialize SeedDbUsers with the user helper before been used
+        // ------------------------------------------------------------------ //
+        SeedDbUsers.Initialize(_userHelper);
+        // SeedDbPersons.Initialize(_userHelper, _dataContextMsSql);
+
+        // ------------------------------------------------------------------ //
+        // adding roles for all users in the system
+        // ------------------------------------------------------------------ //
+        await SeedingRolesForUsers();
 
         // ------------------------------------------------------------------ //
         // adding the super users
@@ -79,12 +93,19 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
+        // initialize SeedDbPersons with the user helper and the data-context
+        // before been used
+        // ------------------------------------------------------------------ //
+        // SeedDbUsers.Initialize(_userHelper);
+        SeedDbPersons.Initialize(_userHelper, _dataContextMsSql);
+        // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
         await SeedDbPersons.AddingData();
 
 
         // verificar se existem os placeholders no sistema
+        SeedDbPlaceHolders.Initialize(_hostingEnvironment);
         SeedDbPlaceHolders.AddPlaceHolders();
 
 
@@ -185,6 +206,18 @@ public class SeedDb
             "Diogo", "Alves",
             "diogo.alves.28645@formandos.cinel.pt",
             "Calle Luna", "Functionary", "Passw0rd");
+    }
+
+
+    private async Task SeedingRolesForUsers()
+    {
+        await CreateRoleAsync("SuperUser");
+        await CreateRoleAsync("Admin");
+        await CreateRoleAsync("Functionary");
+        await CreateRoleAsync("Student");
+        await CreateRoleAsync("Teacher");
+        await CreateRoleAsync("User");
+        await CreateRoleAsync("Parent");
     }
 
 

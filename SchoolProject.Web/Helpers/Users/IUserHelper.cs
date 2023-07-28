@@ -6,10 +6,10 @@ namespace SchoolProject.Web.Helpers.Users;
 
 public interface IUserHelper
 {
-    Task<User> GetUserByEmailAsync(string email);
+    Task<User?> GetUserByEmailAsync(string email);
 
 
-    Task<User> GetUserByIdAsync(string id);
+    Task<User?> GetUserByIdAsync(string id);
 
 
     Task<IdentityResult> AddUserAsync(User user, string password);

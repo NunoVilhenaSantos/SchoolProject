@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
@@ -41,25 +42,25 @@ public static class SeedDbPersons
         if (!_dataContextMssql.Students.Any())
         {
             await AddStudent(
-                "Juan", "Zuluaga", "Calle Luna", user);
+                "Student 1", "Zuluaga", "Calle Luna", user);
             await AddStudent(
-                "Joaquim", "Alvenaria", "Calle Sol", user);
+                "Student 2", "Alvenaria", "Calle Sol", user);
             await AddStudent(
-                "Alberto", "Domingues", "Calle Luna", user);
+                "Student 3", "Domingues", "Calle Luna", user);
             await AddStudent(
-                "Mariana", "Alvarez", "Calle Sol", user);
+                "Student 4", "Alvarez", "Calle Sol", user);
             await AddStudent(
-                "Lucia", "Liu", "Calle Luna", user);
+                "Student 5", "Liu", "Calle Luna", user);
             await AddStudent(
-                "Renee", "Arriaga", "Calle Sol", user);
+                "Student 6", "Arriaga", "Calle Sol", user);
             await AddStudent(
-                "Marcia", "Zuluaga", "Calle Luna", user);
+                "Student 7", "Zuluaga", "Calle Luna", user);
             await AddStudent(
-                "Ernesto", "Guevara", "Calle Sol", user);
+                "Student 8", "Guevara", "Calle Sol", user);
             await AddStudent(
-                "El", "Che", "Calle Luna", user);
+                "Student 9", "Che", "Calle Luna", user);
             await AddStudent(
-                "Claudia", "Arroz", "Calle Sol", user);
+                "Student 10", "Arroz", "Calle Sol", user);
         }
 
         user = await _userHelper.GetUserByEmailAsync(
@@ -257,39 +258,7 @@ public static class SeedDbPersons
             );
 
 
-        var newUser = await _dataContextMssql.Users
-            .FirstOrDefaultAsync(
-                u => u.Email == studentWithRole.Entity.Email);
-
-        // Check if the role already exists in the database
-        var role =
-            await _dataContextMssql.Roles
-                .FirstOrDefaultAsync(iR => iR.Name == userRole)
-            ?? new IdentityRole
-            {
-                // Set the name for the role
-                Name = "Student"
-                // Set the normalized name for the role
-                // NormalizedName = "STUDENT"
-            };
-
-        _dataContextMssql.Roles.Add(role);
-        // await _dataContextMssql.SaveChangesAsync();
-
-
-        _dataContextMssql.UserRoles.Add(
-            new IdentityUserRole<string>
-            {
-                UserId = newUser.Id,
-                RoleId = role.Id
-            });
-
-        // Assign the role to the user
-        await _userHelper.AddUserAsync(newUser, password);
-
-        // Save the changes to the student entity, including the 'UpdatedAt' property
-        // studentWithRole.Entity.UpdatedAt = DateTime.UtcNow;
-        await _dataContextMssql.SaveChangesAsync();
+        await StoreStudentsOrTeachersWithRoles(studentWithRole, userRole);
     }
 
 
@@ -362,7 +331,7 @@ public static class SeedDbPersons
                     {
                         Name = "Porto",
                         // Id = 0,
-                        // IdGuid = new Guid(),
+                        IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
@@ -374,12 +343,12 @@ public static class SeedDbPersons
                         Nationality = nationality ?? new Nationality
                         {
                             Name = "Português",
-                            // IdGuid = new Guid(),
+                            IdGuid = new Guid(),
                             WasDeleted = false,
                             CreatedAt = DateTime.UtcNow,
                             CreatedBy = user
                         },
-                        // IdGuid = new Guid(),
+                        IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
@@ -392,7 +361,7 @@ public static class SeedDbPersons
                     Genre = genre ?? new Genre
                     {
                         Name = "Female",
-                        // IdGuid = new Guid(),
+                        IdGuid = new Guid(),
                         WasDeleted = false,
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user
@@ -411,12 +380,12 @@ public static class SeedDbPersons
                             countryOfNationalityNationality ?? new Nationality
                             {
                                 Name = "Português",
-                                // IdGuid = new Guid(),
+                                IdGuid = new Guid(),
                                 WasDeleted = false,
                                 CreatedAt = DateTime.UtcNow,
                                 CreatedBy = user
                             },
-                        // IdGuid = new Guid(),
+                        IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
@@ -428,12 +397,12 @@ public static class SeedDbPersons
                         Nationality = birthplaceNationality ?? new Nationality
                         {
                             Name = "Françês",
-                            // IdGuid = new Guid(),
+                            IdGuid = new Guid(),
                             WasDeleted = false,
                             CreatedAt = DateTime.UtcNow,
                             CreatedBy = user
                         },
-                        // IdGuid = new Guid(),
+                        IdGuid = new Guid(),
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = user,
                         WasDeleted = false
@@ -441,46 +410,14 @@ public static class SeedDbPersons
 
                     EnrollDate = DateTime.UtcNow,
                     // Id = 0,
-                    // IdGuid = new Guid(),
+                    IdGuid = new Guid(),
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = user
                 }
             );
 
 
-        var newUser = await _dataContextMssql.Users
-            .FirstOrDefaultAsync(
-                u => u.Email == teacherWithRole.Entity.Email);
-
-        // Check if the role already exists in the database
-        var role =
-            await _dataContextMssql.Roles
-                .FirstOrDefaultAsync(iR => iR.Name == userRole)
-            ?? new IdentityRole
-            {
-                // Set the name for the role
-                Name = "Student"
-                // Set the normalized name for the role
-                // NormalizedName = "STUDENT"
-            };
-
-        _dataContextMssql.Roles.Add(role);
-        // await _dataContextMssql.SaveChangesAsync();
-
-
-        _dataContextMssql.UserRoles.Add(
-            new IdentityUserRole<string>
-            {
-                UserId = newUser.Id,
-                RoleId = role.Id
-            });
-
-        // Assign the role to the user
-        await _userHelper.AddUserAsync(newUser, password);
-
-        // Save the changes to the student entity, including the 'UpdatedAt' property
-        // studentWithRole.Entity.UpdatedAt = DateTime.UtcNow;
-        await _dataContextMssql.SaveChangesAsync();
+        await StoreStudentsOrTeachersWithRoles(teacherWithRole, userRole);
     }
 
 
@@ -499,5 +436,44 @@ public static class SeedDbPersons
 
         Console.WriteLine(new DateTime(year, month, day));
         return new DateTime(year, month, day);
+    }
+
+
+    private static async Task StoreStudentsOrTeachersWithRoles<T>(
+        EntityEntry<T> studentOrTeacherWithRole, string userRole)
+        where T : class
+    {
+        // Check if the user already exists in the database
+        // Check if the user already exists in the database
+        var newUser = await _dataContextMssql.Users
+            .FirstOrDefaultAsync(u =>
+                u.Email == studentOrTeacherWithRole.Entity.GetType()
+                    .GetProperty("Email")
+                    .GetValue(studentOrTeacherWithRole.Entity, null)
+                    .ToString());
+
+
+        // Check if the role already exists in the database
+        var role = await _dataContextMssql.Roles
+            .FirstOrDefaultAsync(iR => iR.Name == userRole);
+
+        // If the role does not exist, create it
+        if (role == null)
+        {
+            role = new IdentityRole
+            {
+                // Set the name for the role
+                Name = userRole,
+            };
+
+            _dataContextMssql.Roles.Add(role);
+        }
+
+
+        // Assign the role to the user
+        // await _userHelper.AddUserAsync(newUser, password);
+
+        // Save the changes to the student entity,
+        await _dataContextMssql.SaveChangesAsync();
     }
 }

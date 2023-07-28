@@ -8,18 +8,18 @@ namespace SchoolProject.Web.Data.Entities.Students;
 
 public class StudentCourse : IEntity
 {
-    public StudentCourse()
-    {
-        IdGuid = Guid.NewGuid();
-        CreatedAt = DateTime.Now;
-    }
-
-    [Required] public int StudentId { get; set; }
+    // [Required] public int StudentId { get; set; }
     [Required] public Student Student { get; set; }
 
+    public Guid StudentGuidId => Student.IdGuid;
 
-    [Required] public int CourseId { get; set; }
+
+    // [Required] public int CourseId { get; set; }
     [Required] public Course Course { get; set; }
+
+    public Guid CourseGuidId => Course.IdGuid;
+
+
 
 
     [Key]
@@ -28,26 +28,31 @@ public class StudentCourse : IEntity
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    // [Column("StudentCourseId")]
-    public Guid IdGuid { get; set; }
+    public required Guid IdGuid { get; set; }
 
 
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
+
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
-    public DateTime CreatedAt { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Created By")] public User CreatedBy { get; set; }
+    [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
-    public DateTime? UpdatedAt { get; set; }
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+
+
+
 }

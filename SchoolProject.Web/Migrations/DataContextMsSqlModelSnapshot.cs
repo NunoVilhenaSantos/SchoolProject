@@ -182,14 +182,16 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("IdGuid")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -197,6 +199,8 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -225,14 +229,16 @@ namespace SchoolProject.Web.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("IdGuid")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -243,6 +249,8 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -271,14 +279,16 @@ namespace SchoolProject.Web.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("IdGuid")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -286,6 +296,8 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -312,6 +324,7 @@ namespace SchoolProject.Web.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
@@ -321,8 +334,9 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CourseId");
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -336,6 +350,7 @@ namespace SchoolProject.Web.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -370,6 +385,7 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
@@ -382,7 +398,7 @@ namespace SchoolProject.Web.Migrations
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("EnrollmentId");
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<int?>("SchoolClassId")
                         .HasColumnType("int");
@@ -391,6 +407,8 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -423,14 +441,16 @@ namespace SchoolProject.Web.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("GenreId");
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -439,6 +459,7 @@ namespace SchoolProject.Web.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -561,6 +582,7 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
@@ -573,8 +595,9 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("time");
 
                     b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("SchoolClassId");
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
@@ -593,6 +616,7 @@ namespace SchoolProject.Web.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -612,27 +636,33 @@ namespace SchoolProject.Web.Migrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClassCourse", b =>
                 {
-                    b.Property<Guid>("IdGuid")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<int>("SchoolClassId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -641,7 +671,7 @@ namespace SchoolProject.Web.Migrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("IdGuid");
+                    b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
@@ -681,10 +711,8 @@ namespace SchoolProject.Web.Migrations
                     b.Property<int>("CountryOfNationalityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CoursesCount")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
@@ -711,8 +739,9 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("StudentId");
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("IdentificationNumber")
                         .IsRequired()
@@ -741,11 +770,9 @@ namespace SchoolProject.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalWorkHours")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -781,28 +808,33 @@ namespace SchoolProject.Web.Migrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.StudentCourse", b =>
                 {
-                    b.Property<Guid>("IdGuid")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("StudentCourseId");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -811,7 +843,7 @@ namespace SchoolProject.Web.Migrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("IdGuid");
+                    b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
@@ -852,6 +884,7 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
@@ -878,8 +911,9 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("TeacherId");
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("IdentificationNumber")
                         .IsRequired()
@@ -910,6 +944,7 @@ namespace SchoolProject.Web.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -945,28 +980,33 @@ namespace SchoolProject.Web.Migrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.TeacherCourse", b =>
                 {
-                    b.Property<Guid>("IdGuid")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("TeacherCourseId");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
@@ -975,7 +1015,7 @@ namespace SchoolProject.Web.Migrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("IdGuid");
+                    b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
@@ -1064,8 +1104,7 @@ namespace SchoolProject.Web.Migrations
                     b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
                         .WithMany()
@@ -1082,8 +1121,7 @@ namespace SchoolProject.Web.Migrations
                     b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Countries.Nationality", "Nationality")
                         .WithMany()
@@ -1108,8 +1146,7 @@ namespace SchoolProject.Web.Migrations
                     b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
                         .WithMany()

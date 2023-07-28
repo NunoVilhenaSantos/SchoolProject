@@ -23,13 +23,13 @@ public class UserHelper : IUserHelper
     }
 
 
-    public async Task<User> GetUserByEmailAsync(string email)
+    public async Task<User?> GetUserByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
     }
 
 
-    public async Task<User> GetUserByIdAsync(string id)
+    public async Task<User?> GetUserByIdAsync(string id)
     {
         return await _userManager.FindByIdAsync(id);
     }

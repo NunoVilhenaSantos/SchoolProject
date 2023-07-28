@@ -73,18 +73,29 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
         //
         // Set ValueGeneratedOnAdd for IdGuid properties in entities
         //
-        // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            // Verifica se a entidade possui a propriedade "IdGuid" do tipo Guid
+            var idGuidProperty =
+                entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
+
+            if (idGuidProperty != null)
+            {
+                // Configura a propriedade "IdGuid" para ser gerada automaticamente
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property("IdGuid")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("NEWID()");
+            }
+        }
+        // ------------------------------------------------------------------ //
+
+
+        // foreach (var property in modelBuilder.Model.GetEntityTypes()
+        //              .SelectMany(t => t.GetProperties())
+        //              .Where(p => p.ClrType == typeof(Guid)))
         // {
-        //     // Verifica se a entidade possui a propriedade "IdGuid" do tipo Guid
-        //     var idGuidProperty =
-        //         entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
-        //     if (idGuidProperty != null)
-        //     {
-        //         // Configura a propriedade "IdGuid" para ser gerada automaticamente
-        //         modelBuilder.Entity(entityType.ClrType)
-        //             .Property("IdGuid")
-        //             .ValueGeneratedOnAdd();
-        //     }
+        //     property.SetDefaultValueSql("NEWID()");
         // }
         // ------------------------------------------------------------------ //
 

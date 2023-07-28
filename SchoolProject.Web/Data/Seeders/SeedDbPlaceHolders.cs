@@ -8,6 +8,14 @@ public class SeedDbPlaceHolders
     //
     private static IWebHostEnvironment _hostingEnvironment;
 
+
+    // Add an initializer to receive IUserHelper through dependency injection
+    public static void Initialize(IWebHostEnvironment hostingEnvironment)
+    {
+        _hostingEnvironment = hostingEnvironment;
+    }
+
+
     internal static void AddPlaceHolders()
     {
         var baseDirectory = _hostingEnvironment.ContentRootPath;

@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Net.NetworkInformation;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -46,6 +47,86 @@ static string GenerateRandomString(
 }
 
 
+// Método para extrair o nome do servidor da Connection String
+static string GetServerHostNameFromConnectionString(string connectionString)
+{
+    var parts = connectionString.Split(';');
+
+    foreach (var part in parts)
+    {
+        if (part.StartsWith("Data Source="))
+        {
+            return part.Substring("Data Source=".Length);
+        }
+        else if (part.StartsWith("workstation id="))
+        {
+            return part.Substring("workstation id=".Length);
+        }
+        else if (part.StartsWith("Server="))
+        {
+            return part.Substring("Server=".Length);
+        }
+        else if (part.StartsWith("Host="))
+        {
+            return part.Substring("Host=".Length);
+        }
+    }
+
+    throw new ArgumentException(
+        "Connection String inválida. Nome do servidor não encontrado.");
+}
+
+
+// Método para extrair o nome do servidor da Connection String
+static void GetServerHostNamePing(string serverHostName)
+{
+    // Tempo limite para o ping em milissegundos (1 segundo neste exemplo)
+    var timeout = 1000;
+
+    while (true)
+    {
+        Ping pingSender = new Ping();
+        PingReply reply = pingSender.Send(serverHostName, timeout);
+
+        if (reply.Status == IPStatus.Success)
+        {
+            Console.WriteLine("Servidor responde. Conexão estabelecida.");
+
+            // Sai do loop quando a conexão é bem-sucedida
+            break;
+        }
+
+        Console.WriteLine(
+            "Falha na conexão com o servidor. Tentar novamente...");
+
+        // Aguarda um período antes de tentar novamente
+        // Aguarda 3 segundos (ajuste conforme necessário)
+        System.Threading.Thread.Sleep(3000);
+    }
+}
+
+
+static async Task RunSeeding(IHost host)
+{
+    var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+
+    // var Provider =
+    //     host.Services.GetService(typeof(IServiceProvider)) as
+    //         IServiceProvider;
+
+    // var scopeFactory =
+    //     host.Services.GetService(typeof(IServiceScopeFactory)) as
+    //         IServiceScopeFactory;
+
+
+    using var scope = scopeFactory.CreateScope();
+
+    var seeder = scope.ServiceProvider.GetService<SeedDb>();
+
+    await seeder.SeedAsync();
+}
+
+
 // Create a new web application using the WebApplicationBuilder.
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,7 +149,7 @@ builder.Services.AddDbContext<DataContextMsSql>(
     {
         cfg.UseSqlServer(
             builder.Configuration.GetConnectionString(
-                "SchoolProject-somee"), options =>
+                "SchoolProject-Somee"), options =>
             {
                 options.EnableRetryOnFailure();
                 options.MigrationsAssembly("SchoolProject.Web");
@@ -80,8 +161,9 @@ builder.Services.AddDbContext<DataContextMySql>(
     cfg =>
     {
         cfg.UseMySQL(
-            builder.Configuration.GetConnectionString("SchoolProject-MySQL") ??
-            string.Empty, options =>
+            builder.Configuration.GetConnectionString(
+                "SchoolProject-MySQL") ?? string.Empty,
+            options =>
             {
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
@@ -92,7 +174,8 @@ builder.Services.AddDbContext<DataContextSqLite>(
     cfg =>
     {
         cfg.UseSqlite(
-            builder.Configuration.GetConnectionString("SchoolProject-SQLite"),
+            builder.Configuration.GetConnectionString(
+                "SchoolProject-SQLite"),
             options =>
             {
                 options.MigrationsAssembly("SchoolProject.Web");
@@ -315,7 +398,7 @@ builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();
 
 
 // Configuração do serviço DatabaseConnectionVerifier
-builder.Services.AddSingleton<DatabaseConnectionVerifier>();
+builder.Services.AddTransient<DatabaseConnectionVerifier>();
 
 
 // Add logging providers for debugging and application insights.
@@ -344,45 +427,24 @@ builder.Services.AddScoped<IStorageHelper, StorageHelper>();
 builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 
 
-// -------------------------------------------------------------------------- //
-//
-// Seed the database (optional, depends on your application's requirements).
-//
-// -------------------------------------------------------------------------- //
+// Extrai o nome do servidor da Connection String
+var serverHostName =
+    GetServerHostNameFromConnectionString(
+        builder.Configuration.GetConnectionString(
+            "SchoolProject-Somee"));
 
-
-using var scope = builder.Services.BuildServiceProvider().CreateScope();
-var serviceProvider = builder.Services.BuildServiceProvider();
-var userHelper = serviceProvider.GetRequiredService<IUserHelper>();
-var uDataContextMsSql = serviceProvider.GetRequiredService<DataContextMsSql>();
-var uDataContextMySql = serviceProvider.GetRequiredService<DataContextMySql>();
-var uDataContextSqLite =
-    serviceProvider.GetRequiredService<DataContextSqLite>();
-
-SeedDbUsers.Initialize(userHelper);
-SeedDbPersons.Initialize(userHelper, uDataContextMsSql);
-
-
-// Verificação de conexão com o banco de dados
-var connectionVerifier =
-    serviceProvider.GetRequiredService<DatabaseConnectionVerifier>();
-while (!await connectionVerifier.CheckDatabaseConnectionAsync())
-    Console.WriteLine(
-        "Falha na conexão com o banco de dados. Tentando novamente...");
-
-
-var seedDb = scope.ServiceProvider.GetRequiredService<SeedDb>();
-await seedDb.SeedAsync();
+// Verifica se o servidor está disponível
+GetServerHostNamePing(serverHostName);
 
 
 // -------------------------------------------------------------------------- //
-//
-// -------------------------------------------------------------------------- //
 
-
+// Build the application.
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
+// ---------------- //
+await RunSeeding(app);
 
 // Exception handling and HTTPS redirection for non-development environments.
 if (!app.Environment.IsDevelopment())

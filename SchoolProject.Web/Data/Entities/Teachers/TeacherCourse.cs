@@ -8,35 +8,40 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 
 public class TeacherCourse : IEntity
 {
-    [Required] public required int TeacherId { get; set; }
+    // [Required] public required int TeacherId { get; set; }
 
     [Required] public required Teacher Teacher { get; set; }
 
+    public Guid TeacherGuidId => Teacher.IdGuid;
 
-    [Required] public required int CourseId { get; set; }
+
+    // [Required] public required int CourseId { get; set; }
 
     [Required] public required Course Course { get; set; }
+
+    public Guid CourseGuidId => Course.IdGuid;
+
 
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
     public int Id { get; set; }
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    // [Column("TeacherCourseId")]
-    public Guid IdGuid { get; set; }
+    public required Guid IdGuid { get; set; }
 
 
     [Required]
     [DisplayName("Was Deleted?")]
-    public required bool WasDeleted { get; set; }
+    public bool WasDeleted { get; set; }
+
 
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
-    public required DateTime CreatedAt { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
@@ -44,7 +49,10 @@ public class TeacherCourse : IEntity
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
-    public DateTime? UpdatedAt { get; set; }
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+
+
 }
