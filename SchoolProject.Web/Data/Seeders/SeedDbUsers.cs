@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Identity;
+using Org.BouncyCastle.Crypto.Generators;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Helpers.Users;
+using Serilog.Core;
+
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -8,9 +13,12 @@ public static class SeedDbUsers
 {
     // Add a private field to hold the IUserHelper instance
     private static IUserHelper _userHelper;
+    private static ILogger _logger;
 
     // Add a constructor to receive IUserHelper through dependency injection
-    public static void Initialize(IUserHelper userHelper)
+    public static void Initialize(
+        IUserHelper userHelper
+    )
     {
         _userHelper = userHelper;
     }
@@ -55,81 +63,134 @@ public static class SeedDbUsers
         string address,
         string password = "123456")
     {
-        var user = await _userHelper.GetUserByEmailAsync(email);
-
-        Console.WriteLine(
-            $"Seeding the user {firstName} {lastName} " +
-            $"with the email {email} and the role {role}.");
-
-        switch (user)
+        // Input validation
+        if (string.IsNullOrWhiteSpace(firstName) ||
+            string.IsNullOrWhiteSpace(lastName) ||
+            string.IsNullOrWhiteSpace(userName) ||
+            string.IsNullOrWhiteSpace(email) ||
+            string.IsNullOrWhiteSpace(phoneNumber) ||
+            string.IsNullOrWhiteSpace(role) ||
+            string.IsNullOrWhiteSpace(address))
         {
-            case null:
-            {
-                user = role switch
-                {
-                    "Student" => new User
-                    {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber,
-                        WasDeleted = false
-                    },
-                    "Teacher" => new User
-                    {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber,
-                        WasDeleted = false
-                    },
-                    "Functionary" => new User
-                    {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber,
-                        WasDeleted = false
-                    },
-                    "Admin" => new User
-                    {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber,
-                        WasDeleted = false
-                    },
-                    "SuperUser" => new User
-                    {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber,
-                        WasDeleted = false
-                    },
-                    _ => throw new InvalidOperationException(
-                        "The role is not valid")
-                };
-
-                var result = await _userHelper.AddUserAsync(user, password);
-
-                if (result != IdentityResult.Success)
-                    throw new InvalidOperationException(
-                        "Could not create the user in Seeder");
-                break;
-            }
+            throw new ArgumentException(
+                "One or more required parameters are missing or empty.");
         }
 
-        return user;
+        // Additional validation for email format and
+        // phone number format can be performed here.
+
+        // Validate email format
+        if (!IsValidEmail(email))
+        {
+            throw new ArgumentException("Invalid email format.");
+        }
+
+        // Validate phone number format
+        if (!IsValidPhoneNumber(phoneNumber))
+        {
+            throw new ArgumentException("Invalid phone number format.");
+        }
+
+
+        // Validate role
+        var user = await _userHelper.GetUserByEmailAsync(email);
+
+
+        if (user == null)
+        {
+            // Create a new user with common properties set outside the switch
+            var newUser = new User
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Address = address,
+                UserName = userName,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                WasDeleted = false
+            };
+
+            // Set role-specific properties inside the switch
+            switch (role)
+            {
+                case "SuperUser":
+                case "Admin":
+                case "Functionary":
+                case "Student":
+                case "Teacher":
+                case "Parent":
+                case "User":
+                    // Add any role-specific properties here
+                    break;
+
+                default:
+                    _logger.LogError(
+                        $"{nameof(User)} {firstName} {lastName} " +
+                        $"with email {email} and role {role}, " +
+                        "could not create the user in Seeder, " +
+                        $"because the role {role} is not valid.");
+
+                    throw new InvalidOperationException(
+                        $"The role {role} is not valid.");
+            }
+
+            // Hash the password before storing it
+            // var hashedPassword = HashPassword(password);
+            // var result =
+            //     await _userHelper.AddUserAsync(newUser, hashedPassword);
+
+            var result =
+                await _userHelper.AddUserAsync(newUser, password);
+
+
+            if (result != IdentityResult.Success)
+            {
+                _logger.LogError(
+                    $"{nameof(User)} {firstName} {lastName} " +
+                    $"with email {email} and role {role}, " +
+                    "could not create the user in Seeder.");
+
+                throw new InvalidOperationException(
+                    "Could not create the user in Seeder.");
+            }
+
+            // Log the user creation
+            _logger.LogInformation(
+                $"User {firstName} {lastName} " +
+                $"with email {email} and role {role} has been created.");
+
+            return newUser;
+        }
+        else
+        {
+            // Log that the user already exists
+            _logger.LogInformation(
+                $"User with email {email} already exists.");
+            return user;
+        }
+    }
+
+
+    private static bool IsValidEmail(string email)
+    {
+        // Simple email format validation using regular expression
+        // This is a basic example,
+        // and a more comprehensive validation can be used in a real application.
+        // The chosen regular expression may not cover all edge cases,
+        // but it's a good starting point.
+        const string emailPattern =
+            @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
+        return Regex.IsMatch(email, emailPattern);
+    }
+
+    private static bool IsValidPhoneNumber(string phoneNumber)
+    {
+        // Simple phone number format validation using regular expression
+        // This is a basic example,
+        // and the chosen regular expression may not cover all phone number formats.
+        // Depending on the specific format required,
+        // a more comprehensive regex pattern can be used.
+        const string phonePattern = @"^\+\d{1,3}\s?\(\d{1,}\)\s?\d{1,}-\d{1,}$";
+        return Regex.IsMatch(phoneNumber, phonePattern);
     }
 }

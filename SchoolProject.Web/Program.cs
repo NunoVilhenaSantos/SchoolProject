@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
@@ -263,9 +266,9 @@ builder.Services.AddAuthentication("CookieAuth")
     .AddCookie("CookieAuth",
         config =>
         {
-            config.Cookie.Name = "SuperShop.Cookie";
+            config.Cookie.Name = "SchoolProject.Web.Cookie";
             config.LoginPath = "/Home/Authenticate";
-            config.AccessDeniedPath = "/Home/Authenticate";
+            config.AccessDeniedPath = "/Home/AccessDenied";
         });
 
 
@@ -274,7 +277,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(15);
-    options.LoginPath = "/Account/NotAuthorized";
+    options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/NotAuthorized";
     options.SlidingExpiration = true;
 });
@@ -284,7 +287,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = _ => true;
+
     options.MinimumSameSitePolicy = SameSiteMode.None;
+
     options.ConsentCookie.IsEssential = true;
     options.ConsentCookie.Expiration = TimeSpan.FromDays(30);
     options.ConsentCookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -402,7 +407,58 @@ builder.Services.AddTransient<DatabaseConnectionVerifier>();
 
 
 // Add logging providers for debugging and application insights.
-builder.Services.AddLogging();
+
+// --------------------------------- --------------------------------------- //
+// Configuration type 1
+// --------------------------------- --------------------------------------- //
+// Log.Logger = new LoggerConfiguration()
+//
+//     // Set default minimum log level
+//     .MinimumLevel.Information()
+//
+//     // Set default minimum log level
+//     .MinimumLevel.Debug()
+//
+//     // Add console (Sink) as logging target
+//     .WriteTo.Console()
+//
+//     // Write logs to a file for warning and logs with a higher severity
+//     // Logs are written in JSON
+//     .WriteTo.File(new JsonFormatter(),
+//         ".\\data\\important-logs.json",
+//         restrictedToMinimumLevel: LogEventLevel.Warning)
+//
+//     // Add file (Sink) as logging target
+//     // Add a log file that will be replaced by a new log file each day
+//     .WriteTo.File(".\\data\\all-daily-.logs",
+//         rollingInterval: RollingInterval.Day)
+//
+//     // Create the actual logger
+//     .CreateLogger();
+//
+// builder.Services.AddLogging(cfg => { cfg.AddSerilog(); });
+// --------------------------------- --------------------------------------- //
+
+
+// --------------------------------- --------------------------------------- //
+// Configuration type 2
+// --------------------------------- --------------------------------------- //
+var serilogConfig =
+    builder.Configuration.GetSection("Serilog");
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(serilogConfig)
+    .CreateLogger();
+
+builder.Services.AddLogging(cfg =>
+{
+    cfg.AddSerilog(dispose: true); // Integrates Serilog as the logging provider
+});
+
+// --------------------------------- --------------------------------------- //
+
+// builder.Services.AddLogging();
+
 builder.Logging.AddDebug();
 builder.Logging.AddConsole();
 builder.Logging.AddEventSourceLogger();

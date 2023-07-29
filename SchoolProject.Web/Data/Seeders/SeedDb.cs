@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Helpers.Users;
 
@@ -8,6 +10,8 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDb
 {
+    private readonly ILogger<SeedDb> _logger;
+
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
@@ -19,6 +23,7 @@ public class SeedDb
     private readonly DataContextSqLite _dataContextSqLite;
 
     public SeedDb(
+        ILogger<SeedDb> logger,
         IUserHelper userHelper,
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
@@ -28,6 +33,8 @@ public class SeedDb
         DataContextSqLite dataContextSqLite
     )
     {
+        _logger = logger;
+
         _userHelper = userHelper;
         _userManager = userManager;
         _roleManager = roleManager;
@@ -56,10 +63,12 @@ public class SeedDb
         SeedDbUsers.Initialize(_userHelper);
         // SeedDbPersons.Initialize(_userHelper, _dataContextMsSql);
 
+
         // ------------------------------------------------------------------ //
         // adding roles for all users in the system
         // ------------------------------------------------------------------ //
         await SeedingRolesForUsers();
+
 
         // ------------------------------------------------------------------ //
         // adding the super users
@@ -80,10 +89,17 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding the Functionary user
+        // getting an admin to insert data that needs to have an user
         // ------------------------------------------------------------------ //
         var user = await _userHelper.GetUserByEmailAsync(
             "nuno.santos.26288@formandos.cinel.pt");
+
+
+        // ------------------------------------------------------------------ //
+        // adding countries and cities to the database
+        // ------------------------------------------------------------------ //
+        Debug.Assert(user != null, nameof(user) + " != null");
+        AddCountriesWithCitiesAndNationalities(user);
 
 
         // ------------------------------------------------------------------ //
@@ -150,7 +166,10 @@ public class SeedDb
                 CreatedBy = user
             }
         };
+
         await _dataContextMsSql.Genres.AddRangeAsync(genres);
+
+        await _dataContextMsSql.SaveChangesAsync();
     }
 
 
@@ -160,10 +179,12 @@ public class SeedDb
             "Nuno", "Vilhena Santos",
             "nunovilhenasantos@msn.com",
             "Calle Luna", "SuperUser", "Passw0rd");
+
         await SeedDbUsers.AddUsers(
             "Nuno", "Santos",
             "nuno.santos.26288@formandos.cinel.pt",
             "Calle Luna", "SuperUser", "Passw0rd");
+
         await SeedDbUsers.AddUsers(
             "Rafael", "Santos",
             "rafael.santos@cinel.pt",
@@ -216,8 +237,8 @@ public class SeedDb
         await CreateRoleAsync("Functionary");
         await CreateRoleAsync("Student");
         await CreateRoleAsync("Teacher");
-        await CreateRoleAsync("User");
         await CreateRoleAsync("Parent");
+        await CreateRoleAsync("User");
     }
 
 
@@ -235,5 +256,127 @@ public class SeedDb
     {
         // return await _roleManager.CreateAsync(new IdentityRole("Admin"));
         return await _roleManager.CreateAsync(new IdentityRole(role));
+    }
+
+
+    private void AddCountriesWithCitiesAndNationalities(User createdBy)
+    {
+        if (_dataContextMsSql.Countries.Any()) return;
+
+        var countryCityData = new Dictionary<string, List<string>>
+        {
+            {
+                "Angola", new List<string>
+                {
+                    "Luanda", "Lobito", "Benguela", "Lubango", "Huambo",
+                    "Namibe", "Lubango", "Alto Catumbela", "Cabinda", "Caxito",
+                    "Cuito", "Dundo", "Malanje", "Menongue", "Namibe",
+                    "N'dalatando", "Ondjiva", "Saurimo", "Soio", "Sumbe",
+                    "Uíge", "Xangongo",
+                }
+            },
+            {
+                "Portugal", new List<string>
+                {
+                    "Lisboa", "Porto", "Coimbra", "Faro", "Braga", "Aveiro",
+                    "Évora", "Funchal", "Viseu", "Viana do Castelo", "Beja",
+                    "Bragança", "Castelo Branco", "Guarda", "Leiria",
+                    "Portalegre", "Santarém", "Setúbal", "Vila Real", "Angra",
+                }
+            },
+            {
+                "Spain", new List<string>
+                {
+                    "Madrid", "Salamanca", "Sevilha", "Valencia", "Barcelona",
+                    "Bilbao", "Santiago de Compostela", "Toledo", "Córdoba",
+                    "Granada", "Málaga", "Zaragoza", "Alicante", "Cádiz",
+                }
+            },
+            {
+                "France", new List<string>
+                {
+                    "Paris", "Lyon", "Marselha", "Nante", "Estrasbourgo",
+                    "Bordeaux", "Toulouse", "Lille", "Nice", "Rennes",
+                    "Reims", "Saint-Étienne", "Toulon", "Le Havre",
+                }
+            },
+            {
+                "Brazil", new List<string>
+                {
+                    "Rio de Janeiro", "São Paulo", "Salvador", "Brasília",
+                    "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba",
+                    "Recife", "Porto Alegre", "Belém", "Goiânia", "Guarulhos",
+                }
+            },
+            {
+                "Cuba", new List<string>
+                {
+                    "Havana", "Santiago de Cuba", "Camagüey", "Holguín",
+                    "Guantánamo", "Santa Clara", "Las Tunas", "Bayamo",
+                    "Cienfuegos", "Pinar del Río", "Matanzas", "Ciego de Ávila",
+                }
+            },
+            {
+                "Mexico", new List<string>
+                {
+                    "Mexico City", "Guadalajara", "Monterrey", "Puebla",
+                    "Toluca", "Tijuana", "León", "Ciudad Juárez", "La Laguna",
+                    "San Luis Potosí", "Mérida", "Mexicali", "Aguascalientes",
+                    "Cuernavaca", "Acuña",
+                }
+            },
+            {
+                "Russia", new List<string>
+                {
+                    "Moscovo", "São Petersburgo", "Novosibirsk",
+                    "Ecaterimburgo", "Níjni Novgorod", "Samara", "Omsk",
+                    "Cazã", "Cheliabinsk", "Rostov do Don", "Ufá", "Volgogrado",
+                }
+            },
+        };
+
+        foreach (var countryEntry in countryCityData)
+        {
+            var countryName = countryEntry.Key;
+            var cityNames = countryEntry.Value;
+
+            if (_dataContextMsSql.Countries
+                .Any(c => c.Name == countryName))
+                continue;
+
+            var cities = CreateCities(cityNames, createdBy);
+            var nationality = new Nationality
+            {
+                Name = $"{countryName}na",
+                IdGuid = Guid.NewGuid(),
+                CreatedBy = createdBy
+            };
+            var country = new Country
+            {
+                Name = countryName,
+                Cities = cities,
+                WasDeleted = false,
+                Nationality = nationality,
+                IdGuid = Guid.NewGuid(),
+                CreatedBy = createdBy
+            };
+
+            _dataContextMsSql.Countries.Add(country);
+        }
+
+        _dataContextMsSql.SaveChanges();
+    }
+
+    private List<City> CreateCities(List<string> cityNames, User createdBy)
+    {
+        return cityNames.Select(
+            cityName => new City
+            {
+                Name = cityName,
+                WasDeleted = false,
+                IdGuid = Guid.NewGuid(),
+                CreatedBy = createdBy
+            }
+        ).ToList();
     }
 }

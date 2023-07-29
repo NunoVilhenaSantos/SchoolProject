@@ -122,7 +122,7 @@ public static class SeedDbPersons
             .FirstOrDefaultAsync(c => c.Name == "Portugal");
 
         var nationality = await _dataContextMssql.Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Português");
+            .FirstOrDefaultAsync(n => n.Name == "Portuguesa");
 
         var genre = await _dataContextMssql.Genres
             .FirstOrDefaultAsync(g => g.Name == "Female");
@@ -132,13 +132,13 @@ public static class SeedDbPersons
 
         var countryOfNationalityNationality = await _dataContextMssql
             .Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Português");
+            .FirstOrDefaultAsync(n => n.Name == "Portuguesa");
 
         var birthplace = await _dataContextMssql.Countries
             .FirstOrDefaultAsync(c => c.Name == "França");
 
         var birthplaceNationality = await _dataContextMssql.Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Françês");
+            .FirstOrDefaultAsync(n => n.Name == "Françesa");
 
 
         var studentWithRole =
@@ -160,91 +160,21 @@ public static class SeedDbPersons
                     Address = addressFull,
                     PostalCode = postalCode,
 
-                    City = city ?? new City
-                    {
-                        Name = "Porto",
-                        // Id = 0,
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
-                    Country = country ?? new Country
-                    {
-                        Name = "Portugal",
-                        Nationality = nationality ?? new Nationality
-                        {
-                            Name = "Português",
-                            IdGuid = new Guid(),
-                            WasDeleted = false,
-                            CreatedAt = DateTime.UtcNow,
-                            CreatedBy = user
-                        },
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
+                    City = city,
+                    Country = country,
                     MobilePhone = cellPhone,
                     Email = email,
                     Active = true,
 
-                    Genre = genre ?? new Genre
-                    {
-                        Name = "Female",
-                        IdGuid = new Guid(),
-                        WasDeleted = false,
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        // TODO: Set the UpdatedAt property to null
-                        // Set the UpdatedAt property to the current date and time
-                        UpdatedAt = DateTime.UtcNow
-                    },
-
+                    Genre = genre,
                     DateOfBirth = dateOfBirth,
                     IdentificationNumber = identificationNumber,
                     IdentificationType = "CC",
                     ExpirationDateIdentificationNumber = default,
                     TaxIdentificationNumber = vatNumber,
 
-                    CountryOfNationality = countryOfNationality ?? new Country
-                    {
-                        Name = "Portugal",
-                        Nationality =
-                            countryOfNationalityNationality ?? new Nationality
-                            {
-                                Name = "Português",
-                                IdGuid = new Guid(),
-                                WasDeleted = false,
-                                CreatedAt =
-                                    DateTime.UtcNow,
-                                CreatedBy = user
-                            },
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
-                    Birthplace = birthplace ?? new Country
-                    {
-                        Name = "França",
-                        Nationality = birthplaceNationality ?? new Nationality
-                        {
-                            Name = "Françês",
-                            IdGuid = new Guid(),
-                            WasDeleted = false,
-                            CreatedAt = DateTime.UtcNow,
-                            CreatedBy = user
-                        },
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
+                    CountryOfNationality = countryOfNationality,
+                    Birthplace = birthplace,
                     EnrollDate = DateTime.UtcNow,
                     // Id = 0,
                     IdGuid = new Guid(),
