@@ -196,11 +196,11 @@ builder.Services.AddIdentity<User, IdentityRole>(
             cfg.User.RequireUniqueEmail = true;
 
             // Password settings.
-            cfg.Password.RequireDigit = false;
-            cfg.Password.RequiredLength = 6;
+            cfg.Password.RequireDigit = true;
+            cfg.Password.RequiredLength = 9;
             cfg.Password.RequiredUniqueChars = 0;
-            cfg.Password.RequireUppercase = false;
-            cfg.Password.RequireLowercase = false;
+            cfg.Password.RequireUppercase = true;
+            cfg.Password.RequireLowercase = true;
             cfg.Password.RequireNonAlphanumeric = false;
 
             // SignIn settings.

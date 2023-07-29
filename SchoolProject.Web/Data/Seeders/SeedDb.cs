@@ -11,6 +11,8 @@ namespace SchoolProject.Web.Data.Seeders;
 public class SeedDb
 {
     private readonly ILogger<SeedDb> _logger;
+    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
+    private readonly ILogger<SeedDbPersons> _loggerSeedDbPersons;
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
@@ -24,6 +26,8 @@ public class SeedDb
 
     public SeedDb(
         ILogger<SeedDb> logger,
+        ILogger<SeedDbUsers> loggerSeedDbUsers,
+        ILogger<SeedDbPersons> loggerSeedDbPersons,
         IUserHelper userHelper,
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
@@ -34,6 +38,8 @@ public class SeedDb
     )
     {
         _logger = logger;
+        _loggerSeedDbUsers = loggerSeedDbUsers;
+        _loggerSeedDbPersons = loggerSeedDbPersons;
 
         _userHelper = userHelper;
         _userManager = userManager;
@@ -60,7 +66,7 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // initialize SeedDbUsers with the user helper before been used
         // ------------------------------------------------------------------ //
-        SeedDbUsers.Initialize(_userHelper);
+        SeedDbUsers.Initialize(_userHelper, _loggerSeedDbUsers);
         // SeedDbPersons.Initialize(_userHelper, _dataContextMsSql);
 
 
@@ -113,7 +119,9 @@ public class SeedDb
         // before been used
         // ------------------------------------------------------------------ //
         // SeedDbUsers.Initialize(_userHelper);
-        SeedDbPersons.Initialize(_userHelper, _dataContextMsSql);
+        SeedDbPersons.Initialize(
+            _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
+
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //

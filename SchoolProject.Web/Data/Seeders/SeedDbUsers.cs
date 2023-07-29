@@ -9,17 +9,19 @@ using Serilog.Core;
 
 namespace SchoolProject.Web.Data.Seeders;
 
-public static class SeedDbUsers
+public class SeedDbUsers
 {
     // Add a private field to hold the IUserHelper instance
     private static IUserHelper _userHelper;
-    private static ILogger _logger;
+    private static ILogger<SeedDbUsers> _logger;
+
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
-        IUserHelper userHelper
+        IUserHelper userHelper, ILogger<SeedDbUsers> logger
     )
     {
+        _logger = logger;
         _userHelper = userHelper;
     }
 
@@ -28,17 +30,22 @@ public static class SeedDbUsers
         string firstName, string lastName,
         string email,
         string address,
-        string role, string password = "123456"
+        string role, string password = "Passw0rd"
     )
     {
         var random = new Random();
         var userSplit = email.Split(
             '.', StringSplitOptions.RemoveEmptyEntries);
 
-        var document = random.Next(100000, 999999999).ToString();
-        var fixedPhone = random.Next(1000000, 99999999).ToString();
-        var cellPhone = random.Next(1000000, 99999999).ToString();
-        var fullAddress = address + ", " + random.Next(1, 9999);
+        var document =
+            random.Next(100_000_000, 999_999_999).ToString();
+        var fixedPhone =
+            random.Next(100_000_000, 999_999_999).ToString();
+        var cellPhone =
+            random.Next(100_000_000, 999_999_999).ToString();
+
+        var fullAddress =
+            address + ", " + random.Next(1, 9_999);
 
         Console.WriteLine(
             $"Seeding the user {firstName} {lastName} with the email {email}");
@@ -178,8 +185,9 @@ public static class SeedDbUsers
         // and a more comprehensive validation can be used in a real application.
         // The chosen regular expression may not cover all edge cases,
         // but it's a good starting point.
-        const string emailPattern =
-            @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
+
+        const string emailPattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,})+)$";
+
         return Regex.IsMatch(email, emailPattern);
     }
 
@@ -190,7 +198,10 @@ public static class SeedDbUsers
         // and the chosen regular expression may not cover all phone number formats.
         // Depending on the specific format required,
         // a more comprehensive regex pattern can be used.
-        const string phonePattern = @"^\+\d{1,3}\s?\(\d{1,}\)\s?\d{1,}-\d{1,}$";
+
+        // const string phonePattern = @"^\+\d{9,13}$";
+        const string phonePattern = @"^\d{9,13}$";
+
         return Regex.IsMatch(phoneNumber, phonePattern);
     }
 }

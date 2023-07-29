@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SchoolProject.Web.Data.DataContexts;
@@ -10,19 +11,21 @@ using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 
-public static class SeedDbPersons
+public class SeedDbPersons
 {
     private static Random _random;
     private static IUserHelper _userHelper;
+    private static ILogger<SeedDbPersons> _logger;
     private static DataContextMsSql _dataContextMssql;
 
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
-        IUserHelper userHelper,
+        IUserHelper userHelper, ILogger<SeedDbPersons> logger,
         DataContextMsSql dataContextMssql
     )
     {
+        _logger = logger;
         _random = new Random();
         _userHelper = userHelper;
         _dataContextMssql = dataContextMssql;
@@ -96,23 +99,34 @@ public static class SeedDbPersons
 
 
     private static async Task AddStudent(
-        string firstName, string lastName, string address, User user,
-        string userRole = "Student", string password = "123456")
+        string firstName, string lastName, string address,
+        User user,
+        string userRole = "Student", string password = "Passw0rd")
     {
-        var document = _random.Next(100000, 999999999).ToString();
-        var fixedPhone = _random.Next(1000000, 99999999).ToString();
-        var cellPhone = _random.Next(1000000, 99999999).ToString();
-        var addressFull = address + ", " + _random.Next(1, 9999);
-        var email = $"{firstName}.{lastName}@mail.pt";
-        var identificationNumber = _random.Next(100000, 999999999).ToString();
-        var vatNumber = _random.Next(100000, 999999999).ToString();
+        var document =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var fixedPhone =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var cellPhone =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var addressFull = address + ", " + _random.Next(1, 9_999);
+
+        // Generate a valid email address based on firstName and lastName
+        string email = GenerateValidEmail(firstName, lastName);
+
+        var identificationNumber =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var vatNumber =
+            _random.Next(100_000_000, 999_999_999).ToString();
 
         var dateOfBirth = GenerateRandomDateOfBirth();
 
         var postalCode =
-            _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
-
-        // const string userRole = "Student";
+            _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
 
 
         var city = await _dataContextMssql.Cities
@@ -195,22 +209,32 @@ public static class SeedDbPersons
     private static async Task AddTeacher(
         string firstName, string lastName, string address,
         User user,
-        string userRole = "Teacher", string password = "123456")
+        string userRole = "Teacher", string password = "Passw0rd")
     {
-        var document = _random.Next(100000, 999999999).ToString();
-        var fixedPhone = _random.Next(1000000, 99999999).ToString();
-        var cellPhone = _random.Next(1000000, 99999999).ToString();
-        var addressFull = address + ", " + _random.Next(1, 9999);
-        var email = $"{firstName}.{lastName}@mail.pt";
-        var identificationNumber = _random.Next(100000, 999999999).ToString();
-        var vatNumber = _random.Next(100000, 999999999).ToString();
+        var document =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var fixedPhone =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var cellPhone =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var addressFull = address + ", " + _random.Next(1, 9_999);
+
+        // Generate a valid email address based on firstName and lastName
+        var email = GenerateValidEmail(firstName, lastName);
+
+        var identificationNumber =
+            _random.Next(100_000_000, 999_999_999).ToString();
+
+        var vatNumber =
+            _random.Next(100_000_000, 999_999_999).ToString();
 
         var dateOfBirth = GenerateRandomDateOfBirth();
 
         var postalCode =
-            _random.Next(1000, 9999) + "-" + _random.Next(100, 999);
-
-        // const string userRole = "Teacher";
+            _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
 
 
         var city = await _dataContextMssql.Cities
@@ -252,92 +276,27 @@ public static class SeedDbPersons
                         document,
                         addressFull
                     ),
+
                     FirstName = firstName,
                     LastName = lastName,
                     Address = addressFull,
                     PostalCode = postalCode,
 
-                    City = city ?? new City
-                    {
-                        Name = "Porto",
-                        // Id = 0,
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
-                    Country = country ?? new Country
-                    {
-                        Name = "Portugal",
-                        Nationality = nationality ?? new Nationality
-                        {
-                            Name = "Português",
-                            IdGuid = new Guid(),
-                            WasDeleted = false,
-                            CreatedAt = DateTime.UtcNow,
-                            CreatedBy = user
-                        },
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
+                    City = city,
+                    Country = country,
                     MobilePhone = cellPhone,
                     Email = email,
                     Active = true,
 
-                    Genre = genre ?? new Genre
-                    {
-                        Name = "Female",
-                        IdGuid = new Guid(),
-                        WasDeleted = false,
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user
-                    },
-
+                    Genre = genre,
                     DateOfBirth = dateOfBirth,
                     IdentificationNumber = identificationNumber,
                     IdentificationType = "BI",
                     ExpirationDateIdentificationNumber = default,
                     TaxIdentificationNumber = vatNumber,
 
-                    CountryOfNationality = countryOfNationality ?? new Country
-                    {
-                        Name = "Portugal",
-                        Nationality =
-                            countryOfNationalityNationality ?? new Nationality
-                            {
-                                Name = "Português",
-                                IdGuid = new Guid(),
-                                WasDeleted = false,
-                                CreatedAt = DateTime.UtcNow,
-                                CreatedBy = user
-                            },
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
-                    Birthplace = birthplace ?? new Country
-                    {
-                        Name = "França",
-                        Nationality = birthplaceNationality ?? new Nationality
-                        {
-                            Name = "Françês",
-                            IdGuid = new Guid(),
-                            WasDeleted = false,
-                            CreatedAt = DateTime.UtcNow,
-                            CreatedBy = user
-                        },
-                        IdGuid = new Guid(),
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = user,
-                        WasDeleted = false
-                    },
-
+                    CountryOfNationality = countryOfNationality,
+                    Birthplace = birthplace,
                     EnrollDate = DateTime.UtcNow,
                     // Id = 0,
                     IdGuid = new Guid(),
@@ -366,6 +325,27 @@ public static class SeedDbPersons
 
         Console.WriteLine(new DateTime(year, month, day));
         return new DateTime(year, month, day);
+    }
+
+
+    private static string GenerateValidEmail(string firstName, string lastName)
+    {
+        //  Define a regular expression for repeated words.
+        var pattern = @"[^0-9a-zA-Z]+";
+
+        // Remove any spaces and special characters from the names
+        var sanitizedFirstName =
+            Regex.Replace(firstName, pattern, "");
+        var sanitizedLastName =
+            Regex.Replace(lastName, pattern, "");
+
+        // Concatenate the sanitized names to create the email address
+        var email = $"{sanitizedFirstName}.{sanitizedLastName}@mail.pt";
+
+        // You can also convert the email to lowercase, if desired
+        // email = email.ToLower();
+
+        return email;
     }
 
 
