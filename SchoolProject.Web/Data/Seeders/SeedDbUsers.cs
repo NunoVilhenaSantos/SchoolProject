@@ -68,7 +68,7 @@ public class SeedDbUsers
         string phoneNumber, string role,
         string document,
         string address,
-        string password = "123456")
+        string password = "Passw0rd")
     {
         // Input validation
         if (string.IsNullOrWhiteSpace(firstName) ||

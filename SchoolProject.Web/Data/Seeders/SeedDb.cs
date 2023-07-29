@@ -343,6 +343,7 @@ public class SeedDb
             },
         };
 
+
         foreach (var countryEntry in countryCityData)
         {
             var countryName = countryEntry.Key;
@@ -353,9 +354,10 @@ public class SeedDb
                 continue;
 
             var cities = CreateCities(cityNames, createdBy);
+            var nationalityName = GetNationalityName(countryName);
             var nationality = new Nationality
             {
-                Name = $"{countryName}na",
+                Name = nationalityName,
                 IdGuid = Guid.NewGuid(),
                 CreatedBy = createdBy
             };
@@ -375,6 +377,7 @@ public class SeedDb
         _dataContextMsSql.SaveChanges();
     }
 
+
     private List<City> CreateCities(List<string> cityNames, User createdBy)
     {
         return cityNames.Select(
@@ -386,5 +389,39 @@ public class SeedDb
                 CreatedBy = createdBy
             }
         ).ToList();
+    }
+
+
+    private static string GetNationalityNameInPortugues(string countryName)
+    {
+        return countryName switch
+        {
+            "Angola" => "Angolana",
+            "Portugal" => "Portuguesa",
+            "Spain" => "Espanhola",
+            "France" => "Francesa",
+            "Brazil" => "Brasileira",
+            "Cuba" => "Cubana",
+            "Mexico" => "Mexicana",
+            "Russia" => "Russa",
+            _ => countryName + "n"
+        };
+    }
+
+
+    private static string GetNationalityName(string countryName)
+    {
+        return countryName switch
+        {
+            "Angola" => "Angolan",
+            "Portugal" => "Portuguese",
+            "Spain" => "Spanish",
+            "France" => "French",
+            "Brazil" => "Brazilian",
+            "Cuba" => "Cuban",
+            "Mexico" => "Mexican",
+            "Russia" => "Russian",
+            _ => countryName + "n"
+        };
     }
 }

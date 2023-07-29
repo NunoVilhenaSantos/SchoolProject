@@ -32,281 +32,260 @@ public class SeedDbPersons
     }
 
 
-    internal static async Task AddingData()
+    public static async Task AddingData()
     {
-        var user = await _userHelper.GetUserByEmailAsync(
-            "nuno.santos.26288@formandos.cinel.pt");
-
+        var user =
+            await _userHelper.GetUserByEmailAsync(
+                "nuno.santos.26288@formandos.cinel.pt");
 
         Console.WriteLine(
             "Seeding the users table with students and teachers...");
 
-
         if (!_dataContextMssql.Students.Any())
         {
-            await AddStudent(
-                "Student 1", "Zuluaga", "Calle Luna", user);
-            await AddStudent(
-                "Student 2", "Alvenaria", "Calle Sol", user);
-            await AddStudent(
-                "Student 3", "Domingues", "Calle Luna", user);
-            await AddStudent(
-                "Student 4", "Alvarez", "Calle Sol", user);
-            await AddStudent(
-                "Student 5", "Liu", "Calle Luna", user);
-            await AddStudent(
-                "Student 6", "Arriaga", "Calle Sol", user);
-            await AddStudent(
-                "Student 7", "Zuluaga", "Calle Luna", user);
-            await AddStudent(
-                "Student 8", "Guevara", "Calle Sol", user);
-            await AddStudent(
-                "Student 9", "Che", "Calle Luna", user);
-            await AddStudent(
-                "Student 10", "Arroz", "Calle Sol", user);
+            await AddStudents(user);
         }
-
-        user = await _userHelper.GetUserByEmailAsync(
-            "nuno.santos.26288@formandos.cinel.pt");
-
 
         if (!_dataContextMssql.Teachers.Any())
         {
-            await AddTeacher(
-                "Roberto", "Rossellini", "Calle Luna", user);
-            await AddTeacher(
-                "Giuseppe", "Tornatore", "Calle Luna", user);
-            await AddTeacher(
-                "Federico", "Fellini", "Rimini", user);
-            await AddTeacher(
-                "Ingrid", "Bergman", "Calle Sol", user);
-            await AddTeacher(
-                "Gina", "Lollobrigida", "Calle Sol", user);
-            await AddTeacher(
-                "Isabella", "Rossellini", "Calle Luna", user);
-            await AddTeacher(
-                "Monica", "Bellucci", "Calle Sol", user);
-            await AddTeacher(
-                "Giovanna", "Ralli", "Calle Luna", user);
-            await AddTeacher(
-                "Valeria", "Golino", "Calle Sol", user);
-            await AddTeacher(
-                "Sophia", "Loren", "Calle Luna", user);
-            await AddTeacher(
-                "Claudia", "Cardinale", "Calle Sol", user);
+            await AddTeachers(user);
         }
     }
 
 
-    private static async Task AddStudent(
-        string firstName, string lastName, string address,
-        User user,
-        string userRole = "Student", string password = "Passw0rd")
+    private static async Task AddStudents(User user)
     {
-        var document =
-            _random.Next(100_000_000, 999_999_999).ToString();
+        var students = new List<Student>();
 
-        var fixedPhone =
-            _random.Next(100_000_000, 999_999_999).ToString();
+        var city =
+            await _dataContextMssql.Cities
+                .FirstOrDefaultAsync(c => c.Name == "Porto");
 
-        var cellPhone =
-            _random.Next(100_000_000, 999_999_999).ToString();
+        var country =
+            await _dataContextMssql.Countries
+                .FirstOrDefaultAsync(c => c.Name == "Portugal");
 
-        var addressFull = address + ", " + _random.Next(1, 9_999);
+        var countryOfNationality =
+            await _dataContextMssql.Countries
+                .Include(c => c.Nationality.Name == "Francesa")
+                .FirstOrDefaultAsync();
 
-        // Generate a valid email address based on firstName and lastName
-        string email = GenerateValidEmail(firstName, lastName);
-
-        var identificationNumber =
-            _random.Next(100_000_000, 999_999_999).ToString();
-
-        var vatNumber =
-            _random.Next(100_000_000, 999_999_999).ToString();
-
-        var dateOfBirth = GenerateRandomDateOfBirth();
-
-        var postalCode =
-            _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
+        var birthplace =
+            await _dataContextMssql.Countries
+                .FirstOrDefaultAsync(c => c.Name == "França");
 
 
-        var city = await _dataContextMssql.Cities
-            .FirstOrDefaultAsync(c => c.Name == "Porto");
+        var genre =
+            await _dataContextMssql.Genres
+                .FirstOrDefaultAsync(g => g.Name == "Female");
 
-        var country = await _dataContextMssql.Countries
-            .FirstOrDefaultAsync(c => c.Name == "Portugal");
+        for (var i = 1; i <= 10; i++)
+        {
+            var firstName = "Student " + i;
+            var lastName = "Lastname " + i;
 
-        var nationality = await _dataContextMssql.Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Portuguesa");
+            // Generate a valid email address based on firstName and lastName
+            var email = GenerateValidEmail(firstName, lastName);
 
-        var genre = await _dataContextMssql.Genres
-            .FirstOrDefaultAsync(g => g.Name == "Female");
+            var document =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var fixedPhone =
+                _random.Next(100_000_000, 999_999_999).ToString();
 
-        var countryOfNationality = await _dataContextMssql.Countries
-            .FirstOrDefaultAsync(c => c.Name == "Portugal");
+            var cellPhone =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var address = "address " + i + ", " + _random.Next(1, 9_999);
+            var idNumber =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var vatNumber =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var postalCode =
+                _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
+            var dateOfBirth = GenerateRandomDateOfBirth();
 
-        var countryOfNationalityNationality = await _dataContextMssql
-            .Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Portuguesa");
+            var student = await CreateStudent(
+                firstName, lastName, address, email, postalCode,
+                cellPhone, dateOfBirth, idNumber, vatNumber,
+                user, city, country, countryOfNationality, birthplace, genre);
 
-        var birthplace = await _dataContextMssql.Countries
-            .FirstOrDefaultAsync(c => c.Name == "França");
+            students.Add(student);
+        }
 
-        var birthplaceNationality = await _dataContextMssql.Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Françesa");
+        await _dataContextMssql.Students.AddRangeAsync(students);
 
-
-        var studentWithRole =
-            _dataContextMssql.Students.Add(new Student
-                {
-                    User = await SeedDbUsers.VerifyUserAsync(
-                        firstName,
-                        lastName,
-                        email,
-                        email,
-                        fixedPhone,
-                        userRole,
-                        document,
-                        addressFull
-                    ),
-
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Address = addressFull,
-                    PostalCode = postalCode,
-
-                    City = city,
-                    Country = country,
-                    MobilePhone = cellPhone,
-                    Email = email,
-                    Active = true,
-
-                    Genre = genre,
-                    DateOfBirth = dateOfBirth,
-                    IdentificationNumber = identificationNumber,
-                    IdentificationType = "CC",
-                    ExpirationDateIdentificationNumber = default,
-                    TaxIdentificationNumber = vatNumber,
-
-                    CountryOfNationality = countryOfNationality,
-                    Birthplace = birthplace,
-                    EnrollDate = DateTime.UtcNow,
-                    // Id = 0,
-                    IdGuid = new Guid(),
-                    CreatedAt = DateTime.UtcNow,
-                    CreatedBy = user,
-
-                    // todo: Set the UpdatedAt property to null
-                    // the 'UpdatedAt' property
-                    UpdatedAt = DateTime.UtcNow
-                }
-            );
-
-
-        await StoreStudentsOrTeachersWithRoles(studentWithRole, userRole);
+        await _dataContextMssql.SaveChangesAsync();
     }
 
 
-    private static async Task AddTeacher(
-        string firstName, string lastName, string address,
-        User user,
-        string userRole = "Teacher", string password = "Passw0rd")
+    private static async Task<Student> CreateStudent(
+        string firstName, string lastName, string address, string email,
+        string postalCode, string cellPhone, DateTime dateOfBirth,
+        string idNumber, string vatNumber,
+        User user, City city, Country country,
+        Country countryOfNationality, Country birthplace, Genre genre)
     {
-        var document =
-            _random.Next(100_000_000, 999_999_999).ToString();
-
-        var fixedPhone =
-            _random.Next(100_000_000, 999_999_999).ToString();
-
-        var cellPhone =
-            _random.Next(100_000_000, 999_999_999).ToString();
-
-        var addressFull = address + ", " + _random.Next(1, 9_999);
-
-        // Generate a valid email address based on firstName and lastName
-        var email = GenerateValidEmail(firstName, lastName);
-
-        var identificationNumber =
-            _random.Next(100_000_000, 999_999_999).ToString();
-
-        var vatNumber =
-            _random.Next(100_000_000, 999_999_999).ToString();
-
-        var dateOfBirth = GenerateRandomDateOfBirth();
-
-        var postalCode =
-            _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
-
-
-        var city = await _dataContextMssql.Cities
-            .FirstOrDefaultAsync(c => c.Name == "Porto");
-
-        var country = await _dataContextMssql.Countries
-            .FirstOrDefaultAsync(c => c.Name == "Portugal");
-
-        var nationality = await _dataContextMssql.Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Português");
-
-        var genre = await _dataContextMssql.Genres
-            .FirstOrDefaultAsync(g => g.Name == "Female");
-
-        var countryOfNationality = await _dataContextMssql.Countries
-            .FirstOrDefaultAsync(c => c.Name == "Portugal");
-
-        var countryOfNationalityNationality = await _dataContextMssql
-            .Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Português");
-
-        var birthplace = await _dataContextMssql.Countries
-            .FirstOrDefaultAsync(c => c.Name == "França");
-
-        var birthplaceNationality = await _dataContextMssql.Nationalities
-            .FirstOrDefaultAsync(n => n.Name == "Françês");
+        // Create a student object
+        var student = new Student
+        {
+            User = await GetOrCreateUserAsync(
+                firstName, lastName,
+                email,
+                user),
+            FirstName = firstName,
+            LastName = lastName,
+            Address = address,
+            PostalCode = postalCode,
+            City = city,
+            Country = country,
+            MobilePhone = cellPhone,
+            Email = email,
+            Active = true,
+            Genre = genre,
+            DateOfBirth = dateOfBirth,
+            IdentificationNumber = idNumber,
+            IdentificationType = "C/C",
+            ExpirationDateIdentificationNumber =
+                DateTime.Now.ToUniversalTime().AddYears(20),
+            TaxIdentificationNumber = vatNumber,
+            CountryOfNationality = countryOfNationality,
+            Birthplace = birthplace,
+            EnrollDate = DateTime.Now.ToUniversalTime(),
+            IdGuid = default,
+            CreatedBy = user,
+        };
 
 
-        var teacherWithRole =
-            _dataContextMssql.Teachers.Add(new Teacher
-                {
-                    User = await SeedDbUsers.VerifyUserAsync(
-                        firstName,
-                        lastName,
-                        email,
-                        email,
-                        fixedPhone,
-                        userRole,
-                        document,
-                        addressFull
-                    ),
-
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Address = addressFull,
-                    PostalCode = postalCode,
-
-                    City = city,
-                    Country = country,
-                    MobilePhone = cellPhone,
-                    Email = email,
-                    Active = true,
-
-                    Genre = genre,
-                    DateOfBirth = dateOfBirth,
-                    IdentificationNumber = identificationNumber,
-                    IdentificationType = "BI",
-                    ExpirationDateIdentificationNumber = default,
-                    TaxIdentificationNumber = vatNumber,
-
-                    CountryOfNationality = countryOfNationality,
-                    Birthplace = birthplace,
-                    EnrollDate = DateTime.UtcNow,
-                    // Id = 0,
-                    IdGuid = new Guid(),
-                    CreatedAt = DateTime.UtcNow,
-                    CreatedBy = user
-                }
-            );
+        return student;
+    }
 
 
-        await StoreStudentsOrTeachersWithRoles(teacherWithRole, userRole);
+    private static async Task<User> GetOrCreateUserAsync(
+        string firstName, string lastName, string email, User user)
+    {
+        var existingUser =
+            await _dataContextMssql.Users.FirstOrDefaultAsync(u =>
+                u.Email == email);
+
+        // User already exists, return the existing user
+        if (existingUser != null) return existingUser;
+
+        // User doesn't exist, create a new user
+        var newUser = await SeedDbUsers.VerifyUserAsync(
+            firstName, lastName,
+            email, email,
+            "FixedPhone", "Student",
+            "Document", "Address");
+
+        // Add the new user to the context
+        _dataContextMssql.Users.Add(newUser);
+
+        return newUser;
+    }
+
+
+    private static async Task AddTeachers(User user)
+    {
+        var teachers = new List<Teacher>();
+
+        var city =
+            await _dataContextMssql.Cities
+                .FirstOrDefaultAsync(c => c.Name == "Porto");
+
+        var country =
+            await _dataContextMssql.Countries
+                .FirstOrDefaultAsync(c => c.Name == "Portugal");
+
+        var countryOfNationality =
+            await _dataContextMssql.Countries
+                .Include(c => c.Nationality.Name == "Francesa")
+                .FirstOrDefaultAsync();
+
+        var birthplace =
+            await _dataContextMssql.Countries
+                .FirstOrDefaultAsync(c => c.Name == "França");
+
+
+        var genre =
+            await _dataContextMssql.Genres
+                .FirstOrDefaultAsync(g => g.Name == "Female");
+
+        for (var i = 1; i <= 10; i++)
+        {
+            var firstName = "Teacher " + i;
+            var lastName = "Lastname " + i;
+
+            // Generate a valid email address based on firstName and lastName
+            var email = GenerateValidEmail(firstName, lastName);
+
+            var document =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var fixedPhone =
+                _random.Next(100_000_000, 999_999_999).ToString();
+
+            var cellPhone =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var address = "address " + i + ", " + _random.Next(1, 9_999);
+            var idNumber =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var vatNumber =
+                _random.Next(100_000_000, 999_999_999).ToString();
+            var postalCode =
+                _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
+            var dateOfBirth = GenerateRandomDateOfBirth();
+
+            var student = await CreateTeacher(
+                firstName, lastName, address, email, postalCode,
+                cellPhone, dateOfBirth, idNumber, vatNumber,
+                user, city, country, countryOfNationality, birthplace, genre);
+
+            teachers.Add(student);
+        }
+
+        await _dataContextMssql.Teachers.AddRangeAsync(teachers);
+
+        await _dataContextMssql.SaveChangesAsync();
+    }
+
+
+    private static async Task<Teacher> CreateTeacher(
+        string firstName, string lastName, string address, string email,
+        string postalCode, string cellPhone, DateTime dateOfBirth,
+        string idNumber, string vatNumber,
+        User user, City city, Country country,
+        Country countryOfNationality, Country birthplace, Genre genre)
+    {
+        // Create a student object
+        var teacher = new Teacher
+        {
+            User = await GetOrCreateUserAsync(
+                firstName, lastName,
+                email,
+                user),
+            FirstName = firstName,
+            LastName = lastName,
+            Address = address,
+            PostalCode = postalCode,
+            City = city,
+            Country = country,
+            MobilePhone = cellPhone,
+            Email = email,
+            Active = true,
+            Genre = genre,
+            DateOfBirth = dateOfBirth,
+            IdentificationNumber = idNumber,
+            IdentificationType = "C/C",
+            ExpirationDateIdentificationNumber =
+                DateTime.Now.ToUniversalTime().AddYears(20),
+            TaxIdentificationNumber = vatNumber,
+            CountryOfNationality = countryOfNationality,
+            Birthplace = birthplace,
+            EnrollDate = DateTime.Now.ToUniversalTime(),
+            IdGuid = default,
+            CreatedBy = user,
+        };
+
+
+        return teacher;
     }
 
 
