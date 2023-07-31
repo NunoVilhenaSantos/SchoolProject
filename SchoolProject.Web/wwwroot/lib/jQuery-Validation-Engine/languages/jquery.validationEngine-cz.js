@@ -1,8 +1,8 @@
-(function($){
-    $.fn.validationEngineLanguage = function(){
+(function ($) {
+    $.fn.validationEngineLanguage = function () {
     };
     $.validationEngineLanguage = {
-        newLang: function(){
+        newLang: function () {
             $.validationEngineLanguage.allRules = {
                 "required": { // Add your regex rules here, you can take telephone as an example
                     "regex": "none",
@@ -10,8 +10,8 @@
                     "alertTextCheckboxMultiple": "* Prosím vyberte jednu možnost",
                     "alertTextCheckboxe": "* Tato položka je povinná"
                 },
-                 "requiredInFunction": { 
-                    "func": function(field, rules, i, options){
+                "requiredInFunction": {
+                    "func": function (field, rules, i, options) {
                         return (field.val() == "test") ? true : false;
                     },
                     "alertText": "* Pole se musí rovnat test"
@@ -26,7 +26,7 @@
                     "alertText": "* Maximálně ",
                     "alertText2": " znaky"
                 },
-				"groupRequired": {
+                "groupRequired": {
                     "regex": "none",
                     "alertText": "* Musíte zadat jedno z nasledujících polí"
                 },
@@ -45,7 +45,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Datum po "
-                },	
+                },
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Počet vybraných položek přesáhl limit"
@@ -149,7 +149,7 @@
                     "alertText": "* Prosím napište HELLO"
                 }
             };
-            
+
         }
     };
     $.validationEngineLanguage.newLang();

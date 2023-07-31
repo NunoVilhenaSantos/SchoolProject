@@ -80,23 +80,19 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
                 entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
 
             if (idGuidProperty != null)
-            {
                 // Configura a propriedade "IdGuid" para ser gerada automaticamente
                 modelBuilder.Entity(entityType.ClrType)
                     .Property("IdGuid")
                     .ValueGeneratedOnAdd()
                     .HasDefaultValueSql("(UUID())");
-
-                // Configura a propriedade "IdGuid" para ser do tipo binary(16) com valor padrão UUID_TO_BIN(UUID()) e NOT NULL
-                //modelBuilder.Entity(entityType.ClrType)
-                //    // Use byte[] to represent 16-byte binary
-                //    .Property<byte[]>("IdGuid")
-                //    // Set the column type to binary(16)
-                //    .HasColumnType("binary(16)")
-                //    .ValueGeneratedOnAdd()
-                //    .HasDefaultValueSql("(UUID_TO_BIN(UUID()))");
-                    
-            }
+            // Configura a propriedade "IdGuid" para ser do tipo binary(16) com valor padrão UUID_TO_BIN(UUID()) e NOT NULL
+            //modelBuilder.Entity(entityType.ClrType)
+            //    // Use byte[] to represent 16-byte binary
+            //    .Property<byte[]>("IdGuid")
+            //    // Set the column type to binary(16)
+            //    .HasColumnType("binary(16)")
+            //    .ValueGeneratedOnAdd()
+            //    .HasDefaultValueSql("(UUID_TO_BIN(UUID()))");
         }
         // ------------------------------------------------------------------ //
 

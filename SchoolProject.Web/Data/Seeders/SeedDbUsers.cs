@@ -1,11 +1,7 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
-using Org.BouncyCastle.Crypto.Generators;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Helpers.Users;
-using Serilog.Core;
-
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -61,7 +57,7 @@ public class SeedDbUsers
     }
 
 
-    internal static async Task<User> VerifyUserAsync(
+    public static async Task<User> VerifyUserAsync(
         string firstName, string lastName,
         string userName,
         string email,
@@ -78,30 +74,24 @@ public class SeedDbUsers
             string.IsNullOrWhiteSpace(phoneNumber) ||
             string.IsNullOrWhiteSpace(role) ||
             string.IsNullOrWhiteSpace(address))
-        {
             throw new ArgumentException(
                 "One or more required parameters are missing or empty.");
-        }
 
         // Additional validation for email format and
         // phone number format can be performed here.
 
         // Validate email format
         if (!IsValidEmail(email))
-        {
             throw new ArgumentException("Invalid email format.");
-        }
 
         // Validate phone number format
         if (!IsValidPhoneNumber(phoneNumber))
-        {
             throw new ArgumentException("Invalid phone number format.");
-        }
 
 
         // Validate role
         var user = await _userHelper.GetUserByEmailAsync(email);
-
+        string message;
 
         if (user == null)
         {
@@ -131,58 +121,55 @@ public class SeedDbUsers
                     break;
 
                 default:
-                    _logger.LogError(
-                        $"{nameof(User)} {firstName} {lastName} " +
-                        $"with email {email} and role {role}, " +
-                        "could not create the user in Seeder, " +
-                        $"because the role {role} is not valid.");
+                    message = $"{nameof(User)} {firstName} {lastName} " +
+                              $"with email {email} and role {role}, " +
+                              "could not create the user in Seeder, " +
+                              $"because the role {role} is not valid.";
 
-                    throw new InvalidOperationException(
-                        $"The role {role} is not valid.");
+                    Console.WriteLine(message);
+                    _logger.LogError(message);
+                    throw new InvalidOperationException(message);
             }
 
-            // Hash the password before storing it
-            // var hashedPassword = HashPassword(password);
-            // var result =
-            //     await _userHelper.AddUserAsync(newUser, hashedPassword);
-
+            // Create the user
             var result =
                 await _userHelper.AddUserAsync(newUser, password);
 
 
             if (result != IdentityResult.Success)
             {
-                _logger.LogError(
-                    $"{nameof(User)} {firstName} {lastName} " +
-                    $"with email {email} and role {role}, " +
-                    "could not create the user in Seeder.");
+                message = $"{nameof(User)} {firstName} {lastName} " +
+                          $"with email {email} and role {role}, " +
+                          "could not create the user in Seeder.";
 
-                throw new InvalidOperationException(
-                    "Could not create the user in Seeder.");
+                Console.WriteLine(message);
+                _logger.LogError(message);
+                throw new InvalidOperationException(message);
             }
 
             // Log the user creation
-            _logger.LogInformation(
-                $"User {firstName} {lastName} " +
-                $"with email {email} and role {role} has been created.");
+            message = $"User {firstName} {lastName} " +
+                      $"with email {email} and role {role} has been created.";
+
+            Console.WriteLine(message);
+            _logger.LogInformation(message);
 
             return newUser;
         }
-        else
-        {
-            // Log that the user already exists
-            _logger.LogInformation(
-                $"User with email {email} already exists.");
-            return user;
-        }
+
+        message = $"{nameof(User)} {firstName} {lastName} " +
+                  $"with email {email} and role {role}, " +
+                  "already exists.";
+
+        Console.WriteLine(message);
+        _logger.LogInformation(message);
+        return user;
     }
 
 
     private static bool IsValidEmail(string email)
     {
         // Simple email format validation using regular expression
-        // This is a basic example,
-        // and a more comprehensive validation can be used in a real application.
         // The chosen regular expression may not cover all edge cases,
         // but it's a good starting point.
 
@@ -194,8 +181,6 @@ public class SeedDbUsers
     private static bool IsValidPhoneNumber(string phoneNumber)
     {
         // Simple phone number format validation using regular expression
-        // This is a basic example,
-        // and the chosen regular expression may not cover all phone number formats.
         // Depending on the specific format required,
         // a more comprehensive regex pattern can be used.
 

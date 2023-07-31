@@ -1,11 +1,54 @@
-﻿<footer class="footer bg-body-tertiary position-fixed bottom-0 py-4  ">
+﻿<footer class="footer">
 
-    <div class="container">
+    <div class="container-fluid" style="width:100%">
         <span class="text-body-secondary">Place sticky footer content here.</span>
-        @DateTime.Now | @DateTime.Today.Year - @ViewData["AssemblyName"] &copy; - Versão: @ViewData["AssemblyVersion"] | Web -
+        <span class="text-body-secondary">
+            @DateTime.Now | @DateTime.Today.Year - @ViewData["AssemblyName"] &copy; -
+            Version: @ViewData["AssemblyVersion"] | Web -
+            <i id="output3"></i> <!-- Será atualizado com a largura do html -->
+        </span>
         <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 
+
     <partial name="_LayoutDarkModeButton"/>
 
+
+    <nav class="navbar sticky-bottom bg-body-tertiary position-absolute bottom-0 start-0" style="width:100%">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Sticky bottom</a>
+
+            <span class="text-body-secondary">
+                @DateTime.Now | @DateTime.Today.Year - @ViewData["AssemblyName"] &copy; -
+                Version: @ViewData["AssemblyVersion"] | Web -
+                <i id="output3-navbar"></i> <!-- Será atualizado com a largura do html -->
+            </span>
+            <span class="text-body-secondary">
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </span>
+
+        </div>
+    </nav>
+
+
 </footer>
+
+
+<script>
+        // Obter a referência para o elemento <html>
+        const htmlElement = document.getElementsByTagName('html')[0];
+
+        // Obter a largura do elemento <html> em pixels
+        const htmlWidth = htmlElement.clientWidth;
+
+        // Exibir a largura em pixels no console ou fazer o que você desejar com ela
+        console.log('Largura do <html>: ' + htmlWidth + 'px');
+
+    // Exibir a largura em pixels no rodapé - output3
+    const output3Element = document.getElementById('output3');
+    output3Element.textContent = 'Largura do <html>: ' + htmlWidth + 'px';
+
+    // Exibir a largura em pixels no rodapé do navbar - output3-navbar
+    const output3NavbarElement = document.getElementById('output3-navbar');
+    output3NavbarElement.textContent = 'Largura do <html>: ' + htmlWidth + 'px';
+    </script>

@@ -122,15 +122,13 @@ public class Teacher : IEntity, INotifyPropertyChanged
         TeacherCourses?.Sum(t => t.Course.WorkLoad) ?? 0;
 
 
-
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required Guid IdGuid { get; set; }
+    public Guid IdGuid { get; set; }
 
 
     [Required]
@@ -147,14 +145,13 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
-    [Required]
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

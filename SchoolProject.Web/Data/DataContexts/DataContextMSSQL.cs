@@ -82,13 +82,30 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
                 entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
 
             if (idGuidProperty != null)
-            {
                 // Configura a propriedade "IdGuid" para ser gerada automaticamente
+                // modelBuilder.Entity(entityType.ClrType)
+                //     .Property("IdGuid")
+                //     .ValueGeneratedOnAdd()
+                //     .HasValueGeneratorFactory<ValueGeneratorFactory>();
+                // modelBuilder.Entity(entityType.ClrType)
+                //     .Property("IdGuid")
+                //     .ValueGeneratedOnAdd()
+                //     .HasValueGeneratorFactory<ValueGeneratorFactory>()
+                //     .HasValueGeneratorFactory(
+                //         typeof(SequentialGuidValueGenerator));
+                // modelBuilder.Entity(entityType.ClrType)
+                //     .Property("IdGuid")
+                //     .ValueGeneratedOnAdd()
+                //     .HasValueGenerator(
+                //         typeof(SequentialGuidValueGenerator));
+                // modelBuilder.Entity(entityType.ClrType)
+                //     .Property("IdGuid")
+                //     .ValueGeneratedOnAdd()
+                //     .HasValueGenerator<SequentialGuidValueGenerator>();
                 modelBuilder.Entity(entityType.ClrType)
                     .Property("IdGuid")
                     .ValueGeneratedOnAdd()
-                    .HasDefaultValueSql("newsequentialid()");
-            }
+                    .HasDefaultValueSql("(NEWSEQUENTIALID())");
         }
         // ------------------------------------------------------------------ //
 

@@ -19,7 +19,7 @@ public class SchoolClassesController : Controller
     {
         return _context.SchoolClasses != null
             ? View(await _context.SchoolClasses.ToListAsync())
-            : Problem("Entity set 'DataContextMsSql.SchoolClasses'  is null.");
+            : Problem("Entity set 'DataContextMsSql.SchoolClasses' is null.");
     }
 
     // GET: SchoolClasses/Details/5

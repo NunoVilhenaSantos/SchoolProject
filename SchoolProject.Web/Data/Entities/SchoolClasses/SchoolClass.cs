@@ -14,11 +14,11 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 {
     [Required]
     [DisplayName("Class Acronym")]
-    public required string ClassAcronym { get; set; }
+    public required string Acronym { get; set; }
 
     [Required]
     [DisplayName("Class Name")]
-    public required string ClassName { get; set; }
+    public required string Name { get; set; }
 
 
     // old version
@@ -72,6 +72,20 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     public string? Area { get; set; }
 
 
+    [Required]
+    [Precision(10, 2)]
+    [DataType(DataType.Currency)]
+    [DisplayName("Price for Employed")]
+    public required decimal PriceForEmployed { get; set; } = 200;
+
+
+    [Required]
+    [Precision(10, 2)]
+    [DataType(DataType.Currency)]
+    [DisplayName("Price for Unemployed")]
+    public required decimal PriceForUnemployed { get; set; } = 0;
+
+
     [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
@@ -88,7 +102,7 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
 
     [DisplayName("SchoolClass Credits")]
-    public int? SchoolClassCredits => Courses?.Sum(c => c.Credits) ?? 0;
+    public double? SchoolClassCredits => Courses?.Sum(c => c.Credits) ?? 0;
 
 
     [DisplayName("Work Hour Load")]
@@ -143,14 +157,13 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
         Enrollment?.Select(e => e.Student).Distinct().Count() ?? 0;
 
 
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required Guid IdGuid { get; set; }
+    public Guid IdGuid { get; set; }
 
 
     [Required]
@@ -167,15 +180,14 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
-    [Required]
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
+
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
-
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

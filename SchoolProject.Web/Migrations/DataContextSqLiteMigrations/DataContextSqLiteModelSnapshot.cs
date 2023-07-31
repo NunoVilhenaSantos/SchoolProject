@@ -187,7 +187,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -234,7 +233,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -278,7 +276,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -302,6 +299,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
@@ -309,8 +311,8 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Credits")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Credits")
+                        .HasColumnType("REAL");
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -328,7 +330,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -383,7 +384,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -431,7 +431,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -539,15 +538,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Acronym")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Area")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ClassAcronym")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ClassName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -571,6 +566,18 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<string>("Location")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PriceForEmployed")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PriceForUnemployed")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("TEXT");
 
@@ -584,7 +591,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -627,7 +633,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -734,7 +739,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -793,7 +797,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -900,7 +903,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")
@@ -959,7 +961,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UpdatedById")

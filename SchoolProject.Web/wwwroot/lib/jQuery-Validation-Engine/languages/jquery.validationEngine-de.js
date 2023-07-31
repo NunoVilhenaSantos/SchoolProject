@@ -1,8 +1,8 @@
-(function($){
-    $.fn.validationEngineLanguage = function(){
+(function ($) {
+    $.fn.validationEngineLanguage = function () {
     };
     $.validationEngineLanguage = {
-        newLang: function(){
+        newLang: function () {
             $.validationEngineLanguage.allRules = {
                 "required": { // Add your regex rules here, you can take telephone as an example
                     "regex": "none",
@@ -10,8 +10,8 @@
                     "alertTextCheckboxMultiple": "* Bitte wählen Sie eine Option",
                     "alertTextCheckboxe": "* Dieses Feld ist ein Pflichtfeld"
                 },
-                "requiredInFunction": { 
-                    "func": function(field, rules, i, options){
+                "requiredInFunction": {
+                    "func": function (field, rules, i, options) {
                         return (field.val() == "test") ? true : false;
                     },
                     "alertText": "* Field must equal test"
@@ -26,7 +26,7 @@
                     "alertText": "* Maximal ",
                     "alertText2": " Zeichen erlaubt"
                 },
-				"groupRequired": {
+                "groupRequired": {
                     "regex": "none",
                     "alertText": "* Sie müssen mindestens eines dieser Felder ausfüllen"
                 },
@@ -45,7 +45,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Datum nach "
-                },	
+                },
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Maximale Anzahl Markierungen überschritten"
@@ -88,7 +88,7 @@
                     "alertText": "* Ungültiges Datumsformat, erwartet wird das Format JJJJ-MM-TT"
                 },
                 "ipv4": {
-                	"regex": /^((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/,
+                    "regex": /^((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/,
                     "alertText": "* Ungültige IP-Adresse"
                 },
                 "url": {
@@ -96,13 +96,13 @@
                     "alertText": "* Ungültige URL"
                 },
                 "onlyLetterSp": {
-	                 "regex": /^[a-zA-ZäüöÄÜÖßs\ \\\']+$/,
-                     "alertText": "* Nur Buchstaben erlaubt"
+                    "regex": /^[a-zA-ZäüöÄÜÖßs\ \\\']+$/,
+                    "alertText": "* Nur Buchstaben erlaubt"
                 },
-				"onlyLetterNumber": {
-					"regex": /^[0-9a-zA-ZäüöÄÜÖßs-]+$/,
-					"alertText": "* Keine Sonderzeichen erlaubt"
-				},
+                "onlyLetterNumber": {
+                    "regex": /^[0-9a-zA-ZäüöÄÜÖßs-]+$/,
+                    "alertText": "* Keine Sonderzeichen erlaubt"
+                },
                 // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
                 "ajaxUserCall": {
                     "url": "ajaxValidateFieldUser",
@@ -125,11 +125,8 @@
                     "alertText": "* Bitte HELLO eingeben"
                 }
             };
-            
+
         }
     };
     $.validationEngineLanguage.newLang();
 })(jQuery);
-
-
-    

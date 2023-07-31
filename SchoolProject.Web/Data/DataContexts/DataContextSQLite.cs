@@ -80,13 +80,11 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
                 entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
 
             if (idGuidProperty != null)
-            {
                 // Configura a propriedade "IdGuid" para ser gerada automaticamente
                 modelBuilder.Entity(entityType.ClrType)
                     .Property("IdGuid")
                     .ValueGeneratedOnAdd()
                     .HasDefaultValueSql("NEWID()");
-            }
         }
         // ------------------------------------------------------------------ //
 

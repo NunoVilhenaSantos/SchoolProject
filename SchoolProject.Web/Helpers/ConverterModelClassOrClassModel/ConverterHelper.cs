@@ -54,6 +54,7 @@ public class ConverterHelper : IConverterHelper
     {
         return new Course
         {
+            Codigo = courseViewModel.Codigo,
             Name = courseViewModel.Name,
             WorkLoad = courseViewModel.WorkLoad,
             Credits = courseViewModel.Credits,
@@ -73,6 +74,7 @@ public class ConverterHelper : IConverterHelper
     {
         return new CourseViewModel
         {
+            Codigo = course.Codigo,
             Name = course.Name,
             WorkLoad = course.WorkLoad,
             Credits = course.Credits,

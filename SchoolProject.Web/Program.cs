@@ -9,9 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Json;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
@@ -22,6 +19,7 @@ using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
+using Serilog;
 
 
 // Helper method to generate a random
@@ -56,24 +54,14 @@ static string GetServerHostNameFromConnectionString(string connectionString)
     var parts = connectionString.Split(';');
 
     foreach (var part in parts)
-    {
         if (part.StartsWith("Data Source="))
-        {
             return part.Substring("Data Source=".Length);
-        }
         else if (part.StartsWith("workstation id="))
-        {
             return part.Substring("workstation id=".Length);
-        }
         else if (part.StartsWith("Server="))
-        {
             return part.Substring("Server=".Length);
-        }
         else if (part.StartsWith("Host="))
-        {
             return part.Substring("Host=".Length);
-        }
-    }
 
     throw new ArgumentException(
         "Connection String inválida. Nome do servidor não encontrado.");
@@ -88,8 +76,8 @@ static void GetServerHostNamePing(string serverHostName)
 
     while (true)
     {
-        Ping pingSender = new Ping();
-        PingReply reply = pingSender.Send(serverHostName, timeout);
+        var pingSender = new Ping();
+        var reply = pingSender.Send(serverHostName, timeout);
 
         if (reply.Status == IPStatus.Success)
         {
@@ -104,7 +92,7 @@ static void GetServerHostNamePing(string serverHostName)
 
         // Aguarda um período antes de tentar novamente
         // Aguarda 3 segundos (ajuste conforme necessário)
-        System.Threading.Thread.Sleep(3000);
+        Thread.Sleep(3000);
     }
 }
 
@@ -197,7 +185,7 @@ builder.Services.AddIdentity<User, IdentityRole>(
 
             // Password settings.
             cfg.Password.RequireDigit = true;
-            cfg.Password.RequiredLength = 9;
+            cfg.Password.RequiredLength = 8;
             cfg.Password.RequiredUniqueChars = 0;
             cfg.Password.RequireUppercase = true;
             cfg.Password.RequireLowercase = true;

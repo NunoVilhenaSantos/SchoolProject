@@ -21,7 +21,7 @@ public class City : IEntity, INotifyPropertyChanged
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required Guid IdGuid { get; set; }
+    public Guid IdGuid { get; set; }
 
 
     [Required]
@@ -38,7 +38,7 @@ public class City : IEntity, INotifyPropertyChanged
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
-    [Required]
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

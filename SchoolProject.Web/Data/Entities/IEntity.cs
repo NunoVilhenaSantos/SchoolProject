@@ -23,10 +23,11 @@ public interface IEntity
     public bool WasDeleted { get; set; }
 
 
-    [Column(Order = 21)]
     [Required]
+    [Column(Order = 21)]
     [DisplayName("Created At")]
     [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; }
 
 
@@ -36,15 +37,17 @@ public interface IEntity
     public User CreatedBy { get; set; }
 
 
+    // [Required]
     [Column(Order = 23)]
-    [Required]
     [DisplayName("Updated At")]
     [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; }
 
 
     [Column(Order = 24)]
     [Required]
     [DisplayName("Updated By")]
+    [DataType(DataType.Date)]
     public User? UpdatedBy { get; set; }
 }

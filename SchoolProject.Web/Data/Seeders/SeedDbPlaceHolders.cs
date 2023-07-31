@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace SchoolProject.Web.Data.Seeders;
+﻿namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDbPlaceHolders
 {

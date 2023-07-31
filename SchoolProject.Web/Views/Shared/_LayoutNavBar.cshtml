@@ -1,16 +1,21 @@
-﻿@* @model TModel *@
-
-@using Microsoft.AspNetCore.Mvc.Rendering
+﻿@using System.Diagnostics
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@* @model TModel *@
 
-@using System.Diagnostics
 
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs">
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
+
+<div class="container-fluid">
+
+
+<nav class="navbar bg-body-tertiary nav-tabs">
+@* <nav class="navbar navbar-expand bg-body-tertiary nav-tabs"> *@
+@* <nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs"> *@
+
 <div class="container-fluid">
 
 @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@ViewData["Title"] - </a> *@
@@ -216,3 +221,5 @@
 </div>
 
 </nav>
+
+</div>

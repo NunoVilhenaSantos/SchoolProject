@@ -20,15 +20,13 @@ public class StudentCourse : IEntity
     public Guid CourseGuidId => Course.IdGuid;
 
 
-
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required Guid IdGuid { get; set; }
+    public Guid IdGuid { get; set; }
 
 
     [Required]
@@ -45,14 +43,11 @@ public class StudentCourse : IEntity
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
-    [Required]
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
-
-
 }

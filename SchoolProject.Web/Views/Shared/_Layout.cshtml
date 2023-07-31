@@ -1,5 +1,4 @@
-﻿@using System.Diagnostics
-@using System.Reflection
+﻿@using System.Reflection
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 
@@ -9,6 +8,7 @@
     ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
     ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
     ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
 }
 
 @* <html lang="pt" data-bs-theme="dark"> *@
@@ -19,8 +19,10 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>@ViewData["Title"] - @ViewData["SolutionName"]</title>
-
+    @* <title>@ViewData["Title"] - @ViewData["SolutionName"]</title> *@
+    @* <title>@ViewData["Title"] - @ViewData["AssemblyName"]</title> *@
+    @* <title>@ViewData["Title"] - @ViewData["AssemblyName"] v @ViewData["AssemblyVersion"]</title> *@
+    <title>@ViewData["Title"] - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
 
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
     <!-- ----------------------------------- Adicione as referências aos estilos ----------------------------------- -->
@@ -35,7 +37,6 @@
 
 
 <header>
-
 
     <partial name="_LayoutNavBar"/>
 

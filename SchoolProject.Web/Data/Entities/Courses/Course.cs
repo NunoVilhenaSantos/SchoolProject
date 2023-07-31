@@ -9,25 +9,19 @@ namespace SchoolProject.Web.Data.Entities.Courses;
 
 public class Course : IEntity, INotifyPropertyChanged
 {
-    private string _name;
+    [DisplayName("Code")]
+    [MaxLength(7,
+        ErrorMessage = "The {0} field can not have more than {1} characters.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required string Codigo { get; set; }
 
-    [Required]
-    public required string Name
-    {
-        get => _name;
-        set
-        {
-            if (value == _name) return;
-            _name = value;
-            OnPropertyChanged();
-        }
-    }
+    [Required] public required string Name { get; set; }
 
 
     [Required] public required int WorkLoad { get; set; }
 
 
-    [Required] public required int Credits { get; set; }
+    [Required] public required double Credits { get; set; }
 
 
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
@@ -46,14 +40,13 @@ public class Course : IEntity, INotifyPropertyChanged
         Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
 
 
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required Guid IdGuid { get; set; }
+    public Guid IdGuid { get; set; }
 
 
     [Required]
@@ -70,7 +63,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [DisplayName("Created By")] public required User CreatedBy { get; set; }
 
 
-    [Required]
+    // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

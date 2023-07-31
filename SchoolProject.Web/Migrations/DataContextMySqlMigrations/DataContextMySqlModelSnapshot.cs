@@ -189,7 +189,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -236,7 +235,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -280,7 +278,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -304,6 +301,11 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("varchar(7)");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
@@ -311,8 +313,8 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("Credits")
-                        .HasColumnType("int");
+                    b.Property<double>("Credits")
+                        .HasColumnType("double");
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -330,7 +332,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -385,7 +386,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -433,7 +433,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("varchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -541,15 +540,11 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Acronym")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Area")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ClassAcronym")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ClassName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
@@ -573,6 +568,18 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.Property<string>("Location")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("PriceForEmployed")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("PriceForUnemployed")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
                     b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("char(36)");
 
@@ -586,7 +593,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -629,7 +635,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -736,7 +741,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -795,7 +799,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -902,7 +905,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
@@ -961,7 +963,6 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .IsRequired()
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")

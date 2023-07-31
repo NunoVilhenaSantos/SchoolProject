@@ -2,6 +2,8 @@
 using System.Text;
 using System.Text.Json;
 
+namespace SchoolProject.Web.Helpers.UsersDataDeletionParsers;
+
 public static class FacebookSignedRequestParser
 {
     public static FacebookDataDeletionRequestData ParseSignedRequest(

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Drawing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
@@ -10,19 +11,18 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDb
 {
-    private readonly ILogger<SeedDb> _logger;
-    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
-    private readonly ILogger<SeedDbPersons> _loggerSeedDbPersons;
-
-    private readonly IUserHelper _userHelper;
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly ILogger<SeedDb> _logger;
+    private readonly ILogger<SeedDbPersons> _loggerSeedDbPersons;
+    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    private readonly IUserHelper _userHelper;
+    private readonly UserManager<User> _userManager;
 
     public SeedDb(
         ILogger<SeedDb> logger,
@@ -69,6 +69,8 @@ public class SeedDb
         SeedDbUsers.Initialize(_userHelper, _loggerSeedDbUsers);
         // SeedDbPersons.Initialize(_userHelper, _dataContextMsSql);
 
+        Console.WriteLine("Seeding the database.", Color.Green);
+        Console.WriteLine("Debug point.", Color.Red);
 
         // ------------------------------------------------------------------ //
         // adding roles for all users in the system
@@ -128,6 +130,14 @@ public class SeedDb
         await SeedDbPersons.AddingData();
 
 
+        // ------------------------------------------------------------------ //
+        // adding students and teachers to the database and also there user
+        // ------------------------------------------------------------------ //
+        SeedDbSchoolClasses.Initialize(
+            _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
+        await SeedDbSchoolClasses.AddingData();
+
+
         // verificar se existem os placeholders no sistema
         SeedDbPlaceHolders.Initialize(_hostingEnvironment);
         SeedDbPlaceHolders.AddPlaceHolders();
@@ -139,44 +149,31 @@ public class SeedDb
 
     private async Task SeedingDataGenres(User user)
     {
-        var genres = new List<Genre>
+        var genresToAdd = new List<string>
         {
-            new()
-            {
-                Name = "Male",
-                IdGuid = new Guid(),
-                WasDeleted = false,
-                CreatedAt = DateTime.Now,
-                CreatedBy = user
-            },
-            new()
-            {
-                Name = "Female",
-                IdGuid = default,
-                WasDeleted = false,
-                CreatedAt = DateTime.Now,
-                CreatedBy = user
-            },
-            new()
-            {
-                Name = "NonBinary",
-                IdGuid = default,
-                WasDeleted = false,
-                CreatedAt = DateTime.Now,
-                CreatedBy = user
-            },
-            new()
-            {
-                Name = "PreferNotToSay",
-                IdGuid = default,
-                WasDeleted = false,
-                CreatedAt = DateTime.Now,
-                CreatedBy = user
-            }
+            "Male", "Female", "NonBinary", "PreferNotToSay"
         };
 
-        await _dataContextMsSql.Genres.AddRangeAsync(genres);
+        var existingGenres =
+            await _dataContextMsSql.Genres
+                .Where(genre => genresToAdd.Contains(genre.Name))
+                .Select(genre => genre.Name)
+                .ToListAsync();
 
+        var genresToCreate =
+            genresToAdd.Except(existingGenres).ToList();
+
+        var newGenres =
+            genresToCreate.Select(genre => new Genre
+            {
+                Name = genre,
+                IdGuid = Guid.NewGuid(),
+                WasDeleted = false,
+                CreatedAt = DateTime.Now,
+                CreatedBy = user
+            }).ToList();
+
+        await _dataContextMsSql.Genres.AddRangeAsync(newGenres);
         await _dataContextMsSql.SaveChangesAsync();
     }
 
@@ -186,17 +183,17 @@ public class SeedDb
         await SeedDbUsers.AddUsers(
             "Nuno", "Vilhena Santos",
             "nunovilhenasantos@msn.com",
-            "Calle Luna", "SuperUser", "Passw0rd");
+            "Calle Luna", "SuperUser");
 
         await SeedDbUsers.AddUsers(
             "Nuno", "Santos",
             "nuno.santos.26288@formandos.cinel.pt",
-            "Calle Luna", "SuperUser", "Passw0rd");
+            "Calle Luna", "SuperUser");
 
         await SeedDbUsers.AddUsers(
             "Rafael", "Santos",
             "rafael.santos@cinel.pt",
-            "Calle Luna", "SuperUser", "Passw0rd");
+            "Calle Luna", "SuperUser");
     }
 
 
@@ -215,7 +212,7 @@ public class SeedDb
         await SeedDbUsers.AddUsers(
             "Tatiane", "Avellar",
             "tatiane.avellar.24718@formandos.cinel.pt",
-            "Calle Luna", "Admin", "Passw0rd");
+            "Calle Luna", "Admin");
     }
 
 
@@ -234,35 +231,36 @@ public class SeedDb
         await SeedDbUsers.AddUsers(
             "Diogo", "Alves",
             "diogo.alves.28645@formandos.cinel.pt",
-            "Calle Luna", "Functionary", "Passw0rd");
+            "Calle Luna", "Functionary");
     }
 
 
     private async Task SeedingRolesForUsers()
     {
-        await CreateRoleAsync("SuperUser");
-        await CreateRoleAsync("Admin");
-        await CreateRoleAsync("Functionary");
-        await CreateRoleAsync("Student");
-        await CreateRoleAsync("Teacher");
-        await CreateRoleAsync("Parent");
-        await CreateRoleAsync("User");
-    }
-
-
-    private async Task<IdentityResult?> CheckRolesAsync(User user)
-    {
-        return await _roleManager.FindByIdAsync(user.Id) switch
+        var rolesToCreate = new List<string>
         {
-            null => await CreateRoleAsync(user.UserName),
-            _ => null
+            "SuperUser", "Admin", "Functionary",
+            "Student", "Teacher", "Parent",
+            "User"
         };
-    }
 
+        var existingRoles =
+            await _roleManager.Roles
+                .Where(role => rolesToCreate.Contains(role.Name))
+                .ToListAsync();
+
+        var rolesToAdd = rolesToCreate
+            .Except(existingRoles.Select(role => role.Name))
+            .ToList();
+
+
+        foreach (var role in rolesToAdd) await CreateRoleAsync(role);
+
+        await _dataContextMsSql.SaveChangesAsync();
+    }
 
     private async Task<IdentityResult> CreateRoleAsync(string role)
     {
-        // return await _roleManager.CreateAsync(new IdentityRole("Admin"));
         return await _roleManager.CreateAsync(new IdentityRole(role));
     }
 
@@ -280,7 +278,7 @@ public class SeedDb
                     "Namibe", "Lubango", "Alto Catumbela", "Cabinda", "Caxito",
                     "Cuito", "Dundo", "Malanje", "Menongue", "Namibe",
                     "N'dalatando", "Ondjiva", "Saurimo", "Soio", "Sumbe",
-                    "Uíge", "Xangongo",
+                    "Uíge", "Xangongo"
                 }
             },
             {
@@ -289,7 +287,7 @@ public class SeedDb
                     "Lisboa", "Porto", "Coimbra", "Faro", "Braga", "Aveiro",
                     "Évora", "Funchal", "Viseu", "Viana do Castelo", "Beja",
                     "Bragança", "Castelo Branco", "Guarda", "Leiria",
-                    "Portalegre", "Santarém", "Setúbal", "Vila Real", "Angra",
+                    "Portalegre", "Santarém", "Setúbal", "Vila Real", "Angra"
                 }
             },
             {
@@ -297,7 +295,7 @@ public class SeedDb
                 {
                     "Madrid", "Salamanca", "Sevilha", "Valencia", "Barcelona",
                     "Bilbao", "Santiago de Compostela", "Toledo", "Córdoba",
-                    "Granada", "Málaga", "Zaragoza", "Alicante", "Cádiz",
+                    "Granada", "Málaga", "Zaragoza", "Alicante", "Cádiz"
                 }
             },
             {
@@ -305,7 +303,7 @@ public class SeedDb
                 {
                     "Paris", "Lyon", "Marselha", "Nante", "Estrasbourgo",
                     "Bordeaux", "Toulouse", "Lille", "Nice", "Rennes",
-                    "Reims", "Saint-Étienne", "Toulon", "Le Havre",
+                    "Reims", "Saint-Étienne", "Toulon", "Le Havre"
                 }
             },
             {
@@ -313,7 +311,7 @@ public class SeedDb
                 {
                     "Rio de Janeiro", "São Paulo", "Salvador", "Brasília",
                     "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba",
-                    "Recife", "Porto Alegre", "Belém", "Goiânia", "Guarulhos",
+                    "Recife", "Porto Alegre", "Belém", "Goiânia", "Guarulhos"
                 }
             },
             {
@@ -321,7 +319,7 @@ public class SeedDb
                 {
                     "Havana", "Santiago de Cuba", "Camagüey", "Holguín",
                     "Guantánamo", "Santa Clara", "Las Tunas", "Bayamo",
-                    "Cienfuegos", "Pinar del Río", "Matanzas", "Ciego de Ávila",
+                    "Cienfuegos", "Pinar del Río", "Matanzas", "Ciego de Ávila"
                 }
             },
             {
@@ -330,7 +328,7 @@ public class SeedDb
                     "Mexico City", "Guadalajara", "Monterrey", "Puebla",
                     "Toluca", "Tijuana", "León", "Ciudad Juárez", "La Laguna",
                     "San Luis Potosí", "Mérida", "Mexicali", "Aguascalientes",
-                    "Cuernavaca", "Acuña",
+                    "Cuernavaca", "Acuña"
                 }
             },
             {
@@ -338,9 +336,9 @@ public class SeedDb
                 {
                     "Moscovo", "São Petersburgo", "Novosibirsk",
                     "Ecaterimburgo", "Níjni Novgorod", "Samara", "Omsk",
-                    "Cazã", "Cheliabinsk", "Rostov do Don", "Ufá", "Volgogrado",
+                    "Cazã", "Cheliabinsk", "Rostov do Don", "Ufá", "Volgogrado"
                 }
-            },
+            }
         };
 
 
