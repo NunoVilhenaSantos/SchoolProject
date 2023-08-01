@@ -1,9 +1,9 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 
-public record ListCoursesTeGicd()
+public record ListCoursesTeGicd
 {
     internal static Dictionary<string, (string, int, double)> TeGicdDictionary =
-        new Dictionary<string, (string, int, double)>
+        new()
         {
             // Key: Course Code (string) -> Value: (Nº, UFCD obrigatórias, Horas, Pontos de crédito) as a tuple
             {"5745", ("Inglês técnico", 50, 4.50)},

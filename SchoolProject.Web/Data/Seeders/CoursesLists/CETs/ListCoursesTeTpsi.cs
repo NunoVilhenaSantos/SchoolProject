@@ -1,6 +1,6 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 
-public record ListCoursesTeTpsi()
+public record ListCoursesTeTpsi
 {
     internal static readonly Dictionary<string, (string, int, double)>
         TeTpsiDictionary = new()

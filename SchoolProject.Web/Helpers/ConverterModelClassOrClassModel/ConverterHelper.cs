@@ -56,8 +56,8 @@ public class ConverterHelper : IConverterHelper
         {
             Code = courseViewModel.Code,
             Name = courseViewModel.Name,
-            WorkLoad = courseViewModel.WorkLoad,
-            Credits = courseViewModel.Credits,
+            Hours = courseViewModel.Hours,
+            CreditPoints = courseViewModel.CreditPoints,
             Enrollments = courseViewModel.Enrollments,
             Id = isNew
                 ? 0
@@ -76,8 +76,8 @@ public class ConverterHelper : IConverterHelper
         {
             Code = course.Code,
             Name = course.Name,
-            WorkLoad = course.WorkLoad,
-            Credits = course.Credits,
+            Hours = course.Hours,
+            CreditPoints = course.CreditPoints,
             Enrollments = course.Enrollments,
             Id = course.Id,
             WasDeleted = course.WasDeleted,

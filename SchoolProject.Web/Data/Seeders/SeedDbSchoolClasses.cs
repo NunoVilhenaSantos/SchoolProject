@@ -41,11 +41,13 @@ public class SeedDbSchoolClasses
             "Seeding courses and school-classes tables with the courses...");
 
 
+        SeedDbCoursesList.Initialize(_dataContextMssql, user);
+
+
         // 481228
         // Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos
         // 5
-        var coursesForTeGrsi =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeGrsi(), user);
+        var coursesForTeGrsi = SeedDbCoursesList.TeGrsi();
         var schoolClass = new SchoolClass
         {
             Code = "481228",
@@ -62,7 +64,7 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeGrsi,
+            Courses = coursesForTeGrsi
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
@@ -71,8 +73,7 @@ public class SeedDbSchoolClasses
         // 481227
         // Técnico/a Especialista em Aplicações Informáticas de Gestão
         // 5
-        var coursesForTeAig =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeAig(), user);
+        var coursesForTeAig = SeedDbCoursesList.TeAig();
         schoolClass = new SchoolClass
         {
             Code = "481227",
@@ -89,7 +90,7 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeAig,
+            Courses = coursesForTeAig
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
@@ -98,8 +99,7 @@ public class SeedDbSchoolClasses
         // 481241
         // Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação
         // 5
-        var coursesForTeTpsi =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeTpsi(), user);
+        var coursesForTeTpsi = SeedDbCoursesList.TeTpsi();
         schoolClass = new SchoolClass
         {
             Code = "481241",
@@ -138,7 +138,7 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeTpsi,
+            Courses = coursesForTeTpsi
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
@@ -147,8 +147,7 @@ public class SeedDbSchoolClasses
         // 481344
         // Técnico/a Especialista em Cibersegurança
         // 5
-        var coursesForTeCs =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeCs(), user);
+        var coursesForTeCs = SeedDbCoursesList.TeCs();
         schoolClass = new SchoolClass
         {
             Code = "481344",
@@ -165,7 +164,7 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeCs,
+            Courses = coursesForTeCs
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
@@ -174,8 +173,7 @@ public class SeedDbSchoolClasses
         // 481390
         // Técnico/a Especialista em Gestão de Informação e Ciência dos Dados
         // 5
-        var coursesForTeGicd =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeGicd(), user);
+        var coursesForTeGicd = SeedDbCoursesList.TeGicd();
         schoolClass = new SchoolClass
         {
             Code = "481390",
@@ -192,14 +190,13 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeGicd,
+            Courses = coursesForTeGicd
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
 
 
-        var coursesForTeArci =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeArci(), user);
+        var coursesForTeArci = SeedDbCoursesList.TeArci();
         schoolClass = new SchoolClass
         {
             Code = "523229",
@@ -216,14 +213,13 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeArci,
+            Courses = coursesForTeArci
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
 
 
-        var coursesForTeDpm =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeDpm(), user);
+        var coursesForTeDpm = SeedDbCoursesList.TeDpm();
         schoolClass = new SchoolClass
         {
             Code = "213240",
@@ -240,14 +236,13 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeDpm,
+            Courses = coursesForTeDpm
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
 
 
-        var coursesForTeTr =
-            CreateCoursesListFromDictionary(SeedDbCoursesList.TeTr(), user);
+        var coursesForTeTr = SeedDbCoursesList.TeTr();
         schoolClass = new SchoolClass
         {
             Code = "523273",
@@ -263,7 +258,7 @@ public class SeedDbSchoolClasses
             PriceForUnemployed = 0,
             IdGuid = default,
             CreatedBy = user,
-            Courses = coursesForTeTr,
+            Courses = coursesForTeTr
         };
         await _dataContextMssql.SchoolClasses.AddRangeAsync(schoolClass);
         await _dataContextMssql.SaveChangesAsync();
@@ -284,8 +279,8 @@ public class SeedDbSchoolClasses
                 {
                     Code = courseEntry.Key,
                     Name = courseEntry.Value.Item1,
-                    WorkLoad = courseEntry.Value.Item2,
-                    Credits = courseEntry.Value.Item3,
+                    Hours = courseEntry.Value.Item2,
+                    CreditPoints = courseEntry.Value.Item3,
                     IdGuid = default,
                     CreatedBy = user
                 })

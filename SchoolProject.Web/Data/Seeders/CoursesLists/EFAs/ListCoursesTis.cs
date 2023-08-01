@@ -1,9 +1,9 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.EFAs;
 
-public record ListCoursesTis()
+public record ListCoursesTis
 {
     internal static readonly Dictionary<string, (string, int, double)>
-        TisDictionary = new Dictionary<string, (string, int, double)>
+        TisDictionary = new()
         {
             {"0769", ("Arquitetura interna do computador", 25, 2.25)},
             {"0770", ("Dispositivos e periféricos", 25, 2.25)},

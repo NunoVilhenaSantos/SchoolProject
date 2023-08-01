@@ -1,9 +1,9 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 
-public record ListCoursesTeArci()
+public record ListCoursesTeArci
 {
     internal static Dictionary<string, (string, int, double)> TeArciDictionary =
-        new Dictionary<string, (string, int, double)>
+        new()
         {
             // Key: Course Code (string) -> Value: (Nº, UFCD obrigatórias, Horas, Pontos de crédito) as a tuple
             {"5125", ("Técnicas de programação", 50, 4.50)},

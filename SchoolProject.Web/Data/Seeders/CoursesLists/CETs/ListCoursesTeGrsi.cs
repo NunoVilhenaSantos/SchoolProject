@@ -1,6 +1,6 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 
-public abstract record ListCoursesTeGrsi()
+public abstract record ListCoursesTeGrsi
 {
     internal static readonly Dictionary<string, (string, int, double)>
         TeGrsiDictionary = new()
@@ -23,8 +23,7 @@ public abstract record ListCoursesTeGrsi()
             {"5107", ("Servidor de dados", 25, 2.25)},
             {
                 "5108",
-                ("Configuração avançada de sistemas operativos servidores",
-                    25,
+                ("Configuração avançada de sistemas operativos servidores", 25,
                     2.25)
             },
             {"5109", ("Políticas de segurança", 50, 4.50)},

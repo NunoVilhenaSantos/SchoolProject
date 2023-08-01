@@ -118,12 +118,12 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     public int? CoursesCount => Courses?.Count ?? 0;
 
 
-    [DisplayName("SchoolClass Credits")]
-    public double? SchoolClassCredits => Courses?.Sum(c => c.Credits) ?? 0;
+    [DisplayName("SchoolClass CreditPoints")]
+    public double? SchoolClassCredits => Courses?.Sum(c => c.CreditPoints) ?? 0;
 
 
     [DisplayName("Work Hour Load")]
-    public int? WorkHourLoad => Courses?.Sum(c => c.WorkLoad) ?? 0;
+    public int? WorkHourLoad => Courses?.Sum(c => c.Hours) ?? 0;
 
 
     public ICollection<Student>? Students { get; set; } = new List<Student>();
@@ -166,7 +166,7 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
     [DisplayName("Work Hour Load")]
     public int EWorkHourLoad =>
-        Enrollment?.Sum(e => e.Course.WorkLoad) ?? 0;
+        Enrollment?.Sum(e => e.Course.Hours) ?? 0;
 
 
     [DisplayName("Students Count")]

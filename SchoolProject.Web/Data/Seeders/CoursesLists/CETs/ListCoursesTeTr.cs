@@ -1,9 +1,9 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 
-public record ListCoursesTeTr()
+public record ListCoursesTeTr
 {
     internal static readonly Dictionary<string, (string, int, double)>
-        TeTrDictionary = new Dictionary<string, (string, int, double)>
+        TeTrDictionary = new()
         {
             // Key: Course Code (string) -> Value: (UFCD, Horas, Pontos de crédito) as a tuple
             {"6027", ("Circuitos sequenciais síncronos", 50, 4.50)},
@@ -54,6 +54,6 @@ public record ListCoursesTeTr()
                 "6142",
                 ("Redes de comunicações - protocolos de redes de distribuição",
                     25, 2.25)
-            },
+            }
         };
 }

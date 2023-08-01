@@ -3,7 +3,7 @@
 public record ListCoursesTiIgr
 {
     private static Dictionary<string, (string, int, double)> TiIgrDictionary =
-        new Dictionary<string, (string, int, double)>
+        new()
         {
             {"0769", ("Arquitetura interna do computador", 25, 2.25)},
             {"0770", ("Dispositivos e periféricos", 25, 2.25)},

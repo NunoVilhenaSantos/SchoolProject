@@ -1,9 +1,9 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 
-public record ListCoursesTeCs()
+public abstract record ListCoursesTeCs
 {
-    internal static Dictionary<string, (string, int, double)> TeCsDictionary =
-        new()
+    internal static readonly Dictionary<string, (string, int, double)>
+        TeCsDictionary = new()
         {
             // Key: Course Code (string) -> Value: (Nº, UFCD obrigatórias, Horas, Pontos de crédito) as a tuple
             {
@@ -31,25 +31,34 @@ public record ListCoursesTeCs()
             {"5106", ("Serviços de rede", 25, 2.25)},
             {
                 "5892",
-                ("Modelos de gestão de redes e de suporte a clientes", 25, 2.25)
+                ("Modelos de gestão de redes e de suporte a clientes", 25,
+                    2.25)
             },
             {"9188", ("Fundamentos de cibersegurança", 25, 2.25)},
             {"9189", ("Tecnologias de análise de evidências", 50, 4.50)},
             {
                 "9190",
-                ("Introdução à programação aplicada à cibersegurança", 25, 2.25)
+                ("Introdução à programação aplicada à cibersegurança", 25,
+                    2.25)
             },
             {
                 "9191",
-                ("Introdução às técnicas de análise de evidências", 50, 4.50)
+                ("Introdução às técnicas de análise de evidências", 50,
+                    4.50)
             },
             {"9192", ("Análise de vulnerabilidades – iniciação", 50, 4.50)},
             {
                 "9193",
                 ("Análise de vulnerabilidades - desenvolvimento", 50, 4.50)
             },
-            {"9194", ("Introdução à cibersegurança e à ciberdefesa", 50, 4.50)},
-            {"9195", ("Enquadramento operacional da cibersegurança", 50, 4.50)},
+            {
+                "9194",
+                ("Introdução à cibersegurança e à ciberdefesa", 50, 4.50)
+            },
+            {
+                "9195",
+                ("Enquadramento operacional da cibersegurança", 50, 4.50)
+            },
             {"9196", ("Cibersegurança ativa", 50, 4.50)},
             {"9197", ("Wargamming", 50, 4.50)}
         };

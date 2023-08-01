@@ -120,7 +120,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     [DisplayName("Total Work Hours")]
     public int TotalWorkHours =>
-        TeacherCourses?.Sum(t => t.Course.WorkLoad) ?? 0;
+        TeacherCourses?.Sum(t => t.Course.Hours) ?? 0;
 
 
     [Key]

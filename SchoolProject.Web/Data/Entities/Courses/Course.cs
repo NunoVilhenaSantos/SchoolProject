@@ -18,10 +18,10 @@ public class Course : IEntity, INotifyPropertyChanged
     [Required] public required string Name { get; set; }
 
 
-    [Required] public required int WorkLoad { get; set; }
+    [Required] public required int Hours { get; set; }
 
 
-    [Required] public required double Credits { get; set; }
+    [Required] public required double CreditPoints { get; set; }
 
 
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }

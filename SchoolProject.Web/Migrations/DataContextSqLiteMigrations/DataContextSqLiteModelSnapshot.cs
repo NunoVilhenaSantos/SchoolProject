@@ -311,8 +311,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("Credits")
+                    b.Property<double>("CreditPoints")
                         .HasColumnType("REAL");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -336,9 +339,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("WasDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("WorkLoad")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -446,90 +446,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("ProfilePhotoId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("WasDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", b =>
@@ -993,6 +909,90 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.ToTable("TeacherCourses");
                 });
 
+            modelBuilder.Entity("SchoolProject.Web.Data.EntitiesMatrix.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1004,7 +1004,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1013,7 +1013,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1028,7 +1028,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1037,7 +1037,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1066,12 +1066,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1083,7 +1083,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.Country", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1094,7 +1094,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1108,12 +1108,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.Nationality", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1125,7 +1125,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1135,7 +1135,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("SchoolClassId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1153,7 +1153,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1169,7 +1169,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1185,12 +1185,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.Genre", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1202,12 +1202,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1225,7 +1225,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1236,7 +1236,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1276,7 +1276,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1287,12 +1287,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "User")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1323,7 +1323,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1334,7 +1334,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1374,7 +1374,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1385,12 +1385,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "User")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1421,7 +1421,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1432,7 +1432,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);

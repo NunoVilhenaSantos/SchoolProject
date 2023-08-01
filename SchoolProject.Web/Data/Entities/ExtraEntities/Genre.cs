@@ -1,8 +1,8 @@
-﻿using SchoolProject.Web.Data.EntitiesMatrix;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.EntitiesMatrix;
 
 namespace SchoolProject.Web.Data.Entities.ExtraEntities;
 

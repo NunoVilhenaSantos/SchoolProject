@@ -1,11 +1,22 @@
 ﻿using System.Diagnostics;
+using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.EntitiesMatrix;
 using SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 using SchoolProject.Web.Data.Seeders.CoursesLists.EFAs;
+using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders.CoursesLists;
 
 public static class SeedDbCoursesList
 {
+    private static User _user;
+    private static Random _random;
+    private static IUserHelper _userHelper;
+    private static ILogger<SeedDbPersons> _logger;
+    private static DataContextMsSql _dataContextMssql;
+
+
     // Disciplinas comuns da area de informática
     private static readonly Dictionary<string, (string, int, double)>
         FgcCommonDictionary = new()
@@ -28,7 +39,7 @@ public static class SeedDbCoursesList
 
 
     private static readonly Dictionary<string, (string, int, double)>
-        FgcTeGicdDictionary = new Dictionary<string, (string, int, double)>
+        FgcTeGicdDictionary = new()
         {
             // Key: Course Code (string) -> Value: (UFCD, Horas) as a tuple
             {"0683", ("Ética e deontologia profissionais", 25, 2.5)},
@@ -40,7 +51,7 @@ public static class SeedDbCoursesList
 
 
     private static readonly Dictionary<string, (string, int, double)>
-        FgcTeArciDictionary = new Dictionary<string, (string, int, double)>
+        FgcTeArciDictionary = new()
         {
             // Key: Course Code (string) -> Value: (UFCD, Horas) as a tuple
             {
@@ -56,7 +67,7 @@ public static class SeedDbCoursesList
 
 
     private static readonly Dictionary<string, (string, int, double)>
-        FgcTeDpmDictionary = new Dictionary<string, (string, int, double)>
+        FgcTeDpmDictionary = new()
         {
             // Key: Course Code (string) -> Value: (UFCD, Horas) as a tuple
             {"5381", ("Comunicação e média", 25, 2.5)},
@@ -74,8 +85,8 @@ public static class SeedDbCoursesList
             }
         };
 
-    public static readonly Dictionary<string, (string, int, double)>
-        FgcTeTrDictionary = new Dictionary<string, (string, int, double)>
+    private static readonly Dictionary<string, (string, int, double)>
+        FgcTeTrDictionary = new()
         {
             // Key: Course Code (string) -> Value: (UFCD, Horas) as a tuple
             {"6402", ("Cálculo diferencial e integral", 50, 5)},
@@ -86,8 +97,15 @@ public static class SeedDbCoursesList
                 "6406",
                 ("Técnicas aplicadas ao desenvolvimento humano nas organizações",
                     25, 2.5)
-            },
+            }
         };
+
+
+    public static void Initialize(DataContextMsSql dataContextMssql, User user)
+    {
+        _user = user;
+        _dataContextMssql = dataContextMssql;
+    }
 
 
     private static Dictionary<string, (string, int, double)>
@@ -185,103 +203,202 @@ public static class SeedDbCoursesList
         return mergedDictionary;
     }
 
-    public static Dictionary<string, (string, int, double)> TeTpsi()
+    public static List<Course> TeTpsi()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcCommonDictionary,
             ListCoursesTeTpsi.TeTpsiDictionary,
             ListsOfFct.Fct400);
 
-        return mergedDictionary;
+
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
 
-    public static Dictionary<string, (string, int, double)> TeCs()
+    public static List<Course> TeCs()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcTeCsDictionary,
             ListCoursesTeCs.TeCsDictionary,
             ListsOfFct.Fct560);
 
-        return mergedDictionary;
+
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
 
     // Técnico/a Especialista em Aplicações Informáticas de Gestão
-    internal static Dictionary<string, (string, int, double)> TeAig()
+    internal static List<Course> TeAig()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcCommonDictionary,
             ListCoursesTeAig.TeAigDictionary,
             ListsOfFct.Fct400);
 
-        return mergedDictionary;
+
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
 
-    public static Dictionary<string, (string, int, double)> EfaTis()
+    public static List<Course> EfaTis()
     {
         var mergedKcDictionary = MergeAndPrintCourseInfo(
-            KeyCompetencies.FbCPCourses,
-            KeyCompetencies.FbSTCCourses,
-            KeyCompetencies.FbCLCCourses);
+            KeyCompetencies.FbCpCourses,
+            KeyCompetencies.FbStcCourses,
+            KeyCompetencies.FbClcCourses);
 
         var mergedDictionary = MergeAndPrintCourseInfo(
             mergedKcDictionary,
             ListCoursesTis.TisDictionary,
             ListsOfFct.Fct210);
 
-        return mergedDictionary;
+
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
 
-    public static Dictionary<string, (string, int, double)> TeGrsi()
+    public static List<Course> TeGrsi()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcCommonDictionary,
             ListCoursesTeGrsi.TeGrsiDictionary,
             ListsOfFct.Fct400);
 
-        return mergedDictionary;
+
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
-    public static Dictionary<string, (string, int, double)> TeGicd()
+    public static List<Course> TeGicd()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcTeGicdDictionary,
             ListCoursesTeGicd.TeGicdDictionary,
             ListsOfFct.Fct400);
 
-        return mergedDictionary;
+
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
-    public static Dictionary<string, (string, int, double)> TeArci()
+
+    public static List<Course> TeArci()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcTeArciDictionary,
             ListCoursesTeArci.TeArciDictionary,
             ListsOfFct.Fct560);
 
-        return mergedDictionary;
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
-    public static Dictionary<string, (string, int, double)> TeDpm()
+
+    public static List<Course> TeDpm()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcTeDpmDictionary,
             ListCoursesTeDpm.TeDpmDictionary,
             ListsOfFct.Fct500);
 
-        return mergedDictionary;
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
     }
 
-    public static Dictionary<string, (string, int, double)> TeTr()
+
+    public static List<Course> TeTr()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
             FgcTeTrDictionary,
             ListCoursesTeTr.TeTrDictionary,
             ListsOfFct.Fct560);
 
-        return mergedDictionary;
+        SaveMissingCourses(mergedDictionary);
+        var existingCourses =
+            GetExistingCourses(mergedDictionary);
+
+        return existingCourses;
+    }
+
+    private static void SaveMissingCourses(
+        Dictionary<string, (string, int, double)> mergedDictionary)
+    {
+        // Get the list of existing course codes from the database
+        var existingCourseCodes =
+            _dataContextMssql.Courses.Select(c => c.Code).ToList();
+
+        // Filter out the courses that are already in the database
+        var missingCourses =
+            mergedDictionary
+                .Where(course =>
+                    !existingCourseCodes.Contains(course.Key))
+                .Select(course =>
+                    new Course
+                    {
+                        Code = course.Key,
+                        Name = course.Value.Item1,
+                        Hours = course.Value.Item2,
+                        CreditPoints = course.Value.Item3,
+                        CreatedBy = _user,
+                    })
+                .ToList();
+
+        // Save the missing courses to the database
+        _dataContextMssql.Courses.AddRange(missingCourses);
+        _dataContextMssql.SaveChanges();
+    }
+
+
+    private static List<Course> GetExistingCourses(
+        Dictionary<string, (string, int, double)> mergedDictionary)
+    {
+        // Get the list of existing course codes from the database
+        var existingCourseCodes =
+            _dataContextMssql.Courses.Select(c => c.Code).ToList();
+
+        // Filter out the courses that are already in the database
+        var existingCourses =
+            mergedDictionary
+                .Where(course =>
+                    existingCourseCodes.Contains(course.Key))
+                .Select(course => new Course
+                {
+                    Code = course.Key,
+                    Name = course.Value.Item1,
+                    Hours = course.Value.Item2,
+                    CreditPoints = course.Value.Item3,
+                    CreatedBy = _user,
+                })
+                .ToList();
+
+        return existingCourses;
     }
 }
