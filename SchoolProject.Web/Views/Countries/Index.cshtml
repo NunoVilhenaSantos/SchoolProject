@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Country>
+@model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Country>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,30 +9,29 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-striped table-hover" id="sortableTable" style="width:100%">
+<table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IdGuid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WasDeleted)
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WasDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
+@foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -41,13 +40,13 @@
                 @Html.DisplayFor(modelItem => item.IdGuid)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.WasDeleted)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -55,6 +54,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-    }
+}
     </tbody>
 </table>

@@ -31,12 +31,12 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
     [DisplayName("QNQ Level")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public required byte QnqLevel { get; set; }
+    public required byte QnqLevel { get; init; }
 
 
     [DisplayName("EQF Level")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public required byte EqfLevel { get; set; }
+    public required byte EqfLevel { get; init; }
 
     // old version
     // [Required]

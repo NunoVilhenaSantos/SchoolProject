@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
+using SchoolProject.Web.Data.Entities.Countries;
 
-namespace SchoolProject.Web.Data.Entities.Countries;
+namespace SchoolProject.Web.Data.Servives;
 
 public static class CountryApi
 {

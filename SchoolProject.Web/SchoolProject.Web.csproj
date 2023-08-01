@@ -55,6 +55,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Areas\Identity\Data\" />
         <Folder Include="Data\DataContexts\DataAccess\" />
         <Folder Include="Docs\" />
         <Folder Include="wwwroot\images\" />
