@@ -1,6 +1,6 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 
-public static class TeaigListOfCourses
+public record ListCoursesTeAig
 {
     public static readonly Dictionary<string, (string, int, double)>
         TeAigDictionary = new()

@@ -11,7 +11,7 @@ using SchoolProject.Web.Data.DataContexts;
 namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
 {
     [DbContext(typeof(DataContextMySql))]
-    [Migration("20230731152511_InitDB")]
+    [Migration("20230801012726_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />
@@ -304,7 +304,7 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Codigo")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(7)
                         .HasColumnType("varchar(7)");
@@ -550,6 +550,11 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.Property<string>("Area")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("varchar(7)");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
@@ -562,6 +567,9 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
 
                     b.Property<TimeSpan>("EndHour")
                         .HasColumnType("time(6)");
+
+                    b.Property<byte>("EqfLevel")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -585,6 +593,9 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
 
                     b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("char(36)");
+
+                    b.Property<byte>("QnqLevel")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");

@@ -13,7 +13,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [MaxLength(7,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public required string Codigo { get; set; }
+    public required string Code { get; init; }
 
     [Required] public required string Name { get; set; }
 

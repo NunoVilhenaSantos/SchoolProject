@@ -12,14 +12,31 @@ namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
 public class SchoolClass : IEntity, INotifyPropertyChanged
 {
-    [Required]
+    [DisplayName("Code")]
+    [MaxLength(7,
+        ErrorMessage = "The {0} field can not have more than {1} characters.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required string Code { get; init; }
+
+
     [DisplayName("Class Acronym")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Acronym { get; set; }
 
-    [Required]
+
     [DisplayName("Class Name")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Name { get; set; }
 
+
+    [DisplayName("QNQ Level")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required byte QnqLevel { get; set; }
+
+
+    [DisplayName("EQF Level")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required byte EqfLevel { get; set; }
 
     // old version
     // [Required]

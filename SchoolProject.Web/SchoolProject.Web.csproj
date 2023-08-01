@@ -56,7 +56,6 @@
 
     <ItemGroup>
         <Folder Include="Data\DataContexts\DataAccess\" />
-        <Folder Include="Data\Seeders\CoursesLists\EFAs\" />
         <Folder Include="Docs\" />
         <Folder Include="wwwroot\images\" />
     </ItemGroup>

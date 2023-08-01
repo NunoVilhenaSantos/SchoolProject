@@ -11,7 +11,7 @@ using SchoolProject.Web.Data.DataContexts;
 namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 {
     [DbContext(typeof(DataContextSqLite))]
-    [Migration("20230731152552_InitDB")]
+    [Migration("20230801012808_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />
@@ -302,7 +302,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Codigo")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(7)
                         .HasColumnType("TEXT");
@@ -548,6 +548,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<string>("Area")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
@@ -560,6 +565,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<TimeSpan>("EndHour")
                         .HasColumnType("TEXT");
+
+                    b.Property<byte>("EqfLevel")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -583,6 +591,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("TEXT");
+
+                    b.Property<byte>("QnqLevel")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");

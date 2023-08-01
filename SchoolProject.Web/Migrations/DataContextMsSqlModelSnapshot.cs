@@ -317,7 +317,7 @@ namespace SchoolProject.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Codigo")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(7)
                         .HasColumnType("nvarchar(7)");
@@ -570,6 +570,11 @@ namespace SchoolProject.Web.Migrations
                     b.Property<string>("Area")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
@@ -582,6 +587,9 @@ namespace SchoolProject.Web.Migrations
 
                     b.Property<TimeSpan>("EndHour")
                         .HasColumnType("time");
+
+                    b.Property<byte>("EqfLevel")
+                        .HasColumnType("tinyint");
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -605,6 +613,9 @@ namespace SchoolProject.Web.Migrations
 
                     b.Property<Guid?>("ProfilePhotoId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("QnqLevel")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
