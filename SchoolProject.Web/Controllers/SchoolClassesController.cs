@@ -10,11 +10,11 @@ using SchoolProject.Web.Data.Entities.SchoolClasses;
 
 namespace SchoolProject.Web.Controllers
 {
-    public class SchoolClassController : Controller
+    public class SchoolClassesController : Controller
     {
         private readonly DataContextMsSql _context;
 
-        public SchoolClassController(DataContextMsSql context)
+        public SchoolClassesController(DataContextMsSql context)
         {
             _context = context;
         }

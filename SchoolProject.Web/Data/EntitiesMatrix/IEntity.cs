@@ -1,9 +1,8 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using SchoolProject.Web.Data.Entities.ExtraEntities;
 
-namespace SchoolProject.Web.Data.Entities;
+namespace SchoolProject.Web.Data.EntitiesMatrix;
 
 public interface IEntity
 {

@@ -1,7 +1,7 @@
 ﻿using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.EntitiesMatrix;
 using SchoolProject.Web.Data.Seeders.CoursesLists;
 using SchoolProject.Web.Helpers.Users;
 

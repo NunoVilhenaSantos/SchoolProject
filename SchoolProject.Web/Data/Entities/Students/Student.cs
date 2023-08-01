@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.EntitiesMatrix;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 

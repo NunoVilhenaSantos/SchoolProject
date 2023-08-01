@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Identity;
 
-namespace SchoolProject.Web.Data.Entities.ExtraEntities;
+namespace SchoolProject.Web.Data.EntitiesMatrix;
 
 public class User : IdentityUser, INotifyPropertyChanged
 {
