@@ -1,6 +1,6 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.EFAs;
 
-public record ListCoursesTis
+public abstract record ListCoursesTis
 {
     internal static readonly Dictionary<string, (string, int, double)>
         TisDictionary = new()

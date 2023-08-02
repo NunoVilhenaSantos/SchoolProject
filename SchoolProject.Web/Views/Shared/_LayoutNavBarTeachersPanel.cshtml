@@ -1,0 +1,33 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+}
+
+
+<div class="dropdown">
+    @* <span class="material-symbols-outlined">settings</span> *@
+    <a class="nav-link dropdown-toggle" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="material-symbols-outlined">admin_panel_settings</i>
+        Teachers
+    </a>
+
+    <ul class="dropdown-menu">
+        <li>
+            <a class="nav-link @(currentController == "TeacherCourses" ? "active" : "")"
+               asp-area="" asp-controller="TeacherCourses" asp-action="Index">
+                <i class="fas fa-person-through-window"></i> TeacherCourses
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="nav-link @(currentController == "Teachers" ? "active" : "")"
+               asp-area="" asp-controller="Teachers" asp-action="Index">
+                <i class="fas fa-person-through-window"></i> Teachers
+            </a>
+        </li>
+    </ul>
+
+</div>

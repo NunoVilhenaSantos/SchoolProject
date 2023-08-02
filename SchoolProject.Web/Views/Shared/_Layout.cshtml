@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+
 <!DOCTYPE html>
 
 @inject IWebHostEnvironment HostingEnvironment
@@ -13,7 +14,6 @@
 
 @* <html lang="pt" data-bs-theme="dark"> *@
 <html lang="pt">
-
 
 <head>
     <meta charset="utf-8"/>
@@ -29,24 +29,17 @@
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
     <partial name="_LayoutHeadImports"></partial>
 
-
 </head>
-
 
 <body>
 
 
 <header>
-
     <partial name="_LayoutNavBar"/>
-
 </header>
 
-
 <br/>
 <br/>
-<br/>
-
 
 <div class="container-fluid justify-content-center">
     <main role="main" class="pb-3">
@@ -54,21 +47,15 @@
     </main>
 </div>
 
-
 <br/>
 <br/>
 <br/>
-
 
 <partial name="_LayoutFooter"/>
-
 <partial name="_LayoutScripts"/>
-
 
 @await RenderSectionAsync("Scripts", false)
 
-
 </body>
-
 
 </html>

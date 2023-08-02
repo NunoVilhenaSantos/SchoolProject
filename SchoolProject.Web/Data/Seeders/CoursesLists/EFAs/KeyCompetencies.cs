@@ -1,6 +1,6 @@
 ﻿namespace SchoolProject.Web.Data.Seeders.CoursesLists.EFAs;
 
-public record KeyCompetencies
+public abstract record KeyCompetencies
 {
     // Cidadania e Profissionalidade
     public static readonly Dictionary<string, (string, int, double)>

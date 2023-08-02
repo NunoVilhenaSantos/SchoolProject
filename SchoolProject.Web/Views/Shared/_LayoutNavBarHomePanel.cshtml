@@ -1,0 +1,87 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+}
+
+
+<div class="dropdown">
+    @* <span class="material-symbols-outlined">settings</span> *@
+    <a class="nav-link dropdown-toggle" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="material-symbols-outlined">admin_panel_settings</i>
+        Home
+    </a>
+
+
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="" asp-action="">
+                <i class="bi bi-person-fill"></i>
+                <span class="material-symbols-outlined">person</span>Users
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="" asp-action="">
+                <i class="bi bi-people-fill"></i>
+                <i class="material-symbols-outlined">group</i>Roles
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="nav-link @(currentAction == "Index" && currentController == "Home" ? "active" : "")"
+               asp-area="" asp-controller="Home" asp-action="Index" aria-current="page">
+                <i class="fas fa-house"></i> Home
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(currentAction == "About" && currentController == "Home" ? "active" : "")"
+               asp-area="" asp-controller="Home" asp-action="About">
+                <i class="fas fa-envelope"></i> About
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(currentAction == "Contact" && currentController == "Home" ? "active" : "")"
+               asp-area="" asp-controller="Home" asp-action="Contact">
+                <i class="fas fa-envelope"></i> Contacts
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(currentAction == "Cookies" && currentController == "Home" ? "active" : "")"
+               asp-area="" asp-controller="Home" asp-action="Cookies">
+                <i class="fas fa-envelope"></i> Cookies
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(currentAction == "CookiesPrivacy" && currentController == "Home" ? "active" : "")"
+               asp-area="" asp-controller="Home" asp-action="CookiesPrivacy">
+                <i class="fas fa-envelope"></i> Cookies Privacy
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(currentAction == "Legal" && currentController == "Home" ? "active" : "")"
+               asp-area="" asp-controller="Home" asp-action="Legal">
+                <i class="fas fa-envelope"></i> Legal
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(currentAction == "Privacy" && currentController == "Home" ? "active" : "")"
+               asp-area="" asp-controller="Home" asp-action="Privacy">
+                <i class="fas fa-envelope"></i> Privacy
+            </a>
+        </li>
+
+
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>

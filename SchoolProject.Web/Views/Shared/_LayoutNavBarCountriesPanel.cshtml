@@ -1,0 +1,50 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+}
+
+
+<div class="dropdown">
+    @* <span class="material-symbols-outlined">settings</span> *@
+    <a class="nav-link dropdown-toggle" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="material-symbols-outlined">admin_panel_settings</i>
+        Countries
+    </a>
+
+    <ul class="dropdown-menu">
+        <li>
+            <a class="nav-link @(currentController == "Cities" ? "active" : "")"
+               asp-area="" asp-controller="Cities" asp-action="Index">
+                <i class="fas fa-person-shelter"></i> Cities
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link @(currentController == "Countries" ? "active" : "")"
+               asp-area="" asp-controller="Countries" asp-action="Index">
+                <i class="fas fa-person-shelter"></i> Countries
+            </a>
+        </li>
+
+        <li>
+            <a class="nav-link @(currentController == "Nationalities" ? "active" : "")"
+               asp-area="" asp-controller="Nationalities" asp-action="Index">
+                <i class="fas fa-person-shelter"></i> Countries
+            </a>
+        </li>
+
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <li>
+            <a class="nav-link @(currentController == "Nationalities" ? "active" : "")"
+               asp-area="" asp-controller="Nationalities" asp-action="Index">
+                <i class="fas fa-person-shelter"></i> Nationalities
+            </a>
+        </li>
+        <li></li>
+    </ul>
+
+</div>

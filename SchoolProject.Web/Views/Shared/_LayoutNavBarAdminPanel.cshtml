@@ -1,0 +1,48 @@
+﻿
+@using System.Diagnostics
+
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+}
+
+
+
+@* Verifica se o User está autenticado e se é o Admin!! *@
+@* cria um dropdown com as opções de Users e Roles *@
+@{
+    Debug.Assert(User.Identity != null, "User.Identity != null");
+}
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="dropdown">
+        @* <span class="material-symbols-outlined">settings</span> *@
+        <a class="nav-link dropdown-toggle" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="material-symbols-outlined">admin_panel_settings</i>
+            Admin
+        </a>
+
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="" asp-action="">
+                    <i class="bi bi-person-fill"></i>
+                    <span class="material-symbols-outlined">person</span>Users
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="" asp-action="">
+                    <i class="bi bi-people-fill"></i>
+                    <i class="material-symbols-outlined">group</i>Roles
+                </a>
+            </li>
+        </ul>
+    </div>
+}
