@@ -18,27 +18,27 @@ public class SeedDb
 
     private readonly ILogger<SeedDb> _logger;
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
-    private readonly ILogger<SeedDbPersons> _loggerSeedDbPersons;
+    private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
 
     private readonly IWebHostEnvironment _hostingEnvironment;
 
     private readonly IUserHelper _userHelper;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<SchoolProject.Web.Data.EntitiesMatrix.User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
     // private readonly SeedDbUsers _seedDbUsers;
-    // private readonly SeedDbPersons _seedDbPersons;
+    // private readonly SeedDbStudentsAndTeachers _seedDbPersons;
     // private readonly SeedDbSchoolClasses _seedDbSchoolClasses;
 
     public SeedDb(
         ILogger<SeedDb> logger,
         ILogger<SeedDbUsers> loggerSeedDbUsers,
-        ILogger<SeedDbPersons> loggerSeedDbPersons,
+        ILogger<SeedDbStudentsAndTeachers> loggerSeedDbSTs,
         IUserHelper userHelper,
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
         SeedDbUsers seedDbUsers,
-        SeedDbPersons seedDbPersons,
+        SeedDbStudentsAndTeachers seedDbStudentsAndTeachers,
         SeedDbSchoolClasses seedDbSchoolClasses,
         IWebHostEnvironment hostingEnvironment,
         DataContextMsSql dataContextMsSql,
@@ -48,14 +48,14 @@ public class SeedDb
     {
         _logger = logger;
         _loggerSeedDbUsers = loggerSeedDbUsers;
-        _loggerSeedDbPersons = loggerSeedDbPersons;
+        _loggerSeedDbSTs = loggerSeedDbSTs;
 
         _userHelper = userHelper;
         _userManager = userManager;
         _roleManager = roleManager;
 
         // _seedDbUsers = seedDbUsers;
-        // _seedDbPersons = seedDbPersons;
+        // _seedDbPersons = seedDbStudentsAndTeachers;
         // _seedDbSchoolClasses = seedDbSchoolClasses;
 
         _hostingEnvironment = hostingEnvironment;
@@ -131,12 +131,13 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
-        // Em vez disso, crie uma instância da classe SeedDbPersons
-        SeedDbPersons.Initialize(
-            _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
-        await SeedDbPersons.AddingData();
+        // Em vez disso, crie uma instância da classe SeedDbStudentsAndTeachers
+        SeedDbStudentsAndTeachers.Initialize(
+            _userHelper,  _dataContextMsSql, _loggerSeedDbSTs);
+        await SeedDbStudentsAndTeachers.AddingData(user);
 
-        // var seedDbPersons = new SeedDbPersons(
+
+        // var seedDbStudentsAndTeachers = new SeedDbStudentsAndTeachers(
         //     _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
 
         // Em seguida, chame o método AddingData() na instância criada
@@ -147,8 +148,8 @@ public class SeedDb
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
         SeedDbSchoolClasses.Initialize(
-            _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
-        await SeedDbSchoolClasses.AddingData();
+            _userHelper, _dataContextMsSql, _loggerSeedDbSTs);
+        await SeedDbSchoolClasses.AddingData(user);
 
 
         // Em vez disso, crie uma instância da classe SeedDbSchoolClasses
@@ -279,6 +280,7 @@ public class SeedDb
         await _dataContextMsSql.SaveChangesAsync();
     }
 
+
     private async Task<IdentityResult> CreateRoleAsync(string role)
     {
         return await _roleManager.CreateAsync(new IdentityRole(role));
@@ -287,7 +289,7 @@ public class SeedDb
 
     private async Task AddCountriesWithCitiesAndNationalities(User createdBy)
     {
-        if (_dataContextMsSql.Countries.Any()) return;
+        if (await _dataContextMsSql.Countries.AnyAsync()) return;
 
         var countryCityData = new Dictionary<string, List<string>>
         {
@@ -367,8 +369,8 @@ public class SeedDb
             var countryName = countryEntry.Key;
             var cityNames = countryEntry.Value;
 
-            if (_dataContextMsSql.Countries
-                .Any(c => c.Name == countryName))
+            if (await _dataContextMsSql.Countries
+                    .AnyAsync(c => c.Name == countryName))
                 continue;
 
             var cities = CreateCities(cityNames, createdBy);

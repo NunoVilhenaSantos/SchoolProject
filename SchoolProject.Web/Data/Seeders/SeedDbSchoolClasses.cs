@@ -12,7 +12,7 @@ public class SeedDbSchoolClasses
 {
     private static Random _random;
     private static IUserHelper _userHelper;
-    private static ILogger<SeedDbPersons> _logger;
+    private static ILogger<SeedDbStudentsAndTeachers> _logger;
     private static DataContextMsSql _dataContextMssql;
 
     // Add a private static field to store the existing courses
@@ -20,7 +20,7 @@ public class SeedDbSchoolClasses
 
 
     public SeedDbSchoolClasses(
-        IUserHelper userHelper, ILogger<SeedDbPersons> logger,
+        IUserHelper userHelper, ILogger<SeedDbStudentsAndTeachers> logger,
         DataContextMsSql dataContextMssql
     )
     {
@@ -33,8 +33,9 @@ public class SeedDbSchoolClasses
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
-        IUserHelper userHelper, ILogger<SeedDbPersons> logger,
-        DataContextMsSql dataContextMssql
+        IUserHelper userHelper,
+        DataContextMsSql dataContextMssql,
+        ILogger<SeedDbStudentsAndTeachers> logger
     )
     {
         _logger = logger;
@@ -44,7 +45,7 @@ public class SeedDbSchoolClasses
     }
 
 
-    public static async Task AddingData()
+    public static async Task AddingData(User user1)
     {
         var user =
             await _userHelper.GetUserByEmailAsync(
@@ -315,9 +316,9 @@ public class SeedDbSchoolClasses
         List<Course> courses,
         User user)
     {
-        var existingSchoolClass =
-            _dataContextMssql.SchoolClasses
-                .FirstOrDefault(s => s.Acronym == acronym && s.Code == code);
+        var existingSchoolClass = await _dataContextMssql.SchoolClasses
+            .FirstOrDefaultAsync(
+                s => s.Acronym == acronym && s.Code == code);
 
 
         // Calculate the total duration in hours from the sum of course hours

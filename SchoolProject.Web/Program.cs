@@ -456,7 +456,9 @@ builder.Logging.AddApplicationInsights();
 
 
 // Inject repositories and helpers.
-builder.Services.AddScoped<UserManager<User>>();
+// builder.Services.AddScoped<UserManager<User>>();
+builder.Services
+    .AddScoped<UserManager<SchoolProject.Web.Data.EntitiesMatrix.User>>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IEmailSender, EmailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
@@ -467,9 +469,11 @@ builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 // Add seeding for the database.
 // builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped<SeedDb>();
-// builder.Services.AddScoped<SeedDbUsers>();
-// builder.Services.AddScoped<SeedDbPersons>();
-// builder.Services.AddScoped<SeedDbSchoolClasses>();
+builder.Services.AddScoped<SeedDbUsers>();
+builder.Services.AddScoped<SeedDbStudentsAndTeachers>();
+builder.Services.AddScoped<SeedDbSchoolClasses>();
+
+// builder.Services.AddScoped<SeedDbSchoolClassStudents>();
 // builder.Services.AddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();
 // builder.Services.AddTransient<SeedDb>().Configure();
 // builder.Services.AddTransient<SeedDbMsSql>();

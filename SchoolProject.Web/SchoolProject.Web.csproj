@@ -8,7 +8,9 @@
         <TargetFramework>net7.0</TargetFramework>
         <ApplicationIcon>school-256x256.ico</ApplicationIcon>
         <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>C:\Users\nunov\Downloads\sgKey.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>C:\Users\nunov\source\repos\SchoolProject\sgKey.snk</AssemblyOriginatorKeyFile>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
