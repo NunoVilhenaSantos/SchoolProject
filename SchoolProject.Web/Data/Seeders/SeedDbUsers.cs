@@ -11,6 +11,14 @@ public class SeedDbUsers
     private static IUserHelper _userHelper;
     private static ILogger<SeedDbUsers> _logger;
 
+    public SeedDbUsers(
+        IUserHelper userHelper, ILogger<SeedDbUsers> logger
+    )
+    {
+        _logger = logger;
+        _userHelper = userHelper;
+    }
+
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
@@ -163,6 +171,7 @@ public class SeedDbUsers
 
         Console.WriteLine(message);
         _logger.LogInformation(message);
+
         return user;
     }
 

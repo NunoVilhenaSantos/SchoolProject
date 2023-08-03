@@ -1,21 +1,24 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
+using SchoolProject.Web.Data.EntitiesMatrix;
 using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<HomeController> _logger;
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
-
+    private readonly SignInManager<User> _signInManager;
 
     public HomeController(
         ILogger<HomeController> logger,
+        SignInManager<User> signInManager,
         IHttpContextAccessor httpContextAccessor,
         IHtmlLocalizer<HomeController> htmlLocalizer,
         IStringLocalizer<HomeController> stringLocalizer
@@ -23,6 +26,7 @@ public class HomeController : Controller
     {
         _logger = logger;
         _htmlLocalizer = htmlLocalizer;
+        _signInManager = signInManager;
         _stringLocalizer = stringLocalizer;
         _httpContextAccessor = httpContextAccessor;
     }
@@ -55,14 +59,10 @@ public class HomeController : Controller
         // }
 
         ViewData["stringLocalizer"] = _stringLocalizer["About Title"];
-        // ViewData["htmlLocalizer"] =
-        //     _htmlLocalizer["<b>Hello</b><i> {0}</i>", name];
+        ViewData["htmlLocalizer"] = _htmlLocalizer["<b>Hello</b><i> {0}</i>",
+            _signInManager.IsSignedIn(User)];
 
         ViewData["WelcomeMessage"] = _stringLocalizer["WelcomeMessage"];
-        return View();
-
-
-        // Resto da lógica do controlador
         return View();
     }
 

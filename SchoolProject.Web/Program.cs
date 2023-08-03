@@ -110,11 +110,11 @@ static async Task RunSeeding(IHost host)
     //         IServiceScopeFactory;
 
 
-    using var scope = scopeFactory.CreateScope();
+    using var scope = scopeFactory?.CreateScope();
 
     var seeder = scope.ServiceProvider.GetService<SeedDb>();
 
-    await seeder.SeedAsync();
+    await seeder?.SeedAsync();
 }
 
 
@@ -148,6 +148,7 @@ builder.Services.AddDbContext<DataContextMsSql>(
             });
     });
 
+
 builder.Services.AddDbContext<DataContextMySql>(
     cfg =>
     {
@@ -173,6 +174,7 @@ builder.Services.AddDbContext<DataContextSqLite>(
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
             });
     });
+
 
 // Configure Identity service with user settings,
 // password settings, and token settings.
@@ -453,15 +455,6 @@ builder.Logging.AddEventSourceLogger();
 builder.Logging.AddApplicationInsights();
 
 
-// Add seeding for the database.
-builder.Services.AddTransient<SeedDb>();
-// builder.Services.AddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();
-// builder.Services.AddTransient<SeedDb>().Configure();
-// builder.Services.AddTransient<SeedDbMsSql>();
-// builder.Services.AddTransient<SeedDbMySql>();
-// builder.Services.AddTransient<SeedDbSqLite>();
-
-
 // Inject repositories and helpers.
 builder.Services.AddScoped<UserManager<User>>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
@@ -469,6 +462,19 @@ builder.Services.AddScoped<IEmailSender, EmailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
 builder.Services.AddScoped<IStorageHelper, StorageHelper>();
 builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
+
+
+// Add seeding for the database.
+// builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<SeedDb>();
+// builder.Services.AddScoped<SeedDbUsers>();
+// builder.Services.AddScoped<SeedDbPersons>();
+// builder.Services.AddScoped<SeedDbSchoolClasses>();
+// builder.Services.AddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();
+// builder.Services.AddTransient<SeedDb>().Configure();
+// builder.Services.AddTransient<SeedDbMsSql>();
+// builder.Services.AddTransient<SeedDbMySql>();
+// builder.Services.AddTransient<SeedDbSqLite>();
 
 
 // Extrai o nome do servidor da Connection String

@@ -35,7 +35,6 @@ public class GenericRepository<T> : IGenericRepository<T>
     {
         return await _dataContext.Set<T>().AsNoTracking()
             .FirstOrDefaultAsync(e => e.IdGuid == idGuid);
-        throw new NotImplementedException();
     }
 
 

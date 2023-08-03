@@ -49,21 +49,21 @@
             // Aqui você pode adicionar lógica para definir os cookies aceitos pela aplicação
             // Exemplo: setCookie("cookieAccepted", "true", 365);
             setCookie("cookieAccepted", "true", 365);
-            alert("Cookies aceitos. Obrigado!");
+            alert("Cookies aceites. Obrigado!");
         }
 
         function rejectCookies() {
             // Aqui você pode adicionar lógica para definir os cookies rejeitados pela aplicação
             // Exemplo: setCookie("cookieAccepted", "false", 365);
             setCookie("cookieAccepted", "false", 365);
-            alert("Cookies rejeitados. Algumas funcionalidades podem ficar comprometidas.");
+            alert("Cookies rejeitadas. Algumas funcionalidades podem ficar comprometidas.");
         }
 
         // Função para definir cookies
         function setCookie(name, value, days) {
-            var expires = "";
+            let expires = "";
             if (days) {
-                var date = new Date();
+                const date = new Date();
                 date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
                 expires = "; expires=" + date.toUTCString();
             }

@@ -6,6 +6,9 @@
         <UserSecretsId>3fb28fef-2681-4d6e-8871-85d425cfe21a</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <TargetFramework>net7.0</TargetFramework>
+        <ApplicationIcon>school-256x256.ico</ApplicationIcon>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>C:\Users\nunov\Downloads\sgKey.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -38,8 +41,8 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
-        <PackageReference Include="Microsoft.Identity.Web" Version="2.13.1" />
-        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.1" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.13.2" />
+        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.2" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
         <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
@@ -403,6 +406,7 @@
         <Content Include="obj\SchoolProject.Web.csproj.nuget.dgspec.json" />
         <Content Include="obj\SchoolProject.Web.csproj.nuget.g.props" />
         <Content Include="obj\SchoolProject.Web.csproj.nuget.g.targets" />
+        <Content Include="school-256x256.ico" />
         <Content Remove="obj\**" />
     </ItemGroup>
 

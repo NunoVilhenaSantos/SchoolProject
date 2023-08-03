@@ -16,14 +16,19 @@ public class SeedDb
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
 
-    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ILogger<SeedDb> _logger;
-    private readonly ILogger<SeedDbPersons> _loggerSeedDbPersons;
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ILogger<SeedDbPersons> _loggerSeedDbPersons;
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    // private readonly SeedDbUsers _seedDbUsers;
+    // private readonly SeedDbPersons _seedDbPersons;
+    // private readonly SeedDbSchoolClasses _seedDbSchoolClasses;
 
     public SeedDb(
         ILogger<SeedDb> logger,
@@ -32,6 +37,9 @@ public class SeedDb
         IUserHelper userHelper,
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
+        SeedDbUsers seedDbUsers,
+        SeedDbPersons seedDbPersons,
+        SeedDbSchoolClasses seedDbSchoolClasses,
         IWebHostEnvironment hostingEnvironment,
         DataContextMsSql dataContextMsSql,
         DataContextMySql dataContextMySql,
@@ -45,6 +53,10 @@ public class SeedDb
         _userHelper = userHelper;
         _userManager = userManager;
         _roleManager = roleManager;
+
+        // _seedDbUsers = seedDbUsers;
+        // _seedDbPersons = seedDbPersons;
+        // _seedDbSchoolClasses = seedDbSchoolClasses;
 
         _hostingEnvironment = hostingEnvironment;
 
@@ -68,7 +80,6 @@ public class SeedDb
         // initialize SeedDbUsers with the user helper before been used
         // ------------------------------------------------------------------ //
         SeedDbUsers.Initialize(_userHelper, _loggerSeedDbUsers);
-        // SeedDbPersons.Initialize(_userHelper, _dataContextMsSql);
 
         Console.WriteLine("Seeding the database.", Color.Green);
         Console.WriteLine("Debug point.", Color.Red);
@@ -108,7 +119,7 @@ public class SeedDb
         // adding countries and cities to the database
         // ------------------------------------------------------------------ //
         Debug.Assert(user != null, nameof(user) + " != null");
-        AddCountriesWithCitiesAndNationalities(user);
+        await AddCountriesWithCitiesAndNationalities(user);
 
 
         // ------------------------------------------------------------------ //
@@ -118,17 +129,18 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // initialize SeedDbPersons with the user helper and the data-context
-        // before been used
-        // ------------------------------------------------------------------ //
-        // SeedDbUsers.Initialize(_userHelper);
-        SeedDbPersons.Initialize(
-            _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
-
-        // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
+        // Em vez disso, crie uma instância da classe SeedDbPersons
+        SeedDbPersons.Initialize(
+            _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
         await SeedDbPersons.AddingData();
+
+        // var seedDbPersons = new SeedDbPersons(
+        //     _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
+
+        // Em seguida, chame o método AddingData() na instância criada
+        // await _seedDbPersons.AddingData();
 
 
         // ------------------------------------------------------------------ //
@@ -137,6 +149,13 @@ public class SeedDb
         SeedDbSchoolClasses.Initialize(
             _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
         await SeedDbSchoolClasses.AddingData();
+
+
+        // Em vez disso, crie uma instância da classe SeedDbSchoolClasses
+        // var seedDbSchoolClasses = new SeedDbSchoolClasses(
+        //     _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
+        // Em seguida, chame o método AddingData() na instância criada
+        // await _seedDbSchoolClasses.AddingData();
 
 
         // verificar se existem os placeholders no sistema
@@ -179,7 +198,7 @@ public class SeedDb
     }
 
 
-    private static async Task SeedingDataSuperUsers()
+    private async Task SeedingDataSuperUsers()
     {
         await SeedDbUsers.AddUsers(
             "Nuno", "Vilhena Santos",
@@ -198,7 +217,7 @@ public class SeedDb
     }
 
 
-    private static async Task SeedingDataAdminUsers()
+    private async Task SeedingDataAdminUsers()
     {
         await SeedDbUsers.AddUsers(
             "Jorge", "Pinto",
@@ -217,7 +236,7 @@ public class SeedDb
     }
 
 
-    private static async Task SeedingDataFunctionaryUsers()
+    private async Task SeedingDataFunctionaryUsers()
     {
         await SeedDbUsers.AddUsers(
             "Licinio", "Rosario",
@@ -266,7 +285,7 @@ public class SeedDb
     }
 
 
-    private void AddCountriesWithCitiesAndNationalities(User createdBy)
+    private async Task AddCountriesWithCitiesAndNationalities(User createdBy)
     {
         if (_dataContextMsSql.Countries.Any()) return;
 
@@ -370,10 +389,10 @@ public class SeedDb
                 CreatedBy = createdBy
             };
 
-            _dataContextMsSql.Countries.Add(country);
+            await _dataContextMsSql.Countries.AddAsync(country);
         }
 
-        _dataContextMsSql.SaveChanges();
+        await _dataContextMsSql.SaveChangesAsync();
     }
 
 

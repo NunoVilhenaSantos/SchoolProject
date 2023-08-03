@@ -7,7 +7,6 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Data.EntitiesMatrix;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -18,6 +17,17 @@ public class SeedDbPersons
     private static IUserHelper _userHelper;
     private static ILogger<SeedDbPersons> _logger;
     private static DataContextMsSql _dataContextMssql;
+
+
+    public SeedDbPersons(
+        IUserHelper userHelper,
+        ILogger<SeedDbPersons> logger, DataContextMsSql dataContextMssql)
+    {
+        _logger = logger;
+        _random = new Random();
+        _userHelper = userHelper;
+        _dataContextMssql = dataContextMssql;
+    }
 
 
     // Add a constructor to receive IUserHelper through dependency injection
@@ -39,13 +49,35 @@ public class SeedDbPersons
             await _userHelper.GetUserByEmailAsync(
                 "nuno.santos.26288@formandos.cinel.pt");
 
+
         Console.WriteLine(
             "Seeding the users table with students and teachers...");
 
 
         Console.WriteLine(
             "Seeding the users table with students...");
+        var existingStudents =
+            await _dataContextMssql.Students.ToListAsync();
 
+        var existingStudentsList = existingStudents.ToList();
+
+        await AddingStudentData(user, existingStudentsList);
+
+
+        Console.WriteLine(
+            "Seeding the users table with teachers...");
+        var existingTeachers =
+            await _dataContextMssql.Teachers.ToListAsync();
+
+        var existingTeachersList = existingTeachers.ToList();
+
+        await AddingTeacherData(user, existingTeachersList);
+    }
+
+
+    private static async Task AddingStudentData(
+        EntitiesMatrix.User user, List<Student> existingStudentsList)
+    {
         var studentNames = new List<string>
         {
             "Ana Ribeiro", "Bruno Ferreira", "Catarina Palma",
@@ -67,62 +99,21 @@ public class SeedDbPersons
 
 
         // Check if any students need to be added
-        var existingStudents =
-            await _dataContextMssql.Students.ToListAsync();
+        //var existingStudents =
+        //    await _dataContextMssql.Students.ToListAsync();
+
         var studentsToAdd = studentNames
             .Except(
-                existingStudents
+                existingStudentsList
                     .Select(s => s.FirstName + " " + s.LastName))
             .ToList();
 
         if (studentsToAdd.Any()) await AddStudents(user, studentsToAdd);
-
-
-        Console.WriteLine(
-            "Seeding the users table with teachers...");
-
-        var teacherNames = new List<string>
-        {
-            "New Teacher 1", "New Teacher 2", "New Teacher 3", "New Teacher 4",
-            "New Teacher 5", "New Teacher 6", "New Teacher 7", "New Teacher 8",
-            "New Teacher 9", "New Teacher 10", "New Teacher 11",
-            "New Teacher 12", "New Teacher 13", "New Teacher 14",
-            "New Teacher 15", "New Teacher 16", "New Teacher 17",
-            "New Teacher 18", "New Teacher 19", "New Teacher 20",
-            "New Teacher 21", "New Teacher 22", "New Teacher 23",
-            "New Teacher 12", "New Teacher 13", "New Teacher 14",
-            "New Teacher 15", "New Teacher 16", "New Teacher 17",
-            "New Teacher 18", "New Teacher 19", "New Teacher 20",
-            "New Teacher 21", "New Teacher 22", "New Teacher 23",
-            "New Teacher 24", "New Teacher 25", "New Teacher 26",
-            "New Teacher 27", "New Teacher 28", "New Teacher 29",
-            "New Teacher 30", "New Teacher 31", "New Teacher 32",
-            "New Teacher 33", "New Teacher 34", "New Teacher 35",
-            "New Teacher 36", "New Teacher 37", "New Teacher 38",
-            "New Teacher 39", "New Teacher 40", "New Teacher 41",
-            "New Teacher 42", "New Teacher 43", "New Teacher 44",
-            "New Teacher 45", "New Teacher 46", "New Teacher 47",
-            "New Teacher 48", "New Teacher 49", "New Teacher 50",
-            "New Teacher 51", "New Teacher 52", "New Teacher 53",
-            "New Teacher 54", "New Teacher 55", "New Teacher 56",
-            "New Teacher 57", "New Teacher 58", "New Teacher 59"
-        };
-
-        // Check if any teachers need to be added
-        var existingTeachers =
-            await _dataContextMssql.Teachers.ToListAsync();
-        var teachersToAdd = teacherNames
-            .Except(
-                existingTeachers
-                    .Select(t => t.FirstName + " " + t.LastName))
-            .ToList();
-
-        if (teachersToAdd.Any()) await AddTeachers(user, teachersToAdd);
     }
 
 
     private static async Task AddStudents(
-        User user, List<string> studentNamesToAdd)
+        EntitiesMatrix.User user, List<string> studentNamesToAdd)
     {
         var students = new List<Student>();
 
@@ -152,7 +143,8 @@ public class SeedDbPersons
         foreach (var studentName in studentNamesToAdd)
         {
             var firstName = studentName.Split(' ')[0];
-            var lastName = studentName.Split(' ')[1];
+            var lastName =
+                studentName.Replace(firstName, "").Trim();
 
             // Generate a valid email address based on firstName and lastName
             // var firstName = "Student " + i;
@@ -186,30 +178,25 @@ public class SeedDbPersons
                 cellPhone, dateOfBirth, idNumber, vatNumber,
                 user, city, country, countryOfNationality, birthplace, genre);
 
-            students.Add(student);
+            // students.Add(student);
         }
 
-        await _dataContextMssql.Students.AddRangeAsync(students);
+        // todo: add students to the database
+        // await _dataContextMssql.Students.AddRangeAsync(students);
 
         await _dataContextMssql.SaveChangesAsync();
     }
 
 
-    private static Student CreateStudent(
+    private static async Task<Student> CreateStudent(
         string firstName, string lastName, string address, string email,
         string postalCode, string cellPhone, DateTime dateOfBirth,
         string idNumber, string vatNumber,
-        User user, City city, Country country,
-        Country countryOfNationality, Country birthplace, Genre genre)
+        EntitiesMatrix.User user, City city, Country country,
+        Country countryOfNationality, Country birthplace, Genre genre,
+        string password = "Passw0rd")
     {
-        // var newUser = await GetOrCreateUserAsync(
-        //     firstName, lastName,
-        //     email, cellPhone,
-        //     "document " + email,
-        //     address,
-        //     user);
-
-        var newUser = new User
+        var newUser = new EntitiesMatrix.User
         {
             FirstName = firstName,
             LastName = lastName,
@@ -219,6 +206,15 @@ public class SeedDbPersons
             PhoneNumber = cellPhone,
             WasDeleted = false
         };
+
+        newUser = await SeedDbUsers.VerifyUserAsync(
+            firstName, lastName,
+            email,
+            email,
+            cellPhone, "Student",
+            "document of " + firstName + " " + lastName + " from " + address,
+            address, password
+        );
 
         Console.WriteLine("Creating student: " + firstName + " " + lastName);
 
@@ -254,32 +250,52 @@ public class SeedDbPersons
     }
 
 
-    private static async Task<User> GetOrCreateUserAsync(string firstName,
-        string lastName, string email, string mobilePhone,
-        string document, string address, User user,
-        string role = "Student")
+    private static async Task AddingTeacherData(EntitiesMatrix.User user,
+        List<Teacher> existingTeachersList)
     {
-        var existingUser =
-            await _dataContextMssql.Users.FirstOrDefaultAsync(u =>
-                u.Email == email);
+        var teacherNames = new List<string>
+        {
+            "New Teacher 1", "New Teacher 2", "New Teacher 3", "New Teacher 4",
+            "New Teacher 5", "New Teacher 6", "New Teacher 7", "New Teacher 8",
+            "New Teacher 9", "New Teacher 10", "New Teacher 11",
+            "New Teacher 12", "New Teacher 13", "New Teacher 14",
+            "New Teacher 15", "New Teacher 16", "New Teacher 17",
+            "New Teacher 18", "New Teacher 19", "New Teacher 20",
+            "New Teacher 21", "New Teacher 22", "New Teacher 23",
+            "New Teacher 12", "New Teacher 13", "New Teacher 14",
+            "New Teacher 15", "New Teacher 16", "New Teacher 17",
+            "New Teacher 18", "New Teacher 19", "New Teacher 20",
+            "New Teacher 21", "New Teacher 22", "New Teacher 23",
+            "New Teacher 24", "New Teacher 25", "New Teacher 26",
+            "New Teacher 27", "New Teacher 28", "New Teacher 29",
+            "New Teacher 30", "New Teacher 31", "New Teacher 32",
+            "New Teacher 33", "New Teacher 34", "New Teacher 35",
+            "New Teacher 36", "New Teacher 37", "New Teacher 38",
+            "New Teacher 39", "New Teacher 40", "New Teacher 41",
+            "New Teacher 42", "New Teacher 43", "New Teacher 44",
+            "New Teacher 45", "New Teacher 46", "New Teacher 47",
+            "New Teacher 48", "New Teacher 49", "New Teacher 50",
+            "New Teacher 51", "New Teacher 52", "New Teacher 53",
+            "New Teacher 54", "New Teacher 55", "New Teacher 56",
+            "New Teacher 57", "New Teacher 58", "New Teacher 59"
+        };
 
-        // User already exists, return the existing user
-        if (existingUser != null) return existingUser;
+        // Check if any teachers need to be added
+        //var existingTeachers =
+        //    await _dataContextMssql.Teachers.ToListAsync();
 
-        // User doesn't exist, create a new user
-        var newUser = await SeedDbUsers.VerifyUserAsync(
-            firstName, lastName,
-            email,
-            email,
-            mobilePhone, role,
-            document, address);
+        var teachersToAdd = teacherNames
+            .Except(
+                existingTeachersList
+                    .Select(t => t.FirstName + " " + t.LastName))
+            .ToList();
 
-        return newUser;
+        if (teachersToAdd.Any()) await AddTeachers(user, teachersToAdd);
     }
 
 
     private static async Task AddTeachers(
-        User user, List<string> teacherNamesToAdd)
+        EntitiesMatrix.User user, List<string> teacherNamesToAdd)
     {
         var teachers = new List<Teacher>();
 
@@ -308,7 +324,8 @@ public class SeedDbPersons
         foreach (var teacherName in teacherNamesToAdd)
         {
             var firstName = teacherName.Split(' ')[0];
-            var lastName = teacherName.Split(' ')[1];
+            var lastName =
+                teacherName.Replace(firstName, "").Trim();
 
             // var firstName = "Teacher " + i;
             // var lastName = "Lastname " + i;
@@ -340,30 +357,25 @@ public class SeedDbPersons
                 cellPhone, dateOfBirth, idNumber, vatNumber,
                 user, city, country, countryOfNationality, birthplace, genre);
 
-            teachers.Add(student);
+            // teachers.Add(student);
         }
 
-        await _dataContextMssql.Teachers.AddRangeAsync(teachers);
+        // todo: add teachers to the database
+        // await _dataContextMssql.Teachers.AddRangeAsync(teachers);
 
         await _dataContextMssql.SaveChangesAsync();
     }
 
 
-    private static Teacher CreateTeacher(
+    private static async Task<Teacher> CreateTeacher(
         string firstName, string lastName, string address, string email,
         string postalCode, string cellPhone, DateTime dateOfBirth,
         string idNumber, string vatNumber,
-        User user, City city, Country country,
-        Country countryOfNationality, Country birthplace, Genre genre)
+        EntitiesMatrix.User user, City city, Country country,
+        Country countryOfNationality, Country birthplace, Genre genre,
+        string password = "Passw0rd")
     {
-        // var newUser = await GetOrCreateUserAsync(
-        //     firstName, lastName,
-        //     email, cellPhone,
-        //     "document " + email,
-        //     address,
-        //     user);
-
-        var newUser = new User
+        var newUser = new EntitiesMatrix.User
         {
             FirstName = firstName,
             LastName = lastName,
@@ -373,6 +385,16 @@ public class SeedDbPersons
             PhoneNumber = cellPhone,
             WasDeleted = false
         };
+
+
+        newUser = await SeedDbUsers.VerifyUserAsync(
+            firstName, lastName,
+            email,
+            email,
+            cellPhone, "Student",
+            "document of " + firstName + " " + lastName + " from " + address,
+            address, password
+        );
 
 
         Console.WriteLine("Creating teacher: " + firstName + " " + lastName);
@@ -443,13 +465,13 @@ public class SeedDbPersons
         var email = $"{sanitizedFirstName}.{sanitizedLastName}@mail.pt";
 
         // You can also convert the email to lowercase, if desired
-        // email = email.ToLower();
+        email = email.ToLower();
 
         return email;
     }
 
 
-    private static async Task StoreStudentsOrTeachersWithRoles<T>(
+    private async Task StoreStudentsOrTeachersWithRoles<T>(
         EntityEntry<T> studentOrTeacherWithRole, string userRole)
         where T : class
     {
@@ -476,7 +498,7 @@ public class SeedDbPersons
                 Name = userRole
             };
 
-            _dataContextMssql.Roles.Add(role);
+            await _dataContextMssql.Roles.AddAsync(role);
         }
 
 
