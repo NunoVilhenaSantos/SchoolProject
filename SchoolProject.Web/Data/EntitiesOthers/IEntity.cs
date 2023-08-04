@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SchoolProject.Web.Data.EntitiesMatrix;
+namespace SchoolProject.Web.Data.EntitiesOthers;
 
 public interface IEntity
 {

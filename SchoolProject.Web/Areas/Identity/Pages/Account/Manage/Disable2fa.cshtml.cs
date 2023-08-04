@@ -6,7 +6,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 

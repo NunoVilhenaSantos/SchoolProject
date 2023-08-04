@@ -3,7 +3,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using SchoolProject.Web.Data.DataContexts;
 
-namespace SchoolProject.Web.Data.EntitiesMatrix;
+namespace SchoolProject.Web.Data.EntitiesOthers;
 
 public static class SaveToCsv
 {

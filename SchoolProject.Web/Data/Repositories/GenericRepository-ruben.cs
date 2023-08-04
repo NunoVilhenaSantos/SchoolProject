@@ -3,10 +3,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SchoolProject.Web.Data.DataContexts;
-using SchoolProject.Web.Data.EntitiesMatrix;
 using SchoolProject.Web.Data.Repositories.Interfaces;
+using SchoolProject.Web.Data.EntitiesOthers;
 
-namespace SuperShop.Web.Data
+namespace SchoolProject.Web.Data.Repositories
 {
     public class GenericRepositoryRuben<T> : IGenericRepository<T> where T : class, IEntity
     {

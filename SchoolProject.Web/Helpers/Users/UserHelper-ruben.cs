@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
-using SchoolProject.Web.Data.EntitiesMatrix;
-using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Users;
+using SchoolProject.Web.Data.EntitiesOthers;
 
-namespace SuperShop.Web.Helpers
+namespace SchoolProject.Web.Helpers.Users
 {
     public class UserHelperRuben : IUserHelper
     {

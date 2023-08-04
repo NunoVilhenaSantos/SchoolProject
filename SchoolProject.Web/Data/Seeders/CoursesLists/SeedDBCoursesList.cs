@@ -2,20 +2,28 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 using SchoolProject.Web.Data.Seeders.CoursesLists.EFAs;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders.CoursesLists;
 
-public static class SeedDbCoursesList
+public class SeedDbCoursesList
 {
     private static User _user;
     private static Random _random;
+
     private static IUserHelper _userHelper;
-    private static ILogger<SeedDbStudentsAndTeachers> _logger;
-    private static DataContextMsSql _dataContextMssql;
+    private static ILogger<SeedDbCoursesList> _logger;
+
+
+    private static DataContextMsSql _dataContextMsSql;
+
+
+    private static Dictionary<string, (string, int, double)> _listOfCoursesToAdd = new();
+    private static Dictionary<string, (string, int, double)> _listOfCoursesFromDb = new();
+
 
 
     // Disciplinas comuns da area de informática
@@ -102,11 +110,64 @@ public static class SeedDbCoursesList
         };
 
 
-    public static void Initialize(DataContextMsSql dataContextMsSql, User user)
+    public static void Initialize(DataContextMsSql dataContextMsSql)
+    {
+        //_user = user;
+        _dataContextMsSql = dataContextMsSql;
+    }
+
+
+    internal static async Task AddingData(User user)
     {
         _user = user;
-        _dataContextMssql = dataContextMsSql;
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        TeTpsi();
+        TeCs();
+        TeAig();
+        EfaTis();
+        TeGrsi();
+        TeGicd();
+        TeArci();
+        TeDpm();
+        TeTr();
+
+        // Adding the courses to the database
+        await SaveMissingCourses();
+
+        stopwatch.Stop();
+
+        Console.WriteLine($"Tempo de execução: {stopwatch.Elapsed}");
+
+        Console.WriteLine("debug zone...");
     }
+
+
+    //internal static async void AddingData(SchoolProject.Web.Data.EntitiesMatrix.User user)
+    //{
+    //    _user = user;
+
+    //    TeTpsi();
+    //    TeCs();
+    //    TeAig();
+    //    EfaTis();
+    //    TeGrsi();
+    //    TeGicd();
+    //    TeArci();
+    //    TeDpm();
+    //    TeTr();
+
+
+    //    // Adding the courses to the database
+    //    await SaveMissingCourses();
+
+
+    //    Console.WriteLine("debug zone...");
+    //}
+
+
 
 
     private static Dictionary<string, (string, int, double)>
@@ -209,7 +270,8 @@ public static class SeedDbCoursesList
             ListCoursesTeTpsi.TeTpsiDictionary,
             ListsOfFct.Fct400);
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -223,7 +285,8 @@ public static class SeedDbCoursesList
             ListsOfFct.Fct560);
 
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -238,7 +301,8 @@ public static class SeedDbCoursesList
             ListsOfFct.Fct400);
 
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -257,7 +321,8 @@ public static class SeedDbCoursesList
             ListsOfFct.Fct210);
 
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -270,7 +335,8 @@ public static class SeedDbCoursesList
             ListCoursesTeGrsi.TeGrsiDictionary,
             ListsOfFct.Fct400);
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -284,7 +350,8 @@ public static class SeedDbCoursesList
             ListsOfFct.Fct400);
 
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -298,7 +365,8 @@ public static class SeedDbCoursesList
             ListsOfFct.Fct560);
 
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -312,7 +380,8 @@ public static class SeedDbCoursesList
             ListsOfFct.Fct500);
 
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -326,22 +395,52 @@ public static class SeedDbCoursesList
             ListsOfFct.Fct560);
 
 
-        SaveMissingCourses(mergedDictionary);
+        //SaveMissingCourses(mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
 
 
-    private static async void SaveMissingCourses(
-        Dictionary<string, (string, int, double)> mergedDictionary)
+
+    private static void AddMissingCourses(
+            Dictionary<string, (string, int, double)> addCoursesToListOfCoursesToAdd
+        )
+    {
+        //var mergedDictionary =
+        //    new Dictionary<string, (string, int, double)>(commonCourses);
+
+
+        // Merge with the _listOfCoursesToAdd dictionary
+        foreach (var (key, value) in addCoursesToListOfCoursesToAdd)
+            _listOfCoursesToAdd
+                .TryAdd(key, (value.Item1, value.Item2, value.Item3));
+
+
+        // Merge with workRelatedTraining dictionary
+        //foreach (var (key, value) in workRelatedTraining)
+        //    mergedDictionary
+        //        .TryAdd(key, (value.Item1, value.Item2, value.Item3));
+    }
+
+
+
+    private static async 
+
+
+    Task
+SaveMissingCourses(
+        //Dictionary<string, (string, int, double)> mergedDictionary
+        )
     {
         // Get the list of existing course codes from the database
         var existingCourseCodes =
-            await _dataContextMssql.Courses.Select(c => c.Code).ToListAsync();
+            await _dataContextMsSql.Courses.Select(c => c.Code).ToListAsync();
+
 
         // Filter out the courses that are already in the database
         var missingCourses =
-            mergedDictionary
+            _listOfCoursesToAdd
                 .Where(course =>
                     !existingCourseCodes.Contains(course.Key))
                 .Select(course =>
@@ -355,23 +454,34 @@ public static class SeedDbCoursesList
                     })
                 .ToList();
 
+
+        Console.WriteLine($"Missing courses: {missingCourses.Count}");
+        Console.WriteLine("Debug zone");
+
+
         // Save the missing courses to the database
-        await _dataContextMssql.Courses.AddRangeAsync(missingCourses);
-        await _dataContextMssql.SaveChangesAsync();
+        await _dataContextMsSql.Courses.AddRangeAsync(missingCourses);
+        await _dataContextMsSql.SaveChangesAsync();
     }
 
 
     private static async Task<List<Course>> GetExistingCourses(
-        Dictionary<string, (string, int, double)> mergedDictionary)
+        Dictionary<string, (string, int, double)> mergedDictionary
+        )
     {
         // Filter out the courses that are already in the database and also present in the dictionary
         var existingCourses =
-            await _dataContextMssql.Courses.AsAsyncEnumerable()
+            await _dataContextMsSql.Courses.AsAsyncEnumerable()
                 .Where(course => mergedDictionary.ContainsKey(course.Code))
                 .ToListAsync();
 
         var finalList = existingCourses.ToList();
 
+        Console.WriteLine($"Existing courses: {existingCourses.Count}");
+        Console.WriteLine("Debug zone");
+
+
         return finalList;
     }
+
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Students;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 

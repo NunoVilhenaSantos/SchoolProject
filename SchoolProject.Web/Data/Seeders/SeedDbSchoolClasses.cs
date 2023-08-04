@@ -2,7 +2,7 @@
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders.CoursesLists;
 using SchoolProject.Web.Helpers.Users;
 
@@ -11,54 +11,65 @@ namespace SchoolProject.Web.Data.Seeders;
 public class SeedDbSchoolClasses
 {
     private static Random _random;
+
+
     private static IUserHelper _userHelper;
-    private static ILogger<SeedDbStudentsAndTeachers> _logger;
-    private static DataContextMsSql _dataContextMssql;
+    private static ILogger<SeedDbSchoolClasses> _logger;
+
+
+    private static DataContextMsSql _dataContextMsSql;
 
     // Add a private static field to store the existing courses
-    private static List<Course>? _existingCourses;
+    private static List<Course> _listOfCoursesFromDb = new();
+    private static List<SchoolClass> _listOfSchoolClassFromDb = new();
 
 
     public SeedDbSchoolClasses(
-        IUserHelper userHelper, ILogger<SeedDbStudentsAndTeachers> logger,
-        DataContextMsSql dataContextMssql
+        IUserHelper userHelper, ILogger<SeedDbSchoolClasses> logger,
+        DataContextMsSql dataContextMsSql
     )
     {
         _logger = logger;
         _random = new Random();
         _userHelper = userHelper;
-        _dataContextMssql = dataContextMssql;
+        _dataContextMsSql = dataContextMsSql;
     }
 
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
         IUserHelper userHelper,
-        DataContextMsSql dataContextMssql,
-        ILogger<SeedDbStudentsAndTeachers> logger
+        DataContextMsSql dataContextMsSql,
+        ILogger<SeedDbSchoolClasses> logger
     )
     {
         _logger = logger;
         _random = new Random();
         _userHelper = userHelper;
-        _dataContextMssql = dataContextMssql;
+        _dataContextMsSql = dataContextMsSql;
     }
 
 
-    public static async Task AddingData(User user1)
+    public static async Task AddingData(User user)
     {
-        var user =
-            await _userHelper.GetUserByEmailAsync(
-                "nuno.santos.26288@formandos.cinel.pt") ??
-            new User
-                {FirstName = "Nuno", LastName = "Santos", WasDeleted = false};
-
-
         Console.WriteLine(
             "Seeding courses and school-classes tables with the courses...");
 
 
-        SeedDbCoursesList.Initialize(_dataContextMssql, user);
+        SeedDbCoursesList.Initialize(_dataContextMsSql);
+
+
+        _listOfSchoolClassFromDb ??= await _dataContextMsSql.SchoolClasses.ToListAsync();
+
+
+        Console.WriteLine("debug zone...");
+
+
+        // ------------------------------------------------------------------ //
+
+        await SeedDbCoursesList.AddingData(user);
+
+        // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //
@@ -66,27 +77,40 @@ public class SeedDbSchoolClasses
         // 481228
         // Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos
         var coursesForTeGrsi = SeedDbCoursesList.TeGrsi();
+
         // 481227
         // Técnico/a Especialista em Aplicações Informáticas de Gestão
         var coursesForTeAig = SeedDbCoursesList.TeAig();
+
         // 481241
         // Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação
         var coursesForTeTpsi = SeedDbCoursesList.TeTpsi();
+
         // 481344
         // Técnico/a Especialista em Cibersegurança
         var coursesForTeCs = SeedDbCoursesList.TeCs();
+
         // 481390
         // Técnico/a Especialista em Gestão de Informação e Ciência dos Dados
         var coursesForTeGicd = SeedDbCoursesList.TeGicd();
+
         // 523229
-        // Tecnico/a Especialista em Automação, Robótica e Controlo Industrial
+        // Técnico/a Especialista em Automação, Robótica e Controlo Industrial
         var coursesForTeArci = SeedDbCoursesList.TeArci();
+
         // 213240
         // Técnico/a Especialista em Desenvolvimento de Produtos Multimédia
         var coursesForTeDpm = SeedDbCoursesList.TeDpm();
+
         // 523273
         // Técnico/a Especialista em Telecomunicações e Redes
         var coursesForTeTr = SeedDbCoursesList.TeTr();
+
+
+
+        Console.WriteLine("debug zone...");
+
+
 
 
         // ------------------------------------------------------------------ //
@@ -95,32 +119,43 @@ public class SeedDbSchoolClasses
         // Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos
         var coursesListForTeGrsi =
             GetExistingCoursesAsync(coursesForTeGrsi).Result;
+
         // 481227
         // Técnico/a Especialista em Aplicações Informáticas de Gestão
         var coursesListForTeAig =
             GetExistingCoursesAsync(coursesForTeAig).Result;
+
         // 481241
         // Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação
         var coursesListForTeTpsi =
             GetExistingCoursesAsync(coursesForTeTpsi).Result;
+
         // 481344
         // Técnico/a Especialista em Cibersegurança
         var coursesListForTeCs = GetExistingCoursesAsync(coursesForTeCs).Result;
+
         // 481390
         // Técnico/a Especialista em Gestão de Informação e Ciência dos Dados
         var coursesListForTeGicd =
             GetExistingCoursesAsync(coursesForTeGicd).Result;
+
         // 523229
-        // Tecnico/a Especialista em Automação, Robótica e Controlo Industrial
+        // Técnico/a Especialista em Automação, Robótica e Controlo Industrial
         var coursesListForTeArci =
             GetExistingCoursesAsync(coursesForTeArci).Result;
+
         // 213240
         // Técnico/a Especialista em Desenvolvimento de Produtos Multimédia
         var coursesListForTeDpm =
             GetExistingCoursesAsync(coursesForTeDpm).Result;
+
         // 523273
         // Técnico/a Especialista em Telecomunicações e Redes
         var coursesListForTeTr = GetExistingCoursesAsync(coursesForTeTr).Result;
+
+
+        Console.WriteLine("debug zone...");
+
 
 
         // ------------------------------------------------------------------ //
@@ -135,6 +170,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
             coursesListForTeGrsi, user);
+
         await SeedSchoolClassIfNotExists("481228", "CET.SITE.DPO.92",
             "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Laboral) (B-Learning)",
             5, 5,
@@ -145,6 +181,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
             coursesListForTeGrsi, user);
+
         await SeedSchoolClassIfNotExists("481228", "CET.SITE.DPO.06",
             "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Pós-Laboral) (B-Learning)",
             5, 5,
@@ -181,6 +218,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
             coursesListForTeTpsi, user);
+        
         await SeedSchoolClassIfNotExists("481241", "CET.TPSI.N.L.00",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-laboral)",
             5, 5,
@@ -189,6 +227,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
             TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
             coursesListForTeTpsi, user);
+        
         await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.91",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Laboral) (B-Learning)",
             5, 5,
@@ -199,6 +238,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
             coursesListForTeTpsi, user);
+        
         await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.04",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-Laboral) (B-Learning)",
             5, 5,
@@ -246,9 +286,9 @@ public class SeedDbSchoolClasses
 
 
         // 523229
-        // Tecnico/a Especialista em Automação, Robótica e Controlo Industrial
+        // Técnico/a Especialista em Automação, Robótica e Controlo Industrial
         await SeedSchoolClassIfNotExists("523229", "CET.ARCI.N.L.00",
-            "Tecnico/a Especialista em Automação, Robótica e Controlo Industrial",
+            "Técnico/a Especialista em Automação, Robótica e Controlo Industrial",
             5, 5,
             DateTime.Today.AddMonths(1),
             DateTime.Today.AddMonths(13),
@@ -296,15 +336,22 @@ public class SeedDbSchoolClasses
     private static async Task<List<Course>> GetExistingCoursesAsync(
         Dictionary<string, (string, int, double)> mergedDictionary)
     {
-        _existingCourses ??= await _dataContextMssql.Courses.ToListAsync();
+
+        // Get the courses from the database
+        _listOfCoursesFromDb ??= await _dataContextMsSql.Courses.ToListAsync();
+
 
         // Filter out the courses that are already in the database and also present in the dictionary
-        var existingCourses = _existingCourses
+        var existingCourses = _listOfCoursesFromDb
             .Where(course => mergedDictionary.ContainsKey(course.Code))
             .ToList();
 
+
+        // Get the list of existing courses as a list
         var existingCoursesList = existingCourses.ToList();
 
+
+        // return the list of existing courses as a list
         return existingCoursesList;
     }
 
@@ -316,18 +363,20 @@ public class SeedDbSchoolClasses
         List<Course> courses,
         User user)
     {
-        var existingSchoolClass = await _dataContextMssql.SchoolClasses
-            .FirstOrDefaultAsync(
+        // Get the school classes from the database
+        var existingSchoolClass = _listOfSchoolClassFromDb.FirstOrDefault(
                 s => s.Acronym == acronym && s.Code == code);
 
 
         // Calculate the total duration in hours from the sum of course hours
         var totalDurationInHours = courses.Sum(c => c.Hours);
 
+
         // Calculate the total number of days needed for completion
         var totalDays =
             (int) Math.Ceiling(totalDurationInHours /
                                ((endHour - startHour).TotalHours - 1));
+
 
         // Calculate the end date and time based on the total number of days and start date/hour
         endDate = startDate.AddDays(totalDays - 1).Date.Add(endHour);
@@ -342,6 +391,7 @@ public class SeedDbSchoolClasses
         }
 
 
+        // Check if the school class already exists in the database
         if (existingSchoolClass == null)
         {
             var schoolClass = new SchoolClass
@@ -361,8 +411,9 @@ public class SeedDbSchoolClasses
                 CreatedBy = user,
                 Courses = courses
             };
-            await _dataContextMssql.SchoolClasses.AddAsync(schoolClass);
-            await _dataContextMssql.SaveChangesAsync();
+
+            await _dataContextMsSql.SchoolClasses.AddAsync(schoolClass);
+            await _dataContextMsSql.SaveChangesAsync();
         }
     }
 }

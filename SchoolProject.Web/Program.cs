@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -11,7 +13,7 @@ using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
@@ -20,6 +22,11 @@ using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using Serilog;
+
+
+
+
+
 
 
 // Helper method to generate a random
@@ -71,8 +78,8 @@ static string GetServerHostNameFromConnectionString(string connectionString)
 // Método para extrair o nome do servidor da Connection String
 static void GetServerHostNamePing(string serverHostName)
 {
-    // Tempo limite para o ping em milissegundos (1 segundo neste exemplo)
-    var timeout = 1000;
+    // Tempo limite para o ping em milissegundos (3 segundo neste exemplo)
+    var timeout = 3000;
 
     while (true)
     {
@@ -92,29 +99,34 @@ static void GetServerHostNamePing(string serverHostName)
 
         // Aguarda um período antes de tentar novamente
         // Aguarda 3 segundos (ajuste conforme necessário)
-        Thread.Sleep(3000);
+        Thread.Sleep(timeout);
     }
 }
 
 
 static async Task RunSeeding(IHost host)
 {
+    var stopwatch = new Stopwatch();
+    stopwatch.Start();
+
+
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
-
-    // var Provider =
-    //     host.Services.GetService(typeof(IServiceProvider)) as
-    //         IServiceProvider;
-
-    // var scopeFactory =
-    //     host.Services.GetService(typeof(IServiceScopeFactory)) as
-    //         IServiceScopeFactory;
-
 
     using var scope = scopeFactory?.CreateScope();
 
-    var seeder = scope.ServiceProvider.GetService<SeedDb>();
+    var seeder = scope?.ServiceProvider.GetService<SeedDb>();
 
     await seeder?.SeedAsync();
+
+    
+    stopwatch.Stop();
+    var elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
+    
+    
+    Console.WriteLine($"Tempo decorrido: {elapsedSeconds} segundos.");
+    TimeTracker.runSeedingElapsedSeconds = elapsedSeconds;
+
+    Thread.Sleep(3000);
 }
 
 
@@ -458,7 +470,7 @@ builder.Logging.AddApplicationInsights();
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
 builder.Services
-    .AddScoped<UserManager<SchoolProject.Web.Data.EntitiesMatrix.User>>();
+    .AddScoped<UserManager<User>>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IEmailSender, EmailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
@@ -517,7 +529,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 
-// Configure routing, authentication, and authorization middleware.
+// Configure routing, authentication, and authorization middle-ware.
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

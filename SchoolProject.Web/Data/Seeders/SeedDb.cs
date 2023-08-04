@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Seeders.CoursesLists;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -19,16 +20,22 @@ public class SeedDb
     private readonly ILogger<SeedDb> _logger;
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
+    private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
+    private readonly ILogger<SeedDbCoursesList> _loggerSeedDbCs;
+
 
     private readonly IWebHostEnvironment _hostingEnvironment;
 
+
     private readonly IUserHelper _userHelper;
-    private readonly UserManager<SchoolProject.Web.Data.EntitiesMatrix.User> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+
 
     // private readonly SeedDbUsers _seedDbUsers;
     // private readonly SeedDbStudentsAndTeachers _seedDbPersons;
     // private readonly SeedDbSchoolClasses _seedDbSchoolClasses;
+
 
     public SeedDb(
         ILogger<SeedDb> logger,
@@ -137,33 +144,28 @@ public class SeedDb
         await SeedDbStudentsAndTeachers.AddingData(user);
 
 
-        // var seedDbStudentsAndTeachers = new SeedDbStudentsAndTeachers(
-        //     _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
-
-        // Em seguida, chame o método AddingData() na instância criada
-        // await _seedDbPersons.AddingData();
 
 
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
         SeedDbSchoolClasses.Initialize(
-            _userHelper, _dataContextMsSql, _loggerSeedDbSTs);
+            _userHelper, _dataContextMsSql, _loggerSeedDbSCs);
         await SeedDbSchoolClasses.AddingData(user);
 
 
-        // Em vez disso, crie uma instância da classe SeedDbSchoolClasses
-        // var seedDbSchoolClasses = new SeedDbSchoolClasses(
-        //     _userHelper, _loggerSeedDbPersons, _dataContextMsSql);
-        // Em seguida, chame o método AddingData() na instância criada
-        // await _seedDbSchoolClasses.AddingData();
 
-
+        // ------------------------------------------------------------------ //
         // verificar se existem os placeholders no sistema
+        // ------------------------------------------------------------------ //
         SeedDbPlaceHolders.Initialize(_hostingEnvironment);
         SeedDbPlaceHolders.AddPlaceHolders();
 
 
+
+        // ------------------------------------------------------------------ //
+        // saving all the changes to the database
+        // ------------------------------------------------------------------ //
         await _dataContextMsSql.SaveChangesAsync();
     }
 

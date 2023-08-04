@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -139,11 +139,16 @@ public class SeedDbUsers
                     throw new InvalidOperationException(message);
             }
 
+
+
+
+            // ------------------------------------------------------------ //
+            
             // Create the user
             var result =
                 await _userHelper.AddUserAsync(newUser, password);
 
-
+            // Check if the user was created successfully
             if (result != IdentityResult.Success)
             {
                 message = $"{nameof(User)} {firstName} {lastName} " +
@@ -155,9 +160,36 @@ public class SeedDbUsers
                 throw new InvalidOperationException(message);
             }
 
+
+
+
+            // ------------------------------------------------------------ //
+
+            // Add the user to the role
+            await _userHelper.AddUserToRoleAsync(newUser, role);
+
+            // Check if the user was added to the role successfully
+            var isInRole =
+                await _userHelper.IsUserInRoleAsync(newUser, role);
+
+            // Check if the user was added to the role successfully
+            if (!isInRole)
+            {
+                message = $"{nameof(User)} {firstName} {lastName} " +
+                          $"with email {email} and role {role}, " +
+                          "could not create the user in Seeder.";
+
+                Console.WriteLine(message);
+                _logger.LogError(message);
+                throw new InvalidOperationException(message);
+            }
+
+
+
             // Log the user creation
             message = $"User {firstName} {lastName} " +
                       $"with email {email} and role {role} has been created.";
+
 
             Console.WriteLine(message);
             _logger.LogInformation(message);

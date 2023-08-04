@@ -7,7 +7,7 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -99,7 +99,7 @@ public class SeedDbStudentsAndTeachers
 
 
     private static async Task GenerateStudentsNames(
-        EntitiesMatrix.User user, IEnumerable<Student> existingStudentsList)
+        User user, IEnumerable<Student> existingStudentsList)
     {
         var studentNames = new List<string>
         {
@@ -133,7 +133,7 @@ public class SeedDbStudentsAndTeachers
 
 
     private static async Task GenerateTeachersNames(
-        EntitiesMatrix.User user, IEnumerable<Teacher> existingTeachersList)
+        User user, IEnumerable<Teacher> existingTeachersList)
     {
         var teacherNames = new List<string>
         {
@@ -306,14 +306,14 @@ public class SeedDbStudentsAndTeachers
         string firstName, string lastName, string address, string email,
         string postalCode, string cellPhone, DateTime dateOfBirth,
         string idNumber, string vatNumber,
-        EntitiesMatrix.User user, City city, Country country,
+        User user, City city, Country country,
         Country countryOfNationality, Country birthplace, Genre genre,
         // Novo parâmetro para indicar o papel (role)
         string userRole, string password = "Passw0rd"
         // Restrição genérica para permitir apenas classes
     ) where T : class
     {
-        var newUser = new EntitiesMatrix.User
+        var newUser = new SchoolProject.Web.Data.EntitiesOthers.User
         {
             FirstName = firstName,
             LastName = lastName,

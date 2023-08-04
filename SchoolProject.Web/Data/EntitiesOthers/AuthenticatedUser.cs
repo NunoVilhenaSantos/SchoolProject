@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using SchoolProject.Web.Helpers.Users;
 
-namespace SchoolProject.Web.Data.EntitiesMatrix;
+namespace SchoolProject.Web.Data.EntitiesOthers;
 
 public class AuthenticatedUser
 {

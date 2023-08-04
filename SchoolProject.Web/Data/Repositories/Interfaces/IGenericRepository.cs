@@ -1,4 +1,4 @@
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Repositories.Interfaces;
 

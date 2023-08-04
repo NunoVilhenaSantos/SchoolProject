@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
-using SchoolProject.Web.Data.EntitiesMatrix;
+using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Repositories.Interfaces;
 
 namespace SchoolProject.Web.Data.Repositories;
