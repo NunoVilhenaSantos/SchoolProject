@@ -14,6 +14,14 @@ public class Country : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
+    [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
+          ProfilePhotoId;
+
+
     public ICollection<City>? Cities { get; set; }
 
 
@@ -62,6 +70,7 @@ public class Country : IEntity, INotifyPropertyChanged
 
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
 
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)

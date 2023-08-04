@@ -56,7 +56,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Dátum ez után "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Maximum ",
@@ -166,7 +166,7 @@
                     "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1}$|^(?:(?:(?:0?[13578]|1[02])(\/|-)31)|(?:(?:0?[1,3-9]|1[0-2])(\/|-)(?:29|30)))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^((1[012]|0?[1-9]){1}\/(0?[1-9]|[12][0-9]|3[01]){1}\/\d{2,4}\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1})$/,
                     "alertText": "* Invalid Date or Date Format",
                     "alertText2": "Expected Format: ",
-                    "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM or ",
+                    "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM or ", 
                     "alertText4": "yyyy-mm-dd hh:mm:ss AM|PM"
                 }
             };

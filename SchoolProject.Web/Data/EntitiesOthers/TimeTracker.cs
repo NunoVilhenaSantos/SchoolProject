@@ -2,5 +2,16 @@
 
 public static class TimeTracker
 {
-    public static double runSeedingElapsedSeconds { get; set; }
+    public static TimeSpan RunSeedingElapsedSeconds { get; set; }
+
+
+    public static TimeSpan
+        SeedDbCoursesListAddingDataElapsedSeconds { get; set; }
+
+
+    public static TimeSpan
+        SeedDbCoursesListMergeAndPrintCourseInfoElapsedSeconds { get; set; }
+
+
+    public static TimeSpan StartProgramElapsedTime { get; set; }
 }

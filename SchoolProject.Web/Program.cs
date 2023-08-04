@@ -93,11 +93,15 @@ static void GetServerHostNamePing(string serverHostName)
 
         // Aguarda um período antes de tentar novamente
         // Aguarda 3 segundos (ajuste conforme necessário)
+        // antes de tentar novamente, use 0 para tentar imediatamente
+        // ou altere para o valor desejado em milissegundos
+        // na variavel timeout
         Thread.Sleep(timeout);
     }
 }
 
 
+// Método para executar o seeding do banco de dados
 static async Task RunSeeding(IHost host)
 {
     var stopwatch = new Stopwatch();
@@ -115,14 +119,41 @@ static async Task RunSeeding(IHost host)
 
     stopwatch.Stop();
     var elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-
+    TimeTracker.RunSeedingElapsedSeconds = stopwatch.Elapsed;
 
     Console.WriteLine($"Tempo decorrido: {elapsedSeconds} segundos.");
-    TimeTracker.runSeedingElapsedSeconds = elapsedSeconds;
 
     Thread.Sleep(3000);
 }
 
+
+// Método para verificar que processos ainda estão em execução
+static void RunningProcessInTheApp()
+{
+    // Obter o ID do processo atual
+    var processId = Process.GetCurrentProcess().Id;
+
+    // Obter o objeto Process para o processo atual
+    var process = Process.GetProcessById(processId);
+
+    // Obter a coleção de threads associados ao processo
+    var threadCollection = process.Threads;
+
+    // Exibir informações sobre cada thread
+    Console.WriteLine(
+        $"Threads em execução no processo " +
+        $"{process.ProcessName} (ID: {process.Id}):");
+    foreach (ProcessThread thread in threadCollection)
+    {
+        Console.WriteLine(
+            $"Thread ID: {thread.Id}, Estado: {thread.ThreadState}");
+    }
+}
+
+
+// calcular o tempo decorrido para executar o método principal
+var stopwatchProgram = new Stopwatch();
+stopwatchProgram.Start();
 
 // Create a new web application using the WebApplicationBuilder.
 var builder = WebApplication.CreateBuilder(args);
@@ -535,7 +566,21 @@ app.MapControllerRoute(
     "{controller=Home}/{action=Index}/{id?}");
 
 
+// 
 app.MapRazorPages();
+
+
+// elapsed time for the program
+stopwatchProgram.Stop();
+var elapsedSecondsProgram = stopwatchProgram.Elapsed.TotalSeconds;
+TimeTracker.StartProgramElapsedTime = stopwatchProgram.Elapsed;
+
+Console.WriteLine(
+    $"Tempo decorrido para executar o inicio do programa: " +
+    $"{elapsedSecondsProgram} segundos.");
+
+// running processes
+RunningProcessInTheApp();
 
 
 // Run the application.

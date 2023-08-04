@@ -32,7 +32,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
     public DbSet<Nationality> Nationalities { get; set; }
 
-    public DbSet<Genre> Genres { get; set; }
+    public DbSet<Gender> Genders { get; set; }
 
 
     // --------------------------------------------------------------------- //

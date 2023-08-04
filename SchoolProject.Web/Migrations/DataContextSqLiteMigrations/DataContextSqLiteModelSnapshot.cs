@@ -232,6 +232,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<int>("NationalityId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid?>("ProfilePhotoId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
@@ -407,7 +410,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.Genre", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -430,6 +433,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("ProfilePhotoId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
@@ -445,7 +451,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genders");
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", b =>
@@ -630,7 +636,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("GenreId")
+                    b.Property<int>("GenderId")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid>("IdGuid")
@@ -690,7 +696,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("GenderId");
 
                     b.HasIndex("UpdatedById");
 
@@ -794,7 +800,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("GenreId")
+                    b.Property<int>("GenderId")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid>("IdGuid")
@@ -854,7 +860,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("GenderId");
 
                     b.HasIndex("UpdatedById");
 
@@ -909,7 +915,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.ToTable("TeacherCourses");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.EntitiesMatrix.User", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.EntitiesOthers.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -1004,7 +1010,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1013,7 +1019,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1028,7 +1034,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1037,7 +1043,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", null)
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1066,12 +1072,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1083,7 +1089,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.Country", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1094,7 +1100,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1108,12 +1114,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.Nationality", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1125,7 +1131,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1135,7 +1141,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("SchoolClassId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1153,7 +1159,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1169,7 +1175,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1183,14 +1189,14 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Navigation("UpdatedBy");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.Genre", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1202,12 +1208,12 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1225,7 +1231,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1236,7 +1242,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1276,23 +1282,23 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.Genre", "Genre")
+                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", "Gender")
                         .WithMany()
-                        .HasForeignKey("GenreId")
+                        .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "User")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1308,7 +1314,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("Genre");
+                    b.Navigation("Gender");
 
                     b.Navigation("UpdatedBy");
 
@@ -1323,7 +1329,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1334,7 +1340,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1374,23 +1380,23 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.Genre", "Genre")
+                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", "Gender")
                         .WithMany()
-                        .HasForeignKey("GenreId")
+                        .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "User")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1406,7 +1412,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("Genre");
+                    b.Navigation("Gender");
 
                     b.Navigation("UpdatedBy");
 
@@ -1421,7 +1427,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "CreatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1432,7 +1438,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.EntitiesMatrix.User", "UpdatedBy")
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);

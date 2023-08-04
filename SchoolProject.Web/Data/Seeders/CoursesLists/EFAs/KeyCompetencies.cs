@@ -33,7 +33,7 @@ public abstract record KeyCompetencies
                 "CLC_7",
                 ("Fundamentos de cultura, língua e comunicação", 50, 5)
             },
-            {"CPPRA", ("PORTEFÓLIO REFLEXIVO DE APRENDIZAGENS", 85, 25)}
+            {"CPPRA", ("Portefólio reflexivo de aprendizagens", 85, 25)}
         };
 
     // Cidadania e Profissionalidade

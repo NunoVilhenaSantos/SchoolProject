@@ -132,7 +132,7 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // adding genres to the database
         // ------------------------------------------------------------------ //
-        await SeedingDataGenres(user);
+        await SeedingDataGenders(user);
 
 
         // ------------------------------------------------------------------ //
@@ -166,33 +166,35 @@ public class SeedDb
     }
 
 
-    private async Task SeedingDataGenres(User user)
+    private async Task SeedingDataGenders(User user)
     {
-        var genresToAdd = new List<string>
+        var gendersToAdd = new List<string>
         {
-            "Male", "Female", "NonBinary", "PreferNotToSay"
+            "Male", "Female", "NonBinary", "PreferNotToSay", "Other",
+            "Transgender", "Intersex", "GenderFluid", "GenderQueer",
+            "Agender", "Androgyne", "Bigender", "Demigender", "Genderless",
         };
 
-        var existingGenres =
-            await _dataContextMsSql.Genres
-                .Where(genre => genresToAdd.Contains(genre.Name))
-                .Select(genre => genre.Name)
+        var existingGenders =
+            await _dataContextMsSql.Genders
+                .Where(g => gendersToAdd.Contains(g.Name))
+                .Select(g => g.Name)
                 .ToListAsync();
 
-        var genresToCreate =
-            genresToAdd.Except(existingGenres).ToList();
+        var gendersToCreate =
+            gendersToAdd.Except(existingGenders).ToList();
 
-        var newGenres =
-            genresToCreate.Select(genre => new Genre
+        var newGender =
+            gendersToCreate.Select(gender => new Gender
             {
-                Name = genre,
+                Name = gender,
                 IdGuid = Guid.NewGuid(),
                 WasDeleted = false,
                 CreatedAt = DateTime.Now,
                 CreatedBy = user
             }).ToList();
 
-        await _dataContextMsSql.Genres.AddRangeAsync(newGenres);
+        await _dataContextMsSql.Genders.AddRangeAsync(newGender);
         await _dataContextMsSql.SaveChangesAsync();
     }
 

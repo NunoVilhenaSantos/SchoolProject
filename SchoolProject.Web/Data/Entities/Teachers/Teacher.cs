@@ -53,7 +53,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     [Required] public required bool Active { get; set; } = true;
 
-    [Required] public required Genre Genre { get; set; }
+    [Required] public required Gender Gender { get; set; }
 
 
     [Required]

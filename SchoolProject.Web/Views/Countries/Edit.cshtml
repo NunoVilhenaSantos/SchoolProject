@@ -17,6 +17,11 @@
                 <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ProfilePhotoId" class="control-label"></label>
+                <input asp-for="ProfilePhotoId" class="form-control"/>
+                <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="Id"/>
             <div class="form-group">
                 <label asp-for="IdGuid" class="control-label"></label>
@@ -48,3 +53,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+

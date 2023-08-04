@@ -3,34 +3,34 @@ using SchoolProject.Web.Data.Repositories.Interfaces;
 
 namespace SchoolProject.Web.Data.Repositories.Mock;
 
-public class GenreMockRepository : IGenericRepository<Genre>
+public class GenreMockRepository : IGenericRepository<Gender>
 {
-    public IQueryable<Genre> GetAll()
+    public IQueryable<Gender> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Genre?> GetByIdAsync(int id)
+    public async Task<Gender?> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Genre?> GetByIdGuidAsync(Guid idGuid)
+    public async Task<Gender?> GetByIdGuidAsync(Guid idGuid)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> CreateAsync(Genre entity)
+    public async Task<bool> CreateAsync(Gender entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> UpdateAsync(Genre entity)
+    public async Task<bool> UpdateAsync(Gender entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteAsync(Genre entity)
+    public async Task<bool> DeleteAsync(Gender entity)
     {
         throw new NotImplementedException();
     }

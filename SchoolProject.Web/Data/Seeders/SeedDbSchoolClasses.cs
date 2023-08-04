@@ -12,16 +12,14 @@ public class SeedDbSchoolClasses
 {
     private static Random _random;
 
-
     private static IUserHelper _userHelper;
     private static ILogger<SeedDbSchoolClasses> _logger;
-
 
     private static DataContextMsSql _dataContextMsSql;
 
     // Add a private static field to store the existing courses
-    private static List<Course> _listOfCoursesFromDb = new();
-    private static List<SchoolClass> _listOfSchoolClassFromDb = new();
+    private static List<Course> _listOfCoursesFromDb;
+    private static List<SchoolClass> _listOfSchoolClassFromDb;
 
 
     public SeedDbSchoolClasses(
@@ -55,20 +53,20 @@ public class SeedDbSchoolClasses
         Console.WriteLine(
             "Seeding courses and school-classes tables with the courses...");
 
-
         SeedDbCoursesList.Initialize(_dataContextMsSql);
 
-
-        _listOfSchoolClassFromDb ??=
-            await _dataContextMsSql.SchoolClasses.ToListAsync();
-
-
-        Console.WriteLine("debug zone...");
-
+        await SeedDbCoursesList.AddingData(user);
 
         // ------------------------------------------------------------------ //
 
-        await SeedDbCoursesList.AddingData(user);
+        // Get the courses from the database
+        _listOfCoursesFromDb = await _dataContextMsSql.Courses.ToListAsync();
+
+        // Get the school-classes from the database
+        _listOfSchoolClassFromDb =
+            await _dataContextMsSql.SchoolClasses.ToListAsync();
+
+        Console.WriteLine("debug zone...");
 
         // ------------------------------------------------------------------ //
 
@@ -107,6 +105,7 @@ public class SeedDbSchoolClasses
         // Técnico/a Especialista em Telecomunicações e Redes
         var coursesForTeTr = SeedDbCoursesList.TeTr();
 
+        // ------------------------------------------------------------------ //
 
         Console.WriteLine("debug zone...");
 
@@ -151,6 +150,7 @@ public class SeedDbSchoolClasses
         // Técnico/a Especialista em Telecomunicações e Redes
         var coursesListForTeTr = GetExistingCoursesAsync(coursesForTeTr).Result;
 
+        // ------------------------------------------------------------------ //
 
         Console.WriteLine("debug zone...");
 
@@ -333,10 +333,6 @@ public class SeedDbSchoolClasses
     private static async Task<List<Course>> GetExistingCoursesAsync(
         Dictionary<string, (string, int, double)> mergedDictionary)
     {
-        // Get the courses from the database
-        _listOfCoursesFromDb ??= await _dataContextMsSql.Courses.ToListAsync();
-
-
         // Filter out the courses that are already in the database and also present in the dictionary
         var existingCourses = _listOfCoursesFromDb
             .Where(course => mergedDictionary.ContainsKey(course.Code))

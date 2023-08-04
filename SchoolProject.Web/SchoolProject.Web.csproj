@@ -455,4 +455,12 @@
         <None Remove="libman.json.bak"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Views\Genres\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Genres\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Genres\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Genres\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Genres\Index.cshtml"/>
+    </ItemGroup>
+
 </Project>

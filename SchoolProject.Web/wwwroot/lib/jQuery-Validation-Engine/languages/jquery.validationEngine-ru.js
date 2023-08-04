@@ -45,7 +45,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Дата от "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Нельзя выбрать столько вариантов"

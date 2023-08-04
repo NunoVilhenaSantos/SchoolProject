@@ -56,7 +56,7 @@
                     "regex": "none",
                     "alertText": "* ",
                     "alertText2": " より最近の日付にしてください"
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* チェックしすぎです"

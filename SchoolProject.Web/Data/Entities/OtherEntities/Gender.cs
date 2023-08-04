@@ -6,13 +6,21 @@ using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.ExtraEntities;
 
-public class Genre : IEntity, INotifyPropertyChanged
+public class Gender : IEntity, INotifyPropertyChanged
 {
     [MaxLength(20,
         ErrorMessage =
             "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Name { get; set; }
+
+
+    [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
+          ProfilePhotoId;
 
 
     [Key]

@@ -4,9 +4,9 @@ using SchoolProject.Web.Data.Repositories.Interfaces;
 
 namespace SchoolProject.Web.Data.Repositories;
 
-public class GenreRepository : GenericRepository<Genre>, IGenreRepository
+public class GenderRepository : GenericRepository<Gender>, IGenreRepository
 {
-    public GenreRepository(DataContextMsSql dataContext) : base(dataContext)
+    public GenderRepository(DataContextMsSql dataContext) : base(dataContext)
     {
     }
 }

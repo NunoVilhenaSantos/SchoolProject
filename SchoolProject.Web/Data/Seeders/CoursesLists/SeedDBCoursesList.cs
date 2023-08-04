@@ -126,48 +126,27 @@ public class SeedDbCoursesList
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        TeTpsi();
-        TeCs();
-        TeAig();
         EfaTis();
+        TeCs();
+        TeTr();
+        TeDpm();
+        TeAig();
         TeGrsi();
         TeGicd();
         TeArci();
-        TeDpm();
-        TeTr();
+        TeTpsi();
 
         // Adding the courses to the database
         await SaveMissingCourses();
 
         stopwatch.Stop();
+        TimeTracker.SeedDbCoursesListAddingDataElapsedSeconds =
+            stopwatch.Elapsed;
 
         Console.WriteLine($"Tempo de execução: {stopwatch.Elapsed}");
 
         Console.WriteLine("debug zone...");
     }
-
-
-    //internal static async void AddingData(SchoolProject.Web.Data.EntitiesMatrix.User user)
-    //{
-    //    _user = user;
-
-    //    TeTpsi();
-    //    TeCs();
-    //    TeAig();
-    //    EfaTis();
-    //    TeGrsi();
-    //    TeGicd();
-    //    TeArci();
-    //    TeDpm();
-    //    TeTr();
-
-
-    //    // Adding the courses to the database
-    //    await SaveMissingCourses();
-
-
-    //    Console.WriteLine("debug zone...");
-    //}
 
 
     private static Dictionary<string, (string, int, double)>
@@ -256,8 +235,10 @@ public class SeedDbCoursesList
 
         // Tempo total decorrido (em milissegundos)
         var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-        Console.WriteLine($"Tempo de execução: {elapsedMilliseconds} ms");
+        TimeTracker.SeedDbCoursesListMergeAndPrintCourseInfoElapsedSeconds =
+            stopwatch.Elapsed;
 
+        Console.WriteLine($"Tempo de execução: {elapsedMilliseconds} ms");
 
         return mergedDictionary;
     }
@@ -308,7 +289,7 @@ public class SeedDbCoursesList
     }
 
 
-    public static Dictionary<string, (string, int, double)> EfaTis()
+    internal static Dictionary<string, (string, int, double)> EfaTis()
     {
         var mergedKcDictionary = MergeAndPrintCourseInfo(
             KeyCompetencies.FbCpCourses,

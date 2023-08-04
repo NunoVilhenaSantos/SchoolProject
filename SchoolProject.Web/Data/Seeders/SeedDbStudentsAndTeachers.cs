@@ -182,8 +182,8 @@ public class SeedDbStudentsAndTeachers
         var birthplace =
             await _dataContextMsSql.Countries
                 .FirstOrDefaultAsync(c => c.Name == "France");
-        var genre =
-            await _dataContextMsSql.Genres
+        var gender =
+            await _dataContextMsSql.Genders
                 .FirstOrDefaultAsync(g => g.Name == "Female");
 
 
@@ -215,34 +215,22 @@ public class SeedDbStudentsAndTeachers
             if (userRole.Equals(
                     "Student", StringComparison.OrdinalIgnoreCase))
             {
-                // var student = await CreateStudent(
-                //     firstName, lastName, address, email, postalCode,
-                //     cellPhone, dateOfBirth, idNumber, vatNumber,
-                //     user, city, country, countryOfNationality, birthplace,
-                //     genre);
-
                 var student = await CreateUser<Student>(
                     firstName, lastName, address, email, postalCode,
                     cellPhone, dateOfBirth, idNumber, vatNumber,
                     user, city, country, countryOfNationality, birthplace,
-                    genre, "Student");
+                    gender, "Student");
 
                 _listOfStudentsToAdd.Add(student);
             }
             else if (userRole.Equals(
                          "Teacher", StringComparison.OrdinalIgnoreCase))
             {
-                // var teacher = await CreateTeacher(
-                //     firstName, lastName, address, email, postalCode,
-                //     cellPhone, dateOfBirth, idNumber, vatNumber,
-                //     user, city, country, countryOfNationality, birthplace,
-                //     genre);
-
                 var teacher = await CreateUser<Teacher>(
                     firstName, lastName, address, email, postalCode,
                     cellPhone, dateOfBirth, idNumber, vatNumber,
                     user, city, country, countryOfNationality, birthplace,
-                    genre, "Teacher");
+                    gender, "Teacher");
 
                 _listOfTeachersToAdd.Add(teacher);
             }
@@ -299,7 +287,7 @@ public class SeedDbStudentsAndTeachers
         string postalCode, string cellPhone, DateTime dateOfBirth,
         string idNumber, string vatNumber,
         User user, City city, Country country,
-        Country countryOfNationality, Country birthplace, Genre genre,
+        Country countryOfNationality, Country birthplace, Gender gender,
         // Novo parâmetro para indicar o papel (role)
         string userRole, string password = "Passw0rd"
         // Restrição genérica para permitir apenas classes
@@ -317,10 +305,6 @@ public class SeedDbStudentsAndTeachers
         };
 
         _listOfUsersToAdd.Add(newUser);
-
-        // await _userHelper.AddUserAsync(newUser, password);
-        // await _userHelper.AddUserToRoleAsync(newUser, userRole);
-        // newUser = await _userHelper.GetUserByEmailAsync(newUser.Email);
 
 
         Console.WriteLine(
@@ -341,7 +325,7 @@ public class SeedDbStudentsAndTeachers
             ?.SetValue(entity, cellPhone);
         entity.GetType().GetProperty("Email")?.SetValue(entity, email);
         entity.GetType().GetProperty("Active")?.SetValue(entity, true);
-        entity.GetType().GetProperty("Genre")?.SetValue(entity, genre);
+        entity.GetType().GetProperty("Gender")?.SetValue(entity, gender);
         entity.GetType().GetProperty("DateOfBirth")
             ?.SetValue(entity, dateOfBirth);
         entity.GetType().GetProperty("IdentificationNumber")
@@ -363,287 +347,6 @@ public class SeedDbStudentsAndTeachers
 
         return entity;
     }
-
-
-    // private static async Task AddStudentsOrTeachers(
-    //     EntitiesMatrix.User user, List<string> studentNamesToAdd)
-    // {
-    //     var city =
-    //         await _dataContextMsSql.Cities
-    //             .FirstOrDefaultAsync(c => c.Name == "Porto");
-    //
-    //     var country =
-    //         await _dataContextMsSql.Countries
-    //             .FirstOrDefaultAsync(c => c.Name == "Portugal");
-    //
-    //     var countryOfNationality =
-    //         await _dataContextMsSql.Countries
-    //             // Include the Nationality related entity
-    //             .Include(c => c.Nationality)
-    //             .FirstOrDefaultAsync(c => c.Nationality.Name == "French");
-    //
-    //     var birthplace =
-    //         await _dataContextMsSql.Countries
-    //             .FirstOrDefaultAsync(c => c.Name == "France");
-    //
-    //     var genre =
-    //         await _dataContextMsSql.Genres
-    //             .FirstOrDefaultAsync(g => g.Name == "Female");
-    //
-    //
-    //     foreach (var studentName in studentNamesToAdd)
-    //     {
-    //         var firstName = studentName.Split(' ')[0];
-    //         var lastName =
-    //             studentName.Replace(firstName, "").Trim();
-    //
-    //
-    //         // Generate a valid email address based on firstName and lastName
-    //         var email = GenerateValidEmail(firstName, lastName);
-    //
-    //         var document =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var fixedPhone =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var cellPhone =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var address =
-    //             "Address of " + firstName + " " + lastName + ", " +
-    //             _random.Next(1, 9_999);
-    //         var idNumber =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var vatNumber =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var postalCode =
-    //             _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
-    //         var dateOfBirth = GenerateRandomDateOfBirth();
-    //
-    //         Console.WriteLine(
-    //             "Creating student: " + firstName + " " + lastName);
-    //
-    //         var student = CreateStudent(
-    //             firstName, lastName, address, email, postalCode,
-    //             cellPhone, dateOfBirth, idNumber, vatNumber,
-    //             user, city, country, countryOfNationality, birthplace, genre);
-    //
-    //         // students.Add(student);
-    //     }
-    //
-    //     Console.WriteLine("Saving students to the database...");
-    //
-    //     // todo: add students to the database
-    //     // await _dataContextMsSql.Students.AddRangeAsync(students);
-    //
-    //     await _dataContextMsSql.SaveChangesAsync();
-    // }
-
-
-    // private static async Task<Student> CreateStudent(
-    //     string firstName, string lastName, string address, string email,
-    //     string postalCode, string cellPhone, DateTime dateOfBirth,
-    //     string idNumber, string vatNumber,
-    //     EntitiesMatrix.User user, City city, Country country,
-    //     Country countryOfNationality, Country birthplace, Genre genre,
-    //     string password = "Passw0rd")
-    // {
-    //     var newUser = new EntitiesMatrix.User
-    //     {
-    //         FirstName = firstName,
-    //         LastName = lastName,
-    //         Address = address,
-    //         UserName = email,
-    //         Email = email,
-    //         PhoneNumber = cellPhone,
-    //         WasDeleted = false
-    //     };
-    //
-    //
-    //     //newUser = await SeedDbUsers.VerifyUserAsync(
-    //     //    firstName, lastName,
-    //     //    email,
-    //     //    email,
-    //     //    cellPhone, "Student",
-    //     //    "document of " + firstName + " " + lastName + " from " + address,
-    //     //    address, password
-    //     //);
-    //
-    //     Console.WriteLine("Creating student: " + firstName + " " + lastName);
-    //
-    //     await _userHelper.AddUserAsync(newUser, password);
-    //     await _userHelper.AddUserToRoleAsync(newUser, "Student");
-    //     newUser = await _userHelper.GetUserByEmailAsync(newUser.Email);
-    //
-    //
-    //     Console.WriteLine("Debug zone...");
-    //
-    //
-    //     // Create a student object
-    //     var student = new Student
-    //     {
-    //         User = newUser,
-    //         FirstName = firstName,
-    //         LastName = lastName,
-    //         Address = address,
-    //         PostalCode = postalCode,
-    //         City = city,
-    //         Country = country,
-    //         MobilePhone = cellPhone,
-    //         Email = email,
-    //         Active = true,
-    //         Genre = genre,
-    //         DateOfBirth = dateOfBirth,
-    //         IdentificationNumber = idNumber,
-    //         IdentificationType = "C/C",
-    //         ExpirationDateIdentificationNumber =
-    //             DateTime.Now.ToUniversalTime().AddYears(20),
-    //         TaxIdentificationNumber = vatNumber,
-    //         CountryOfNationality = countryOfNationality,
-    //         Birthplace = birthplace,
-    //         EnrollDate = DateTime.Now.ToUniversalTime(),
-    //         IdGuid = default,
-    //         CreatedBy = user
-    //     };
-    //
-    //
-    //     return student;
-    // }
-
-
-    // private static async Task<Teacher> CreateTeacher(
-    //     string firstName, string lastName, string address, string email,
-    //     string postalCode, string cellPhone, DateTime dateOfBirth,
-    //     string idNumber, string vatNumber,
-    //     EntitiesMatrix.User user, City city, Country country,
-    //     Country countryOfNationality, Country birthplace, Genre genre,
-    //     string password = "Passw0rd")
-    // {
-    //     var newUser = new EntitiesMatrix.User
-    //     {
-    //         FirstName = firstName,
-    //         LastName = lastName,
-    //         Address = address,
-    //         UserName = email,
-    //         Email = email,
-    //         PhoneNumber = cellPhone,
-    //         WasDeleted = false
-    //     };
-    //
-    //
-    //     newUser = await SeedDbUsers.VerifyUserAsync(
-    //         firstName, lastName,
-    //         email,
-    //         email,
-    //         cellPhone, "Student",
-    //         "document of " + firstName + " " + lastName + " from " + address,
-    //         address, password
-    //     );
-    //
-    //
-    //     Console.WriteLine("Creating teacher: " + firstName + " " + lastName);
-    //
-    //     // Create a teacher object
-    //     var teacher = new Teacher
-    //     {
-    //         User = newUser,
-    //         FirstName = firstName,
-    //         LastName = lastName,
-    //         Address = address,
-    //         PostalCode = postalCode,
-    //         City = city,
-    //         Country = country,
-    //         MobilePhone = cellPhone,
-    //         Email = email,
-    //         Active = true,
-    //         Genre = genre,
-    //         DateOfBirth = dateOfBirth,
-    //         IdentificationNumber = idNumber,
-    //         IdentificationType = "C/C",
-    //         ExpirationDateIdentificationNumber =
-    //             DateTime.Now.ToUniversalTime().AddYears(20),
-    //         TaxIdentificationNumber = vatNumber,
-    //         CountryOfNationality = countryOfNationality,
-    //         Birthplace = birthplace,
-    //         EnrollDate = DateTime.Now.ToUniversalTime(),
-    //         IdGuid = default,
-    //         CreatedBy = user
-    //     };
-    //
-    //
-    //     return teacher;
-    // }
-
-
-    // private static async Task AddTeachers(
-    //     EntitiesMatrix.User user, List<string> teacherNamesToAdd)
-    // {
-    //     var teachers = new List<Teacher>();
-    //
-    //     var city =
-    //         await _dataContextMsSql.Cities
-    //             .FirstOrDefaultAsync(c => c.Name == "Faro");
-    //
-    //     var country =
-    //         await _dataContextMsSql.Countries
-    //             .FirstOrDefaultAsync(c => c.Name == "Portugal");
-    //
-    //     var countryOfNationality =
-    //         await _dataContextMsSql.Countries
-    //             // Include the Nationality related entity
-    //             .Include(c => c.Nationality)
-    //             .FirstOrDefaultAsync(c => c.Nationality.Name == "French");
-    //
-    //     var birthplace =
-    //         await _dataContextMsSql.Countries
-    //             .FirstOrDefaultAsync(c => c.Name == "Angola");
-    //
-    //     var genre =
-    //         await _dataContextMsSql.Genres
-    //             .FirstOrDefaultAsync(g => g.Name == "Female");
-    //
-    //     foreach (var teacherName in teacherNamesToAdd)
-    //     {
-    //         var firstName = teacherName.Split(' ')[0];
-    //         var lastName =
-    //             teacherName.Replace(firstName, "").Trim();
-    //
-    //         // var firstName = "Teacher " + i;
-    //         // var lastName = "Lastname " + i;
-    //
-    //         // Generate a valid email address based on firstName and lastName
-    //         var email = GenerateValidEmail(firstName, lastName);
-    //
-    //         var document =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var fixedPhone =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var cellPhone =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var address =
-    //             "Address of " + firstName + " " + lastName + ", " +
-    //             _random.Next(1, 9_999);
-    //         var idNumber =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var vatNumber =
-    //             _random.Next(100_000_000, 999_999_999).ToString();
-    //         var postalCode =
-    //             _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
-    //         var dateOfBirth = GenerateRandomDateOfBirth();
-    //
-    //         Console.WriteLine("Teacher: " + firstName + " " + lastName);
-    //
-    //         var student = CreateTeacher(
-    //             firstName, lastName, address, email, postalCode,
-    //             cellPhone, dateOfBirth, idNumber, vatNumber,
-    //             user, city, country, countryOfNationality, birthplace, genre);
-    //
-    //         // teachers.Add(student);
-    //     }
-    //
-    //     // todo: add teachers to the database
-    //     // await _dataContextMsSql.Teachers.AddRangeAsync(teachers);
-    //
-    //     await _dataContextMsSql.SaveChangesAsync();
-    // }
 
 
     private static DateTime GenerateRandomDateOfBirth()

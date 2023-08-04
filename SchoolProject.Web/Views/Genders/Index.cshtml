@@ -1,4 +1,4 @@
-@model IEnumerable<SchoolProject.Web.Data.Entities.ExtraEntities.Genre>
+@model IEnumerable<SchoolProject.Web.Data.Entities.ExtraEntities.Gender>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,11 +9,14 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-striped table-hover" id="sortableTable" style="width:100%">
+<table class="table">
     <thead>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfilePhotoId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.IdGuid)
@@ -36,6 +39,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfilePhotoId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdGuid)

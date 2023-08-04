@@ -2,6 +2,6 @@
 
 namespace SchoolProject.Web.Data.Repositories.Interfaces;
 
-public interface IGenreRepository : IGenericRepository<Genre>
+public interface IGenreRepository : IGenericRepository<Gender>
 {
 }

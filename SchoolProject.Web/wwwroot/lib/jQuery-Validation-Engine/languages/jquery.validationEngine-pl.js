@@ -45,7 +45,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Data musi być późniejsza niż "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Przekroczona maksymalna liczba opcji"

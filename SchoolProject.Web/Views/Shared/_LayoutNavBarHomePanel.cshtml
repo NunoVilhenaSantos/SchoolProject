@@ -1,14 +1,18 @@
 ﻿@{
-    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    if (ViewContext.RouteData.Values["controller"] is not string currentController)
+    {
+        throw new ArgumentNullException(nameof(currentController));
+    }
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
 
 
 <div class="dropdown">
     @* <span class="material-symbols-outlined">settings</span> *@
-    <a class="nav-link dropdown-toggle" role="button"
-       data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="material-symbols-outlined">admin_panel_settings</i>
+    <a class="nav-link dropdown-toggle @(currentController == "Home" ? "active" : "")"
+       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="material-symbols-outlined">home</span>
+        @* <i class="material-symbols-outlined">admin_panel_settings</i> *@
         Home
     </a>
 

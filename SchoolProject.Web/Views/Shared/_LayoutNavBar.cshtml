@@ -27,17 +27,21 @@
 
                 <a class="nav-link @(currentController == "Courses" ? "active" : "")"
                    asp-area="" asp-controller="Courses" asp-action="Index">
-                    <i class="fas fa-person-shelter"></i> Courses
+                    <i class="fas fa-person-shelter"></i> 
+                    Courses
                 </a>
 
                 <a class="nav-link @(currentController == "Enrollments" ? "active" : "")"
                    asp-area="" asp-controller="Enrollments" asp-action="Index">
-                    <i class="fas fa-person-through-window"></i> Enrollments
+                    <i class="fas fa-person-through-window"></i> 
+                    Enrollments
                 </a>
 
-                <a class="nav-link @(currentController == "Genres" ? "active" : "")"
-                   asp-area="" asp-controller="Genres" asp-action="Index">
-                    <i class="fas fa-person-shelter"></i> Genres
+                <a class="nav-link @(currentController == "Genders" ? "active" : "")"
+                   asp-area="" asp-controller="Genders" asp-action="Index">
+                    @* <i class="fas fa-person-shelter"></i> *@
+                    <span class="material-symbols-outlined">transgender</span>
+                    Genders
                 </a>
 
                 <partial name="_LayoutNavBarSchoolClassesPanel"/>

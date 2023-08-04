@@ -1,4 +1,4 @@
-@model SchoolProject.Web.Data.Entities.ExtraEntities.Genre
+@model SchoolProject.Web.Data.Entities.ExtraEntities.Gender
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,7 @@
 
 <h1>Edit</h1>
 
-<h4>Genre</h4>
+<h4>Gender</h4>
 <hr/>
 <div class="row">
     <div class="col-md-4">
@@ -16,6 +16,11 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfilePhotoId" class="control-label"></label>
+                <input asp-for="ProfilePhotoId" class="form-control"/>
+                <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id"/>
             <div class="form-group">
@@ -48,3 +53,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+

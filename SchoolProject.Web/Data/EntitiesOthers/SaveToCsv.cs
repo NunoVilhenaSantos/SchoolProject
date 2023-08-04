@@ -30,8 +30,8 @@ public static class SaveToCsv
 
 
         SaveEntitiesToCsv(
-            dataContext.Genres,
-            "Genres.csv", csvConfig);
+            dataContext.Genders,
+            "Genders.csv", csvConfig);
 
 
         SaveEntitiesToCsv(
