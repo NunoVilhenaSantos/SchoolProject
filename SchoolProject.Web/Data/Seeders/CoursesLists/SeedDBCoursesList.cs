@@ -21,9 +21,11 @@ public class SeedDbCoursesList
     private static DataContextMsSql _dataContextMsSql;
 
 
-    private static Dictionary<string, (string, int, double)> _listOfCoursesToAdd = new();
-    private static Dictionary<string, (string, int, double)> _listOfCoursesFromDb = new();
+    private static readonly Dictionary<string, (string, int, double)>
+        _listOfCoursesToAdd = new();
 
+    private static Dictionary<string, (string, int, double)>
+        _listOfCoursesFromDb = new();
 
 
     // Disciplinas comuns da area de informática
@@ -166,8 +168,6 @@ public class SeedDbCoursesList
 
     //    Console.WriteLine("debug zone...");
     //}
-
-
 
 
     private static Dictionary<string, (string, int, double)>
@@ -402,10 +402,9 @@ public class SeedDbCoursesList
     }
 
 
-
     private static void AddMissingCourses(
-            Dictionary<string, (string, int, double)> addCoursesToListOfCoursesToAdd
-        )
+        Dictionary<string, (string, int, double)> addCoursesToListOfCoursesToAdd
+    )
     {
         //var mergedDictionary =
         //    new Dictionary<string, (string, int, double)>(commonCourses);
@@ -424,13 +423,10 @@ public class SeedDbCoursesList
     }
 
 
-
-    private static async 
-
-
-    Task
-SaveMissingCourses(
-        //Dictionary<string, (string, int, double)> mergedDictionary
+    private static async
+        Task
+        SaveMissingCourses(
+            //Dictionary<string, (string, int, double)> mergedDictionary
         )
     {
         // Get the list of existing course codes from the database
@@ -450,7 +446,7 @@ SaveMissingCourses(
                         Name = course.Value.Item1,
                         Hours = course.Value.Item2,
                         CreditPoints = course.Value.Item3,
-                        CreatedBy = _user,
+                        CreatedBy = _user
                     })
                 .ToList();
 
@@ -467,7 +463,7 @@ SaveMissingCourses(
 
     private static async Task<List<Course>> GetExistingCourses(
         Dictionary<string, (string, int, double)> mergedDictionary
-        )
+    )
     {
         // Filter out the courses that are already in the database and also present in the dictionary
         var existingCourses =
@@ -483,5 +479,4 @@ SaveMissingCourses(
 
         return finalList;
     }
-
 }

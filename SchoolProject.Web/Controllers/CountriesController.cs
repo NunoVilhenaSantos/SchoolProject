@@ -46,7 +46,8 @@ public class CountriesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Country country)
+        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        Country country)
     {
         if (ModelState.IsValid)
         {
@@ -74,7 +75,8 @@ public class CountriesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Country country)
+        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        Country country)
     {
         if (id != country.Id) return NotFound();
 

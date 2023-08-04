@@ -17,19 +17,19 @@ public class SeedDb
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
 
-    private readonly ILogger<SeedDb> _logger;
-    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
-    private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
-    private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
-    private readonly ILogger<SeedDbCoursesList> _loggerSeedDbCs;
-
 
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    private readonly ILogger<SeedDb> _logger;
+    private readonly ILogger<SeedDbCoursesList> _loggerSeedDbCs;
+    private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
+    private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
+    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     // private readonly SeedDbUsers _seedDbUsers;
@@ -140,10 +140,8 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // Em vez disso, crie uma instância da classe SeedDbStudentsAndTeachers
         SeedDbStudentsAndTeachers.Initialize(
-            _userHelper,  _dataContextMsSql, _loggerSeedDbSTs);
+            _userHelper, _dataContextMsSql, _loggerSeedDbSTs);
         await SeedDbStudentsAndTeachers.AddingData(user);
-
-
 
 
         // ------------------------------------------------------------------ //
@@ -154,13 +152,11 @@ public class SeedDb
         await SeedDbSchoolClasses.AddingData(user);
 
 
-
         // ------------------------------------------------------------------ //
         // verificar se existem os placeholders no sistema
         // ------------------------------------------------------------------ //
         SeedDbPlaceHolders.Initialize(_hostingEnvironment);
         SeedDbPlaceHolders.AddPlaceHolders();
-
 
 
         // ------------------------------------------------------------------ //

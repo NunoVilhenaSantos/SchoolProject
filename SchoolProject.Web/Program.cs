@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -22,11 +21,6 @@ using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using Serilog;
-
-
-
-
-
 
 
 // Helper method to generate a random
@@ -118,11 +112,11 @@ static async Task RunSeeding(IHost host)
 
     await seeder?.SeedAsync();
 
-    
+
     stopwatch.Stop();
     var elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-    
-    
+
+
     Console.WriteLine($"Tempo decorrido: {elapsedSeconds} segundos.");
     TimeTracker.runSeedingElapsedSeconds = elapsedSeconds;
 

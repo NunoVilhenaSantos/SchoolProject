@@ -1,7 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.ExtraEntities;
@@ -25,13 +23,11 @@ public class SeedDbStudentsAndTeachers
     private static List<Teacher> _listOfTeachersFromDb;
 
 
-    private static readonly List<User> _listOfUsersToAdd = new List<User>();
+    private static readonly List<User> _listOfUsersToAdd = new();
 
-    private static readonly List<Student> _listOfStudentsToAdd =
-        new List<Student>();
+    private static readonly List<Student> _listOfStudentsToAdd = new();
 
-    private static readonly List<Teacher> _listOfTeachersToAdd =
-        new List<Teacher>();
+    private static readonly List<Teacher> _listOfTeachersToAdd = new();
 
 
     public SeedDbStudentsAndTeachers(
@@ -264,11 +260,11 @@ public class SeedDbStudentsAndTeachers
                 }
             }
         }
-        
+
 
         Console.WriteLine($"Created {namesToAdd.Count} {userRole.ToLower()}s");
 
-        
+
         // ------------------------------------------------------------------ //
         Console.WriteLine($"Saving {userRole.ToLower()}s to the database...");
         await StoreStudentsOrTeachersWithRoles(
@@ -287,16 +283,12 @@ public class SeedDbStudentsAndTeachers
         // TODO: add students or teachers to the database
         if (userRole.Equals(
                 "Student", StringComparison.OrdinalIgnoreCase))
-        {
             await _dataContextMsSql.Students
                 .AddRangeAsync(_listOfStudentsToAdd);
-        }
         else if (userRole.Equals(
                      "Teacher", StringComparison.OrdinalIgnoreCase))
-        {
             await _dataContextMsSql.Teachers
                 .AddRangeAsync(_listOfTeachersToAdd);
-        }
 
         await _dataContextMsSql.SaveChangesAsync();
     }
@@ -313,7 +305,7 @@ public class SeedDbStudentsAndTeachers
         // Restrição genérica para permitir apenas classes
     ) where T : class
     {
-        var newUser = new SchoolProject.Web.Data.EntitiesOthers.User
+        var newUser = new User
         {
             FirstName = firstName,
             LastName = lastName,

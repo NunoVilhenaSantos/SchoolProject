@@ -1,7 +1,8 @@
-(function($){
-    $.fn.validationEngineLanguage = function(){};
+(function ($) {
+    $.fn.validationEngineLanguage = function () {
+    };
     $.validationEngineLanguage = {
-        newLang: function(){
+        newLang: function () {
             $.validationEngineLanguage.allRules = {
                 "required": {
                     "regex": "none",
@@ -10,8 +11,8 @@
                     "alertTextCheckboxe": "* Este checkbox é obrigatório",
                     "alertTextDateRange": "* Ambas as datas do intervalo são obrigatórias"
                 },
-                "requiredInFunction": { 
-                    "func": function(field, rules, i, options){
+                "requiredInFunction": {
+                    "func": function (field, rules, i, options) {
                         return (field.val() == "test") ? true : false;
                     },
                     "alertText": "* Field must equal test"
@@ -34,7 +35,7 @@
                     "alertText": "* Permitido o máximo de ",
                     "alertText2": " caractere(s)"
                 },
-				"groupRequired": {
+                "groupRequired": {
                     "regex": "none",
                     "alertText": "* Você deve preencher um dos seguintes campos"
                 },
@@ -53,7 +54,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Data posterior a "
-                },	
+                },
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Máximo de ",
@@ -113,15 +114,15 @@
                     "alertText": "* Não são permitidos caracteres especiais"
                 },
                 "real": {
-                	// Brazilian (Real - R$) money format
-                	"regex": /^([1-9]{1}[\d]{0,2}(\.[\d]{3})*(\,[\d]{0,2})?|[1-9]{1}[\d]{0,}(\,[\d]{0,2})?|0(\,[\d]{0,2})?|(\,[\d]{1,2})?)$/,
+                    // Brazilian (Real - R$) money format
+                    "regex": /^([1-9]{1}[\d]{0,2}(\.[\d]{3})*(\,[\d]{0,2})?|[1-9]{1}[\d]{0,}(\,[\d]{0,2})?|0(\,[\d]{0,2})?|(\,[\d]{1,2})?)$/,
                     "alertText": "* Número decimal inválido"
                 }
             };
-            
+
         }
     };
 
     $.validationEngineLanguage.newLang();
-    
+
 })(jQuery);

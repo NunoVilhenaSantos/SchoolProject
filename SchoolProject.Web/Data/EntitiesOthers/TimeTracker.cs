@@ -1,9 +1,6 @@
-﻿namespace SchoolProject.Web.Data.EntitiesOthers
+﻿namespace SchoolProject.Web.Data.EntitiesOthers;
+
+public static class TimeTracker
 {
-    public static class TimeTracker
-    {
-
-        public static double runSeedingElapsedSeconds { get; set; }
-
-    }
+    public static double runSeedingElapsedSeconds { get; set; }
 }

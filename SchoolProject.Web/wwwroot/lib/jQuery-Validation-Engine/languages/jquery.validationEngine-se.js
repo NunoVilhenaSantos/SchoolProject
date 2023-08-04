@@ -1,8 +1,8 @@
-(function($){
-    $.fn.validationEngineLanguage = function(){
+(function ($) {
+    $.fn.validationEngineLanguage = function () {
     };
     $.validationEngineLanguage = {
-        newLang: function(){
+        newLang: function () {
             $.validationEngineLanguage.allRules = {
                 "required": { // Add your regex rules here, you can take telephone as an example
                     "regex": "none",
@@ -10,8 +10,8 @@
                     "alertTextCheckboxMultiple": "* Var god välj ett alternativ",
                     "alertTextCheckboxe": "* Den här kryssrutan måste anges"
                 },
-                "requiredInFunction": { 
-                    "func": function(field, rules, i, options){
+                "requiredInFunction": {
+                    "func": function (field, rules, i, options) {
                         return (field.val() == "test") ? true : false;
                     },
                     "alertText": "* Field must equal test"
@@ -26,7 +26,7 @@
                     "alertText": "* Maximalt ",
                     "alertText2": " antal tecken"
                 },
-				"groupRequired": {
+                "groupRequired": {
                     "regex": "none",
                     "alertText": "* You must fill one of the following fields"
                 },
@@ -45,7 +45,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Datum efter "
-                },	
+                },
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Maximalt ",
@@ -115,7 +115,7 @@
                     "alertText": "* Användarnamnet är upptaget",
                     "alertTextLoad": "* Validerar, var god vänta"
                 },
-				"ajaxUserCallPhp": {
+                "ajaxUserCallPhp": {
                     "url": "phpajax/ajaxValidateFieldUser.php",
                     // you may want to pass extra data on the ajax call
                     "extraData": "name=eric",
@@ -134,19 +134,19 @@
                     // speaks by itself
                     "alertTextLoad": "* Validerar, var god vänta"
                 },
-				 "ajaxNameCallPhp": {
-	                    // remote json service location
-	                    "url": "phpajax/ajaxValidateFieldName.php",
-	                    // error
-	                    "alertText": "* Användarnamnet är upptaget",
-	                    // speaks by itself
-	                    "alertTextLoad": "* Validerar, var god vänta"
-	                },
+                "ajaxNameCallPhp": {
+                    // remote json service location
+                    "url": "phpajax/ajaxValidateFieldName.php",
+                    // error
+                    "alertText": "* Användarnamnet är upptaget",
+                    // speaks by itself
+                    "alertTextLoad": "* Validerar, var god vänta"
+                },
                 "validate2fields": {
                     "alertText": "* Ange text HELLO"
                 }
             };
-            
+
         }
     };
     $.validationEngineLanguage.newLang();

@@ -140,10 +140,8 @@ public class SeedDbUsers
             }
 
 
-
-
             // ------------------------------------------------------------ //
-            
+
             // Create the user
             var result =
                 await _userHelper.AddUserAsync(newUser, password);
@@ -159,8 +157,6 @@ public class SeedDbUsers
                 _logger.LogError(message);
                 throw new InvalidOperationException(message);
             }
-
-
 
 
             // ------------------------------------------------------------ //
@@ -183,7 +179,6 @@ public class SeedDbUsers
                 _logger.LogError(message);
                 throw new InvalidOperationException(message);
             }
-
 
 
             // Log the user creation

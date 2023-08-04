@@ -59,7 +59,8 @@ public class SeedDbSchoolClasses
         SeedDbCoursesList.Initialize(_dataContextMsSql);
 
 
-        _listOfSchoolClassFromDb ??= await _dataContextMsSql.SchoolClasses.ToListAsync();
+        _listOfSchoolClassFromDb ??=
+            await _dataContextMsSql.SchoolClasses.ToListAsync();
 
 
         Console.WriteLine("debug zone...");
@@ -107,10 +108,7 @@ public class SeedDbSchoolClasses
         var coursesForTeTr = SeedDbCoursesList.TeTr();
 
 
-
         Console.WriteLine("debug zone...");
-
-
 
 
         // ------------------------------------------------------------------ //
@@ -155,7 +153,6 @@ public class SeedDbSchoolClasses
 
 
         Console.WriteLine("debug zone...");
-
 
 
         // ------------------------------------------------------------------ //
@@ -218,7 +215,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
             coursesListForTeTpsi, user);
-        
+
         await SeedSchoolClassIfNotExists("481241", "CET.TPSI.N.L.00",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-laboral)",
             5, 5,
@@ -227,7 +224,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
             TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
             coursesListForTeTpsi, user);
-        
+
         await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.91",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Laboral) (B-Learning)",
             5, 5,
@@ -238,7 +235,7 @@ public class SeedDbSchoolClasses
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
             coursesListForTeTpsi, user);
-        
+
         await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.04",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-Laboral) (B-Learning)",
             5, 5,
@@ -336,7 +333,6 @@ public class SeedDbSchoolClasses
     private static async Task<List<Course>> GetExistingCoursesAsync(
         Dictionary<string, (string, int, double)> mergedDictionary)
     {
-
         // Get the courses from the database
         _listOfCoursesFromDb ??= await _dataContextMsSql.Courses.ToListAsync();
 
@@ -365,7 +361,7 @@ public class SeedDbSchoolClasses
     {
         // Get the school classes from the database
         var existingSchoolClass = _listOfSchoolClassFromDb.FirstOrDefault(
-                s => s.Acronym == acronym && s.Code == code);
+            s => s.Acronym == acronym && s.Code == code);
 
 
         // Calculate the total duration in hours from the sum of course hours
@@ -380,7 +376,7 @@ public class SeedDbSchoolClasses
 
         // Calculate the end date and time based on the total number of days and start date/hour
         endDate = startDate.AddDays(totalDays - 1).Date.Add(endHour);
-        var durationPerDay = (endHour - startHour);
+        var durationPerDay = endHour - startHour;
         if (endDate.DayOfWeek == DayOfWeek.Saturday ||
             endDate.DayOfWeek == DayOfWeek.Sunday)
         {
