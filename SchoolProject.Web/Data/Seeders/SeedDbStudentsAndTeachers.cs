@@ -24,11 +24,10 @@ public class SeedDbStudentsAndTeachers
 
 
     private static readonly List<User> _listOfUsersToAdd = new();
+    private static readonly HashSet<string> _existingEmails = new();
 
     private static readonly List<Student> _listOfStudentsToAdd = new();
-
     private static readonly List<Teacher> _listOfTeachersToAdd = new();
-
 
     public SeedDbStudentsAndTeachers(
         // User user,
@@ -64,11 +63,29 @@ public class SeedDbStudentsAndTeachers
         Console.WriteLine(
             "Seeding the users table with students and teachers...");
 
+        await PopulateExistingUsersStudentsAndTeachersFromDb();
 
+        // ------------------------------------------------------------------ //
+        Console.WriteLine(
+            "Seeding the users table with students...");
+        await GenerateStudentsNames(user, _listOfStudentsFromDb);
+
+        Console.WriteLine(
+            "Seeding the users table with teachers...");
+        await GenerateTeachersNames(user, _listOfTeachersFromDb);
+    }
+
+
+    private static async Task PopulateExistingUsersStudentsAndTeachersFromDb()
+    {
         // ------------------------------------------------------------------ //
         var existingUsersList =
             await _dataContextMsSql.Users.ToListAsync();
         _listOfUsersFromDb = existingUsersList.ToList();
+
+        // Fill the existing emails HashSet for efficient email lookups
+        _existingEmails.UnionWith(
+            _dataContextMsSql.Users.Select(u => u.Email));
 
 
         // ------------------------------------------------------------------ //
@@ -81,16 +98,6 @@ public class SeedDbStudentsAndTeachers
         var existingTeachers =
             await _dataContextMsSql.Teachers.ToListAsync();
         _listOfTeachersFromDb = existingTeachers.ToList();
-
-
-        // ------------------------------------------------------------------ //
-        Console.WriteLine(
-            "Seeding the users table with students...");
-        await GenerateStudentsNames(user, _listOfStudentsFromDb);
-
-        Console.WriteLine(
-            "Seeding the users table with teachers...");
-        await GenerateTeachersNames(user, _listOfTeachersFromDb);
     }
 
 
@@ -255,11 +262,10 @@ public class SeedDbStudentsAndTeachers
 
         // ------------------------------------------------------------------ //
         Console.WriteLine($"Saving {userRole.ToLower()}s to the database...");
-        await StoreStudentsOrTeachersWithRoles(
-            user, _listOfStudentsToAdd, "Student");
-        await StoreStudentsOrTeachersWithRoles(
-            user, _listOfTeachersToAdd, "Teacher");
 
+
+        // ------------------------------------------------------------------ //
+        await StoreStudentsOrTeachersWithRoles();
 
         // ------------------------------------------------------------------ //
         var existingUsersList =
@@ -345,6 +351,13 @@ public class SeedDbStudentsAndTeachers
         entity.GetType().GetProperty("IdGuid")?.SetValue(entity, default);
         entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user);
 
+
+        // TODO: mudei-me para aqui
+        var result =
+            await _userHelper.AddUserAsync(newUser, password);
+        if (result.Succeeded)
+            await _userHelper.AddUserToRoleAsync(newUser, userRole);
+
         return entity;
     }
 
@@ -389,49 +402,40 @@ public class SeedDbStudentsAndTeachers
     }
 
 
-    private static async Task StoreStudentsOrTeachersWithRoles<T>(
-        User user, List<T> usersToAddList, string userRole,
-        string password = "Passw0rd") where T : class
+    private static async Task StoreStudentsOrTeachersWithRoles(
+        string password = "Passw0rd")
     {
-        // Check if the role already exists in the database
-        await _userHelper.CheckRoleAsync(userRole);
+        // Extract the emails from the lists of students and teachers
+        var studentEmails =
+            _listOfStudentsToAdd.Select(s => s.Email).ToList();
+        var teacherEmails =
+            _listOfTeachersToAdd.Select(t => t.Email).ToList();
 
+        Console.WriteLine("Debug zone:");
 
-        foreach (var studentOrTeacherWithRole in usersToAddList)
+        // Add students to the database and assign student role
+        foreach (var studentUser in _listOfUsersToAdd)
         {
-            var email = studentOrTeacherWithRole
-                .GetType().GetProperty("Email")?
-                .GetValue(studentOrTeacherWithRole, null).ToString();
+            if (_existingEmails.Contains(studentUser.Email)) continue;
 
-            // Get the user from users to add list
-            var userFromUsersToAddList =
-                _listOfUsersToAdd.FirstOrDefault(u => u.Email == email);
-
-
-            // Check if the user already exists in the existing users list
-            var userExist =
-                _listOfUsersFromDb.FirstOrDefault(u => u.Email == email);
-
-
-            if (userExist != null) continue;
-
-
-            // If the user doesn't exist in the existing list,
-            // create and add the user to the database
             var result =
-                await _userHelper.AddUserAsync(
-                    userFromUsersToAddList, password);
-
-
+                await _userHelper.AddUserAsync(studentUser, password);
             if (result.Succeeded)
-                await _userHelper
-                    .AddUserToRoleAsync(userFromUsersToAddList, userRole);
-
-
-            // Clear the users to add list
-            _listOfUsersToAdd.Remove(userFromUsersToAddList);
+                await _userHelper.AddUserToRoleAsync(studentUser,
+                    "Student");
         }
 
+        // Add teachers to the database and assign teacher role
+        foreach (var teacherUser in _listOfUsersToAdd)
+        {
+            if (_existingEmails.Contains(teacherUser.Email)) continue;
+
+            var result =
+                await _userHelper.AddUserAsync(teacherUser, password);
+            if (result.Succeeded)
+                await _userHelper.AddUserToRoleAsync(teacherUser,
+                    "Teacher");
+        }
 
         // Save the changes to the student or teacher entity
         await _dataContextMsSql.SaveChangesAsync();

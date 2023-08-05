@@ -124,6 +124,7 @@ static async Task RunSeeding(IHost host)
     Console.WriteLine($"Tempo decorrido: {elapsedSeconds} segundos.");
 
     Thread.Sleep(3000);
+    
 }
 
 

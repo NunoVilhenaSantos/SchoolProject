@@ -38,6 +38,11 @@ public class UserHelper : IUserHelper
     public async Task<IdentityResult> AddUserAsync(
         User user, string password)
     {
+        // Check if user object is not null before proceeding
+        if (user == null)
+            throw new ArgumentNullException(nameof(user),
+                "User object cannot be null.");
+
         return await _userManager.CreateAsync(user, password);
     }
 
@@ -45,6 +50,7 @@ public class UserHelper : IUserHelper
     public async Task CheckRoleAsync(string roleName)
     {
         var result = await _roleManager.RoleExistsAsync(roleName);
+        
         if (!result)
             await _roleManager.CreateAsync(
                 new IdentityRole {Name = roleName});
