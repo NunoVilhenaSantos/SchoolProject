@@ -50,10 +50,9 @@ public class UserHelper : IUserHelper
     public async Task CheckRoleAsync(string roleName)
     {
         var result = await _roleManager.RoleExistsAsync(roleName);
-        
+
         if (!result)
-            await _roleManager.CreateAsync(
-                new IdentityRole {Name = roleName});
+            await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
     }
 
 

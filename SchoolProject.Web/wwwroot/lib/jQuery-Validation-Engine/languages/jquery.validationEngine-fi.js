@@ -1,8 +1,8 @@
-(function($){
-    $.fn.validationEngineLanguage = function(){
+(function ($) {
+    $.fn.validationEngineLanguage = function () {
     };
     $.validationEngineLanguage = {
-        newLang: function(){
+        newLang: function () {
             $.validationEngineLanguage.allRules = {
                 "required": { // Add your regex rules here, you can take telephone as an example
                     "regex": "none",
@@ -10,8 +10,8 @@
                     "alertTextCheckboxMultiple": "* Yksi valikoima, kiitos",
                     "alertTextCheckboxe": "* Tarkistusmerkki on pakollinen"
                 },
-                "requiredInFunction": { 
-                    "func": function(field, rules, i, options){
+                "requiredInFunction": {
+                    "func": function (field, rules, i, options) {
                         return (field.val() == "test") ? true : false;
                     },
                     "alertText": "* Field must equal test"
@@ -104,7 +104,7 @@
                     "alertText": "* Erikoismerkit eivät ole sallittuja"
                 }
             };
-            
+
         }
     };
     $.validationEngineLanguage.newLang();

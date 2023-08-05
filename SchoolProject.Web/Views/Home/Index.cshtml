@@ -1,10 +1,36 @@
 ﻿@using SchoolProject.Web.Controllers
+@using SchoolProject.Web.Data.EntitiesOthers
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<HomeController> Localizer
 
 
 @{
     ViewData["Title"] = "Home Page";
+
+    var ts = TimeTracker.SeedDbCoursesListAddingDataElapsedSeconds;
+    var SCElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
+
+    ts = TimeTracker.SeedDbCoursesListMergeAndPrintCourseInfoElapsedSeconds;
+    var MPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
+
+    ts = TimeTracker.RunSeedingElapsedSeconds;
+    var RSElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
+
+    ts = TimeTracker.StartProgramElapsedTime;
+    var SPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
+
+
+    var allRuntimes =
+        $"RunTime do seeding dos cursos: {SCElapsedTime} seconds.\n" +
+        $"RunTime do seeding dos cursos (impressão dos dados na consola): {MPElapsedTime} seconds.\n" +
+        $"RunTime do seeding (total): {RSElapsedTime} seconds.\n" +
+        $"RunTime do programa: {SPElapsedTime}.\n";
+
+    var allRuntimesHtml =
+        $"RunTime do seeding dos cursos: {SCElapsedTime} seconds.<br>" +
+        $"RunTime do seeding dos cursos (impressão dos dados na consola): {MPElapsedTime} seconds.<br>" +
+        $"RunTime do seeding (total): {RSElapsedTime} seconds.<br>" +
+        $"RunTime do programa: {SPElapsedTime}.<br>";
 }
 
 
@@ -12,8 +38,15 @@
 
 
 <h1>@Localizer["WelcomeMessage"]</h1>
+
 <p>@Localizer["ContactUs"]</p>
+
 <p>@Localizer["AboutUs"]</p>
+
+
+<p>@allRuntimes</p>
+
+@Html.Raw(allRuntimesHtml)
 
 
 <div class="text-center">

@@ -123,8 +123,18 @@ static async Task RunSeeding(IHost host)
 
     Console.WriteLine($"Tempo decorrido: {elapsedSeconds} segundos.");
 
+    // Get the elapsed time as a TimeSpan value.
+    TimeSpan ts = stopwatch.Elapsed;
+
+    // Format and display the TimeSpan value.
+    Console.WriteLine(
+        "RunTime: horas, minutos, segundos, milesimos de segundos");
+    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+        ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+
+    Console.WriteLine("RunTime: " + elapsedTime);
+
     Thread.Sleep(3000);
-    
 }
 
 
