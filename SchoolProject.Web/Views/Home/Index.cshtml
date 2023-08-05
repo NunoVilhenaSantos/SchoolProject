@@ -7,16 +7,16 @@
 @{
     ViewData["Title"] = "Home Page";
 
-    var ts = TimeTracker.SeedDbCoursesListAddingDataElapsedSeconds;
+    var ts = TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesName);
     var SCElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.SeedDbCoursesListMergeAndPrintCourseInfoElapsedSeconds;
+    ts = TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesMPInfoName);
     var MPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.RunSeedingElapsedSeconds;
+    ts = TimeTracker.GetElapsedTime(TimeTracker.SeederTimerName);
     var RSElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.StartProgramElapsedTime;
+    ts = TimeTracker.GetElapsedTime(TimeTracker.AppBuilderTimerName);
     var SPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
 
@@ -44,9 +44,21 @@
 <p>@Localizer["AboutUs"]</p>
 
 
+<br/>
 <p>@allRuntimes</p>
-
 @Html.Raw(allRuntimesHtml)
+
+<br/>
+<p>@ProcessList.ListOfProcesses</p>
+
+<br/>
+<ul>
+    <p>@ProcessList.ListOfProcesses.Count</p>
+    @foreach (var process in ProcessList.ListOfProcesses)
+    {
+        <li>@process</li>
+    }
+</ul>
 
 
 <div class="text-center">

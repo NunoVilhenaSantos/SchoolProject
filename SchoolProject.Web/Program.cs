@@ -23,6 +23,7 @@ using SchoolProject.Web.Helpers.Users;
 using Serilog;
 
 
+
 // Helper method to generate a random
 // string with specified length and characters.
 static string GenerateRandomString(
@@ -104,8 +105,11 @@ static void GetServerHostNamePing(string serverHostName)
 // Método para executar o seeding do banco de dados
 static async Task RunSeeding(IHost host)
 {
-    var stopwatch = new Stopwatch();
-    stopwatch.Start();
+    // Create a new timer with the name "MyTimer"
+    TimeTracker.CreateTimer(TimeTracker.SeederTimerName);
+
+    // Start the timer "MyTimer"
+    TimeTracker.StartTimer(TimeTracker.SeederTimerName);
 
 
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
@@ -117,24 +121,27 @@ static async Task RunSeeding(IHost host)
     await seeder?.SeedAsync();
 
 
-    stopwatch.Stop();
-    var elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-    TimeTracker.RunSeedingElapsedSeconds = stopwatch.Elapsed;
+    // Stop the timer "MyTimer"
+    TimeTracker.StopTimer(TimeTracker.SeederTimerName);
 
-    Console.WriteLine($"Tempo decorrido: {elapsedSeconds} segundos.");
+    // Get the elapsed time for the timer "MyTimer"
+    TimeSpan elapsed = TimeTracker.GetElapsedTime(TimeTracker.SeederTimerName);
 
-    // Get the elapsed time as a TimeSpan value.
-    TimeSpan ts = stopwatch.Elapsed;
+    Console.WriteLine($"Tempo decorrido: {elapsed}.");
+
 
     // Format and display the TimeSpan value.
     Console.WriteLine(
         "RunTime: horas, minutos, segundos, milesimos de segundos");
-    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-        ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+    var elapsedTime =
+        $"{elapsed.Hours:00}:{elapsed.Minutes:00}:" +
+        $"{elapsed.Seconds:00}.{elapsed.Milliseconds:00}";
 
     Console.WriteLine("RunTime: " + elapsedTime);
+    
+    TimeTracker.PrintTimerToConsole(TimeTracker.SeederTimerName);
 
-    Thread.Sleep(3000);
+    // Thread.Sleep(3000);
 }
 
 
@@ -144,6 +151,9 @@ static void RunningProcessInTheApp()
     // Obter o ID do processo atual
     var processId = Process.GetCurrentProcess().Id;
 
+    // Obter o ID do processo atual
+    var processName = Process.GetCurrentProcess().ProcessName;
+
     // Obter o objeto Process para o processo atual
     var process = Process.GetProcessById(processId);
 
@@ -151,20 +161,66 @@ static void RunningProcessInTheApp()
     var threadCollection = process.Threads;
 
     // Exibir informações sobre cada thread
-    Console.WriteLine(
+    var message =
         $"Threads em execução no processo " +
-        $"{process.ProcessName} (ID: {process.Id}):");
+        $"{process.ProcessName} (ID: {process.Id}):";
+
+    Console.WriteLine(message);
+
+    ProcessList.ListOfProcesses.Add(message);
+
     foreach (ProcessThread thread in threadCollection)
     {
-        Console.WriteLine(
-            $"Thread ID: {thread.Id}, Estado: {thread.ThreadState}");
+        message = $"Thread ID: {thread.Id}, Estado: {thread.ThreadState}";
+
+        Console.WriteLine(message);
+
+        ProcessList.ListOfProcesses.Add(message);
     }
 }
 
 
-// calcular o tempo decorrido para executar o método principal
-var stopwatchProgram = new Stopwatch();
-stopwatchProgram.Start();
+// Método para verificar que processos ainda estão em execução
+static void StartProgramTimer()
+{
+    // calcular o tempo decorrido para executar o método principal
+
+    // Create a new timer with the name from variable "timerName" 
+    TimeTracker.CreateTimer(TimeTracker.AppBuilderTimerName);
+
+    // Start the timer "MyTimer"
+    TimeTracker.StartTimer(TimeTracker.AppBuilderTimerName);
+}
+
+
+// Método para verificar que processos ainda estão em execução
+static void StopProgramTimer()
+{
+    // Stop the timer "MyTimer"
+    TimeTracker.StopTimer(TimeTracker.AppBuilderTimerName);
+
+
+    // Get the elapsed time for the timer "MyTimer"
+    TimeSpan elapsed =
+        TimeTracker.GetElapsedTime(TimeTracker.AppBuilderTimerName);
+
+
+    // Format and display the TimeSpan value.
+    // Console.WriteLine(
+    //     "RunTime: horas, minutos, segundos, milesimos de segundos");
+    //
+    // var elapsedTime =
+    //     $"{elapsed.Hours:00}:{elapsed.Minutes:00}:{elapsed.Seconds:00}." +
+    //     $"{elapsed.Milliseconds:00}";
+    //
+    // Console.WriteLine("RunTime (Program builder time): " + elapsedTime);
+    
+    TimeTracker.PrintTimerToConsole(TimeTracker.AppBuilderTimerName);
+}
+
+
+StartProgramTimer();
+
 
 // Create a new web application using the WebApplicationBuilder.
 var builder = WebApplication.CreateBuilder(args);
@@ -581,17 +637,12 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 
-// elapsed time for the program
-stopwatchProgram.Stop();
-var elapsedSecondsProgram = stopwatchProgram.Elapsed.TotalSeconds;
-TimeTracker.StartProgramElapsedTime = stopwatchProgram.Elapsed;
-
-Console.WriteLine(
-    $"Tempo decorrido para executar o inicio do programa: " +
-    $"{elapsedSecondsProgram} segundos.");
-
 // running processes
 RunningProcessInTheApp();
+
+
+// elapsed time for the program
+StopProgramTimer();
 
 
 // Run the application.

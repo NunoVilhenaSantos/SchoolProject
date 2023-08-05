@@ -123,8 +123,12 @@ public class SeedDbCoursesList
     {
         _user = user;
 
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
+        // calcular o tempo decorrido para executar o método principal
+        // Create a new timer with the name from variable "timerName" 
+        TimeTracker.CreateTimer(TimeTracker.SeedDbCoursesName);
+
+        // Start the timer "MyTimer"
+        TimeTracker.StartTimer(TimeTracker.SeedDbCoursesName);
 
         EfaTis();
         TeCs();
@@ -139,11 +143,14 @@ public class SeedDbCoursesList
         // Adding the courses to the database
         await SaveMissingCourses();
 
-        stopwatch.Stop();
-        TimeTracker.SeedDbCoursesListAddingDataElapsedSeconds =
-            stopwatch.Elapsed;
+        // Stop the timer "MyTimer"
+        TimeTracker.StopTimer(TimeTracker.SeedDbCoursesName);
 
-        Console.WriteLine($"Tempo de execução: {stopwatch.Elapsed}");
+        // Get the elapsed time for the timer "MyTimer"
+        TimeSpan ts =
+            TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesName);
+
+        TimeTracker.PrintTimerToConsole(TimeTracker.SeedDbCoursesName);
 
         Console.WriteLine("debug zone...");
     }
@@ -220,9 +227,13 @@ public class SeedDbCoursesList
             Dictionary<string, (string, int, double)> workRelatedTraining
         )
     {
-        // Iniciar a medição do tempo
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
+        // calcular o tempo decorrido para executar o método principal
+        // Create a new timer with the name from variable "timerName" 
+        TimeTracker.CreateTimer(TimeTracker.SeedDbCoursesMPInfoName);
+
+        // Start the timer "MyTimer"
+        TimeTracker.StartTimer(TimeTracker.SeedDbCoursesMPInfoName);
+
 
         var mergedDictionary = MergeDictionaries(
             commonCourses, specificCourses, workRelatedTraining);
@@ -230,15 +241,18 @@ public class SeedDbCoursesList
         PrintCourseInfo(mergedDictionary);
         CalculateTotals(mergedDictionary);
 
+
         // Parar a medição do tempo
-        stopwatch.Stop();
+        TimeTracker.StopTimer(TimeTracker.SeedDbCoursesMPInfoName);
 
-        // Tempo total decorrido (em milissegundos)
-        var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-        TimeTracker.SeedDbCoursesListMergeAndPrintCourseInfoElapsedSeconds =
-            stopwatch.Elapsed;
+        // Get the elapsed time for the timer "MyTimer"
+        TimeSpan ts =
+            TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesMPInfoName);
 
-        Console.WriteLine($"Tempo de execução: {elapsedMilliseconds} ms");
+        TimeTracker.PrintTimerToConsole(TimeTracker.SeedDbCoursesMPInfoName);
+
+        Console.WriteLine("debug zone...");
+
 
         return mergedDictionary;
     }

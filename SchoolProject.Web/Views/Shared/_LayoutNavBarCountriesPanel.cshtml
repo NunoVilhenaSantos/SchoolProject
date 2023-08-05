@@ -1,5 +1,8 @@
 ﻿@{
-    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    if (ViewContext.RouteData.Values["controller"] is not string currentController)
+    {
+        throw new ArgumentNullException(nameof(currentController));
+    }
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
 
@@ -20,7 +23,7 @@
                asp-area="" asp-controller="Cities" asp-action="Index">
                 @* <i class="fas fa-person-shelter"></i> *@
                 <span class="material-symbols-outlined">location_city</span>
-                 Cities
+                Cities
             </a>
         </li>
         <li>
@@ -34,15 +37,6 @@
                 Countries
             </a>
         </li>
-        @* <li> *@
-        @*     <hr class="dropdown-divider"> *@
-        @* </li> *@
-        @* <li> *@
-        @*     <a class="nav-link @(currentController == "Nationalities" ? "active" : "")" *@
-        @*        asp-area="" asp-controller="Nationalities" asp-action="Index"> *@
-        @*         <i class="fas fa-person-shelter"></i> Countries *@
-        @*     </a> *@
-        @* </li> *@
         <li>
             <hr class="dropdown-divider">
         </li>
