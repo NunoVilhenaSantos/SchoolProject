@@ -13,17 +13,45 @@ public class SeedDbTeachersWithCourses
     private static List<Teacher> _listOfTeachersFromDb;
 
 
+    public SeedDbTeachersWithCourses(DataContextMsSql dataContextMsSql)
+    {
+        _dataContextMsSql = dataContextMsSql;
+    }
+
     public static void Initialize(DataContextMsSql dataContextMsSql)
     {
         _dataContextMsSql = dataContextMsSql;
     }
 
 
-    public static async Task AddingData(User user)
+    public static async Task AddingData(
+        DataContextMsSql dataContextMsSql, User user)
     {
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
 
+        await AddDataToDb(user);
+
+        // ------------------------------------------------------------------ //
+        Console.WriteLine("debug zone...");
+    }
+
+    public async Task AddingData(User user)
+    {
+        // ------------------------------------------------------------------ //
+        Console.WriteLine("debug zone...");
+
+        await AddDataToDb(user);
+
+        // ------------------------------------------------------------------ //
+        Console.WriteLine("debug zone...");
+    }
+
+    private static async Task AddDataToDb(User user)
+    {
+        // ------------------------------------------------------------------ //
+        Console.WriteLine("debug zone...");
+        // _dataContextMsSql = dataContextMsSql;
 
         // ------------------------------------------------------------------ //
         var existingCourses =
@@ -42,8 +70,8 @@ public class SeedDbTeachersWithCourses
 
 
         // ------------------------------------------------------------------ //
-        await using (var context = _dataContextMsSql)
-        {
+        // await using (var context = _dataContextMsSql)
+        // {
             var random = new Random();
 
             foreach (var teacherCourse in from course in _listOfCoursesFromDb
@@ -51,23 +79,21 @@ public class SeedDbTeachersWithCourses
                          random.Next(_listOfTeachersFromDb.Count)]
                      select new TeacherCourse
                      {
-                         Teacher = teacher,
-                         Course = course,
+                         TeacherId = teacher.Id, Teacher = teacher,
+                         CourseId = course.Id, Course = course,
                          CreatedBy = user,
                      })
             {
                 // Add the TeacherCourse association to the context
-                context.TeacherCourses.Add(teacherCourse);
+                _dataContextMsSql.TeacherCourses.Add(teacherCourse);
             }
-
 
             // -------------------------------------------------------------- //
             Console.WriteLine("debug zone...");
 
             // Save the changes to the database
-            await context.SaveChangesAsync();
-        }
-
+            await _dataContextMsSql.SaveChangesAsync();
+        // }
 
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");

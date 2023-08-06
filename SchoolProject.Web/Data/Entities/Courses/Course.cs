@@ -79,7 +79,9 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
-    // Navigation property for the many-to-many relationship
+    /// <summary>
+    ///    Navigation property for the many-to-many relationship between SchoolClass and Course
+    /// </summary>
     public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
         new List<SchoolClassCourse>();
 
@@ -94,7 +96,9 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
-    // Navigation property for the many-to-many relationship with teachers
+    /// <summary>
+    ///   Navigation property for the many-to-many relationship between Teacher and Course
+    /// </summary>
     public ICollection<TeacherCourse> TeacherCourses { get; set; } =
         new List<TeacherCourse>();
 
@@ -102,9 +106,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
     public int TeachersCount => TeacherCourses
         .Select(tc => tc.Teacher).Distinct().Count();
-
-    // Navigation property for the many-to-many relationship with teachers
-    // public ICollection<Teacher>? Teachers { get; set; } = new List<Teacher>();
 
 
     // ---------------------------------------------------------------------- //

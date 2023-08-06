@@ -17,7 +17,7 @@
 
     <ul class="dropdown-menu">
         <li>
-            <a class="nav-link @(currentController == "Teachers" ? "active" : "")"
+            <a class="dropdown-item @(currentController == "Teachers" ? "active" : "")"
                asp-area="" asp-controller="Teachers" asp-action="Index">
                 <i class="fas fa-person-through-window"></i> Teachers
             </a>
@@ -26,7 +26,7 @@
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a class="nav-link @(currentController == "TeacherCourses" ? "active" : "")"
+            <a class="dropdown-item @(currentController == "TeacherCourses" ? "active" : "")"
                asp-area="" asp-controller="TeacherCourses" asp-action="Index">
                 <i class="fas fa-person-through-window"></i> TeacherCourses
             </a>

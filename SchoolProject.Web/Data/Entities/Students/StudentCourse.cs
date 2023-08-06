@@ -8,19 +8,24 @@ namespace SchoolProject.Web.Data.Entities.Students;
 
 public class StudentCourse : IEntity
 {
-    // [Required] public int StudentId { get; set; }
-    [Required] public Student Student { get; set; }
+    [Required] public required int StudentId { get; set; }
+
+    [ForeignKey(nameof(StudentId))]
+    public virtual required Student Student { get; set; }
 
     public Guid StudentGuidId => Student.IdGuid;
 
 
-    // [Required] public int CourseId { get; set; }
-    [Required] public Course Course { get; set; }
+    [Required] public required int CourseId { get; set; }
+
+    [ForeignKey(nameof(CourseId))]
+    [Required]
+    public required Course Course { get; set; }
 
     public Guid CourseGuidId => Course.IdGuid;
 
 
-    [Key]
+    // [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 

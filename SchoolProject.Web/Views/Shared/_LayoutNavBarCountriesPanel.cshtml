@@ -19,7 +19,7 @@
 
     <ul class="dropdown-menu">
         <li>
-            <a class="nav-link @(currentController == "Cities" ? "active" : "")"
+            <a class="dropdown-item @(currentController == "Cities" ? "active" : "")"
                asp-area="" asp-controller="Cities" asp-action="Index">
                 @* <i class="fas fa-person-shelter"></i> *@
                 <span class="material-symbols-outlined">location_city</span>
@@ -30,7 +30,7 @@
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a class="nav-link @(currentController == "Countries" ? "active" : "")"
+            <a class="dropdown-item @(currentController == "Countries" ? "active" : "")"
                asp-area="" asp-controller="Countries" asp-action="Index">
                 @* <i class="fas fa-person-shelter"></i> *@
                 <span class="material-symbols-outlined">flag_circle</span>
@@ -41,7 +41,7 @@
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a class="nav-link @(currentController == "Nationalities" ? "active" : "")"
+            <a class="dropdown-item @(currentController == "Nationalities" ? "active" : "")"
                asp-area="" asp-controller="Nationalities" asp-action="Index">
                 @* <i class="fas fa-person-shelter"></i> *@
                 <span class="material-symbols-outlined">language_international</span>

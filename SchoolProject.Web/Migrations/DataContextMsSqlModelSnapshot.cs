@@ -430,7 +430,7 @@ namespace SchoolProject.Web.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.OtherEntities.Gender", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -567,11 +567,8 @@ namespace SchoolProject.Web.Migrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClassCourse", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("SchoolClassId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -583,13 +580,16 @@ namespace SchoolProject.Web.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("(NEWSEQUENTIALID())");
-
-                    b.Property<int>("SchoolClassId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -600,13 +600,11 @@ namespace SchoolProject.Web.Migrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("SchoolClassId", "CourseId");
 
                     b.HasIndex("CourseId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("SchoolClassId");
 
                     b.HasIndex("UpdatedById");
 
@@ -903,11 +901,8 @@ namespace SchoolProject.Web.Migrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.TeacherCourse", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -919,13 +914,16 @@ namespace SchoolProject.Web.Migrations
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("(NEWSEQUENTIALID())");
-
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -936,13 +934,11 @@ namespace SchoolProject.Web.Migrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("TeacherId", "CourseId");
 
                     b.HasIndex("CourseId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("TeacherId");
 
                     b.HasIndex("UpdatedById");
 
@@ -1224,7 +1220,7 @@ namespace SchoolProject.Web.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.OtherEntities.Gender", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
@@ -1261,7 +1257,7 @@ namespace SchoolProject.Web.Migrations
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClassCourse", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", "Course")
-                        .WithMany()
+                        .WithMany("SchoolClassCourses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1272,7 +1268,7 @@ namespace SchoolProject.Web.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", "SchoolClass")
-                        .WithMany()
+                        .WithMany("SchoolClassCourses")
                         .HasForeignKey("SchoolClassId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1322,7 +1318,7 @@ namespace SchoolProject.Web.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", "Gender")
+                    b.HasOne("SchoolProject.Web.Data.Entities.OtherEntities.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1420,7 +1416,7 @@ namespace SchoolProject.Web.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.ExtraEntities.Gender", "Gender")
+                    b.HasOne("SchoolProject.Web.Data.Entities.OtherEntities.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1457,7 +1453,7 @@ namespace SchoolProject.Web.Migrations
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.TeacherCourse", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", "Course")
-                        .WithMany()
+                        .WithMany("TeacherCourses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1495,6 +1491,10 @@ namespace SchoolProject.Web.Migrations
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("SchoolClassCourses");
+
+                    b.Navigation("TeacherCourses");
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", b =>
@@ -1502,6 +1502,8 @@ namespace SchoolProject.Web.Migrations
                     b.Navigation("Courses");
 
                     b.Navigation("Enrollment");
+
+                    b.Navigation("SchoolClassCourses");
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>

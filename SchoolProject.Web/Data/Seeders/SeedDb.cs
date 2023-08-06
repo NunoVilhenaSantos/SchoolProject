@@ -156,20 +156,46 @@ public class SeedDb
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
         SeedDbTeachersWithCourses.Initialize(_dataContextMsSql);
-        await SeedDbTeachersWithCourses.AddingData(user);
+        await SeedDbTeachersWithCourses.AddingData(_dataContextMsSql, user);
+        
+        Console.WriteLine("Debug point.", Color.Red);
+
+
+        // TODO: estou aqui a tentar adicionar os cursos as turmas e vice-versa
+        // ------------------------------------------------------------------ //
+        // adding courses to teachers to the database
+        // ------------------------------------------------------------------ //
+        SeedDbSchoolClassesWithCourses.Initialize(_dataContextMsSql);
+        await SeedDbSchoolClassesWithCourses.AddingData(
+            _dataContextMsSql, user);
 
         Console.WriteLine("Debug point.", Color.Red);
+
+
+        // TODO: estou aqui a tentar adicionar os cursos as turmas e vice-versa
+        // ------------------------------------------------------------------ //
+        // adding students to school-classes into the database
+        // ------------------------------------------------------------------ //
+        SeedDbStudentsWithSchoolClasses.Initialize(_dataContextMsSql);
+        await SeedDbStudentsWithSchoolClasses.AddingData(user);
+
+        Console.WriteLine("Debug point.", Color.Red);
+
+
+        // TODO: estou aqui a tentar adicionar o resto dos seedings que faltam
+        // lista de schoolclasses no estudante e vice-versa
+
+
+        // ------------------------------------------------------------------ //
+        Console.WriteLine("Seeding the database finished.", Color.Green);
+        // ------------------------------------------------------------------ //
+
 
         // ------------------------------------------------------------------ //
         // verificar se existem os placeholders no sistema
         // ------------------------------------------------------------------ //
         SeedDbPlaceHolders.Initialize(_hostingEnvironment);
         SeedDbPlaceHolders.AddPlaceHolders();
-
-
-        // ------------------------------------------------------------------ //
-        Console.WriteLine("Seeding the database finished.", Color.Green);
-        // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //

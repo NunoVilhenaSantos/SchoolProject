@@ -12,7 +12,7 @@ public interface IUserHelper
     Task<User?> GetUserByIdAsync(string id);
 
 
-    Task<IdentityResult> AddUserAsync(User user, string password);
+    Task<IdentityResult> AddUserAsync(User? user, string password);
 
 
     Task CheckRoleAsync(string roleName);
@@ -24,20 +24,20 @@ public interface IUserHelper
     Task LogOutAsync();
 
 
-    Task<IdentityResult> UpdateUserAsync(User user);
+    Task<IdentityResult> UpdateUserAsync(User? user);
 
 
     Task<IdentityResult> ChangePasswordAsync(
-        User user, string oldPassword, string newPassword);
+        User? user, string oldPassword, string newPassword);
 
 
-    Task AddUserToRoleAsync(User user, string roleName);
+    Task AddUserToRoleAsync(User? user, string roleName);
 
 
-    Task RemoveUserFromRoleAsync(User user, string roleName);
+    Task RemoveUserFromRoleAsync(User? user, string roleName);
 
 
-    Task<bool> IsUserInRoleAsync(User user, string roleName);
+    Task<bool> IsUserInRoleAsync(User? user, string roleName);
 
 
     Task<SignInResult> ValidatePasswordAsync(User user, string password);

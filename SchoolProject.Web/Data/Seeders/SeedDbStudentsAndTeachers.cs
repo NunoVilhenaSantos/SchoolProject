@@ -26,7 +26,7 @@ public class SeedDbStudentsAndTeachers
     private static List<Teacher> _listOfTeachersFromDb;
 
 
-    private static readonly List<User> _listOfUsersToAdd = new();
+    private static readonly List<User?> _listOfUsersToAdd = new();
 
     private static readonly List<Student> _listOfStudentsToAdd = new();
     private static readonly List<Teacher> _listOfTeachersToAdd = new();

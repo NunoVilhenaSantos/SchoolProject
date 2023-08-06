@@ -8,11 +8,11 @@ public class UserHelper : IUserHelper
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<User?> _userManager;
 
 
     public UserHelper(
-        UserManager<User> userManager,
+        UserManager<User?> userManager,
         SignInManager<User> signInManager,
         RoleManager<IdentityRole> roleManager
     )
@@ -36,7 +36,7 @@ public class UserHelper : IUserHelper
 
 
     public async Task<IdentityResult> AddUserAsync(
-        User user, string password)
+        User? user, string password)
     {
         // Check if user object is not null before proceeding
         if (user == null)
@@ -70,31 +70,31 @@ public class UserHelper : IUserHelper
         await _signInManager.SignOutAsync();
     }
 
-    public async Task<IdentityResult> UpdateUserAsync(User user)
+    public async Task<IdentityResult> UpdateUserAsync(User? user)
     {
         return await _userManager.UpdateAsync(user);
     }
 
     public async Task<IdentityResult> ChangePasswordAsync(
-        User user, string oldPassword, string newPassword)
+        User? user, string oldPassword, string newPassword)
     {
         return await _userManager.ChangePasswordAsync(
             user, oldPassword, newPassword);
     }
 
-    public async Task AddUserToRoleAsync(User user, string roleName)
+    public async Task AddUserToRoleAsync(User? user, string roleName)
     {
         await _userManager.AddToRoleAsync(user, roleName);
     }
 
 
-    public async Task RemoveUserFromRoleAsync(User user, string roleName)
+    public async Task RemoveUserFromRoleAsync(User? user, string roleName)
     {
         await _userManager.RemoveFromRoleAsync(user, roleName);
     }
 
 
-    public async Task<bool> IsUserInRoleAsync(User user, string roleName)
+    public async Task<bool> IsUserInRoleAsync(User? user, string roleName)
     {
         return await _userManager.IsInRoleAsync(user, roleName);
     }

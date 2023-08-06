@@ -559,8 +559,7 @@ builder.Logging.AddApplicationInsights();
 
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
-builder.Services
-    .AddScoped<UserManager<User>>();
+builder.Services.AddScoped<UserManager<User>>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<IEmailSender, EmailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
@@ -574,6 +573,11 @@ builder.Services.AddScoped<SeedDb>();
 builder.Services.AddScoped<SeedDbUsers>();
 builder.Services.AddScoped<SeedDbStudentsAndTeachers>();
 builder.Services.AddScoped<SeedDbSchoolClasses>();
+
+builder.Services.AddScoped<SeedDbTeachersWithCourses>();
+builder.Services.AddScoped<SeedDbSchoolClassesWithCourses>();
+builder.Services.AddScoped<SeedDbStudentsWithSchoolClasses>();
+
 
 // builder.Services.AddScoped<SeedDbSchoolClassStudents>();
 // builder.Services.AddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();

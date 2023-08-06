@@ -10,17 +10,21 @@ namespace SchoolProject.Web.Data.Entities.Enrollments;
 
 public class Enrollment : IEntity, INotifyPropertyChanged
 {
-    // [ForeignKey("StudentId")]
-    [Required] public required Student Student { get; set; }
+    [Required] public required int StudentId { get; set; }
 
-    // public int StudentId => Student.Id;
+    [Required]
+    [ForeignKey("StudentId")]
+    public virtual required Student Student { get; set; }
+
     public Guid StudentGuidId => Student.IdGuid;
 
 
-    // [ForeignKey("CourseId")]
-    [Required] public required Course Course { get; set; }
+    [Required] public required int CourseId { get; set; }
 
-    // public int CourseId => Course.Id;
+    [Required]
+    [ForeignKey("CourseId")]
+    public virtual required Course Course { get; set; }
+
     public Guid CourseGuidId => Course.IdGuid;
 
 
@@ -28,7 +32,7 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     [Precision(18, 2)] public decimal? Grade { get; set; }
 
 
-    [Key]
+    // [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 

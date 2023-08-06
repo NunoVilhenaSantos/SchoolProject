@@ -22,7 +22,8 @@ public class Country : IEntity, INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    public ICollection<City>? Cities { get; set; }
+    // Navigation property with lazy-loading enabled
+    public virtual ICollection<City>? Cities { get; set; }
 
 
     [DisplayName("Number of Cities")]
@@ -31,7 +32,7 @@ public class Country : IEntity, INotifyPropertyChanged
 
     [Required]
     // [ForeignKey("NationalityId")]
-    public required Nationality Nationality { get; set; }
+    public virtual required Nationality Nationality { get; set; }
 
     // public int NationalityId => Nationality.Id;
     public Guid NationalityGuidId => Nationality.IdGuid;

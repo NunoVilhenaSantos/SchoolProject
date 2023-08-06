@@ -145,7 +145,10 @@ public class Teacher : IEntity, INotifyPropertyChanged
     // Navigation property for the many-to-many relationship
     // ---------------------------------------------------------------------- //
 
-    // Navigation property for the many-to-many relationship with teachers
+
+    /// <summary>
+    ///    Navigation property for the many-to-many relationship with courses
+    /// </summary>
     public ICollection<TeacherCourse> TeacherCourses { get; set; } =
         new List<TeacherCourse>();
 

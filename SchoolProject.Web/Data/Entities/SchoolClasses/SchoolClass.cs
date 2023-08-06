@@ -99,7 +99,7 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     [Precision(10, 2)]
     [DataType(DataType.Currency)]
     [DisplayName("Price for Unemployed")]
-    public required decimal PriceForUnemployed { get; set; } = 0;
+    public required decimal PriceForUnemployed { get; set; }
 
 
     [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
@@ -146,7 +146,10 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     // Navigation property for the many-to-many relationship
     // ---------------------------------------------------------------------- //
 
-    // Navigation property for the many-to-many relationship between SchoolClass and Course
+
+    /// <summary>
+    /// Navigation property for the many-to-many relationship between SchoolClass and Course
+    /// </summary>
     public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
         new List<SchoolClassCourse>();
 
@@ -169,7 +172,9 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     // Navigation property for the many-to-many relationship
     // ---------------------------------------------------------------------- //
 
-    // Navigation property for the many-to-many relationship between SchoolClass and Student
+    /// <summary>
+    ///  Navigation property for the many-to-many relationship between SchoolClass and Student
+    /// </summary>
     public ICollection<Student>? Students { get; set; } = new List<Student>();
 
 
@@ -216,6 +221,23 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     [DisplayName("Students Count")]
     public int EStudentsCount =>
         Enrollment?.Select(e => e.Student).Distinct().Count() ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///  Navigation property for the many-to-many relationship between SchoolClass and Courses
+    ///  This property is used by EF Core to automatically build a join table
+    /// </summary>
+    public List<Course>? Courses { get; init; }
+
+
+    // ---------------------------------------------------------------------- //
+    // Property Changed Event Handler
+    // ---------------------------------------------------------------------- //
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

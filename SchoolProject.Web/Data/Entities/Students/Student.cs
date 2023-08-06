@@ -112,25 +112,6 @@ public class Student : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [DisplayName("Courses")]
-    public ICollection<SchoolClass>? SchoolClasses { get; set; } =
-        new List<SchoolClass>();
-
-    [DisplayName("Courses")]
-    public ICollection<StudentCourse>? StudentCourses { get; set; } =
-        new List<StudentCourse>();
-
-
-    [DisplayName("Courses Count")]
-    public int CoursesCount =>
-        SchoolClasses?.Where(s => s.CoursesCount > 0).Count() ?? 0;
-
-
-    [DisplayName("Total Work Hours")]
-    public int TotalWorkHours =>
-        SchoolClasses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
-
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -161,4 +142,28 @@ public class Student : IEntity //: INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+
+    [DisplayName("Courses")]
+    public ICollection<SchoolClass>? SchoolClasses { get; set; } =
+        new List<SchoolClass>();
+
+    [DisplayName("Courses")]
+    public ICollection<StudentCourse>? StudentCourses { get; set; } =
+        new List<StudentCourse>();
+
+
+    [DisplayName("Courses Count")]
+    public int CoursesCount =>
+        SchoolClasses?.Where(s => s.CoursesCount > 0).Count() ?? 0;
+
+
+    [DisplayName("Total Work Hours")]
+    public int TotalWorkHours =>
+        SchoolClasses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
 }

@@ -12,18 +12,25 @@ using SchoolProject.Web.Data.EntitiesOthers;
 namespace SchoolProject.Web.Data.DataContexts;
 
 // public class DataContextMsSql : IdentityDbContext<User>
+/// <inheritdoc />
 public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
+
 {
     /// <inheritdoc />
     public DataContextMsSql(DbContextOptions<DataContextMsSql> options) :
         base(options)
     {
+        // Enable lazy-loading EF 6.x
+        // Configuration.LazyLoadingEnabled = true;
+        
+        // Enable lazy-loading EF 7.x
+        // ChangeTracker.LazyLoadingEnabled = true;
     }
 
 
-    // --------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
     // tabelas auxiliares
-    // --------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
 
     public DbSet<City> Cities { get; set; }
 
@@ -34,9 +41,9 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     public DbSet<Gender> Genders { get; set; }
 
 
-    // --------------------------------------------------------------------- //
-    // um para muitos
-    // --------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // tabelas principais com relações de um para muitos e de muitos para um
+    // ---------------------------------------------------------------------- //
 
     public DbSet<Course> Courses { get; set; }
 
@@ -47,9 +54,9 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     public DbSet<Teacher> Teachers { get; set; }
 
 
-    // --------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
     // muitos para muitos
-    // --------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
 
     public DbSet<Enrollment> Enrollments { get; set; }
 
@@ -60,6 +67,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
 
 
+    // ---------------------------------------------------------------------- //
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //
@@ -113,41 +121,79 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
         // Configure many-to-many relationship between SchoolClass and Course
         // ------------------------------------------------------------------ //
+
         modelBuilder.Entity<SchoolClassCourse>()
-            .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
+            .HasKey(scc => new {scc.SchoolClassId, scc.CourseId});
 
         modelBuilder.Entity<SchoolClassCourse>()
             .HasOne(scc => scc.SchoolClass)
             .WithMany(sc => sc.SchoolClassCourses)
-            .HasForeignKey(scc => scc.SchoolClassGuidId);
+            .HasForeignKey(scc => scc.SchoolClassId);
 
         modelBuilder.Entity<SchoolClassCourse>()
             .HasOne(scc => scc.Course)
             .WithMany(c => c.SchoolClassCourses)
-            .HasForeignKey(scc => scc.CourseGuidId);
+            .HasForeignKey(scc => scc.CourseId);
+
+        // ------------------------------------------------------------------ //
+
+        // modelBuilder.Entity<SchoolClassCourse>()
+        //     .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
+        //
+        // modelBuilder.Entity<SchoolClassCourse>()
+        //     .HasOne(scc => scc.SchoolClass)
+        //     .WithMany(sc => sc.SchoolClassCourses)
+        //     .HasForeignKey(scc => scc.SchoolClassGuidId);
+        //
+        // modelBuilder.Entity<SchoolClassCourse>()
+        //     .HasOne(scc => scc.Course)
+        //     .WithMany(c => c.SchoolClassCourses)
+        //     .HasForeignKey(scc => scc.CourseGuidId);
 
 
         // ------------------------------------------------------------------ //
         // Configure many-to-many relationship between Teacher and Course
         // ------------------------------------------------------------------ //
+
         modelBuilder.Entity<TeacherCourse>()
-            .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
+            .HasKey(tc => new {tc.TeacherId, tc.CourseId});
 
         modelBuilder.Entity<TeacherCourse>()
             .HasOne(tc => tc.Teacher)
             .WithMany(t => t.TeacherCourses)
-            .HasForeignKey(tc => tc.TeacherGuidId);
+            .HasForeignKey(tc => tc.TeacherId);
 
         modelBuilder.Entity<TeacherCourse>()
             .HasOne(tc => tc.Course)
             .WithMany(c => c.TeacherCourses)
-            .HasForeignKey(tc => tc.CourseGuidId);
+            .HasForeignKey(tc => tc.CourseId);
 
-        // Other configurations...
+        // ------------------------------------------------------------------ //
+
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Teacher)
+        //     .WithMany(t => t.TeacherCourses)
+        //     .HasForeignKey(tc => tc.TeacherGuidId);
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Course)
+        //     .WithMany(c => c.TeacherCourses)
+        //     .HasForeignKey(tc => tc.CourseGuidId);
+
+
+        // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between Teacher and Course
+        // ------------------------------------------------------------------ //
+
 
         // Other configurations...
 
 
         base.OnModelCreating(modelBuilder);
     }
+
+    // ---------------------------------------------------------------------- //
 }

@@ -65,7 +65,7 @@ public class SeedDbUsers
     }
 
 
-    public static async Task<User> VerifyUserAsync(
+    public static async Task<User?> VerifyUserAsync(
         string firstName, string lastName,
         string userName,
         string email,

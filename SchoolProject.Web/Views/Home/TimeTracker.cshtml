@@ -5,8 +5,11 @@
 
 @inject IStringLocalizer<HomeController> Localizer
 
+@model dynamic
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "TimeTrackers";
+    Layout = "_Layout";
 
     var ts = TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesName);
     var SCElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
@@ -48,22 +51,3 @@
 <br/>
 <p>@allRuntimes</p>
 @Html.Raw(allRuntimesHtml)
-
-<br/>
-<p>@ProcessList.ListOfProcesses</p>
-
-<br/>
-<p>@ProcessList.ListOfProcesses.Count</p>
-<br/>
-<ul>
-    @foreach (var process in ProcessList.ListOfProcesses)
-    {
-        <li>@process</li>
-    }
-</ul>
-
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
