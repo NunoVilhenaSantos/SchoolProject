@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.ExtraEntities;
+using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
@@ -87,17 +86,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
                 // modelBuilder.Entity(entityType.ClrType)
                 //     .Property("IdGuid")
                 //     .ValueGeneratedOnAdd()
-                //     .HasValueGeneratorFactory<ValueGeneratorFactory>();
-                // modelBuilder.Entity(entityType.ClrType)
-                //     .Property("IdGuid")
-                //     .ValueGeneratedOnAdd()
-                //     .HasValueGeneratorFactory<ValueGeneratorFactory>()
                 //     .HasValueGeneratorFactory(
-                //         typeof(SequentialGuidValueGenerator));
-                // modelBuilder.Entity(entityType.ClrType)
-                //     .Property("IdGuid")
-                //     .ValueGeneratedOnAdd()
-                //     .HasValueGenerator(
                 //         typeof(SequentialGuidValueGenerator));
                 // modelBuilder.Entity(entityType.ClrType)
                 //     .Property("IdGuid")
@@ -110,7 +99,6 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         }
         // ------------------------------------------------------------------ //
 
-
         // Modify table names for all entities (excluding "AspNet" tables)
         // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         // {
@@ -118,7 +106,46 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         //     if (table.StartsWith("AspNet")) continue;
         //     entityType.SetTableName(table[0..^1]);
         // }
+
         // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between SchoolClass and Course
+        // ------------------------------------------------------------------ //
+        modelBuilder.Entity<SchoolClassCourse>()
+            .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
+
+        modelBuilder.Entity<SchoolClassCourse>()
+            .HasOne(scc => scc.SchoolClass)
+            .WithMany(sc => sc.SchoolClassCourses)
+            .HasForeignKey(scc => scc.SchoolClassGuidId);
+
+        modelBuilder.Entity<SchoolClassCourse>()
+            .HasOne(scc => scc.Course)
+            .WithMany(c => c.SchoolClassCourses)
+            .HasForeignKey(scc => scc.CourseGuidId);
+
+
+        // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between Teacher and Course
+        // ------------------------------------------------------------------ //
+        modelBuilder.Entity<TeacherCourse>()
+            .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
+
+        modelBuilder.Entity<TeacherCourse>()
+            .HasOne(tc => tc.Teacher)
+            .WithMany(t => t.TeacherCourses)
+            .HasForeignKey(tc => tc.TeacherGuidId);
+
+        modelBuilder.Entity<TeacherCourse>()
+            .HasOne(tc => tc.Course)
+            .WithMany(c => c.TeacherCourses)
+            .HasForeignKey(tc => tc.CourseGuidId);
+
+        // Other configurations...
+
+        // Other configurations...
 
 
         base.OnModelCreating(modelBuilder);

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SchoolProject.Web.Data.DataContexts;
+﻿using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.EntitiesOthers;

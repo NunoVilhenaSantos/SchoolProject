@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.ExtraEntities;
+using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
@@ -80,23 +79,25 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
             var idGuidProperty =
                 entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
 
+            // Configura a propriedade "IdGuid" para ser gerada automaticamente
             if (idGuidProperty != null)
-                // Configura a propriedade "IdGuid" para ser gerada automaticamente
                 modelBuilder.Entity(entityType.ClrType)
                     .Property("IdGuid")
                     .ValueGeneratedOnAdd()
                     .HasDefaultValueSql("(UUID())");
-            // Configura a propriedade "IdGuid" para ser do tipo binary(16) com valor padrão UUID_TO_BIN(UUID()) e NOT NULL
-            //modelBuilder.Entity(entityType.ClrType)
-            //    // Use byte[] to represent 16-byte binary
-            //    .Property<byte[]>("IdGuid")
-            //    // Set the column type to binary(16)
-            //    .HasColumnType("binary(16)")
-            //    .ValueGeneratedOnAdd()
-            //    .HasDefaultValueSql("(UUID_TO_BIN(UUID()))");
+
+            // Configura a propriedade "IdGuid" para ser do tipo binary(16)
+            // e com o valor padrão UUID_TO_BIN(UUID()) e NOT NULL
+            // if (idGuidProperty != null)
+            //     modelBuilder.Entity(entityType.ClrType)
+            //         // Use byte[] to represent 16-byte binary
+            //         .Property<byte[]>("IdGuid")
+            //         // Set the column type to binary(16)
+            //         .HasColumnType("binary(16)")
+            //         .ValueGeneratedOnAdd()
+            //         .HasDefaultValueSql("(UUID_TO_BIN(UUID()))");
         }
         // ------------------------------------------------------------------ //
-
 
         // foreach (var property in modelBuilder.Model.GetEntityTypes()
         //              .SelectMany(t => t.GetProperties())
@@ -104,6 +105,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // {
         //     property.SetDefaultValueSql("NEWID()");
         // }
+
         // ------------------------------------------------------------------ //
 
 
@@ -114,7 +116,44 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         //     if (table.StartsWith("AspNet")) continue;
         //     entityType.SetTableName(table[0..^1]);
         // }
+
         // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between SchoolClass and Course
+        // ------------------------------------------------------------------ //
+        modelBuilder.Entity<SchoolClassCourse>()
+            .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
+
+        modelBuilder.Entity<SchoolClassCourse>()
+            .HasOne(scc => scc.SchoolClass)
+            .WithMany(sc => sc.SchoolClassCourses)
+            .HasForeignKey(scc => scc.SchoolClassGuidId);
+
+        modelBuilder.Entity<SchoolClassCourse>()
+            .HasOne(scc => scc.Course)
+            .WithMany(c => c.SchoolClassCourses)
+            .HasForeignKey(scc => scc.CourseGuidId);
+
+
+        // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between Teacher and Course
+        // ------------------------------------------------------------------ //
+        modelBuilder.Entity<TeacherCourse>()
+            .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
+
+        modelBuilder.Entity<TeacherCourse>()
+            .HasOne(tc => tc.Teacher)
+            .WithMany(t => t.TeacherCourses)
+            .HasForeignKey(tc => tc.TeacherGuidId);
+
+        modelBuilder.Entity<TeacherCourse>()
+            .HasOne(tc => tc.Course)
+            .WithMany(c => c.TeacherCourses)
+            .HasForeignKey(tc => tc.CourseGuidId);
+
+        // Other configurations...
 
 
         base.OnModelCreating(modelBuilder);

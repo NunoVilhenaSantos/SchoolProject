@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace SchoolProject.Web.Helpers;
+namespace SchoolProject.Web.Helpers.Services;
 
 public class DatabaseConnectionVerifier
 {

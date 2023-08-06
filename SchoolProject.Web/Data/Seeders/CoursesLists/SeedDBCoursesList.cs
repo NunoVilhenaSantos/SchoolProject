@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using SchoolProject.Web.Data.DataContexts;
+﻿using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 using SchoolProject.Web.Data.Seeders.CoursesLists.EFAs;
-using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders.CoursesLists;
 
@@ -14,18 +11,16 @@ public class SeedDbCoursesList
     private static User _user;
     private static Random _random;
 
-    private static IUserHelper _userHelper;
+    // private static IUserHelper _userHelper;
     private static ILogger<SeedDbCoursesList> _logger;
 
-
     private static DataContextMsSql _dataContextMsSql;
-
 
     private static readonly Dictionary<string, (string, int, double)>
         _listOfCoursesToAdd = new();
 
-    private static Dictionary<string, (string, int, double)>
-        _listOfCoursesFromDb = new();
+    // private static Dictionary<string, (string, int, double)>
+    //     _listOfCoursesFromDb = new();
 
 
     // Disciplinas comuns da area de informática
@@ -147,7 +142,7 @@ public class SeedDbCoursesList
         TimeTracker.StopTimer(TimeTracker.SeedDbCoursesName);
 
         // Get the elapsed time for the timer "MyTimer"
-        TimeSpan ts =
+        var ts =
             TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesName);
 
         TimeTracker.PrintTimerToConsole(TimeTracker.SeedDbCoursesName);
@@ -246,7 +241,7 @@ public class SeedDbCoursesList
         TimeTracker.StopTimer(TimeTracker.SeedDbCoursesMPInfoName);
 
         // Get the elapsed time for the timer "MyTimer"
-        TimeSpan ts =
+        var ts =
             TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesMPInfoName);
 
         TimeTracker.PrintTimerToConsole(TimeTracker.SeedDbCoursesMPInfoName);

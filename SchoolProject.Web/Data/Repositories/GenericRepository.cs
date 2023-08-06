@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Repositories.Interfaces;

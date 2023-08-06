@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.EntitiesOthers;
 
-namespace SchoolProject.Web.Data.Entities.ExtraEntities;
+namespace SchoolProject.Web.Data.Entities.OtherEntities;
 
 public class Gender : IEntity, INotifyPropertyChanged
 {

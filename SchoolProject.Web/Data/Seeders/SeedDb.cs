@@ -1,10 +1,9 @@
 using System.Diagnostics;
 using System.Drawing;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.ExtraEntities;
+using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders.CoursesLists;
 using SchoolProject.Web.Helpers.Users;
@@ -152,11 +151,25 @@ public class SeedDb
         await SeedDbSchoolClasses.AddingData(user);
 
 
+        // TODO: estou aqui a tentar adicionar os cursos aos professores
+        // ------------------------------------------------------------------ //
+        // adding courses to teachers to the database
+        // ------------------------------------------------------------------ //
+        SeedDbTeachersWithCourses.Initialize(_dataContextMsSql);
+        await SeedDbTeachersWithCourses.AddingData(user);
+
+        Console.WriteLine("Debug point.", Color.Red);
+
         // ------------------------------------------------------------------ //
         // verificar se existem os placeholders no sistema
         // ------------------------------------------------------------------ //
         SeedDbPlaceHolders.Initialize(_hostingEnvironment);
         SeedDbPlaceHolders.AddPlaceHolders();
+
+
+        // ------------------------------------------------------------------ //
+        Console.WriteLine("Seeding the database finished.", Color.Green);
+        // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //
@@ -172,7 +185,7 @@ public class SeedDb
         {
             "Male", "Female", "NonBinary", "PreferNotToSay", "Other",
             "Transgender", "Intersex", "GenderFluid", "GenderQueer",
-            "Agender", "Androgyne", "Bigender", "Demigender", "Genderless",
+            "Agender", "Androgyne", "Bigender", "Demigender", "Genderless"
         };
 
         var existingGenders =

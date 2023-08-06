@@ -1,20 +1,16 @@
-﻿namespace SchoolProject.Web.Data.EntitiesOthers;
+﻿using System.Diagnostics;
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+namespace SchoolProject.Web.Data.EntitiesOthers;
 
 public static class TimeTracker
 {
-    private static readonly Dictionary<string, Stopwatch> Timers =
-        new Dictionary<string, Stopwatch>();
-
-
     internal const string SeederTimerName = "SeederTimer";
     internal const string AppBuilderTimerName = "AppBuilderTimer";
 
     internal const string SeedDbCoursesName = "SeedDbCoursesTimer";
     internal const string SeedDbCoursesMPInfoName = "SCMPInfoTimer";
+
+    private static readonly Dictionary<string, Stopwatch> Timers = new();
 
 
     // Method to create a new timer with the given name

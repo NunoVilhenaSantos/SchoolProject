@@ -1,4 +1,4 @@
-﻿using SchoolProject.Web.Data.Entities.ExtraEntities;
+﻿using SchoolProject.Web.Data.Entities.OtherEntities;
 
 namespace SchoolProject.Web.Data.Repositories.Interfaces;
 

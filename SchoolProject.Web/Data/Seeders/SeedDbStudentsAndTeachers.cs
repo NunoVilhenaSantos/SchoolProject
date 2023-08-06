@@ -1,8 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.ExtraEntities;
+using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.EntitiesOthers;
@@ -19,16 +18,18 @@ public class SeedDbStudentsAndTeachers
 
 
     private static List<User> _listOfUsersFromDb;
-    private static HashSet<string> _existingEmailsOfUsersFromDb = new();
+
+    private static readonly HashSet<string>
+        _existingEmailsOfUsersFromDb = new();
 
     private static List<Student> _listOfStudentsFromDb;
     private static List<Teacher> _listOfTeachersFromDb;
 
 
-    private static List<User> _listOfUsersToAdd = new();
+    private static readonly List<User> _listOfUsersToAdd = new();
 
-    private static List<Student> _listOfStudentsToAdd = new();
-    private static List<Teacher> _listOfTeachersToAdd = new();
+    private static readonly List<Student> _listOfStudentsToAdd = new();
+    private static readonly List<Teacher> _listOfTeachersToAdd = new();
 
     public SeedDbStudentsAndTeachers(
         // User user,

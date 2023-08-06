@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
@@ -14,14 +13,13 @@ using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders;
-using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
+using SchoolProject.Web.Helpers.Services;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using Serilog;
-
 
 
 // Helper method to generate a random
@@ -125,7 +123,7 @@ static async Task RunSeeding(IHost host)
     TimeTracker.StopTimer(TimeTracker.SeederTimerName);
 
     // Get the elapsed time for the timer "MyTimer"
-    TimeSpan elapsed = TimeTracker.GetElapsedTime(TimeTracker.SeederTimerName);
+    var elapsed = TimeTracker.GetElapsedTime(TimeTracker.SeederTimerName);
 
     Console.WriteLine($"Tempo decorrido: {elapsed}.");
 
@@ -138,7 +136,7 @@ static async Task RunSeeding(IHost host)
         $"{elapsed.Seconds:00}.{elapsed.Milliseconds:00}";
 
     Console.WriteLine("RunTime: " + elapsedTime);
-    
+
     TimeTracker.PrintTimerToConsole(TimeTracker.SeederTimerName);
 
     // Thread.Sleep(3000);
@@ -201,7 +199,7 @@ static void StopProgramTimer()
 
 
     // Get the elapsed time for the timer "MyTimer"
-    TimeSpan elapsed =
+    var elapsed =
         TimeTracker.GetElapsedTime(TimeTracker.AppBuilderTimerName);
 
 
@@ -214,7 +212,7 @@ static void StopProgramTimer()
     //     $"{elapsed.Milliseconds:00}";
     //
     // Console.WriteLine("RunTime (Program builder time): " + elapsedTime);
-    
+
     TimeTracker.PrintTimerToConsole(TimeTracker.AppBuilderTimerName);
 }
 

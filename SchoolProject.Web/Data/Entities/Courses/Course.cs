@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Enrollments;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
@@ -70,6 +72,44 @@ public class Course : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+
+    // Navigation property for the many-to-many relationship
+    public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
+        new List<SchoolClassCourse>();
+
+    public int SchoolClassCoursesCount => SchoolClassCourses.Count;
+
+    public int SchoolClassesCount => SchoolClassCourses
+        .Select(scc => scc.SchoolClass).Distinct().Count();
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+
+    // Navigation property for the many-to-many relationship with teachers
+    public ICollection<TeacherCourse> TeacherCourses { get; set; } =
+        new List<TeacherCourse>();
+
+    public int TeacherCoursesCount => TeacherCourses.Count;
+
+    public int TeachersCount => TeacherCourses
+        .Select(tc => tc.Teacher).Distinct().Count();
+
+    // Navigation property for the many-to-many relationship with teachers
+    // public ICollection<Teacher>? Teachers { get; set; } = new List<Teacher>();
+
+
+    // ---------------------------------------------------------------------- //
+    // Property Changed Event Handler
+    // ---------------------------------------------------------------------- //
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Students;
@@ -110,22 +109,67 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
         : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
           ProfilePhotoId;
 
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
-    public ICollection<Course>? Courses { get; set; } = new List<Course>();
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid IdGuid { get; set; }
+
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [DisplayName("Created By")] public required User CreatedBy { get; set; }
+
+
+    // [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+
+    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+    // Navigation property for the many-to-many relationship between SchoolClass and Course
+    public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
+        new List<SchoolClassCourse>();
 
 
     [DisplayName("Courses Count")]
-    public int? CoursesCount => Courses?.Count ?? 0;
+    public int? CoursesCount => SchoolClassCourses?.Count ?? 0;
 
 
     [DisplayName("SchoolClass CreditPoints")]
-    public double? SchoolClassCredits => Courses?.Sum(c => c.CreditPoints) ?? 0;
+    public double? SchoolClassCredits =>
+        SchoolClassCourses?.Sum(c => c.Course.CreditPoints) ?? 0;
 
 
     [DisplayName("Work Hour Load")]
-    public int? WorkHourLoad => Courses?.Sum(c => c.Hours) ?? 0;
+    public int? WorkHourLoad =>
+        SchoolClassCourses?.Sum(c => c.Course.Hours) ?? 0;
 
 
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+    // Navigation property for the many-to-many relationship between SchoolClass and Student
     public ICollection<Student>? Students { get; set; } = new List<Student>();
 
 
@@ -172,39 +216,6 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     [DisplayName("Students Count")]
     public int EStudentsCount =>
         Enrollment?.Select(e => e.Student).Distinct().Count() ?? 0;
-
-
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid IdGuid { get; set; }
-
-
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
-
-
-    // [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
 
 
     public event PropertyChangedEventHandler? PropertyChanged;
