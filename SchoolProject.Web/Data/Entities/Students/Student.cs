@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.EntitiesOthers;
@@ -146,6 +147,7 @@ public class Student : IEntity //: INotifyPropertyChanged
 
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
+    // between Student and SchoolClass
     // ---------------------------------------------------------------------- //
 
 
@@ -166,4 +168,40 @@ public class Student : IEntity //: INotifyPropertyChanged
     [DisplayName("Total Work Hours")]
     public int TotalWorkHours =>
         SchoolClasses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // between Student and Courses
+    // ---------------------------------------------------------------------- //
+
+    public ICollection<Enrollment>? Enrollments { get; set; }
+
+
+    [DisplayName("Courses Count")]
+    public int? CoursesCountEnrollments =>
+        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
+
+
+    [DisplayName("Total Work Hours")]
+    public int? TotalWorkHoursEnrollments =>
+        Enrollments?.Sum(e => e.Course.Hours) ?? 0;
+
+
+    [DisplayName("Highest Grade")]
+    public decimal? HighestGrade => Enrollments?
+        .Where(e => e.StudentId == Id)
+        .Max(e => e.Grade) ?? 0;
+
+
+    [DisplayName("Average Grade")]
+    public decimal? AveregaGrade => Enrollments?
+        .Where(e => e.StudentId == Id)
+        .Average(e => e.Grade) ?? 0;
+
+
+    [DisplayName("Lowest Grade")]
+    public decimal? LowestGrade => Enrollments?
+        .Where(e => e.StudentId == Id)
+        .Min(e => e.Grade) ?? 0;
 }

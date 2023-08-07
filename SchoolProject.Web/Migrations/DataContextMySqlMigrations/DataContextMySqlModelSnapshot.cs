@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolProject.Web.Data.DataContexts;
 
@@ -319,6 +320,9 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.Property<double>("CreditPoints")
                         .HasColumnType("double");
 
+                    b.Property<int>("Description")
+                        .HasColumnType("int");
+
                     b.Property<int>("Hours")
                         .HasColumnType("int");
 
@@ -359,8 +363,7 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollments.Enrollment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<int>("CourseId")
@@ -371,11 +374,19 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedById")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<decimal?>("Grade")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1L)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -385,27 +396,23 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.Property<int?>("SchoolClassId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("Id");
+                    b.HasKey("StudentId", "CourseId");
 
                     b.HasIndex("CourseId");
 
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("SchoolClassId");
-
-                    b.HasIndex("StudentId");
 
                     b.HasIndex("UpdatedById");
 
@@ -560,8 +567,11 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1L)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -709,8 +719,7 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.StudentCourse", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<int>("CourseId")
@@ -721,32 +730,36 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedById")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1L)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)")
                         .HasDefaultValueSql("(UUID())");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("UpdatedById")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("Id");
+                    b.HasKey("StudentId", "CourseId");
 
                     b.HasIndex("CourseId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("StudentId");
 
                     b.HasIndex("UpdatedById");
 
@@ -888,8 +901,11 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1L)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -1164,7 +1180,8 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", null)
                         .WithMany("Enrollment")
@@ -1172,7 +1189,7 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1180,7 +1197,8 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Course");
 
@@ -1328,7 +1346,7 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.StudentCourse", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", "Course")
-                        .WithMany()
+                        .WithMany("StudentCourses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1336,7 +1354,8 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
                         .WithMany("StudentCourses")
@@ -1347,7 +1366,8 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Course");
 
@@ -1469,6 +1489,8 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
 
                     b.Navigation("SchoolClassCourses");
 
+                    b.Navigation("StudentCourses");
+
                     b.Navigation("TeacherCourses");
                 });
 
@@ -1483,6 +1505,8 @@ namespace SchoolProject.Web.Migrations.DataContextMySqlMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
                 {
+                    b.Navigation("Enrollments");
+
                     b.Navigation("StudentCourses");
                 });
 

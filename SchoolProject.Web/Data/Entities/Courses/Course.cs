@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.EntitiesOthers;
 
@@ -11,90 +12,143 @@ namespace SchoolProject.Web.Data.Entities.Courses;
 
 public class Course : IEntity, INotifyPropertyChanged
 {
+    /// <summary>
+    ///    The code of the course.
+    /// </summary>
     [DisplayName("Code")]
     [MaxLength(7,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Code { get; init; }
 
-    [Required] public required string Name { get; set; }
+    /// <summary>
+    ///   The name of the course.
+    /// </summary>
+    [Required]
+    public required string Name { get; set; }
 
 
-    [Required] public required int Hours { get; set; }
+    /// <summary>
+    ///  The description of the course.
+    /// </summary>
+    public int Description { get; set; }
 
 
-    [Required] public required double CreditPoints { get; set; }
+    /// <summary>
+    /// The number of hours of the course.
+    /// </summary>
+    [Required]
+    public required int Hours { get; set; }
 
 
-    [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
+    /// <summary>
+    /// The number of credit points of the course.
+    /// The number of ECTS of the course.
+    /// The number of ECTS credits of the course.
+    /// European Credit Transfer and Accumulation System (ECTS).
+    /// </summary>
+    [Required]
+    public required double CreditPoints { get; set; }
 
+
+    /// <summary>
+    ///  The profile photo of the course.
+    /// Guid value of the profile photo of the course.
+    /// Guid.Empty is the default value of the Guid type.
+    /// </summary>
+    [DisplayName("Profile Photo")]
+    public Guid ProfilePhotoId { get; set; }
+
+
+    /// <summary>
+    /// The profile photo of the course.
+    /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
         : "https://storage.googleapis.com/storage-nuno/courses/" +
           ProfilePhotoId;
 
 
-    public ICollection<Enrollment>? Enrollments { get; set; }
-
-
-    [DisplayName("Students Count")]
-    public int? StudentsCount =>
-        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
-
-
+    /// <summary>
+    /// ID of the course.
+    /// </summary>
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
+    /// <summary>
+    /// Guid value of the ID of the course.
+    /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
+    /// <summary>
+    /// Was Deleted?
+    /// Determines whether the course was deleted or not.
+    /// </summary>
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
+    /// <summary>
+    /// Date and time of the creation of the course.
+    /// </summary>
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
+    /// <summary>
+    /// The user who created the course.
+    /// </summary>
+    [DisplayName("Created By")]
+    public required User CreatedBy { get; set; }
 
 
     // [Required]
+    /// <summary>
+    /// Date and time of the update of the course.
+    /// </summary>
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+    /// <summary>
+    /// The user who updated the course.
+    /// </summary>
+    [DisplayName("Updated By")]
+    public User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
     // ---------------------------------------------------------------------- //
 
+    // ---------------------------------------------------------------------- //
+    // SchoolClassCourse relationship
+    // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///    Navigation property for the many-to-many relationship between SchoolClass and Course
+    ///  Navigation property for the many-to-many relationship between SchoolClass and Course
     /// </summary>
     public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
         new List<SchoolClassCourse>();
 
+    /// <summary>
+    /// Returns the number of the course for this school classes 
+    /// </summary>
     public int SchoolClassCoursesCount => SchoolClassCourses.Count;
 
-    public int SchoolClassesCount => SchoolClassCourses
-        .Select(scc => scc.SchoolClass).Distinct().Count();
-
+    
 
     // ---------------------------------------------------------------------- //
-    // Navigation property for the many-to-many relationship
+    // Teacher Courses relationship
     // ---------------------------------------------------------------------- //
-
 
     /// <summary>
     ///   Navigation property for the many-to-many relationship between Teacher and Course
@@ -102,10 +156,74 @@ public class Course : IEntity, INotifyPropertyChanged
     public ICollection<TeacherCourse> TeacherCourses { get; set; } =
         new List<TeacherCourse>();
 
+    /// <summary>
+    /// Returns the number of the course for this teachers
+    /// </summary>
     public int TeacherCoursesCount => TeacherCourses.Count;
 
     public int TeachersCount => TeacherCourses
         .Select(tc => tc.Teacher).Distinct().Count();
+
+
+    // ---------------------------------------------------------------------- //
+    // Student Courses relationship
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///   Navigation property for the many-to-many relationship between Courses and Students
+    /// </summary>
+    public ICollection<StudentCourse> StudentCourses { get; set; } =
+        new List<StudentCourse>();
+
+    public int StudentCoursesCount => StudentCourses.Count;
+
+    public int StudentCount => StudentCourses
+        .Select(sc => sc.Student).Distinct().Count();
+
+
+    // ---------------------------------------------------------------------- //
+    // Enrollments relationship
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    /// Navigation property for the one-to-many relationship between Course and Enrollment
+    /// </summary>
+    public ICollection<Enrollment>? Enrollments { get; set; }
+
+
+    /// <summary>
+    /// Returns the number of students enrolled in the course
+    /// </summary>
+    [DisplayName("Enrolled Students")]
+    public int? StudentsCount =>
+        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
+
+
+    /// <summary>
+    ///  Returns the highest grade of the course
+    /// </summary>
+    [DisplayName("Highest Grade")]
+    public decimal? HighestGrade => Enrollments?
+        .Where(e => e.CourseId == Id)
+        .Max(e => e.Grade) ?? null;
+
+
+    /// <summary>
+    /// Returns the average grade of the course
+    /// </summary>
+    [DisplayName("Average Grade")]
+    public decimal? AveregaGrade => Enrollments?
+        .Where(e => e.CourseId == Id)
+        .Average(e => e.Grade) ?? null;
+
+
+    /// <summary>
+    /// Returns the lowest grade of the course
+    /// </summary>
+    [DisplayName("Lowest Grade")]
+    public decimal? LowestGrade => Enrollments?
+        .Where(e => e.CourseId == Id)
+        .Min(e => e.Grade) ?? null;
 
 
     // ---------------------------------------------------------------------- //

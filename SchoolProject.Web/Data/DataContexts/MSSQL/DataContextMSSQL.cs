@@ -80,6 +80,10 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
 
     // ---------------------------------------------------------------------- //
+    // criação do modelo
+    // ---------------------------------------------------------------------- //
+
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //
@@ -89,8 +93,8 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
                  in modelBuilder.Model.GetEntityTypes()
                      .SelectMany(e => e.GetForeignKeys()))
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
-        // ------------------------------------------------------------------ //
 
+        // ------------------------------------------------------------------ //
 
         //
         // Set ValueGeneratedOnAdd for IdGuid properties in entities
@@ -117,6 +121,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
                     .ValueGeneratedOnAdd()
                     .HasDefaultValueSql("(NEWSEQUENTIALID())");
         }
+
         // ------------------------------------------------------------------ //
 
         // Modify table names for all entities (excluding "AspNet" tables)
@@ -128,6 +133,52 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // }
 
         // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between Student and Course
+        // via Enrollment
+        // ------------------------------------------------------------------ //
+
+        modelBuilder.Entity<Enrollment>()
+            .HasKey(e => new {e.StudentId, e.CourseId});
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Student)
+            .WithMany(s => s.Enrollments)
+            .HasForeignKey(e => e.StudentId);
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Course)
+            .WithMany(c => c.Enrollments)
+            .HasForeignKey(e => e.CourseId);
+
+        // Configurar coluna Id como autoincrementada sem ser chave principal
+        modelBuilder.Entity<Enrollment>()
+            .Property(e => e.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna,
+            // pode variar de acordo com suas necessidades
+            .HasColumnType("int");
+
+
+        // ------------------------------------------------------------------ //
+
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Teacher)
+        //     .WithMany(t => t.TeacherCourses)
+        //     .HasForeignKey(tc => tc.TeacherGuidId);
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Course)
+        //     .WithMany(c => c.TeacherCourses)
+        //     .HasForeignKey(tc => tc.CourseGuidId);
 
 
         // ------------------------------------------------------------------ //
@@ -147,6 +198,17 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
             .WithMany(c => c.SchoolClassCourses)
             .HasForeignKey(scc => scc.CourseId);
 
+        // Configurar coluna Id como autoincrementada sem ser chave principal
+        modelBuilder.Entity<SchoolClassCourse>()
+            .Property(scc => scc.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna,
+            // pode variar de acordo com suas necessidades
+            .HasColumnType("int");
+
         // ------------------------------------------------------------------ //
 
         // modelBuilder.Entity<SchoolClassCourse>()
@@ -164,21 +226,32 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Teacher and Course
+        // Configure many-to-many relationship between Student and Course
         // ------------------------------------------------------------------ //
 
-        modelBuilder.Entity<TeacherCourse>()
-            .HasKey(tc => new {tc.TeacherId, tc.CourseId});
+        modelBuilder.Entity<StudentCourse>()
+            .HasKey(sc => new {sc.StudentId, sc.CourseId});
 
-        modelBuilder.Entity<TeacherCourse>()
-            .HasOne(tc => tc.Teacher)
-            .WithMany(t => t.TeacherCourses)
-            .HasForeignKey(tc => tc.TeacherId);
+        modelBuilder.Entity<StudentCourse>()
+            .HasOne(sc => sc.Student)
+            .WithMany(s => s.StudentCourses)
+            .HasForeignKey(sc => sc.StudentId);
 
-        modelBuilder.Entity<TeacherCourse>()
-            .HasOne(tc => tc.Course)
-            .WithMany(c => c.TeacherCourses)
-            .HasForeignKey(tc => tc.CourseId);
+        modelBuilder.Entity<StudentCourse>()
+            .HasOne(sc => sc.Course)
+            .WithMany(c => c.StudentCourses)
+            .HasForeignKey(sc => sc.CourseId);
+
+        // Configurar coluna Id como autoincrementada sem ser chave principal
+        modelBuilder.Entity<StudentCourse>()
+            .Property<int>(sc => sc.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna, pode variar de acordo com suas necessidades
+            .HasColumnType("int");
+
 
         // ------------------------------------------------------------------ //
 
@@ -198,6 +271,49 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
         // ------------------------------------------------------------------ //
         // Configure many-to-many relationship between Teacher and Course
+        // ------------------------------------------------------------------ //
+
+        modelBuilder.Entity<TeacherCourse>()
+            .HasKey(tc => new {tc.TeacherId, tc.CourseId});
+
+        modelBuilder.Entity<TeacherCourse>()
+            .HasOne(tc => tc.Teacher)
+            .WithMany(t => t.TeacherCourses)
+            .HasForeignKey(tc => tc.TeacherId);
+
+        modelBuilder.Entity<TeacherCourse>()
+            .HasOne(tc => tc.Course)
+            .WithMany(c => c.TeacherCourses)
+            .HasForeignKey(tc => tc.CourseId);
+
+
+        // Configurar coluna Id como autoincrementada sem ser chave principal
+        modelBuilder.Entity<TeacherCourse>()
+            .Property(tc => tc.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna, pode variar de acordo com suas necessidades
+            .HasColumnType("int");
+
+
+        // ------------------------------------------------------------------ //
+
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Teacher)
+        //     .WithMany(t => t.TeacherCourses)
+        //     .HasForeignKey(tc => tc.TeacherGuidId);
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Course)
+        //     .WithMany(c => c.TeacherCourses)
+        //     .HasForeignKey(tc => tc.CourseGuidId);
+
+
         // ------------------------------------------------------------------ //
 
 

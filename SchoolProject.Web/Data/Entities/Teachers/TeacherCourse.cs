@@ -10,6 +10,7 @@ public class TeacherCourse : IEntity
 {
     [Required] public required int TeacherId { get; set; }
 
+    [Required]
     [ForeignKey(nameof(TeacherId))]
     public virtual required Teacher Teacher { get; set; }
 
@@ -18,6 +19,7 @@ public class TeacherCourse : IEntity
 
     [Required] public required int CourseId { get; set; }
 
+    [Required]
     [ForeignKey(nameof(CourseId))]
     public virtual required Course Course { get; set; }
 
@@ -26,7 +28,7 @@ public class TeacherCourse : IEntity
 
 
     // [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 

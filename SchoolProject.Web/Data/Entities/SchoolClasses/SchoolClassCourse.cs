@@ -41,7 +41,7 @@ public class SchoolClassCourse : IEntity
 
 
     // [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 

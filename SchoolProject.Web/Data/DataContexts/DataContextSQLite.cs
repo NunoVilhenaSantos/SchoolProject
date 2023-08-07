@@ -11,8 +11,10 @@ using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.DataContexts;
 
+/// <inheritdoc />
 public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 {
+    /// <inheritdoc />
     public DataContextSqLite(DbContextOptions<DataContextSqLite> options) :
         base(options)
     {
@@ -58,6 +60,7 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
 
 
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //
@@ -110,6 +113,36 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between Student and Course
+        // via Enrollment
+        // ------------------------------------------------------------------ //
+
+        modelBuilder.Entity<Enrollment>()
+            .HasKey(e => new {e.StudentId, e.CourseId});
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Student)
+            .WithMany(s => s.Enrollments)
+            .HasForeignKey(e => e.StudentId);
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Course)
+            .WithMany(c => c.Enrollments)
+            .HasForeignKey(e => e.CourseId);
+
+        // Configurar coluna Id como autoincrementada sem ser chave principal
+        modelBuilder.Entity<Enrollment>()
+            .Property(e => e.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna,
+            // pode variar de acordo com suas necessidades
+            .HasColumnType("int");
+
+
+        // ------------------------------------------------------------------ //
         // Configure many-to-many relationship between SchoolClass and Course
         // ------------------------------------------------------------------ //
 
@@ -143,6 +176,53 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship between Student and Course
+        // ------------------------------------------------------------------ //
+
+        modelBuilder.Entity<StudentCourse>()
+            .HasKey(sc => new {sc.StudentId, sc.CourseId});
+
+        modelBuilder.Entity<StudentCourse>()
+            .HasOne(sc => sc.Student)
+            .WithMany(s => s.StudentCourses)
+            .HasForeignKey(sc => sc.StudentId);
+
+        modelBuilder.Entity<StudentCourse>()
+            .HasOne(sc => sc.Course)
+            .WithMany(c => c.StudentCourses)
+            .HasForeignKey(sc => sc.CourseId);
+
+        // // Configurar coluna Id como autoincrementada sem ser chave principal
+        // modelBuilder.Entity<StudentCourse>()
+        //     .Property<int>(sc => sc.Id)
+        //     // Usar a extensão específica para MySQL
+        //     .UseIdentityColumn()
+        //     // Nome da coluna no banco de dados
+        //     .HasColumnName("Id")
+        //     // Tipo de dado da coluna, pode variar de acordo com suas necessidades
+        //     .HasColumnType("int");
+
+
+        // ------------------------------------------------------------------ //
+
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Teacher)
+        //     .WithMany(t => t.TeacherCourses)
+        //     .HasForeignKey(tc => tc.TeacherGuidId);
+        //
+        // modelBuilder.Entity<TeacherCourse>()
+        //     .HasOne(tc => tc.Course)
+        //     .WithMany(c => c.TeacherCourses)
+        //     .HasForeignKey(tc => tc.CourseGuidId);
+
+
+        // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
         // Configure many-to-many relationship between Teacher and Course
         // ------------------------------------------------------------------ //
 
@@ -173,11 +253,6 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
         //     .HasOne(tc => tc.Course)
         //     .WithMany(c => c.TeacherCourses)
         //     .HasForeignKey(tc => tc.CourseGuidId);
-
-
-        // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Teacher and Course
-        // ------------------------------------------------------------------ //
 
 
         // Other configurations...

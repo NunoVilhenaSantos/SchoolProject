@@ -8,11 +8,11 @@ public class UserHelper : IUserHelper
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User?> _userManager;
+    private readonly UserManager<User> _userManager;
 
 
     public UserHelper(
-        UserManager<User?> userManager,
+        UserManager<User> userManager,
         SignInManager<User> signInManager,
         RoleManager<IdentityRole> roleManager
     )

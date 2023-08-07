@@ -68,7 +68,7 @@ public class SeedDbStudentsAndTeachers
         // ------------------------------------------------------------------ //
         var existingUsersList =
             await _dataContextInUse.Users.ToListAsync();
-        _listOfUsersFromDb.ToList();
+        _listOfUsersFromDb = existingUsersList.ToList();
 
         // Fill the existing emails HashSet for efficient email lookups
         ExistingEmailsOfUsersFromDb
@@ -258,16 +258,11 @@ public class SeedDbStudentsAndTeachers
 
 
         // ------------------------------------------------------------------ //
-        // Adding students and teachers it's user to the database
-        // ------------------------------------------------------------------ //
-        // await StoreStudentsOrTeachersWithRoles();
-
-        // ------------------------------------------------------------------ //
         // reading the list of existing users from the database
         // ------------------------------------------------------------------ //
-        var existingUsersList =
-            await _dataContextInUse.Users.ToListAsync();
-        existingUsersList.ToList();
+        // var existingUsersList =
+        //     await _dataContextInUse.Users.ToListAsync();
+        // _listOfUsersFromDb = existingUsersList.ToList();
         await PopulateExistingUsersStudentsAndTeachersFromDb();
 
 
