@@ -9,41 +9,25 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDbSchoolClasses
 {
-    private static Random _random;
+    // private static Random _random;
 
-    private static IUserHelper _userHelper;
-    private static ILogger<SeedDbSchoolClasses> _logger;
+    // private static IUserHelper _userHelper;
+    // private static ILogger<SeedDbSchoolClasses> _logger;
 
-    private static DataContextMsSql _dataContextMsSql;
+    private static DataContextMySql _dataContextInUse;
+    // private static DataContextMsSql _dataContextMsSql;
 
     // Add a private static field to store the existing courses
     private static List<Course> _listOfCoursesFromDb;
     private static List<SchoolClass> _listOfSchoolClassFromDb;
 
 
-    public SeedDbSchoolClasses(
-        IUserHelper userHelper, ILogger<SeedDbSchoolClasses> logger,
-        DataContextMsSql dataContextMsSql
-    )
-    {
-        _logger = logger;
-        _random = new Random();
-        _userHelper = userHelper;
-        _dataContextMsSql = dataContextMsSql;
-    }
-
-
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
-        IUserHelper userHelper,
-        DataContextMsSql dataContextMsSql,
-        ILogger<SeedDbSchoolClasses> logger
+        DataContextMySql dataContextInUse
     )
     {
-        _logger = logger;
-        _random = new Random();
-        _userHelper = userHelper;
-        _dataContextMsSql = dataContextMsSql;
+        _dataContextInUse = dataContextInUse;
     }
 
 
@@ -52,18 +36,18 @@ public class SeedDbSchoolClasses
         Console.WriteLine(
             "Seeding courses and school-classes tables with the courses...");
 
-        SeedDbCoursesList.Initialize(_dataContextMsSql);
+        SeedDbCoursesList.Initialize(_dataContextInUse);
 
         await SeedDbCoursesList.AddingData(user);
 
         // ------------------------------------------------------------------ //
 
         // Get the courses from the database
-        _listOfCoursesFromDb = await _dataContextMsSql.Courses.ToListAsync();
+        _listOfCoursesFromDb = await _dataContextInUse.Courses.ToListAsync();
 
         // Get the school-classes from the database
         _listOfSchoolClassFromDb =
-            await _dataContextMsSql.SchoolClasses.ToListAsync();
+            await _dataContextInUse.SchoolClasses.ToListAsync();
 
         Console.WriteLine("debug zone...");
 
@@ -403,8 +387,8 @@ public class SeedDbSchoolClasses
                 Courses = courses
             };
 
-            await _dataContextMsSql.SchoolClasses.AddAsync(schoolClass);
-            await _dataContextMsSql.SaveChangesAsync();
+            await _dataContextInUse.SchoolClasses.AddAsync(schoolClass);
+            await _dataContextInUse.SaveChangesAsync();
         }
     }
 }

@@ -22,9 +22,21 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     {
         // Enable lazy-loading EF 6.x
         // Configuration.LazyLoadingEnabled = true;
-        
+
         // Enable lazy-loading EF 7.x
         // ChangeTracker.LazyLoadingEnabled = true;
+    }
+
+
+    /// <inheritdoc />
+    protected DataContextMsSql(DbContextOptions<DcMsSqlLocal> options)
+    {
+    }
+
+
+    /// <inheritdoc />
+    protected DataContextMsSql(DbContextOptions<DcMsSqlOnline> options)
+    {
     }
 
 

@@ -42,8 +42,8 @@ static string GenerateRandomString(
     }
 
     var randomString = sb.ToString();
-    Console.WriteLine(
-        randomString); // Print the generated string to the console
+    // Print the generated string to the console
+    Console.WriteLine(randomString);
     return randomString;
 }
 
@@ -56,12 +56,16 @@ static string GetServerHostNameFromConnectionString(string connectionString)
     foreach (var part in parts)
         if (part.StartsWith("Data Source="))
             return part.Substring("Data Source=".Length);
+
         else if (part.StartsWith("workstation id="))
             return part.Substring("workstation id=".Length);
+
         else if (part.StartsWith("Server="))
             return part.Substring("Server=".Length);
+
         else if (part.StartsWith("Host="))
             return part.Substring("Host=".Length);
+
 
     throw new ArgumentException(
         "Connection String inválida. Nome do servidor não encontrado.");
@@ -217,6 +221,9 @@ static void StopProgramTimer()
 }
 
 
+// -------------------------------------------------------------------------- //
+
+
 StartProgramTimer();
 
 
@@ -236,13 +243,23 @@ builder.Services.AddAzureClients(clientBuilder =>
 });
 
 
+// -------------------------------------------------------------------------- //
+
+
+// -------------------------------------------------------------------------- //
 // Configuring database connections using DbContext for MSSQL, MySQL, and SQLite.
+// -------------------------------------------------------------------------- //
 builder.Services.AddDbContext<DataContextMsSql>(
     cfg =>
     {
         cfg.UseSqlServer(
             builder.Configuration.GetConnectionString(
-                "SchoolProject-Somee"), options =>
+                builder.Environment.IsDevelopment()
+                    // Usar a Connection String local durante o desenvolvimento
+                    ? "SP-MSSql-Somee"
+                    // Usar a Connection String online ao publicar
+                    : "SP-SmarterASP-MSSQL") ?? string.Empty,
+            options =>
             {
                 options.EnableRetryOnFailure();
                 options.MigrationsAssembly("SchoolProject.Web");
@@ -251,25 +268,37 @@ builder.Services.AddDbContext<DataContextMsSql>(
     });
 
 
+// -------------------------------------------------------------------------- //
+
 builder.Services.AddDbContext<DataContextMySql>(
     cfg =>
     {
         cfg.UseMySQL(
             builder.Configuration.GetConnectionString(
-                "SchoolProject-MySQL") ?? string.Empty,
+                builder.Environment.IsDevelopment()
+                    // Usar a Connection String local durante o desenvolvimento
+                    ? "SP-MySQL-Local"
+                    // Usar a Connection String online ao publicar
+                    : "SP-SmarterASP-MySQL") ?? string.Empty,
             options =>
             {
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
             });
     });
+
+// -------------------------------------------------------------------------- //
 
 builder.Services.AddDbContext<DataContextSqLite>(
     cfg =>
     {
         cfg.UseSqlite(
             builder.Configuration.GetConnectionString(
-                "SchoolProject-SQLite"),
+                builder.Environment.IsDevelopment()
+                    // Usar a Connection String local durante o desenvolvimento
+                    ? "SP-SQLite-Local"
+                    // Usar a Connection String online ao publicar
+                    : "SP-SQLite-Online") ?? string.Empty,
             options =>
             {
                 options.MigrationsAssembly("SchoolProject.Web");
@@ -277,6 +306,7 @@ builder.Services.AddDbContext<DataContextSqLite>(
             });
     });
 
+// -------------------------------------------------------------------------- //
 
 // Configure Identity service with user settings,
 // password settings, and token settings.
@@ -570,13 +600,14 @@ builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 // Add seeding for the database.
 // builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped<SeedDb>();
-builder.Services.AddScoped<SeedDbUsers>();
-builder.Services.AddScoped<SeedDbStudentsAndTeachers>();
-builder.Services.AddScoped<SeedDbSchoolClasses>();
 
-builder.Services.AddScoped<SeedDbTeachersWithCourses>();
-builder.Services.AddScoped<SeedDbSchoolClassesWithCourses>();
-builder.Services.AddScoped<SeedDbStudentsWithSchoolClasses>();
+// builder.Services.AddScoped<SeedDbUsers>();
+// builder.Services.AddScoped<SeedDbStudentsAndTeachers>();
+// builder.Services.AddScoped<SeedDbSchoolClasses>();
+
+// builder.Services.AddScoped<SeedDbTeachersWithCourses>();
+// builder.Services.AddScoped<SeedDbSchoolClassesWithCourses>();
+// builder.Services.AddScoped<SeedDbStudentsWithSchoolClasses>();
 
 
 // builder.Services.AddScoped<SeedDbSchoolClassStudents>();
@@ -591,11 +622,21 @@ builder.Services.AddScoped<SeedDbStudentsWithSchoolClasses>();
 var serverHostName =
     GetServerHostNameFromConnectionString(
         builder.Configuration.GetConnectionString(
-            "SchoolProject-Somee"));
+            "SP-MSSql-Somee"));
+
 
 // Verifica se o servidor está disponível
 GetServerHostNamePing(serverHostName);
 
+
+// if (builder.Environment.IsDevelopment())
+// {
+//     builder.Configuration.AddJsonFile("appsettings.Development.json");
+// }
+// else
+// {
+//     builder.Configuration.AddJsonFile("appsettings.json");
+// }
 
 // -------------------------------------------------------------------------- //
 
@@ -603,7 +644,8 @@ GetServerHostNamePing(serverHostName);
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
-// ---------------- //
+
+// ------------------- //
 await RunSeeding(app);
 
 // Exception handling and HTTPS redirection for non-development environments.

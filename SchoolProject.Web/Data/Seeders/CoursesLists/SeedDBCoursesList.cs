@@ -9,18 +9,16 @@ namespace SchoolProject.Web.Data.Seeders.CoursesLists;
 public class SeedDbCoursesList
 {
     private static User _user;
-    private static Random _random;
+    // private static Random _random;
 
     // private static IUserHelper _userHelper;
     private static ILogger<SeedDbCoursesList> _logger;
 
-    private static DataContextMsSql _dataContextMsSql;
+    // private static DataContextMsSql _dataContextMsSql;
+    private static DataContextMySql _dataContextInUse;
 
     private static readonly Dictionary<string, (string, int, double)>
         _listOfCoursesToAdd = new();
-
-    // private static Dictionary<string, (string, int, double)>
-    //     _listOfCoursesFromDb = new();
 
 
     // Disciplinas comuns da area de informática
@@ -107,10 +105,10 @@ public class SeedDbCoursesList
         };
 
 
-    public static void Initialize(DataContextMsSql dataContextMsSql)
+    public static void Initialize(DataContextMySql dataContextInUse)
     {
         //_user = user;
-        _dataContextMsSql = dataContextMsSql;
+        _dataContextInUse = dataContextInUse;
     }
 
 
@@ -421,7 +419,7 @@ public class SeedDbCoursesList
     {
         // Get the list of existing course codes from the database
         var existingCourseCodes =
-            await _dataContextMsSql.Courses.Select(c => c.Code).ToListAsync();
+            await _dataContextInUse.Courses.Select(c => c.Code).ToListAsync();
 
 
         // Filter out the courses that are already in the database
@@ -446,8 +444,8 @@ public class SeedDbCoursesList
 
 
         // Save the missing courses to the database
-        await _dataContextMsSql.Courses.AddRangeAsync(missingCourses);
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContextInUse.Courses.AddRangeAsync(missingCourses);
+        await _dataContextInUse.SaveChangesAsync();
     }
 
 
@@ -457,7 +455,7 @@ public class SeedDbCoursesList
     {
         // Filter out the courses that are already in the database and also present in the dictionary
         var existingCourses =
-            await _dataContextMsSql.Courses.AsAsyncEnumerable()
+            await _dataContextInUse.Courses.AsAsyncEnumerable()
                 .Where(course => mergedDictionary.ContainsKey(course.Code))
                 .ToListAsync();
 

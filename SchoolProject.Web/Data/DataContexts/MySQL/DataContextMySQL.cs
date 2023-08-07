@@ -13,7 +13,22 @@ namespace SchoolProject.Web.Data.DataContexts;
 
 public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 {
+    /// <inheritdoc />
     public DataContextMySql(DbContextOptions<DataContextMySql> options) :
+        base(options)
+    {
+    }
+
+
+    /// <inheritdoc />
+    protected DataContextMySql(DbContextOptions<DCMySqlOnline> options) :
+        base(options)
+    {
+    }
+
+
+    /// <inheritdoc />
+    protected DataContextMySql(DbContextOptions<DCMySqlLocal> options) :
         base(options)
     {
     }

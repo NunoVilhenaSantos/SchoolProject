@@ -9,33 +9,27 @@ namespace SchoolProject.Web.Data.Seeders;
 /// <summary>
 ///    This class is used to seed the database with some initial data.
 /// </summary>
-public class SeedDbSchoolClassesWithCourses
+public static class SeedDbSchoolClassesWithCourses
 {
-    private static DataContextMsSql _dataContextMsSql;
-
     private static List<Course> _listOfCoursesToAdd = new();
     private static List<SchoolClass> _listOfSchoolClassesToAdd = new();
 
 
-    public static void Initialize(DataContextMsSql dataContextMsSql)
-    {
-        _dataContextMsSql = dataContextMsSql;
-    }
-
-
     // Your existing code for fetching existing school classes and courses
-    public static async Task AddingData(
-        DataContextMsSql dataContextMsSql, User user)
+    public static async Task AddingData(User user,
+        // DataContextMsSql dataContextInUse, 
+        DataContextMySql dataContextInUse
+    )
     {
         Console.WriteLine("debug zone...");
 
 
         // ------------------------------------------------------------------ //
         var existingCourses =
-            await dataContextMsSql.Courses.ToListAsync();
+            await dataContextInUse.Courses.ToListAsync();
 
         var existingSchoolClasses =
-            await dataContextMsSql.SchoolClasses
+            await dataContextInUse.SchoolClasses
                 // To Ensure Courses are loaded for each SchoolClass
                 .Include(sc => sc.Courses)
                 .ToListAsync();
@@ -53,20 +47,19 @@ public class SeedDbSchoolClassesWithCourses
             if (schoolClass.Courses != null && schoolClass.Courses.Any())
             {
                 // Loop through each course associated with the school class
-                foreach (var course in schoolClass.Courses)
+                foreach (var schoolClassCourse in
+                         schoolClass.Courses.Select(
+                             course => new SchoolClassCourse
+                             {
+                                 SchoolClassId = schoolClass.Id,
+                                 SchoolClass = schoolClass,
+                                 CourseId = course.Id,
+                                 Course = course,
+                                 CreatedBy = user,
+                             }))
                 {
-                    // Create a new SchoolClassCourse to represent the association
-                    var schoolClassCourse = new SchoolClassCourse
-                    {
-                        SchoolClassId = schoolClass.Id,
-                        SchoolClass = schoolClass,
-                        CourseId = course.Id,
-                        Course = course,
-                        CreatedBy = user,
-                    };
-
                     // Add the association to the SchoolClass's SchoolClassCourses collection
-                    dataContextMsSql.SchoolClassCourses.Add(schoolClassCourse);
+                    dataContextInUse.SchoolClassCourses.Add(schoolClassCourse);
                 }
             }
 
@@ -74,7 +67,7 @@ public class SeedDbSchoolClassesWithCourses
             Console.WriteLine("debug zone...", Color.Red);
 
             // Save the changes to the database
-            await _dataContextMsSql.SaveChangesAsync();
+            await dataContextInUse.SaveChangesAsync();
         }
 
 

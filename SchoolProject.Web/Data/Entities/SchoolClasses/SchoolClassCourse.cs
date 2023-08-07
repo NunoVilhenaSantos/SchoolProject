@@ -60,7 +60,15 @@ public class SchoolClassCourse : IEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
+
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
+
+    // Propriedade de navegação
+    // Especifique o nome da coluna da chave estrangeira
+    [DisplayName("Created By")]
+    [ForeignKey(nameof(CreatedById))]
+    public virtual required User CreatedBy { get; set; }
 
 
     // [Required]
@@ -69,5 +77,13 @@ public class SchoolClassCourse : IEntity
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Updated By User Id")] public string UpdatedById { get; set; }
+
+    // Propriedade de navegação
+    // Especifique o nome da coluna da chave estrangeira
+    [DisplayName("Updated By")]
+    [ForeignKey(nameof(UpdatedById))]
+    public virtual User? UpdatedBy { get; set; }
 }

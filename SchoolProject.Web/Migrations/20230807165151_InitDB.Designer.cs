@@ -12,7 +12,7 @@ using SchoolProject.Web.Data.DataContexts;
 namespace SchoolProject.Web.Migrations
 {
     [DbContext(typeof(DataContextMsSql))]
-    [Migration("20230806175003_InitDB")]
+    [Migration("20230807165151_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />
@@ -581,6 +581,7 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Id")
@@ -598,6 +599,7 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("WasDeleted")
@@ -915,6 +917,7 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedById")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Id")
@@ -932,6 +935,7 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedById")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("WasDeleted")
@@ -1268,7 +1272,8 @@ namespace SchoolProject.Web.Migrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", "SchoolClass")
                         .WithMany("SchoolClassCourses")
@@ -1279,7 +1284,8 @@ namespace SchoolProject.Web.Migrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Course");
 
@@ -1464,7 +1470,8 @@ namespace SchoolProject.Web.Migrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Teachers.Teacher", "Teacher")
                         .WithMany("TeacherCourses")
@@ -1475,7 +1482,8 @@ namespace SchoolProject.Web.Migrations
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Course");
 

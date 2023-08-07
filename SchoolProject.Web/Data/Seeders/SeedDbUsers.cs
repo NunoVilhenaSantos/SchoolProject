@@ -8,11 +8,11 @@ namespace SchoolProject.Web.Data.Seeders;
 public class SeedDbUsers
 {
     // Add a private field to hold the IUserHelper instance
-    private static IUserHelper _userHelper;
+    private static IUserHelper? _userHelper;
     private static ILogger<SeedDbUsers> _logger;
 
     public SeedDbUsers(
-        IUserHelper userHelper, ILogger<SeedDbUsers> logger
+        IUserHelper? userHelper, ILogger<SeedDbUsers> logger
     )
     {
         _logger = logger;
@@ -22,7 +22,7 @@ public class SeedDbUsers
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
-        IUserHelper userHelper, ILogger<SeedDbUsers> logger
+        IUserHelper? userHelper, ILogger<SeedDbUsers> logger
     )
     {
         _logger = logger;

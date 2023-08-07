@@ -7,22 +7,27 @@ namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDbStudentsWithSchoolClasses
 {
-    private static DataContextMsSql _dataContextMsSql;
+    // private static DataContextMsSql _dataContextMsSql;
+    // private static DataContextMsSql _dataContextInUse;
+    private static DataContextMySql _dataContextInUse;
+    
+    
+    // public static void Initialize(DataContextMsSql dataContextMsSql)
+    // {
+    //     _dataContextMsSql = dataContextMsSql;
+    // }
 
-    public static void Initialize(DataContextMsSql dataContextMsSql)
+    public static async Task AddingData(DataContextMySql dataContextInUse)
     {
-        _dataContextMsSql = dataContextMsSql;
-    }
-
-    public static async Task AddingData(User user)
-    {
+        var _dataContextInUse = dataContextInUse;
+        
         // Get all school classes from the database
         var schoolClasses =
-            await _dataContextMsSql.SchoolClasses.ToListAsync();
+            await dataContextInUse.SchoolClasses.ToListAsync();
 
         // Get all students from the database
         var students =
-            await _dataContextMsSql.Students.ToListAsync();
+            await dataContextInUse.Students.ToListAsync();
 
         // Verifica se jhá dados para popular a lista de schoolclasses dos estudantes
         if (!HasExistingData())
@@ -63,14 +68,14 @@ public class SeedDbStudentsWithSchoolClasses
 
 
         // Save the changes to the database
-        await _dataContextMsSql.SaveChangesAsync();
+        await dataContextInUse.SaveChangesAsync();
     }
 
 
     private static bool HasExistingData()
     {
-        var studentsCount = _dataContextMsSql.Students.Count();
-        var schoolClassesCount = _dataContextMsSql.SchoolClasses.Count();
+        var studentsCount = _dataContextInUse.Students.Count();
+        var schoolClassesCount = _dataContextInUse.SchoolClasses.Count();
 
         // Verifica se existem registros nas tabelas Students e SchoolClasses
         return studentsCount > 0 && schoolClassesCount > 0;

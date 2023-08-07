@@ -13,49 +13,32 @@ public class SeedDbStudentsAndTeachers
 {
     private static Random _random;
     private static IUserHelper _userHelper;
-    private static ILogger<SeedDbStudentsAndTeachers> _logger;
-    private static DataContextMsSql _dataContextMsSql;
 
+    private static DataContextMySql _dataContextInUse;
+    // private static DataContextMsSql _dataContextInUse;
 
-    private static List<User> _listOfUsersFromDb;
 
     private static readonly HashSet<string>
-        _existingEmailsOfUsersFromDb = new();
+        ExistingEmailsOfUsersFromDb = new();
 
-    private static List<Student> _listOfStudentsFromDb;
-    private static List<Teacher> _listOfTeachersFromDb;
+    private static List<User>? _listOfUsersFromDb;
+    private static List<Student>? _listOfStudentsFromDb;
+    private static List<Teacher>? _listOfTeachersFromDb;
 
 
-    private static readonly List<User?> _listOfUsersToAdd = new();
-
-    private static readonly List<Student> _listOfStudentsToAdd = new();
-    private static readonly List<Teacher> _listOfTeachersToAdd = new();
-
-    public SeedDbStudentsAndTeachers(
-        // User user,
-        IUserHelper userHelper,
-        DataContextMsSql dataContextMsSql,
-        ILogger<SeedDbStudentsAndTeachers> logger
-    )
-    {
-        _logger = logger;
-        _random = new Random();
-        _userHelper = userHelper;
-        _dataContextMsSql = dataContextMsSql;
-    }
+    private static readonly List<User> ListOfUsersToAdd = new();
+    private static readonly List<Student> ListOfStudentsToAdd = new();
+    private static readonly List<Teacher> ListOfTeachersToAdd = new();
 
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
-        IUserHelper userHelper,
-        DataContextMsSql dataContextMssql,
-        ILogger<SeedDbStudentsAndTeachers> logger
+        IUserHelper userHelper, DataContextMySql dataContext
     )
     {
-        _logger = logger;
         _random = new Random();
         _userHelper = userHelper;
-        _dataContextMsSql = dataContextMssql;
+        _dataContextInUse = dataContext;
     }
 
 
@@ -69,11 +52,11 @@ public class SeedDbStudentsAndTeachers
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with students...");
-        await GenerateStudentsNames(user, _listOfStudentsFromDb);
+        await GenerateStudentsNames(user);
 
         Console.WriteLine(
             "Seeding the users table with teachers...");
-        await GenerateTeachersNames(user, _listOfTeachersFromDb);
+        await GenerateTeachersNames(user);
     }
 
 
@@ -84,23 +67,23 @@ public class SeedDbStudentsAndTeachers
 
         // ------------------------------------------------------------------ //
         var existingUsersList =
-            await _dataContextMsSql.Users.ToListAsync();
-        _listOfUsersFromDb = existingUsersList.ToList();
+            await _dataContextInUse.Users.ToListAsync();
+        _listOfUsersFromDb.ToList();
 
         // Fill the existing emails HashSet for efficient email lookups
-        _existingEmailsOfUsersFromDb
-            .UnionWith(existingUsersList.Select(u => u.Email));
+        ExistingEmailsOfUsersFromDb
+            .UnionWith(_listOfUsersFromDb.Select(u => u.Email));
 
 
         // ------------------------------------------------------------------ //
         var existingStudents =
-            await _dataContextMsSql.Students.ToListAsync();
+            await _dataContextInUse.Students.ToListAsync();
         _listOfStudentsFromDb = existingStudents.ToList();
 
 
         // ------------------------------------------------------------------ //
         var existingTeachers =
-            await _dataContextMsSql.Teachers.ToListAsync();
+            await _dataContextInUse.Teachers.ToListAsync();
         _listOfTeachersFromDb = existingTeachers.ToList();
 
 
@@ -108,8 +91,7 @@ public class SeedDbStudentsAndTeachers
     }
 
 
-    private static async Task GenerateStudentsNames(
-        User user, IEnumerable<Student> existingStudentsList)
+    private static async Task GenerateStudentsNames(User user)
     {
         var studentNames = new List<string>
         {
@@ -133,7 +115,7 @@ public class SeedDbStudentsAndTeachers
 
         var studentsToAdd = studentNames
             .Except(
-                existingStudentsList
+                _listOfStudentsFromDb
                     .Select(s => s.FirstName + " " + s.LastName))
             .ToList();
 
@@ -142,8 +124,7 @@ public class SeedDbStudentsAndTeachers
     }
 
 
-    private static async Task GenerateTeachersNames(
-        User user, IEnumerable<Teacher> existingTeachersList)
+    private static async Task GenerateTeachersNames(User user)
     {
         var teacherNames = new List<string>
         {
@@ -170,7 +151,7 @@ public class SeedDbStudentsAndTeachers
 
         var teachersToAdd = teacherNames
             .Except(
-                existingTeachersList
+                _listOfTeachersFromDb
                     .Select(t => t.FirstName + " " + t.LastName))
             .ToList();
 
@@ -184,20 +165,20 @@ public class SeedDbStudentsAndTeachers
         User user, List<string> namesToAdd, string userRole)
     {
         var city =
-            await _dataContextMsSql.Cities
+            await _dataContextInUse.Cities
                 .FirstOrDefaultAsync(c => c.Name == "Porto");
         var country =
-            await _dataContextMsSql.Countries
+            await _dataContextInUse.Countries
                 .FirstOrDefaultAsync(c => c.Name == "Portugal");
         var countryOfNationality =
-            await _dataContextMsSql.Countries
+            await _dataContextInUse.Countries
                 .Include(c => c.Nationality)
                 .FirstOrDefaultAsync(c => c.Nationality.Name == "French");
         var birthplace =
-            await _dataContextMsSql.Countries
+            await _dataContextInUse.Countries
                 .FirstOrDefaultAsync(c => c.Name == "France");
         var gender =
-            await _dataContextMsSql.Genders
+            await _dataContextInUse.Genders
                 .FirstOrDefaultAsync(g => g.Name == "Female");
 
 
@@ -235,7 +216,7 @@ public class SeedDbStudentsAndTeachers
                     user, city, country, countryOfNationality, birthplace,
                     gender, "Student");
 
-                _listOfStudentsToAdd.Add(student);
+                ListOfStudentsToAdd.Add(student);
 
                 Console.WriteLine(
                     $"Created {userRole.ToLower()}: {firstName} {lastName}");
@@ -251,7 +232,7 @@ public class SeedDbStudentsAndTeachers
                     user, city, country, countryOfNationality, birthplace,
                     gender, "Teacher");
 
-                _listOfTeachersToAdd.Add(teacher);
+                ListOfTeachersToAdd.Add(teacher);
             }
             else
             {
@@ -285,8 +266,8 @@ public class SeedDbStudentsAndTeachers
         // reading the list of existing users from the database
         // ------------------------------------------------------------------ //
         var existingUsersList =
-            await _dataContextMsSql.Users.ToListAsync();
-        _listOfUsersFromDb = existingUsersList.ToList();
+            await _dataContextInUse.Users.ToListAsync();
+        existingUsersList.ToList();
         await PopulateExistingUsersStudentsAndTeachersFromDb();
 
 
@@ -298,14 +279,15 @@ public class SeedDbStudentsAndTeachers
         // TODO: add students or teachers to the database
         if (userRole.Equals(
                 "Student", StringComparison.OrdinalIgnoreCase))
-            await _dataContextMsSql.Students
-                .AddRangeAsync(_listOfStudentsToAdd);
+            await _dataContextInUse.Students
+                .AddRangeAsync(ListOfStudentsToAdd);
+
         else if (userRole.Equals(
                      "Teacher", StringComparison.OrdinalIgnoreCase))
-            await _dataContextMsSql.Teachers
-                .AddRangeAsync(_listOfTeachersToAdd);
+            await _dataContextInUse.Teachers
+                .AddRangeAsync(ListOfTeachersToAdd);
 
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContextInUse.SaveChangesAsync();
     }
 
 
@@ -333,7 +315,7 @@ public class SeedDbStudentsAndTeachers
 
         // ------------------------------------------------------------------ //
         // TODO: mudei-me para aqui
-        _listOfUsersToAdd.Add(newUser);
+        ListOfUsersToAdd.Add(newUser);
 
 
         try
@@ -451,39 +433,39 @@ public class SeedDbStudentsAndTeachers
     {
         // Extract the emails from the lists of students and teachers
         var studentEmails =
-            _listOfStudentsToAdd.Select(s => s.Email).ToList();
+            ListOfStudentsToAdd.Select(s => s.Email).ToList();
         var teacherEmails =
-            _listOfTeachersToAdd.Select(t => t.Email).ToList();
+            ListOfTeachersToAdd.Select(t => t.Email).ToList();
 
         Console.WriteLine("Debug zone:");
 
         // Add students to the database and assign student role
-        foreach (var studentUser in _listOfUsersToAdd)
+        foreach (var studentUser in
+                 ListOfUsersToAdd.Where(studentUser =>
+                     !ExistingEmailsOfUsersFromDb.Contains(studentUser.Email)))
         {
-            if (_existingEmailsOfUsersFromDb.Contains(studentUser.Email))
-                continue;
-
             var result =
                 await _userHelper.AddUserAsync(studentUser, password);
+
             if (result.Succeeded)
                 await _userHelper.AddUserToRoleAsync(studentUser,
                     "Student");
         }
 
         // Add teachers to the database and assign teacher role
-        foreach (var teacherUser in _listOfUsersToAdd)
+        foreach (var teacherUser in
+                 ListOfUsersToAdd.Where(teacherUser =>
+                     !ExistingEmailsOfUsersFromDb.Contains(teacherUser.Email)))
         {
-            if (_existingEmailsOfUsersFromDb.Contains(teacherUser.Email))
-                continue;
-
             var result =
                 await _userHelper.AddUserAsync(teacherUser, password);
+
             if (result.Succeeded)
                 await _userHelper.AddUserToRoleAsync(teacherUser,
                     "Teacher");
         }
 
         // Save the changes to the student or teacher entity
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContextInUse.SaveChangesAsync();
     }
 }

@@ -1,17 +1,26 @@
 using System.Diagnostics;
 using System.Drawing;
+using System.Transactions;
 using Microsoft.AspNetCore.Identity;
+using MySql.EntityFrameworkCore.Extensions;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.EntitiesOthers;
-using SchoolProject.Web.Data.Seeders.CoursesLists;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 
 public class SeedDb
 {
+    private readonly DataContextMySql _dataContextInUse;
+
+    // private readonly DcMsSqlLocal _msSqlLocal;
+    // private readonly DCMySqlLocal _mySqlLocal;
+
+    // private readonly DcMsSqlOnline _msSqlOnline;
+    // private readonly DCMySqlOnline _mySqlOnline;
+
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
@@ -19,67 +28,76 @@ public class SeedDb
 
     private readonly IWebHostEnvironment _hostingEnvironment;
 
-    private readonly ILogger<SeedDb> _logger;
-    private readonly ILogger<SeedDbCoursesList> _loggerSeedDbCs;
+    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
     private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
-    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
-
-
-    // private readonly SeedDbUsers _seedDbUsers;
-    // private readonly SeedDbStudentsAndTeachers _seedDbPersons;
-    // private readonly SeedDbSchoolClasses _seedDbSchoolClasses;
-
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     public SeedDb(
-        ILogger<SeedDb> logger,
+        // ILogger<SeedDb> logger,
         ILogger<SeedDbUsers> loggerSeedDbUsers,
+        ILogger<SeedDbSchoolClasses> loggerSeedDbSCs,
         ILogger<SeedDbStudentsAndTeachers> loggerSeedDbSTs,
         IUserHelper userHelper,
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
-        SeedDbUsers seedDbUsers,
-        SeedDbStudentsAndTeachers seedDbStudentsAndTeachers,
-        SeedDbSchoolClasses seedDbSchoolClasses,
         IWebHostEnvironment hostingEnvironment,
+        IConfiguration configuration,
         DataContextMsSql dataContextMsSql,
         DataContextMySql dataContextMySql,
-        DataContextSqLite dataContextSqLite
+        DataContextSqLite dataContextSqLite,
+        DataContextMySql dataContextInUse
+        // DcMsSqlLocal msSqlLocal, DcMsSqlOnline msSqlOnline,
+        // DCMySqlLocal mySqlLocal, DCMySqlOnline mySqlOnline
     )
     {
-        _logger = logger;
-        _loggerSeedDbUsers = loggerSeedDbUsers;
+        _loggerSeedDbSCs = loggerSeedDbSCs;
         _loggerSeedDbSTs = loggerSeedDbSTs;
+        _loggerSeedDbUsers = loggerSeedDbUsers;
 
         _userHelper = userHelper;
         _userManager = userManager;
         _roleManager = roleManager;
-
-        // _seedDbUsers = seedDbUsers;
-        // _seedDbPersons = seedDbStudentsAndTeachers;
-        // _seedDbSchoolClasses = seedDbSchoolClasses;
 
         _hostingEnvironment = hostingEnvironment;
 
         _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
         _dataContextSqLite = dataContextSqLite;
+        _dataContextInUse = dataContextInUse;
+        // _msSqlLocal = msSqlLocal;
+        // _msSqlOnline = msSqlOnline;
+        // _mySqlLocal = mySqlLocal;
+        // _mySqlOnline = mySqlOnline;
     }
 
 
     public async Task SeedAsync()
     {
         // ------------------------------------------------------------------ //
+        // _dataContextInUse = _dataContextMySql;
+
+        // ------------------------------------------------------------------ //
         // verify if the database exists and if not create it
         // ------------------------------------------------------------------ //
         await _dataContextMsSql.Database.MigrateAsync();
+        // await _msSqlLocal.Database.MigrateAsync();
+        // await _msSqlOnline.Database.MigrateAsync();
+
         await _dataContextMySql.Database.MigrateAsync();
+        // await _mySqlLocal.Database.MigrateAsync();
+        // await _mySqlOnline.Database.MigrateAsync();
+
         await _dataContextSqLite.Database.MigrateAsync();
+
+        await _dataContextInUse.Database.MigrateAsync();
+
+
+        // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //
@@ -94,24 +112,27 @@ public class SeedDb
         // adding roles for all users in the system
         // ------------------------------------------------------------------ //
         await SeedingRolesForUsers();
-
+        await _dataContextInUse.SaveChangesAsync();
 
         // ------------------------------------------------------------------ //
         // adding the super users
         // ------------------------------------------------------------------ //
         await SeedingDataSuperUsers();
+        await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding the admin user
         // ------------------------------------------------------------------ //
         await SeedingDataAdminUsers();
+        await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding the Functionary user
         // ------------------------------------------------------------------ //
         await SeedingDataFunctionaryUsers();
+        await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
@@ -126,38 +147,40 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         Debug.Assert(user != null, nameof(user) + " != null");
         await AddCountriesWithCitiesAndNationalities(user);
+        await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding genres to the database
         // ------------------------------------------------------------------ //
         await SeedingDataGenders(user);
+        await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
-        // Em vez disso, crie uma instância da classe SeedDbStudentsAndTeachers
-        SeedDbStudentsAndTeachers.Initialize(
-            _userHelper, _dataContextMsSql, _loggerSeedDbSTs);
+        SeedDbStudentsAndTeachers.Initialize(_userHelper, _dataContextInUse);
         await SeedDbStudentsAndTeachers.AddingData(user);
+        await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
-        SeedDbSchoolClasses.Initialize(
-            _userHelper, _dataContextMsSql, _loggerSeedDbSCs);
+        SeedDbSchoolClasses.Initialize(_dataContextInUse);
         await SeedDbSchoolClasses.AddingData(user);
+        await _dataContextInUse.SaveChangesAsync();
 
 
         // TODO: estou aqui a tentar adicionar os cursos aos professores
         // ------------------------------------------------------------------ //
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
-        SeedDbTeachersWithCourses.Initialize(_dataContextMsSql);
-        await SeedDbTeachersWithCourses.AddingData(_dataContextMsSql, user);
-        
+        // SeedDbTeachersWithCourses.Initialize(_dataContextInUse);
+        await SeedDbTeachersWithCourses.AddingData(_dataContextInUse, user);
+        await _dataContextInUse.SaveChangesAsync();
+
         Console.WriteLine("Debug point.", Color.Red);
 
 
@@ -165,9 +188,10 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
-        SeedDbSchoolClassesWithCourses.Initialize(_dataContextMsSql);
-        await SeedDbSchoolClassesWithCourses.AddingData(
-            _dataContextMsSql, user);
+        // SeedDbSchoolClassesWithCourses.Initialize(_dataContextInUse);
+        await SeedDbSchoolClassesWithCourses.AddingData(user,
+            _dataContextInUse);
+        await _dataContextInUse.SaveChangesAsync();
 
         Console.WriteLine("Debug point.", Color.Red);
 
@@ -176,8 +200,9 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // adding students to school-classes into the database
         // ------------------------------------------------------------------ //
-        SeedDbStudentsWithSchoolClasses.Initialize(_dataContextMsSql);
-        await SeedDbStudentsWithSchoolClasses.AddingData(user);
+        // SeedDbStudentsWithSchoolClasses.Initialize(_dataContextInUse);
+        await SeedDbStudentsWithSchoolClasses.AddingData(_dataContextInUse);
+        await _dataContextInUse.SaveChangesAsync();
 
         Console.WriteLine("Debug point.", Color.Red);
 
@@ -201,7 +226,38 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // saving all the changes to the database
         // ------------------------------------------------------------------ //
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContextInUse.SaveChangesAsync();
+
+        // ------------------------------------------------------------------ //
+        try
+        {
+            // Realiza as transações necessárias e
+            // salva as alterações no banco de dados
+            await _dataContextInUse.SaveChangesAsync();
+
+            // Enquanto houver uma transação ativa,
+            // aguarde e verifique novamente
+            while (_dataContextInUse.Database.GetEnlistedTransaction() != null)
+            {
+                // Aguardar um período de tempo
+                // Exemplo: 5 segundos
+                await Task.Delay(TimeSpan.FromSeconds(5));
+            }
+
+            // Todas as transações estão concluídas,
+            // então chama Dispose para liberar o contexto
+            await _dataContextInUse.DisposeAsync();
+        }
+        catch (Exception ex)
+        {
+            // Lida com exceções, se necessário
+        }
+        finally
+        {
+            // Se você não quiser mais que o contexto seja reutilizado,
+            // chame Dispose novamente
+            await _dataContextInUse.DisposeAsync();
+        }
     }
 
 
@@ -215,7 +271,7 @@ public class SeedDb
         };
 
         var existingGenders =
-            await _dataContextMsSql.Genders
+            await _dataContextInUse.Genders
                 .Where(g => gendersToAdd.Contains(g.Name))
                 .Select(g => g.Name)
                 .ToListAsync();
@@ -233,8 +289,8 @@ public class SeedDb
                 CreatedBy = user
             }).ToList();
 
-        await _dataContextMsSql.Genders.AddRangeAsync(newGender);
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContextInUse.Genders.AddRangeAsync(newGender);
+        await _dataContextInUse.SaveChangesAsync();
     }
 
 
@@ -316,19 +372,19 @@ public class SeedDb
 
         foreach (var role in rolesToAdd) await CreateRoleAsync(role);
 
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContextInUse.SaveChangesAsync();
     }
 
 
-    private async Task<IdentityResult> CreateRoleAsync(string role)
+    private async Task CreateRoleAsync(string role)
     {
-        return await _roleManager.CreateAsync(new IdentityRole(role));
+        await _roleManager.CreateAsync(new IdentityRole(role));
     }
 
 
     private async Task AddCountriesWithCitiesAndNationalities(User createdBy)
     {
-        if (await _dataContextMsSql.Countries.AnyAsync()) return;
+        if (await _dataContextInUse.Countries.AnyAsync()) return;
 
         var countryCityData = new Dictionary<string, List<string>>
         {
@@ -408,7 +464,7 @@ public class SeedDb
             var countryName = countryEntry.Key;
             var cityNames = countryEntry.Value;
 
-            if (await _dataContextMsSql.Countries
+            if (await _dataContextInUse.Countries
                     .AnyAsync(c => c.Name == countryName))
                 continue;
 
@@ -430,10 +486,8 @@ public class SeedDb
                 CreatedBy = createdBy
             };
 
-            await _dataContextMsSql.Countries.AddAsync(country);
+            await _dataContextInUse.Countries.AddAsync(country);
         }
-
-        await _dataContextMsSql.SaveChangesAsync();
     }
 
 
