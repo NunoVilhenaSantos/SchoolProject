@@ -32,6 +32,7 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     [Precision(18, 2)] public decimal? Grade { get; set; }
 
 
+   
     // [Key]
     // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -56,11 +57,13 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     // Deve ser do mesmo tipo da propriedade Id de User
     [DisplayName("Created By User Id")] public string CreatedById { get; set; }
 
+
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
     [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
+
 
 
     // [Required]
@@ -69,9 +72,8 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-
     // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")] public string UpdatedById { get; set; }
+    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
 
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira

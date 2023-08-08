@@ -1,6 +1,6 @@
-﻿namespace SchoolProject.Web.Data.DataContexts;
+﻿namespace SchoolProject.Web.Data.DataContexts.MSSQL;
 
-public class DcMsSqlOnline:DataContextMsSql
+public class DcMsSqlOnline : DataContextMsSql
 {
     /// <inheritdoc />
     public DcMsSqlOnline(DbContextOptions<DcMsSqlOnline> options) :

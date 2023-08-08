@@ -113,38 +113,6 @@ public class Student : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid IdGuid { get; set; }
-
-
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
-
-
-    // [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
-
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
     // between Student and SchoolClass
@@ -204,4 +172,38 @@ public class Student : IEntity //: INotifyPropertyChanged
     public decimal? LowestGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Min(e => e.Grade) ?? 0;
+
+
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid IdGuid { get; set; }
+
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
+
+
+    // [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 }

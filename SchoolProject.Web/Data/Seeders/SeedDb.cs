@@ -2,8 +2,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Transactions;
 using Microsoft.AspNetCore.Identity;
-using MySql.EntityFrameworkCore.Extensions;
 using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.DataContexts.MSSQL;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.EntitiesOthers;
@@ -11,9 +12,14 @@ using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 
+/// <summary>
+/// Data seeder for the database.
+/// </summary>
 public class SeedDb
 {
+    //private readonly DataContextMsSql _dataContextInUse;
     private readonly DataContextMySql _dataContextInUse;
+    //private readonly DataContextSqLite _dataContextInUse;
 
     // private readonly DcMsSqlLocal _msSqlLocal;
     // private readonly DCMySqlLocal _mySqlLocal;
@@ -27,15 +33,15 @@ public class SeedDb
 
 
     private readonly IWebHostEnvironment _hostingEnvironment;
-
-    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
     private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
+
+    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
     public SeedDb(
         // ILogger<SeedDb> logger,
@@ -106,6 +112,8 @@ public class SeedDb
         SeedDbUsers.Initialize(_userHelper, _loggerSeedDbUsers);
 
         Console.WriteLine("Seeding the database.", Color.Green);
+        Console.WriteLine(_dataContextInUse.Database.GetConnectionString(), Color.Green);
+        Console.WriteLine(_dataContextInUse.Database.GetDbConnection().DataSource, Color.Green); 
         Console.WriteLine("Debug point.", Color.Red);
 
         // ------------------------------------------------------------------ //
@@ -113,6 +121,7 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         await SeedingRolesForUsers();
         await _dataContextInUse.SaveChangesAsync();
+        //await _dataContextInUse.Database.CommitTransactionAsync();
 
         // ------------------------------------------------------------------ //
         // adding the super users
@@ -189,8 +198,8 @@ public class SeedDb
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
         // SeedDbSchoolClassesWithCourses.Initialize(_dataContextInUse);
-        await SeedDbSchoolClassesWithCourses.AddingData(user,
-            _dataContextInUse);
+        await SeedDbSchoolClassesWithCourses.AddingData(
+            user, _dataContextInUse);
         await _dataContextInUse.SaveChangesAsync();
 
         Console.WriteLine("Debug point.", Color.Red);
@@ -238,11 +247,9 @@ public class SeedDb
             // Enquanto houver uma transação ativa,
             // aguarde e verifique novamente
             while (_dataContextInUse.Database.GetEnlistedTransaction() != null)
-            {
                 // Aguardar um período de tempo
                 // Exemplo: 5 segundos
                 await Task.Delay(TimeSpan.FromSeconds(5));
-            }
 
             // Todas as transações estão concluídas,
             // então chama Dispose para liberar o contexto

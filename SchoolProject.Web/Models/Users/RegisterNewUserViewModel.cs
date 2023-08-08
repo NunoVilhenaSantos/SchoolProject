@@ -7,7 +7,7 @@ namespace SchoolProject.Web.Models.Users;
 public class RegisterNewUserViewModel
 {
     /// <summary>
-    /// The first name of the user.
+    ///     The first name of the user.
     /// </summary>
     [Required]
     [DisplayName("First Name")]
@@ -15,7 +15,7 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The last name of the user.
+    ///     The last name of the user.
     /// </summary>
     [Required]
     [DisplayName("Last Name")]
@@ -23,7 +23,7 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The username for the user.
+    ///     The username for the user.
     /// </summary>
     [Required]
     [DataType(DataType.EmailAddress)]
@@ -31,7 +31,7 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The address of the user.
+    ///     The address of the user.
     /// </summary>
     [MaxLength(100,
         ErrorMessage =
@@ -40,7 +40,7 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The phone number of the user.
+    ///     The phone number of the user.
     /// </summary>
     [MaxLength(20,
         ErrorMessage =
@@ -49,7 +49,7 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The city of the user.
+    ///     The city of the user.
     /// </summary>
     [Display(Name = "City")]
     [Range(1, int.MaxValue, ErrorMessage = "You must select a city.")]
@@ -57,13 +57,13 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The list of cities for selection.
+    ///     The list of cities for selection.
     /// </summary>
     public IEnumerable<SelectListItem>? Cities { get; set; }
 
 
     /// <summary>
-    /// The country of the user.
+    ///     The country of the user.
     /// </summary>
     [Display(Name = "Country")]
     [Range(1, int.MaxValue, ErrorMessage = "You must select a country")]
@@ -71,13 +71,13 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The list of countries for selection.
+    ///     The list of countries for selection.
     /// </summary>
     public IEnumerable<SelectListItem>? Countries { get; set; }
 
 
     /// <summary>
-    /// The password of the user.
+    ///     The password of the user.
     /// </summary>
     [Required]
     [DataType(DataType.Password)]
@@ -86,7 +86,7 @@ public class RegisterNewUserViewModel
 
 
     /// <summary>
-    /// The confirm password of the user.
+    ///     The confirm password of the user.
     /// </summary>
     [Required]
     [DataType(DataType.Password)]

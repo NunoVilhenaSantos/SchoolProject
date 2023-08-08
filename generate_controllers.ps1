@@ -1,7 +1,8 @@
 $entitiesDirectory = "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\Data\Entities"
 $rootDirectory = "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\"
 
-$dataContext = "DataContextMsSql"
+# $dataContext = "DataContextMsSql"
+$dataContext = "DataContextMySql"
 
 Set-Location $rootDirectory
 

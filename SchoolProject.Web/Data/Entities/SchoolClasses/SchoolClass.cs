@@ -109,38 +109,6 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
         : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
           ProfilePhotoId;
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid IdGuid { get; set; }
-
-
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
-
-
-    // [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
 
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
@@ -148,7 +116,7 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    /// Navigation property for the many-to-many relationship between SchoolClass and Course
+    ///     Navigation property for the many-to-many relationship between SchoolClass and Course
     /// </summary>
     public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
         new List<SchoolClassCourse>();
@@ -173,7 +141,7 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///  Navigation property for the many-to-many relationship between SchoolClass and Student
+    ///     Navigation property for the many-to-many relationship between SchoolClass and Student
     /// </summary>
     public ICollection<Student>? Students { get; set; } = new List<Student>();
 
@@ -229,10 +197,44 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///  Navigation property for the many-to-many relationship between SchoolClass and Courses
-    ///  This property is used by EF Core to automatically build a join table
+    ///     Navigation property for the many-to-many relationship between SchoolClass and Courses
+    ///     This property is used by EF Core to automatically build a join table
     /// </summary>
     public List<Course>? Courses { get; init; }
+
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid IdGuid { get; set; }
+
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
+
+
+    // [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //

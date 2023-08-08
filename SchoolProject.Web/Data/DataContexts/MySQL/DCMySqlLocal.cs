@@ -1,4 +1,4 @@
-﻿namespace SchoolProject.Web.Data.DataContexts;
+﻿namespace SchoolProject.Web.Data.DataContexts.MySQL;
 
 public class DCMySqlLocal : DataContextMySql
 {

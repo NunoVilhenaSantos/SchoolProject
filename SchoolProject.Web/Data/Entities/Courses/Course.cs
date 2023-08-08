@@ -13,7 +13,7 @@ namespace SchoolProject.Web.Data.Entities.Courses;
 public class Course : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///    The code of the course.
+    ///     The code of the course.
     /// </summary>
     [DisplayName("Code")]
     [MaxLength(7,
@@ -22,107 +22,51 @@ public class Course : IEntity, INotifyPropertyChanged
     public required string Code { get; init; }
 
     /// <summary>
-    ///   The name of the course.
+    ///     The name of the course.
     /// </summary>
     [Required]
     public required string Name { get; set; }
 
 
     /// <summary>
-    ///  The description of the course.
+    ///     The description of the course.
     /// </summary>
     public int Description { get; set; }
 
 
     /// <summary>
-    /// The number of hours of the course.
+    ///     The number of hours of the course.
     /// </summary>
     [Required]
     public required int Hours { get; set; }
 
 
     /// <summary>
-    /// The number of credit points of the course.
-    /// The number of ECTS of the course.
-    /// The number of ECTS credits of the course.
-    /// European Credit Transfer and Accumulation System (ECTS).
+    ///     The number of credit points of the course.
+    ///     The number of ECTS of the course.
+    ///     The number of ECTS credits of the course.
+    ///     European Credit Transfer and Accumulation System (ECTS).
     /// </summary>
     [Required]
     public required double CreditPoints { get; set; }
 
 
     /// <summary>
-    ///  The profile photo of the course.
-    /// Guid value of the profile photo of the course.
-    /// Guid.Empty is the default value of the Guid type.
+    ///     The profile photo of the course.
+    ///     Guid value of the profile photo of the course.
+    ///     Guid.Empty is the default value of the Guid type.
     /// </summary>
     [DisplayName("Profile Photo")]
     public Guid ProfilePhotoId { get; set; }
 
 
     /// <summary>
-    /// The profile photo of the course.
+    ///     The profile photo of the course.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
         : "https://storage.googleapis.com/storage-nuno/courses/" +
           ProfilePhotoId;
-
-
-    /// <summary>
-    /// ID of the course.
-    /// </summary>
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-
-    /// <summary>
-    /// Guid value of the ID of the course.
-    /// </summary>
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid IdGuid { get; set; }
-
-
-    /// <summary>
-    /// Was Deleted?
-    /// Determines whether the course was deleted or not.
-    /// </summary>
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-
-    /// <summary>
-    /// Date and time of the creation of the course.
-    /// </summary>
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    /// <summary>
-    /// The user who created the course.
-    /// </summary>
-    [DisplayName("Created By")]
-    public required User CreatedBy { get; set; }
-
-
-    // [Required]
-    /// <summary>
-    /// Date and time of the update of the course.
-    /// </summary>
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    /// <summary>
-    /// The user who updated the course.
-    /// </summary>
-    [DisplayName("Updated By")]
-    public User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -134,30 +78,29 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///  Navigation property for the many-to-many relationship between SchoolClass and Course
+    ///     Navigation property for the many-to-many relationship between SchoolClass and Course
     /// </summary>
     public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
         new List<SchoolClassCourse>();
 
     /// <summary>
-    /// Returns the number of the course for this school classes 
+    ///     Returns the number of the course for this school classes
     /// </summary>
     public int SchoolClassCoursesCount => SchoolClassCourses.Count;
 
-    
 
     // ---------------------------------------------------------------------- //
     // Teacher Courses relationship
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///   Navigation property for the many-to-many relationship between Teacher and Course
+    ///     Navigation property for the many-to-many relationship between Teacher and Course
     /// </summary>
     public ICollection<TeacherCourse> TeacherCourses { get; set; } =
         new List<TeacherCourse>();
 
     /// <summary>
-    /// Returns the number of the course for this teachers
+    ///     Returns the number of the course for this teachers
     /// </summary>
     public int TeacherCoursesCount => TeacherCourses.Count;
 
@@ -170,7 +113,7 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///   Navigation property for the many-to-many relationship between Courses and Students
+    ///     Navigation property for the many-to-many relationship between Courses and Students
     /// </summary>
     public ICollection<StudentCourse> StudentCourses { get; set; } =
         new List<StudentCourse>();
@@ -186,13 +129,13 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    /// Navigation property for the one-to-many relationship between Course and Enrollment
+    ///     Navigation property for the one-to-many relationship between Course and Enrollment
     /// </summary>
     public ICollection<Enrollment>? Enrollments { get; set; }
 
 
     /// <summary>
-    /// Returns the number of students enrolled in the course
+    ///     Returns the number of students enrolled in the course
     /// </summary>
     [DisplayName("Enrolled Students")]
     public int? StudentsCount =>
@@ -200,7 +143,7 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///  Returns the highest grade of the course
+    ///     Returns the highest grade of the course
     /// </summary>
     [DisplayName("Highest Grade")]
     public decimal? HighestGrade => Enrollments?
@@ -209,7 +152,7 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    /// Returns the average grade of the course
+    ///     Returns the average grade of the course
     /// </summary>
     [DisplayName("Average Grade")]
     public decimal? AveregaGrade => Enrollments?
@@ -218,12 +161,69 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    /// Returns the lowest grade of the course
+    ///     Returns the lowest grade of the course
     /// </summary>
     [DisplayName("Lowest Grade")]
     public decimal? LowestGrade => Enrollments?
         .Where(e => e.CourseId == Id)
         .Min(e => e.Grade) ?? null;
+
+
+    /// <summary>
+    ///     ID of the course.
+    /// </summary>
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    /// <summary>
+    ///     Guid value of the ID of the course.
+    /// </summary>
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid IdGuid { get; set; }
+
+
+    /// <summary>
+    ///     Was Deleted?
+    ///     Determines whether the course was deleted or not.
+    /// </summary>
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+    /// <summary>
+    ///     Date and time of the creation of the course.
+    /// </summary>
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
+    ///     The user who created the course.
+    /// </summary>
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
+
+
+    // [Required]
+    /// <summary>
+    ///     Date and time of the update of the course.
+    /// </summary>
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
+    ///     The user who updated the course.
+    /// </summary>
+    [DisplayName("Updated By")]
+    public virtual User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //

@@ -51,6 +51,7 @@ public class TeacherCourse : IEntity
     // Deve ser do mesmo tipo da propriedade Id de User
     [DisplayName("Created By User Id")] public string CreatedById { get; set; }
 
+
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
@@ -64,9 +65,9 @@ public class TeacherCourse : IEntity
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-
     // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")] public string UpdatedById { get; set; }
+    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
+
 
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira

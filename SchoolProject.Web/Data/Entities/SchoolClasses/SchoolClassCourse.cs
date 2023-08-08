@@ -9,7 +9,7 @@ namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 public class SchoolClassCourse : IEntity
 {
     /// <summary>
-    ///    Foreign Key for SchoolClass
+    ///     Foreign Key for SchoolClass
     /// </summary>
     [Required]
     public required int SchoolClassId { get; set; }
@@ -24,13 +24,13 @@ public class SchoolClassCourse : IEntity
 
 
     /// <summary>
-    ///   Foreign Key for Course
+    ///     Foreign Key for Course
     /// </summary>
     [Required]
     public required int CourseId { get; set; }
 
     /// <summary>
-    ///  Foreign Key for Course
+    ///     Foreign Key for Course
     /// </summary>
     [Required]
     [ForeignKey(nameof(CourseId))]
@@ -60,9 +60,10 @@ public class SchoolClassCourse : IEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-
+    
     // Deve ser do mesmo tipo da propriedade Id de User
     [DisplayName("Created By User Id")] public string CreatedById { get; set; }
+
 
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
@@ -79,7 +80,8 @@ public class SchoolClassCourse : IEntity
 
 
     // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")] public string UpdatedById { get; set; }
+    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
+
 
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira

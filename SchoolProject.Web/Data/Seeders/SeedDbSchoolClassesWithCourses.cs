@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.EntitiesOthers;
@@ -7,7 +7,7 @@ using SchoolProject.Web.Data.EntitiesOthers;
 namespace SchoolProject.Web.Data.Seeders;
 
 /// <summary>
-///    This class is used to seed the database with some initial data.
+///     This class is used to seed the database with some initial data.
 /// </summary>
 public static class SeedDbSchoolClassesWithCourses
 {
@@ -45,7 +45,6 @@ public static class SeedDbSchoolClassesWithCourses
         {
             // Check if Courses is null or empty before iterating
             if (schoolClass.Courses != null && schoolClass.Courses.Any())
-            {
                 // Loop through each course associated with the school class
                 foreach (var schoolClassCourse in
                          schoolClass.Courses.Select(
@@ -55,13 +54,10 @@ public static class SeedDbSchoolClassesWithCourses
                                  SchoolClass = schoolClass,
                                  CourseId = course.Id,
                                  Course = course,
-                                 CreatedBy = user,
+                                 CreatedBy = user
                              }))
-                {
                     // Add the association to the SchoolClass's SchoolClassCourses collection
                     dataContextInUse.SchoolClassCourses.Add(schoolClassCourse);
-                }
-            }
 
             // ------------------------------------------------------------------ //
             Console.WriteLine("debug zone...", Color.Red);

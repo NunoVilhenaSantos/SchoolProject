@@ -1,4 +1,4 @@
-﻿using SchoolProject.Web.Data.DataContexts;
+﻿using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.EntitiesOthers;
@@ -59,12 +59,10 @@ public class SeedDbTeachersWithCourses
                  {
                      TeacherId = teacher.Id, Teacher = teacher,
                      CourseId = course.Id, Course = course,
-                     CreatedBy = user,
+                     CreatedBy = user
                  })
-        {
             // Add the TeacherCourse association to the context
             dataContextInUse.TeacherCourses.Add(teacherCourse);
-        }
 
         // -------------------------------------------------------------- //
         Console.WriteLine("debug zone...");

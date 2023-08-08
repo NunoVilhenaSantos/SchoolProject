@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.Students;
@@ -54,9 +54,18 @@ public class SeedDbStudentsAndTeachers
             "Seeding the users table with students...");
         await GenerateStudentsNames(user);
 
+        // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with teachers...");
         await GenerateTeachersNames(user);
+
+        // ------------------------------------------------------------------ //
+        Console.WriteLine(
+            "Saving Students and Teachers to there respective tables...");
+
+        await PopulateExistingUsersStudentsAndTeachersFromDb();
+
+        await StoreStudentsOrTeachersInDb();
     }
 
 
@@ -121,6 +130,9 @@ public class SeedDbStudentsAndTeachers
 
         if (studentsToAdd.Any())
             await AddStudentsOrTeachers(user, studentsToAdd, "Student");
+
+        // await PopulateExistingUsersStudentsAndTeachersFromDb();
+        // await StoreStudentsOrTeachersInDb();
     }
 
 
@@ -157,6 +169,9 @@ public class SeedDbStudentsAndTeachers
 
         if (teachersToAdd.Any())
             await AddStudentsOrTeachers(user, teachersToAdd, "Teacher");
+
+        // await PopulateExistingUsersStudentsAndTeachersFromDb();
+        // await StoreStudentsOrTeachersInDb();
     }
 
 
@@ -250,46 +265,29 @@ public class SeedDbStudentsAndTeachers
         }
 
 
+        // ------------------------------------------------------------------ //
         Console.WriteLine($"Created {namesToAdd.Count} {userRole.ToLower()}s");
-
 
         // ------------------------------------------------------------------ //
         Console.WriteLine($"Saving {userRole.ToLower()}s to the database...");
 
-
         // ------------------------------------------------------------------ //
-        // reading the list of existing users from the database
-        // ------------------------------------------------------------------ //
-        // var existingUsersList =
-        //     await _dataContextInUse.Users.ToListAsync();
-        // _listOfUsersFromDb = existingUsersList.ToList();
-        await PopulateExistingUsersStudentsAndTeachersFromDb();
-
-
-        // TODO: add students or teachers to the database
         Console.WriteLine($"Saved {userRole.ToLower()}s to the database");
 
 
         // ------------------------------------------------------------------ //
-        // TODO: add students or teachers to the database
-        if (userRole.Equals(
-                "Student", StringComparison.OrdinalIgnoreCase))
-            await _dataContextInUse.Students
-                .AddRangeAsync(ListOfStudentsToAdd);
+        Console.WriteLine("debug zone..");
 
-        else if (userRole.Equals(
-                     "Teacher", StringComparison.OrdinalIgnoreCase))
-            await _dataContextInUse.Teachers
-                .AddRangeAsync(ListOfTeachersToAdd);
-
+        // ------------------------------------------------------------------ //
         await _dataContextInUse.SaveChangesAsync();
     }
 
 
     private static async Task<T> CreateUser<T>(
         string firstName, string lastName, string address, string email,
-        string postalCode, string cellPhone, DateTime dateOfBirth,
-        string idNumber, string vatNumber,
+        string postalCode,
+        string cellPhone,
+        DateTime dateOfBirth, string idNumber, string vatNumber,
         User user, City city, Country country,
         Country countryOfNationality, Country birthplace, Gender gender,
         // Novo parâmetro para indicar o papel (role)
@@ -313,8 +311,16 @@ public class SeedDbStudentsAndTeachers
         ListOfUsersToAdd.Add(newUser);
 
 
+        // ------------------------------------------------------------------ //
+        // store the user in the database
         try
         {
+            var result = 
+                await _userHelper.GetUserByEmailAsync(newUser.Email);
+            if (result != null)
+                throw new Exception(
+                    $"User {email} already exists in the database");
+
             var resultUser = await _userHelper.AddUserAsync(newUser, password);
 
             if (!resultUser.Succeeded)
@@ -328,25 +334,59 @@ public class SeedDbStudentsAndTeachers
         }
 
 
-        await _userHelper.AddUserToRoleAsync(newUser, userRole);
+        // ------------------------------------------------------------------ //
+        // check if the user was created and stored in the database
+        try
+        {
+            await _userHelper.AddUserToRoleAsync(newUser, userRole);
 
-        var result = await _userHelper.IsUserInRoleAsync(newUser, userRole);
+            var result =
+                await _userHelper.IsUserInRoleAsync(newUser, userRole);
 
-        if (!result)
-            throw new Exception(
-                $"User {email} was not added to role {userRole}");
+            if (!result)
+                throw new Exception(
+                    $"User {email} was not added to role {userRole}");
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or display a user-friendly error message.
+        }
 
 
+        // ------------------------------------------------------------------ //
+        // check if the user was created and stored in the database
+        try
+        {
+            var numberOfChanges = await _dataContextInUse.SaveChangesAsync();
+
+            if (numberOfChanges > 0)
+                // As alterações foram salvas com sucesso no banco de dados.
+                Console.WriteLine("Changes saved successfully!");
+            else
+                // Nenhuma alteração foi salva no banco de dados.
+                // Você pode optar por lançar uma exceção ou lidar com isso de alguma outra maneira.
+                // Por exemplo:
+                throw new Exception("No changes were saved to the database.");
+        }
+        catch (Exception ex)
+        {
+            // Lidar com a exceção ou registrar a mensagem de erro.
+        }
+
+
+        // ------------------------------------------------------------------ //
         Console.WriteLine(
             $"Creating {userRole.ToLower()}: {firstName} {lastName}");
         // ------------------------------------------------------------------ //
 
         Console.WriteLine("debug zone 1");
 
+        // newUser = await _userHelper.GetUserByEmailAsync(newUser.Email);
+
         // ------------------------------------------------------------------ //
         // Create the specific entity (Student or Teacher) based on the generic type T
         var entity = Activator.CreateInstance<T>();
-        entity.GetType().GetProperty("User")?.SetValue(entity, newUser);
+        // entity.GetType().GetProperty("User")?.SetValue(entity, newUser);
         entity.GetType().GetProperty("FirstName")?.SetValue(entity, firstName);
         entity.GetType().GetProperty("LastName")?.SetValue(entity, lastName);
         entity.GetType().GetProperty("Address")?.SetValue(entity, address);
@@ -378,7 +418,10 @@ public class SeedDbStudentsAndTeachers
         entity.GetType().GetProperty("IdGuid")?.SetValue(entity, default);
         entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user);
 
+
         // ------------------------------------------------------------------ //
+        Console.WriteLine("Debug zone 2");
+
         return entity;
     }
 
@@ -423,7 +466,7 @@ public class SeedDbStudentsAndTeachers
     }
 
 
-    private static async Task StoreStudentsOrTeachersWithRoles(
+    private static async Task StoreStudentsOrTeachersUsersWithRoles(
         string password = "Passw0rd")
     {
         // Extract the emails from the lists of students and teachers
@@ -432,7 +475,9 @@ public class SeedDbStudentsAndTeachers
         var teacherEmails =
             ListOfTeachersToAdd.Select(t => t.Email).ToList();
 
+
         Console.WriteLine("Debug zone:");
+
 
         // Add students to the database and assign student role
         foreach (var studentUser in
@@ -446,6 +491,7 @@ public class SeedDbStudentsAndTeachers
                 await _userHelper.AddUserToRoleAsync(studentUser,
                     "Student");
         }
+
 
         // Add teachers to the database and assign teacher role
         foreach (var teacherUser in
@@ -461,6 +507,50 @@ public class SeedDbStudentsAndTeachers
         }
 
         // Save the changes to the student or teacher entity
+        await _dataContextInUse.SaveChangesAsync();
+    }
+
+
+    private static async Task StoreStudentsOrTeachersInDb()
+    {
+        // ------------------------------------------------------------------ //
+        // TODO: add students or teachers to the database
+
+        Console.WriteLine("Debug zone 1");
+
+        foreach (var student in ListOfStudentsToAdd)
+        {
+            var studentFromDb = _listOfStudentsFromDb
+                .FirstOrDefault(s => s.Id == student.Id);
+
+            if (studentFromDb != null) continue;
+
+            var studentUser = _listOfUsersFromDb
+                .FirstOrDefault(u => u.Email == student.Email);
+
+            student.User = studentUser;
+
+            _dataContextInUse.Students.Add(student);
+        }
+
+        await _dataContextInUse.SaveChangesAsync();
+
+
+        foreach (var teacher in ListOfTeachersToAdd)
+        {
+            var teacherFromDb = _listOfTeachersFromDb
+                .FirstOrDefault(t => t.Id == teacher.Id);
+
+            if (teacherFromDb != null) continue;
+
+            var teacherUser = _listOfUsersFromDb
+                .FirstOrDefault(u => u.Email == teacher.Email);
+
+            teacher.User = teacherUser;
+
+            _dataContextInUse.Teachers.Add(teacher);
+        }
+
         await _dataContextInUse.SaveChangesAsync();
     }
 }

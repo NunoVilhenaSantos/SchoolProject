@@ -30,8 +30,8 @@ public interface IEntity
     public DateTime CreatedAt { get; set; }
 
 
-    [Column(Order = 22)]
     [Required]
+    [Column(Order = 22)]
     [DisplayName("Created By")]
     public User CreatedBy { get; set; }
 

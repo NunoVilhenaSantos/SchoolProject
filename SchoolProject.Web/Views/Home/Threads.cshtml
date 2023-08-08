@@ -1,10 +1,8 @@
-﻿@using Microsoft.Extensions.Localization
+﻿@inject IStringLocalizer<HomeController> Localizer
 
 @using SchoolProject.Web.Controllers
 @using SchoolProject.Web.Data.EntitiesOthers
-
-@inject IStringLocalizer<HomeController> Localizer
-
+@using Microsoft.Extensions.Localization
 @model dynamic
 
 @{

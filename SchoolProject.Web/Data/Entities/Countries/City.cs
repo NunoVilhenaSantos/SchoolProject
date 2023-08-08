@@ -35,7 +35,9 @@ public class City : IEntity, INotifyPropertyChanged
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
 
 
     // [Required]
@@ -44,7 +46,7 @@ public class City : IEntity, INotifyPropertyChanged
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

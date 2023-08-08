@@ -11,6 +11,8 @@ using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.DataContexts.MSSQL;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
@@ -20,6 +22,10 @@ using SchoolProject.Web.Helpers.Services;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using Serilog;
+
+
+// Create a new web application using the WebApplicationBuilder.
+var builder = WebApplication.CreateBuilder(args);
 
 
 // Helper method to generate a random
@@ -55,16 +61,16 @@ static string GetServerHostNameFromConnectionString(string connectionString)
 
     foreach (var part in parts)
         if (part.StartsWith("Data Source="))
-            return part.Substring("Data Source=".Length);
+            return part["Data Source=".Length..];
 
         else if (part.StartsWith("workstation id="))
-            return part.Substring("workstation id=".Length);
+            return part["workstation id=".Length..];
 
         else if (part.StartsWith("Server="))
-            return part.Substring("Server=".Length);
+            return part["Server=".Length..];
 
         else if (part.StartsWith("Host="))
-            return part.Substring("Host=".Length);
+            return part["Host=".Length..];
 
 
     throw new ArgumentException(
@@ -226,10 +232,7 @@ static void StopProgramTimer()
 
 StartProgramTimer();
 
-
-// Create a new web application using the WebApplicationBuilder.
-var builder = WebApplication.CreateBuilder(args);
-
+// -------------------------------------------------------------------------- //
 
 // Configuring Azure services for Blob and Queue clients.
 builder.Services.AddAzureClients(clientBuilder =>
@@ -264,7 +267,7 @@ builder.Services.AddDbContext<DataContextMsSql>(
                 options.EnableRetryOnFailure();
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
-            });
+            }).EnableSensitiveDataLogging();
     });
 
 
@@ -284,7 +287,7 @@ builder.Services.AddDbContext<DataContextMySql>(
             {
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
-            });
+            }).EnableSensitiveDataLogging();
     });
 
 // -------------------------------------------------------------------------- //
@@ -303,7 +306,7 @@ builder.Services.AddDbContext<DataContextSqLite>(
             {
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
-            });
+            }).EnableSensitiveDataLogging();
     });
 
 // -------------------------------------------------------------------------- //
@@ -335,8 +338,8 @@ builder.Services.AddIdentity<User, IdentityRole>(
                 TokenOptions.DefaultAuthenticatorProvider;
         })
     .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<DataContextMsSql>()
     .AddEntityFrameworkStores<DataContextMySql>()
+    .AddEntityFrameworkStores<DataContextMsSql>()
     .AddEntityFrameworkStores<DataContextSqLite>();
 
 
@@ -524,10 +527,6 @@ builder.Services.AddMvcCore().AddViewLocalization();
 builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();
 
 
-// Configuração do serviço DatabaseConnectionVerifier
-builder.Services.AddTransient<DatabaseConnectionVerifier>();
-
-
 // Add logging providers for debugging and application insights.
 
 // --------------------------------- --------------------------------------- //
@@ -587,6 +586,12 @@ builder.Logging.AddEventSourceLogger();
 builder.Logging.AddApplicationInsights();
 
 
+
+// Configuração do serviço DatabaseConnectionVerifier
+builder.Services.AddTransient<DatabaseConnectionVerifier>();
+
+
+
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
 builder.Services.AddScoped<UserManager<User>>();
@@ -628,15 +633,6 @@ var serverHostName =
 // Verifica se o servidor está disponível
 GetServerHostNamePing(serverHostName);
 
-
-// if (builder.Environment.IsDevelopment())
-// {
-//     builder.Configuration.AddJsonFile("appsettings.Development.json");
-// }
-// else
-// {
-//     builder.Configuration.AddJsonFile("appsettings.json");
-// }
 
 // -------------------------------------------------------------------------- //
 

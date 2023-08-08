@@ -1,4 +1,4 @@
-﻿namespace SchoolProject.Web.Data.DataContexts;
+﻿namespace SchoolProject.Web.Data.DataContexts.MSSQL;
 
 public class DcMsSqlLocal : DataContextMsSql
 {

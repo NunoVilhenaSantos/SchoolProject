@@ -9,7 +9,7 @@ using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.EntitiesOthers;
 
-namespace SchoolProject.Web.Data.DataContexts;
+namespace SchoolProject.Web.Data.DataContexts.MSSQL;
 
 // public class DataContextMsSql : IdentityDbContext<User>
 /// <inheritdoc />
@@ -141,7 +141,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<Enrollment>()
-            .HasKey(e => new {e.StudentId, e.CourseId});
+            .HasKey(e => new { e.StudentId, e.CourseId });
 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
@@ -186,7 +186,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<SchoolClassCourse>()
-            .HasKey(scc => new {scc.SchoolClassId, scc.CourseId});
+            .HasKey(scc => new { scc.SchoolClassId, scc.CourseId });
 
         modelBuilder.Entity<SchoolClassCourse>()
             .HasOne(scc => scc.SchoolClass)
@@ -230,7 +230,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<StudentCourse>()
-            .HasKey(sc => new {sc.StudentId, sc.CourseId});
+            .HasKey(sc => new { sc.StudentId, sc.CourseId });
 
         modelBuilder.Entity<StudentCourse>()
             .HasOne(sc => sc.Student)
@@ -244,7 +244,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
         // Configurar coluna Id como autoincrementada sem ser chave principal
         modelBuilder.Entity<StudentCourse>()
-            .Property<int>(sc => sc.Id)
+            .Property(sc => sc.Id)
             // Usar a extensão específica para MySQL
             .UseIdentityColumn()
             // Nome da coluna no banco de dados
@@ -274,7 +274,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<TeacherCourse>()
-            .HasKey(tc => new {tc.TeacherId, tc.CourseId});
+            .HasKey(tc => new { tc.TeacherId, tc.CourseId });
 
         modelBuilder.Entity<TeacherCourse>()
             .HasOne(tc => tc.Teacher)

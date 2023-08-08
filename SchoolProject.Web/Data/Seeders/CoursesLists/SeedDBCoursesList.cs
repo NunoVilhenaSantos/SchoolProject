@@ -1,4 +1,4 @@
-﻿using SchoolProject.Web.Data.DataContexts;
+﻿using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders.CoursesLists.CETs;

@@ -1,4 +1,4 @@
-﻿using SchoolProject.Web.Data.DataContexts;
+﻿using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Repositories.Interfaces;
 

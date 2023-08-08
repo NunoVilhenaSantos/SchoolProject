@@ -1,7 +1,4 @@
-﻿using SchoolProject.Web.Data.DataContexts;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
-using SchoolProject.Web.Data.EntitiesOthers;
-
+﻿using SchoolProject.Web.Data.DataContexts.MySQL;
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -10,8 +7,8 @@ public class SeedDbStudentsWithSchoolClasses
     // private static DataContextMsSql _dataContextMsSql;
     // private static DataContextMsSql _dataContextInUse;
     private static DataContextMySql _dataContextInUse;
-    
-    
+
+
     // public static void Initialize(DataContextMsSql dataContextMsSql)
     // {
     //     _dataContextMsSql = dataContextMsSql;
@@ -20,7 +17,7 @@ public class SeedDbStudentsWithSchoolClasses
     public static async Task AddingData(DataContextMySql dataContextInUse)
     {
         var _dataContextInUse = dataContextInUse;
-        
+
         // Get all school classes from the database
         var schoolClasses =
             await dataContextInUse.SchoolClasses.ToListAsync();
@@ -31,12 +28,10 @@ public class SeedDbStudentsWithSchoolClasses
 
         // Verifica se jhá dados para popular a lista de schoolclasses dos estudantes
         if (!HasExistingData())
-        {
             // Decide como proceder quando já existem dados no banco de dados
             // Você pode optar por não executar o processo de seed novamente ou atualizar os dados existentes.
             // Por exemplo, você pode gerar um log ou mostrar uma mensagem ao usuário informando que os dados já existem.
             return;
-        }
 
         // ------------------------------------------------------------------ //
 
@@ -74,8 +69,8 @@ public class SeedDbStudentsWithSchoolClasses
 
     private static bool HasExistingData()
     {
-        var studentsCount = _dataContextInUse.Students.Count();
-        var schoolClassesCount = _dataContextInUse.SchoolClasses.Count();
+        var studentsCount = _dataContextInUse.Students?.Count();
+        var schoolClassesCount = _dataContextInUse.SchoolClasses?.Count();
 
         // Verifica se existem registros nas tabelas Students e SchoolClasses
         return studentsCount > 0 && schoolClassesCount > 0;

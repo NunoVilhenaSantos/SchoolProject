@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.EntitiesOthers;
 
@@ -109,6 +108,26 @@ public class Teacher : IEntity, INotifyPropertyChanged
         : "https://storage.googleapis.com/storage-nuno/teachers/" +
           ProfilePhotoId;
 
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Navigation property for the many-to-many relationship with courses
+    /// </summary>
+    public ICollection<TeacherCourse> TeacherCourses { get; set; } =
+        new List<TeacherCourse>();
+
+
+    [DisplayName("Courses Count")]
+    public int CoursesCount => TeacherCourses?.Count ?? 0;
+
+    [DisplayName("Total Work Hours")]
+    public int TotalWorkHours => TeacherCourses?
+        .Sum(t => t.Course.Hours) ?? 0;
+
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -129,7 +148,9 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Created By")] public required User CreatedBy { get; set; }
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
 
 
     // [Required]
@@ -138,27 +159,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public User? UpdatedBy { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-    // Navigation property for the many-to-many relationship
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    ///    Navigation property for the many-to-many relationship with courses
-    /// </summary>
-    public ICollection<TeacherCourse> TeacherCourses { get; set; } =
-        new List<TeacherCourse>();
-
-
-    [DisplayName("Courses Count")]
-    public int CoursesCount => TeacherCourses?.Count ?? 0;
-
-    [DisplayName("Total Work Hours")]
-    public int TotalWorkHours => TeacherCourses?
-        .Sum(t => t.Course.Hours) ?? 0;
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //

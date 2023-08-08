@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SchoolProject.Web.Data.DataContexts;
+using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.Entities.Enrollments;
 
 namespace SchoolProject.Web.Controllers;
