@@ -18,20 +18,23 @@ public class SeedDbStudentsWithSchoolClasses
     {
         var _dataContextInUse = dataContextInUse;
 
+        // ------------------------------------------------------------------ //
         // Get all school classes from the database
         var schoolClasses =
             await dataContextInUse.SchoolClasses.ToListAsync();
+        schoolClasses.ToList();
 
+
+        // ------------------------------------------------------------------ //
         // Get all students from the database
         var students =
             await dataContextInUse.Students.ToListAsync();
+        students.ToList();
 
-        // Verifica se jhá dados para popular a lista de schoolclasses dos estudantes
-        if (!HasExistingData())
-            // Decide como proceder quando já existem dados no banco de dados
-            // Você pode optar por não executar o processo de seed novamente ou atualizar os dados existentes.
-            // Por exemplo, você pode gerar um log ou mostrar uma mensagem ao usuário informando que os dados já existem.
-            return;
+        // ------------------------------------------------------------------ //
+        // Verifica se ja há dados para popular a lista de schoolclasses dos estudantes
+        if (schoolClasses == null) return;
+
 
         // ------------------------------------------------------------------ //
 
@@ -42,6 +45,7 @@ public class SeedDbStudentsWithSchoolClasses
         // (assuming each student is associated with multiple school classes)
         foreach (var student in students)
         {
+            // If the student already has school classes, skip this student
             if (student.SchoolClasses != null ||
                 student.SchoolClasses.Count >= 0) continue;
 
@@ -67,12 +71,5 @@ public class SeedDbStudentsWithSchoolClasses
     }
 
 
-    private static bool HasExistingData()
-    {
-        var studentsCount = _dataContextInUse.Students?.Count();
-        var schoolClassesCount = _dataContextInUse.SchoolClasses?.Count();
-
-        // Verifica se existem registros nas tabelas Students e SchoolClasses
-        return studentsCount > 0 && schoolClassesCount > 0;
-    }
+   
 }

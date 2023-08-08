@@ -28,17 +28,23 @@ public static class SeedDbSchoolClassesWithCourses
         var existingCourses =
             await dataContextInUse.Courses.ToListAsync();
 
+        // ------------------------------------------------------------------ //
         var existingSchoolClasses =
             await dataContextInUse.SchoolClasses
                 // To Ensure Courses are loaded for each SchoolClass
                 .Include(sc => sc.Courses)
                 .ToListAsync();
 
+        // ------------------------------------------------------------------ //
         _listOfCoursesToAdd = existingCourses.ToList();
         _listOfSchoolClassesToAdd = existingSchoolClasses.ToList();
 
+
+
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
+        if (await dataContextInUse.SchoolClassCourses.AnyAsync()) return;
+
 
         // Loop through each school class
         foreach (var schoolClass in _listOfSchoolClassesToAdd)
