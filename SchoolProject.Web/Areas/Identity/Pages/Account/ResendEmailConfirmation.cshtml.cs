@@ -22,8 +22,8 @@ public class ResendEmailConfirmationModel : PageModel
     private readonly IEmailSender _emailSender;
     private readonly UserManager<User> _userManager;
 
-    public ResendEmailConfirmationModel(UserManager<User> userManager,
-        IEmailSender emailSender)
+    public ResendEmailConfirmationModel(
+        UserManager<User> userManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _emailSender = emailSender;

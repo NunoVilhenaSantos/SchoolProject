@@ -76,61 +76,61 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Code)
+                @Html.DisplayFor(expression: modelItem => item.Code)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Acronym)
+                @Html.DisplayFor(expression: modelItem => item.Acronym)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(expression: modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.QnqLevel)
+                @Html.DisplayFor(expression: modelItem => item.QnqLevel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EqfLevel)
+                @Html.DisplayFor(expression: modelItem => item.EqfLevel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @Html.DisplayFor(expression: modelItem => item.StartDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @Html.DisplayFor(expression: modelItem => item.EndDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartHour)
+                @Html.DisplayFor(expression: modelItem => item.StartHour)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndHour)
+                @Html.DisplayFor(expression: modelItem => item.EndHour)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
+                @Html.DisplayFor(expression: modelItem => item.Location)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Type)
+                @Html.DisplayFor(expression: modelItem => item.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Area)
+                @Html.DisplayFor(expression: modelItem => item.Area)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PriceForEmployed)
+                @Html.DisplayFor(expression: modelItem => item.PriceForEmployed)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PriceForUnemployed)
+                @Html.DisplayFor(expression: modelItem => item.PriceForUnemployed)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProfilePhotoId)
+                @Html.DisplayFor(expression: modelItem => item.ProfilePhotoId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdGuid)
+                @Html.DisplayFor(expression: modelItem => item.IdGuid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
+                @Html.DisplayFor(expression: modelItem => item.WasDeleted)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(expression: modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(expression: modelItem => item.UpdatedAt)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

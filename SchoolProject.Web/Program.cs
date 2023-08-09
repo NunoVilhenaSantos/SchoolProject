@@ -309,6 +309,7 @@ builder.Services.AddDbContext<DataContextSqLite>(
             }).EnableSensitiveDataLogging();
     });
 
+
 // -------------------------------------------------------------------------- //
 
 // Configure Identity service with user settings,
@@ -402,8 +403,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(15);
-    options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/Account/NotAuthorized";
+    
+    // options.LoginPath = "/Account/Login";
+    // options.AccessDeniedPath = "/Account/NotAuthorized";
+    
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    
     options.SlidingExpiration = true;
 });
 
@@ -627,7 +633,7 @@ builder.Services.AddScoped<SeedDb>();
 var serverHostName =
     GetServerHostNameFromConnectionString(
         builder.Configuration.GetConnectionString(
-            "SP-MSSql-Somee"));
+            "SP-MSSql-Somee") ?? string.Empty);
 
 
 // Verifica se o servidor está disponível

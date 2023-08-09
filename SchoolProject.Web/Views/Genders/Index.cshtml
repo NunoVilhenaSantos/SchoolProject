@@ -37,22 +37,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(expression: modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProfilePhotoId)
+                @Html.DisplayFor(expression: modelItem => item.ProfilePhotoId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdGuid)
+                @Html.DisplayFor(expression: modelItem => item.IdGuid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
+                @Html.DisplayFor(expression: modelItem => item.WasDeleted)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(expression: modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(expression: modelItem => item.UpdatedAt)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

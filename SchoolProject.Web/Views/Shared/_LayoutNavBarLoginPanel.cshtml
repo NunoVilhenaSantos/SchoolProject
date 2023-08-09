@@ -4,7 +4,10 @@
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
+    
+    Debug.Assert(User.Identity != null, "User.Identity != null");
 }
+
 
 <div class="d-flex ms-auto">
 
@@ -14,9 +17,6 @@
         @* <a class="nav-link" href="#">Pricing</a> *@
         @* <a class="nav-link disabled">Disabled</a> *@
 
-        @{
-            Debug.Assert(User.Identity != null, "User.Identity != null");
-        }
         @* @if (User.Identity.IsAuthenticated) *@
         @* { *@
         @*     <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")" *@

@@ -1,11 +1,7 @@
 ﻿@{
-    if (ViewContext.RouteData.Values["controller"] is not string currentController)
-    {
-        throw new ArgumentNullException(nameof(currentController));
-    }
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
-
 
 <div class="dropdown">
     @* <span class="material-symbols-outlined">settings</span> *@
