@@ -70,7 +70,7 @@ public class RegisterModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
-        returnUrl ??= Url.Content("~/");
+        returnUrl ??= Url.Content(contentPath: "~/");
         ExternalLogins =
             (await _signInManager.GetExternalAuthenticationSchemesAsync())
             .ToList();
@@ -78,43 +78,43 @@ public class RegisterModel : PageModel
         {
             var user = CreateUser();
 
-            await _userStore.SetUserNameAsync(user, Input.Email,
-                CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, Input.Email,
-                CancellationToken.None);
-            var result = await _userManager.CreateAsync(user, Input.Password);
+            await _userStore.SetUserNameAsync(user: user, userName: Input.Email,
+                cancellationToken: CancellationToken.None);
+            await _emailStore.SetEmailAsync(user: user, email: Input.Email,
+                cancellationToken: CancellationToken.None);
+            var result = await _userManager.CreateAsync(user: user, password: Input.Password);
 
             if (result.Succeeded)
             {
                 _logger.LogInformation(
-                    "User created a new account with password.");
+                    message: "User created a new account with password.");
 
-                var userId = await _userManager.GetUserIdAsync(user);
+                var userId = await _userManager.GetUserIdAsync(user: user);
                 var code =
                     await _userManager
-                        .GenerateEmailConfirmationTokenAsync(user);
+                        .GenerateEmailConfirmationTokenAsync(user: user);
                 code = WebEncoders.Base64UrlEncode(
-                    Encoding.UTF8.GetBytes(code));
+                    input: Encoding.UTF8.GetBytes(s: code));
                 var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    null,
-                    new {area = "Identity", userId, code, returnUrl},
-                    Request.Scheme);
+                    pageName: "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new {area = "Identity", userId, code, returnUrl},
+                    protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(Input.Email,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await _emailSender.SendEmailAsync(email: Input.Email,
+                    subject: "Confirm your email",
+                    htmlMessage: $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(value: callbackUrl)}'>clicking here</a>.");
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    return RedirectToPage("RegisterConfirmation",
-                        new {email = Input.Email, returnUrl});
+                    return RedirectToPage(pageName: "RegisterConfirmation",
+                        routeValues: new {email = Input.Email, returnUrl});
 
-                await _signInManager.SignInAsync(user, false);
-                return LocalRedirect(returnUrl);
+                await _signInManager.SignInAsync(user: user, isPersistent: false);
+                return LocalRedirect(localUrl: returnUrl);
             }
 
             foreach (var error in result.Errors)
-                ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError(key: string.Empty, errorMessage: error.Description);
         }
 
         // If we got this far, something failed, redisplay form
@@ -130,9 +130,9 @@ public class RegisterModel : PageModel
         catch
         {
             throw new InvalidOperationException(
-                $"Can't create an instance of '{nameof(User)}'. " +
-                $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                message: $"Can't create an instance of '{nameof(User)}'. " +
+                         $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                         $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
         }
     }
 
@@ -140,7 +140,7 @@ public class RegisterModel : PageModel
     {
         if (!_userManager.SupportsUserEmail)
             throw new NotSupportedException(
-                "The default UI requires a user store with email support.");
+                message: "The default UI requires a user store with email support.");
         return (IUserEmailStore<User>) _userStore;
     }
 
@@ -164,11 +164,11 @@ public class RegisterModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [StringLength(100,
+        [StringLength(maximumLength: 100,
             ErrorMessage =
                 "The {0} must be at least {2} and at max {1} characters long.",
             MinimumLength = 6)]
-        [DataType(DataType.Password)]
+        [DataType(dataType: DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
@@ -176,9 +176,9 @@ public class RegisterModel : PageModel
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        [DataType(DataType.Password)]
+        [DataType(dataType: DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password",
+        [Compare(otherProperty: "Password",
             ErrorMessage =
                 "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }

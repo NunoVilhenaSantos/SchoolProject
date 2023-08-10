@@ -17,8 +17,8 @@ public class CitiesController : Controller
     public async Task<IActionResult> Index()
     {
         return _context.Cities != null
-            ? View(await _context.Cities.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Cities'  is null.");
+            ? View(model: await _context.Cities.ToListAsync())
+            : Problem(detail: "Entity set 'DataContextMySql.Cities'  is null.");
     }
 
     // GET: Cities/Details/5
@@ -27,10 +27,10 @@ public class CitiesController : Controller
         if (id == null || _context.Cities == null) return NotFound();
 
         var city = await _context.Cities
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (city == null) return NotFound();
 
-        return View(city);
+        return View(model: city);
     }
 
     // GET: Cities/Create
@@ -48,17 +48,17 @@ public class CitiesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         City city)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(city);
+            _context.Add(entity: city);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(city);
+        return View(model: city);
     }
 
     // GET: Cities/Edit/5
@@ -66,9 +66,9 @@ public class CitiesController : Controller
     {
         if (id == null || _context.Cities == null) return NotFound();
 
-        var city = await _context.Cities.FindAsync(id);
+        var city = await _context.Cities.FindAsync(keyValues: id);
         if (city == null) return NotFound();
-        return View(city);
+        return View(model: city);
     }
 
     // POST: Cities/Edit/5
@@ -77,7 +77,7 @@ public class CitiesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         City city)
     {
         if (id != city.Id) return NotFound();
@@ -86,20 +86,20 @@ public class CitiesController : Controller
         {
             try
             {
-                _context.Update(city);
+                _context.Update(entity: city);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CityExists(city.Id))
+                if (!CityExists(id: city.Id))
                     return NotFound();
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(city);
+        return View(model: city);
     }
 
     // GET: Cities/Delete/5
@@ -108,29 +108,29 @@ public class CitiesController : Controller
         if (id == null || _context.Cities == null) return NotFound();
 
         var city = await _context.Cities
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (city == null) return NotFound();
 
-        return View(city);
+        return View(model: city);
     }
 
     // POST: Cities/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(name: "Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         if (_context.Cities == null)
-            return Problem("Entity set 'DataContextMySql.Cities'  is null.");
-        var city = await _context.Cities.FindAsync(id);
-        if (city != null) _context.Cities.Remove(city);
+            return Problem(detail: "Entity set 'DataContextMySql.Cities'  is null.");
+        var city = await _context.Cities.FindAsync(keyValues: id);
+        if (city != null) _context.Cities.Remove(entity: city);
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     private bool CityExists(int id)
     {
-        return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Cities?.Any(predicate: e => e.Id == id)).GetValueOrDefault();
     }
 }

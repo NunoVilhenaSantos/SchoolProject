@@ -53,9 +53,9 @@ public class CreateRegionalBucketSample
             StorageClass = storageClass
         };
 
-        var newlyCreatedBucket = storage.CreateBucket(projectId, bucket);
+        var newlyCreatedBucket = storage.CreateBucket(projectId: projectId, bucket: bucket);
 
-        Console.WriteLine($"Created {bucketName}.");
+        Console.WriteLine(value: $"Created {bucketName}.");
 
         return newlyCreatedBucket;
     }

@@ -68,79 +68,79 @@ public class EnableAuthenticatorModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
-        await LoadSharedKeyAndQrCodeUriAsync(user);
+        await LoadSharedKeyAndQrCodeUriAsync(user: user);
 
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
         if (!ModelState.IsValid)
         {
-            await LoadSharedKeyAndQrCodeUriAsync(user);
+            await LoadSharedKeyAndQrCodeUriAsync(user: user);
             return Page();
         }
 
         // Strip spaces and hyphens
-        var verificationCode = Input.Code.Replace(" ", string.Empty)
-            .Replace("-", string.Empty);
+        var verificationCode = Input.Code.Replace(oldValue: " ", newValue: string.Empty)
+            .Replace(oldValue: "-", newValue: string.Empty);
 
         var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-            user, _userManager.Options.Tokens.AuthenticatorTokenProvider,
-            verificationCode);
+            user: user, tokenProvider: _userManager.Options.Tokens.AuthenticatorTokenProvider,
+            token: verificationCode);
 
         if (!is2faTokenValid)
         {
-            ModelState.AddModelError("Input.Code",
-                "Verification code is invalid.");
-            await LoadSharedKeyAndQrCodeUriAsync(user);
+            ModelState.AddModelError(key: "Input.Code",
+                errorMessage: "Verification code is invalid.");
+            await LoadSharedKeyAndQrCodeUriAsync(user: user);
             return Page();
         }
 
-        await _userManager.SetTwoFactorEnabledAsync(user, true);
-        var userId = await _userManager.GetUserIdAsync(user);
+        await _userManager.SetTwoFactorEnabledAsync(user: user, enabled: true);
+        var userId = await _userManager.GetUserIdAsync(user: user);
         _logger.LogInformation(
-            "User with ID '{UserId}' has enabled 2FA with an authenticator app.",
-            userId);
+            message: "User with ID '{UserId}' has enabled 2FA with an authenticator app.",
+            args: userId);
 
         StatusMessage = "Your authenticator app has been verified.";
 
-        if (await _userManager.CountRecoveryCodesAsync(user) == 0)
+        if (await _userManager.CountRecoveryCodesAsync(user: user) == 0)
         {
             var recoveryCodes =
-                await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user,
-                    10);
+                await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user: user,
+                    number: 10);
             RecoveryCodes = recoveryCodes.ToArray();
-            return RedirectToPage("./ShowRecoveryCodes");
+            return RedirectToPage(pageName: "./ShowRecoveryCodes");
         }
 
-        return RedirectToPage("./TwoFactorAuthentication");
+        return RedirectToPage(pageName: "./TwoFactorAuthentication");
     }
 
     private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
     {
         // Load the authenticator key & QR code URI to display on the form
-        var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
-        if (string.IsNullOrEmpty(unformattedKey))
+        var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user: user);
+        if (string.IsNullOrEmpty(value: unformattedKey))
         {
-            await _userManager.ResetAuthenticatorKeyAsync(user);
-            unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            await _userManager.ResetAuthenticatorKeyAsync(user: user);
+            unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user: user);
         }
 
-        SharedKey = FormatKey(unformattedKey);
+        SharedKey = FormatKey(unformattedKey: unformattedKey);
 
-        var email = await _userManager.GetEmailAsync(user);
-        AuthenticatorUri = GenerateQrCodeUri(email, unformattedKey);
+        var email = await _userManager.GetEmailAsync(user: user);
+        AuthenticatorUri = GenerateQrCodeUri(email: email, unformattedKey: unformattedKey);
     }
 
     private string FormatKey(string unformattedKey)
@@ -149,13 +149,13 @@ public class EnableAuthenticatorModel : PageModel
         var currentPosition = 0;
         while (currentPosition + 4 < unformattedKey.Length)
         {
-            result.Append(unformattedKey.AsSpan(currentPosition, 4))
-                .Append(' ');
+            result.Append(value: unformattedKey.AsSpan(start: currentPosition, length: 4))
+                .Append(value: ' ');
             currentPosition += 4;
         }
 
         if (currentPosition < unformattedKey.Length)
-            result.Append(unformattedKey.AsSpan(currentPosition));
+            result.Append(value: unformattedKey.AsSpan(start: currentPosition));
 
         return result.ToString().ToLowerInvariant();
     }
@@ -163,11 +163,11 @@ public class EnableAuthenticatorModel : PageModel
     private string GenerateQrCodeUri(string email, string unformattedKey)
     {
         return string.Format(
-            CultureInfo.InvariantCulture,
-            AuthenticatorUriFormat,
-            _urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
-            _urlEncoder.Encode(email),
-            unformattedKey);
+            provider: CultureInfo.InvariantCulture,
+            format: AuthenticatorUriFormat,
+            arg0: _urlEncoder.Encode(value: "Microsoft.AspNetCore.Identity.UI"),
+            arg1: _urlEncoder.Encode(value: email),
+            arg2: unformattedKey);
     }
 
     /// <summary>
@@ -181,11 +181,11 @@ public class EnableAuthenticatorModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [StringLength(7,
+        [StringLength(maximumLength: 7,
             ErrorMessage =
                 "The {0} must be at least {2} and at max {1} characters long.",
             MinimumLength = 6)]
-        [DataType(DataType.Text)]
+        [DataType(dataType: DataType.Text)]
         [Display(Name = "Verification Code")]
         public string Code { get; set; }
     }

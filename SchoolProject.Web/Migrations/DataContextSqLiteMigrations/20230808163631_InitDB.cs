@@ -11,1136 +11,1136 @@ public partial class InitDB : Migration
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.CreateTable(
-            "AspNetRoles",
-            table => new
+            name: "AspNetRoles",
+            columns: table => new
             {
-                Id = table.Column<string>("TEXT", nullable: false),
-                Name = table.Column<string>("TEXT", maxLength: 256,
+                Id = table.Column<string>(type: "TEXT", nullable: false),
+                Name = table.Column<string>(type: "TEXT", maxLength: 256,
                     nullable: true),
-                NormalizedName = table.Column<string>("TEXT", maxLength: 256,
+                NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256,
                     nullable: true),
-                ConcurrencyStamp = table.Column<string>("TEXT", nullable: true)
+                ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                table.PrimaryKey(name: "PK_AspNetRoles", columns: x => x.Id);
             });
 
         migrationBuilder.CreateTable(
-            "AspNetUsers",
-            table => new
+            name: "AspNetUsers",
+            columns: table => new
             {
-                Id = table.Column<string>("TEXT", nullable: false),
-                FirstName = table.Column<string>("TEXT", maxLength: 50,
+                Id = table.Column<string>(type: "TEXT", nullable: false),
+                FirstName = table.Column<string>(type: "TEXT", maxLength: 50,
                     nullable: false),
-                LastName = table.Column<string>("TEXT", maxLength: 50,
+                LastName = table.Column<string>(type: "TEXT", maxLength: 50,
                     nullable: false),
-                Address = table.Column<string>("TEXT", maxLength: 100,
+                Address = table.Column<string>(type: "TEXT", maxLength: 100,
                     nullable: true),
-                ProfilePhotoId = table.Column<Guid>("TEXT", nullable: false),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                UserName = table.Column<string>("TEXT", maxLength: 256,
+                ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: false),
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                UserName = table.Column<string>(type: "TEXT", maxLength: 256,
                     nullable: true),
-                NormalizedUserName = table.Column<string>("TEXT",
+                NormalizedUserName = table.Column<string>(type: "TEXT",
                     maxLength: 256, nullable: true),
-                Email = table.Column<string>("TEXT", maxLength: 256,
+                Email = table.Column<string>(type: "TEXT", maxLength: 256,
                     nullable: true),
-                NormalizedEmail = table.Column<string>("TEXT", maxLength: 256,
+                NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256,
                     nullable: true),
-                EmailConfirmed = table.Column<bool>("INTEGER", nullable: false),
-                PasswordHash = table.Column<string>("TEXT", nullable: true),
-                SecurityStamp = table.Column<string>("TEXT", nullable: true),
-                ConcurrencyStamp = table.Column<string>("TEXT", nullable: true),
-                PhoneNumber = table.Column<string>("TEXT", nullable: true),
+                EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
+                ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
                 PhoneNumberConfirmed =
-                    table.Column<bool>("INTEGER", nullable: false),
+                    table.Column<bool>(type: "INTEGER", nullable: false),
                 TwoFactorEnabled =
-                    table.Column<bool>("INTEGER", nullable: false),
+                    table.Column<bool>(type: "INTEGER", nullable: false),
                 LockoutEnd =
-                    table.Column<DateTimeOffset>("TEXT", nullable: true),
-                LockoutEnabled = table.Column<bool>("INTEGER", nullable: false),
+                    table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                 AccessFailedCount =
-                    table.Column<int>("INTEGER", nullable: false)
+                    table.Column<int>(type: "INTEGER", nullable: false)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                table.PrimaryKey(name: "PK_AspNetUsers", columns: x => x.Id);
             });
 
         migrationBuilder.CreateTable(
-            "AspNetRoleClaims",
-            table => new
+            name: "AspNetRoleClaims",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                RoleId = table.Column<string>("TEXT", nullable: false),
-                ClaimType = table.Column<string>("TEXT", nullable: true),
-                ClaimValue = table.Column<string>("TEXT", nullable: true)
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                RoleId = table.Column<string>(type: "TEXT", nullable: false),
+                ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                table.PrimaryKey(name: "PK_AspNetRoleClaims", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                    x => x.RoleId,
-                    "AspNetRoles",
-                    "Id",
+                    name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                    column: x => x.RoleId,
+                    principalTable: "AspNetRoles",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
-            "AspNetUserClaims",
-            table => new
+            name: "AspNetUserClaims",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                UserId = table.Column<string>("TEXT", nullable: false),
-                ClaimType = table.Column<string>("TEXT", nullable: true),
-                ClaimValue = table.Column<string>("TEXT", nullable: true)
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                UserId = table.Column<string>(type: "TEXT", nullable: false),
+                ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                table.PrimaryKey(name: "PK_AspNetUserClaims", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_AspNetUserClaims_AspNetUsers_UserId",
-                    x => x.UserId,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                    column: x => x.UserId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
-            "AspNetUserLogins",
-            table => new
+            name: "AspNetUserLogins",
+            columns: table => new
             {
-                LoginProvider = table.Column<string>("TEXT", nullable: false),
-                ProviderKey = table.Column<string>("TEXT", nullable: false),
+                LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
                 ProviderDisplayName =
-                    table.Column<string>("TEXT", nullable: true),
-                UserId = table.Column<string>("TEXT", nullable: false)
+                    table.Column<string>(type: "TEXT", nullable: true),
+                UserId = table.Column<string>(type: "TEXT", nullable: false)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AspNetUserLogins",
-                    x => new {x.LoginProvider, x.ProviderKey});
+                table.PrimaryKey(name: "PK_AspNetUserLogins",
+                    columns: x => new {x.LoginProvider, x.ProviderKey});
                 table.ForeignKey(
-                    "FK_AspNetUserLogins_AspNetUsers_UserId",
-                    x => x.UserId,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                    column: x => x.UserId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
-            "AspNetUserRoles",
-            table => new
+            name: "AspNetUserRoles",
+            columns: table => new
             {
-                UserId = table.Column<string>("TEXT", nullable: false),
-                RoleId = table.Column<string>("TEXT", nullable: false)
+                UserId = table.Column<string>(type: "TEXT", nullable: false),
+                RoleId = table.Column<string>(type: "TEXT", nullable: false)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AspNetUserRoles",
-                    x => new {x.UserId, x.RoleId});
+                table.PrimaryKey(name: "PK_AspNetUserRoles",
+                    columns: x => new {x.UserId, x.RoleId});
                 table.ForeignKey(
-                    "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                    x => x.RoleId,
-                    "AspNetRoles",
-                    "Id",
+                    name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                    column: x => x.RoleId,
+                    principalTable: "AspNetRoles",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
                 table.ForeignKey(
-                    "FK_AspNetUserRoles_AspNetUsers_UserId",
-                    x => x.UserId,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                    column: x => x.UserId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
-            "AspNetUserTokens",
-            table => new
+            name: "AspNetUserTokens",
+            columns: table => new
             {
-                UserId = table.Column<string>("TEXT", nullable: false),
-                LoginProvider = table.Column<string>("TEXT", nullable: false),
-                Name = table.Column<string>("TEXT", nullable: false),
-                Value = table.Column<string>("TEXT", nullable: true)
+                UserId = table.Column<string>(type: "TEXT", nullable: false),
+                LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                Name = table.Column<string>(type: "TEXT", nullable: false),
+                Value = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AspNetUserTokens",
-                    x => new {x.UserId, x.LoginProvider, x.Name});
+                table.PrimaryKey(name: "PK_AspNetUserTokens",
+                    columns: x => new {x.UserId, x.LoginProvider, x.Name});
                 table.ForeignKey(
-                    "FK_AspNetUserTokens_AspNetUsers_UserId",
-                    x => x.UserId,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                    column: x => x.UserId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
-            "Genders",
-            table => new
+            name: "Genders",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                Name = table.Column<string>("TEXT", maxLength: 20,
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                Name = table.Column<string>(type: "TEXT", maxLength: 20,
                     nullable: false),
-                ProfilePhotoId = table.Column<Guid>("TEXT", nullable: true),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: true),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Genders", x => x.Id);
+                table.PrimaryKey(name: "PK_Genders", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_Genders_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Genders_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Genders_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Genders_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "Nationalities",
-            table => new
+            name: "Nationalities",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                Name = table.Column<string>("TEXT", maxLength: 50,
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                Name = table.Column<string>(type: "TEXT", maxLength: 50,
                     nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Nationalities", x => x.Id);
+                table.PrimaryKey(name: "PK_Nationalities", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_Nationalities_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Nationalities_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Nationalities_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Nationalities_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "SchoolClasses",
-            table => new
+            name: "SchoolClasses",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                Code = table.Column<string>("TEXT", maxLength: 7,
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                Code = table.Column<string>(type: "TEXT", maxLength: 7,
                     nullable: false),
-                Acronym = table.Column<string>("TEXT", nullable: false),
-                Name = table.Column<string>("TEXT", nullable: false),
-                QnqLevel = table.Column<byte>("INTEGER", nullable: false),
-                EqfLevel = table.Column<byte>("INTEGER", nullable: false),
-                StartDate = table.Column<DateTime>("TEXT", nullable: false),
-                EndDate = table.Column<DateTime>("TEXT", nullable: false),
-                StartHour = table.Column<TimeSpan>("TEXT", nullable: false),
-                EndHour = table.Column<TimeSpan>("TEXT", nullable: false),
-                Location = table.Column<string>("TEXT", nullable: true),
-                Type = table.Column<string>("TEXT", nullable: true),
-                Area = table.Column<string>("TEXT", nullable: true),
-                PriceForEmployed = table.Column<decimal>("TEXT", precision: 10,
+                Acronym = table.Column<string>(type: "TEXT", nullable: false),
+                Name = table.Column<string>(type: "TEXT", nullable: false),
+                QnqLevel = table.Column<byte>(type: "INTEGER", nullable: false),
+                EqfLevel = table.Column<byte>(type: "INTEGER", nullable: false),
+                StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                StartHour = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                EndHour = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                Location = table.Column<string>(type: "TEXT", nullable: true),
+                Type = table.Column<string>(type: "TEXT", nullable: true),
+                Area = table.Column<string>(type: "TEXT", nullable: true),
+                PriceForEmployed = table.Column<decimal>(type: "TEXT", precision: 10,
                     scale: 2, nullable: false),
-                PriceForUnemployed = table.Column<decimal>("TEXT",
+                PriceForUnemployed = table.Column<decimal>(type: "TEXT",
                     precision: 10, scale: 2, nullable: false),
-                ProfilePhotoId = table.Column<Guid>("TEXT", nullable: true),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: true),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_SchoolClasses", x => x.Id);
+                table.PrimaryKey(name: "PK_SchoolClasses", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_SchoolClasses_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_SchoolClasses_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_SchoolClasses_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_SchoolClasses_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "Countries",
-            table => new
+            name: "Countries",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                Name = table.Column<string>("TEXT", maxLength: 50,
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                Name = table.Column<string>(type: "TEXT", maxLength: 50,
                     nullable: false),
-                ProfilePhotoId = table.Column<Guid>("TEXT", nullable: true),
-                NationalityId = table.Column<int>("INTEGER", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: true),
+                NationalityId = table.Column<int>(type: "INTEGER", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Countries", x => x.Id);
+                table.PrimaryKey(name: "PK_Countries", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_Countries_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Countries_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Countries_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Countries_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Countries_Nationalities_NationalityId",
-                    x => x.NationalityId,
-                    "Nationalities",
-                    "Id",
+                    name: "FK_Countries_Nationalities_NationalityId",
+                    column: x => x.NationalityId,
+                    principalTable: "Nationalities",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "Courses",
-            table => new
+            name: "Courses",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                Code = table.Column<string>("TEXT", maxLength: 7,
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                Code = table.Column<string>(type: "TEXT", maxLength: 7,
                     nullable: false),
-                Name = table.Column<string>("TEXT", nullable: false),
-                Description = table.Column<int>("INTEGER", nullable: false),
-                Hours = table.Column<int>("INTEGER", nullable: false),
-                CreditPoints = table.Column<double>("REAL", nullable: false),
-                ProfilePhotoId = table.Column<Guid>("TEXT", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                Name = table.Column<string>(type: "TEXT", nullable: false),
+                Description = table.Column<int>(type: "INTEGER", nullable: false),
+                Hours = table.Column<int>(type: "INTEGER", nullable: false),
+                CreditPoints = table.Column<double>(type: "REAL", nullable: false),
+                ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true),
-                SchoolClassId = table.Column<int>("INTEGER", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true),
+                SchoolClassId = table.Column<int>(type: "INTEGER", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Courses", x => x.Id);
+                table.PrimaryKey(name: "PK_Courses", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_Courses_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Courses_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Courses_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Courses_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Courses_SchoolClasses_SchoolClassId",
-                    x => x.SchoolClassId,
-                    "SchoolClasses",
-                    "Id",
+                    name: "FK_Courses_SchoolClasses_SchoolClassId",
+                    column: x => x.SchoolClassId,
+                    principalTable: "SchoolClasses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "Cities",
-            table => new
+            name: "Cities",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                Name = table.Column<string>("TEXT", maxLength: 50,
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                Name = table.Column<string>(type: "TEXT", maxLength: 50,
                     nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true),
-                CountryId = table.Column<int>("INTEGER", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true),
+                CountryId = table.Column<int>(type: "INTEGER", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Cities", x => x.Id);
+                table.PrimaryKey(name: "PK_Cities", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_Cities_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Cities_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Cities_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Cities_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Cities_Countries_CountryId",
-                    x => x.CountryId,
-                    "Countries",
-                    "Id",
+                    name: "FK_Cities_Countries_CountryId",
+                    column: x => x.CountryId,
+                    principalTable: "Countries",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "SchoolClassCourses",
-            table => new
+            name: "SchoolClassCourses",
+            columns: table => new
             {
-                SchoolClassId = table.Column<int>("INTEGER", nullable: false),
-                CourseId = table.Column<int>("INTEGER", nullable: false),
-                Id = table.Column<int>("INTEGER", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                SchoolClassId = table.Column<int>(type: "INTEGER", nullable: false),
+                CourseId = table.Column<int>(type: "INTEGER", nullable: false),
+                Id = table.Column<int>(type: "INTEGER", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_SchoolClassCourses",
-                    x => new {x.SchoolClassId, x.CourseId});
+                table.PrimaryKey(name: "PK_SchoolClassCourses",
+                    columns: x => new {x.SchoolClassId, x.CourseId});
                 table.ForeignKey(
-                    "FK_SchoolClassCourses_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_SchoolClassCourses_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_SchoolClassCourses_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_SchoolClassCourses_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_SchoolClassCourses_Courses_CourseId",
-                    x => x.CourseId,
-                    "Courses",
-                    "Id",
+                    name: "FK_SchoolClassCourses_Courses_CourseId",
+                    column: x => x.CourseId,
+                    principalTable: "Courses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_SchoolClassCourses_SchoolClasses_SchoolClassId",
-                    x => x.SchoolClassId,
-                    "SchoolClasses",
-                    "Id",
+                    name: "FK_SchoolClassCourses_SchoolClasses_SchoolClassId",
+                    column: x => x.SchoolClassId,
+                    principalTable: "SchoolClasses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "Students",
-            table => new
+            name: "Students",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                FirstName = table.Column<string>("TEXT", nullable: false),
-                LastName = table.Column<string>("TEXT", nullable: false),
-                Address = table.Column<string>("TEXT", nullable: false),
-                PostalCode = table.Column<string>("TEXT", nullable: false),
-                CityId = table.Column<int>("INTEGER", nullable: false),
-                CountryId = table.Column<int>("INTEGER", nullable: false),
-                MobilePhone = table.Column<string>("TEXT", nullable: false),
-                Email = table.Column<string>("TEXT", nullable: false),
-                Active = table.Column<bool>("INTEGER", nullable: false),
-                GenderId = table.Column<int>("INTEGER", nullable: false),
-                DateOfBirth = table.Column<DateTime>("TEXT", nullable: false),
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                LastName = table.Column<string>(type: "TEXT", nullable: false),
+                Address = table.Column<string>(type: "TEXT", nullable: false),
+                PostalCode = table.Column<string>(type: "TEXT", nullable: false),
+                CityId = table.Column<int>(type: "INTEGER", nullable: false),
+                CountryId = table.Column<int>(type: "INTEGER", nullable: false),
+                MobilePhone = table.Column<string>(type: "TEXT", nullable: false),
+                Email = table.Column<string>(type: "TEXT", nullable: false),
+                Active = table.Column<bool>(type: "INTEGER", nullable: false),
+                GenderId = table.Column<int>(type: "INTEGER", nullable: false),
+                DateOfBirth = table.Column<DateTime>(type: "TEXT", nullable: false),
                 IdentificationNumber =
-                    table.Column<string>("TEXT", nullable: false),
+                    table.Column<string>(type: "TEXT", nullable: false),
                 IdentificationType =
-                    table.Column<string>("TEXT", nullable: false),
+                    table.Column<string>(type: "TEXT", nullable: false),
                 ExpirationDateIdentificationNumber =
-                    table.Column<DateTime>("TEXT", nullable: false),
+                    table.Column<DateTime>(type: "TEXT", nullable: false),
                 TaxIdentificationNumber =
-                    table.Column<string>("TEXT", nullable: false),
+                    table.Column<string>(type: "TEXT", nullable: false),
                 CountryOfNationalityId =
-                    table.Column<int>("INTEGER", nullable: false),
-                BirthplaceId = table.Column<int>("INTEGER", nullable: false),
-                EnrollDate = table.Column<DateTime>("TEXT", nullable: false),
-                UserId = table.Column<string>("TEXT", nullable: false),
-                ProfilePhotoId = table.Column<Guid>("TEXT", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                    table.Column<int>(type: "INTEGER", nullable: false),
+                BirthplaceId = table.Column<int>(type: "INTEGER", nullable: false),
+                EnrollDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                UserId = table.Column<string>(type: "TEXT", nullable: false),
+                ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Students", x => x.Id);
+                table.PrimaryKey(name: "PK_Students", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_Students_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Students_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Students_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Students_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Students_AspNetUsers_UserId",
-                    x => x.UserId,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Students_AspNetUsers_UserId",
+                    column: x => x.UserId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Students_Cities_CityId",
-                    x => x.CityId,
-                    "Cities",
-                    "Id",
+                    name: "FK_Students_Cities_CityId",
+                    column: x => x.CityId,
+                    principalTable: "Cities",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Students_Countries_BirthplaceId",
-                    x => x.BirthplaceId,
-                    "Countries",
-                    "Id",
+                    name: "FK_Students_Countries_BirthplaceId",
+                    column: x => x.BirthplaceId,
+                    principalTable: "Countries",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Students_Countries_CountryId",
-                    x => x.CountryId,
-                    "Countries",
-                    "Id",
+                    name: "FK_Students_Countries_CountryId",
+                    column: x => x.CountryId,
+                    principalTable: "Countries",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Students_Countries_CountryOfNationalityId",
-                    x => x.CountryOfNationalityId,
-                    "Countries",
-                    "Id",
+                    name: "FK_Students_Countries_CountryOfNationalityId",
+                    column: x => x.CountryOfNationalityId,
+                    principalTable: "Countries",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Students_Genders_GenderId",
-                    x => x.GenderId,
-                    "Genders",
-                    "Id",
+                    name: "FK_Students_Genders_GenderId",
+                    column: x => x.GenderId,
+                    principalTable: "Genders",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "Teachers",
-            table => new
+            name: "Teachers",
+            columns: table => new
             {
-                Id = table.Column<int>("INTEGER", nullable: false)
-                    .Annotation("Sqlite:Autoincrement", true),
-                FirstName = table.Column<string>("TEXT", nullable: false),
-                LastName = table.Column<string>("TEXT", nullable: false),
-                Address = table.Column<string>("TEXT", nullable: false),
-                PostalCode = table.Column<string>("TEXT", nullable: false),
-                CityId = table.Column<int>("INTEGER", nullable: false),
-                CountryId = table.Column<int>("INTEGER", nullable: false),
-                MobilePhone = table.Column<string>("TEXT", nullable: false),
-                Email = table.Column<string>("TEXT", nullable: false),
-                Active = table.Column<bool>("INTEGER", nullable: false),
-                GenderId = table.Column<int>("INTEGER", nullable: false),
-                DateOfBirth = table.Column<DateTime>("TEXT", nullable: false),
+                Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    .Annotation(name: "Sqlite:Autoincrement", value: true),
+                FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                LastName = table.Column<string>(type: "TEXT", nullable: false),
+                Address = table.Column<string>(type: "TEXT", nullable: false),
+                PostalCode = table.Column<string>(type: "TEXT", nullable: false),
+                CityId = table.Column<int>(type: "INTEGER", nullable: false),
+                CountryId = table.Column<int>(type: "INTEGER", nullable: false),
+                MobilePhone = table.Column<string>(type: "TEXT", nullable: false),
+                Email = table.Column<string>(type: "TEXT", nullable: false),
+                Active = table.Column<bool>(type: "INTEGER", nullable: false),
+                GenderId = table.Column<int>(type: "INTEGER", nullable: false),
+                DateOfBirth = table.Column<DateTime>(type: "TEXT", nullable: false),
                 IdentificationNumber =
-                    table.Column<string>("TEXT", nullable: false),
+                    table.Column<string>(type: "TEXT", nullable: false),
                 IdentificationType =
-                    table.Column<string>("TEXT", nullable: false),
+                    table.Column<string>(type: "TEXT", nullable: false),
                 ExpirationDateIdentificationNumber =
-                    table.Column<DateTime>("TEXT", nullable: false),
+                    table.Column<DateTime>(type: "TEXT", nullable: false),
                 TaxIdentificationNumber =
-                    table.Column<string>("TEXT", nullable: false),
+                    table.Column<string>(type: "TEXT", nullable: false),
                 CountryOfNationalityId =
-                    table.Column<int>("INTEGER", nullable: false),
-                BirthplaceId = table.Column<int>("INTEGER", nullable: false),
-                EnrollDate = table.Column<DateTime>("TEXT", nullable: false),
-                UserId = table.Column<string>("TEXT", nullable: false),
-                ProfilePhotoId = table.Column<Guid>("TEXT", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                    table.Column<int>(type: "INTEGER", nullable: false),
+                BirthplaceId = table.Column<int>(type: "INTEGER", nullable: false),
+                EnrollDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                UserId = table.Column<string>(type: "TEXT", nullable: false),
+                ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Teachers", x => x.Id);
+                table.PrimaryKey(name: "PK_Teachers", columns: x => x.Id);
                 table.ForeignKey(
-                    "FK_Teachers_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Teachers_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Teachers_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Teachers_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Teachers_AspNetUsers_UserId",
-                    x => x.UserId,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Teachers_AspNetUsers_UserId",
+                    column: x => x.UserId,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Teachers_Cities_CityId",
-                    x => x.CityId,
-                    "Cities",
-                    "Id",
+                    name: "FK_Teachers_Cities_CityId",
+                    column: x => x.CityId,
+                    principalTable: "Cities",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Teachers_Countries_BirthplaceId",
-                    x => x.BirthplaceId,
-                    "Countries",
-                    "Id",
+                    name: "FK_Teachers_Countries_BirthplaceId",
+                    column: x => x.BirthplaceId,
+                    principalTable: "Countries",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Teachers_Countries_CountryId",
-                    x => x.CountryId,
-                    "Countries",
-                    "Id",
+                    name: "FK_Teachers_Countries_CountryId",
+                    column: x => x.CountryId,
+                    principalTable: "Countries",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Teachers_Countries_CountryOfNationalityId",
-                    x => x.CountryOfNationalityId,
-                    "Countries",
-                    "Id",
+                    name: "FK_Teachers_Countries_CountryOfNationalityId",
+                    column: x => x.CountryOfNationalityId,
+                    principalTable: "Countries",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Teachers_Genders_GenderId",
-                    x => x.GenderId,
-                    "Genders",
-                    "Id",
+                    name: "FK_Teachers_Genders_GenderId",
+                    column: x => x.GenderId,
+                    principalTable: "Genders",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "Enrollments",
-            table => new
+            name: "Enrollments",
+            columns: table => new
             {
-                StudentId = table.Column<int>("INTEGER", nullable: false),
-                CourseId = table.Column<int>("INTEGER", nullable: false),
-                Grade = table.Column<decimal>("TEXT", precision: 18, scale: 2,
+                StudentId = table.Column<int>(type: "INTEGER", nullable: false),
+                CourseId = table.Column<int>(type: "INTEGER", nullable: false),
+                Grade = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2,
                     nullable: true),
-                Id = table.Column<int>("int", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                Id = table.Column<int>(type: "int", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true),
-                SchoolClassId = table.Column<int>("INTEGER", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true),
+                SchoolClassId = table.Column<int>(type: "INTEGER", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Enrollments",
-                    x => new {x.StudentId, x.CourseId});
+                table.PrimaryKey(name: "PK_Enrollments",
+                    columns: x => new {x.StudentId, x.CourseId});
                 table.ForeignKey(
-                    "FK_Enrollments_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Enrollments_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Enrollments_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_Enrollments_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Enrollments_Courses_CourseId",
-                    x => x.CourseId,
-                    "Courses",
-                    "Id",
+                    name: "FK_Enrollments_Courses_CourseId",
+                    column: x => x.CourseId,
+                    principalTable: "Courses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Enrollments_SchoolClasses_SchoolClassId",
-                    x => x.SchoolClassId,
-                    "SchoolClasses",
-                    "Id",
+                    name: "FK_Enrollments_SchoolClasses_SchoolClassId",
+                    column: x => x.SchoolClassId,
+                    principalTable: "SchoolClasses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_Enrollments_Students_StudentId",
-                    x => x.StudentId,
-                    "Students",
-                    "Id",
+                    name: "FK_Enrollments_Students_StudentId",
+                    column: x => x.StudentId,
+                    principalTable: "Students",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "SchoolClassStudent",
-            table => new
+            name: "SchoolClassStudent",
+            columns: table => new
             {
-                SchoolClassesId = table.Column<int>("INTEGER", nullable: false),
-                StudentsId = table.Column<int>("INTEGER", nullable: false)
+                SchoolClassesId = table.Column<int>(type: "INTEGER", nullable: false),
+                StudentsId = table.Column<int>(type: "INTEGER", nullable: false)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_SchoolClassStudent",
-                    x => new {x.SchoolClassesId, x.StudentsId});
+                table.PrimaryKey(name: "PK_SchoolClassStudent",
+                    columns: x => new {x.SchoolClassesId, x.StudentsId});
                 table.ForeignKey(
-                    "FK_SchoolClassStudent_SchoolClasses_SchoolClassesId",
-                    x => x.SchoolClassesId,
-                    "SchoolClasses",
-                    "Id",
+                    name: "FK_SchoolClassStudent_SchoolClasses_SchoolClassesId",
+                    column: x => x.SchoolClassesId,
+                    principalTable: "SchoolClasses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_SchoolClassStudent_Students_StudentsId",
-                    x => x.StudentsId,
-                    "Students",
-                    "Id",
+                    name: "FK_SchoolClassStudent_Students_StudentsId",
+                    column: x => x.StudentsId,
+                    principalTable: "Students",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "StudentCourses",
-            table => new
+            name: "StudentCourses",
+            columns: table => new
             {
-                StudentId = table.Column<int>("INTEGER", nullable: false),
-                CourseId = table.Column<int>("INTEGER", nullable: false),
-                Id = table.Column<int>("INTEGER", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                StudentId = table.Column<int>(type: "INTEGER", nullable: false),
+                CourseId = table.Column<int>(type: "INTEGER", nullable: false),
+                Id = table.Column<int>(type: "INTEGER", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_StudentCourses",
-                    x => new {x.StudentId, x.CourseId});
+                table.PrimaryKey(name: "PK_StudentCourses",
+                    columns: x => new {x.StudentId, x.CourseId});
                 table.ForeignKey(
-                    "FK_StudentCourses_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_StudentCourses_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_StudentCourses_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_StudentCourses_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_StudentCourses_Courses_CourseId",
-                    x => x.CourseId,
-                    "Courses",
-                    "Id",
+                    name: "FK_StudentCourses_Courses_CourseId",
+                    column: x => x.CourseId,
+                    principalTable: "Courses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_StudentCourses_Students_StudentId",
-                    x => x.StudentId,
-                    "Students",
-                    "Id",
+                    name: "FK_StudentCourses_Students_StudentId",
+                    column: x => x.StudentId,
+                    principalTable: "Students",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateTable(
-            "TeacherCourses",
-            table => new
+            name: "TeacherCourses",
+            columns: table => new
             {
-                TeacherId = table.Column<int>("INTEGER", nullable: false),
-                CourseId = table.Column<int>("INTEGER", nullable: false),
-                Id = table.Column<int>("INTEGER", nullable: false),
-                IdGuid = table.Column<Guid>("TEXT", nullable: false,
+                TeacherId = table.Column<int>(type: "INTEGER", nullable: false),
+                CourseId = table.Column<int>(type: "INTEGER", nullable: false),
+                Id = table.Column<int>(type: "INTEGER", nullable: false),
+                IdGuid = table.Column<Guid>(type: "TEXT", nullable: false,
                     defaultValueSql: "NEWID()"),
-                WasDeleted = table.Column<bool>("INTEGER", nullable: false),
-                CreatedAt = table.Column<DateTime>("TEXT", nullable: false),
-                CreatedById = table.Column<string>("TEXT", nullable: false),
-                UpdatedAt = table.Column<DateTime>("TEXT", nullable: true),
-                UpdatedById = table.Column<string>("TEXT", nullable: true)
+                WasDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                CreatedById = table.Column<string>(type: "TEXT", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                UpdatedById = table.Column<string>(type: "TEXT", nullable: true)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_TeacherCourses",
-                    x => new {x.TeacherId, x.CourseId});
+                table.PrimaryKey(name: "PK_TeacherCourses",
+                    columns: x => new {x.TeacherId, x.CourseId});
                 table.ForeignKey(
-                    "FK_TeacherCourses_AspNetUsers_CreatedById",
-                    x => x.CreatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_TeacherCourses_AspNetUsers_CreatedById",
+                    column: x => x.CreatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_TeacherCourses_AspNetUsers_UpdatedById",
-                    x => x.UpdatedById,
-                    "AspNetUsers",
-                    "Id",
+                    name: "FK_TeacherCourses_AspNetUsers_UpdatedById",
+                    column: x => x.UpdatedById,
+                    principalTable: "AspNetUsers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_TeacherCourses_Courses_CourseId",
-                    x => x.CourseId,
-                    "Courses",
-                    "Id",
+                    name: "FK_TeacherCourses_Courses_CourseId",
+                    column: x => x.CourseId,
+                    principalTable: "Courses",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
                 table.ForeignKey(
-                    "FK_TeacherCourses_Teachers_TeacherId",
-                    x => x.TeacherId,
-                    "Teachers",
-                    "Id",
+                    name: "FK_TeacherCourses_Teachers_TeacherId",
+                    column: x => x.TeacherId,
+                    principalTable: "Teachers",
+                    principalColumn: "Id",
                     onDelete: ReferentialAction.Restrict);
             });
 
         migrationBuilder.CreateIndex(
-            "IX_AspNetRoleClaims_RoleId",
-            "AspNetRoleClaims",
-            "RoleId");
+            name: "IX_AspNetRoleClaims_RoleId",
+            table: "AspNetRoleClaims",
+            column: "RoleId");
 
         migrationBuilder.CreateIndex(
-            "RoleNameIndex",
-            "AspNetRoles",
-            "NormalizedName",
+            name: "RoleNameIndex",
+            table: "AspNetRoles",
+            column: "NormalizedName",
             unique: true);
 
         migrationBuilder.CreateIndex(
-            "IX_AspNetUserClaims_UserId",
-            "AspNetUserClaims",
-            "UserId");
+            name: "IX_AspNetUserClaims_UserId",
+            table: "AspNetUserClaims",
+            column: "UserId");
 
         migrationBuilder.CreateIndex(
-            "IX_AspNetUserLogins_UserId",
-            "AspNetUserLogins",
-            "UserId");
+            name: "IX_AspNetUserLogins_UserId",
+            table: "AspNetUserLogins",
+            column: "UserId");
 
         migrationBuilder.CreateIndex(
-            "IX_AspNetUserRoles_RoleId",
-            "AspNetUserRoles",
-            "RoleId");
+            name: "IX_AspNetUserRoles_RoleId",
+            table: "AspNetUserRoles",
+            column: "RoleId");
 
         migrationBuilder.CreateIndex(
-            "EmailIndex",
-            "AspNetUsers",
-            "NormalizedEmail");
+            name: "EmailIndex",
+            table: "AspNetUsers",
+            column: "NormalizedEmail");
 
         migrationBuilder.CreateIndex(
-            "UserNameIndex",
-            "AspNetUsers",
-            "NormalizedUserName",
+            name: "UserNameIndex",
+            table: "AspNetUsers",
+            column: "NormalizedUserName",
             unique: true);
 
         migrationBuilder.CreateIndex(
-            "IX_Cities_CountryId",
-            "Cities",
-            "CountryId");
+            name: "IX_Cities_CountryId",
+            table: "Cities",
+            column: "CountryId");
 
         migrationBuilder.CreateIndex(
-            "IX_Cities_CreatedById",
-            "Cities",
-            "CreatedById");
+            name: "IX_Cities_CreatedById",
+            table: "Cities",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Cities_UpdatedById",
-            "Cities",
-            "UpdatedById");
+            name: "IX_Cities_UpdatedById",
+            table: "Cities",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Countries_CreatedById",
-            "Countries",
-            "CreatedById");
+            name: "IX_Countries_CreatedById",
+            table: "Countries",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Countries_NationalityId",
-            "Countries",
-            "NationalityId");
+            name: "IX_Countries_NationalityId",
+            table: "Countries",
+            column: "NationalityId");
 
         migrationBuilder.CreateIndex(
-            "IX_Countries_UpdatedById",
-            "Countries",
-            "UpdatedById");
+            name: "IX_Countries_UpdatedById",
+            table: "Countries",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Courses_CreatedById",
-            "Courses",
-            "CreatedById");
+            name: "IX_Courses_CreatedById",
+            table: "Courses",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Courses_SchoolClassId",
-            "Courses",
-            "SchoolClassId");
+            name: "IX_Courses_SchoolClassId",
+            table: "Courses",
+            column: "SchoolClassId");
 
         migrationBuilder.CreateIndex(
-            "IX_Courses_UpdatedById",
-            "Courses",
-            "UpdatedById");
+            name: "IX_Courses_UpdatedById",
+            table: "Courses",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Enrollments_CourseId",
-            "Enrollments",
-            "CourseId");
+            name: "IX_Enrollments_CourseId",
+            table: "Enrollments",
+            column: "CourseId");
 
         migrationBuilder.CreateIndex(
-            "IX_Enrollments_CreatedById",
-            "Enrollments",
-            "CreatedById");
+            name: "IX_Enrollments_CreatedById",
+            table: "Enrollments",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Enrollments_SchoolClassId",
-            "Enrollments",
-            "SchoolClassId");
+            name: "IX_Enrollments_SchoolClassId",
+            table: "Enrollments",
+            column: "SchoolClassId");
 
         migrationBuilder.CreateIndex(
-            "IX_Enrollments_UpdatedById",
-            "Enrollments",
-            "UpdatedById");
+            name: "IX_Enrollments_UpdatedById",
+            table: "Enrollments",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Genders_CreatedById",
-            "Genders",
-            "CreatedById");
+            name: "IX_Genders_CreatedById",
+            table: "Genders",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Genders_UpdatedById",
-            "Genders",
-            "UpdatedById");
+            name: "IX_Genders_UpdatedById",
+            table: "Genders",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Nationalities_CreatedById",
-            "Nationalities",
-            "CreatedById");
+            name: "IX_Nationalities_CreatedById",
+            table: "Nationalities",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Nationalities_UpdatedById",
-            "Nationalities",
-            "UpdatedById");
+            name: "IX_Nationalities_UpdatedById",
+            table: "Nationalities",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_SchoolClassCourses_CourseId",
-            "SchoolClassCourses",
-            "CourseId");
+            name: "IX_SchoolClassCourses_CourseId",
+            table: "SchoolClassCourses",
+            column: "CourseId");
 
         migrationBuilder.CreateIndex(
-            "IX_SchoolClassCourses_CreatedById",
-            "SchoolClassCourses",
-            "CreatedById");
+            name: "IX_SchoolClassCourses_CreatedById",
+            table: "SchoolClassCourses",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_SchoolClassCourses_UpdatedById",
-            "SchoolClassCourses",
-            "UpdatedById");
+            name: "IX_SchoolClassCourses_UpdatedById",
+            table: "SchoolClassCourses",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_SchoolClasses_CreatedById",
-            "SchoolClasses",
-            "CreatedById");
+            name: "IX_SchoolClasses_CreatedById",
+            table: "SchoolClasses",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_SchoolClasses_UpdatedById",
-            "SchoolClasses",
-            "UpdatedById");
+            name: "IX_SchoolClasses_UpdatedById",
+            table: "SchoolClasses",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_SchoolClassStudent_StudentsId",
-            "SchoolClassStudent",
-            "StudentsId");
+            name: "IX_SchoolClassStudent_StudentsId",
+            table: "SchoolClassStudent",
+            column: "StudentsId");
 
         migrationBuilder.CreateIndex(
-            "IX_StudentCourses_CourseId",
-            "StudentCourses",
-            "CourseId");
+            name: "IX_StudentCourses_CourseId",
+            table: "StudentCourses",
+            column: "CourseId");
 
         migrationBuilder.CreateIndex(
-            "IX_StudentCourses_CreatedById",
-            "StudentCourses",
-            "CreatedById");
+            name: "IX_StudentCourses_CreatedById",
+            table: "StudentCourses",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_StudentCourses_UpdatedById",
-            "StudentCourses",
-            "UpdatedById");
+            name: "IX_StudentCourses_UpdatedById",
+            table: "StudentCourses",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_BirthplaceId",
-            "Students",
-            "BirthplaceId");
+            name: "IX_Students_BirthplaceId",
+            table: "Students",
+            column: "BirthplaceId");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_CityId",
-            "Students",
-            "CityId");
+            name: "IX_Students_CityId",
+            table: "Students",
+            column: "CityId");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_CountryId",
-            "Students",
-            "CountryId");
+            name: "IX_Students_CountryId",
+            table: "Students",
+            column: "CountryId");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_CountryOfNationalityId",
-            "Students",
-            "CountryOfNationalityId");
+            name: "IX_Students_CountryOfNationalityId",
+            table: "Students",
+            column: "CountryOfNationalityId");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_CreatedById",
-            "Students",
-            "CreatedById");
+            name: "IX_Students_CreatedById",
+            table: "Students",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_GenderId",
-            "Students",
-            "GenderId");
+            name: "IX_Students_GenderId",
+            table: "Students",
+            column: "GenderId");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_UpdatedById",
-            "Students",
-            "UpdatedById");
+            name: "IX_Students_UpdatedById",
+            table: "Students",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Students_UserId",
-            "Students",
-            "UserId");
+            name: "IX_Students_UserId",
+            table: "Students",
+            column: "UserId");
 
         migrationBuilder.CreateIndex(
-            "IX_TeacherCourses_CourseId",
-            "TeacherCourses",
-            "CourseId");
+            name: "IX_TeacherCourses_CourseId",
+            table: "TeacherCourses",
+            column: "CourseId");
 
         migrationBuilder.CreateIndex(
-            "IX_TeacherCourses_CreatedById",
-            "TeacherCourses",
-            "CreatedById");
+            name: "IX_TeacherCourses_CreatedById",
+            table: "TeacherCourses",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_TeacherCourses_UpdatedById",
-            "TeacherCourses",
-            "UpdatedById");
+            name: "IX_TeacherCourses_UpdatedById",
+            table: "TeacherCourses",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_BirthplaceId",
-            "Teachers",
-            "BirthplaceId");
+            name: "IX_Teachers_BirthplaceId",
+            table: "Teachers",
+            column: "BirthplaceId");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_CityId",
-            "Teachers",
-            "CityId");
+            name: "IX_Teachers_CityId",
+            table: "Teachers",
+            column: "CityId");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_CountryId",
-            "Teachers",
-            "CountryId");
+            name: "IX_Teachers_CountryId",
+            table: "Teachers",
+            column: "CountryId");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_CountryOfNationalityId",
-            "Teachers",
-            "CountryOfNationalityId");
+            name: "IX_Teachers_CountryOfNationalityId",
+            table: "Teachers",
+            column: "CountryOfNationalityId");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_CreatedById",
-            "Teachers",
-            "CreatedById");
+            name: "IX_Teachers_CreatedById",
+            table: "Teachers",
+            column: "CreatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_GenderId",
-            "Teachers",
-            "GenderId");
+            name: "IX_Teachers_GenderId",
+            table: "Teachers",
+            column: "GenderId");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_UpdatedById",
-            "Teachers",
-            "UpdatedById");
+            name: "IX_Teachers_UpdatedById",
+            table: "Teachers",
+            column: "UpdatedById");
 
         migrationBuilder.CreateIndex(
-            "IX_Teachers_UserId",
-            "Teachers",
-            "UserId");
+            name: "IX_Teachers_UserId",
+            table: "Teachers",
+            column: "UserId");
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropTable(
-            "AspNetRoleClaims");
+            name: "AspNetRoleClaims");
 
         migrationBuilder.DropTable(
-            "AspNetUserClaims");
+            name: "AspNetUserClaims");
 
         migrationBuilder.DropTable(
-            "AspNetUserLogins");
+            name: "AspNetUserLogins");
 
         migrationBuilder.DropTable(
-            "AspNetUserRoles");
+            name: "AspNetUserRoles");
 
         migrationBuilder.DropTable(
-            "AspNetUserTokens");
+            name: "AspNetUserTokens");
 
         migrationBuilder.DropTable(
-            "Enrollments");
+            name: "Enrollments");
 
         migrationBuilder.DropTable(
-            "SchoolClassCourses");
+            name: "SchoolClassCourses");
 
         migrationBuilder.DropTable(
-            "SchoolClassStudent");
+            name: "SchoolClassStudent");
 
         migrationBuilder.DropTable(
-            "StudentCourses");
+            name: "StudentCourses");
 
         migrationBuilder.DropTable(
-            "TeacherCourses");
+            name: "TeacherCourses");
 
         migrationBuilder.DropTable(
-            "AspNetRoles");
+            name: "AspNetRoles");
 
         migrationBuilder.DropTable(
-            "Students");
+            name: "Students");
 
         migrationBuilder.DropTable(
-            "Courses");
+            name: "Courses");
 
         migrationBuilder.DropTable(
-            "Teachers");
+            name: "Teachers");
 
         migrationBuilder.DropTable(
-            "SchoolClasses");
+            name: "SchoolClasses");
 
         migrationBuilder.DropTable(
-            "Cities");
+            name: "Cities");
 
         migrationBuilder.DropTable(
-            "Genders");
+            name: "Genders");
 
         migrationBuilder.DropTable(
-            "Countries");
+            name: "Countries");
 
         migrationBuilder.DropTable(
-            "Nationalities");
+            name: "Nationalities");
 
         migrationBuilder.DropTable(
-            "AspNetUsers");
+            name: "AspNetUsers");
     }
 }

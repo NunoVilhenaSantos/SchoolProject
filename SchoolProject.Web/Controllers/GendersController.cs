@@ -17,8 +17,8 @@ public class GendersController : Controller
     public async Task<IActionResult> Index()
     {
         return _context.Genders != null
-            ? View(await _context.Genders.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Genders'  is null.");
+            ? View(model: await _context.Genders.ToListAsync())
+            : Problem(detail: "Entity set 'DataContextMySql.Genders'  is null.");
     }
 
     // GET: Genders/Details/5
@@ -27,10 +27,10 @@ public class GendersController : Controller
         if (id == null || _context.Genders == null) return NotFound();
 
         var gender = await _context.Genders
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (gender == null) return NotFound();
 
-        return View(gender);
+        return View(model: gender);
     }
 
     // GET: Genders/Create
@@ -45,17 +45,17 @@ public class GendersController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Gender gender)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(gender);
+            _context.Add(entity: gender);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(gender);
+        return View(model: gender);
     }
 
     // GET: Genders/Edit/5
@@ -63,9 +63,9 @@ public class GendersController : Controller
     {
         if (id == null || _context.Genders == null) return NotFound();
 
-        var gender = await _context.Genders.FindAsync(id);
+        var gender = await _context.Genders.FindAsync(keyValues: id);
         if (gender == null) return NotFound();
-        return View(gender);
+        return View(model: gender);
     }
 
     // POST: Genders/Edit/5
@@ -74,7 +74,7 @@ public class GendersController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
-        [Bind("Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Gender gender)
     {
         if (id != gender.Id) return NotFound();
@@ -83,20 +83,20 @@ public class GendersController : Controller
         {
             try
             {
-                _context.Update(gender);
+                _context.Update(entity: gender);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GenderExists(gender.Id))
+                if (!GenderExists(id: gender.Id))
                     return NotFound();
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(gender);
+        return View(model: gender);
     }
 
     // GET: Genders/Delete/5
@@ -105,29 +105,29 @@ public class GendersController : Controller
         if (id == null || _context.Genders == null) return NotFound();
 
         var gender = await _context.Genders
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (gender == null) return NotFound();
 
-        return View(gender);
+        return View(model: gender);
     }
 
     // POST: Genders/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(name: "Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         if (_context.Genders == null)
-            return Problem("Entity set 'DataContextMySql.Genders'  is null.");
-        var gender = await _context.Genders.FindAsync(id);
-        if (gender != null) _context.Genders.Remove(gender);
+            return Problem(detail: "Entity set 'DataContextMySql.Genders'  is null.");
+        var gender = await _context.Genders.FindAsync(keyValues: id);
+        if (gender != null) _context.Genders.Remove(entity: gender);
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     private bool GenderExists(int id)
     {
-        return (_context.Genders?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Genders?.Any(predicate: e => e.Id == id)).GetValueOrDefault();
     }
 }

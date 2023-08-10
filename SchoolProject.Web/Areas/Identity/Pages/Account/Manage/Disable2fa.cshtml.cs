@@ -32,35 +32,35 @@ public class Disable2faModel : PageModel
 
     public async Task<IActionResult> OnGet()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
-        if (!await _userManager.GetTwoFactorEnabledAsync(user))
+        if (!await _userManager.GetTwoFactorEnabledAsync(user: user))
             throw new InvalidOperationException(
-                "Cannot disable 2FA for user as it's not currently enabled.");
+                message: "Cannot disable 2FA for user as it's not currently enabled.");
 
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
         var disable2faResult =
-            await _userManager.SetTwoFactorEnabledAsync(user, false);
+            await _userManager.SetTwoFactorEnabledAsync(user: user, enabled: false);
         if (!disable2faResult.Succeeded)
             throw new InvalidOperationException(
-                "Unexpected error occurred disabling 2FA.");
+                message: "Unexpected error occurred disabling 2FA.");
 
-        _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.",
-            _userManager.GetUserId(User));
+        _logger.LogInformation(message: "User with ID '{UserId}' has disabled 2fa.",
+            args: _userManager.GetUserId(principal: User));
         StatusMessage =
             "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
-        return RedirectToPage("./TwoFactorAuthentication");
+        return RedirectToPage(pageName: "./TwoFactorAuthentication");
     }
 }

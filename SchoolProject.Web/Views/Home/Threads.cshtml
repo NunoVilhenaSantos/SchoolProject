@@ -13,18 +13,18 @@
 
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData[index: "Title"] = "Home Page";
 
-    var ts = TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesName);
+    var ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.SeedDbCoursesName);
     var SCElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesMPInfoName);
+    ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.SeedDbCoursesMPInfoName);
     var MPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.GetElapsedTime(TimeTracker.SeederTimerName);
+    ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.SeederTimerName);
     var RSElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.GetElapsedTime(TimeTracker.AppBuilderTimerName);
+    ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.AppBuilderTimerName);
     var SPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
 
@@ -42,7 +42,7 @@
 }
 
 
-<h1>@ViewData["WelcomeMessage"]</h1>
+<h1>@ViewData[index: "WelcomeMessage"]</h1>
 
 
 <br/>

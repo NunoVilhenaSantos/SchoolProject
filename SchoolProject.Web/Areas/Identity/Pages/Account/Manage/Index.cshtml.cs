@@ -46,8 +46,8 @@ public class IndexModel : PageModel
 
     private async Task LoadAsync(User user)
     {
-        var userName = await _userManager.GetUserNameAsync(user);
-        var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+        var userName = await _userManager.GetUserNameAsync(user: user);
+        var phoneNumber = await _userManager.GetPhoneNumberAsync(user: user);
 
         Username = userName;
 
@@ -59,33 +59,33 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
-        await LoadAsync(user);
+        await LoadAsync(user: user);
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
         if (!ModelState.IsValid)
         {
-            await LoadAsync(user);
+            await LoadAsync(user: user);
             return Page();
         }
 
-        var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+        var phoneNumber = await _userManager.GetPhoneNumberAsync(user: user);
         if (Input.PhoneNumber != phoneNumber)
         {
             var setPhoneResult =
-                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                await _userManager.SetPhoneNumberAsync(user: user, phoneNumber: Input.PhoneNumber);
             if (!setPhoneResult.Succeeded)
             {
                 StatusMessage =
@@ -94,7 +94,7 @@ public class IndexModel : PageModel
             }
         }
 
-        await _signInManager.RefreshSignInAsync(user);
+        await _signInManager.RefreshSignInAsync(user: user);
         StatusMessage = "Your profile has been updated";
         return RedirectToPage();
     }

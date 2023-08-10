@@ -35,32 +35,32 @@ public class ResetAuthenticatorModel : PageModel
 
     public async Task<IActionResult> OnGet()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
-        await _userManager.SetTwoFactorEnabledAsync(user, false);
-        await _userManager.ResetAuthenticatorKeyAsync(user);
-        var userId = await _userManager.GetUserIdAsync(user);
+        await _userManager.SetTwoFactorEnabledAsync(user: user, enabled: false);
+        await _userManager.ResetAuthenticatorKeyAsync(user: user);
+        var userId = await _userManager.GetUserIdAsync(user: user);
         _logger.LogInformation(
-            "User with ID '{UserId}' has reset their authentication app key.",
-            user.Id);
+            message: "User with ID '{UserId}' has reset their authentication app key.",
+            args: user.Id);
 
-        await _signInManager.RefreshSignInAsync(user);
+        await _signInManager.RefreshSignInAsync(user: user);
         StatusMessage =
             "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.";
 
-        return RedirectToPage("./EnableAuthenticator");
+        return RedirectToPage(pageName: "./EnableAuthenticator");
     }
 }

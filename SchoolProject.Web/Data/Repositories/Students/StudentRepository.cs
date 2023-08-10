@@ -17,7 +17,7 @@ public class StudentRepository : GenericRepository<Student>, IStudentRepository
     protected StudentRepository(
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
-    ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
+    ) : base(dataContext: dataContext, dataContextMySql: dataContextMySql, dataContextMsSql: dataContextMsSql, dataContextSqLite: dataContextSqLite)
     {
         _dataContext = dataContext;
         _dataContextMsSql = dataContextMsSql;

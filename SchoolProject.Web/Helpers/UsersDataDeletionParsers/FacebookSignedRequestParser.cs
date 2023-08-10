@@ -9,38 +9,38 @@ public static class FacebookSignedRequestParser
     public static FacebookDataDeletionRequestData ParseSignedRequest(
         string signedRequest, string appSecret)
     {
-        var parts = signedRequest.Split('.');
-        var signature = Base64UrlDecode(parts[0]);
+        var parts = signedRequest.Split(separator: '.');
+        var signature = Base64UrlDecode(input: parts[0]);
         var payload = parts[1];
 
 
-        var bytesToSign = Encoding.UTF8.GetBytes(payload);
-        var secretBytes = Encoding.UTF8.GetBytes(appSecret);
+        var bytesToSign = Encoding.UTF8.GetBytes(s: payload);
+        var secretBytes = Encoding.UTF8.GetBytes(s: appSecret);
 
 
-        using var hmac = new HMACSHA256(secretBytes);
-        var calculatedSignature = hmac.ComputeHash(bytesToSign);
+        using var hmac = new HMACSHA256(key: secretBytes);
+        var calculatedSignature = hmac.ComputeHash(buffer: bytesToSign);
 
 
-        if (!signature.SequenceEqual(calculatedSignature))
-            throw new ArgumentException("Bad Signed JSON signature!");
+        if (!signature.SequenceEqual(second: calculatedSignature))
+            throw new ArgumentException(message: "Bad Signed JSON signature!");
 
 
-        var decodedPayload = Base64UrlDecode(payload);
+        var decodedPayload = Base64UrlDecode(input: payload);
 
 
         return JsonSerializer.Deserialize<FacebookDataDeletionRequestData>(
-            decodedPayload);
+            utf8Json: decodedPayload);
     }
 
 
     private static byte[] Base64UrlDecode(string input)
     {
-        input = input.Replace('-', '+').Replace('_', '/');
+        input = input.Replace(oldChar: '-', newChar: '+').Replace(oldChar: '_', newChar: '/');
         var padding = 3 - (input.Length + 3) % 4;
-        input += new string('=', padding);
+        input += new string(c: '=', count: padding);
 
-        return Convert.FromBase64String(input);
+        return Convert.FromBase64String(s: input);
     }
 
 

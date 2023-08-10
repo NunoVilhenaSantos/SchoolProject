@@ -19,20 +19,20 @@ public interface IStorageHelper
     {
         var storage = StorageClient.Create();
         storage.CopyObject(
-            sourceBucketName,
-            sourceObjectName,
-            destBucketName,
-            destObjectName);
+            sourceBucket: sourceBucketName,
+            sourceObjectName: sourceObjectName,
+            destinationBucket: destBucketName,
+            destinationObjectName: destObjectName);
 
         Console.WriteLine(
-            "Copied " +
-            $"{sourceBucketName}/{sourceObjectName}" +
-            " to " +
-            $"{destBucketName}/{destObjectName}.");
+            value: "Copied " +
+                   $"{sourceBucketName}/{sourceObjectName}" +
+                   " to " +
+                   $"{destBucketName}/{destObjectName}.");
 
         return Task.FromResult(
-            storage.GetNotification(
-                sourceBucketName, sourceObjectName) != null);
+            result: storage.GetNotification(
+                bucket: sourceBucketName, notificationId: sourceObjectName) != null);
     }
 
 
@@ -68,9 +68,9 @@ public interface IStorageHelper
             string objectName = "my-file-name")
         {
             var storage = StorageClient.Create();
-            using var fileStream = File.OpenRead(localPath);
-            storage.UploadObject(bucketName, objectName, null, fileStream);
-            Console.WriteLine($"Uploaded {objectName}.");
+            using var fileStream = File.OpenRead(path: localPath);
+            storage.UploadObject(bucket: bucketName, objectName: objectName, contentType: null, source: fileStream);
+            Console.WriteLine(value: $"Uploaded {objectName}.");
         }
     }
 

@@ -1,16 +1,16 @@
 ﻿@model dynamic
 
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData[index: "Title"] = "Privacy Policy";
 
 
     // Variáveis do lado do servidor com os valores necessários
     const string projectName = "Gestão Escolar Web";
-    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+    var currentDate = DateTime.Now.ToString(format: "yyyy-MM-dd");
 }
 
 
-<h1>@ViewData["Title"]</h1>
+<h1>@ViewData[index: "Title"]</h1>
 
 
 <p>Use this page to detail your site's privacy policy.</p>

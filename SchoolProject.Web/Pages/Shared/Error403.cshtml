@@ -1,7 +1,7 @@
 ﻿@model dynamic
 
 @{
-    ViewData["Title"] = "403 Forbidden";
+    ViewData[index: "Title"] = "403 Forbidden";
     Layout = "_Layout";
 }
 
@@ -9,7 +9,7 @@
 @* <h1>@ViewData["Title"]</h1> *@
 @* <br/> *@
 
-<link rel="stylesheet" href="@Url.Content("~/css/Error403.css")">
+<link rel="stylesheet" href="@Url.Content(contentPath: "~/css/Error403.css")">
 
 <partial name="_Error403"/>
 

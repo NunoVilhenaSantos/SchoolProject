@@ -44,29 +44,29 @@ public class ResendEmailConfirmationModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var user = await _userManager.FindByEmailAsync(Input.Email);
+        var user = await _userManager.FindByEmailAsync(email: Input.Email);
         if (user == null)
         {
-            ModelState.AddModelError(string.Empty,
-                "Verification email sent. Please check your email.");
+            ModelState.AddModelError(key: string.Empty,
+                errorMessage: "Verification email sent. Please check your email.");
             return Page();
         }
 
-        var userId = await _userManager.GetUserIdAsync(user);
-        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var userId = await _userManager.GetUserIdAsync(user: user);
+        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user: user);
+        code = WebEncoders.Base64UrlEncode(input: Encoding.UTF8.GetBytes(s: code));
         var callbackUrl = Url.Page(
-            "/Account/ConfirmEmail",
-            null,
-            new {userId, code},
-            Request.Scheme);
+            pageName: "/Account/ConfirmEmail",
+            pageHandler: null,
+            values: new {userId, code},
+            protocol: Request.Scheme);
         await _emailSender.SendEmailAsync(
-            Input.Email,
-            "Confirm your email",
-            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            email: Input.Email,
+            subject: "Confirm your email",
+            htmlMessage: $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(value: callbackUrl)}'>clicking here</a>.");
 
-        ModelState.AddModelError(string.Empty,
-            "Verification email sent. Please check your email.");
+        ModelState.AddModelError(key: string.Empty,
+            errorMessage: "Verification email sent. Please check your email.");
         return Page();
     }
 

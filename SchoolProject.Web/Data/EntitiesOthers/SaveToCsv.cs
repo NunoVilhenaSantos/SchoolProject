@@ -12,81 +12,81 @@ public static class SaveToCsv
 
     public static void SaveTo(DataContextMsSql dataContext)
     {
-        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        var csvConfig = new CsvConfiguration(cultureInfo: CultureInfo.InvariantCulture)
         {
             Delimiter = ";"
         };
 
 
         SaveEntitiesToCsv(
-            dataContext.Cities,
-            "Cities.csv", csvConfig);
+            entities: dataContext.Cities,
+            fileName: "Cities.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.Countries,
-            "Countries.csv", csvConfig);
+            entities: dataContext.Countries,
+            fileName: "Countries.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.Nationalities,
-            "Nationalities.csv", csvConfig);
+            entities: dataContext.Nationalities,
+            fileName: "Nationalities.csv", csvConfig: csvConfig);
 
 
         SaveEntitiesToCsv(
-            dataContext.Genders,
-            "Genders.csv", csvConfig);
+            entities: dataContext.Genders,
+            fileName: "Genders.csv", csvConfig: csvConfig);
 
 
         SaveEntitiesToCsv(
-            dataContext.Users,
-            "Users.csv", csvConfig);
+            entities: dataContext.Users,
+            fileName: "Users.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.UserClaims,
-            "UserClaims.csv", csvConfig);
+            entities: dataContext.UserClaims,
+            fileName: "UserClaims.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.UserLogins,
-            "UserLogins.csv", csvConfig);
+            entities: dataContext.UserLogins,
+            fileName: "UserLogins.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.UserRoles,
-            "UserRoles.csv", csvConfig);
+            entities: dataContext.UserRoles,
+            fileName: "UserRoles.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.UserTokens,
-            "UserTokens.csv", csvConfig);
+            entities: dataContext.UserTokens,
+            fileName: "UserTokens.csv", csvConfig: csvConfig);
 
 
         SaveEntitiesToCsv(
-            dataContext.Courses,
-            "Courses.csv", csvConfig);
+            entities: dataContext.Courses,
+            fileName: "Courses.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.SchoolClasses,
-            "SchoolClasses.csv", csvConfig);
+            entities: dataContext.SchoolClasses,
+            fileName: "SchoolClasses.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.Students,
-            "Students.csv", csvConfig);
+            entities: dataContext.Students,
+            fileName: "Students.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.Teachers,
-            "Teachers.csv", csvConfig);
+            entities: dataContext.Teachers,
+            fileName: "Teachers.csv", csvConfig: csvConfig);
 
 
         SaveEntitiesToCsv(
-            dataContext.Enrollments,
-            "Enrollments.csv", csvConfig);
+            entities: dataContext.Enrollments,
+            fileName: "Enrollments.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.SchoolClassCourses,
-            "SchoolClassCourses.csv", csvConfig);
+            entities: dataContext.SchoolClassCourses,
+            fileName: "SchoolClassCourses.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.StudentCourses,
-            "StudentCourses.csv", csvConfig);
+            entities: dataContext.StudentCourses,
+            fileName: "StudentCourses.csv", csvConfig: csvConfig);
         SaveEntitiesToCsv(
-            dataContext.TeacherCourses,
-            "TeacherCourses.csv", csvConfig);
+            entities: dataContext.TeacherCourses,
+            fileName: "TeacherCourses.csv", csvConfig: csvConfig);
     }
 
     private static void SaveEntitiesToCsv<T>(IEnumerable<T> entities,
         string fileName, CsvConfiguration csvConfig)
     {
-        var filePath = Path.Combine(_filePath, fileName);
-        using (var writer = new StreamWriter(filePath))
-        using (var csv = new CsvWriter(writer, csvConfig))
+        var filePath = Path.Combine(path1: _filePath, path2: fileName);
+        using (var writer = new StreamWriter(path: filePath))
+        using (var csv = new CsvWriter(writer: writer, configuration: csvConfig))
         {
-            csv.WriteRecords(entities);
+            csv.WriteRecords(records: entities);
         }
     }
 }

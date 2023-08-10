@@ -45,47 +45,47 @@ public class GenericRepository<T> : IGenericRepository<T>
     {
         // return await _dataContext.Set<T>().FindAsync(id).AsTask();
         return await _dataContext.Set<T>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.Id == id);
+            .FirstOrDefaultAsync(predicate: e => e.Id == id);
     }
 
 
     public async Task<T?> GetByIdGuidAsync(Guid idGuid)
     {
         return await _dataContext.Set<T>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.IdGuid == idGuid);
+            .FirstOrDefaultAsync(predicate: e => e.IdGuid == idGuid);
     }
 
 
     public async Task<bool> CreateAsync(T entity)
     {
-        await _dataContext.Set<T>().AddAsync(entity);
+        await _dataContext.Set<T>().AddAsync(entity: entity);
         return await SaveAllAsync();
     }
 
 
     public async Task<bool> UpdateAsync(T entity)
     {
-        _dataContext.Set<T>().Update(entity);
+        _dataContext.Set<T>().Update(entity: entity);
         return await SaveAllAsync();
     }
 
 
     public async Task<bool> DeleteAsync(T entity)
     {
-        _dataContext.Set<T>().Remove(entity);
+        _dataContext.Set<T>().Remove(entity: entity);
         return await SaveAllAsync();
     }
 
 
     public async Task<bool> ExistAsync(int id)
     {
-        return await _dataContext.Set<T>().AnyAsync(e => e.Id == id);
+        return await _dataContext.Set<T>().AnyAsync(predicate: e => e.Id == id);
     }
 
 
     public async Task<bool> ExistAsync(Guid idGuid)
     {
-        return await _dataContext.Set<T>().AnyAsync(e => e.IdGuid == idGuid);
+        return await _dataContext.Set<T>().AnyAsync(predicate: e => e.IdGuid == idGuid);
     }
 
 

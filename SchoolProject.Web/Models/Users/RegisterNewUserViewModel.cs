@@ -10,7 +10,7 @@ public class RegisterNewUserViewModel
     ///     The first name of the user.
     /// </summary>
     [Required]
-    [DisplayName("First Name")]
+    [DisplayName(displayName: "First Name")]
     public required string FirstName { get; set; }
 
 
@@ -18,7 +18,7 @@ public class RegisterNewUserViewModel
     ///     The last name of the user.
     /// </summary>
     [Required]
-    [DisplayName("Last Name")]
+    [DisplayName(displayName: "Last Name")]
     public required string LastName { get; set; }
 
 
@@ -26,14 +26,14 @@ public class RegisterNewUserViewModel
     ///     The username for the user.
     /// </summary>
     [Required]
-    [DataType(DataType.EmailAddress)]
+    [DataType(dataType: DataType.EmailAddress)]
     public required string Username { get; set; }
 
 
     /// <summary>
     ///     The address of the user.
     /// </summary>
-    [MaxLength(100,
+    [MaxLength(length: 100,
         ErrorMessage =
             "The field {0} can only contain {1} characters in lenght.")]
     public string? Address { get; set; }
@@ -42,7 +42,7 @@ public class RegisterNewUserViewModel
     /// <summary>
     ///     The phone number of the user.
     /// </summary>
-    [MaxLength(20,
+    [MaxLength(length: 20,
         ErrorMessage =
             "The field {0} can only contain {1} characters in lenght.")]
     public string? PhoneNumber { get; set; }
@@ -52,7 +52,7 @@ public class RegisterNewUserViewModel
     ///     The city of the user.
     /// </summary>
     [Display(Name = "City")]
-    [Range(1, int.MaxValue, ErrorMessage = "You must select a city.")]
+    [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = "You must select a city.")]
     public int CityId { get; set; }
 
 
@@ -66,7 +66,7 @@ public class RegisterNewUserViewModel
     ///     The country of the user.
     /// </summary>
     [Display(Name = "Country")]
-    [Range(1, int.MaxValue, ErrorMessage = "You must select a country")]
+    [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = "You must select a country")]
     public int CountryId { get; set; }
 
 
@@ -80,8 +80,8 @@ public class RegisterNewUserViewModel
     ///     The password of the user.
     /// </summary>
     [Required]
-    [DataType(DataType.Password)]
-    [MinLength(6)]
+    [DataType(dataType: DataType.Password)]
+    [MinLength(length: 6)]
     public required string Password { get; set; }
 
 
@@ -89,8 +89,8 @@ public class RegisterNewUserViewModel
     ///     The confirm password of the user.
     /// </summary>
     [Required]
-    [DataType(DataType.Password)]
-    [Compare("Password")]
-    [MinLength(6)]
+    [DataType(dataType: DataType.Password)]
+    [Compare(otherProperty: "Password")]
+    [MinLength(length: 6)]
     public required string ConfirmPassword { get; set; }
 }

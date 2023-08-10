@@ -18,9 +18,9 @@ public class SchoolClassCoursesController : Controller
     public async Task<IActionResult> Index()
     {
         var dataContextMySql = _context.SchoolClassCourses
-            .Include(s => s.Course).Include(s => s.CreatedBy)
-            .Include(s => s.SchoolClass).Include(s => s.UpdatedBy);
-        return View(await dataContextMySql.ToListAsync());
+            .Include(navigationPropertyPath: s => s.Course).Include(navigationPropertyPath: s => s.CreatedBy)
+            .Include(navigationPropertyPath: s => s.SchoolClass).Include(navigationPropertyPath: s => s.UpdatedBy);
+        return View(model: await dataContextMySql.ToListAsync());
     }
 
     // GET: SchoolClassCourses/Details/5
@@ -30,24 +30,24 @@ public class SchoolClassCoursesController : Controller
             return NotFound();
 
         var schoolClassCourse = await _context.SchoolClassCourses
-            .Include(s => s.Course)
-            .Include(s => s.CreatedBy)
-            .Include(s => s.SchoolClass)
-            .Include(s => s.UpdatedBy)
-            .FirstOrDefaultAsync(m => m.SchoolClassId == id);
+            .Include(navigationPropertyPath: s => s.Course)
+            .Include(navigationPropertyPath: s => s.CreatedBy)
+            .Include(navigationPropertyPath: s => s.SchoolClass)
+            .Include(navigationPropertyPath: s => s.UpdatedBy)
+            .FirstOrDefaultAsync(predicate: m => m.SchoolClassId == id);
         if (schoolClassCourse == null) return NotFound();
 
-        return View(schoolClassCourse);
+        return View(model: schoolClassCourse);
     }
 
     // GET: SchoolClassCourses/Create
     public IActionResult Create()
     {
-        ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Code");
-        ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Id");
-        ViewData["SchoolClassId"] =
-            new SelectList(_context.SchoolClasses, "Id", "Acronym");
-        ViewData["UpdatedById"] = new SelectList(_context.Users, "Id", "Id");
+        ViewData[index: "CourseId"] = new SelectList(items: _context.Courses, dataValueField: "Id", dataTextField: "Code");
+        ViewData[index: "CreatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id");
+        ViewData[index: "SchoolClassId"] =
+            new SelectList(items: _context.SchoolClasses, dataValueField: "Id", dataTextField: "Acronym");
+        ViewData[index: "UpdatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id");
         return View();
     }
 
@@ -58,25 +58,25 @@ public class SchoolClassCoursesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
         [Bind(
-            "SchoolClassId,CourseId,Id,IdGuid,WasDeleted,CreatedAt,CreatedById,UpdatedAt,UpdatedById")]
+            include: "SchoolClassId,CourseId,Id,IdGuid,WasDeleted,CreatedAt,CreatedById,UpdatedAt,UpdatedById")]
         SchoolClassCourse schoolClassCourse)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(schoolClassCourse);
+            _context.Add(entity: schoolClassCourse);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Code",
-            schoolClassCourse.CourseId);
-        ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Id",
-            schoolClassCourse.CreatedById);
-        ViewData["SchoolClassId"] = new SelectList(_context.SchoolClasses, "Id",
-            "Acronym", schoolClassCourse.SchoolClassId);
-        ViewData["UpdatedById"] = new SelectList(_context.Users, "Id", "Id",
-            schoolClassCourse.UpdatedById);
-        return View(schoolClassCourse);
+        ViewData[index: "CourseId"] = new SelectList(items: _context.Courses, dataValueField: "Id", dataTextField: "Code",
+            selectedValue: schoolClassCourse.CourseId);
+        ViewData[index: "CreatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id",
+            selectedValue: schoolClassCourse.CreatedById);
+        ViewData[index: "SchoolClassId"] = new SelectList(items: _context.SchoolClasses, dataValueField: "Id",
+            dataTextField: "Acronym", selectedValue: schoolClassCourse.SchoolClassId);
+        ViewData[index: "UpdatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id",
+            selectedValue: schoolClassCourse.UpdatedById);
+        return View(model: schoolClassCourse);
     }
 
     // GET: SchoolClassCourses/Edit/5
@@ -85,17 +85,17 @@ public class SchoolClassCoursesController : Controller
         if (id == null || _context.SchoolClassCourses == null)
             return NotFound();
 
-        var schoolClassCourse = await _context.SchoolClassCourses.FindAsync(id);
+        var schoolClassCourse = await _context.SchoolClassCourses.FindAsync(keyValues: id);
         if (schoolClassCourse == null) return NotFound();
-        ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Code",
-            schoolClassCourse.CourseId);
-        ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Id",
-            schoolClassCourse.CreatedById);
-        ViewData["SchoolClassId"] = new SelectList(_context.SchoolClasses, "Id",
-            "Acronym", schoolClassCourse.SchoolClassId);
-        ViewData["UpdatedById"] = new SelectList(_context.Users, "Id", "Id",
-            schoolClassCourse.UpdatedById);
-        return View(schoolClassCourse);
+        ViewData[index: "CourseId"] = new SelectList(items: _context.Courses, dataValueField: "Id", dataTextField: "Code",
+            selectedValue: schoolClassCourse.CourseId);
+        ViewData[index: "CreatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id",
+            selectedValue: schoolClassCourse.CreatedById);
+        ViewData[index: "SchoolClassId"] = new SelectList(items: _context.SchoolClasses, dataValueField: "Id",
+            dataTextField: "Acronym", selectedValue: schoolClassCourse.SchoolClassId);
+        ViewData[index: "UpdatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id",
+            selectedValue: schoolClassCourse.UpdatedById);
+        return View(model: schoolClassCourse);
     }
 
     // POST: SchoolClassCourses/Edit/5
@@ -105,7 +105,7 @@ public class SchoolClassCoursesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
         [Bind(
-            "SchoolClassId,CourseId,Id,IdGuid,WasDeleted,CreatedAt,CreatedById,UpdatedAt,UpdatedById")]
+            include: "SchoolClassId,CourseId,Id,IdGuid,WasDeleted,CreatedAt,CreatedById,UpdatedAt,UpdatedById")]
         SchoolClassCourse schoolClassCourse)
     {
         if (id != schoolClassCourse.SchoolClassId) return NotFound();
@@ -114,28 +114,28 @@ public class SchoolClassCoursesController : Controller
         {
             try
             {
-                _context.Update(schoolClassCourse);
+                _context.Update(entity: schoolClassCourse);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SchoolClassCourseExists(schoolClassCourse.SchoolClassId))
+                if (!SchoolClassCourseExists(id: schoolClassCourse.SchoolClassId))
                     return NotFound();
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Code",
-            schoolClassCourse.CourseId);
-        ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Id",
-            schoolClassCourse.CreatedById);
-        ViewData["SchoolClassId"] = new SelectList(_context.SchoolClasses, "Id",
-            "Acronym", schoolClassCourse.SchoolClassId);
-        ViewData["UpdatedById"] = new SelectList(_context.Users, "Id", "Id",
-            schoolClassCourse.UpdatedById);
-        return View(schoolClassCourse);
+        ViewData[index: "CourseId"] = new SelectList(items: _context.Courses, dataValueField: "Id", dataTextField: "Code",
+            selectedValue: schoolClassCourse.CourseId);
+        ViewData[index: "CreatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id",
+            selectedValue: schoolClassCourse.CreatedById);
+        ViewData[index: "SchoolClassId"] = new SelectList(items: _context.SchoolClasses, dataValueField: "Id",
+            dataTextField: "Acronym", selectedValue: schoolClassCourse.SchoolClassId);
+        ViewData[index: "UpdatedById"] = new SelectList(items: _context.Users, dataValueField: "Id", dataTextField: "Id",
+            selectedValue: schoolClassCourse.UpdatedById);
+        return View(model: schoolClassCourse);
     }
 
     // GET: SchoolClassCourses/Delete/5
@@ -145,36 +145,36 @@ public class SchoolClassCoursesController : Controller
             return NotFound();
 
         var schoolClassCourse = await _context.SchoolClassCourses
-            .Include(s => s.Course)
-            .Include(s => s.CreatedBy)
-            .Include(s => s.SchoolClass)
-            .Include(s => s.UpdatedBy)
-            .FirstOrDefaultAsync(m => m.SchoolClassId == id);
+            .Include(navigationPropertyPath: s => s.Course)
+            .Include(navigationPropertyPath: s => s.CreatedBy)
+            .Include(navigationPropertyPath: s => s.SchoolClass)
+            .Include(navigationPropertyPath: s => s.UpdatedBy)
+            .FirstOrDefaultAsync(predicate: m => m.SchoolClassId == id);
         if (schoolClassCourse == null) return NotFound();
 
-        return View(schoolClassCourse);
+        return View(model: schoolClassCourse);
     }
 
     // POST: SchoolClassCourses/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(name: "Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         if (_context.SchoolClassCourses == null)
             return Problem(
-                "Entity set 'DataContextMySql.SchoolClassCourses'  is null.");
-        var schoolClassCourse = await _context.SchoolClassCourses.FindAsync(id);
+                detail: "Entity set 'DataContextMySql.SchoolClassCourses'  is null.");
+        var schoolClassCourse = await _context.SchoolClassCourses.FindAsync(keyValues: id);
         if (schoolClassCourse != null)
-            _context.SchoolClassCourses.Remove(schoolClassCourse);
+            _context.SchoolClassCourses.Remove(entity: schoolClassCourse);
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     private bool SchoolClassCourseExists(int id)
     {
-        return (_context.SchoolClassCourses?.Any(e => e.SchoolClassId == id))
+        return (_context.SchoolClassCourses?.Any(predicate: e => e.SchoolClassId == id))
             .GetValueOrDefault();
     }
 }

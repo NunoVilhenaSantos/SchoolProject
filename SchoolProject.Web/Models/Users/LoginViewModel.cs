@@ -9,12 +9,12 @@ public class LoginViewModel
 
 
     [Required]
-    [MinLength(6)]
-    [DataType(DataType.Password)]
+    [MinLength(length: 6)]
+    [DataType(dataType: DataType.Password)]
     public required string Password { get; set; }
 
 
     [Required]
-    [DisplayName("Remember Me?")]
+    [DisplayName(displayName: "Remember Me?")]
     public required bool RememberMe { get; set; }
 }

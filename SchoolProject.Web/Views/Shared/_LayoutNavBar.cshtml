@@ -1,8 +1,8 @@
 ﻿@* @model TModel *@
 
 @{
-    var currentController = ViewContext.RouteData.Values["controller"] as string;
-    var currentAction = ViewContext.RouteData.Values["action"] as string;
+    var currentController = ViewContext.RouteData.Values[key: "controller"] as string;
+    var currentAction = ViewContext.RouteData.Values[key: "action"] as string;
 }
 
 
@@ -14,7 +14,7 @@
 
         @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@ViewData["Title"] - </a> *@
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-            @ViewData["AssemblyName"]
+            @ViewData[index: "AssemblyName"]
         </a>
 
 

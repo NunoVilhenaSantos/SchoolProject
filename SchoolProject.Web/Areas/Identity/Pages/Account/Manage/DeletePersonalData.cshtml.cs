@@ -42,42 +42,42 @@ public class DeletePersonalDataModel : PageModel
 
     public async Task<IActionResult> OnGet()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
-        RequirePassword = await _userManager.HasPasswordAsync(user);
+        RequirePassword = await _userManager.HasPasswordAsync(user: user);
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(principal: User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
 
-        RequirePassword = await _userManager.HasPasswordAsync(user);
+        RequirePassword = await _userManager.HasPasswordAsync(user: user);
         if (RequirePassword)
-            if (!await _userManager.CheckPasswordAsync(user, Input.Password))
+            if (!await _userManager.CheckPasswordAsync(user: user, password: Input.Password))
             {
-                ModelState.AddModelError(string.Empty, "Incorrect password.");
+                ModelState.AddModelError(key: string.Empty, errorMessage: "Incorrect password.");
                 return Page();
             }
 
-        var result = await _userManager.DeleteAsync(user);
-        var userId = await _userManager.GetUserIdAsync(user);
+        var result = await _userManager.DeleteAsync(user: user);
+        var userId = await _userManager.GetUserIdAsync(user: user);
         if (!result.Succeeded)
             throw new InvalidOperationException(
-                "Unexpected error occurred deleting user.");
+                message: "Unexpected error occurred deleting user.");
 
         await _signInManager.SignOutAsync();
 
-        _logger.LogInformation("User with ID '{UserId}' deleted themselves.",
-            userId);
+        _logger.LogInformation(message: "User with ID '{UserId}' deleted themselves.",
+            args: userId);
 
-        return Redirect("~/");
+        return Redirect(url: "~/");
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public class DeletePersonalDataModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [DataType(DataType.Password)]
+        [DataType(dataType: DataType.Password)]
         public string Password { get; set; }
     }
 }

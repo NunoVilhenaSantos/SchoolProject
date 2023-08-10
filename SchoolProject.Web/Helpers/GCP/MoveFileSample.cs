@@ -27,10 +27,10 @@ public class MoveFileSample
         string targetObjectName = "target-object-name")
     {
         var storage = StorageClient.Create();
-        storage.CopyObject(sourceBucketName, sourceObjectName, targetBucketName,
-            targetObjectName);
-        storage.DeleteObject(sourceBucketName, sourceObjectName);
-        Console.WriteLine($"Moved {sourceObjectName} to {targetObjectName}.");
+        storage.CopyObject(sourceBucket: sourceBucketName, sourceObjectName: sourceObjectName, destinationBucket: targetBucketName,
+            destinationObjectName: targetObjectName);
+        storage.DeleteObject(bucket: sourceBucketName, objectName: sourceObjectName);
+        Console.WriteLine(value: $"Moved {sourceObjectName} to {targetObjectName}.");
     }
 }
 // [END storage_move_file]

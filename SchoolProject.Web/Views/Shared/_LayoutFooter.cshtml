@@ -3,8 +3,8 @@
     <div class="container-fluid" style="width:100%">
         <span class="text-body-secondary">Place sticky footer content here.</span>
         <span class="text-body-secondary">
-            @DateTime.Now | @DateTime.Today.Year - @ViewData["AssemblyName"] &copy; -
-            Version: @ViewData["AssemblyVersion"] | Web -
+            @DateTime.Now | @DateTime.Today.Year - @ViewData[index: "AssemblyName"] &copy; -
+            Version: @ViewData[index: "AssemblyVersion"] | Web -
             <i id="output3"></i> <!-- Será atualizado com a largura do html -->
         </span>
         <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -19,8 +19,8 @@
             <a class="navbar-brand" href="#">Sticky bottom</a>
 
             <span class="text-body-secondary">
-                @DateTime.Now | @DateTime.Today.Year - @ViewData["AssemblyName"] &copy; -
-                Version: @ViewData["AssemblyVersion"] | Web -
+                @DateTime.Now | @DateTime.Today.Year - @ViewData[index: "AssemblyName"] &copy; -
+                Version: @ViewData[index: "AssemblyVersion"] | Web -
                 <i id="output3-navbar"></i> <!-- Será atualizado com a largura do html -->
             </span>
             <span class="text-body-secondary">

@@ -1,7 +1,7 @@
 @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.City>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData[index: "Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -13,19 +13,19 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(expression: model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IdGuid)
+            @Html.DisplayNameFor(expression: model => model.IdGuid)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WasDeleted)
+            @Html.DisplayNameFor(expression: model => model.WasDeleted)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(expression: model => model.CreatedAt)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            @Html.DisplayNameFor(expression: model => model.UpdatedAt)
         </th>
         <th></th>
     </tr>
@@ -35,19 +35,19 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(expression: modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdGuid)
+                @Html.DisplayFor(expression: modelItem => item.IdGuid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
+                @Html.DisplayFor(expression: modelItem => item.WasDeleted)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(expression: modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(expression: modelItem => item.UpdatedAt)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

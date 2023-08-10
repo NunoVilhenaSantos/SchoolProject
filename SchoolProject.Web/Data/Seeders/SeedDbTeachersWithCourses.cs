@@ -18,12 +18,12 @@ public class SeedDbTeachersWithCourses
     )
     {
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
 
-        await AddDataToDb(user, dataContextInUse);
+        await AddDataToDb(user: user, dataContextInUse: dataContextInUse);
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
     }
 
 
@@ -31,7 +31,7 @@ public class SeedDbTeachersWithCourses
         DataContextMySql dataContextInUse)
     {
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
 
 
         // ------------------------------------------------------------------ //
@@ -47,10 +47,10 @@ public class SeedDbTeachersWithCourses
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
         if (await dataContextInUse.TeacherCourses.AnyAsync()) return;
 
 
@@ -59,7 +59,7 @@ public class SeedDbTeachersWithCourses
 
         foreach (var teacherCourse in from course in _listOfCoursesFromDb
                  let teacher = _listOfTeachersFromDb[
-                     random.Next(_listOfTeachersFromDb.Count)]
+                     index: random.Next(maxValue: _listOfTeachersFromDb.Count)]
                  select new TeacherCourse
                  {
                      TeacherId = teacher.Id, Teacher = teacher,
@@ -67,10 +67,10 @@ public class SeedDbTeachersWithCourses
                      CreatedBy = user
                  })
             // Add the TeacherCourse association to the context
-            dataContextInUse.TeacherCourses.Add(teacherCourse);
+            dataContextInUse.TeacherCourses.Add(entity: teacherCourse);
 
         // -------------------------------------------------------------- //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
 
 
         // Save the changes to the database
@@ -78,6 +78,6 @@ public class SeedDbTeachersWithCourses
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
     }
 }

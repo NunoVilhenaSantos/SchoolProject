@@ -8,45 +8,45 @@ public interface IEntity
 {
     [Column(Order = 0)]
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     [Column(Order = 1)]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
     [Column(Order = 20)]
     [Required]
-    [DisplayName("Was Deleted?")]
+    [DisplayName(displayName: "Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
     [Required]
     [Column(Order = 21)]
-    [DisplayName("Created At")]
-    [DataType(DataType.Date)]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DisplayName(displayName: "Created At")]
+    [DataType(dataType: DataType.Date)]
+    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; }
 
 
     [Required]
     [Column(Order = 22)]
-    [DisplayName("Created By")]
+    [DisplayName(displayName: "Created By")]
     public User CreatedBy { get; set; }
 
 
     // [Required]
     [Column(Order = 23)]
-    [DisplayName("Updated At")]
-    [DataType(DataType.Date)]
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [DisplayName(displayName: "Updated At")]
+    [DataType(dataType: DataType.Date)]
+    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; }
 
 
     [Column(Order = 24)]
     [Required]
-    [DisplayName("Updated By")]
-    [DataType(DataType.Date)]
+    [DisplayName(displayName: "Updated By")]
+    [DataType(dataType: DataType.Date)]
     public User? UpdatedBy { get; set; }
 }

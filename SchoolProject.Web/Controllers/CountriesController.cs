@@ -17,8 +17,8 @@ public class CountriesController : Controller
     public async Task<IActionResult> Index()
     {
         return _context.Countries != null
-            ? View(await _context.Countries.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Countries'  is null.");
+            ? View(model: await _context.Countries.ToListAsync())
+            : Problem(detail: "Entity set 'DataContextMySql.Countries'  is null.");
     }
 
     // GET: Countries/Details/5
@@ -27,10 +27,10 @@ public class CountriesController : Controller
         if (id == null || _context.Countries == null) return NotFound();
 
         var country = await _context.Countries
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (country == null) return NotFound();
 
-        return View(country);
+        return View(model: country);
     }
 
     // GET: Countries/Create
@@ -45,17 +45,17 @@ public class CountriesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Country country)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(country);
+            _context.Add(entity: country);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(country);
+        return View(model: country);
     }
 
     // GET: Countries/Edit/5
@@ -63,9 +63,9 @@ public class CountriesController : Controller
     {
         if (id == null || _context.Countries == null) return NotFound();
 
-        var country = await _context.Countries.FindAsync(id);
+        var country = await _context.Countries.FindAsync(keyValues: id);
         if (country == null) return NotFound();
-        return View(country);
+        return View(model: country);
     }
 
     // POST: Countries/Edit/5
@@ -74,7 +74,7 @@ public class CountriesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
-        [Bind("Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Country country)
     {
         if (id != country.Id) return NotFound();
@@ -83,20 +83,20 @@ public class CountriesController : Controller
         {
             try
             {
-                _context.Update(country);
+                _context.Update(entity: country);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CountryExists(country.Id))
+                if (!CountryExists(id: country.Id))
                     return NotFound();
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(country);
+        return View(model: country);
     }
 
     // GET: Countries/Delete/5
@@ -105,29 +105,29 @@ public class CountriesController : Controller
         if (id == null || _context.Countries == null) return NotFound();
 
         var country = await _context.Countries
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (country == null) return NotFound();
 
-        return View(country);
+        return View(model: country);
     }
 
     // POST: Countries/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(name: "Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         if (_context.Countries == null)
-            return Problem("Entity set 'DataContextMySql.Countries'  is null.");
-        var country = await _context.Countries.FindAsync(id);
-        if (country != null) _context.Countries.Remove(country);
+            return Problem(detail: "Entity set 'DataContextMySql.Countries'  is null.");
+        var country = await _context.Countries.FindAsync(keyValues: id);
+        if (country != null) _context.Countries.Remove(entity: country);
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     private bool CountryExists(int id)
     {
-        return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Countries?.Any(predicate: e => e.Id == id)).GetValueOrDefault();
     }
 }

@@ -4,10 +4,10 @@
 @inject IWebHostEnvironment HostingEnvironment
 
 @{
-    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
-    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
-    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
-    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData[index: "AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData[index: "AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData[index: "AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData[index: "vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
 }
 
 @* <html lang="pt" data-bs-theme="dark"> *@
@@ -20,7 +20,7 @@
     @* <title>@ViewData["Title"] - @ViewData["SolutionName"]</title> *@
     @* <title>@ViewData["Title"] - @ViewData["AssemblyName"]</title> *@
     @* <title>@ViewData["Title"] - @ViewData["AssemblyName"] v @ViewData["AssemblyVersion"]</title> *@
-    <title>@ViewData["Title"] - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
+    <title>@ViewData[index: "Title"] - @ViewData[index: "AssemblyName"] @ViewData[index: "vAssemblyVersion"]</title>
 
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
     <!-- ----------------------------------- Adicione as referências aos estilos ----------------------------------- -->
@@ -52,7 +52,7 @@
 <partial name="_LayoutFooter"/>
 <partial name="_LayoutScripts"/>
 
-@await RenderSectionAsync("Scripts", false)
+@await RenderSectionAsync(name: "Scripts", required: false)
 
 </body>
 

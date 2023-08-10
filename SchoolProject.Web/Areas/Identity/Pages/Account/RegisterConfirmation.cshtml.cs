@@ -48,27 +48,27 @@ public class RegisterConfirmationModel : PageModel
     public async Task<IActionResult> OnGetAsync(string email,
         string returnUrl = null)
     {
-        if (email == null) return RedirectToPage("/Index");
-        returnUrl = returnUrl ?? Url.Content("~/");
+        if (email == null) return RedirectToPage(pageName: "/Index");
+        returnUrl = returnUrl ?? Url.Content(contentPath: "~/");
 
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindByEmailAsync(email: email);
         if (user == null)
-            return NotFound($"Unable to load user with email '{email}'.");
+            return NotFound(value: $"Unable to load user with email '{email}'.");
 
         Email = email;
         // Once you add a real email sender, you should remove this code that lets you confirm the account
         DisplayConfirmAccountLink = true;
         if (DisplayConfirmAccountLink)
         {
-            var userId = await _userManager.GetUserIdAsync(user);
+            var userId = await _userManager.GetUserIdAsync(user: user);
             var code =
-                await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                await _userManager.GenerateEmailConfirmationTokenAsync(user: user);
+            code = WebEncoders.Base64UrlEncode(input: Encoding.UTF8.GetBytes(s: code));
             EmailConfirmationUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                null,
-                new {area = "Identity", userId, code, returnUrl},
-                Request.Scheme);
+                pageName: "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new {area = "Identity", userId, code, returnUrl},
+                protocol: Request.Scheme);
         }
 
         return Page();

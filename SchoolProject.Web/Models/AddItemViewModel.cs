@@ -6,12 +6,12 @@ namespace SchoolProject.Web.Models;
 public class AddItemViewModel
 {
     [Display(Name = "Product")]
-    [Range(1, int.MaxValue, ErrorMessage = "You must select a product.")]
+    [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = "You must select a product.")]
     public int ProductId { get; set; }
 
 
     [Display(Name = "Quantity")]
-    [Range(1, double.MaxValue, ErrorMessage = "You must select a quantity.")]
+    [Range(minimum: 1, maximum: double.MaxValue, ErrorMessage = "You must select a quantity.")]
     public double Quantity { get; set; }
 
 

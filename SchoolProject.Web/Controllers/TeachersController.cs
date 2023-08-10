@@ -17,8 +17,8 @@ public class TeachersController : Controller
     public async Task<IActionResult> Index()
     {
         return _context.Teachers != null
-            ? View(await _context.Teachers.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Teachers'  is null.");
+            ? View(model: await _context.Teachers.ToListAsync())
+            : Problem(detail: "Entity set 'DataContextMySql.Teachers'  is null.");
     }
 
     // GET: Teachers/Details/5
@@ -27,10 +27,10 @@ public class TeachersController : Controller
         if (id == null || _context.Teachers == null) return NotFound();
 
         var teacher = await _context.Teachers
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (teacher == null) return NotFound();
 
-        return View(teacher);
+        return View(model: teacher);
     }
 
     // GET: Teachers/Create
@@ -46,17 +46,17 @@ public class TeachersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
         [Bind(
-            "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+            include: "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Teacher teacher)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(teacher);
+            _context.Add(entity: teacher);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(teacher);
+        return View(model: teacher);
     }
 
     // GET: Teachers/Edit/5
@@ -64,9 +64,9 @@ public class TeachersController : Controller
     {
         if (id == null || _context.Teachers == null) return NotFound();
 
-        var teacher = await _context.Teachers.FindAsync(id);
+        var teacher = await _context.Teachers.FindAsync(keyValues: id);
         if (teacher == null) return NotFound();
-        return View(teacher);
+        return View(model: teacher);
     }
 
     // POST: Teachers/Edit/5
@@ -76,7 +76,7 @@ public class TeachersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
         [Bind(
-            "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+            include: "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Teacher teacher)
     {
         if (id != teacher.Id) return NotFound();
@@ -85,20 +85,20 @@ public class TeachersController : Controller
         {
             try
             {
-                _context.Update(teacher);
+                _context.Update(entity: teacher);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TeacherExists(teacher.Id))
+                if (!TeacherExists(id: teacher.Id))
                     return NotFound();
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(teacher);
+        return View(model: teacher);
     }
 
     // GET: Teachers/Delete/5
@@ -107,29 +107,29 @@ public class TeachersController : Controller
         if (id == null || _context.Teachers == null) return NotFound();
 
         var teacher = await _context.Teachers
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (teacher == null) return NotFound();
 
-        return View(teacher);
+        return View(model: teacher);
     }
 
     // POST: Teachers/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(name: "Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         if (_context.Teachers == null)
-            return Problem("Entity set 'DataContextMySql.Teachers'  is null.");
-        var teacher = await _context.Teachers.FindAsync(id);
-        if (teacher != null) _context.Teachers.Remove(teacher);
+            return Problem(detail: "Entity set 'DataContextMySql.Teachers'  is null.");
+        var teacher = await _context.Teachers.FindAsync(keyValues: id);
+        if (teacher != null) _context.Teachers.Remove(entity: teacher);
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     private bool TeacherExists(int id)
     {
-        return (_context.Teachers?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Teachers?.Any(predicate: e => e.Id == id)).GetValueOrDefault();
     }
 }

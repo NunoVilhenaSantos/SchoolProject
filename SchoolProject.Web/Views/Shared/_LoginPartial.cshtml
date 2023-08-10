@@ -8,19 +8,19 @@
 
 <ul class="navbar-nav">
 
-    @if (SignInManager.IsSignedIn(User))
+    @if (SignInManager.IsSignedIn(principal: User))
     {
         <li class="nav-item">
             <a id="manage" class="nav-link "
                asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 <span class="material-symbols-outlined">settings_account_box</span>
-                Hello @UserManager.GetUserName(User)!
+                Hello @UserManager.GetUserName(principal: User)!
             </a>
         </li>
         <li class="nav-item">
             <form id="logoutForm" class="form-inline"
                   asp-area="Identity" asp-page="/Account/Logout"
-                  asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
+                  asp-route-returnUrl="@Url.Action(action: "Index", controller: "Home", values: new {area = ""})">
                 <span class="material-symbols-outlined">logout</span>
                 <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
             </form>

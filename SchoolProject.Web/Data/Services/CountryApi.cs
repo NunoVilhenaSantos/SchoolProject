@@ -14,14 +14,14 @@ public static class CountryApi
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(ApiUrl);
+                var response = await httpClient.GetAsync(requestUri: ApiUrl);
 
                 if (!response.IsSuccessStatusCode)
                     return null;
 
                 var json = await response.Content.ReadAsStringAsync();
                 var countryData =
-                    JsonSerializer.Deserialize<List<City>>(json);
+                    JsonSerializer.Deserialize<List<City>>(json: json);
 
                 return countryData;
             }
@@ -29,7 +29,7 @@ public static class CountryApi
         catch (Exception ex)
         {
             Console.WriteLine(
-                $"Failed to retrieve country data: {ex.Message}");
+                value: $"Failed to retrieve country data: {ex.Message}");
             return null;
         }
     }

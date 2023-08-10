@@ -50,18 +50,18 @@ public class SeedDbStudentsWithSchoolClasses
                 student.SchoolClasses.Count >= 0) continue;
 
             // Assign 1 to 3 random school classes to each student
-            var numberOfSchoolClasses = random.Next(1, 4);
+            var numberOfSchoolClasses = random.Next(minValue: 1, maxValue: 4);
 
             for (var i = 0; i < numberOfSchoolClasses; i++)
             {
                 var randomSchoolClass =
-                    schoolClasses[random.Next(schoolClasses.Count)];
+                    schoolClasses[index: random.Next(maxValue: schoolClasses.Count)];
 
                 // Add the school class to the Student's SchoolClasses collection
-                student.SchoolClasses.Add(randomSchoolClass);
+                student.SchoolClasses.Add(item: randomSchoolClass);
 
                 // Add the student to the SchoolClass's Students collection
-                randomSchoolClass.Students.Add(student);
+                randomSchoolClass.Students.Add(item: student);
             }
         }
 

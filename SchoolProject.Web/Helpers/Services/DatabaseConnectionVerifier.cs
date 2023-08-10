@@ -14,11 +14,11 @@ public class DatabaseConnectionVerifier
     public async Task<bool> CheckDatabaseConnectionAsync()
     {
         var connectionString =
-            _configuration.GetConnectionString("SchoolProject-somee");
+            _configuration.GetConnectionString(name: "SchoolProject-somee");
 
         try
         {
-            await using var connection = new SqlConnection(connectionString);
+            await using var connection = new SqlConnection(connectionString: connectionString);
             await connection.OpenAsync();
             return true;
         }
@@ -30,7 +30,7 @@ public class DatabaseConnectionVerifier
             // banco de dados em caso de falha temporária.
 
             // Aguarda 5 segundos antes de tentar novamente.
-            await Task.Delay(5000);
+            await Task.Delay(millisecondsDelay: 5000);
             return false;
         }
     }

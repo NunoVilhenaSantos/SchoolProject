@@ -1,7 +1,7 @@
 @model IEnumerable<SchoolProject.Web.Data.Entities.Teachers.Teacher>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData[index: "Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -13,58 +13,58 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(expression: model => model.FirstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(expression: model => model.LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(expression: model => model.Address)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PostalCode)
+            @Html.DisplayNameFor(expression: model => model.PostalCode)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.MobilePhone)
+            @Html.DisplayNameFor(expression: model => model.MobilePhone)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(expression: model => model.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Active)
+            @Html.DisplayNameFor(expression: model => model.Active)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DateOfBirth)
+            @Html.DisplayNameFor(expression: model => model.DateOfBirth)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IdentificationNumber)
+            @Html.DisplayNameFor(expression: model => model.IdentificationNumber)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IdentificationType)
+            @Html.DisplayNameFor(expression: model => model.IdentificationType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExpirationDateIdentificationNumber)
+            @Html.DisplayNameFor(expression: model => model.ExpirationDateIdentificationNumber)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TaxIdentificationNumber)
+            @Html.DisplayNameFor(expression: model => model.TaxIdentificationNumber)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EnrollDate)
+            @Html.DisplayNameFor(expression: model => model.EnrollDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ProfilePhotoId)
+            @Html.DisplayNameFor(expression: model => model.ProfilePhotoId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IdGuid)
+            @Html.DisplayNameFor(expression: model => model.IdGuid)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WasDeleted)
+            @Html.DisplayNameFor(expression: model => model.WasDeleted)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(expression: model => model.CreatedAt)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            @Html.DisplayNameFor(expression: model => model.UpdatedAt)
         </th>
         <th></th>
     </tr>
@@ -74,58 +74,58 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(expression: modelItem => item.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(expression: modelItem => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                @Html.DisplayFor(expression: modelItem => item.Address)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
+                @Html.DisplayFor(expression: modelItem => item.PostalCode)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MobilePhone)
+                @Html.DisplayFor(expression: modelItem => item.MobilePhone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @Html.DisplayFor(expression: modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Active)
+                @Html.DisplayFor(expression: modelItem => item.Active)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                @Html.DisplayFor(expression: modelItem => item.DateOfBirth)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdentificationNumber)
+                @Html.DisplayFor(expression: modelItem => item.IdentificationNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdentificationType)
+                @Html.DisplayFor(expression: modelItem => item.IdentificationType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpirationDateIdentificationNumber)
+                @Html.DisplayFor(expression: modelItem => item.ExpirationDateIdentificationNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TaxIdentificationNumber)
+                @Html.DisplayFor(expression: modelItem => item.TaxIdentificationNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EnrollDate)
+                @Html.DisplayFor(expression: modelItem => item.EnrollDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProfilePhotoId)
+                @Html.DisplayFor(expression: modelItem => item.ProfilePhotoId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdGuid)
+                @Html.DisplayFor(expression: modelItem => item.IdGuid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
+                @Html.DisplayFor(expression: modelItem => item.WasDeleted)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(expression: modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(expression: modelItem => item.UpdatedAt)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

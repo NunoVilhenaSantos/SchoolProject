@@ -4,7 +4,7 @@ public class DCMySqlOnline : DataContextMySql
 {
     /// <inheritdoc />
     public DCMySqlOnline(DbContextOptions<DCMySqlOnline> options) :
-        base(options)
+        base(options: options)
     {
     }
 }

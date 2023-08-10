@@ -17,8 +17,8 @@ public class NationalitiesController : Controller
     public async Task<IActionResult> Index()
     {
         return _context.Nationalities != null
-            ? View(await _context.Nationalities.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Nationalities'  is null.");
+            ? View(model: await _context.Nationalities.ToListAsync())
+            : Problem(detail: "Entity set 'DataContextMySql.Nationalities'  is null.");
     }
 
     // GET: Nationalities/Details/5
@@ -27,10 +27,10 @@ public class NationalitiesController : Controller
         if (id == null || _context.Nationalities == null) return NotFound();
 
         var nationality = await _context.Nationalities
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (nationality == null) return NotFound();
 
-        return View(nationality);
+        return View(model: nationality);
     }
 
     // GET: Nationalities/Create
@@ -45,17 +45,17 @@ public class NationalitiesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Nationality nationality)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(nationality);
+            _context.Add(entity: nationality);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(nationality);
+        return View(model: nationality);
     }
 
     // GET: Nationalities/Edit/5
@@ -63,9 +63,9 @@ public class NationalitiesController : Controller
     {
         if (id == null || _context.Nationalities == null) return NotFound();
 
-        var nationality = await _context.Nationalities.FindAsync(id);
+        var nationality = await _context.Nationalities.FindAsync(keyValues: id);
         if (nationality == null) return NotFound();
-        return View(nationality);
+        return View(model: nationality);
     }
 
     // POST: Nationalities/Edit/5
@@ -74,7 +74,7 @@ public class NationalitiesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+        [Bind(include: "Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Nationality nationality)
     {
         if (id != nationality.Id) return NotFound();
@@ -83,20 +83,20 @@ public class NationalitiesController : Controller
         {
             try
             {
-                _context.Update(nationality);
+                _context.Update(entity: nationality);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NationalityExists(nationality.Id))
+                if (!NationalityExists(id: nationality.Id))
                     return NotFound();
                 throw;
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(nationality);
+        return View(model: nationality);
     }
 
     // GET: Nationalities/Delete/5
@@ -105,31 +105,31 @@ public class NationalitiesController : Controller
         if (id == null || _context.Nationalities == null) return NotFound();
 
         var nationality = await _context.Nationalities
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (nationality == null) return NotFound();
 
-        return View(nationality);
+        return View(model: nationality);
     }
 
     // POST: Nationalities/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(name: "Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         if (_context.Nationalities == null)
             return Problem(
-                "Entity set 'DataContextMySql.Nationalities'  is null.");
-        var nationality = await _context.Nationalities.FindAsync(id);
-        if (nationality != null) _context.Nationalities.Remove(nationality);
+                detail: "Entity set 'DataContextMySql.Nationalities'  is null.");
+        var nationality = await _context.Nationalities.FindAsync(keyValues: id);
+        if (nationality != null) _context.Nationalities.Remove(entity: nationality);
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     private bool NationalityExists(int id)
     {
-        return (_context.Nationalities?.Any(e => e.Id == id))
+        return (_context.Nationalities?.Any(predicate: e => e.Id == id))
             .GetValueOrDefault();
     }
 }

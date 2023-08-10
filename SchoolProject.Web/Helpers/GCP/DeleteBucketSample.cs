@@ -23,8 +23,8 @@ public class DeleteBucketSample
     public void DeleteBucket(string bucketName = "your-unique-bucket-name")
     {
         var storage = StorageClient.Create();
-        storage.DeleteBucket(bucketName);
-        Console.WriteLine($"The bucket {bucketName} was deleted.");
+        storage.DeleteBucket(bucket: bucketName);
+        Console.WriteLine(value: $"The bucket {bucketName} was deleted.");
     }
 }
 // [END storage_delete_bucket]

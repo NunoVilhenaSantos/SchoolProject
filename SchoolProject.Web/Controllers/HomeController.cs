@@ -58,11 +58,11 @@ public class HomeController : Controller
         // {
         // }
 
-        ViewData["stringLocalizer"] = _stringLocalizer["About Title"];
-        ViewData["htmlLocalizer"] = _htmlLocalizer["<b>Hello</b><i> {0}</i>",
-            _signInManager.IsSignedIn(User)];
+        ViewData[index: "stringLocalizer"] = _stringLocalizer[name: "About Title"];
+        ViewData[index: "htmlLocalizer"] = _htmlLocalizer[name: "<b>Hello</b><i> {0}</i>",
+            arguments: _signInManager.IsSignedIn(principal: User)];
 
-        ViewData["WelcomeMessage"] = _stringLocalizer["WelcomeMessage"];
+        ViewData[index: "WelcomeMessage"] = _stringLocalizer[name: "WelcomeMessage"];
         return View();
     }
 
@@ -119,7 +119,7 @@ public class HomeController : Controller
         Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel
+        return View(model: new ErrorViewModel
             {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
     }
 }

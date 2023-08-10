@@ -17,7 +17,7 @@ public class GenderRepository : GenericRepository<Gender>, IGenderRepository
     protected GenderRepository(
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
-    ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
+    ) : base(dataContext: dataContext, dataContextMySql: dataContextMySql, dataContextMsSql: dataContextMsSql, dataContextSqLite: dataContextSqLite)
     {
         _dataContext = dataContext;
         _dataContextMsSql = dataContextMsSql;

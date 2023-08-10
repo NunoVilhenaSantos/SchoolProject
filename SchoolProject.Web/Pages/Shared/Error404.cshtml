@@ -1,7 +1,7 @@
 ﻿@model dynamic
 
 @{
-    ViewData["Title"] = "404 Not Found";
+    ViewData[index: "Title"] = "404 Not Found";
     Layout = "_Layout";
 }
 
@@ -22,7 +22,7 @@
 @* <partial name="_Error403"/> *@
 <partial name="_Error404"/>
 
-<link rel="stylesheet" href="@Url.Content("~/css/Error404.css")">
+<link rel="stylesheet" href="@Url.Content(contentPath: "~/css/Error404.css")">
 
 
 <p>

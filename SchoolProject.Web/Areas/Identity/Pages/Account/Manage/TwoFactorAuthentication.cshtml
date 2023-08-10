@@ -3,13 +3,13 @@
 @model TwoFactorAuthenticationModel
 
 @{
-    ViewData["Title"] = "Two-factor authentication (2FA)";
-    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+    ViewData[index: "Title"] = "Two-factor authentication (2FA)";
+    ViewData[index: "ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
 <partial name="_StatusMessage" for="StatusMessage"/>
 
-<h3>@ViewData["Title"]</h3>
+<h3>@ViewData[index: "Title"]</h3>
 
 @{
     var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();

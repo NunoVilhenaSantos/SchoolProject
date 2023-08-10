@@ -29,7 +29,7 @@ public class ErrorModel : PageModel
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
-    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    public bool ShowRequestId => !string.IsNullOrEmpty(value: RequestId);
 
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

@@ -19,8 +19,8 @@ public class CoursesController : Controller
     public async Task<IActionResult> Index()
     {
         return _context.Courses != null
-            ? View(await _context.Courses.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Courses'  is null.");
+            ? View(model: await _context.Courses.ToListAsync())
+            : Problem(detail: "Entity set 'DataContextMySql.Courses'  is null.");
     }
 
     // GET: Courses/Details/5
@@ -29,10 +29,10 @@ public class CoursesController : Controller
         if (id == null || _context.Courses == null) return NotFound();
 
         var course = await _context.Courses
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (course == null) return NotFound();
 
-        return View(course);
+        return View(model: course);
     }
 
     // GET: Courses/Create
@@ -48,17 +48,17 @@ public class CoursesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
         [Bind(
-            "Code,Name,Description,Hours,CreditPoints,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+            include: "Code,Name,Description,Hours,CreditPoints,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Course course)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(course);
+            _context.Add(entity: course);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(actionName: nameof(Index));
         }
 
-        return View(course);
+        return View(model: course);
     }
 
     // GET: Courses/Edit/5
@@ -66,10 +66,10 @@ public class CoursesController : Controller
     {
         if (id == null || _context.Courses == null) return NotFound();
 
-        var course = await _context.Courses.FindAsync(id);
+        var course = await _context.Courses.FindAsync(keyValues: id);
         if (course == null) return NotFound();
 
-        return View(course);
+        return View(model: course);
     }
 
     // POST: Courses/Edit/5
@@ -79,26 +79,26 @@ public class CoursesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
         [Bind(
-            "Code,Name,Description,Hours,CreditPoints,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+            include: "Code,Name,Description,Hours,CreditPoints,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
         Course course)
     {
         if (id != course.Id) return NotFound();
 
-        if (!ModelState.IsValid) return View(course);
+        if (!ModelState.IsValid) return View(model: course);
 
         try
         {
-            _context.Update(course);
+            _context.Update(entity: course);
             await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!CourseExists(course.Id))
+            if (!CourseExists(id: course.Id))
                 return NotFound();
             throw;
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     // GET: Courses/Delete/5
@@ -107,31 +107,31 @@ public class CoursesController : Controller
         if (id == null || _context.Courses == null) return NotFound();
 
         var course = await _context.Courses
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(predicate: m => m.Id == id);
         if (course == null) return NotFound();
 
-        return View(course);
+        return View(model: course);
     }
 
     // POST: Courses/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(name: "Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         if (_context.Courses == null)
             return Problem(
-                "Entity set 'DataContextMySql.Courses'  is null.");
+                detail: "Entity set 'DataContextMySql.Courses'  is null.");
 
-        var course = await _context.Courses.FindAsync(id);
-        if (course != null) _context.Courses.Remove(course);
+        var course = await _context.Courses.FindAsync(keyValues: id);
+        if (course != null) _context.Courses.Remove(entity: course);
 
         await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(actionName: nameof(Index));
     }
 
     private bool CourseExists(int id)
     {
-        return (_context.Courses?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Courses?.Any(predicate: e => e.Id == id)).GetValueOrDefault();
     }
 }

@@ -25,7 +25,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
         AuthenticatedUserInApp authenticatedUserInApp,
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
-    ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
+    ) : base(dataContext: dataContext, dataContextMySql: dataContextMySql, dataContextMsSql: dataContextMsSql, dataContextSqLite: dataContextSqLite)
     {
         _userHelper = userHelper;
         _dataContext = dataContext;
@@ -41,23 +41,23 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public IQueryable<Country> GetCountriesWithCities()
     {
         return _dataContext.Countries
-            .Include(c => c.Cities)
-            .OrderBy(c => c.Name);
+            .Include(navigationPropertyPath: c => c.Cities)
+            .OrderBy(keySelector: c => c.Name);
     }
 
     public IEnumerable<Country> GetCountriesWithCitiesEnumerable()
     {
         return _dataContext.Countries
-            .Include(c => c.Cities)
-            .OrderBy(c => c.Name)
+            .Include(navigationPropertyPath: c => c.Cities)
+            .OrderBy(keySelector: c => c.Name)
             .AsEnumerable();
     }
 
     public IEnumerable<Country> GetCountriesWithCitiesEnumerableNoTracking()
     {
         return _dataContext.Countries
-            .Include(c => c.Cities)
-            .OrderBy(c => c.Name)
+            .Include(navigationPropertyPath: c => c.Cities)
+            .OrderBy(keySelector: c => c.Name)
             .AsNoTracking().AsEnumerable();
     }
 
@@ -65,15 +65,15 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public IEnumerable<SelectListItem> GetComboCountries()
     {
         var countriesList = _dataContext.Countries
-            .Select(c => new SelectListItem
+            .Select(selector: c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
             })
-            .OrderBy(c => c.Text)
+            .OrderBy(keySelector: c => c.Text)
             .ToList();
 
-        countriesList.Insert(0, new SelectListItem
+        countriesList.Insert(index: 0, item: new SelectListItem
         {
             Text = "(Select a country...)",
             Value = "0"
@@ -85,21 +85,21 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public IEnumerable<SelectListItem>? GetComboCities(int countryId)
     {
         var country = _dataContext.Countries
-            .Include(c => c.Cities)
-            .FirstOrDefault(c => c.Id == countryId);
+            .Include(navigationPropertyPath: c => c.Cities)
+            .FirstOrDefault(predicate: c => c.Id == countryId);
 
         if (country == null) return null;
 
         var citiesList = country.Cities
-            .Select(c => new SelectListItem
+            .Select(selector: c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
             })
-            .OrderBy(c => c.Text)
+            .OrderBy(keySelector: c => c.Text)
             .ToList();
 
-        citiesList.Insert(0, new SelectListItem
+        citiesList.Insert(index: 0, item: new SelectListItem
         {
             Text = "(Select a city...)",
             Value = "0"
@@ -112,7 +112,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public async Task<Country> GetCountryAsync(int cityId)
     {
         return await _dataContext.Countries
-            .Include(c => c.Cities
+            .Include(navigationPropertyPath: c => c.Cities
                 .FirstOrDefault(ci => ci.Id == cityId))
             .FirstOrDefaultAsync();
     }
@@ -121,7 +121,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public async Task<Country> GetCountryAsync(City city)
     {
         return await _dataContext.Countries
-            .Include(c => c.Cities
+            .Include(navigationPropertyPath: c => c.Cities
                 .FirstOrDefault(ci => ci.Id == city.Id))
             .FirstOrDefaultAsync();
     }
@@ -130,64 +130,64 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public async Task<Country?> GetCountryWithCitiesAsync(int id)
     {
         return await _dataContext.Countries
-            .Include(c => c.Cities)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .Include(navigationPropertyPath: c => c.Cities)
+            .FirstOrDefaultAsync(predicate: c => c.Id == id);
     }
 
     public async Task<Country?> GetCountryWithCitiesAsync(Country country)
     {
         return await _dataContext.Countries
-            .Include(c => c.Cities)
-            .FirstOrDefaultAsync(c => c.Id == country.Id);
+            .Include(navigationPropertyPath: c => c.Cities)
+            .FirstOrDefaultAsync(predicate: c => c.Id == country.Id);
     }
 
     public async Task<Country?> GetCountryWithCitiesAsync(City city)
     {
         return await _dataContext.Countries
-            .Include(c => c.Cities
+            .Include(navigationPropertyPath: c => c.Cities
                 .Where(ci => ci.Id == city.Id))
             .FirstOrDefaultAsync();
     }
 
     public async Task<City?> GetCityAsync(int id)
     {
-        return await _dataContext.Cities.FindAsync(id);
+        return await _dataContext.Cities.FindAsync(keyValues: id);
     }
 
     public async Task<City?> GetCityAsync(City city)
     {
-        return await _dataContext.Cities.FindAsync(city.Id);
+        return await _dataContext.Cities.FindAsync(keyValues: city.Id);
     }
 
 
     public Task<IIncludableQueryable<Country, City>>
         GetCityWithCountryAsync(int id)
     {
-        return Task.FromResult(_dataContext.Countries
-            .Include(c => c.Cities
+        return Task.FromResult(result: _dataContext.Countries
+            .Include(navigationPropertyPath: c => c.Cities
                 .FirstOrDefault(ci => ci.Id == id)));
     }
 
     public Task<IIncludableQueryable<Country, City>>
         GetCityWithCountryAsync(City city)
     {
-        return Task.FromResult(_dataContext.Countries
-            .Include(c => c.Cities
+        return Task.FromResult(result: _dataContext.Countries
+            .Include(navigationPropertyPath: c => c.Cities
                 .FirstOrDefault(ci => ci.Id == city.Id)));
     }
 
     public Task<IIncludableQueryable<Country, City>>
         GetCityWithCountryAsync(Country country)
     {
-        return Task.FromResult(_dataContext.Countries
-            .Include(c => c.Cities
+        return Task.FromResult(result: _dataContext.Countries
+            .Include(navigationPropertyPath: c => c.Cities
                 .FirstOrDefault(ci => ci.Id == country.Id)));
     }
 
 
     public async Task AddCityAsync(CityViewModel model)
     {
-        var country = await GetCountryWithCitiesAsync(model.CountryId);
+        var country = await GetCountryWithCitiesAsync(id: model.CountryId);
 
         if (country == null) return;
 
@@ -202,14 +202,14 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
         // assim funciona
         //
         // country.Cities.Add(city);
-        country.Cities.Add(new City
+        country.Cities.Add(item: new City
         {
             Name = model.Name,
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
         });
 
-        _dataContext.Countries.Update(country);
+        _dataContext.Countries.Update(entity: country);
 
         await _dataContext.SaveChangesAsync();
     }
@@ -218,12 +218,12 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public async Task<int> UpdateCityAsync(City? city)
     {
         var country = await _dataContext.Countries
-            .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
+            .Where(predicate: c => c.Cities.Any(ci => ci.Id == city.Id))
             .FirstOrDefaultAsync();
 
         if (country == null) return 0;
 
-        _dataContext.Cities.Update(city);
+        _dataContext.Cities.Update(entity: city);
 
         await _dataContext.SaveChangesAsync();
 
@@ -233,12 +233,12 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public async Task<int> DeleteCityAsync(City city)
     {
         var country = await _dataContextMsSql.Countries
-            .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
+            .Where(predicate: c => c.Cities.Any(ci => ci.Id == city.Id))
             .FirstOrDefaultAsync();
 
         if (country == null) return 0;
 
-        _dataContextMsSql.Cities.Remove(city);
+        _dataContextMsSql.Cities.Remove(entity: city);
 
         await _dataContextMsSql.SaveChangesAsync();
 

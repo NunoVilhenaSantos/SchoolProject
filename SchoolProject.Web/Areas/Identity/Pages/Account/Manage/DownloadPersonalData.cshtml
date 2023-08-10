@@ -1,11 +1,11 @@
 ﻿@page
 @model DownloadPersonalDataModel
 @{
-    ViewData["Title"] = "Download Your Data";
-    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+    ViewData[index: "Title"] = "Download Your Data";
+    ViewData[index: "ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3>@ViewData[index: "Title"]</h3>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>

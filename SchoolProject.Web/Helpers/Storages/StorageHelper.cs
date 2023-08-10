@@ -19,15 +19,15 @@ public class StorageHelper : IStorageHelper
 
 
         var gcpStorageFileNuno =
-            _configuration["GoogleStorages:GCPStorageAuthFile_Nuno"];
+            _configuration[key: "GoogleStorages:GCPStorageAuthFile_Nuno"];
         _googleCredentialsNuno =
-            GoogleCredential.FromFile(gcpStorageFileNuno);
+            GoogleCredential.FromFile(path: gcpStorageFileNuno);
 
 
         var gcpStorageFileJorge =
-            _configuration["GoogleStorages:GCPStorageAuthFile_Jorge"];
+            _configuration[key: "GoogleStorages:GCPStorageAuthFile_Jorge"];
         _googleCredentialsJorge =
-            GoogleCredential.FromFile(gcpStorageFileJorge);
+            GoogleCredential.FromFile(path: gcpStorageFileJorge);
     }
 
 
@@ -35,23 +35,23 @@ public class StorageHelper : IStorageHelper
         IFormFile file, string bucketName)
     {
         var stream = file.OpenReadStream();
-        return await UploadStreamAsync(stream, bucketName);
+        return await UploadStreamAsync(stream: stream, bucketName: bucketName);
     }
 
 
     public async Task<Guid> UploadStorageAsync(
         byte[] file, string bucketName)
     {
-        var stream = new MemoryStream(file);
-        return await UploadStreamAsync(stream, bucketName);
+        var stream = new MemoryStream(buffer: file);
+        return await UploadStreamAsync(stream: stream, bucketName: bucketName);
     }
 
 
     public async Task<Guid> UploadStorageAsync(
         string file, string bucketName)
     {
-        var stream = File.OpenRead(file);
-        return await UploadStreamAsync(stream, bucketName);
+        var stream = File.OpenRead(path: file);
+        return await UploadStreamAsync(stream: stream, bucketName: bucketName);
     }
 
 
@@ -61,49 +61,49 @@ public class StorageHelper : IStorageHelper
         try
         {
             Log.Logger.Information(
-                "Uploading File Async: " +
-                "{FileName} to {FileNameToSave} " +
-                "into storage {GcpStorageBucket}",
-                fileToUpload.FileName,
-                fileNameToSave,
-                _configuration["GCPStorageBucketName_Nuno"]);
+                messageTemplate: "Uploading File Async: " +
+                                 "{FileName} to {FileNameToSave} " +
+                                 "into storage {GcpStorageBucket}",
+                propertyValue0: fileToUpload.FileName,
+                propertyValue1: fileNameToSave,
+                propertyValue2: _configuration[key: "GCPStorageBucketName_Nuno"]);
 
             using (var memoryStream = new MemoryStream())
             {
-                await fileToUpload.CopyToAsync(memoryStream);
+                await fileToUpload.CopyToAsync(target: memoryStream);
 
                 // create storage client using the credentials file.
                 using (var storageClient =
-                       StorageClient.Create(_googleCredentialsNuno))
+                       StorageClient.Create(credential: _googleCredentialsNuno))
                 {
                     //var bucketName = _options.GCPStorageBucketName_Nuno;
 
                     var storageObject = await storageClient.UploadObjectAsync(
-                        _configuration["GCPStorageBucketName_Nuno"],
-                        fileNameToSave, fileToUpload.ContentType,
-                        memoryStream);
+                        bucket: _configuration[key: "GCPStorageBucketName_Nuno"],
+                        objectName: fileNameToSave, contentType: fileToUpload.ContentType,
+                        source: memoryStream);
 
                     Log.Logger.Information(
-                        "Uploaded File Async: " +
-                        "{FileName} to {FileNameToSave} " +
-                        "into storage {GcpStorageBucket}",
-                        fileToUpload.FileName,
-                        fileNameToSave,
-                        _configuration["GCPStorageBucketName_Nuno"]);
+                        messageTemplate: "Uploaded File Async: " +
+                                         "{FileName} to {FileNameToSave} " +
+                                         "into storage {GcpStorageBucket}",
+                        propertyValue0: fileToUpload.FileName,
+                        propertyValue1: fileNameToSave,
+                        propertyValue2: _configuration[key: "GCPStorageBucketName_Nuno"]);
 
-                    return await Task.FromResult(storageObject.MediaLink);
+                    return await Task.FromResult(result: storageObject.MediaLink);
                 }
             }
         }
         catch (Exception ex)
         {
             Log.Logger.Error(
-                ex, "{ExMessage}", ex.Message);
+                exception: ex, messageTemplate: "{ExMessage}", propertyValue: ex.Message);
 
             //return $"Error while uploading file {fileNameToSave} {ex.Message}";
 
             return await Task.FromResult(
-                $"Error while uploading file {fileNameToSave} {ex.Message}");
+                result: $"Error while uploading file {fileNameToSave} {ex.Message}");
         }
     }
 
@@ -117,14 +117,14 @@ public class StorageHelper : IStorageHelper
         // and then create it
         var blobContainerClient =
             new BlobContainerClient(
-                _configuration["Storages:AzureBlobKeyNuno"],
-                bucketName);
+                connectionString: _configuration[key: "Storages:AzureBlobKeyNuno"],
+                blobContainerName: bucketName);
 
 
         // Get a reference to a blob named "sample-file"
         // in a container named "sample-container"
         var blobClient =
-            blobContainerClient.GetBlobClient(name.ToString());
+            blobContainerClient.GetBlobClient(blobName: name.ToString());
 
 
         // Check if the container already exists
@@ -137,7 +137,7 @@ public class StorageHelper : IStorageHelper
         // Perform any additional setup or
         // configuration for the container if needed
         // Upload local file
-        await blobClient.UploadAsync(stream);
+        await blobClient.UploadAsync(content: stream);
 
         return name;
     }

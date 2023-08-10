@@ -28,14 +28,14 @@ public class AuthenticatedUserInApp
         var user = _httpContextAccessor.HttpContext?.User;
 
         var userId = user?.FindFirstValue(
-            ClaimTypes.NameIdentifier);
+            claimType: ClaimTypes.NameIdentifier);
 
-        var userEmail = user?.FindFirstValue(ClaimTypes.Email);
+        var userEmail = user?.FindFirstValue(claimType: ClaimTypes.Email);
 
         if (userId is null || userEmail is null) return null;
 
         return
-            await _userHelper.GetUserByIdAsync(userId) ??
-            await _userHelper.GetUserByEmailAsync(userEmail);
+            await _userHelper.GetUserByIdAsync(id: userId) ??
+            await _userHelper.GetUserByEmailAsync(email: userEmail);
     }
 }

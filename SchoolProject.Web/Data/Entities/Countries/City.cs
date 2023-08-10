@@ -10,43 +10,43 @@ namespace SchoolProject.Web.Data.Entities.Countries;
 public class City : IEntity, INotifyPropertyChanged
 {
     [Required]
-    [DisplayName("City")]
-    [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
+    [DisplayName(displayName: "City")]
+    [MaxLength(length: 50, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Name { get; set; }
 
 
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
     [Required]
-    [DisplayName("Was Deleted?")]
+    [DisplayName(displayName: "Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
     [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DataType(dataType: DataType.Date)]
+    [DisplayName(displayName: "Created At")]
+    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [Required]
-    [DisplayName("Created By")]
+    [DisplayName(displayName: "Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
     // [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
+    [DataType(dataType: DataType.Date)]
+    [DisplayName(displayName: "Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+    [DisplayName(displayName: "Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -54,16 +54,16 @@ public class City : IEntity, INotifyPropertyChanged
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(sender: this,
+            e: new PropertyChangedEventArgs(propertyName: propertyName));
     }
 
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(x: field, y: value)) return false;
         field = value;
-        OnPropertyChanged(propertyName);
+        OnPropertyChanged(propertyName: propertyName);
         return true;
     }
 }

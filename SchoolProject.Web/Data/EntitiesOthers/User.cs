@@ -7,21 +7,21 @@ namespace SchoolProject.Web.Data.EntitiesOthers;
 
 public class User : IdentityUser, INotifyPropertyChanged
 {
-    [DisplayName("First Name")]
-    [MaxLength(50,
+    [DisplayName(displayName: "First Name")]
+    [MaxLength(length: 50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     // [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string FirstName { get; init; }
 
 
-    [DisplayName("Last Name")]
-    [MaxLength(50,
+    [DisplayName(displayName: "Last Name")]
+    [MaxLength(length: 50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     // [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string LastName { get; init; }
 
 
-    [MaxLength(100,
+    [MaxLength(length: 100,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     public string? Address { get; set; }
 
@@ -48,7 +48,7 @@ public class User : IdentityUser, INotifyPropertyChanged
     //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
 
 
-    [DisplayName("Was Deleted?")] public required bool WasDeleted { get; set; }
+    [DisplayName(displayName: "Was Deleted?")] public required bool WasDeleted { get; set; }
 
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -57,17 +57,17 @@ public class User : IdentityUser, INotifyPropertyChanged
     private void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(sender: this,
+            e: new PropertyChangedEventArgs(propertyName: propertyName));
     }
 
 
     private bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(x: field, y: value)) return false;
         field = value;
-        OnPropertyChanged(propertyName);
+        OnPropertyChanged(propertyName: propertyName);
         return true;
     }
 }

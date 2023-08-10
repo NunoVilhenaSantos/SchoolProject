@@ -21,7 +21,7 @@ public static class SeedDbSchoolClassesWithCourses
         DataContextMySql dataContextInUse
     )
     {
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
 
 
         // ------------------------------------------------------------------ //
@@ -32,7 +32,7 @@ public static class SeedDbSchoolClassesWithCourses
         var existingSchoolClasses =
             await dataContextInUse.SchoolClasses
                 // To Ensure Courses are loaded for each SchoolClass
-                .Include(sc => sc.Courses)
+                .Include(navigationPropertyPath: sc => sc.Courses)
                 .ToListAsync();
 
         // ------------------------------------------------------------------ //
@@ -41,7 +41,7 @@ public static class SeedDbSchoolClassesWithCourses
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
+        Console.WriteLine(value: "debug zone...");
         if (await dataContextInUse.SchoolClassCourses.AnyAsync()) return;
 
 
@@ -53,7 +53,7 @@ public static class SeedDbSchoolClassesWithCourses
                 // Loop through each course associated with the school class
                 foreach (var schoolClassCourse in
                          schoolClass.Courses.Select(
-                             course => new SchoolClassCourse
+                             selector: course => new SchoolClassCourse
                              {
                                  SchoolClassId = schoolClass.Id,
                                  SchoolClass = schoolClass,
@@ -62,10 +62,10 @@ public static class SeedDbSchoolClassesWithCourses
                                  CreatedBy = user
                              }))
                     // Add the association to the SchoolClass's SchoolClassCourses collection
-                    dataContextInUse.SchoolClassCourses.Add(schoolClassCourse);
+                    dataContextInUse.SchoolClassCourses.Add(entity: schoolClassCourse);
 
             // ------------------------------------------------------------------ //
-            Console.WriteLine("debug zone...", Color.Red);
+            Console.WriteLine(format: "debug zone...", arg0: Color.Red);
 
             // Save the changes to the database
             await dataContextInUse.SaveChangesAsync();
@@ -73,6 +73,6 @@ public static class SeedDbSchoolClassesWithCourses
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...", Color.Red);
+        Console.WriteLine(format: "debug zone...", arg0: Color.Red);
     }
 }

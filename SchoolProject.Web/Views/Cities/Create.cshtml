@@ -1,7 +1,7 @@
 @model SchoolProject.Web.Data.Entities.Countries.City
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData[index: "Title"] = "Create";
 }
 
 <h1>Create</h1>
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
+                    <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(expression: model => model.WasDeleted)
                 </label>
             </div>
             <div class="form-group">
