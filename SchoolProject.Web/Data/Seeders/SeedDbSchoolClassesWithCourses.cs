@@ -40,7 +40,6 @@ public static class SeedDbSchoolClassesWithCourses
         _listOfSchoolClassesToAdd = existingSchoolClasses.ToList();
 
 
-
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
         if (await dataContextInUse.SchoolClassCourses.AnyAsync()) return;

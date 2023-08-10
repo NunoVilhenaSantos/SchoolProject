@@ -69,7 +69,4 @@ public class SeedDbStudentsWithSchoolClasses
         // Save the changes to the database
         await dataContextInUse.SaveChangesAsync();
     }
-
-
-   
 }

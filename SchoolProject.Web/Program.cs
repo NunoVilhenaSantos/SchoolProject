@@ -15,6 +15,7 @@ using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Seeders;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
@@ -403,13 +404,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(15);
-    
+
     // options.LoginPath = "/Account/Login";
     // options.AccessDeniedPath = "/Account/NotAuthorized";
-    
+
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-    
+
     options.SlidingExpiration = true;
 });
 
@@ -592,10 +593,8 @@ builder.Logging.AddEventSourceLogger();
 builder.Logging.AddApplicationInsights();
 
 
-
 // Configuração do serviço DatabaseConnectionVerifier
 builder.Services.AddTransient<DatabaseConnectionVerifier>();
-
 
 
 // Inject repositories and helpers.

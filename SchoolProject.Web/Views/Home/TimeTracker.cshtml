@@ -1,7 +1,6 @@
 ﻿@inject IStringLocalizer<HomeController> Localizer
-
 @using SchoolProject.Web.Controllers
-@using SchoolProject.Web.Data.EntitiesOthers
+@using SchoolProject.Web.Helpers
 @using Microsoft.Extensions.Localization
 @model dynamic
 
@@ -34,9 +33,6 @@
         $"RunTime do seeding (total): {RSElapsedTime} seconds.<br>" +
         $"RunTime do programa: {SPElapsedTime}.<br>";
 }
-
-
-<h1>@ViewData["WelcomeMessage"]</h1>
 
 
 <h1>@Localizer["WelcomeMessage"]</h1>

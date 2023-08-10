@@ -1,0 +1,35 @@
+﻿@model dynamic
+
+
+@{
+    ViewData["Title"] = "403 Forbidden";
+    // Layout = "_Layout";
+}
+
+
+<h1>403 Forbidden</h1>
+
+
+<h2>@ViewData["Title"]</h2>
+
+<p>The client does not have access rights to the content.</p>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<p>The client does not have access rights to the content;</p>
+<br>
+
+<p>that is, it is unauthorized, so the server is refusing to give the requested resource.</p>
+<br>
+
+<p>Unlike 401 Unauthorized, the client's identity is known to the server.</p>
+<br>
+<!-- Path: SchoolProject.Web\Pages\Shared\_Error404.cshtml -->
+
+<p>Go back to the <a href="/">Home page</a>.</p>
+<br>

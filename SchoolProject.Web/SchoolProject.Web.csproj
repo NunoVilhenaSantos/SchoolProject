@@ -21,25 +21,25 @@
         <PackageReference Include="DnsClient" Version="1.7.0"/>
         <PackageReference Include="Google.Apis.Storage.v1" Version="1.61.0.3112"/>
         <PackageReference Include="Google.Cloud.Storage.V1" Version="4.6.0"/>
-        <PackageReference Include="MailKit" Version="4.1.0" />
+        <PackageReference Include="MailKit" Version="4.1.0"/>
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.10"/>
         <PackageReference Include="Microsoft.Build.Framework" Version="17.6.3"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.10"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -80,6 +80,7 @@
     <ItemGroup>
         <Folder Include="Areas\Identity\Data\"/>
         <Folder Include="Data\DataContexts\DataAccess\"/>
+        <Folder Include="Data\Repositories\Interfaces\"/>
         <Folder Include="Docs\"/>
         <Folder Include="wwwroot\images\"/>
     </ItemGroup>

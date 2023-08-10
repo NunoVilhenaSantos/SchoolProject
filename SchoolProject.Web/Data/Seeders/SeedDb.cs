@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Drawing;
+using System.Security.Claims;
 using System.Transactions;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.DataContexts;
@@ -13,7 +14,7 @@ using SchoolProject.Web.Helpers.Users;
 namespace SchoolProject.Web.Data.Seeders;
 
 /// <summary>
-/// Data seeder for the database.
+///     Data seeder for the database.
 /// </summary>
 public class SeedDb
 {
@@ -98,7 +99,7 @@ public class SeedDb
         // await _mySqlLocal.Database.MigrateAsync();
         // await _mySqlOnline.Database.MigrateAsync();
 
-        await _dataContextSqLite.Database.MigrateAsync();
+        // await _dataContextSqLite.Database.MigrateAsync();
 
         await _dataContextInUse.Database.MigrateAsync();
 
@@ -112,8 +113,11 @@ public class SeedDb
         SeedDbUsers.Initialize(_userHelper, _loggerSeedDbUsers);
 
         Console.WriteLine("Seeding the database.", Color.Green);
-        Console.WriteLine(_dataContextInUse.Database.GetConnectionString(), Color.Green);
-        Console.WriteLine(_dataContextInUse.Database.GetDbConnection().DataSource, Color.Green); 
+        Console.WriteLine(_dataContextInUse.Database.GetConnectionString(),
+            Color.Green);
+        Console.WriteLine(
+            _dataContextInUse.Database.GetDbConnection().DataSource,
+            Color.Green);
         Console.WriteLine("Debug point.", Color.Red);
 
         // ------------------------------------------------------------------ //
@@ -376,8 +380,55 @@ public class SeedDb
             .Except(existingRoles.Select(role => role.Name))
             .ToList();
 
+        foreach (var role in rolesToAdd)
+        {
+            await CreateRoleAsync(role);
 
-        foreach (var role in rolesToAdd) await CreateRoleAsync(role);
+            // Associar a função com as reivindicações apropriadas
+            switch (role)
+            {
+                case "SuperUser":
+                    await AddClaimToRoleAsync(role, "IsAdmin");
+                    await AddClaimToRoleAsync(role, "IsFunctionary");
+                    await AddClaimToRoleAsync(role, "IsStudent");
+                    await AddClaimToRoleAsync(role, "IsTeacher");
+                    await AddClaimToRoleAsync(role, "IsParent");
+                    await AddClaimToRoleAsync(role, "IsUser");
+
+                    // ... outras reivindicações conforme necessário
+                    break;
+
+                case "Admin":
+                    await AddClaimToRoleAsync(role, "IsAdmin");
+                    // ...
+                    break;
+
+                case "Functionary":
+                    await AddClaimToRoleAsync(role, "IsFunctionary");
+                    // ...
+                    break;
+
+                case "Student":
+                    await AddClaimToRoleAsync(role, "IsStudent");
+                    // ...
+                    break;
+
+                case "Teacher":
+                    await AddClaimToRoleAsync(role, "IsTeacher");
+                    // ...
+                    break;
+
+                case "Parent":
+                    await AddClaimToRoleAsync(role, "IsParent");
+                    // ...
+                    break;
+
+                case "User":
+                    await AddClaimToRoleAsync(role, "IsUser");
+                    // ...
+                    break;
+            }
+        }
 
         await _dataContextInUse.SaveChangesAsync();
     }
@@ -388,6 +439,17 @@ public class SeedDb
         await _roleManager.CreateAsync(new IdentityRole(role));
     }
 
+
+    private async Task AddClaimToRoleAsync(string roleName, string claimType)
+    {
+        var role = await _roleManager.FindByNameAsync(roleName);
+
+        if (role != null)
+        {
+            var claim = new Claim(claimType, "true");
+            await _roleManager.AddClaimAsync(role, claim);
+        }
+    }
 
     private async Task AddCountriesWithCitiesAndNationalities(User createdBy)
     {

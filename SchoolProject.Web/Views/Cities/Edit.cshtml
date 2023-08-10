@@ -7,39 +7,39 @@
 <h1>Edit</h1>
 
 <h4>City</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
                 <label asp-for="IdGuid" class="control-label"></label>
-                <input asp-for="IdGuid" class="form-control" />
+                <input asp-for="IdGuid" class="form-control"/>
                 <span asp-validation-for="IdGuid" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WasDeleted" /> @Html.DisplayNameFor(expression: model => model.WasDeleted)
+                    <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
                 </label>
             </div>
             <div class="form-group">
                 <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
+                <input asp-for="CreatedAt" class="form-control"/>
                 <span asp-validation-for="CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
+                <input asp-for="UpdatedAt" class="form-control"/>
                 <span asp-validation-for="UpdatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -48,4 +48,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-

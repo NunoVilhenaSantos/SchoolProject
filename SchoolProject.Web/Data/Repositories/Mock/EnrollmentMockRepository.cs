@@ -1,8 +1,8 @@
 ﻿using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Repositories.Interfaces;
 
 namespace SchoolProject.Web.Data.Repositories.Mock;
 
+/// <inheritdoc />
 public class EnrollmentMockRepository : IGenericRepository<Enrollment>
 {
     public IQueryable<Enrollment> GetAll()
@@ -36,6 +36,11 @@ public class EnrollmentMockRepository : IGenericRepository<Enrollment>
     }
 
     public async Task<bool> ExistAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> ExistAsync(Guid idGuid)
     {
         throw new NotImplementedException();
     }

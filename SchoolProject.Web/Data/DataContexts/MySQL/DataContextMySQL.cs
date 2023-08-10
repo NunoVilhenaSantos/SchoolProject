@@ -39,9 +39,9 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
     // tabelas auxiliares
     // ---------------------------------------------------------------------- //
 
-    public DbSet<City> Cities { get; set; }
+    public DbSet<City?> Cities { get; set; }
 
-    public DbSet<Country> Countries { get; set; }
+    public DbSet<Country?> Countries { get; set; }
 
 
     public DbSet<Nationality> Nationalities { get; set; }
@@ -150,7 +150,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<Enrollment>()
-            .HasKey(e => new { e.StudentId, e.CourseId });
+            .HasKey(e => new {e.StudentId, e.CourseId});
 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
@@ -195,7 +195,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<SchoolClassCourse>()
-            .HasKey(scc => new { scc.SchoolClassId, scc.CourseId });
+            .HasKey(scc => new {scc.SchoolClassId, scc.CourseId});
 
         modelBuilder.Entity<SchoolClassCourse>()
             .HasOne(scc => scc.SchoolClass)
@@ -238,7 +238,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<StudentCourse>()
-            .HasKey(sc => new { sc.StudentId, sc.CourseId });
+            .HasKey(sc => new {sc.StudentId, sc.CourseId});
 
         modelBuilder.Entity<StudentCourse>()
             .HasOne(sc => sc.Student)
@@ -282,7 +282,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<TeacherCourse>()
-            .HasKey(tc => new { tc.TeacherId, tc.CourseId });
+            .HasKey(tc => new {tc.TeacherId, tc.CourseId});
 
         modelBuilder.Entity<TeacherCourse>()
             .HasOne(tc => tc.Teacher)

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SchoolProject.Web.Data.DataContexts.MySQL;
+﻿using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.EntitiesOthers;
@@ -52,7 +51,7 @@ public class SeedDbTeachersWithCourses
 
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
-        if(await dataContextInUse.TeacherCourses.AnyAsync()) return;
+        if (await dataContextInUse.TeacherCourses.AnyAsync()) return;
 
 
         // ------------------------------------------------------------------ //

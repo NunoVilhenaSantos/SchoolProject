@@ -65,6 +65,7 @@ public class UserHelper : IUserHelper
             false);
     }
 
+
     public async Task LogOutAsync()
     {
         await _signInManager.SignOutAsync();
@@ -74,6 +75,7 @@ public class UserHelper : IUserHelper
     {
         return await _userManager.UpdateAsync(user);
     }
+
 
     public async Task<IdentityResult> ChangePasswordAsync(
         User? user, string oldPassword, string newPassword)
@@ -105,5 +107,23 @@ public class UserHelper : IUserHelper
     {
         return await _signInManager.CheckPasswordSignInAsync(
             user, password, false);
+    }
+
+
+    public async Task<User?> GetUserByUserNameAsync(string userName)
+    {
+        return await _userManager.FindByNameAsync(userName);
+    }
+
+
+    public async Task<string> GenerateEmailConfirmationTokenAsync(User? user)
+    {
+        return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+    }
+
+    public async Task<IdentityResult> ConfirmEmailAsync(
+        User? user, string token)
+    {
+        return await _userManager.ConfirmEmailAsync(user, token);
     }
 }

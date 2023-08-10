@@ -1,7 +1,6 @@
 ﻿@inject IStringLocalizer<HomeController> Localizer
-
 @using SchoolProject.Web.Controllers
-@using SchoolProject.Web.Data.EntitiesOthers
+@using SchoolProject.Web.Helpers
 @using Microsoft.Extensions.Localization
 @model dynamic
 
@@ -53,7 +52,6 @@
 <p>@ProcessList.ListOfProcesses.Count</p>
 <br/>
 <ul>
-
     @foreach (var process in ProcessList.ListOfProcesses)
     {
         <li>@process</li>

@@ -315,7 +315,7 @@ public class SeedDbStudentsAndTeachers
         // store the user in the database
         try
         {
-            var result = 
+            var result =
                 await _userHelper.GetUserByEmailAsync(newUser.Email);
             if (result != null)
                 throw new Exception(

@@ -1,0 +1,29 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "403 Forbidden";
+    Layout = "_Layout";
+}
+
+@* <br/> *@
+@* <h1>@ViewData["Title"]</h1> *@
+@* <br/> *@
+
+<link rel="stylesheet" href="@Url.Content("~/css/Error403.css")">
+
+<partial name="_Error403"/>
+
+@* <partial name="_Error404"/> *@
+
+@* <h2>Ops... Page not found!!!</h2> *@
+
+
+@* <script> *@
+@*     document.addEventListener("DOMContentLoaded", function() { *@
+@*       const container = document.getElementById("containerError403"); *@
+@* *@
+@*       container.innerHTML = document.body.innerHTML; *@
+@* *@
+@*       document.body.innerHTML = ""; *@
+@*     }); *@
+@*   </script> *@

@@ -1,23 +1,42 @@
+using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.EntitiesOthers;
-using SchoolProject.Web.Data.Repositories.Interfaces;
 
 namespace SchoolProject.Web.Data.Repositories;
 
+/// <inheritdoc />
 public class GenericRepository<T> : IGenericRepository<T>
     where T : class, IEntity
 {
-    private readonly DataContextMsSql _dataContext;
+    private readonly DataContextMySql _dataContext;
+    private readonly DataContextMsSql _dataContextMsSql;
+    private readonly DataContextMySql _dataContextMySql;
+    private readonly DataContextSqLite _dataContextSqLite;
 
-
-    protected GenericRepository(DataContextMsSql dataContext)
+    /// <summary>
+    ///    Constructor of the generic repository.
+    /// </summary>
+    /// <param name="dataContext"></param>
+    /// <param name="dataContextMySql"></param>
+    /// <param name="dataContextMsSql"></param>
+    /// <param name="dataContextSqLite"></param>
+    protected GenericRepository(
+        DataContextMySql dataContext, DataContextMySql dataContextMySql,
+        DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
+    )
     {
         _dataContext = dataContext;
+        _dataContextMsSql = dataContextMsSql;
+        _dataContextMySql = dataContextMySql;
+        _dataContextSqLite = dataContextSqLite;
     }
 
 
+    /// <inheritdoc />
     public IQueryable<T> GetAll()
     {
+        // return _dataContext.Set<T>().AsNoTracking();
         return _dataContext.Set<T>().AsQueryable().AsNoTracking();
     }
 
@@ -61,6 +80,12 @@ public class GenericRepository<T> : IGenericRepository<T>
     public async Task<bool> ExistAsync(int id)
     {
         return await _dataContext.Set<T>().AnyAsync(e => e.Id == id);
+    }
+
+
+    public async Task<bool> ExistAsync(Guid idGuid)
+    {
+        return await _dataContext.Set<T>().AnyAsync(e => e.IdGuid == idGuid);
     }
 
 
