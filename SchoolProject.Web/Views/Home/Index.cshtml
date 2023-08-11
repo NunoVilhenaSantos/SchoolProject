@@ -1,21 +1,26 @@
 ﻿@using SchoolProject.Web.Controllers
 @using SchoolProject.Web.Helpers
 @using Microsoft.Extensions.Localization
+@model IEnumerable<SchoolProject.Web.Data.Entities.Students.Student>
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass> *@
+
 @inject IStringLocalizer<HomeController> Localizer
 
-@{
-    ViewData[index: "Title"] = "Home Page";
 
-    var ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.SeedDbCoursesName);
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    var ts = TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesName);
     var SCElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.SeedDbCoursesMPInfoName);
+    ts = TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesMPInfoName);
     var MPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.SeederTimerName);
+    ts = TimeTracker.GetElapsedTime(TimeTracker.SeederTimerName);
     var RSElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
-    ts = TimeTracker.GetElapsedTime(timerName: TimeTracker.AppBuilderTimerName);
+    ts = TimeTracker.GetElapsedTime(TimeTracker.AppBuilderTimerName);
     var SPElapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds:00}";
 
 
@@ -30,22 +35,24 @@
         $"RunTime do seeding dos cursos (impressão dos dados na consola): {MPElapsedTime} seconds.<br>" +
         $"RunTime do seeding (total): {RSElapsedTime} seconds.<br>" +
         $"RunTime do programa: {SPElapsedTime}.<br>";
+
+
 }
 
 
-<h1>@ViewData[index: "WelcomeMessage"]</h1>
+<h1>@ViewData["WelcomeMessage"]</h1>
 
 
-<h1>@Localizer[name: "WelcomeMessage"]</h1>
+<h1>@Localizer["WelcomeMessage"]</h1>
 
-<p>@Localizer[name: "ContactUs"]</p>
+<p>@Localizer["ContactUs"]</p>
 
-<p>@Localizer[name: "AboutUs"]</p>
+<p>@Localizer["AboutUs"]</p>
 
 
 <br/>
 <p>@allRuntimes</p>
-@Html.Raw(value: allRuntimesHtml)
+@Html.Raw(allRuntimesHtml)
 
 <br/>
 <p>@ProcessList.ListOfProcesses</p>
@@ -65,3 +72,31 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+<br/>
+<br/>
+@* @foreach (var schoolClass in SchoolClasses) *@
+@* { *@
+@*     <h3>@schoolClass.Name</h3> *@
+@*     <ul> *@
+@*         @foreach (var student in schoolClass.Students) *@
+@*         { *@
+@*             <li>@student.Name</li> *@
+@*         } *@
+@*     </ul> *@
+@* } *@
+
+
+<br/>
+<br/>
+@* @foreach (var student in Students) *@
+@* { *@
+@*     <h3>@student.Name</h3> *@
+@*     <ul> *@
+@*         @foreach (var schoolClass in student.SchoolClasses) *@
+@*         { *@
+@*             <li>@schoolClass.Name</li> *@
+@*         } *@
+@*     </ul> *@
+@* } *@

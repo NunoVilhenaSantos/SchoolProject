@@ -25,13 +25,13 @@ public class UserHelper : IUserHelper
 
     public async Task<User?> GetUserByEmailAsync(string email)
     {
-        return await _userManager.FindByEmailAsync(email: email);
+        return await _userManager.FindByEmailAsync(email);
     }
 
 
     public async Task<User?> GetUserByIdAsync(string id)
     {
-        return await _userManager.FindByIdAsync(userId: id);
+        return await _userManager.FindByIdAsync(id);
     }
 
 
@@ -40,29 +40,29 @@ public class UserHelper : IUserHelper
     {
         // Check if user object is not null before proceeding
         if (user == null)
-            throw new ArgumentNullException(paramName: nameof(user),
-                message: "User object cannot be null.");
+            throw new ArgumentNullException(nameof(user),
+                "User object cannot be null.");
 
-        return await _userManager.CreateAsync(user: user, password: password);
+        return await _userManager.CreateAsync(user, password);
     }
 
 
     public async Task CheckRoleAsync(string roleName)
     {
-        var result = await _roleManager.RoleExistsAsync(roleName: roleName);
+        var result = await _roleManager.RoleExistsAsync(roleName);
 
         if (!result)
-            await _roleManager.CreateAsync(role: new IdentityRole {Name = roleName});
+            await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
     }
 
 
     public async Task<SignInResult> LoginAsync(LoginViewModel model)
     {
         return await _signInManager.PasswordSignInAsync(
-            userName: model.Username,
-            password: model.Password,
-            isPersistent: model.RememberMe,
-            lockoutOnFailure: false);
+            model.Username,
+            model.Password,
+            model.RememberMe,
+            false);
     }
 
 
@@ -73,7 +73,7 @@ public class UserHelper : IUserHelper
 
     public async Task<IdentityResult> UpdateUserAsync(User? user)
     {
-        return await _userManager.UpdateAsync(user: user);
+        return await _userManager.UpdateAsync(user);
     }
 
 
@@ -81,24 +81,24 @@ public class UserHelper : IUserHelper
         User? user, string oldPassword, string newPassword)
     {
         return await _userManager.ChangePasswordAsync(
-            user: user, currentPassword: oldPassword, newPassword: newPassword);
+            user, oldPassword, newPassword);
     }
 
     public async Task AddUserToRoleAsync(User? user, string roleName)
     {
-        await _userManager.AddToRoleAsync(user: user, role: roleName);
+        await _userManager.AddToRoleAsync(user, roleName);
     }
 
 
     public async Task RemoveUserFromRoleAsync(User? user, string roleName)
     {
-        await _userManager.RemoveFromRoleAsync(user: user, role: roleName);
+        await _userManager.RemoveFromRoleAsync(user, roleName);
     }
 
 
     public async Task<bool> IsUserInRoleAsync(User? user, string roleName)
     {
-        return await _userManager.IsInRoleAsync(user: user, role: roleName);
+        return await _userManager.IsInRoleAsync(user, roleName);
     }
 
 
@@ -106,24 +106,24 @@ public class UserHelper : IUserHelper
         User user, string password)
     {
         return await _signInManager.CheckPasswordSignInAsync(
-            user: user, password: password, lockoutOnFailure: false);
+            user, password, false);
     }
 
 
     public async Task<User?> GetUserByUserNameAsync(string userName)
     {
-        return await _userManager.FindByNameAsync(userName: userName);
+        return await _userManager.FindByNameAsync(userName);
     }
 
 
     public async Task<string> GenerateEmailConfirmationTokenAsync(User? user)
     {
-        return await _userManager.GenerateEmailConfirmationTokenAsync(user: user);
+        return await _userManager.GenerateEmailConfirmationTokenAsync(user);
     }
 
     public async Task<IdentityResult> ConfirmEmailAsync(
         User? user, string token)
     {
-        return await _userManager.ConfirmEmailAsync(user: user, token: token);
+        return await _userManager.ConfirmEmailAsync(user, token);
     }
 }

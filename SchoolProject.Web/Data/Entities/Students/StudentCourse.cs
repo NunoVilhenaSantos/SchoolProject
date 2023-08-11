@@ -11,7 +11,7 @@ public class StudentCourse : IEntity
     [Required] public required int StudentId { get; set; }
 
     [Required]
-    [ForeignKey(name: nameof(StudentId))]
+    [ForeignKey(nameof(StudentId))]
     public virtual required Student Student { get; set; }
 
     public Guid StudentGuidId => Student.IdGuid;
@@ -20,17 +20,17 @@ public class StudentCourse : IEntity
     [Required] public required int CourseId { get; set; }
 
     [Required]
-    [ForeignKey(name: nameof(CourseId))]
+    [ForeignKey(nameof(CourseId))]
     public required Course Course { get; set; }
 
     public Guid CourseGuidId => Course.IdGuid;
 
 
     // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName(displayName: "Created By User Id")] public string CreatedById { get; set; }
+    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
 
     // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName(displayName: "Updated By User Id")] public string? UpdatedById { get; set; }
+    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
 
 
     // [Key]
@@ -38,39 +38,39 @@ public class StudentCourse : IEntity
     public int Id { get; set; }
 
 
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
     [Required]
-    [DisplayName(displayName: "Was Deleted?")]
+    [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
     [Required]
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Created At")]
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
-    [DisplayName(displayName: "Created By")]
-    [ForeignKey(name: nameof(CreatedById))]
+    [DisplayName("Created By")]
+    [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
 
 
     // [Required]
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Update At")]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
 
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
-    [DisplayName(displayName: "Updated By")]
-    [ForeignKey(name: nameof(UpdatedById))]
+    [DisplayName("Updated By")]
+    [ForeignKey(nameof(UpdatedById))]
     public virtual User? UpdatedBy { get; set; }
 }

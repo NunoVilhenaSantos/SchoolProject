@@ -1,6 +1,6 @@
 ﻿@{
-    var currentController = ViewContext.RouteData.Values[key: "controller"] as string;
-    var currentAction = ViewContext.RouteData.Values[key: "action"] as string;
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
 
 
@@ -15,17 +15,6 @@
     </a>
 
     <ul class="dropdown-menu">
-        <li>
-            <a class="dropdown-item @(currentController == "Cities" ? "active" : "")"
-               asp-area="" asp-controller="Cities" asp-action="Index">
-                @* <i class="fas fa-person-shelter"></i> *@
-                <span class="material-symbols-outlined">location_city</span>
-                Cities
-            </a>
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
         <li>
             <a class="dropdown-item @(currentController == "Countries" ? "active" : "")"
                asp-area="" asp-controller="Countries" asp-action="Index">
@@ -43,6 +32,17 @@
                 @* <i class="fas fa-person-shelter"></i> *@
                 <span class="material-symbols-outlined">language_international</span>
                 Nationalities
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item @(currentController == "Cities" ? "active" : "")"
+               asp-area="" asp-controller="Cities" asp-action="Index">
+                @* <i class="fas fa-person-shelter"></i> *@
+                <span class="material-symbols-outlined">location_city</span>
+                Cities
             </a>
         </li>
         <li></li>

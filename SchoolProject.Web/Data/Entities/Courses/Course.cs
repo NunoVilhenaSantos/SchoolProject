@@ -15,8 +15,8 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The code of the course.
     /// </summary>
-    [DisplayName(displayName: "Code")]
-    [MaxLength(length: 7,
+    [DisplayName("Code")]
+    [MaxLength(7,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Code { get; init; }
@@ -56,7 +56,7 @@ public class Course : IEntity, INotifyPropertyChanged
     ///     Guid value of the profile photo of the course.
     ///     Guid.Empty is the default value of the Guid type.
     /// </summary>
-    [DisplayName(displayName: "Profile Photo")]
+    [DisplayName("Profile Photo")]
     public Guid ProfilePhotoId { get; set; }
 
 
@@ -105,7 +105,7 @@ public class Course : IEntity, INotifyPropertyChanged
     public int TeacherCoursesCount => TeacherCourses.Count;
 
     public int TeachersCount => TeacherCourses
-        .Select(selector: tc => tc.Teacher).Distinct().Count();
+        .Select(tc => tc.Teacher).Distinct().Count();
 
 
     // ---------------------------------------------------------------------- //
@@ -121,7 +121,7 @@ public class Course : IEntity, INotifyPropertyChanged
     public int StudentCoursesCount => StudentCourses.Count;
 
     public int StudentCount => StudentCourses
-        .Select(selector: sc => sc.Student).Distinct().Count();
+        .Select(sc => sc.Student).Distinct().Count();
 
 
     // ---------------------------------------------------------------------- //
@@ -137,50 +137,50 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Returns the number of students enrolled in the course
     /// </summary>
-    [DisplayName(displayName: "Enrolled Students")]
+    [DisplayName("Enrolled Students")]
     public int? StudentsCount =>
-        Enrollments?.Where(predicate: e => e.Course.Id == Id).Count() ?? 0;
+        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
 
 
     /// <summary>
     ///     Returns the highest grade of the course
     /// </summary>
-    [DisplayName(displayName: "Highest Grade")]
+    [DisplayName("Highest Grade")]
     public decimal? HighestGrade => Enrollments?
-        .Where(predicate: e => e.CourseId == Id)
-        .Max(selector: e => e.Grade) ?? null;
+        .Where(e => e.CourseId == Id)
+        .Max(e => e.Grade) ?? null;
 
 
     /// <summary>
     ///     Returns the average grade of the course
     /// </summary>
-    [DisplayName(displayName: "Average Grade")]
+    [DisplayName("Average Grade")]
     public decimal? AveregaGrade => Enrollments?
-        .Where(predicate: e => e.CourseId == Id)
-        .Average(selector: e => e.Grade) ?? null;
+        .Where(e => e.CourseId == Id)
+        .Average(e => e.Grade) ?? null;
 
 
     /// <summary>
     ///     Returns the lowest grade of the course
     /// </summary>
-    [DisplayName(displayName: "Lowest Grade")]
+    [DisplayName("Lowest Grade")]
     public decimal? LowestGrade => Enrollments?
-        .Where(predicate: e => e.CourseId == Id)
-        .Min(selector: e => e.Grade) ?? null;
+        .Where(e => e.CourseId == Id)
+        .Min(e => e.Grade) ?? null;
 
 
     /// <summary>
     ///     ID of the course.
     /// </summary>
     [Key]
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
     /// <summary>
     ///     Guid value of the ID of the course.
     /// </summary>
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
@@ -189,7 +189,7 @@ public class Course : IEntity, INotifyPropertyChanged
     ///     Determines whether the course was deleted or not.
     /// </summary>
     [Required]
-    [DisplayName(displayName: "Was Deleted?")]
+    [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
@@ -197,16 +197,16 @@ public class Course : IEntity, INotifyPropertyChanged
     ///     Date and time of the creation of the course.
     /// </summary>
     [Required]
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Created At")]
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     ///     The user who created the course.
     /// </summary>
     [Required]
-    [DisplayName(displayName: "Created By")]
+    [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
@@ -214,15 +214,15 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Date and time of the update of the course.
     /// </summary>
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Update At")]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     ///     The user who updated the course.
     /// </summary>
-    [DisplayName(displayName: "Updated By")]
+    [DisplayName("Updated By")]
     public virtual User? UpdatedBy { get; set; }
 
 
@@ -236,16 +236,16 @@ public class Course : IEntity, INotifyPropertyChanged
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(sender: this,
-            e: new PropertyChangedEventArgs(propertyName: propertyName));
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
     }
 
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(x: field, y: value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
         field = value;
-        OnPropertyChanged(propertyName: propertyName);
+        OnPropertyChanged(propertyName);
         return true;
     }
 }

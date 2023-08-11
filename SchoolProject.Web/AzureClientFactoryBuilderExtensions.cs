@@ -11,19 +11,19 @@ internal static class AzureClientFactoryBuilderExtensions
         AddBlobServiceClient(this AzureClientFactoryBuilder builder,
             string? serviceUriOrConnectionString, bool preferMsi)
     {
-        return preferMsi && Uri.TryCreate(uriString: serviceUriOrConnectionString,
-            uriKind: UriKind.Absolute, result: out var serviceUri)
-            ? builder.AddBlobServiceClient(serviceUri: serviceUri)
-            : builder.AddBlobServiceClient(connectionString: serviceUriOrConnectionString);
+        return preferMsi && Uri.TryCreate(serviceUriOrConnectionString,
+            UriKind.Absolute, out var serviceUri)
+            ? builder.AddBlobServiceClient(serviceUri)
+            : builder.AddBlobServiceClient(serviceUriOrConnectionString);
     }
 
     public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions>
         AddQueueServiceClient(this AzureClientFactoryBuilder builder,
             string? serviceUriOrConnectionString, bool preferMsi)
     {
-        return preferMsi && Uri.TryCreate(uriString: serviceUriOrConnectionString,
-            uriKind: UriKind.Absolute, result: out var serviceUri)
-            ? builder.AddQueueServiceClient(serviceUri: serviceUri)
-            : builder.AddQueueServiceClient(connectionString: serviceUriOrConnectionString);
+        return preferMsi && Uri.TryCreate(serviceUriOrConnectionString,
+            UriKind.Absolute, out var serviceUri)
+            ? builder.AddQueueServiceClient(serviceUri)
+            : builder.AddQueueServiceClient(serviceUriOrConnectionString);
     }
 }

@@ -39,42 +39,42 @@ public class GenerateRecoveryCodesModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.GetUserAsync(principal: User);
+        var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
+                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
         var isTwoFactorEnabled =
-            await _userManager.GetTwoFactorEnabledAsync(user: user);
+            await _userManager.GetTwoFactorEnabledAsync(user);
         if (!isTwoFactorEnabled)
             throw new InvalidOperationException(
-                message: "Cannot generate recovery codes for user because they do not have 2FA enabled.");
+                "Cannot generate recovery codes for user because they do not have 2FA enabled.");
 
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.GetUserAsync(principal: User);
+        var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                value: $"Unable to load user with ID '{_userManager.GetUserId(principal: User)}'.");
+                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
         var isTwoFactorEnabled =
-            await _userManager.GetTwoFactorEnabledAsync(user: user);
-        var userId = await _userManager.GetUserIdAsync(user: user);
+            await _userManager.GetTwoFactorEnabledAsync(user);
+        var userId = await _userManager.GetUserIdAsync(user);
         if (!isTwoFactorEnabled)
             throw new InvalidOperationException(
-                message: "Cannot generate recovery codes for user as they do not have 2FA enabled.");
+                "Cannot generate recovery codes for user as they do not have 2FA enabled.");
 
         var recoveryCodes =
-            await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user: user, number: 10);
+            await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
         RecoveryCodes = recoveryCodes.ToArray();
 
         _logger.LogInformation(
-            message: "User with ID '{UserId}' has generated new 2FA recovery codes.",
-            args: userId);
+            "User with ID '{UserId}' has generated new 2FA recovery codes.",
+            userId);
         StatusMessage = "You have generated new recovery codes.";
-        return RedirectToPage(pageName: "./ShowRecoveryCodes");
+        return RedirectToPage("./ShowRecoveryCodes");
     }
 }

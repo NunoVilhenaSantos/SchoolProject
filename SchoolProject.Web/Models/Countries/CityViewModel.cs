@@ -14,7 +14,7 @@ public class CityViewModel
 
 
     [Required]
-    [DisplayName(displayName: "City")]
-    [MaxLength(length: 50, ErrorMessage = "The field {0} can contain {1} characters.")]
+    [DisplayName("City")]
+    [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
     public string Name { get; set; }
 }

@@ -19,21 +19,21 @@ public class ErrorsController : Controller
         Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(model: new ErrorViewModel
+        return View(new ErrorViewModel
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
         });
     }
 
 
-    [Route(template: "error/403")]
+    [Route("error/403")]
     public IActionResult Error403()
     {
         return View();
     }
 
 
-    [Route(template: "error/404")]
+    [Route("error/404")]
     public IActionResult Error404()
     {
         return View();

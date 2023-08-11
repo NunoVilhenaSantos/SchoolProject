@@ -1,100 +1,99 @@
 @model SchoolProject.Web.Data.Entities.Teachers.Teacher
 
 @{
-    ViewData[index: "Title"] = "Create";
+    ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
 
 <h4>Teacher</h4>
-<hr/>
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control"/>
+                <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control"/>
+                <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control"/>
+                <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PostalCode" class="control-label"></label>
-                <input asp-for="PostalCode" class="form-control"/>
+                <input asp-for="PostalCode" class="form-control" />
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MobilePhone" class="control-label"></label>
-                <input asp-for="MobilePhone" class="form-control"/>
+                <input asp-for="MobilePhone" class="form-control" />
                 <span asp-validation-for="MobilePhone" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control"/>
+                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Active"/> 
-                    @Html.DisplayNameFor(expression: model => model.Active)
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
                 </label>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control"/>
+                <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdentificationNumber" class="control-label"></label>
-                <input asp-for="IdentificationNumber" class="form-control"/>
+                <input asp-for="IdentificationNumber" class="form-control" />
                 <span asp-validation-for="IdentificationNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdentificationType" class="control-label"></label>
-                <input asp-for="IdentificationType" class="form-control"/>
+                <input asp-for="IdentificationType" class="form-control" />
                 <span asp-validation-for="IdentificationType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ExpirationDateIdentificationNumber" class="control-label"></label>
-                <input asp-for="ExpirationDateIdentificationNumber" class="form-control"/>
+                <input asp-for="ExpirationDateIdentificationNumber" class="form-control" />
                 <span asp-validation-for="ExpirationDateIdentificationNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TaxIdentificationNumber" class="control-label"></label>
-                <input asp-for="TaxIdentificationNumber" class="form-control"/>
+                <input asp-for="TaxIdentificationNumber" class="form-control" />
                 <span asp-validation-for="TaxIdentificationNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EnrollDate" class="control-label"></label>
-                <input asp-for="EnrollDate" class="form-control"/>
+                <input asp-for="EnrollDate" class="form-control" />
                 <span asp-validation-for="EnrollDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ProfilePhotoId" class="control-label"></label>
-                <input asp-for="ProfilePhotoId" class="form-control"/>
+                <input asp-for="ProfilePhotoId" class="form-control" />
                 <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(expression: model => model.WasDeleted)
+                    <input class="form-check-input" asp-for="WasDeleted" /> @Html.DisplayNameFor(model => model.WasDeleted)
                 </label>
             </div>
             <div class="form-group">
                 <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control"/>
+                <input asp-for="UpdatedAt" class="form-control" />
                 <span asp-validation-for="UpdatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -103,3 +102,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+

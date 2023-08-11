@@ -27,11 +27,11 @@ public class CopyFileSample
         string destObjectName = "destination-file-name")
     {
         var storage = StorageClient.Create();
-        storage.CopyObject(sourceBucket: sourceBucketName, sourceObjectName: sourceObjectName, destinationBucket: destBucketName,
-            destinationObjectName: destObjectName);
+        storage.CopyObject(sourceBucketName, sourceObjectName, destBucketName,
+            destObjectName);
 
-        Console.WriteLine(value: $"Copied {sourceBucketName}/{sourceObjectName} to " +
-                                 $"{destBucketName}/{destObjectName}.");
+        Console.WriteLine($"Copied {sourceBucketName}/{sourceObjectName} to " +
+                          $"{destBucketName}/{destObjectName}.");
     }
 }
 // [END storage_copy_file]

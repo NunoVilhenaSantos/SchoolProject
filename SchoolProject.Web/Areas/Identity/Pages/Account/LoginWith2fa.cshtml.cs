@@ -54,7 +54,7 @@ public class LoginWith2faModel : PageModel
 
         if (user == null)
             throw new InvalidOperationException(
-                message: "Unable to load two-factor authentication user.");
+                "Unable to load two-factor authentication user.");
 
         ReturnUrl = returnUrl;
         RememberMe = rememberMe;
@@ -67,40 +67,40 @@ public class LoginWith2faModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        returnUrl = returnUrl ?? Url.Content(contentPath: "~/");
+        returnUrl = returnUrl ?? Url.Content("~/");
 
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user == null)
             throw new InvalidOperationException(
-                message: "Unable to load two-factor authentication user.");
+                "Unable to load two-factor authentication user.");
 
-        var authenticatorCode = Input.TwoFactorCode.Replace(oldValue: " ", newValue: string.Empty)
-            .Replace(oldValue: "-", newValue: string.Empty);
+        var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty)
+            .Replace("-", string.Empty);
 
         var result =
             await _signInManager.TwoFactorAuthenticatorSignInAsync(
-                code: authenticatorCode, isPersistent: rememberMe, rememberClient: Input.RememberMachine);
+                authenticatorCode, rememberMe, Input.RememberMachine);
 
-        var userId = await _userManager.GetUserIdAsync(user: user);
+        var userId = await _userManager.GetUserIdAsync(user);
 
         if (result.Succeeded)
         {
             _logger.LogInformation(
-                message: "User with ID '{UserId}' logged in with 2fa.", args: user.Id);
-            return LocalRedirect(localUrl: returnUrl);
+                "User with ID '{UserId}' logged in with 2fa.", user.Id);
+            return LocalRedirect(returnUrl);
         }
 
         if (result.IsLockedOut)
         {
-            _logger.LogWarning(message: "User with ID '{UserId}' account locked out.",
-                args: user.Id);
-            return RedirectToPage(pageName: "./Lockout");
+            _logger.LogWarning("User with ID '{UserId}' account locked out.",
+                user.Id);
+            return RedirectToPage("./Lockout");
         }
 
         _logger.LogWarning(
-            message: "Invalid authenticator code entered for user with ID '{UserId}'.",
-            args: user.Id);
-        ModelState.AddModelError(key: string.Empty, errorMessage: "Invalid authenticator code.");
+            "Invalid authenticator code entered for user with ID '{UserId}'.",
+            user.Id);
+        ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
         return Page();
     }
 
@@ -115,11 +115,11 @@ public class LoginWith2faModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [StringLength(maximumLength: 7,
+        [StringLength(7,
             ErrorMessage =
                 "The {0} must be at least {2} and at max {1} characters long.",
             MinimumLength = 6)]
-        [DataType(dataType: DataType.Text)]
+        [DataType(DataType.Text)]
         [Display(Name = "Authenticator code")]
         public string TwoFactorCode { get; set; }
 

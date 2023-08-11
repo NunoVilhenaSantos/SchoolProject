@@ -1,9 +1,9 @@
 ﻿@using System.Diagnostics
 @{
-    var currentController = ViewContext.RouteData.Values[key: "controller"] as string;
-    var currentAction = ViewContext.RouteData.Values[key: "action"] as string;
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
 
-    Debug.Assert(condition: User.Identity != null, message: "User.Identity != null");
+    Debug.Assert(User.Identity != null, "User.Identity != null");
 }
 
 

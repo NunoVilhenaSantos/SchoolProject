@@ -1,135 +1,163 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
 
-namespace SchoolProject.Web.Controllers;
-
-public class TeachersController : Controller
+namespace SchoolProject.Web.Controllers
 {
-    private readonly DataContextMySql _context;
-
-    public TeachersController(DataContextMySql context)
+    public class TeachersController : Controller
     {
-        _context = context;
-    }
+        private readonly DataContextMySql _context;
 
-    // GET: Teachers
-    public async Task<IActionResult> Index()
-    {
-        return _context.Teachers != null
-            ? View(model: await _context.Teachers.ToListAsync())
-            : Problem(detail: "Entity set 'DataContextMySql.Teachers'  is null.");
-    }
-
-    // GET: Teachers/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null || _context.Teachers == null) return NotFound();
-
-        var teacher = await _context.Teachers
-            .FirstOrDefaultAsync(predicate: m => m.Id == id);
-        if (teacher == null) return NotFound();
-
-        return View(model: teacher);
-    }
-
-    // GET: Teachers/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: Teachers/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        [Bind(
-            include: "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Teacher teacher)
-    {
-        if (ModelState.IsValid)
+        public TeachersController(DataContextMySql context)
         {
-            _context.Add(entity: teacher);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(actionName: nameof(Index));
+            _context = context;
         }
 
-        return View(model: teacher);
-    }
-
-    // GET: Teachers/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null || _context.Teachers == null) return NotFound();
-
-        var teacher = await _context.Teachers.FindAsync(keyValues: id);
-        if (teacher == null) return NotFound();
-        return View(model: teacher);
-    }
-
-    // POST: Teachers/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind(
-            include: "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Teacher teacher)
-    {
-        if (id != teacher.Id) return NotFound();
-
-        if (ModelState.IsValid)
+        // GET: Teachers
+        public async Task<IActionResult> Index()
         {
-            try
+              return _context.Teachers != null ? 
+                          View(await _context.Teachers.ToListAsync()) :
+                          Problem("Entity set 'DataContextMySql.Teachers'  is null.");
+        }
+
+        // GET: Teachers/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Teachers == null)
             {
-                _context.Update(entity: teacher);
+                return NotFound();
+            }
+
+            var teacher = await _context.Teachers
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+
+            return View(teacher);
+        }
+
+        // GET: Teachers/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Teachers/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Teacher teacher)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(teacher);
                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TeacherExists(id: teacher.Id))
-                    return NotFound();
-                throw;
-            }
-
-            return RedirectToAction(actionName: nameof(Index));
+            return View(teacher);
         }
 
-        return View(model: teacher);
-    }
+        // GET: Teachers/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Teachers == null)
+            {
+                return NotFound();
+            }
 
-    // GET: Teachers/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null || _context.Teachers == null) return NotFound();
+            var teacher = await _context.Teachers.FindAsync(id);
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+            return View(teacher);
+        }
 
-        var teacher = await _context.Teachers
-            .FirstOrDefaultAsync(predicate: m => m.Id == id);
-        if (teacher == null) return NotFound();
+        // POST: Teachers/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Teacher teacher)
+        {
+            if (id != teacher.Id)
+            {
+                return NotFound();
+            }
 
-        return View(model: teacher);
-    }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(teacher);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TeacherExists(teacher.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(teacher);
+        }
 
-    // POST: Teachers/Delete/5
-    [HttpPost]
-    [ActionName(name: "Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        if (_context.Teachers == null)
-            return Problem(detail: "Entity set 'DataContextMySql.Teachers'  is null.");
-        var teacher = await _context.Teachers.FindAsync(keyValues: id);
-        if (teacher != null) _context.Teachers.Remove(entity: teacher);
+        // GET: Teachers/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Teachers == null)
+            {
+                return NotFound();
+            }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(actionName: nameof(Index));
-    }
+            var teacher = await _context.Teachers
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (teacher == null)
+            {
+                return NotFound();
+            }
 
-    private bool TeacherExists(int id)
-    {
-        return (_context.Teachers?.Any(predicate: e => e.Id == id)).GetValueOrDefault();
+            return View(teacher);
+        }
+
+        // POST: Teachers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Teachers == null)
+            {
+                return Problem("Entity set 'DataContextMySql.Teachers'  is null.");
+            }
+            var teacher = await _context.Teachers.FindAsync(id);
+            if (teacher != null)
+            {
+                _context.Teachers.Remove(teacher);
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool TeacherExists(int id)
+        {
+          return (_context.Teachers?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
     }
 }

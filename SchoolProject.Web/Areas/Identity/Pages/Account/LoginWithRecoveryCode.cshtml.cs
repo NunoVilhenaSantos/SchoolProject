@@ -46,7 +46,7 @@ public class LoginWithRecoveryCodeModel : PageModel
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user == null)
             throw new InvalidOperationException(
-                message: "Unable to load two-factor authentication user.");
+                "Unable to load two-factor authentication user.");
 
         ReturnUrl = returnUrl;
 
@@ -60,34 +60,34 @@ public class LoginWithRecoveryCodeModel : PageModel
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user == null)
             throw new InvalidOperationException(
-                message: "Unable to load two-factor authentication user.");
+                "Unable to load two-factor authentication user.");
 
-        var recoveryCode = Input.RecoveryCode.Replace(oldValue: " ", newValue: string.Empty);
+        var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);
 
         var result =
-            await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode: recoveryCode);
+            await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
-        var userId = await _userManager.GetUserIdAsync(user: user);
+        var userId = await _userManager.GetUserIdAsync(user);
 
         if (result.Succeeded)
         {
             _logger.LogInformation(
-                message: "User with ID '{UserId}' logged in with a recovery code.",
-                args: user.Id);
-            return LocalRedirect(localUrl: returnUrl ?? Url.Content(contentPath: "~/"));
+                "User with ID '{UserId}' logged in with a recovery code.",
+                user.Id);
+            return LocalRedirect(returnUrl ?? Url.Content("~/"));
         }
 
         if (result.IsLockedOut)
         {
-            _logger.LogWarning(message: "User account locked out.");
-            return RedirectToPage(pageName: "./Lockout");
+            _logger.LogWarning("User account locked out.");
+            return RedirectToPage("./Lockout");
         }
 
         _logger.LogWarning(
-            message: "Invalid recovery code entered for user with ID '{UserId}' ",
-            args: user.Id);
-        ModelState.AddModelError(key: string.Empty,
-            errorMessage: "Invalid recovery code entered.");
+            "Invalid recovery code entered for user with ID '{UserId}' ",
+            user.Id);
+        ModelState.AddModelError(string.Empty,
+            "Invalid recovery code entered.");
         return Page();
     }
 
@@ -103,7 +103,7 @@ public class LoginWithRecoveryCodeModel : PageModel
         /// </summary>
         [BindProperty]
         [Required]
-        [DataType(dataType: DataType.Text)]
+        [DataType(DataType.Text)]
         [Display(Name = "Recovery Code")]
         public string RecoveryCode { get; set; }
     }

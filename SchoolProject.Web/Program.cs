@@ -26,7 +26,7 @@ using Serilog;
 
 
 // Create a new web application using the WebApplicationBuilder.
-var builder = WebApplication.CreateBuilder(args: args);
+var builder = WebApplication.CreateBuilder(args);
 
 
 // Helper method to generate a random
@@ -39,18 +39,18 @@ static string GenerateRandomString(
     if (withSpecialCharacters) characterSet += "!@#$%^&*()_-+=[]{}|;:,.<>?";
 
     var random = new Random();
-    var sb = new StringBuilder(capacity: length);
+    var sb = new StringBuilder(length);
 
     for (var i = 0; i < length; i++)
     {
-        var index = random.Next(maxValue: characterSet.Length);
-        var randomCharacter = characterSet[index: index];
-        sb.Append(value: randomCharacter);
+        var index = random.Next(characterSet.Length);
+        var randomCharacter = characterSet[index];
+        sb.Append(randomCharacter);
     }
 
     var randomString = sb.ToString();
     // Print the generated string to the console
-    Console.WriteLine(value: randomString);
+    Console.WriteLine(randomString);
     return randomString;
 }
 
@@ -58,24 +58,24 @@ static string GenerateRandomString(
 // Método para extrair o nome do servidor da Connection String
 static string GetServerHostNameFromConnectionString(string connectionString)
 {
-    var parts = connectionString.Split(separator: ';');
+    var parts = connectionString.Split(';');
 
     foreach (var part in parts)
-        if (part.StartsWith(value: "Data Source="))
+        if (part.StartsWith("Data Source="))
             return part["Data Source=".Length..];
 
-        else if (part.StartsWith(value: "workstation id="))
+        else if (part.StartsWith("workstation id="))
             return part["workstation id=".Length..];
 
-        else if (part.StartsWith(value: "Server="))
+        else if (part.StartsWith("Server="))
             return part["Server=".Length..];
 
-        else if (part.StartsWith(value: "Host="))
+        else if (part.StartsWith("Host="))
             return part["Host=".Length..];
 
 
     throw new ArgumentException(
-        message: "Connection String inválida. Nome do servidor não encontrado.");
+        "Connection String inválida. Nome do servidor não encontrado.");
 }
 
 
@@ -88,25 +88,25 @@ static void GetServerHostNamePing(string serverHostName)
     while (true)
     {
         var pingSender = new Ping();
-        var reply = pingSender.Send(hostNameOrAddress: serverHostName, timeout: timeout);
+        var reply = pingSender.Send(serverHostName, timeout);
 
         if (reply.Status == IPStatus.Success)
         {
-            Console.WriteLine(value: "Servidor responde. Conexão estabelecida.");
+            Console.WriteLine("Servidor responde. Conexão estabelecida.");
 
             // Sai do loop quando a conexão é bem-sucedida
             break;
         }
 
         Console.WriteLine(
-            value: "Falha na conexão com o servidor. Tentar novamente...");
+            "Falha na conexão com o servidor. Tentar novamente...");
 
         // Aguarda um período antes de tentar novamente
         // Aguarda 3 segundos (ajuste conforme necessário)
         // antes de tentar novamente, use 0 para tentar imediatamente
         // ou altere para o valor desejado em milissegundos
         // na variavel timeout
-        Thread.Sleep(millisecondsTimeout: timeout);
+        Thread.Sleep(timeout);
     }
 }
 
@@ -115,10 +115,10 @@ static void GetServerHostNamePing(string serverHostName)
 static async Task RunSeeding(IHost host)
 {
     // Create a new timer with the name "MyTimer"
-    TimeTracker.CreateTimer(timerName: TimeTracker.SeederTimerName);
+    TimeTracker.CreateTimer(TimeTracker.SeederTimerName);
 
     // Start the timer "MyTimer"
-    TimeTracker.StartTimer(timerName: TimeTracker.SeederTimerName);
+    TimeTracker.StartTimer(TimeTracker.SeederTimerName);
 
 
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
@@ -131,24 +131,24 @@ static async Task RunSeeding(IHost host)
 
 
     // Stop the timer "MyTimer"
-    TimeTracker.StopTimer(timerName: TimeTracker.SeederTimerName);
+    TimeTracker.StopTimer(TimeTracker.SeederTimerName);
 
     // Get the elapsed time for the timer "MyTimer"
-    var elapsed = TimeTracker.GetElapsedTime(timerName: TimeTracker.SeederTimerName);
+    var elapsed = TimeTracker.GetElapsedTime(TimeTracker.SeederTimerName);
 
-    Console.WriteLine(value: $"Tempo decorrido: {elapsed}.");
+    Console.WriteLine($"Tempo decorrido: {elapsed}.");
 
 
     // Format and display the TimeSpan value.
     Console.WriteLine(
-        value: "RunTime: horas, minutos, segundos, milesimos de segundos");
+        "RunTime: horas, minutos, segundos, milesimos de segundos");
     var elapsedTime =
         $"{elapsed.Hours:00}:{elapsed.Minutes:00}:" +
         $"{elapsed.Seconds:00}.{elapsed.Milliseconds:00}";
 
-    Console.WriteLine(value: "RunTime: " + elapsedTime);
+    Console.WriteLine("RunTime: " + elapsedTime);
 
-    TimeTracker.PrintTimerToConsole(timerName: TimeTracker.SeederTimerName);
+    TimeTracker.PrintTimerToConsole(TimeTracker.SeederTimerName);
 
     // Thread.Sleep(3000);
 }
@@ -164,7 +164,7 @@ static void RunningProcessInTheApp()
     var processName = Process.GetCurrentProcess().ProcessName;
 
     // Obter o objeto Process para o processo atual
-    var process = Process.GetProcessById(processId: processId);
+    var process = Process.GetProcessById(processId);
 
     // Obter a coleção de threads associados ao processo
     var threadCollection = process.Threads;
@@ -174,17 +174,17 @@ static void RunningProcessInTheApp()
         $"Threads em execução no processo " +
         $"{process.ProcessName} (ID: {process.Id}):";
 
-    Console.WriteLine(value: message);
+    Console.WriteLine(message);
 
-    ProcessList.ListOfProcesses.Add(item: message);
+    ProcessList.ListOfProcesses.Add(message);
 
     foreach (ProcessThread thread in threadCollection)
     {
         message = $"Thread ID: {thread.Id}, Estado: {thread.ThreadState}";
 
-        Console.WriteLine(value: message);
+        Console.WriteLine(message);
 
-        ProcessList.ListOfProcesses.Add(item: message);
+        ProcessList.ListOfProcesses.Add(message);
     }
 }
 
@@ -195,10 +195,10 @@ static void StartProgramTimer()
     // calcular o tempo decorrido para executar o método principal
 
     // Create a new timer with the name from variable "timerName" 
-    TimeTracker.CreateTimer(timerName: TimeTracker.AppBuilderTimerName);
+    TimeTracker.CreateTimer(TimeTracker.AppBuilderTimerName);
 
     // Start the timer "MyTimer"
-    TimeTracker.StartTimer(timerName: TimeTracker.AppBuilderTimerName);
+    TimeTracker.StartTimer(TimeTracker.AppBuilderTimerName);
 }
 
 
@@ -206,12 +206,12 @@ static void StartProgramTimer()
 static void StopProgramTimer()
 {
     // Stop the timer "MyTimer"
-    TimeTracker.StopTimer(timerName: TimeTracker.AppBuilderTimerName);
+    TimeTracker.StopTimer(TimeTracker.AppBuilderTimerName);
 
 
     // Get the elapsed time for the timer "MyTimer"
     var elapsed =
-        TimeTracker.GetElapsedTime(timerName: TimeTracker.AppBuilderTimerName);
+        TimeTracker.GetElapsedTime(TimeTracker.AppBuilderTimerName);
 
 
     // Format and display the TimeSpan value.
@@ -224,7 +224,7 @@ static void StopProgramTimer()
     //
     // Console.WriteLine("RunTime (Program builder time): " + elapsedTime);
 
-    TimeTracker.PrintTimerToConsole(timerName: TimeTracker.AppBuilderTimerName);
+    TimeTracker.PrintTimerToConsole(TimeTracker.AppBuilderTimerName);
 }
 
 
@@ -236,14 +236,14 @@ StartProgramTimer();
 // -------------------------------------------------------------------------- //
 
 // Configuring Azure services for Blob and Queue clients.
-builder.Services.AddAzureClients(configureClients: clientBuilder =>
+builder.Services.AddAzureClients(clientBuilder =>
 {
     clientBuilder.AddBlobServiceClient(
-        serviceUriOrConnectionString: builder.Configuration[key: "AzureStorage:SchoolProjectStorageNuno:blob"],
-        preferMsi: true);
+        builder.Configuration["AzureStorage:SchoolProjectStorageNuno:blob"],
+        true);
     clientBuilder.AddQueueServiceClient(
-        serviceUriOrConnectionString: builder.Configuration[key: "AzureStorage:SchoolProjectStorageNuno:queue"],
-        preferMsi: true);
+        builder.Configuration["AzureStorage:SchoolProjectStorageNuno:queue"],
+        true);
 });
 
 
@@ -254,20 +254,20 @@ builder.Services.AddAzureClients(configureClients: clientBuilder =>
 // Configuring database connections using DbContext for MSSQL, MySQL, and SQLite.
 // -------------------------------------------------------------------------- //
 builder.Services.AddDbContext<DataContextMsSql>(
-    optionsAction: cfg =>
+    cfg =>
     {
         cfg.UseSqlServer(
-            connectionString: builder.Configuration.GetConnectionString(
-                name: builder.Environment.IsDevelopment()
+            builder.Configuration.GetConnectionString(
+                builder.Environment.IsDevelopment()
                     // Usar a Connection String local durante o desenvolvimento
                     ? "SP-MSSql-Somee"
                     // Usar a Connection String online ao publicar
                     : "SP-SmarterASP-MSSQL") ?? string.Empty,
-            sqlServerOptionsAction: options =>
+            options =>
             {
                 options.EnableRetryOnFailure();
-                options.MigrationsAssembly(assemblyName: "SchoolProject.Web");
-                options.MigrationsHistoryTable(tableName: "_MyMigrationsHistory");
+                options.MigrationsAssembly("SchoolProject.Web");
+                options.MigrationsHistoryTable("_MyMigrationsHistory");
             }).EnableSensitiveDataLogging();
     });
 
@@ -275,38 +275,38 @@ builder.Services.AddDbContext<DataContextMsSql>(
 // -------------------------------------------------------------------------- //
 
 builder.Services.AddDbContext<DataContextMySql>(
-    optionsAction: cfg =>
+    cfg =>
     {
         cfg.UseMySQL(
-            connectionString: builder.Configuration.GetConnectionString(
-                name: builder.Environment.IsDevelopment()
+            builder.Configuration.GetConnectionString(
+                builder.Environment.IsDevelopment()
                     // Usar a Connection String local durante o desenvolvimento
                     ? "SP-MySQL-Local"
                     // Usar a Connection String online ao publicar
                     : "SP-SmarterASP-MySQL") ?? string.Empty,
-            mySqlOptionsAction: options =>
+            options =>
             {
-                options.MigrationsAssembly(assemblyName: "SchoolProject.Web");
-                options.MigrationsHistoryTable(tableName: "_MyMigrationsHistory");
+                options.MigrationsAssembly("SchoolProject.Web");
+                options.MigrationsHistoryTable("_MyMigrationsHistory");
             }).EnableSensitiveDataLogging();
     });
 
 // -------------------------------------------------------------------------- //
 
 builder.Services.AddDbContext<DataContextSqLite>(
-    optionsAction: cfg =>
+    cfg =>
     {
         cfg.UseSqlite(
-            connectionString: builder.Configuration.GetConnectionString(
-                name: builder.Environment.IsDevelopment()
+            builder.Configuration.GetConnectionString(
+                builder.Environment.IsDevelopment()
                     // Usar a Connection String local durante o desenvolvimento
                     ? "SP-SQLite-Local"
                     // Usar a Connection String online ao publicar
                     : "SP-SQLite-Online") ?? string.Empty,
-            sqliteOptionsAction: options =>
+            options =>
             {
-                options.MigrationsAssembly(assemblyName: "SchoolProject.Web");
-                options.MigrationsHistoryTable(tableName: "_MyMigrationsHistory");
+                options.MigrationsAssembly("SchoolProject.Web");
+                options.MigrationsHistoryTable("_MyMigrationsHistory");
             }).EnableSensitiveDataLogging();
     });
 
@@ -317,7 +317,7 @@ builder.Services.AddDbContext<DataContextSqLite>(
 // password settings, and token settings.
 // builder.Services.AddIdentity<IdentityUser, IdentityRole>(
 builder.Services.AddIdentity<User, IdentityRole>(
-        setupAction: cfg =>
+        cfg =>
         {
             // User settings.
             cfg.User.RequireUniqueEmail = true;
@@ -346,16 +346,16 @@ builder.Services.AddIdentity<User, IdentityRole>(
 
 
 // Configure Application Insights for telemetry.
-builder.Services.AddApplicationInsightsTelemetry(options: options =>
+builder.Services.AddApplicationInsightsTelemetry(options =>
 {
     options.ConnectionString = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 });
 
 
 // Configure JWT authentication.
-builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie()
-    .AddJwtBearer(configureOptions: options =>
+    .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -363,13 +363,13 @@ builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.Authenticati
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration[key: "Tokens:Issuer"],
-            ValidAudience = builder.Configuration[key: "Tokens:Audience"],
+            ValidIssuer = builder.Configuration["Tokens:Issuer"],
+            ValidAudience = builder.Configuration["Tokens:Audience"],
             IssuerSigningKey =
                 new SymmetricSecurityKey(
-                    key: Encoding.UTF8.GetBytes(
-                        s: builder.Configuration[key: "Tokens:Key"] ??
-                           GenerateRandomString(length: 128, withSpecialCharacters: false)
+                    Encoding.UTF8.GetBytes(
+                        builder.Configuration["Tokens:Key"] ??
+                        GenerateRandomString(128, false)
                     )
                 )
         };
@@ -380,7 +380,7 @@ builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.Authenticati
             {
                 if (context.Exception.GetType() ==
                     typeof(SecurityTokenExpiredException))
-                    context.Response.Headers.Add(key: "Token-Expired", value: "true");
+                    context.Response.Headers.Add("Token-Expired", "true");
 
                 return Task.CompletedTask;
             }
@@ -389,9 +389,9 @@ builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.Authenticati
 
 
 // Configure Cookie authentication.
-builder.Services.AddAuthentication(defaultScheme: "CookieAuth")
-    .AddCookie(authenticationScheme: "CookieAuth",
-        configureOptions: config =>
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth",
+        config =>
         {
             config.Cookie.Name = "SchoolProject.Web.Cookie";
             config.LoginPath = "/Home/Authenticate";
@@ -400,10 +400,10 @@ builder.Services.AddAuthentication(defaultScheme: "CookieAuth")
 
 
 // Configure application cookie settings with sliding expiration.
-builder.Services.ConfigureApplicationCookie(configure: options =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromDays(value: 15);
+    options.ExpireTimeSpan = TimeSpan.FromDays(15);
 
     // options.LoginPath = "/Account/Login";
     // options.AccessDeniedPath = "/Account/NotAuthorized";
@@ -416,14 +416,14 @@ builder.Services.ConfigureApplicationCookie(configure: options =>
 
 
 // Configure consent cookie options.
-builder.Services.Configure<CookiePolicyOptions>(configureOptions: options =>
+builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = _ => true;
 
     options.MinimumSameSitePolicy = SameSiteMode.None;
 
     options.ConsentCookie.IsEssential = true;
-    options.ConsentCookie.Expiration = TimeSpan.FromDays(value: 30);
+    options.ConsentCookie.Expiration = TimeSpan.FromDays(30);
     options.ConsentCookie.SecurePolicy = CookieSecurePolicy.Always;
     options.ConsentCookie.HttpOnly = true;
 });
@@ -443,86 +443,86 @@ builder.Services.Configure<CookiePolicyOptions>(configureOptions: options =>
 // de forma coletiva
 //
 builder.Services.AddAuthentication()
-    .AddGoogle(configureOptions: options =>
+    .AddGoogle(options =>
     {
         var googleAuthSection =
-            builder.Configuration.GetSection(key: "Authentication:Google");
+            builder.Configuration.GetSection("Authentication:Google");
 
-        options.ClientId = googleAuthSection[key: "ClientId"];
-        options.ClientSecret = googleAuthSection[key: "ClientSecret"];
+        options.ClientId = googleAuthSection["ClientId"];
+        options.ClientSecret = googleAuthSection["ClientSecret"];
     })
-    .AddFacebook(configureOptions: options =>
+    .AddFacebook(options =>
     {
         var fbAuthSection =
-            builder.Configuration.GetSection(key: "Authentication:Facebook");
+            builder.Configuration.GetSection("Authentication:Facebook");
 
-        options.ClientId = fbAuthSection[key: "AppId"];
-        options.ClientSecret = fbAuthSection[key: "AppSecret"];
+        options.ClientId = fbAuthSection["AppId"];
+        options.ClientSecret = fbAuthSection["AppSecret"];
     })
-    .AddMicrosoftAccount(configureOptions: microsoftOptions =>
+    .AddMicrosoftAccount(microsoftOptions =>
     {
         var googleAuthSection =
-            builder.Configuration.GetSection(key: "Authentication:Microsoft");
+            builder.Configuration.GetSection("Authentication:Microsoft");
 
         microsoftOptions.ClientId =
-            builder.Configuration[key: "Authentication:Microsoft:ClientId"];
+            builder.Configuration["Authentication:Microsoft:ClientId"];
 
         microsoftOptions.ClientSecret =
-            builder.Configuration[key: "Authentication:Microsoft:ClientSecret"];
+            builder.Configuration["Authentication:Microsoft:ClientSecret"];
     })
-    .AddTwitter(configureOptions: twitterOptions =>
+    .AddTwitter(twitterOptions =>
     {
         var googleAuthSection =
-            builder.Configuration.GetSection(key: "Authentication:Twitter");
+            builder.Configuration.GetSection("Authentication:Twitter");
 
         twitterOptions.ConsumerKey =
-            builder.Configuration[key: "Authentication:Twitter:ConsumerKey"];
+            builder.Configuration["Authentication:Twitter:ConsumerKey"];
 
         twitterOptions.ConsumerSecret =
-            builder.Configuration[key: "Authentication:Twitter:ConsumerSecret"];
+            builder.Configuration["Authentication:Twitter:ConsumerSecret"];
 
         twitterOptions.RetrieveUserDetails = true;
     });
 
 
 // Add authorization policies for different user roles.
-builder.Services.AddAuthorization(configure: options =>
+builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy(name: "IsAdmin",
-        configurePolicy: policy => policy.RequireClaim(claimType: "IsAdmin"));
+    options.AddPolicy("IsAdmin",
+        policy => policy.RequireClaim("IsAdmin"));
 
-    options.AddPolicy(name: "IsStudent",
-        configurePolicy: policy => policy.RequireClaim(claimType: "IsStudent"));
+    options.AddPolicy("IsStudent",
+        policy => policy.RequireClaim("IsStudent"));
 
-    options.AddPolicy(name: "IsTeacher",
-        configurePolicy: policy => policy.RequireClaim(claimType: "IsTeacher"));
+    options.AddPolicy("IsTeacher",
+        policy => policy.RequireClaim("IsTeacher"));
 
-    options.AddPolicy(name: "IsParent",
-        configurePolicy: policy => policy.RequireClaim(claimType: "IsParent"));
+    options.AddPolicy("IsParent",
+        policy => policy.RequireClaim("IsParent"));
 
-    options.AddPolicy(name: "IsUser",
-        configurePolicy: policy => policy.RequireClaim(claimType: "IsUser"));
+    options.AddPolicy("IsUser",
+        policy => policy.RequireClaim("IsUser"));
 
-    options.AddPolicy(name: "IsAnonymous",
-        configurePolicy: policy => policy.RequireClaim(claimType: "IsAnonymous"));
+    options.AddPolicy("IsAnonymous",
+        policy => policy.RequireClaim("IsAnonymous"));
 });
 
 
 // Add localization and view localization to the application.
-builder.Services.AddLocalization(setupAction: options =>
+builder.Services.AddLocalization(options =>
     options.ResourcesPath = "Resources");
 
 
-builder.Services.Configure<RequestLocalizationOptions>(configureOptions: options =>
+builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[]
     {
-        new CultureInfo(name: "en-US"),
-        new CultureInfo(name: "pt-PT"),
-        new CultureInfo(name: "pt-BR")
+        new CultureInfo("en-US"),
+        new CultureInfo("pt-PT"),
+        new CultureInfo("pt-BR")
     };
 
-    options.DefaultRequestCulture = new RequestCulture(culture: "en-US");
+    options.DefaultRequestCulture = new RequestCulture("en-US");
 
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
@@ -572,13 +572,13 @@ builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();
 // Configuration type 2
 // --------------------------------- --------------------------------------- //
 var serilogConfig =
-    builder.Configuration.GetSection(key: "Serilog");
+    builder.Configuration.GetSection("Serilog");
 
 Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration: serilogConfig)
+    .ReadFrom.Configuration(serilogConfig)
     .CreateLogger();
 
-builder.Services.AddLogging(configure: cfg =>
+builder.Services.AddLogging(cfg =>
 {
     cfg.AddSerilog(dispose: true); // Integrates Serilog as the logging provider
 });
@@ -631,12 +631,12 @@ builder.Services.AddScoped<SeedDb>();
 // Extrai o nome do servidor da Connection String
 var serverHostName =
     GetServerHostNameFromConnectionString(
-        connectionString: builder.Configuration.GetConnectionString(
-            name: "SP-MSSql-Somee") ?? string.Empty);
+        builder.Configuration.GetConnectionString(
+            "SP-MSSql-Somee") ?? string.Empty);
 
 
 // Verifica se o servidor está disponível
-GetServerHostNamePing(serverHostName: serverHostName);
+GetServerHostNamePing(serverHostName);
 
 
 // -------------------------------------------------------------------------- //
@@ -647,12 +647,12 @@ var app = builder.Build();
 
 
 // ------------------- //
-await RunSeeding(host: app);
+await RunSeeding(app);
 
 // Exception handling and HTTPS redirection for non-development environments.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler(errorHandlingPath: "/Home/Error");
+    app.UseExceptionHandler("/Home/Error");
 
     // The default HSTS value is 30 days.
     // You may want to change this for production scenarios,
@@ -680,8 +680,8 @@ app.UseAuthorization();
 
 // Map controller routes and Razor pages.
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 
 
 // 

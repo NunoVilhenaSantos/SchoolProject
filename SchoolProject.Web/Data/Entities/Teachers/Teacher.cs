@@ -11,16 +11,16 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 public class Teacher : IEntity, INotifyPropertyChanged
 {
     [Required]
-    [DisplayName(displayName: "First Name")]
+    [DisplayName("First Name")]
     public required string FirstName { get; set; }
 
 
     [Required]
-    [DisplayName(displayName: "Last Name")]
+    [DisplayName("Last Name")]
     public required string LastName { get; set; }
 
 
-    [DisplayName(displayName: "Full Name")]
+    [DisplayName("Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
 
@@ -28,7 +28,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     [Required]
-    [DisplayName(displayName: "Postal Code")]
+    [DisplayName("Postal Code")]
     public required string PostalCode { get; set; }
 
 
@@ -43,12 +43,12 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     [Required]
-    [DisplayName(displayName: "Mobile Phone")]
+    [DisplayName("Mobile Phone")]
     public required string MobilePhone { get; set; }
 
 
     [Required]
-    [DataType(dataType: DataType.EmailAddress)]
+    [DataType(DataType.EmailAddress)]
     public required string Email { get; set; }
 
     [Required] public required bool Active { get; set; } = true;
@@ -57,30 +57,30 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     [Required]
-    [DisplayName(displayName: "Date Of Birth")]
-    [DataType(dataType: DataType.Date)]
+    [DisplayName("Date Of Birth")]
+    [DataType(DataType.Date)]
     public required DateTime DateOfBirth { get; set; }
 
     [Required]
-    [DisplayName(displayName: "Identification Number")]
+    [DisplayName("Identification Number")]
     public required string IdentificationNumber { get; set; }
 
     public required string IdentificationType { get; set; }
 
 
     [Required]
-    [DisplayName(displayName: "Expiration Date Identification Number")]
-    [DataType(dataType: DataType.Date)]
+    [DisplayName("Expiration Date Identification Number")]
+    [DataType(DataType.Date)]
     public required DateTime ExpirationDateIdentificationNumber { get; set; }
 
 
     [Required]
-    [DisplayName(displayName: "Tax Identification Number")]
+    [DisplayName("Tax Identification Number")]
     public required string TaxIdentificationNumber { get; set; }
 
 
     [Required]
-    [DisplayName(displayName: "Country Of Nationality")]
+    [DisplayName("Country Of Nationality")]
     public required Country CountryOfNationality { get; set; }
 
     [Required]
@@ -93,15 +93,15 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     [Required]
-    [DisplayName(displayName: "Enroll Date")]
-    [DataType(dataType: DataType.Date)]
+    [DisplayName("Enroll Date")]
+    [DataType(DataType.Date)]
     public required DateTime EnrollDate { get; set; }
 
 
     [Required] public required User User { get; set; }
 
 
-    [DisplayName(displayName: "Profile Photo")] public Guid ProfilePhotoId { get; set; }
+    [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
@@ -121,45 +121,45 @@ public class Teacher : IEntity, INotifyPropertyChanged
         new List<TeacherCourse>();
 
 
-    [DisplayName(displayName: "Courses Count")]
+    [DisplayName("Courses Count")]
     public int CoursesCount => TeacherCourses?.Count ?? 0;
 
-    [DisplayName(displayName: "Total Work Hours")]
+    [DisplayName("Total Work Hours")]
     public int TotalWorkHours => TeacherCourses?
-        .Sum(selector: t => t.Course.Hours) ?? 0;
+        .Sum(t => t.Course.Hours) ?? 0;
 
     [Key]
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
     [Required]
-    [DisplayName(displayName: "Was Deleted?")]
+    [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
     [Required]
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Created At")]
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [Required]
-    [DisplayName(displayName: "Created By")]
+    [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
     // [Required]
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Update At")]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName(displayName: "Updated By")] public virtual User? UpdatedBy { get; set; }
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -172,16 +172,16 @@ public class Teacher : IEntity, INotifyPropertyChanged
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(sender: this,
-            e: new PropertyChangedEventArgs(propertyName: propertyName));
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
     }
 
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(x: field, y: value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
         field = value;
-        OnPropertyChanged(propertyName: propertyName);
+        OnPropertyChanged(propertyName);
         return true;
     }
 }

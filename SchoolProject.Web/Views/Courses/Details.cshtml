@@ -1,74 +1,74 @@
 @model SchoolProject.Web.Data.Entities.Courses.Course
 
 @{
-    ViewData[index: "Title"] = "Details";
+    ViewData["Title"] = "Details";
 }
 
 <h1>Details</h1>
 
 <div>
     <h4>Course</h4>
-    <hr/>
+    <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.Code)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Code)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.Code)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Code)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.Name)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.Name)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.Description)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.Description)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.Hours)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hours)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.Hours)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hours)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.CreditPoints)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreditPoints)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.CreditPoints)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreditPoints)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.ProfilePhotoId)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProfilePhotoId)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.ProfilePhotoId)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProfilePhotoId)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.IdGuid)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdGuid)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.IdGuid)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdGuid)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.WasDeleted)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasDeleted)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.WasDeleted)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasDeleted)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.CreatedAt)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.CreatedAt)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(expression: model => model.UpdatedAt)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(expression: model => model.UpdatedAt)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
         </dd>
     </dl>
 </div>

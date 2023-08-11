@@ -1,4 +1,6 @@
 ﻿using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -6,7 +8,7 @@ public class SeedDbStudentsWithSchoolClasses
 {
     // private static DataContextMsSql _dataContextMsSql;
     // private static DataContextMsSql _dataContextInUse;
-    private static DataContextMySql _dataContextInUse;
+    private static readonly DataContextMySql _dataContextInUse;
 
 
     // public static void Initialize(DataContextMsSql dataContextMsSql)
@@ -14,7 +16,8 @@ public class SeedDbStudentsWithSchoolClasses
     //     _dataContextMsSql = dataContextMsSql;
     // }
 
-    public static async Task AddingData(DataContextMySql dataContextInUse)
+    public static async Task AddingData(
+        User user, DataContextMySql dataContextInUse)
     {
         var _dataContextInUse = dataContextInUse;
 
@@ -31,38 +34,62 @@ public class SeedDbStudentsWithSchoolClasses
             await dataContextInUse.Students.ToListAsync();
         students.ToList();
 
-        // ------------------------------------------------------------------ //
-        // Verifica se ja há dados para popular a lista de schoolclasses dos estudantes
-        if (schoolClasses == null) return;
-
 
         // ------------------------------------------------------------------ //
+        // Get all students from the database
+        var schoolClassStudents =
+            await dataContextInUse.SchoolClassStudents.ToListAsync();
+        schoolClassStudents.ToList();
 
+
+        // ------------------------------------------------------------------ //
+        // Verifica se já há dados para popular a lista de school-classes dos estudantes
+        if (!schoolClasses.Any() || schoolClassStudents.Any()) return;
+
+
+        // ------------------------------------------------------------------ //
         // Create a random number generator
         var random = new Random();
 
-        // Assign school classes to students
-        // (assuming each student is associated with multiple school classes)
+
+        // Collect new associations in memory
+        var newAssociations = new List<(int StudentId, int SchoolClassId)>();
+
         foreach (var student in students)
         {
-            // If the student already has school classes, skip this student
-            if (student.SchoolClasses != null ||
-                student.SchoolClasses.Count >= 0) continue;
-
-            // Assign 1 to 3 random school classes to each student
-            var numberOfSchoolClasses = random.Next(minValue: 1, maxValue: 4);
+            var numberOfSchoolClasses = random.Next(1, 4);
 
             for (var i = 0; i < numberOfSchoolClasses; i++)
             {
                 var randomSchoolClass =
-                    schoolClasses[index: random.Next(maxValue: schoolClasses.Count)];
+                    schoolClasses[random.Next(schoolClasses.Count)];
 
-                // Add the school class to the Student's SchoolClasses collection
-                student.SchoolClasses.Add(item: randomSchoolClass);
-
-                // Add the student to the SchoolClass's Students collection
-                randomSchoolClass.Students.Add(item: student);
+                // Check if the association already exists in the database
+                if (!newAssociations.Contains(
+                        (student.Id, randomSchoolClass.Id)))
+                    newAssociations.Add((student.Id, randomSchoolClass.Id));
             }
+        }
+
+
+        foreach (var (studentId, schoolClassId) in newAssociations)
+        {
+            var schoolClass =
+                schoolClasses.FirstOrDefault(sc => sc.Id == schoolClassId);
+            var student = students.FirstOrDefault(s => s.Id == studentId);
+
+            if (schoolClass == null || student == null) continue;
+
+            var schoolClassStudent = new SchoolClassStudent
+            {
+                SchoolClassId = schoolClass.Id,
+                SchoolClass = schoolClass,
+                StudentId = student.Id,
+                Student = student,
+                CreatedBy = user,
+            };
+
+            _dataContextInUse.SchoolClassStudents.Add(schoolClassStudent);
         }
 
 

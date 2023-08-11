@@ -1,7 +1,7 @@
 @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.City>
 
 @{
-    ViewData[index: "Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -11,43 +11,42 @@
 </p>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.IdGuid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.WasDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.UpdatedAt)
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WasDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
+@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.IdGuid)
+                @Html.DisplayFor(modelItem => item.IdGuid)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.WasDeleted)
+                @Html.DisplayFor(modelItem => item.WasDeleted)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -55,6 +54,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-    }
+}
     </tbody>
 </table>

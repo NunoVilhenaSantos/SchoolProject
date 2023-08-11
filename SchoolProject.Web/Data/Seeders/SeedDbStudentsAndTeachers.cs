@@ -45,23 +45,23 @@ public class SeedDbStudentsAndTeachers
     public static async Task AddingData(User user)
     {
         Console.WriteLine(
-            value: "Seeding the users table with students and teachers...");
+            "Seeding the users table with students and teachers...");
 
         await PopulateExistingUsersStudentsAndTeachersFromDb();
 
         // ------------------------------------------------------------------ //
         Console.WriteLine(
-            value: "Seeding the users table with students...");
-        await GenerateStudentsNames(user: user);
+            "Seeding the users table with students...");
+        await GenerateStudentsNames(user);
 
         // ------------------------------------------------------------------ //
         Console.WriteLine(
-            value: "Seeding the users table with teachers...");
-        await GenerateTeachersNames(user: user);
+            "Seeding the users table with teachers...");
+        await GenerateTeachersNames(user);
 
         // ------------------------------------------------------------------ //
         Console.WriteLine(
-            value: "Saving Students and Teachers to there respective tables...");
+            "Saving Students and Teachers to there respective tables...");
 
         await PopulateExistingUsersStudentsAndTeachersFromDb();
 
@@ -71,7 +71,7 @@ public class SeedDbStudentsAndTeachers
 
     private static async Task PopulateExistingUsersStudentsAndTeachersFromDb()
     {
-        Console.WriteLine(value: "debug zone...");
+        Console.WriteLine("debug zone...");
 
 
         // ------------------------------------------------------------------ //
@@ -81,7 +81,7 @@ public class SeedDbStudentsAndTeachers
 
         // Fill the existing emails HashSet for efficient email lookups
         ExistingEmailsOfUsersFromDb
-            .UnionWith(other: _listOfUsersFromDb.Select(selector: u => u.Email));
+            .UnionWith(_listOfUsersFromDb.Select(u => u.Email));
 
 
         // ------------------------------------------------------------------ //
@@ -96,7 +96,7 @@ public class SeedDbStudentsAndTeachers
         _listOfTeachersFromDb = existingTeachers.ToList();
 
 
-        Console.WriteLine(value: "debug zone...");
+        Console.WriteLine("debug zone...");
     }
 
 
@@ -124,12 +124,12 @@ public class SeedDbStudentsAndTeachers
 
         var studentsToAdd = studentNames
             .Except(
-                second: _listOfStudentsFromDb
-                    .Select(selector: s => s.FirstName + " " + s.LastName))
+                _listOfStudentsFromDb
+                    .Select(s => s.FirstName + " " + s.LastName))
             .ToList();
 
         if (studentsToAdd.Any())
-            await AddStudentsOrTeachers(user: user, namesToAdd: studentsToAdd, userRole: "Student");
+            await AddStudentsOrTeachers(user, studentsToAdd, "Student");
 
         // await PopulateExistingUsersStudentsAndTeachersFromDb();
         // await StoreStudentsOrTeachersInDb();
@@ -163,12 +163,12 @@ public class SeedDbStudentsAndTeachers
 
         var teachersToAdd = teacherNames
             .Except(
-                second: _listOfTeachersFromDb
-                    .Select(selector: t => t.FirstName + " " + t.LastName))
+                _listOfTeachersFromDb
+                    .Select(t => t.FirstName + " " + t.LastName))
             .ToList();
 
         if (teachersToAdd.Any())
-            await AddStudentsOrTeachers(user: user, namesToAdd: teachersToAdd, userRole: "Teacher");
+            await AddStudentsOrTeachers(user, teachersToAdd, "Teacher");
 
         // await PopulateExistingUsersStudentsAndTeachersFromDb();
         // await StoreStudentsOrTeachersInDb();
@@ -181,84 +181,84 @@ public class SeedDbStudentsAndTeachers
     {
         var city =
             await _dataContextInUse.Cities
-                .FirstOrDefaultAsync(predicate: c => c.Name == "Porto");
+                .FirstOrDefaultAsync(c => c.Name == "Porto");
         var country =
             await _dataContextInUse.Countries
-                .FirstOrDefaultAsync(predicate: c => c.Name == "Portugal");
+                .FirstOrDefaultAsync(c => c.Name == "Portugal");
         var countryOfNationality =
             await _dataContextInUse.Countries
-                .Include(navigationPropertyPath: c => c.Nationality)
-                .FirstOrDefaultAsync(predicate: c => c.Nationality.Name == "French");
+                .Include(c => c.Nationality)
+                .FirstOrDefaultAsync(c => c.Nationality.Name == "French");
         var birthplace =
             await _dataContextInUse.Countries
-                .FirstOrDefaultAsync(predicate: c => c.Name == "France");
+                .FirstOrDefaultAsync(c => c.Name == "France");
         var gender =
             await _dataContextInUse.Genders
-                .FirstOrDefaultAsync(predicate: g => g.Name == "Female");
+                .FirstOrDefaultAsync(g => g.Name == "Female");
 
 
         foreach (var name in namesToAdd)
         {
-            var firstName = name.Split(separator: ' ')[0];
-            var lastName = name.Replace(oldValue: firstName, newValue: "").Trim();
+            var firstName = name.Split(' ')[0];
+            var lastName = name.Replace(firstName, "").Trim();
 
             // Generate a valid email address based on firstName and lastName
-            var email = GenerateValidEmail(firstName: firstName, lastName: lastName);
+            var email = GenerateValidEmail(firstName, lastName);
 
-            var document = _random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
-            var fixedPhone = _random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
-            var cellPhone = _random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
+            var document = _random.Next(100_000_000, 999_999_999).ToString();
+            var fixedPhone = _random.Next(100_000_000, 999_999_999).ToString();
+            var cellPhone = _random.Next(100_000_000, 999_999_999).ToString();
             var address =
                 "Address of " + firstName + " " + lastName + ", " +
-                _random.Next(minValue: 1, maxValue: 9_999);
-            var idNumber = _random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
-            var vatNumber = _random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
+                _random.Next(1, 9_999);
+            var idNumber = _random.Next(100_000_000, 999_999_999).ToString();
+            var vatNumber = _random.Next(100_000_000, 999_999_999).ToString();
             var postalCode =
-                _random.Next(minValue: 1_000, maxValue: 9_999) + "-" + _random.Next(minValue: 100, maxValue: 999);
+                _random.Next(1_000, 9_999) + "-" + _random.Next(100, 999);
             var dateOfBirth = GenerateRandomDateOfBirth();
 
 
             Console.WriteLine(
-                value: $"Creating {userRole.ToLower()}: {firstName} {lastName}");
+                $"Creating {userRole.ToLower()}: {firstName} {lastName}");
 
 
             if (userRole.Equals(
-                    value: "Student", comparisonType: StringComparison.OrdinalIgnoreCase))
+                    "Student", StringComparison.OrdinalIgnoreCase))
             {
                 var student = await CreateUser<Student>(
-                    firstName: firstName, lastName: lastName, address: address, email: email, postalCode: postalCode,
-                    cellPhone: cellPhone, dateOfBirth: dateOfBirth, idNumber: idNumber, vatNumber: vatNumber,
-                    user: user, city: city, country: country, countryOfNationality: countryOfNationality, birthplace: birthplace,
-                    gender: gender, userRole: "Student");
+                    firstName, lastName, address, email, postalCode,
+                    cellPhone, dateOfBirth, idNumber, vatNumber,
+                    user, city, country, countryOfNationality, birthplace,
+                    gender, "Student");
 
-                ListOfStudentsToAdd.Add(item: student);
+                ListOfStudentsToAdd.Add(student);
 
                 Console.WriteLine(
-                    value: $"Created {userRole.ToLower()}: {firstName} {lastName}");
+                    $"Created {userRole.ToLower()}: {firstName} {lastName}");
 
-                Console.WriteLine(value: "debug zone..");
+                Console.WriteLine("debug zone..");
             }
             else if (userRole.Equals(
-                         value: "Teacher", comparisonType: StringComparison.OrdinalIgnoreCase))
+                         "Teacher", StringComparison.OrdinalIgnoreCase))
             {
                 var teacher = await CreateUser<Teacher>(
-                    firstName: firstName, lastName: lastName, address: address, email: email, postalCode: postalCode,
-                    cellPhone: cellPhone, dateOfBirth: dateOfBirth, idNumber: idNumber, vatNumber: vatNumber,
-                    user: user, city: city, country: country, countryOfNationality: countryOfNationality, birthplace: birthplace,
-                    gender: gender, userRole: "Teacher");
+                    firstName, lastName, address, email, postalCode,
+                    cellPhone, dateOfBirth, idNumber, vatNumber,
+                    user, city, country, countryOfNationality, birthplace,
+                    gender, "Teacher");
 
-                ListOfTeachersToAdd.Add(item: teacher);
+                ListOfTeachersToAdd.Add(teacher);
             }
             else
             {
                 try
                 {
                     throw new Exception(
-                        message: $"Invalid userRole: {userRole}");
+                        $"Invalid userRole: {userRole}");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(value: e);
+                    Console.WriteLine(e);
                     throw;
                 }
             }
@@ -266,17 +266,17 @@ public class SeedDbStudentsAndTeachers
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine(value: $"Created {namesToAdd.Count} {userRole.ToLower()}s");
+        Console.WriteLine($"Created {namesToAdd.Count} {userRole.ToLower()}s");
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine(value: $"Saving {userRole.ToLower()}s to the database...");
+        Console.WriteLine($"Saving {userRole.ToLower()}s to the database...");
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine(value: $"Saved {userRole.ToLower()}s to the database");
+        Console.WriteLine($"Saved {userRole.ToLower()}s to the database");
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine(value: "debug zone..");
+        Console.WriteLine("debug zone..");
 
         // ------------------------------------------------------------------ //
         await _dataContextInUse.SaveChangesAsync();
@@ -308,7 +308,7 @@ public class SeedDbStudentsAndTeachers
 
         // ------------------------------------------------------------------ //
         // TODO: mudei-me para aqui
-        ListOfUsersToAdd.Add(item: newUser);
+        ListOfUsersToAdd.Add(newUser);
 
 
         // ------------------------------------------------------------------ //
@@ -316,17 +316,17 @@ public class SeedDbStudentsAndTeachers
         try
         {
             var result =
-                await _userHelper.GetUserByEmailAsync(email: newUser.Email);
+                await _userHelper.GetUserByEmailAsync(newUser.Email);
             if (result != null)
                 throw new Exception(
-                    message: $"User {email} already exists in the database");
+                    $"User {email} already exists in the database");
 
-            var resultUser = await _userHelper.AddUserAsync(user: newUser, password: password);
+            var resultUser = await _userHelper.AddUserAsync(newUser, password);
 
             if (!resultUser.Succeeded)
                 throw new Exception(
-                    message: $"User {email} was not created: " +
-                             $"{resultUser.Errors.FirstOrDefault()?.Description}");
+                    $"User {email} was not created: " +
+                    $"{resultUser.Errors.FirstOrDefault()?.Description}");
         }
         catch (Exception ex)
         {
@@ -338,14 +338,14 @@ public class SeedDbStudentsAndTeachers
         // check if the user was created and stored in the database
         try
         {
-            await _userHelper.AddUserToRoleAsync(user: newUser, roleName: userRole);
+            await _userHelper.AddUserToRoleAsync(newUser, userRole);
 
             var result =
-                await _userHelper.IsUserInRoleAsync(user: newUser, roleName: userRole);
+                await _userHelper.IsUserInRoleAsync(newUser, userRole);
 
             if (!result)
                 throw new Exception(
-                    message: $"User {email} was not added to role {userRole}");
+                    $"User {email} was not added to role {userRole}");
         }
         catch (Exception ex)
         {
@@ -361,12 +361,12 @@ public class SeedDbStudentsAndTeachers
 
             if (numberOfChanges > 0)
                 // As alterações foram salvas com sucesso no banco de dados.
-                Console.WriteLine(value: "Changes saved successfully!");
+                Console.WriteLine("Changes saved successfully!");
             else
                 // Nenhuma alteração foi salva no banco de dados.
                 // Você pode optar por lançar uma exceção ou lidar com isso de alguma outra maneira.
                 // Por exemplo:
-                throw new Exception(message: "No changes were saved to the database.");
+                throw new Exception("No changes were saved to the database.");
         }
         catch (Exception ex)
         {
@@ -376,10 +376,10 @@ public class SeedDbStudentsAndTeachers
 
         // ------------------------------------------------------------------ //
         Console.WriteLine(
-            value: $"Creating {userRole.ToLower()}: {firstName} {lastName}");
+            $"Creating {userRole.ToLower()}: {firstName} {lastName}");
         // ------------------------------------------------------------------ //
 
-        Console.WriteLine(value: "debug zone 1");
+        Console.WriteLine("debug zone 1");
 
         // newUser = await _userHelper.GetUserByEmailAsync(newUser.Email);
 
@@ -387,40 +387,40 @@ public class SeedDbStudentsAndTeachers
         // Create the specific entity (Student or Teacher) based on the generic type T
         var entity = Activator.CreateInstance<T>();
         // entity.GetType().GetProperty("User")?.SetValue(entity, newUser);
-        entity.GetType().GetProperty(name: "FirstName")?.SetValue(obj: entity, value: firstName);
-        entity.GetType().GetProperty(name: "LastName")?.SetValue(obj: entity, value: lastName);
-        entity.GetType().GetProperty(name: "Address")?.SetValue(obj: entity, value: address);
-        entity.GetType().GetProperty(name: "PostalCode")
-            ?.SetValue(obj: entity, value: postalCode);
-        entity.GetType().GetProperty(name: "City")?.SetValue(obj: entity, value: city);
-        entity.GetType().GetProperty(name: "Country")?.SetValue(obj: entity, value: country);
-        entity.GetType().GetProperty(name: "MobilePhone")
-            ?.SetValue(obj: entity, value: cellPhone);
-        entity.GetType().GetProperty(name: "Email")?.SetValue(obj: entity, value: email);
-        entity.GetType().GetProperty(name: "Active")?.SetValue(obj: entity, value: true);
-        entity.GetType().GetProperty(name: "Gender")?.SetValue(obj: entity, value: gender);
-        entity.GetType().GetProperty(name: "DateOfBirth")
-            ?.SetValue(obj: entity, value: dateOfBirth);
-        entity.GetType().GetProperty(name: "IdentificationNumber")
-            ?.SetValue(obj: entity, value: idNumber);
-        entity.GetType().GetProperty(name: "IdentificationType")
-            ?.SetValue(obj: entity, value: "C/C");
-        entity.GetType().GetProperty(name: "ExpirationDateIdentificationNumber")
-            ?.SetValue(obj: entity, value: DateTime.Now.ToUniversalTime().AddYears(value: 20));
-        entity.GetType().GetProperty(name: "TaxIdentificationNumber")
-            ?.SetValue(obj: entity, value: vatNumber);
-        entity.GetType().GetProperty(name: "CountryOfNationality")
-            ?.SetValue(obj: entity, value: countryOfNationality);
-        entity.GetType().GetProperty(name: "Birthplace")
-            ?.SetValue(obj: entity, value: birthplace);
-        entity.GetType().GetProperty(name: "EnrollDate")
-            ?.SetValue(obj: entity, value: DateTime.Now.ToUniversalTime());
-        entity.GetType().GetProperty(name: "IdGuid")?.SetValue(obj: entity, value: default);
-        entity.GetType().GetProperty(name: "CreatedBy")?.SetValue(obj: entity, value: user);
+        entity.GetType().GetProperty("FirstName")?.SetValue(entity, firstName);
+        entity.GetType().GetProperty("LastName")?.SetValue(entity, lastName);
+        entity.GetType().GetProperty("Address")?.SetValue(entity, address);
+        entity.GetType().GetProperty("PostalCode")
+            ?.SetValue(entity, postalCode);
+        entity.GetType().GetProperty("City")?.SetValue(entity, city);
+        entity.GetType().GetProperty("Country")?.SetValue(entity, country);
+        entity.GetType().GetProperty("MobilePhone")
+            ?.SetValue(entity, cellPhone);
+        entity.GetType().GetProperty("Email")?.SetValue(entity, email);
+        entity.GetType().GetProperty("Active")?.SetValue(entity, true);
+        entity.GetType().GetProperty("Gender")?.SetValue(entity, gender);
+        entity.GetType().GetProperty("DateOfBirth")
+            ?.SetValue(entity, dateOfBirth);
+        entity.GetType().GetProperty("IdentificationNumber")
+            ?.SetValue(entity, idNumber);
+        entity.GetType().GetProperty("IdentificationType")
+            ?.SetValue(entity, "C/C");
+        entity.GetType().GetProperty("ExpirationDateIdentificationNumber")
+            ?.SetValue(entity, DateTime.Now.ToUniversalTime().AddYears(20));
+        entity.GetType().GetProperty("TaxIdentificationNumber")
+            ?.SetValue(entity, vatNumber);
+        entity.GetType().GetProperty("CountryOfNationality")
+            ?.SetValue(entity, countryOfNationality);
+        entity.GetType().GetProperty("Birthplace")
+            ?.SetValue(entity, birthplace);
+        entity.GetType().GetProperty("EnrollDate")
+            ?.SetValue(entity, DateTime.Now.ToUniversalTime());
+        entity.GetType().GetProperty("IdGuid")?.SetValue(entity, default);
+        entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user);
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine(value: "Debug zone 2");
+        Console.WriteLine("Debug zone 2");
 
         return entity;
     }
@@ -434,14 +434,14 @@ public class SeedDbStudentsAndTeachers
         var endYear = 2000;
 
 
-        var year = random.Next(minValue: startYear, maxValue: endYear + 1);
-        var month = random.Next(minValue: 1, maxValue: 13);
-        var maxDay = DateTime.DaysInMonth(year: year, month: month);
-        var day = random.Next(minValue: 1, maxValue: maxDay + 1);
+        var year = random.Next(startYear, endYear + 1);
+        var month = random.Next(1, 13);
+        var maxDay = DateTime.DaysInMonth(year, month);
+        var day = random.Next(1, maxDay + 1);
 
-        Console.WriteLine(value: "Date of birth generated: " +
-                                 new DateTime(year: year, month: month, day: day));
-        return new DateTime(year: year, month: month, day: day);
+        Console.WriteLine("Date of birth generated: " +
+                          new DateTime(year, month, day));
+        return new DateTime(year, month, day);
     }
 
 
@@ -452,9 +452,9 @@ public class SeedDbStudentsAndTeachers
 
         // Remove any spaces and special characters from the names
         var sanitizedFirstName =
-            Regex.Replace(input: firstName, pattern: pattern, replacement: "");
+            Regex.Replace(firstName, pattern, "");
         var sanitizedLastName =
-            Regex.Replace(input: lastName, pattern: pattern, replacement: "");
+            Regex.Replace(lastName, pattern, "");
 
         // Concatenate the sanitized names to create the email address
         var email = $"{sanitizedFirstName}.{sanitizedLastName}@mail.pt";
@@ -471,39 +471,39 @@ public class SeedDbStudentsAndTeachers
     {
         // Extract the emails from the lists of students and teachers
         var studentEmails =
-            ListOfStudentsToAdd.Select(selector: s => s.Email).ToList();
+            ListOfStudentsToAdd.Select(s => s.Email).ToList();
         var teacherEmails =
-            ListOfTeachersToAdd.Select(selector: t => t.Email).ToList();
+            ListOfTeachersToAdd.Select(t => t.Email).ToList();
 
 
-        Console.WriteLine(value: "Debug zone:");
+        Console.WriteLine("Debug zone:");
 
 
         // Add students to the database and assign student role
         foreach (var studentUser in
-                 ListOfUsersToAdd.Where(predicate: studentUser =>
-                     !ExistingEmailsOfUsersFromDb.Contains(item: studentUser.Email)))
+                 ListOfUsersToAdd.Where(studentUser =>
+                     !ExistingEmailsOfUsersFromDb.Contains(studentUser.Email)))
         {
             var result =
-                await _userHelper.AddUserAsync(user: studentUser, password: password);
+                await _userHelper.AddUserAsync(studentUser, password);
 
             if (result.Succeeded)
-                await _userHelper.AddUserToRoleAsync(user: studentUser,
-                    roleName: "Student");
+                await _userHelper.AddUserToRoleAsync(studentUser,
+                    "Student");
         }
 
 
         // Add teachers to the database and assign teacher role
         foreach (var teacherUser in
-                 ListOfUsersToAdd.Where(predicate: teacherUser =>
-                     !ExistingEmailsOfUsersFromDb.Contains(item: teacherUser.Email)))
+                 ListOfUsersToAdd.Where(teacherUser =>
+                     !ExistingEmailsOfUsersFromDb.Contains(teacherUser.Email)))
         {
             var result =
-                await _userHelper.AddUserAsync(user: teacherUser, password: password);
+                await _userHelper.AddUserAsync(teacherUser, password);
 
             if (result.Succeeded)
-                await _userHelper.AddUserToRoleAsync(user: teacherUser,
-                    roleName: "Teacher");
+                await _userHelper.AddUserToRoleAsync(teacherUser,
+                    "Teacher");
         }
 
         // Save the changes to the student or teacher entity
@@ -516,21 +516,21 @@ public class SeedDbStudentsAndTeachers
         // ------------------------------------------------------------------ //
         // TODO: add students or teachers to the database
 
-        Console.WriteLine(value: "Debug zone 1");
+        Console.WriteLine("Debug zone 1");
 
         foreach (var student in ListOfStudentsToAdd)
         {
             var studentFromDb = _listOfStudentsFromDb
-                .FirstOrDefault(predicate: s => s.Id == student.Id);
+                .FirstOrDefault(s => s.Id == student.Id);
 
             if (studentFromDb != null) continue;
 
             var studentUser = _listOfUsersFromDb
-                .FirstOrDefault(predicate: u => u.Email == student.Email);
+                .FirstOrDefault(u => u.Email == student.Email);
 
             student.User = studentUser;
 
-            _dataContextInUse.Students.Add(entity: student);
+            _dataContextInUse.Students.Add(student);
         }
 
         await _dataContextInUse.SaveChangesAsync();
@@ -539,16 +539,16 @@ public class SeedDbStudentsAndTeachers
         foreach (var teacher in ListOfTeachersToAdd)
         {
             var teacherFromDb = _listOfTeachersFromDb
-                .FirstOrDefault(predicate: t => t.Id == teacher.Id);
+                .FirstOrDefault(t => t.Id == teacher.Id);
 
             if (teacherFromDb != null) continue;
 
             var teacherUser = _listOfUsersFromDb
-                .FirstOrDefault(predicate: u => u.Email == teacher.Email);
+                .FirstOrDefault(u => u.Email == teacher.Email);
 
             teacher.User = teacherUser;
 
-            _dataContextInUse.Teachers.Add(entity: teacher);
+            _dataContextInUse.Teachers.Add(teacher);
         }
 
         await _dataContextInUse.SaveChangesAsync();

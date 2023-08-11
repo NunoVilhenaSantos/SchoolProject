@@ -1,15 +1,15 @@
 ﻿@using System.Diagnostics
 @{
-    var currentController = ViewContext.RouteData.Values[key: "controller"] as string;
-    var currentAction = ViewContext.RouteData.Values[key: "action"] as string;
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
 
-    Debug.Assert(condition: User.Identity != null, message: "User.Identity != null");
+    Debug.Assert(User.Identity != null, "User.Identity != null");
 }
 
 
 <div class="dropdown">
     @* <span class="material-symbols-outlined">settings</span> *@
-    <a class="nav-link dropdown-toggle" @(currentController is "SchoolClassCourses" or "SchoolClasses" ? "active" : "")
+    <a class="nav-link dropdown-toggle" @(currentController is "SchoolClassCourses" or "SchoolClasses" or "SchoolClassStudents" ? "active" : "")
        role="button" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="material-symbols-outlined">admin_panel_settings</i>
         SchoolClasses
@@ -29,6 +29,15 @@
             <a class="dropdown-item @(currentController == "SchoolClassCourses" ? "active" : "")"
                asp-area="" asp-controller="SchoolClassCourses" asp-action="Index">
                 <i class="fas fa-person-through-window"></i> SchoolClassCourses
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item @(currentController == "SchoolClassStudents" ? "active" : "")"
+               asp-area="" asp-controller="SchoolClassStudents" asp-action="Index">
+                <i class="fas fa-person-through-window"></i> SchoolClassStudents
             </a>
         </li>
     </ul>

@@ -33,11 +33,11 @@ public class SeedDbSchoolClasses
     public static async Task AddingData(User user)
     {
         Console.WriteLine(
-            value: "Seeding courses and school-classes tables with the courses...");
+            "Seeding courses and school-classes tables with the courses...");
 
-        SeedDbCoursesList.Initialize(dataContextInUse: _dataContextInUse);
+        SeedDbCoursesList.Initialize(_dataContextInUse);
 
-        await SeedDbCoursesList.AddingData(user: user);
+        await SeedDbCoursesList.AddingData(user);
 
         // ------------------------------------------------------------------ //
 
@@ -48,7 +48,7 @@ public class SeedDbSchoolClasses
         _listOfSchoolClassFromDb =
             await _dataContextInUse.SchoolClasses.ToListAsync();
 
-        Console.WriteLine(value: "debug zone...");
+        Console.WriteLine("debug zone...");
 
         // ------------------------------------------------------------------ //
 
@@ -89,7 +89,7 @@ public class SeedDbSchoolClasses
 
         // ------------------------------------------------------------------ //
 
-        Console.WriteLine(value: "debug zone...");
+        Console.WriteLine("debug zone...");
 
 
         // ------------------------------------------------------------------ //
@@ -97,218 +97,218 @@ public class SeedDbSchoolClasses
         // 481228
         // Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos
         var coursesListForTeGrsi =
-            GetExistingCoursesAsync(mergedDictionary: coursesForTeGrsi).Result;
+            GetExistingCoursesAsync(coursesForTeGrsi).Result;
 
         // 481227
         // Técnico/a Especialista em Aplicações Informáticas de Gestão
         var coursesListForTeAig =
-            GetExistingCoursesAsync(mergedDictionary: coursesForTeAig).Result;
+            GetExistingCoursesAsync(coursesForTeAig).Result;
 
         // 481241
         // Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação
         var coursesListForTeTpsi =
-            GetExistingCoursesAsync(mergedDictionary: coursesForTeTpsi).Result;
+            GetExistingCoursesAsync(coursesForTeTpsi).Result;
 
         // 481344
         // Técnico/a Especialista em Cibersegurança
-        var coursesListForTeCs = GetExistingCoursesAsync(mergedDictionary: coursesForTeCs).Result;
+        var coursesListForTeCs = GetExistingCoursesAsync(coursesForTeCs).Result;
 
         // 481390
         // Técnico/a Especialista em Gestão de Informação e Ciência dos Dados
         var coursesListForTeGicd =
-            GetExistingCoursesAsync(mergedDictionary: coursesForTeGicd).Result;
+            GetExistingCoursesAsync(coursesForTeGicd).Result;
 
         // 523229
         // Técnico/a Especialista em Automação, Robótica e Controlo Industrial
         var coursesListForTeArci =
-            GetExistingCoursesAsync(mergedDictionary: coursesForTeArci).Result;
+            GetExistingCoursesAsync(coursesForTeArci).Result;
 
         // 213240
         // Técnico/a Especialista em Desenvolvimento de Produtos Multimédia
         var coursesListForTeDpm =
-            GetExistingCoursesAsync(mergedDictionary: coursesForTeDpm).Result;
+            GetExistingCoursesAsync(coursesForTeDpm).Result;
 
         // 523273
         // Técnico/a Especialista em Telecomunicações e Redes
-        var coursesListForTeTr = GetExistingCoursesAsync(mergedDictionary: coursesForTeTr).Result;
+        var coursesListForTeTr = GetExistingCoursesAsync(coursesForTeTr).Result;
 
         // ------------------------------------------------------------------ //
 
-        Console.WriteLine(value: "debug zone...");
+        Console.WriteLine("debug zone...");
 
 
         // ------------------------------------------------------------------ //
         //
-        await SeedSchoolClassIfNotExists(code: "481228", acronym: "CET.GRSI.D.L.00",
-            name: "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeGrsi, user: user);
+        await SeedSchoolClassIfNotExists("481228", "CET.GRSI.D.L.00",
+            "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeGrsi, user);
 
-        await SeedSchoolClassIfNotExists(code: "481228", acronym: "CET.SITE.DPO.92",
-            name: "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Laboral) (B-Learning)",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeGrsi, user: user);
+        await SeedSchoolClassIfNotExists("481228", "CET.SITE.DPO.92",
+            "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Laboral) (B-Learning)",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeGrsi, user);
 
-        await SeedSchoolClassIfNotExists(code: "481228", acronym: "CET.SITE.DPO.06",
-            name: "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Pós-Laboral) (B-Learning)",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 19)),
-            endHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 23)),
-            courses: coursesListForTeGrsi, user: user);
+        await SeedSchoolClassIfNotExists("481228", "CET.SITE.DPO.06",
+            "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Pós-Laboral) (B-Learning)",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
+            coursesListForTeGrsi, user);
 
 
         // 481227
         // Técnico/a Especialista em Aplicações Informáticas de Gestão
-        await SeedSchoolClassIfNotExists(code: "481227", acronym: "CET.TEAIG.D.L.00",
-            name: "Técnico/a Especialista em Aplicações Informáticas de Gestão",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeAig, user: user);
+        await SeedSchoolClassIfNotExists("481227", "CET.TEAIG.D.L.00",
+            "Técnico/a Especialista em Aplicações Informáticas de Gestão",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeAig, user);
 
 
         // 481241
         // Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação
-        await SeedSchoolClassIfNotExists(code: "481241", acronym: "CET.TPSI.D.L.00",
-            name: "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeTpsi, user: user);
+        await SeedSchoolClassIfNotExists("481241", "CET.TPSI.D.L.00",
+            "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeTpsi, user);
 
-        await SeedSchoolClassIfNotExists(code: "481241", acronym: "CET.TPSI.N.L.00",
-            name: "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-laboral)",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 19)),
-            endHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 23)),
-            courses: coursesListForTeTpsi, user: user);
+        await SeedSchoolClassIfNotExists("481241", "CET.TPSI.N.L.00",
+            "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-laboral)",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
+            coursesListForTeTpsi, user);
 
-        await SeedSchoolClassIfNotExists(code: "481241", acronym: "CET.SITE.DPO.91",
-            name: "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Laboral) (B-Learning)",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeTpsi, user: user);
+        await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.91",
+            "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Laboral) (B-Learning)",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeTpsi, user);
 
-        await SeedSchoolClassIfNotExists(code: "481241", acronym: "CET.SITE.DPO.04",
-            name: "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-Laboral) (B-Learning)",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 19)),
-            endHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 23)),
-            courses: coursesListForTeTpsi, user: user);
+        await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.04",
+            "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-Laboral) (B-Learning)",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
+            coursesListForTeTpsi, user);
 
 
         // 481344
         // Técnico/a Especialista em Cibersegurança
-        await SeedSchoolClassIfNotExists(code: "481241", acronym: "CET.SITE.DPO.99",
-            name: "Técnico/a Especialista em Cibersegurança (Laboral) (B-Learning)",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeCs, user: user);
-        await SeedSchoolClassIfNotExists(code: "481241", acronym: "CET.SITE.DPO.98",
-            name: "Técnico/a Especialista em Cibersegurança (Pós-Laboral) (B-Learning)",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 19)),
-            endHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 23)),
-            courses: coursesListForTeCs, user: user);
+        await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.99",
+            "Técnico/a Especialista em Cibersegurança (Laboral) (B-Learning)",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeCs, user);
+        await SeedSchoolClassIfNotExists("481241", "CET.SITE.DPO.98",
+            "Técnico/a Especialista em Cibersegurança (Pós-Laboral) (B-Learning)",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
+            coursesListForTeCs, user);
 
 
         // 481390
         // Técnico/a Especialista em Gestão de Informação e Ciência dos Dados
-        await SeedSchoolClassIfNotExists(code: "481390", acronym: "CET.SITE.99",
-            name: "Técnico/a Especialista em Gestão de Informação e Ciência dos Dados",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeGicd, user: user);
+        await SeedSchoolClassIfNotExists("481390", "CET.SITE.99",
+            "Técnico/a Especialista em Gestão de Informação e Ciência dos Dados",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeGicd, user);
 
 
         // 523229
         // Técnico/a Especialista em Automação, Robótica e Controlo Industrial
-        await SeedSchoolClassIfNotExists(code: "523229", acronym: "CET.ARCI.N.L.00",
-            name: "Técnico/a Especialista em Automação, Robótica e Controlo Industrial",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeArci, user: user);
+        await SeedSchoolClassIfNotExists("523229", "CET.ARCI.N.L.00",
+            "Técnico/a Especialista em Automação, Robótica e Controlo Industrial",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeArci, user);
 
 
         // 213240
         // Técnico/a Especialista em Desenvolvimento de Produtos Multimédia
-        await SeedSchoolClassIfNotExists(code: "213240", acronym: "CET.ARCI.N.L.00",
-            name: "Técnico/a Especialista em Desenvolvimento de Produtos Multimédia",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 19)),
-            endHour: TimeSpan.Zero.Add(ts: TimeSpan.FromHours(value: 23)),
-            courses: coursesListForTeDpm, user: user);
+        await SeedSchoolClassIfNotExists("213240", "CET.ARCI.N.L.00",
+            "Técnico/a Especialista em Desenvolvimento de Produtos Multimédia",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
+            TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
+            coursesListForTeDpm, user);
 
 
         // 523273
         // Técnico/a Especialista em Telecomunicações e Redes
-        await SeedSchoolClassIfNotExists(code: "523273", acronym: "CET.TR.D.L.00",
-            name: "Técnico/a Especialista em Telecomunicações e Redes",
-            qnqLevel: 5, eqfLevel: 5,
-            startDate: DateTime.Today.AddMonths(months: 1),
-            endDate: DateTime.Today.AddMonths(months: 13),
-            startHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 8).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            endHour: TimeSpan.Zero.Add(
-                ts: TimeSpan.FromHours(value: 16).Add(ts: TimeSpan.FromMinutes(value: 30))),
-            courses: coursesListForTeTr, user: user);
+        await SeedSchoolClassIfNotExists("523273", "CET.TR.D.L.00",
+            "Técnico/a Especialista em Telecomunicações e Redes",
+            5, 5,
+            DateTime.Today.AddMonths(1),
+            DateTime.Today.AddMonths(13),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
+            TimeSpan.Zero.Add(
+                TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
+            coursesListForTeTr, user);
 
 
         // Add other school classes and courses here...
 
         // Add more courses here if needed
 
-        Console.WriteLine(value: "Seeding completed.");
+        Console.WriteLine("Seeding completed.");
     }
 
 
@@ -317,7 +317,7 @@ public class SeedDbSchoolClasses
     {
         // Filter out the courses that are already in the database and also present in the dictionary
         var existingCourses = _listOfCoursesFromDb
-            .Where(predicate: course => mergedDictionary.ContainsKey(key: course.Code))
+            .Where(course => mergedDictionary.ContainsKey(course.Code))
             .ToList();
 
 
@@ -339,21 +339,21 @@ public class SeedDbSchoolClasses
     {
         // Get the school classes from the database
         var existingSchoolClass = _listOfSchoolClassFromDb.FirstOrDefault(
-            predicate: s => s.Acronym == acronym && s.Code == code);
+            s => s.Acronym == acronym && s.Code == code);
 
 
         // Calculate the total duration in hours from the sum of course hours
-        var totalDurationInHours = courses.Sum(selector: c => c.Hours);
+        var totalDurationInHours = courses.Sum(c => c.Hours);
 
 
         // Calculate the total number of days needed for completion
         var totalDays =
-            (int) Math.Ceiling(a: totalDurationInHours /
-                                  ((endHour - startHour).TotalHours - 1));
+            (int) Math.Ceiling(totalDurationInHours /
+                               ((endHour - startHour).TotalHours - 1));
 
 
         // Calculate the end date and time based on the total number of days and start date/hour
-        endDate = startDate.AddDays(value: totalDays - 1).Date.Add(value: endHour);
+        endDate = startDate.AddDays(totalDays - 1).Date.Add(endHour);
         var durationPerDay = endHour - startHour;
         if (endDate.DayOfWeek == DayOfWeek.Saturday ||
             endDate.DayOfWeek == DayOfWeek.Sunday)
@@ -361,7 +361,7 @@ public class SeedDbSchoolClasses
             // Adjust the end date if it falls on a weekend
             var daysToAdd = endDate.DayOfWeek == DayOfWeek.Saturday ? 2 : 1;
             endDate =
-                endDate.AddDays(value: daysToAdd).Date.Add(value: startHour + durationPerDay);
+                endDate.AddDays(daysToAdd).Date.Add(startHour + durationPerDay);
         }
 
 
@@ -386,7 +386,7 @@ public class SeedDbSchoolClasses
                 Courses = courses
             };
 
-            await _dataContextInUse.SchoolClasses.AddAsync(entity: schoolClass);
+            await _dataContextInUse.SchoolClasses.AddAsync(schoolClass);
             await _dataContextInUse.SaveChangesAsync();
         }
     }

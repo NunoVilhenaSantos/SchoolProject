@@ -3,7 +3,7 @@ using SchoolProject.Web.Models.UsersDataDeletion;
 
 namespace SchoolProject.Web.Controllers.API;
 
-[Route(template: "api/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class UserDataDeletionController : ControllerBase
 {
@@ -13,7 +13,7 @@ public class UserDataDeletionController : ControllerBase
     //}
 
 
-    [HttpPost(template: "/datadeletion")]
+    [HttpPost("/datadeletion")]
     public IActionResult HandleDataDeletionRequest(
         [FromBody] FacebookDataDeletionRequest request)
     {
@@ -27,6 +27,6 @@ public class UserDataDeletionController : ControllerBase
             ConfirmationCode = "abc123"
         };
 
-        return Ok(value: response);
+        return Ok(response);
     }
 }

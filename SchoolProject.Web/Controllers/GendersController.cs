@@ -1,133 +1,163 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 
-namespace SchoolProject.Web.Controllers;
-
-public class GendersController : Controller
+namespace SchoolProject.Web.Controllers
 {
-    private readonly DataContextMySql _context;
-
-    public GendersController(DataContextMySql context)
+    public class GendersController : Controller
     {
-        _context = context;
-    }
+        private readonly DataContextMySql _context;
 
-    // GET: Genders
-    public async Task<IActionResult> Index()
-    {
-        return _context.Genders != null
-            ? View(model: await _context.Genders.ToListAsync())
-            : Problem(detail: "Entity set 'DataContextMySql.Genders'  is null.");
-    }
-
-    // GET: Genders/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null || _context.Genders == null) return NotFound();
-
-        var gender = await _context.Genders
-            .FirstOrDefaultAsync(predicate: m => m.Id == id);
-        if (gender == null) return NotFound();
-
-        return View(model: gender);
-    }
-
-    // GET: Genders/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: Genders/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        [Bind(include: "Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Gender gender)
-    {
-        if (ModelState.IsValid)
+        public GendersController(DataContextMySql context)
         {
-            _context.Add(entity: gender);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(actionName: nameof(Index));
+            _context = context;
         }
 
-        return View(model: gender);
-    }
-
-    // GET: Genders/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null || _context.Genders == null) return NotFound();
-
-        var gender = await _context.Genders.FindAsync(keyValues: id);
-        if (gender == null) return NotFound();
-        return View(model: gender);
-    }
-
-    // POST: Genders/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind(include: "Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Gender gender)
-    {
-        if (id != gender.Id) return NotFound();
-
-        if (ModelState.IsValid)
+        // GET: Genders
+        public async Task<IActionResult> Index()
         {
-            try
+              return _context.Genders != null ? 
+                          View(await _context.Genders.ToListAsync()) :
+                          Problem("Entity set 'DataContextMySql.Genders'  is null.");
+        }
+
+        // GET: Genders/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Genders == null)
             {
-                _context.Update(entity: gender);
+                return NotFound();
+            }
+
+            var gender = await _context.Genders
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (gender == null)
+            {
+                return NotFound();
+            }
+
+            return View(gender);
+        }
+
+        // GET: Genders/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Genders/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Gender gender)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(gender);
                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GenderExists(id: gender.Id))
-                    return NotFound();
-                throw;
-            }
-
-            return RedirectToAction(actionName: nameof(Index));
+            return View(gender);
         }
 
-        return View(model: gender);
-    }
+        // GET: Genders/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Genders == null)
+            {
+                return NotFound();
+            }
 
-    // GET: Genders/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null || _context.Genders == null) return NotFound();
+            var gender = await _context.Genders.FindAsync(id);
+            if (gender == null)
+            {
+                return NotFound();
+            }
+            return View(gender);
+        }
 
-        var gender = await _context.Genders
-            .FirstOrDefaultAsync(predicate: m => m.Id == id);
-        if (gender == null) return NotFound();
+        // POST: Genders/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] Gender gender)
+        {
+            if (id != gender.Id)
+            {
+                return NotFound();
+            }
 
-        return View(model: gender);
-    }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(gender);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!GenderExists(gender.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(gender);
+        }
 
-    // POST: Genders/Delete/5
-    [HttpPost]
-    [ActionName(name: "Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        if (_context.Genders == null)
-            return Problem(detail: "Entity set 'DataContextMySql.Genders'  is null.");
-        var gender = await _context.Genders.FindAsync(keyValues: id);
-        if (gender != null) _context.Genders.Remove(entity: gender);
+        // GET: Genders/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Genders == null)
+            {
+                return NotFound();
+            }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(actionName: nameof(Index));
-    }
+            var gender = await _context.Genders
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (gender == null)
+            {
+                return NotFound();
+            }
 
-    private bool GenderExists(int id)
-    {
-        return (_context.Genders?.Any(predicate: e => e.Id == id)).GetValueOrDefault();
+            return View(gender);
+        }
+
+        // POST: Genders/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Genders == null)
+            {
+                return Problem("Entity set 'DataContextMySql.Genders'  is null.");
+            }
+            var gender = await _context.Genders.FindAsync(id);
+            if (gender != null)
+            {
+                _context.Genders.Remove(gender);
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool GenderExists(int id)
+        {
+          return (_context.Genders?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
     }
 }

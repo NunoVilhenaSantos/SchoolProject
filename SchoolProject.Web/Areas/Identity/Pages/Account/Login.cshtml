@@ -2,10 +2,10 @@
 @model LoginModel
 
 @{
-    ViewData[index: "Title"] = "Log in";
+    ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData[index: "Title"]</h1>
+<h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
         <section>
@@ -26,7 +26,7 @@
                 <div class="checkbox mb-3">
                     <label asp-for="Input.RememberMe" class="form-label">
                         <input class="form-check-input" asp-for="Input.RememberMe"/>
-                        @Html.DisplayNameFor(expression: m => m.Input.RememberMe)
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
                 <div>

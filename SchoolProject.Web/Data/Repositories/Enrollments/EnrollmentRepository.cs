@@ -18,7 +18,7 @@ public class EnrollmentRepository : GenericRepository<Enrollment>,
     protected EnrollmentRepository(
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
-    ) : base(dataContext: dataContext, dataContextMySql: dataContextMySql, dataContextMsSql: dataContextMsSql, dataContextSqLite: dataContextSqLite)
+    ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
     {
         _dataContext = dataContext;
         _dataContextMsSql = dataContextMsSql;

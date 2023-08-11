@@ -11,29 +11,29 @@ namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
 public class SchoolClass : IEntity, INotifyPropertyChanged
 {
-    [DisplayName(displayName: "Code")]
-    [MaxLength(length: 7,
+    [DisplayName("Code")]
+    [MaxLength(7,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Code { get; init; }
 
 
-    [DisplayName(displayName: "Class Acronym")]
+    [DisplayName("Class Acronym")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Acronym { get; set; }
 
 
-    [DisplayName(displayName: "Class Name")]
+    [DisplayName("Class Name")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Name { get; set; }
 
 
-    [DisplayName(displayName: "QNQ Level")]
+    [DisplayName("QNQ Level")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required byte QnqLevel { get; init; }
 
 
-    [DisplayName(displayName: "EQF Level")]
+    [DisplayName("EQF Level")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required byte EqfLevel { get; init; }
 
@@ -61,23 +61,23 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
     // new version
     [Required]
-    [DisplayName(displayName: "Start Date")]
-    [DataType(dataType: DataType.Date)]
+    [DisplayName("Start Date")]
+    [DataType(DataType.Date)]
     public required DateTime StartDate { get; set; }
 
     [Required]
-    [DisplayName(displayName: "End Date")]
-    [DataType(dataType: DataType.Date)]
+    [DisplayName("End Date")]
+    [DataType(DataType.Date)]
     public required DateTime EndDate { get; set; }
 
     [Required]
-    [DisplayName(displayName: "Start Hour")]
-    [DataType(dataType: DataType.Time)]
+    [DisplayName("Start Hour")]
+    [DataType(DataType.Time)]
     public required TimeSpan StartHour { get; set; }
 
     [Required]
-    [DisplayName(displayName: "End Hour")]
-    [DataType(dataType: DataType.Time)]
+    [DisplayName("End Hour")]
+    [DataType(DataType.Time)]
     public required TimeSpan EndHour { get; set; }
 
 
@@ -89,20 +89,20 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
 
     [Required]
-    [Precision(precision: 10, scale: 2)]
-    [DataType(dataType: DataType.Currency)]
-    [DisplayName(displayName: "Price for Employed")]
+    [Precision(10, 2)]
+    [DataType(DataType.Currency)]
+    [DisplayName("Price for Employed")]
     public required decimal PriceForEmployed { get; set; } = 200;
 
 
     [Required]
-    [Precision(precision: 10, scale: 2)]
-    [DataType(dataType: DataType.Currency)]
-    [DisplayName(displayName: "Price for Unemployed")]
+    [Precision(10, 2)]
+    [DataType(DataType.Currency)]
+    [DisplayName("Price for Unemployed")]
     public required decimal PriceForUnemployed { get; set; }
 
 
-    [DisplayName(displayName: "Profile Photo")] public Guid? ProfilePhotoId { get; set; }
+    [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
@@ -122,18 +122,18 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
         new List<SchoolClassCourse>();
 
 
-    [DisplayName(displayName: "Courses Count")]
+    [DisplayName("Courses Count")]
     public int? CoursesCount => SchoolClassCourses?.Count ?? 0;
 
 
-    [DisplayName(displayName: "SchoolClass CreditPoints")]
+    [DisplayName("SchoolClass CreditPoints")]
     public double? SchoolClassCredits =>
-        SchoolClassCourses?.Sum(selector: c => c.Course.CreditPoints) ?? 0;
+        SchoolClassCourses?.Sum(c => c.Course.CreditPoints) ?? 0;
 
 
-    [DisplayName(displayName: "Work Hour Load")]
+    [DisplayName("Work Hour Load")]
     public int? WorkHourLoad =>
-        SchoolClassCourses?.Sum(selector: c => c.Course.Hours) ?? 0;
+        SchoolClassCourses?.Sum(c => c.Course.Hours) ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -146,49 +146,68 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     public ICollection<Student>? Students { get; set; } = new List<Student>();
 
 
-    [DisplayName(displayName: "Students Count")]
+    [DisplayName("Students Count")]
     public int? StudentsCount => Students?.Count ?? 0;
 
 
-    [DisplayName(displayName: "Enrollment")]
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///     Navigation property for the many-to-many relationship between SchoolClass and Student
+    /// </summary>
+    public ICollection<SchoolClassStudent>? SchoolClassStudents { get; set; } =
+        new List<SchoolClassStudent>();
+
+
+    [DisplayName("Students Count")]
+    public int? SCSStudentsCount => Students?.Count ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+    [DisplayName("Enrollment")]
     public IEnumerable<Enrollment>? Enrollment { get; set; }
 
 
-    [DisplayName(displayName: "Class Average")]
+    [DisplayName("Class Average")]
     // [Column(TypeName = "decimal(18,2)")]
-    [Precision(precision: 18, scale: 2)]
+    [Precision(18, 2)]
     public decimal? ClassAverage =>
-        Enrollment?.Where(predicate: e => e.Grade.HasValue)
-            .Average(selector: e => e.Grade);
+        Enrollment?.Where(e => e.Grade.HasValue)
+            .Average(e => e.Grade);
 
 
-    [DisplayName(displayName: "Highest Grade")]
+    [DisplayName("Highest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
-    [Precision(precision: 18, scale: 2)]
+    [Precision(18, 2)]
     public decimal? HighestGrade =>
-        Enrollment?.Max(selector: e => e.Grade);
+        Enrollment?.Max(e => e.Grade);
 
 
-    [DisplayName(displayName: "Lowest Grade")]
+    [DisplayName("Lowest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
-    [Precision(precision: 18, scale: 2)]
+    [Precision(18, 2)]
     public decimal? LowestGrade =>
-        Enrollment?.Min(selector: e => e.Grade);
+        Enrollment?.Min(e => e.Grade);
 
 
-    [DisplayName(displayName: "Courses Count")]
+    [DisplayName("Courses Count")]
     public int ECoursesCount =>
-        Enrollment?.Select(selector: e => e.Course).Distinct().Count() ?? 0;
+        Enrollment?.Select(e => e.Course).Distinct().Count() ?? 0;
 
 
-    [DisplayName(displayName: "Work Hour Load")]
+    [DisplayName("Work Hour Load")]
     public int EWorkHourLoad =>
-        Enrollment?.Sum(selector: e => e.Course.Hours) ?? 0;
+        Enrollment?.Sum(e => e.Course.Hours) ?? 0;
 
 
-    [DisplayName(displayName: "Students Count")]
+    [DisplayName("Students Count")]
     public int EStudentsCount =>
-        Enrollment?.Select(selector: e => e.Student).Distinct().Count() ?? 0;
+        Enrollment?.Select(e => e.Student).Distinct().Count() ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -203,38 +222,41 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     public List<Course>? Courses { get; init; }
 
     [Key]
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(
+        DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(
+        DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
     [Required]
-    [DisplayName(displayName: "Was Deleted?")]
+    [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
     [Required]
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Created At")]
-    [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(
+        DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [Required]
-    [DisplayName(displayName: "Created By")]
+    [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
     // [Required]
-    [DataType(dataType: DataType.Date)]
-    [DisplayName(displayName: "Update At")]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
 
-    [DisplayName(displayName: "Updated By")] public virtual User? UpdatedBy { get; set; }
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -248,17 +270,18 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
-        PropertyChanged?.Invoke(sender: this,
-            e: new PropertyChangedEventArgs(propertyName: propertyName));
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
     }
 
 
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(x: field, y: value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
         field = value;
-        OnPropertyChanged(propertyName: propertyName);
+        OnPropertyChanged(propertyName);
         return true;
     }
 }

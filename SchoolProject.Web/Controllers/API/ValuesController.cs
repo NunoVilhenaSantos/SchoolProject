@@ -2,7 +2,7 @@
 
 namespace SchoolProject.Web.Controllers.API;
 
-[Route(template: "api/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class ValuesController : ControllerBase
 {

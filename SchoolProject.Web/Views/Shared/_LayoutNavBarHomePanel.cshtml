@@ -1,6 +1,6 @@
 ﻿@{
-    var currentController = ViewContext.RouteData.Values[key: "controller"] as string;
-    var currentAction = ViewContext.RouteData.Values[key: "action"] as string;
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
 
 <div class="dropdown">
@@ -88,13 +88,13 @@
         <li>
             <a class="dropdown-item @(currentAction == "TimeTracker" && currentController == "Home" ? "active" : "")"
                asp-area="" asp-controller="Home" asp-action="TimeTracker">
-                <i class="fas fa-envelope"></i> Privacy
+                <i class="fas fa-envelope"></i> Time Tracker
             </a>
         </li>
         <li>
             <a class="dropdown-item @(currentAction == "Threads" && currentController == "Home" ? "active" : "")"
                asp-area="" asp-controller="Home" asp-action="Threads">
-                <i class="fas fa-envelope"></i> Privacy
+                <i class="fas fa-envelope"></i> Threads
             </a>
         </li>
         <li></li>

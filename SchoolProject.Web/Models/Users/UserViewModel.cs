@@ -7,5 +7,5 @@ namespace SchoolProject.Web.Models.Users;
 /// </summary>
 public class UserViewModel
 {
-    [DisplayName(displayName: "Image")] public IFormFile? ImageFile { get; set; }
+    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
 }

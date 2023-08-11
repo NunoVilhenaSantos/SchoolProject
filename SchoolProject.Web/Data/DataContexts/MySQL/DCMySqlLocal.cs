@@ -4,7 +4,7 @@ public class DCMySqlLocal : DataContextMySql
 {
     /// <inheritdoc />
     public DCMySqlLocal(DbContextOptions<DCMySqlLocal> options) :
-        base(options: options)
+        base(options)
     {
     }
 }

@@ -12,15 +12,15 @@ public class ConnectivityService
 
             var hostName = "stackoverflow.com";
 
-            var reply = await ping.SendPingAsync(hostNameOrAddress: hostName);
+            var reply = await ping.SendPingAsync(hostName);
 
-            Console.WriteLine(value: $"Ping status for ({hostName}): {reply.Status}");
+            Console.WriteLine($"Ping status for ({hostName}): {reply.Status}");
 
             if (reply is not {Status: IPStatus.Success}) return false;
 
-            Console.WriteLine(value: $"Address: {reply.Address}");
-            Console.WriteLine(value: $"Roundtrip time: {reply.RoundtripTime}");
-            Console.WriteLine(value: $"Time to live: {reply.Options?.Ttl}");
+            Console.WriteLine($"Address: {reply.Address}");
+            Console.WriteLine($"Roundtrip time: {reply.RoundtripTime}");
+            Console.WriteLine($"Time to live: {reply.Options?.Ttl}");
             Console.WriteLine();
 
             return true;

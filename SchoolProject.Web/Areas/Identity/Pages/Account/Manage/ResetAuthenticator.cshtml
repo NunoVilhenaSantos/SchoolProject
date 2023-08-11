@@ -1,12 +1,12 @@
 ﻿@page
 @model ResetAuthenticatorModel
 @{
-    ViewData[index: "Title"] = "Reset authenticator key";
-    ViewData[index: "ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+    ViewData["Title"] = "Reset authenticator key";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
 <partial name="_StatusMessage" for="StatusMessage"/>
-<h3>@ViewData[index: "Title"]</h3>
+<h3>@ViewData["Title"]</h3>
 <div class="alert alert-warning" role="alert">
     <p>
         <span class="glyphicon glyphicon-warning-sign"></span>

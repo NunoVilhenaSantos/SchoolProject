@@ -1,7 +1,7 @@
 @model IEnumerable<SchoolProject.Web.Data.Entities.Students.StudentCourse>
 
 @{
-    ViewData[index: "Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -11,74 +11,73 @@
 </p>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Student)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Course)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.IdGuid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.WasDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.UpdatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.UpdatedBy)
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WasDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
+@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Student.Address)
+                @Html.DisplayFor(modelItem => item.Student.Address)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Course.Code)
+                @Html.DisplayFor(modelItem => item.Course.Code)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Id)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.IdGuid)
+                @Html.DisplayFor(modelItem => item.IdGuid)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.WasDeleted)
+                @Html.DisplayFor(modelItem => item.WasDeleted)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.CreatedBy.Id)
+                @Html.DisplayFor(modelItem => item.CreatedBy.Id)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.UpdatedBy.Id)
+                @Html.DisplayFor(modelItem => item.UpdatedBy.Id)
             </td>
             <td>
-                @Html.ActionLink(linkText: "Edit", actionName: "Edit", routeValues: new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink(linkText: "Details", actionName: "Details", routeValues: new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink(linkText: "Delete", actionName: "Delete", routeValues: new {/* id=item.PrimaryKey */})
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
-    }
+}
     </tbody>
 </table>

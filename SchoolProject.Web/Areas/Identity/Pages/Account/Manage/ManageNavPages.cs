@@ -85,7 +85,7 @@ public static class ManageNavPages
     /// </summary>
     public static string IndexNavClass(ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: Index);
+        return PageNavClass(viewContext, Index);
     }
 
 
@@ -96,7 +96,7 @@ public static class ManageNavPages
     /// </summary>
     public static string EmailNavClass(ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: Email);
+        return PageNavClass(viewContext, Email);
     }
 
 
@@ -107,7 +107,7 @@ public static class ManageNavPages
     /// </summary>
     public static string ChangePasswordNavClass(ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: ChangePassword);
+        return PageNavClass(viewContext, ChangePassword);
     }
 
 
@@ -118,7 +118,7 @@ public static class ManageNavPages
     /// </summary>
     public static string DownloadPersonalDataNavClass(ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: DownloadPersonalData);
+        return PageNavClass(viewContext, DownloadPersonalData);
     }
 
 
@@ -129,7 +129,7 @@ public static class ManageNavPages
     /// </summary>
     public static string DeletePersonalDataNavClass(ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: DeletePersonalData);
+        return PageNavClass(viewContext, DeletePersonalData);
     }
 
 
@@ -140,7 +140,7 @@ public static class ManageNavPages
     /// </summary>
     public static string ExternalLoginsNavClass(ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: ExternalLogins);
+        return PageNavClass(viewContext, ExternalLogins);
     }
 
 
@@ -151,7 +151,7 @@ public static class ManageNavPages
     /// </summary>
     public static string PersonalDataNavClass(ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: PersonalData);
+        return PageNavClass(viewContext, PersonalData);
     }
 
 
@@ -163,7 +163,7 @@ public static class ManageNavPages
     public static string TwoFactorAuthenticationNavClass(
         ViewContext viewContext)
     {
-        return PageNavClass(viewContext: viewContext, page: TwoFactorAuthentication);
+        return PageNavClass(viewContext, TwoFactorAuthentication);
     }
 
 
@@ -175,12 +175,12 @@ public static class ManageNavPages
     public static string PageNavClass(ViewContext viewContext, string page)
     {
         var activePage =
-            viewContext.ViewData[index: "ActivePage"] as string ??
-            Path.GetFileNameWithoutExtension(path: viewContext
+            viewContext.ViewData["ActivePage"] as string ??
+            Path.GetFileNameWithoutExtension(viewContext
                 .ActionDescriptor.DisplayName);
 
-        return string.Equals(a: activePage, b: page,
-            comparisonType: StringComparison.OrdinalIgnoreCase)
+        return string.Equals(activePage, page,
+            StringComparison.OrdinalIgnoreCase)
             ? "active"
             : null;
     }

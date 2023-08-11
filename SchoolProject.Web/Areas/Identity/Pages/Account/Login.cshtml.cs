@@ -52,13 +52,13 @@ public class LoginModel : PageModel
 
     public async Task OnGetAsync(string returnUrl = null)
     {
-        if (!string.IsNullOrEmpty(value: ErrorMessage))
-            ModelState.AddModelError(key: string.Empty, errorMessage: ErrorMessage);
+        if (!string.IsNullOrEmpty(ErrorMessage))
+            ModelState.AddModelError(string.Empty, ErrorMessage);
 
-        returnUrl ??= Url.Content(contentPath: "~/");
+        returnUrl ??= Url.Content("~/");
 
         // Clear the existing external cookie to ensure a clean login process
-        await HttpContext.SignOutAsync(scheme: IdentityConstants.ExternalScheme);
+        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
         ExternalLogins =
             (await _signInManager.GetExternalAuthenticationSchemesAsync())
@@ -69,7 +69,7 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
-        returnUrl ??= Url.Content(contentPath: "~/");
+        returnUrl ??= Url.Content("~/");
 
         ExternalLogins =
             (await _signInManager.GetExternalAuthenticationSchemesAsync())
@@ -79,24 +79,24 @@ public class LoginModel : PageModel
         {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(userName: Input.Email,
-                password: Input.Password, isPersistent: Input.RememberMe, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(Input.Email,
+                Input.Password, Input.RememberMe, false);
             if (result.Succeeded)
             {
-                _logger.LogInformation(message: "User logged in.");
-                return LocalRedirect(localUrl: returnUrl);
+                _logger.LogInformation("User logged in.");
+                return LocalRedirect(returnUrl);
             }
 
             if (result.RequiresTwoFactor)
-                return RedirectToPage(pageName: "./LoginWith2fa",
-                    routeValues: new {ReturnUrl = returnUrl, Input.RememberMe});
+                return RedirectToPage("./LoginWith2fa",
+                    new {ReturnUrl = returnUrl, Input.RememberMe});
             if (result.IsLockedOut)
             {
-                _logger.LogWarning(message: "User account locked out.");
-                return RedirectToPage(pageName: "./Lockout");
+                _logger.LogWarning("User account locked out.");
+                return RedirectToPage("./Lockout");
             }
 
-            ModelState.AddModelError(key: string.Empty, errorMessage: "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return Page();
         }
 
@@ -123,7 +123,7 @@ public class LoginModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [DataType(dataType: DataType.Password)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         /// <summary>

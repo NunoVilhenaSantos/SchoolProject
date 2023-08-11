@@ -1,11 +1,11 @@
 ﻿@page
 @model EmailModel
 @{
-    ViewData[index: "Title"] = "Manage Email";
-    ViewData[index: "ActivePage"] = ManageNavPages.Email;
+    ViewData["Title"] = "Manage Email";
+    ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<h3>@ViewData[index: "Title"]</h3>
+<h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage"/>
 <div class="row">
     <div class="col-md-6">

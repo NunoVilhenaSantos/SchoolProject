@@ -1,7 +1,7 @@
 @model IEnumerable<SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass>
 
 @{
-    ViewData[index: "Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -11,127 +11,126 @@
 </p>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Acronym)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.QnqLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.EqfLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.StartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.StartHour)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.EndHour)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.Area)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.PriceForEmployed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.PriceForUnemployed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.ProfilePhotoId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.IdGuid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.WasDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(expression: model => model.UpdatedAt)
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Acronym)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QnqLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EqfLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartHour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndHour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceForEmployed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceForUnemployed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfilePhotoId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WasDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
+@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Code)
+                @Html.DisplayFor(modelItem => item.Code)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Acronym)
+                @Html.DisplayFor(modelItem => item.Acronym)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.QnqLevel)
+                @Html.DisplayFor(modelItem => item.QnqLevel)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.EqfLevel)
+                @Html.DisplayFor(modelItem => item.EqfLevel)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.StartDate)
+                @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.EndDate)
+                @Html.DisplayFor(modelItem => item.EndDate)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.StartHour)
+                @Html.DisplayFor(modelItem => item.StartHour)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.EndHour)
+                @Html.DisplayFor(modelItem => item.EndHour)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Location)
+                @Html.DisplayFor(modelItem => item.Location)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Type)
+                @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.Area)
+                @Html.DisplayFor(modelItem => item.Area)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.PriceForEmployed)
+                @Html.DisplayFor(modelItem => item.PriceForEmployed)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.PriceForUnemployed)
+                @Html.DisplayFor(modelItem => item.PriceForUnemployed)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.ProfilePhotoId)
+                @Html.DisplayFor(modelItem => item.ProfilePhotoId)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.IdGuid)
+                @Html.DisplayFor(modelItem => item.IdGuid)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.WasDeleted)
+                @Html.DisplayFor(modelItem => item.WasDeleted)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(expression: modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -139,6 +138,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-    }
+}
     </tbody>
 </table>

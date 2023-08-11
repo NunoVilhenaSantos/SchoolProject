@@ -25,9 +25,9 @@ public class LogoutModel : PageModel
     public async Task<IActionResult> OnPost(string returnUrl = null)
     {
         await _signInManager.SignOutAsync();
-        _logger.LogInformation(message: "User logged out.");
+        _logger.LogInformation("User logged out.");
         if (returnUrl != null)
-            return LocalRedirect(localUrl: returnUrl);
+            return LocalRedirect(returnUrl);
         // This needs to be a redirect so that the browser performs a new
         // request and the identity for the user gets updated.
         return RedirectToPage();

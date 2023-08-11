@@ -20,7 +20,7 @@ public class AuthenticatedUserInApp
 
 
     /// <summary>
-    ///    Get authenticated user from HttpContext
+    ///     Get authenticated user from HttpContext
     /// </summary>
     /// <returns></returns>
     public async Task<User> GetAuthenticatedUser()
@@ -28,14 +28,14 @@ public class AuthenticatedUserInApp
         var user = _httpContextAccessor.HttpContext?.User;
 
         var userId = user?.FindFirstValue(
-            claimType: ClaimTypes.NameIdentifier);
+            ClaimTypes.NameIdentifier);
 
-        var userEmail = user?.FindFirstValue(claimType: ClaimTypes.Email);
+        var userEmail = user?.FindFirstValue(ClaimTypes.Email);
 
         if (userId is null || userEmail is null) return null;
 
         return
-            await _userHelper.GetUserByIdAsync(id: userId) ??
-            await _userHelper.GetUserByEmailAsync(email: userEmail);
+            await _userHelper.GetUserByIdAsync(userId) ??
+            await _userHelper.GetUserByEmailAsync(userEmail);
     }
 }

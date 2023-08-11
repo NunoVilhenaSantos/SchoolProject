@@ -119,10 +119,10 @@ public class SeedDbCoursesList
 
         // calcular o tempo decorrido para executar o método principal
         // Create a new timer with the name from variable "timerName" 
-        TimeTracker.CreateTimer(timerName: TimeTracker.SeedDbCoursesName);
+        TimeTracker.CreateTimer(TimeTracker.SeedDbCoursesName);
 
         // Start the timer "MyTimer"
-        TimeTracker.StartTimer(timerName: TimeTracker.SeedDbCoursesName);
+        TimeTracker.StartTimer(TimeTracker.SeedDbCoursesName);
 
         EfaTis();
         TeCs();
@@ -138,15 +138,15 @@ public class SeedDbCoursesList
         await SaveMissingCourses();
 
         // Stop the timer "MyTimer"
-        TimeTracker.StopTimer(timerName: TimeTracker.SeedDbCoursesName);
+        TimeTracker.StopTimer(TimeTracker.SeedDbCoursesName);
 
         // Get the elapsed time for the timer "MyTimer"
         var ts =
-            TimeTracker.GetElapsedTime(timerName: TimeTracker.SeedDbCoursesName);
+            TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesName);
 
-        TimeTracker.PrintTimerToConsole(timerName: TimeTracker.SeedDbCoursesName);
+        TimeTracker.PrintTimerToConsole(TimeTracker.SeedDbCoursesName);
 
-        Console.WriteLine(value: "debug zone...");
+        Console.WriteLine("debug zone...");
     }
 
 
@@ -158,19 +158,19 @@ public class SeedDbCoursesList
         )
     {
         var mergedDictionary =
-            new Dictionary<string, (string, int, double)>(dictionary: commonCourses);
+            new Dictionary<string, (string, int, double)>(commonCourses);
 
 
         // Merge with the specificCourses dictionary
         foreach (var (key, value) in specificCourses)
             mergedDictionary
-                .TryAdd(key: key, value: (value.Item1, value.Item2, value.Item3));
+                .TryAdd(key, (value.Item1, value.Item2, value.Item3));
 
 
         // Merge with workRelatedTraining dictionary
         foreach (var (key, value) in workRelatedTraining)
             mergedDictionary
-                .TryAdd(key: key, value: (value.Item1, value.Item2, value.Item3));
+                .TryAdd(key, (value.Item1, value.Item2, value.Item3));
 
 
         // Accessing the values
@@ -188,10 +188,10 @@ public class SeedDbCoursesList
             var creditPoints = courseInfo.Item3;
 
             Console.WriteLine(
-                value: $"Course Number: {courseNumber}, " +
-                       $"Course Name: {courseName}, " +
-                       $"Hours: {courseHours}, " +
-                       $"Credit Points: {creditPoints}");
+                $"Course Number: {courseNumber}, " +
+                $"Course Name: {courseName}, " +
+                $"Hours: {courseHours}, " +
+                $"Credit Points: {creditPoints}");
         }
     }
 
@@ -209,8 +209,8 @@ public class SeedDbCoursesList
         }
 
         Console.WriteLine(
-            value: $"Total Hours: {totalHours}, " +
-                   $"Total Credit Points: {totalCreditPoints}");
+            $"Total Hours: {totalHours}, " +
+            $"Total Credit Points: {totalCreditPoints}");
     }
 
 
@@ -223,29 +223,29 @@ public class SeedDbCoursesList
     {
         // calcular o tempo decorrido para executar o método principal
         // Create a new timer with the name from variable "timerName" 
-        TimeTracker.CreateTimer(timerName: TimeTracker.SeedDbCoursesMPInfoName);
+        TimeTracker.CreateTimer(TimeTracker.SeedDbCoursesMPInfoName);
 
         // Start the timer "MyTimer"
-        TimeTracker.StartTimer(timerName: TimeTracker.SeedDbCoursesMPInfoName);
+        TimeTracker.StartTimer(TimeTracker.SeedDbCoursesMPInfoName);
 
 
         var mergedDictionary = MergeDictionaries(
-            commonCourses: commonCourses, specificCourses: specificCourses, workRelatedTraining: workRelatedTraining);
+            commonCourses, specificCourses, workRelatedTraining);
 
-        PrintCourseInfo(mergedDictionary: mergedDictionary);
-        CalculateTotals(mergedDictionary: mergedDictionary);
+        PrintCourseInfo(mergedDictionary);
+        CalculateTotals(mergedDictionary);
 
 
         // Parar a medição do tempo
-        TimeTracker.StopTimer(timerName: TimeTracker.SeedDbCoursesMPInfoName);
+        TimeTracker.StopTimer(TimeTracker.SeedDbCoursesMPInfoName);
 
         // Get the elapsed time for the timer "MyTimer"
         var ts =
-            TimeTracker.GetElapsedTime(timerName: TimeTracker.SeedDbCoursesMPInfoName);
+            TimeTracker.GetElapsedTime(TimeTracker.SeedDbCoursesMPInfoName);
 
-        TimeTracker.PrintTimerToConsole(timerName: TimeTracker.SeedDbCoursesMPInfoName);
+        TimeTracker.PrintTimerToConsole(TimeTracker.SeedDbCoursesMPInfoName);
 
-        Console.WriteLine(value: "debug zone...");
+        Console.WriteLine("debug zone...");
 
 
         return mergedDictionary;
@@ -255,12 +255,12 @@ public class SeedDbCoursesList
     public static Dictionary<string, (string, int, double)> TeTpsi()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcCommonDictionary,
-            specificCourses: ListCoursesTeTpsi.TeTpsiDictionary,
-            workRelatedTraining: ListsOfFct.Fct400);
+            FgcCommonDictionary,
+            ListCoursesTeTpsi.TeTpsiDictionary,
+            ListsOfFct.Fct400);
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -269,13 +269,13 @@ public class SeedDbCoursesList
     public static Dictionary<string, (string, int, double)> TeCs()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcTeCsDictionary,
-            specificCourses: ListCoursesTeCs.TeCsDictionary,
-            workRelatedTraining: ListsOfFct.Fct560);
+            FgcTeCsDictionary,
+            ListCoursesTeCs.TeCsDictionary,
+            ListsOfFct.Fct560);
 
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -285,13 +285,13 @@ public class SeedDbCoursesList
     internal static Dictionary<string, (string, int, double)> TeAig()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcCommonDictionary,
-            specificCourses: ListCoursesTeAig.TeAigDictionary,
-            workRelatedTraining: ListsOfFct.Fct400);
+            FgcCommonDictionary,
+            ListCoursesTeAig.TeAigDictionary,
+            ListsOfFct.Fct400);
 
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -300,18 +300,18 @@ public class SeedDbCoursesList
     internal static Dictionary<string, (string, int, double)> EfaTis()
     {
         var mergedKcDictionary = MergeAndPrintCourseInfo(
-            commonCourses: KeyCompetencies.FbCpCourses,
-            specificCourses: KeyCompetencies.FbStcCourses,
-            workRelatedTraining: KeyCompetencies.FbClcCourses);
+            KeyCompetencies.FbCpCourses,
+            KeyCompetencies.FbStcCourses,
+            KeyCompetencies.FbClcCourses);
 
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: mergedKcDictionary,
-            specificCourses: ListCoursesTis.TisDictionary,
-            workRelatedTraining: ListsOfFct.Fct210);
+            mergedKcDictionary,
+            ListCoursesTis.TisDictionary,
+            ListsOfFct.Fct210);
 
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -320,12 +320,12 @@ public class SeedDbCoursesList
     public static Dictionary<string, (string, int, double)> TeGrsi()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcCommonDictionary,
-            specificCourses: ListCoursesTeGrsi.TeGrsiDictionary,
-            workRelatedTraining: ListsOfFct.Fct400);
+            FgcCommonDictionary,
+            ListCoursesTeGrsi.TeGrsiDictionary,
+            ListsOfFct.Fct400);
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -334,13 +334,13 @@ public class SeedDbCoursesList
     public static Dictionary<string, (string, int, double)> TeGicd()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcTeGicdDictionary,
-            specificCourses: ListCoursesTeGicd.TeGicdDictionary,
-            workRelatedTraining: ListsOfFct.Fct400);
+            FgcTeGicdDictionary,
+            ListCoursesTeGicd.TeGicdDictionary,
+            ListsOfFct.Fct400);
 
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -349,13 +349,13 @@ public class SeedDbCoursesList
     public static Dictionary<string, (string, int, double)> TeArci()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcTeArciDictionary,
-            specificCourses: ListCoursesTeArci.TeArciDictionary,
-            workRelatedTraining: ListsOfFct.Fct560);
+            FgcTeArciDictionary,
+            ListCoursesTeArci.TeArciDictionary,
+            ListsOfFct.Fct560);
 
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -364,13 +364,13 @@ public class SeedDbCoursesList
     public static Dictionary<string, (string, int, double)> TeDpm()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcTeDpmDictionary,
-            specificCourses: ListCoursesTeDpm.TeDpmDictionary,
-            workRelatedTraining: ListsOfFct.Fct500);
+            FgcTeDpmDictionary,
+            ListCoursesTeDpm.TeDpmDictionary,
+            ListsOfFct.Fct500);
 
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -379,13 +379,13 @@ public class SeedDbCoursesList
     public static Dictionary<string, (string, int, double)> TeTr()
     {
         var mergedDictionary = MergeAndPrintCourseInfo(
-            commonCourses: FgcTeTrDictionary,
-            specificCourses: ListCoursesTeTr.TeTrDictionary,
-            workRelatedTraining: ListsOfFct.Fct560);
+            FgcTeTrDictionary,
+            ListCoursesTeTr.TeTrDictionary,
+            ListsOfFct.Fct560);
 
 
         //SaveMissingCourses(mergedDictionary);
-        AddMissingCourses(addCoursesToListOfCoursesToAdd: mergedDictionary);
+        AddMissingCourses(mergedDictionary);
 
         return mergedDictionary;
     }
@@ -402,7 +402,7 @@ public class SeedDbCoursesList
         // Merge with the _listOfCoursesToAdd dictionary
         foreach (var (key, value) in addCoursesToListOfCoursesToAdd)
             _listOfCoursesToAdd
-                .TryAdd(key: key, value: (value.Item1, value.Item2, value.Item3));
+                .TryAdd(key, (value.Item1, value.Item2, value.Item3));
 
 
         // Merge with workRelatedTraining dictionary
@@ -420,15 +420,15 @@ public class SeedDbCoursesList
     {
         // Get the list of existing course codes from the database
         var existingCourseCodes =
-            await _dataContextInUse.Courses.Select(selector: c => c.Code).ToListAsync();
+            await _dataContextInUse.Courses.Select(c => c.Code).ToListAsync();
 
 
         // Filter out the courses that are already in the database
         var missingCourses =
             _listOfCoursesToAdd
-                .Where(predicate: course =>
-                    !existingCourseCodes.Contains(item: course.Key))
-                .Select(selector: course =>
+                .Where(course =>
+                    !existingCourseCodes.Contains(course.Key))
+                .Select(course =>
                     new Course
                     {
                         Code = course.Key,
@@ -440,12 +440,12 @@ public class SeedDbCoursesList
                 .ToList();
 
 
-        Console.WriteLine(value: $"Missing courses: {missingCourses.Count}");
-        Console.WriteLine(value: "Debug zone");
+        Console.WriteLine($"Missing courses: {missingCourses.Count}");
+        Console.WriteLine("Debug zone");
 
 
         // Save the missing courses to the database
-        await _dataContextInUse.Courses.AddRangeAsync(entities: missingCourses);
+        await _dataContextInUse.Courses.AddRangeAsync(missingCourses);
         await _dataContextInUse.SaveChangesAsync();
     }
 
@@ -457,13 +457,13 @@ public class SeedDbCoursesList
         // Filter out the courses that are already in the database and also present in the dictionary
         var existingCourses =
             await _dataContextInUse.Courses.AsAsyncEnumerable()
-                .Where(predicate: course => mergedDictionary.ContainsKey(key: course.Code))
+                .Where(course => mergedDictionary.ContainsKey(course.Code))
                 .ToListAsync();
 
         var finalList = existingCourses.ToList();
 
-        Console.WriteLine(value: $"Existing courses: {existingCourses.Count}");
-        Console.WriteLine(value: "Debug zone");
+        Console.WriteLine($"Existing courses: {existingCourses.Count}");
+        Console.WriteLine("Debug zone");
 
 
         return finalList;

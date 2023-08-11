@@ -3,20 +3,20 @@ using SchoolProject.Web.Data.EntitiesOthers;
 namespace SchoolProject.Web.Data.Repositories;
 
 /// <summary>
-///    Generic repository interface.
+///     Generic repository interface.
 /// </summary>
 /// <typeparam name="T"> T is a class </typeparam>
 public interface IGenericRepository<T> where T : class, IEntity
 {
     /// <summary>
-    ///   Get all entities.
+    ///     Get all entities.
     /// </summary>
     /// <returns></returns>
     IQueryable<T> GetAll();
 
 
     /// <summary>
-    ///  Get an entity by it's id.
+    ///     Get an entity by it's id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns> returns an entity or null. </returns>
@@ -24,7 +24,7 @@ public interface IGenericRepository<T> where T : class, IEntity
 
 
     /// <summary>
-    /// Get an entity by it's idGuid.
+    ///     Get an entity by it's idGuid.
     /// </summary>
     /// <param name="idGuid"></param>
     /// <returns> returns an entity or null.</returns>
@@ -32,7 +32,7 @@ public interface IGenericRepository<T> where T : class, IEntity
 
 
     /// <summary>
-    /// Create an entity.
+    ///     Create an entity.
     /// </summary>
     /// <param name="entity"></param>
     /// <returns>if the entity was successfully created or not.</returns>
@@ -40,7 +40,7 @@ public interface IGenericRepository<T> where T : class, IEntity
 
 
     /// <summary>
-    /// Update an entity.
+    ///     Update an entity.
     /// </summary>
     /// <param name="entity"></param>
     /// <returns>if the entity was successfully updated or not.</returns>
@@ -48,7 +48,7 @@ public interface IGenericRepository<T> where T : class, IEntity
 
 
     /// <summary>
-    /// Delete an entity.
+    ///     Delete an entity.
     /// </summary>
     /// <param name="entity"></param>
     /// <returns>if the entity was successfully deleted or not.</returns>
@@ -56,14 +56,14 @@ public interface IGenericRepository<T> where T : class, IEntity
 
 
     /// <summary>
-    /// Check if an entity exist, using it's id.
+    ///     Check if an entity exist, using it's id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<bool> ExistAsync(int id);
 
     /// <summary>
-    /// Check if an entity exist, using it's idGuid.
+    ///     Check if an entity exist, using it's idGuid.
     /// </summary>
     /// <param name="idGuid"></param>
     /// <returns>if the entity exist returns true and if not returns false.</returns>
@@ -71,7 +71,7 @@ public interface IGenericRepository<T> where T : class, IEntity
 
 
     /// <summary>
-    /// Save all changes that have been made.
+    ///     Save all changes that have been made.
     /// </summary>
     /// <returns>if the data was successfully save to database returns true and if not returns false.</returns>
     Task<bool> SaveAllAsync();

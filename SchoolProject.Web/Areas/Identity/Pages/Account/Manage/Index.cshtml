@@ -1,11 +1,11 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData[index: "Title"] = "Profile";
-    ViewData[index: "ActivePage"] = ManageNavPages.Index;
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData[index: "Title"]</h3>
+<h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage"/>
 <div class="row">
     <div class="col-md-6">

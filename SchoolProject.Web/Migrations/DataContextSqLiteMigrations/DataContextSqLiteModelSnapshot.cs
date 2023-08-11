@@ -146,21 +146,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SchoolClassStudent", b =>
-                {
-                    b.Property<int>("SchoolClassesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SchoolClassesId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("SchoolClassStudent");
-                });
-
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.City", b =>
                 {
                     b.Property<int>("Id")
@@ -597,6 +582,53 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.ToTable("SchoolClassCourses");
                 });
 
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClassStudent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<int>("SchoolClassId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("SchoolClassId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("SchoolClassStudent");
+                });
+
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -678,6 +710,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<Guid>("ProfilePhotoId")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("SchoolClassId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("TaxIdentificationNumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -708,6 +743,8 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("GenderId");
+
+                    b.HasIndex("SchoolClassId");
 
                     b.HasIndex("UpdatedById");
 
@@ -1058,21 +1095,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SchoolClassStudent", b =>
-                {
-                    b.HasOne("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", null)
-                        .WithMany()
-                        .HasForeignKey("SchoolClassesId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.City", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.Countries.Country", null)
@@ -1272,6 +1294,40 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Navigation("UpdatedBy");
                 });
 
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClassStudent", b =>
+                {
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", "SchoolClass")
+                        .WithMany("SchoolClassStudents")
+                        .HasForeignKey("SchoolClassId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
+                        .WithMany("SchoolClassStudents")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("SchoolClass");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("UpdatedBy");
+                });
+
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.Countries.Country", "Birthplace")
@@ -1309,6 +1365,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass", null)
+                        .WithMany("Students")
+                        .HasForeignKey("SchoolClassId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.EntitiesOthers.User", "UpdatedBy")
                         .WithMany()
@@ -1495,11 +1556,17 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Navigation("Enrollment");
 
                     b.Navigation("SchoolClassCourses");
+
+                    b.Navigation("SchoolClassStudents");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("SchoolClassStudents");
 
                     b.Navigation("StudentCourses");
                 });

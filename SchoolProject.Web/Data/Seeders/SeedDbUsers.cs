@@ -39,28 +39,28 @@ public class SeedDbUsers
     {
         var random = new Random();
         var userSplit = email.Split(
-            separator: '.', options: StringSplitOptions.RemoveEmptyEntries);
+            '.', StringSplitOptions.RemoveEmptyEntries);
 
         var document =
-            random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
+            random.Next(100_000_000, 999_999_999).ToString();
         var fixedPhone =
-            random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
+            random.Next(100_000_000, 999_999_999).ToString();
         var cellPhone =
-            random.Next(minValue: 100_000_000, maxValue: 999_999_999).ToString();
+            random.Next(100_000_000, 999_999_999).ToString();
 
         var fullAddress =
-            address + ", " + random.Next(minValue: 1, maxValue: 9_999);
+            address + ", " + random.Next(1, 9_999);
 
         Console.WriteLine(
-            value: $"Seeding the user {firstName} {lastName} with the email {email}");
+            $"Seeding the user {firstName} {lastName} with the email {email}");
 
         await VerifyUserAsync(
-            firstName: firstName, lastName: lastName,
-            userName: email,
-            email: email,
-            phoneNumber: cellPhone, role: role,
-            document: document,
-            address: fullAddress, password: password
+            firstName, lastName,
+            email,
+            email,
+            cellPhone, role,
+            document,
+            fullAddress, password
         );
     }
 
@@ -75,30 +75,28 @@ public class SeedDbUsers
         string password = "Passw0rd")
     {
         // Input validation
-        if (string.IsNullOrWhiteSpace(value: firstName) ||
-            string.IsNullOrWhiteSpace(value: lastName) ||
-            string.IsNullOrWhiteSpace(value: userName) ||
-            string.IsNullOrWhiteSpace(value: email) ||
-            string.IsNullOrWhiteSpace(value: phoneNumber) ||
-            string.IsNullOrWhiteSpace(value: role) ||
-            string.IsNullOrWhiteSpace(value: address))
+        if (string.IsNullOrWhiteSpace(firstName) ||
+            string.IsNullOrWhiteSpace(lastName) ||
+            string.IsNullOrWhiteSpace(userName) ||
+            string.IsNullOrWhiteSpace(email) ||
+            string.IsNullOrWhiteSpace(phoneNumber) ||
+            string.IsNullOrWhiteSpace(role) ||
+            string.IsNullOrWhiteSpace(address))
             throw new ArgumentException(
-                message: "One or more required parameters are missing or empty.");
+                "One or more required parameters are missing or empty.");
 
-        // Additional validation for email format and
-        // phone number format can be performed here.
 
         // Validate email format
-        if (!IsValidEmail(email: email))
-            throw new ArgumentException(message: "Invalid email format.");
+        if (!IsValidEmail(email))
+            throw new ArgumentException("Invalid email format.");
 
         // Validate phone number format
-        if (!IsValidPhoneNumber(phoneNumber: phoneNumber))
-            throw new ArgumentException(message: "Invalid phone number format.");
+        if (!IsValidPhoneNumber(phoneNumber))
+            throw new ArgumentException("Invalid phone number format.");
 
 
         // Validate role
-        var user = await _userHelper.GetUserByEmailAsync(email: email);
+        var user = await _userHelper.GetUserByEmailAsync(email);
         string message;
 
         if (user == null)
@@ -134,9 +132,9 @@ public class SeedDbUsers
                               "could not create the user in Seeder, " +
                               $"because the role {role} is not valid.";
 
-                    Console.WriteLine(value: message);
-                    _logger.LogError(message: message);
-                    throw new InvalidOperationException(message: message);
+                    Console.WriteLine(message);
+                    _logger.LogError(message);
+                    throw new InvalidOperationException(message);
             }
 
 
@@ -144,7 +142,7 @@ public class SeedDbUsers
 
             // Create the user
             var result =
-                await _userHelper.AddUserAsync(user: newUser, password: password);
+                await _userHelper.AddUserAsync(newUser, password);
 
             // Check if the user was created successfully
             if (result != IdentityResult.Success)
@@ -153,20 +151,20 @@ public class SeedDbUsers
                           $"with email {email} and role {role}, " +
                           "could not create the user in Seeder.";
 
-                Console.WriteLine(value: message);
-                _logger.LogError(message: message);
-                throw new InvalidOperationException(message: message);
+                Console.WriteLine(message);
+                _logger.LogError(message);
+                throw new InvalidOperationException(message);
             }
 
 
             // ------------------------------------------------------------ //
 
             // Add the user to the role
-            await _userHelper.AddUserToRoleAsync(user: newUser, roleName: role);
+            await _userHelper.AddUserToRoleAsync(newUser, role);
 
             // Check if the user was added to the role successfully
             var isInRole =
-                await _userHelper.IsUserInRoleAsync(user: newUser, roleName: role);
+                await _userHelper.IsUserInRoleAsync(newUser, role);
 
             // Check if the user was added to the role successfully
             if (!isInRole)
@@ -175,9 +173,9 @@ public class SeedDbUsers
                           $"with email {email} and role {role}, " +
                           "could not create the user in Seeder.";
 
-                Console.WriteLine(value: message);
-                _logger.LogError(message: message);
-                throw new InvalidOperationException(message: message);
+                Console.WriteLine(message);
+                _logger.LogError(message);
+                throw new InvalidOperationException(message);
             }
 
 
@@ -186,8 +184,8 @@ public class SeedDbUsers
                       $"with email {email} and role {role} has been created.";
 
 
-            Console.WriteLine(value: message);
-            _logger.LogInformation(message: message);
+            Console.WriteLine(message);
+            _logger.LogInformation(message);
 
             return newUser;
         }
@@ -196,8 +194,8 @@ public class SeedDbUsers
                   $"with email {email} and role {role}, " +
                   "already exists.";
 
-        Console.WriteLine(value: message);
-        _logger.LogInformation(message: message);
+        Console.WriteLine(message);
+        _logger.LogInformation(message);
 
         return user;
     }
@@ -211,7 +209,7 @@ public class SeedDbUsers
 
         const string emailPattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,})+)$";
 
-        return Regex.IsMatch(input: email, pattern: emailPattern);
+        return Regex.IsMatch(email, emailPattern);
     }
 
     private static bool IsValidPhoneNumber(string phoneNumber)
@@ -223,6 +221,6 @@ public class SeedDbUsers
         // const string phonePattern = @"^\+\d{9,13}$";
         const string phonePattern = @"^\d{9,13}$";
 
-        return Regex.IsMatch(input: phoneNumber, pattern: phonePattern);
+        return Regex.IsMatch(phoneNumber, phonePattern);
     }
 }

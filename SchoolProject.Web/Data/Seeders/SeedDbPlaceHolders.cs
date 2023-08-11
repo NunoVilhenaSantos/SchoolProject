@@ -19,34 +19,34 @@ public class SeedDbPlaceHolders
     internal static void AddPlaceHolders()
     {
         var origem =
-            Path.Combine(path1: _hostingEnvironment.ContentRootPath,
-                path2: "Helpers", path3: "Images");
+            Path.Combine(_hostingEnvironment.ContentRootPath,
+                "Helpers", "Images");
         var destino =
-            Path.Combine(path1: _hostingEnvironment.WebRootPath,
-                path2: "images", path3: "PlaceHolders");
+            Path.Combine(_hostingEnvironment.WebRootPath,
+                "images", "PlaceHolders");
 
 
         // Cria o diretório de destino se não existir
-        Directory.CreateDirectory(path: destino);
+        Directory.CreateDirectory(destino);
 
         // Obtém todos os caminhos dos arquivos na pasta de origem
-        var arquivos = Directory.GetFiles(path: origem);
+        var arquivos = Directory.GetFiles(origem);
 
         // Itera sobre os caminhos dos arquivos e
         // copia cada um para a pasta de destino
         foreach (var arquivo in arquivos)
         {
-            var nomeArquivo = Path.GetFileName(path: arquivo);
-            var extensao = Path.GetExtension(path: arquivo);
+            var nomeArquivo = Path.GetFileName(arquivo);
+            var extensao = Path.GetExtension(arquivo);
 
             // Verifica se a extensão do arquivo não é
             // .cs (arquivo C#) antes de copiá-lo
             if (extensao == ".cs") continue;
 
-            var caminhoDestino = Path.Combine(path1: destino, path2: nomeArquivo);
-            File.Copy(sourceFileName: arquivo, destFileName: caminhoDestino, overwrite: true);
+            var caminhoDestino = Path.Combine(destino, nomeArquivo);
+            File.Copy(arquivo, caminhoDestino, true);
         }
 
-        Console.WriteLine(value: "Placeholders adicionados com sucesso!");
+        Console.WriteLine("Placeholders adicionados com sucesso!");
     }
 }

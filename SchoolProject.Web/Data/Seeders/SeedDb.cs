@@ -34,15 +34,17 @@ public class SeedDb
 
 
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
-    private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
 
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
+    private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
 
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+
 
     public SeedDb(
         // ILogger<SeedDb> logger,
@@ -58,8 +60,10 @@ public class SeedDb
         DataContextMySql dataContextMySql,
         DataContextSqLite dataContextSqLite,
         DataContextMySql dataContextInUse
-        // DcMsSqlLocal msSqlLocal, DcMsSqlOnline msSqlOnline,
-        // DCMySqlLocal mySqlLocal, DCMySqlOnline mySqlOnline
+        // DcMsSqlLocal msSqlLocal,
+        // DCMySqlLocal mySqlLocal,
+        // DcMsSqlOnline msSqlOnline,
+        // DCMySqlOnline mySqlOnline
     )
     {
         _loggerSeedDbSCs = loggerSeedDbSCs;
@@ -75,10 +79,13 @@ public class SeedDb
         _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
         _dataContextSqLite = dataContextSqLite;
+
         _dataContextInUse = dataContextInUse;
+
         // _msSqlLocal = msSqlLocal;
-        // _msSqlOnline = msSqlOnline;
         // _mySqlLocal = mySqlLocal;
+        
+        // _msSqlOnline = msSqlOnline;
         // _mySqlOnline = mySqlOnline;
     }
 
@@ -100,7 +107,7 @@ public class SeedDb
         // await _mySqlOnline.Database.MigrateAsync();
 
         // await _dataContextSqLite.Database.MigrateAsync();
-
+        
         await _dataContextInUse.Database.MigrateAsync();
 
 
@@ -110,15 +117,16 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // initialize SeedDbUsers with the user helper before been used
         // ------------------------------------------------------------------ //
-        SeedDbUsers.Initialize(userHelper: _userHelper, logger: _loggerSeedDbUsers);
+        SeedDbUsers.Initialize(_userHelper, _loggerSeedDbUsers);
 
-        Console.WriteLine(format: "Seeding the database.", arg0: Color.Green);
-        Console.WriteLine(format: _dataContextInUse.Database.GetConnectionString(),
-            arg0: Color.Green);
+        Console.WriteLine("Seeding the database.", Color.Green);
         Console.WriteLine(
-            format: _dataContextInUse.Database.GetDbConnection().DataSource,
-            arg0: Color.Green);
-        Console.WriteLine(format: "Debug point.", arg0: Color.Red);
+            _dataContextInUse.Database.GetConnectionString(), Color.Green);
+        Console.WriteLine(
+            _dataContextInUse.Database.GetDbConnection().DataSource,
+            Color.Green);
+        Console.WriteLine("Debug point.", Color.Red);
+
 
         // ------------------------------------------------------------------ //
         // adding roles for all users in the system
@@ -126,6 +134,7 @@ public class SeedDb
         await SeedingRolesForUsers();
         await _dataContextInUse.SaveChangesAsync();
         //await _dataContextInUse.Database.CommitTransactionAsync();
+
 
         // ------------------------------------------------------------------ //
         // adding the super users
@@ -152,37 +161,37 @@ public class SeedDb
         // getting an admin to insert data that needs to have an user
         // ------------------------------------------------------------------ //
         var user = await _userHelper.GetUserByEmailAsync(
-            email: "nuno.santos.26288@formandos.cinel.pt");
+            "nuno.santos.26288@formandos.cinel.pt");
 
 
         // ------------------------------------------------------------------ //
         // adding countries and cities to the database
         // ------------------------------------------------------------------ //
-        Debug.Assert(condition: user != null, message: nameof(user) + " != null");
-        await AddCountriesWithCitiesAndNationalities(createdBy: user);
+        Debug.Assert(user != null, nameof(user) + " != null");
+        await AddCountriesWithCitiesAndNationalities(user);
         await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding genres to the database
         // ------------------------------------------------------------------ //
-        await SeedingDataGenders(user: user);
+        await SeedingDataGenders(user);
         await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
-        SeedDbStudentsAndTeachers.Initialize(userHelper: _userHelper, dataContext: _dataContextInUse);
-        await SeedDbStudentsAndTeachers.AddingData(user: user);
+        SeedDbStudentsAndTeachers.Initialize(_userHelper, _dataContextInUse);
+        await SeedDbStudentsAndTeachers.AddingData(user);
         await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
-        SeedDbSchoolClasses.Initialize(dataContextInUse: _dataContextInUse);
-        await SeedDbSchoolClasses.AddingData(user: user);
+        SeedDbSchoolClasses.Initialize(_dataContextInUse);
+        await SeedDbSchoolClasses.AddingData(user);
         await _dataContextInUse.SaveChangesAsync();
 
 
@@ -191,10 +200,10 @@ public class SeedDb
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
         // SeedDbTeachersWithCourses.Initialize(_dataContextInUse);
-        await SeedDbTeachersWithCourses.AddingData(dataContextInUse: _dataContextInUse, user: user);
+        await SeedDbTeachersWithCourses.AddingData(_dataContextInUse, user);
         await _dataContextInUse.SaveChangesAsync();
 
-        Console.WriteLine(format: "Debug point.", arg0: Color.Red);
+        Console.WriteLine("Debug point.", Color.Red);
 
 
         // TODO: estou aqui a tentar adicionar os cursos as turmas e vice-versa
@@ -203,10 +212,10 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // SeedDbSchoolClassesWithCourses.Initialize(_dataContextInUse);
         await SeedDbSchoolClassesWithCourses.AddingData(
-            user: user, dataContextInUse: _dataContextInUse);
+            user, _dataContextInUse);
         await _dataContextInUse.SaveChangesAsync();
 
-        Console.WriteLine(format: "Debug point.", arg0: Color.Red);
+        Console.WriteLine("Debug point.", Color.Red);
 
 
         // TODO: estou aqui a tentar adicionar os cursos as turmas e vice-versa
@@ -214,10 +223,11 @@ public class SeedDb
         // adding students to school-classes into the database
         // ------------------------------------------------------------------ //
         // SeedDbStudentsWithSchoolClasses.Initialize(_dataContextInUse);
-        await SeedDbStudentsWithSchoolClasses.AddingData(dataContextInUse: _dataContextInUse);
+        await SeedDbStudentsWithSchoolClasses.AddingData(
+            user, _dataContextInUse);
         await _dataContextInUse.SaveChangesAsync();
 
-        Console.WriteLine(format: "Debug point.", arg0: Color.Red);
+        Console.WriteLine("Debug point.", Color.Red);
 
 
         // TODO: estou aqui a tentar adicionar o resto dos seedings que faltam
@@ -225,14 +235,14 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine(format: "Seeding the database finished.", arg0: Color.Green);
+        Console.WriteLine("Seeding the database finished.", Color.Green);
         // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //
         // verificar se existem os placeholders no sistema
         // ------------------------------------------------------------------ //
-        SeedDbPlaceHolders.Initialize(hostingEnvironment: _hostingEnvironment);
+        SeedDbPlaceHolders.Initialize(_hostingEnvironment);
         SeedDbPlaceHolders.AddPlaceHolders();
 
 
@@ -253,7 +263,7 @@ public class SeedDb
             while (_dataContextInUse.Database.GetEnlistedTransaction() != null)
                 // Aguardar um período de tempo
                 // Exemplo: 5 segundos
-                await Task.Delay(delay: TimeSpan.FromSeconds(value: 5));
+                await Task.Delay(TimeSpan.FromSeconds(5));
 
             // Todas as transações estão concluídas,
             // então chama Dispose para liberar o contexto
@@ -283,15 +293,15 @@ public class SeedDb
 
         var existingGenders =
             await _dataContextInUse.Genders
-                .Where(predicate: g => gendersToAdd.Contains(g.Name))
-                .Select(selector: g => g.Name)
+                .Where(g => gendersToAdd.Contains(g.Name))
+                .Select(g => g.Name)
                 .ToListAsync();
 
         var gendersToCreate =
-            gendersToAdd.Except(second: existingGenders).ToList();
+            gendersToAdd.Except(existingGenders).ToList();
 
         var newGender =
-            gendersToCreate.Select(selector: gender => new Gender
+            gendersToCreate.Select(gender => new Gender
             {
                 Name = gender,
                 IdGuid = Guid.NewGuid(),
@@ -300,7 +310,7 @@ public class SeedDb
                 CreatedBy = user
             }).ToList();
 
-        await _dataContextInUse.Genders.AddRangeAsync(entities: newGender);
+        await _dataContextInUse.Genders.AddRangeAsync(newGender);
         await _dataContextInUse.SaveChangesAsync();
     }
 
@@ -308,57 +318,57 @@ public class SeedDb
     private async Task SeedingDataSuperUsers()
     {
         await SeedDbUsers.AddUsers(
-            firstName: "Nuno", lastName: "Vilhena Santos",
-            email: "nunovilhenasantos@msn.com",
-            address: "Calle Luna", role: "SuperUser");
+            "Nuno", "Vilhena Santos",
+            "nunovilhenasantos@msn.com",
+            "Calle Luna", "SuperUser");
 
         await SeedDbUsers.AddUsers(
-            firstName: "Nuno", lastName: "Santos",
-            email: "nuno.santos.26288@formandos.cinel.pt",
-            address: "Calle Luna", role: "SuperUser");
+            "Nuno", "Santos",
+            "nuno.santos.26288@formandos.cinel.pt",
+            "Calle Luna", "SuperUser");
 
         await SeedDbUsers.AddUsers(
-            firstName: "Rafael", lastName: "Santos",
-            email: "rafael.santos@cinel.pt",
-            address: "Calle Luna", role: "SuperUser");
+            "Rafael", "Santos",
+            "rafael.santos@cinel.pt",
+            "Calle Luna", "SuperUser");
     }
 
 
     private async Task SeedingDataAdminUsers()
     {
         await SeedDbUsers.AddUsers(
-            firstName: "Jorge", lastName: "Pinto",
-            email: "jorge.pinto.28720@formandos.cinel.pt",
-            address: "Calle Luna", role: "Admin");
+            "Jorge", "Pinto",
+            "jorge.pinto.28720@formandos.cinel.pt",
+            "Calle Luna", "Admin");
 
         await SeedDbUsers.AddUsers(
-            firstName: "Ruben", lastName: "Correia",
-            email: "ruben.corrreia.28257@formandos.cinel.pt",
-            address: "Calle Luna", role: "Admin");
+            "Ruben", "Correia",
+            "ruben.corrreia.28257@formandos.cinel.pt",
+            "Calle Luna", "Admin");
 
         await SeedDbUsers.AddUsers(
-            firstName: "Tatiane", lastName: "Avellar",
-            email: "tatiane.avellar.24718@formandos.cinel.pt",
-            address: "Calle Luna", role: "Admin");
+            "Tatiane", "Avellar",
+            "tatiane.avellar.24718@formandos.cinel.pt",
+            "Calle Luna", "Admin");
     }
 
 
     private async Task SeedingDataFunctionaryUsers()
     {
         await SeedDbUsers.AddUsers(
-            firstName: "Licinio", lastName: "Rosario",
-            email: "licinio.do.rosario@formandos.cinel.pt",
-            address: "Calle Luna", role: "Functionary");
+            "Licinio", "Rosario",
+            "licinio.do.rosario@formandos.cinel.pt",
+            "Calle Luna", "Functionary");
 
         await SeedDbUsers.AddUsers(
-            firstName: "Joel", lastName: "Rangel",
-            email: "joel.rangel.22101@formandos.cinel.pt",
-            address: "Calle Luna", role: "Functionary");
+            "Joel", "Rangel",
+            "joel.rangel.22101@formandos.cinel.pt",
+            "Calle Luna", "Functionary");
 
         await SeedDbUsers.AddUsers(
-            firstName: "Diogo", lastName: "Alves",
-            email: "diogo.alves.28645@formandos.cinel.pt",
-            address: "Calle Luna", role: "Functionary");
+            "Diogo", "Alves",
+            "diogo.alves.28645@formandos.cinel.pt",
+            "Calle Luna", "Functionary");
     }
 
 
@@ -373,58 +383,58 @@ public class SeedDb
 
         var existingRoles =
             await _roleManager.Roles
-                .Where(predicate: role => rolesToCreate.Contains(role.Name))
+                .Where(role => rolesToCreate.Contains(role.Name))
                 .ToListAsync();
 
         var rolesToAdd = rolesToCreate
-            .Except(second: existingRoles.Select(selector: role => role.Name))
+            .Except(existingRoles.Select(role => role.Name))
             .ToList();
 
         foreach (var role in rolesToAdd)
         {
-            await CreateRoleAsync(role: role);
+            await CreateRoleAsync(role);
 
             // Associar a função com as reivindicações apropriadas
             switch (role)
             {
                 case "SuperUser":
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsAdmin");
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsFunctionary");
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsStudent");
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsTeacher");
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsParent");
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsUser");
+                    await AddClaimToRoleAsync(role, "IsAdmin");
+                    await AddClaimToRoleAsync(role, "IsFunctionary");
+                    await AddClaimToRoleAsync(role, "IsStudent");
+                    await AddClaimToRoleAsync(role, "IsTeacher");
+                    await AddClaimToRoleAsync(role, "IsParent");
+                    await AddClaimToRoleAsync(role, "IsUser");
 
                     // ... outras reivindicações conforme necessário
                     break;
 
                 case "Admin":
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsAdmin");
+                    await AddClaimToRoleAsync(role, "IsAdmin");
                     // ...
                     break;
 
                 case "Functionary":
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsFunctionary");
+                    await AddClaimToRoleAsync(role, "IsFunctionary");
                     // ...
                     break;
 
                 case "Student":
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsStudent");
+                    await AddClaimToRoleAsync(role, "IsStudent");
                     // ...
                     break;
 
                 case "Teacher":
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsTeacher");
+                    await AddClaimToRoleAsync(role, "IsTeacher");
                     // ...
                     break;
 
                 case "Parent":
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsParent");
+                    await AddClaimToRoleAsync(role, "IsParent");
                     // ...
                     break;
 
                 case "User":
-                    await AddClaimToRoleAsync(roleName: role, claimType: "IsUser");
+                    await AddClaimToRoleAsync(role, "IsUser");
                     // ...
                     break;
             }
@@ -436,18 +446,18 @@ public class SeedDb
 
     private async Task CreateRoleAsync(string role)
     {
-        await _roleManager.CreateAsync(role: new IdentityRole(roleName: role));
+        await _roleManager.CreateAsync(new IdentityRole(role));
     }
 
 
     private async Task AddClaimToRoleAsync(string roleName, string claimType)
     {
-        var role = await _roleManager.FindByNameAsync(roleName: roleName);
+        var role = await _roleManager.FindByNameAsync(roleName);
 
         if (role != null)
         {
-            var claim = new Claim(type: claimType, value: "true");
-            await _roleManager.AddClaimAsync(role: role, claim: claim);
+            var claim = new Claim(claimType, "true");
+            await _roleManager.AddClaimAsync(role, claim);
         }
     }
 
@@ -534,11 +544,11 @@ public class SeedDb
             var cityNames = countryEntry.Value;
 
             if (await _dataContextInUse.Countries
-                    .AnyAsync(predicate: c => c.Name == countryName))
+                    .AnyAsync(c => c.Name == countryName))
                 continue;
 
-            var cities = CreateCities(cityNames: cityNames, createdBy: createdBy);
-            var nationalityName = GetNationalityName(countryName: countryName);
+            var cities = CreateCities(cityNames, createdBy);
+            var nationalityName = GetNationalityName(countryName);
             var nationality = new Nationality
             {
                 Name = nationalityName,
@@ -555,7 +565,7 @@ public class SeedDb
                 CreatedBy = createdBy
             };
 
-            await _dataContextInUse.Countries.AddAsync(entity: country);
+            await _dataContextInUse.Countries.AddAsync(country);
         }
     }
 
@@ -563,7 +573,7 @@ public class SeedDb
     private List<City> CreateCities(List<string> cityNames, User createdBy)
     {
         return cityNames.Select(
-            selector: cityName => new City
+            cityName => new City
             {
                 Name = cityName,
                 WasDeleted = false,
