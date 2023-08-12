@@ -13,7 +13,7 @@ using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Seeders;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
@@ -331,7 +331,7 @@ builder.Services.AddIdentity<User, IdentityRole>(
             cfg.Password.RequireNonAlphanumeric = false;
 
             // SignIn settings.
-            cfg.SignIn.RequireConfirmedEmail = true;
+            cfg.SignIn.RequireConfirmedEmail = false;
             cfg.SignIn.RequireConfirmedAccount = false;
             cfg.SignIn.RequireConfirmedPhoneNumber = false;
 

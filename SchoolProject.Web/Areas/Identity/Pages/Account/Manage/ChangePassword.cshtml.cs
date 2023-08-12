@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -22,9 +22,9 @@ public class ChangePasswordModel : PageModel
         SignInManager<User> signInManager,
         ILogger<ChangePasswordModel> logger)
     {
+        _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
-        _logger = logger;
     }
 
     /// <summary>
@@ -46,9 +46,11 @@ public class ChangePasswordModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         var hasPassword = await _userManager.HasPasswordAsync(user);
+
         if (!hasPassword) return RedirectToPage("./SetPassword");
 
         return Page();
@@ -59,13 +61,16 @@ public class ChangePasswordModel : PageModel
         if (!ModelState.IsValid) return Page();
 
         var user = await _userManager.GetUserAsync(User);
+
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         var changePasswordResult =
             await _userManager.ChangePasswordAsync(user, Input.OldPassword,
                 Input.NewPassword);
+
         if (!changePasswordResult.Succeeded)
         {
             foreach (var error in changePasswordResult.Errors)
@@ -74,7 +79,9 @@ public class ChangePasswordModel : PageModel
         }
 
         await _signInManager.RefreshSignInAsync(user);
-        _logger.LogInformation("User changed their password successfully.");
+        _logger.LogInformation(
+            "User changed their password successfully");
+
         StatusMessage = "Your password has been changed.";
 
         return RedirectToPage();
@@ -96,8 +103,9 @@ public class ChangePasswordModel : PageModel
         public string OldPassword { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     This API supports the ASP.NET Core Identity default UI
+        /// infrastructure and is not intended to be used directly from your code. 
+        ///     This API may change or be removed in future releases.
         /// </summary>
         [Required]
         [StringLength(100,
@@ -109,8 +117,9 @@ public class ChangePasswordModel : PageModel
         public string NewPassword { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     This API supports the ASP.NET Core Identity default UI
+        /// infrastructure and is not intended to be used directly from your code. 
+        ///     This API may change or be removed in future releases.
         /// </summary>
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]

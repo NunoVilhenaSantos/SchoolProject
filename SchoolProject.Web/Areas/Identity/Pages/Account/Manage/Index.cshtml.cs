@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -51,10 +51,7 @@ public class IndexModel : PageModel
 
         Username = userName;
 
-        Input = new InputModel
-        {
-            PhoneNumber = phoneNumber
-        };
+        Input = new InputModel {PhoneNumber = phoneNumber};
     }
 
     public async Task<IActionResult> OnGetAsync()
@@ -62,7 +59,8 @@ public class IndexModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         await LoadAsync(user);
         return Page();
@@ -73,7 +71,8 @@ public class IndexModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
         {

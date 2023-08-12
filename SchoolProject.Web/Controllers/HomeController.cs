@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
@@ -59,8 +59,9 @@ public class HomeController : Controller
         // }
 
         ViewData["stringLocalizer"] = _stringLocalizer["About Title"];
-        ViewData["htmlLocalizer"] = _htmlLocalizer["<b>Hello</b><i> {0}</i>",
-            _signInManager.IsSignedIn(User)];
+        ViewData["htmlLocalizer"] =
+            _htmlLocalizer["<b>Hello</b><i> {0}</i>",
+                _signInManager.IsSignedIn(User)];
 
         ViewData["WelcomeMessage"] = _stringLocalizer["WelcomeMessage"];
         return View();

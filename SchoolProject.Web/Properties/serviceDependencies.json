@@ -1,24 +1,12 @@
 {
   "dependencies": {
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": null
-    },
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:SchoolProject-Somee"
-    },
-    "sqlite1": {
-      "type": "sqlite",
-      "connectionId": "ConnectionStrings:SchoolProject-SQLite"
-    },
     "appInsights1": {
       "type": "appInsights",
       "connectionId": null
     },
-    "sqlite2": {
-      "type": "sqlite",
-      "connectionId": "ConnectionStrings:Testes-SQLite"
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": null
     }
   }
 }

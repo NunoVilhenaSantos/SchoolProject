@@ -8,10 +8,10 @@ namespace SchoolProject.Web.Data.Repositories.OtherEntities;
 /// <inheritdoc />
 public class GenderRepository : GenericRepository<Gender>, IGenderRepository
 {
-    private readonly DataContextMySql _dataContext;
+    private readonly DataContextSqLite _dataContextSqLite;
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
-    private readonly DataContextSqLite _dataContextSqLite;
+    private readonly DataContextMySql _dataContext;
 
     /// <inheritdoc />
     protected GenderRepository(

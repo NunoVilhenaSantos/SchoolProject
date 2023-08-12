@@ -1,4 +1,11 @@
 ﻿@using System.Diagnostics
+@using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users;
+@using SchoolProject.Web.Data.EntitiesOthers
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -7,17 +14,13 @@
 }
 
 
-
 @* Verifica se o User está autenticado e se é o Admin!! *@
 @* cria um dropdown com as opções de Users e Roles *@
-@* @{ *@
-@*     Debug.Assert(User.Identity != null, "User.Identity != null"); *@
-@* } *@
-@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+@if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("SuperUser")))
 {
     <div class="dropdown">
         @* <span class="material-symbols-outlined">settings</span> *@
-        <a class="nav-link dropdown-toggle  @(currentAction is "Users" or "Roles" && currentController == "Account" ? "active" : "")"
+        <a class="nav-link dropdown-toggle @(currentAction is "Users" or "Roles" && currentController == "Account" ? "active" : "")"
            role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="material-symbols-outlined">admin_panel_settings</i>
             Admin
@@ -39,6 +42,16 @@
                    asp-area="" asp-controller="" asp-action="">
                     <i class="bi bi-people-fill"></i>
                     <i class="material-symbols-outlined">group</i>Roles
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li class="nav-item">
+                <a id="manage" class="nav-link "
+                   asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    <span class="material-symbols-outlined">settings_account_box</span>
+                    Hello @UserManager.GetUserName(User)!
                 </a>
             </li>
         </ul>

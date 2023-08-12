@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -18,13 +18,14 @@ public class ExternalLoginsModel : PageModel
     private readonly IUserStore<User> _userStore;
 
     public ExternalLoginsModel(
+        IUserStore<User> userStore,
         UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        IUserStore<User> userStore)
+        SignInManager<User> signInManager
+    )
     {
+        _userStore = userStore;
         _userManager = userManager;
         _signInManager = signInManager;
-        _userStore = userStore;
     }
 
     /// <summary>

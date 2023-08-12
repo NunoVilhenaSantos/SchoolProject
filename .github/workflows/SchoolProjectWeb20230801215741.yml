@@ -1,14 +1,17 @@
 name: Build and deploy .NET Core application to Web App SchoolProjectWeb20230801215741
+
 on:
   push:
     branches:
     - master
+
 env:
   AZURE_WEBAPP_NAME: SchoolProjectWeb20230801215741
   AZURE_WEBAPP_PACKAGE_PATH: SchoolProject.Web\published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: SchoolProject.Web
+
 jobs:
   build:
     runs-on: windows-latest
@@ -31,6 +34,7 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
   deploy:
     runs-on: windows-latest
     needs: build

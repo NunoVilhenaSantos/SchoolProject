@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Users;
 
 namespace SchoolProject.Web.Helpers.Users;
@@ -43,8 +43,8 @@ public interface IUserHelper
     Task<SignInResult> ValidatePasswordAsync(User user, string password);
 
 
-    // Task<string> GenerateEmailConfirmationTokenAsync(User user);
+    Task<string> GenerateEmailConfirmationTokenAsync(User user);
 
 
-    // Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+    Task<IdentityResult> ConfirmEmailAsync(User user, string token);
 }

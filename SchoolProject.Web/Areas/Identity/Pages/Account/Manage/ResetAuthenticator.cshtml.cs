@@ -6,7 +6,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -21,9 +21,9 @@ public class ResetAuthenticatorModel : PageModel
         SignInManager<User> signInManager,
         ILogger<ResetAuthenticatorModel> logger)
     {
+        _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
-        _logger = logger;
     }
 
     /// <summary>

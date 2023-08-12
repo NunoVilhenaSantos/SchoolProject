@@ -1,6 +1,6 @@
 ﻿using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 

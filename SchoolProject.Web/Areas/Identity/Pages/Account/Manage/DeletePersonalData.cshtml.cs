@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -22,9 +22,9 @@ public class DeletePersonalDataModel : PageModel
         SignInManager<User> signInManager,
         ILogger<DeletePersonalDataModel> logger)
     {
+        _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
-        _logger = logger;
     }
 
     /// <summary>
@@ -45,7 +45,8 @@ public class DeletePersonalDataModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         RequirePassword = await _userManager.HasPasswordAsync(user);
         return Page();
@@ -56,13 +57,15 @@ public class DeletePersonalDataModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         RequirePassword = await _userManager.HasPasswordAsync(user);
         if (RequirePassword)
             if (!await _userManager.CheckPasswordAsync(user, Input.Password))
             {
-                ModelState.AddModelError(string.Empty, "Incorrect password.");
+                ModelState.AddModelError(
+                    string.Empty, "Incorrect password.");
                 return Page();
             }
 
@@ -74,21 +77,23 @@ public class DeletePersonalDataModel : PageModel
 
         await _signInManager.SignOutAsync();
 
-        _logger.LogInformation("User with ID '{UserId}' deleted themselves.",
-            userId);
+        _logger.LogInformation(
+            "User with ID '{UserId}' deleted themselves.", userId);
 
         return Redirect("~/");
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI
+    /// infrastructure and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     This API supports the ASP.NET Core Identity default UI
+        /// infrastructure and is not intended to be used directly from your code.
+        ///     This API may change or be removed in future releases.
         /// </summary>
         [Required]
         [DataType(DataType.Password)]

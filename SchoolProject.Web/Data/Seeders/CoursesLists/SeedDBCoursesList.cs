@@ -1,6 +1,6 @@
 ﻿using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Seeders.CoursesLists.CETs;
 using SchoolProject.Web.Data.Seeders.CoursesLists.EFAs;
 using SchoolProject.Web.Helpers;

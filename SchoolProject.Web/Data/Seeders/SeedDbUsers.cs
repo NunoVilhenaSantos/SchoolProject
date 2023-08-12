@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -8,11 +10,12 @@ namespace SchoolProject.Web.Data.Seeders;
 public class SeedDbUsers
 {
     // Add a private field to hold the IUserHelper instance
-    private static IUserHelper? _userHelper;
+    private static IUserHelper _userHelper;
     private static ILogger<SeedDbUsers> _logger;
+    private static DataContextMySql _dataContextInUse;
 
     public SeedDbUsers(
-        IUserHelper? userHelper, ILogger<SeedDbUsers> logger
+        IUserHelper userHelper, ILogger<SeedDbUsers> logger
     )
     {
         _logger = logger;
@@ -22,11 +25,12 @@ public class SeedDbUsers
 
     // Add a constructor to receive IUserHelper through dependency injection
     public static void Initialize(
-        IUserHelper? userHelper, ILogger<SeedDbUsers> logger
-    )
+        IUserHelper userHelper,
+        ILogger<SeedDbUsers> logger, DataContextMySql dataContextInUse)
     {
         _logger = logger;
         _userHelper = userHelper;
+        _dataContextInUse = dataContextInUse;
     }
 
 
@@ -51,6 +55,13 @@ public class SeedDbUsers
         var fullAddress =
             address + ", " + random.Next(1, 9_999);
 
+        var city =
+            await _dataContextInUse.Cities
+                .FirstOrDefaultAsync(c => c.Name == "Havana");
+        var country =
+            await _dataContextInUse.Countries
+                .FirstOrDefaultAsync(c => c.Name == "Cuba");
+
         Console.WriteLine(
             $"Seeding the user {firstName} {lastName} with the email {email}");
 
@@ -60,18 +71,20 @@ public class SeedDbUsers
             email,
             cellPhone, role,
             document,
-            fullAddress, password
+            fullAddress,
+            city, country, password
         );
     }
 
 
-    public static async Task<User?> VerifyUserAsync(
+    internal static async Task<User> VerifyUserAsync(
         string firstName, string lastName,
         string userName,
         string email,
         string phoneNumber, string role,
         string document,
         string address,
+        City city, Country country,
         string password = "Passw0rd")
     {
         // Input validation
@@ -110,7 +123,12 @@ public class SeedDbUsers
                 UserName = userName,
                 Email = email,
                 PhoneNumber = phoneNumber,
-                WasDeleted = false
+                WasDeleted = false,
+                // City = city,
+                // CityId = city.Id,
+                // Country = country,
+                // CountryId = country.Id,
+                // NationalityId = country.Nationality.Id,
             };
 
             // Set role-specific properties inside the switch

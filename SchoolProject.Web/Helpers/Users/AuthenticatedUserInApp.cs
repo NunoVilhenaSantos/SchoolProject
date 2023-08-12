@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Helpers.Users;
 

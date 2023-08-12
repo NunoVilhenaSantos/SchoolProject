@@ -30,7 +30,7 @@ public class ChangeUserViewModel
     [MaxLength(20,
         ErrorMessage =
             "The field {0} can only contain {1} characters in lenght.")]
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
 
     [DisplayName("City")]
@@ -47,4 +47,9 @@ public class ChangeUserViewModel
 
 
     public IEnumerable<SelectListItem> Countries { get; set; }
+
+
+    [DisplayName("Nationality")]
+    public int NationalityId => Convert.ToInt32(
+        Countries.FirstOrDefault(c => c.Selected)?.Value);
 }

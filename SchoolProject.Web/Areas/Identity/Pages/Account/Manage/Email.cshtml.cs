@@ -11,24 +11,24 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
 public class EmailModel : PageModel
 {
     private readonly IEmailSender _emailSender;
-    private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
 
     public EmailModel(
-        UserManager<User> userManager,
         SignInManager<User> signInManager,
+        UserManager<User> userManager,
         IEmailSender emailSender)
     {
+        _emailSender = emailSender;
         _userManager = userManager;
         _signInManager = signInManager;
-        _emailSender = emailSender;
     }
 
     /// <summary>
@@ -62,10 +62,7 @@ public class EmailModel : PageModel
         var email = await _userManager.GetEmailAsync(user);
         Email = email;
 
-        Input = new InputModel
-        {
-            NewEmail = email
-        };
+        Input = new InputModel {NewEmail = email};
 
         IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
     }
@@ -75,7 +72,8 @@ public class EmailModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         await LoadAsync(user);
         return Page();
@@ -86,7 +84,8 @@ public class EmailModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
         {
@@ -98,22 +97,30 @@ public class EmailModel : PageModel
         if (Input.NewEmail != email)
         {
             var userId = await _userManager.GetUserIdAsync(user);
-            var code =
-                await _userManager.GenerateChangeEmailTokenAsync(user,
-                    Input.NewEmail);
+
+            var code = await _userManager
+                .GenerateChangeEmailTokenAsync(user, Input.NewEmail);
+
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmailChange",
                 null,
-                new {area = "Identity", userId, email = Input.NewEmail, code},
+                new
+                {
+                    area = "Identity", userId, email = Input.NewEmail, code
+                },
                 Request.Scheme);
+
             await _emailSender.SendEmailAsync(
                 Input.NewEmail,
                 "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                $"Please confirm your account by " +
+                $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>" +
+                $"clicking here</a>.");
 
-            StatusMessage =
-                "Confirmation link to change email sent. Please check your email.";
+            StatusMessage = "Confirmation link to change email sent. " +
+                            "Please check your email.";
             return RedirectToPage();
         }
 
@@ -125,8 +132,8 @@ public class EmailModel : PageModel
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
-            return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return NotFound($"Unable to load user with ID " +
+                            $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
         {
@@ -137,18 +144,24 @@ public class EmailModel : PageModel
         var userId = await _userManager.GetUserIdAsync(user);
         var email = await _userManager.GetEmailAsync(user);
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
         var callbackUrl = Url.Page(
             "/Account/ConfirmEmail",
             null,
             new {area = "Identity", userId, code},
             Request.Scheme);
+
         await _emailSender.SendEmailAsync(
             email,
             "Confirm your email",
-            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            $"Please confirm your account by " +
+            $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>" +
+            $"clicking here</a>.");
 
-        StatusMessage = "Verification email sent. Please check your email.";
+        StatusMessage = "Verification email sent. " +
+                        "Please check your email.";
         return RedirectToPage();
     }
 

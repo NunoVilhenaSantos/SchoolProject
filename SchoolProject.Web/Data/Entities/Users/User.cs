@@ -2,8 +2,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Identity;
+using SchoolProject.Web.Data.Entities.Countries;
 
-namespace SchoolProject.Web.Data.EntitiesOthers;
+namespace SchoolProject.Web.Data.Entities.Users;
 
 public class User : IdentityUser, INotifyPropertyChanged
 {
@@ -11,14 +12,14 @@ public class User : IdentityUser, INotifyPropertyChanged
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     // [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public required string FirstName { get; init; }
+    public required string FirstName { get; set; }
 
 
     [DisplayName("Last Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     // [Required(ErrorMessage = "The field {0} is mandatory.")]
-    public required string LastName { get; init; }
+    public required string LastName { get; set; }
 
 
     [MaxLength(100,
@@ -36,7 +37,8 @@ public class User : IdentityUser, INotifyPropertyChanged
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
         : "https://storage.googleapis.com/storage-nuno/users/" +
           ProfilePhotoId;
-    //     https://storage.googleapis.com/storage-nuno/products/130cd374-c068-47ca-b542-3af5ddb9f478
+    //    "https://storage.googleapis.com/storage-nuno/products/"+
+    //    "130cd374-c068-47ca-b542-3af5ddb9f478";
 
 
     // [Display(Name = "Thumbnail")]
@@ -50,6 +52,8 @@ public class User : IdentityUser, INotifyPropertyChanged
 
     [DisplayName("Was Deleted?")] public required bool WasDeleted { get; set; }
 
+
+    // ---------------------------------------------------------------------- //
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

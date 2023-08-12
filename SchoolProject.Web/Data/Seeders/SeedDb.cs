@@ -8,7 +8,7 @@ using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -43,7 +43,6 @@ public class SeedDb
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-
 
 
     public SeedDb(
@@ -84,7 +83,7 @@ public class SeedDb
 
         // _msSqlLocal = msSqlLocal;
         // _mySqlLocal = mySqlLocal;
-        
+
         // _msSqlOnline = msSqlOnline;
         // _mySqlOnline = mySqlOnline;
     }
@@ -107,7 +106,7 @@ public class SeedDb
         // await _mySqlOnline.Database.MigrateAsync();
 
         // await _dataContextSqLite.Database.MigrateAsync();
-        
+
         await _dataContextInUse.Database.MigrateAsync();
 
 
@@ -117,7 +116,8 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // initialize SeedDbUsers with the user helper before been used
         // ------------------------------------------------------------------ //
-        SeedDbUsers.Initialize(_userHelper, _loggerSeedDbUsers);
+        SeedDbUsers.Initialize(
+            _userHelper, _loggerSeedDbUsers, _dataContextInUse);
 
         Console.WriteLine("Seeding the database.", Color.Green);
         Console.WriteLine(

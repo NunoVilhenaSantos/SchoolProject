@@ -10,7 +10,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -20,17 +20,18 @@ public class EnableAuthenticatorModel : PageModel
         "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
     private readonly ILogger<EnableAuthenticatorModel> _logger;
-    private readonly UrlEncoder _urlEncoder;
     private readonly UserManager<User> _userManager;
+    private readonly UrlEncoder _urlEncoder;
 
     public EnableAuthenticatorModel(
+        UrlEncoder urlEncoder,
         UserManager<User> userManager,
-        ILogger<EnableAuthenticatorModel> logger,
-        UrlEncoder urlEncoder)
+        ILogger<EnableAuthenticatorModel> logger
+    )
     {
-        _userManager = userManager;
         _logger = logger;
         _urlEncoder = urlEncoder;
+        _userManager = userManager;
     }
 
     /// <summary>
@@ -92,7 +93,8 @@ public class EnableAuthenticatorModel : PageModel
         }
 
         // Strip spaces and hyphens
-        var verificationCode = Input.Code.Replace(" ", string.Empty)
+        var verificationCode = Input.Code
+            .Replace(" ", string.Empty)
             .Replace("-", string.Empty);
 
         var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
@@ -110,27 +112,29 @@ public class EnableAuthenticatorModel : PageModel
         await _userManager.SetTwoFactorEnabledAsync(user, true);
         var userId = await _userManager.GetUserIdAsync(user);
         _logger.LogInformation(
-            "User with ID '{UserId}' has enabled 2FA with an authenticator app.",
-            userId);
+            "User with ID '{UserId}' " +
+            "has enabled 2FA with an authenticator app.", userId);
 
         StatusMessage = "Your authenticator app has been verified.";
 
-        if (await _userManager.CountRecoveryCodesAsync(user) == 0)
-        {
-            var recoveryCodes =
-                await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user,
-                    10);
-            RecoveryCodes = recoveryCodes.ToArray();
-            return RedirectToPage("./ShowRecoveryCodes");
-        }
+        if (await _userManager.CountRecoveryCodesAsync(user) != 0)
+            return RedirectToPage("./TwoFactorAuthentication");
+        
+        var recoveryCodes =
+            await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user,
+                10);
+            
+        RecoveryCodes = recoveryCodes.ToArray();
+        return RedirectToPage("./ShowRecoveryCodes");
 
-        return RedirectToPage("./TwoFactorAuthentication");
     }
 
     private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
     {
         // Load the authenticator key & QR code URI to display on the form
-        var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+        var unformattedKey = 
+            await _userManager.GetAuthenticatorKeyAsync(user);
+        
         if (string.IsNullOrEmpty(unformattedKey))
         {
             await _userManager.ResetAuthenticatorKeyAsync(user);

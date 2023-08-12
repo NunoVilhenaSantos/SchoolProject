@@ -22,9 +22,9 @@ namespace SchoolProject.Web.Controllers
         // GET: Cities
         public async Task<IActionResult> Index()
         {
-              return _context.Cities != null ? 
-                          View(await _context.Cities.ToListAsync()) :
-                          Problem("Entity set 'DataContextMySql.Cities'  is null.");
+            return _context.Cities != null
+                ? View(await _context.Cities.ToListAsync())
+                : Problem("Entity set 'DataContextMySql.Cities'  is null.");
         }
 
         // GET: Cities/Details/5
@@ -52,19 +52,24 @@ namespace SchoolProject.Web.Controllers
         }
 
         // POST: Cities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from over-posting attacks,
+        // enable the specific properties you want to bind to.
+        //
+        // For more details,
+        // see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] City city)
+        public async Task<IActionResult> Create(
+            [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+            City city)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(city);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(city);
+            if (!ModelState.IsValid) return View(city);
+
+            _context.Add(city);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Cities/Edit/5
@@ -80,15 +85,18 @@ namespace SchoolProject.Web.Controllers
             {
                 return NotFound();
             }
+
             return View(city);
         }
 
         // POST: Cities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // To protect from over-posting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")] City city)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
+            City city)
         {
             if (id != city.Id)
             {
@@ -113,8 +121,10 @@ namespace SchoolProject.Web.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(city);
         }
 
@@ -143,21 +153,23 @@ namespace SchoolProject.Web.Controllers
         {
             if (_context.Cities == null)
             {
-                return Problem("Entity set 'DataContextMySql.Cities'  is null.");
+                return Problem(
+                    "Entity set 'DataContextMySql.Cities'  is null.");
             }
+
             var city = await _context.Cities.FindAsync(id);
             if (city != null)
             {
                 _context.Cities.Remove(city);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CityExists(int id)
         {
-          return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

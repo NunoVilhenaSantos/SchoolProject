@@ -1,12 +1,16 @@
 ﻿@page
+
 @model ShowRecoveryCodesModel
+
 @{
     ViewData["Title"] = "Recovery codes";
     ViewData["ActivePage"] = "TwoFactorAuthentication";
 }
 
 <partial name="_StatusMessage" for="StatusMessage"/>
+
 <h3>@ViewData["Title"]</h3>
+
 <div class="alert alert-warning" role="alert">
     <p>
         <strong>Put these codes in a safe place.</strong>
@@ -15,6 +19,7 @@
         If you lose your device and don't have the recovery codes you will lose access to your account.
     </p>
 </div>
+
 <div class="row">
     <div class="col-md-12">
         @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)

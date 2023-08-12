@@ -50,53 +50,8 @@
 <p>@Localizer["AboutUs"]</p>
 
 
-<br/>
-<p>@allRuntimes</p>
-@Html.Raw(allRuntimesHtml)
-
-<br/>
-<p>@ProcessList.ListOfProcesses</p>
-
-<br/>
-<p>@ProcessList.ListOfProcesses.Count</p>
-<br/>
-<ul>
-    @foreach (var process in ProcessList.ListOfProcesses)
-    {
-        <li>@process</li>
-    }
-</ul>
-
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-
-
-<br/>
-<br/>
-@* @foreach (var schoolClass in SchoolClasses) *@
-@* { *@
-@*     <h3>@schoolClass.Name</h3> *@
-@*     <ul> *@
-@*         @foreach (var student in schoolClass.Students) *@
-@*         { *@
-@*             <li>@student.Name</li> *@
-@*         } *@
-@*     </ul> *@
-@* } *@
-
-
-<br/>
-<br/>
-@* @foreach (var student in Students) *@
-@* { *@
-@*     <h3>@student.Name</h3> *@
-@*     <ul> *@
-@*         @foreach (var schoolClass in student.SchoolClasses) *@
-@*         { *@
-@*             <li>@schoolClass.Name</li> *@
-@*         } *@
-@*     </ul> *@
-@* } *@

@@ -4,7 +4,7 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
@@ -303,7 +303,12 @@ public class SeedDbStudentsAndTeachers
             UserName = email,
             Email = email,
             PhoneNumber = cellPhone,
-            WasDeleted = false
+            WasDeleted = false,
+            // City = city,
+            // CityId = city.Id,
+            // Country = country,
+            // CountryId = country.Id,
+            // NationalityId = country.Nationality.Id,
         };
 
         // ------------------------------------------------------------------ //

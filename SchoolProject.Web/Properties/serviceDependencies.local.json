@@ -1,34 +1,16 @@
 {
   "dependencies": {
-    "secrets1": {
-      "secretStore": null,
-      "resourceId": null,
-      "type": "secrets.user",
-      "connectionId": null
-    },
-    "mssql1": {
-      "serviceConnectorResourceId": "",
-      "secretStore": "LocalSecretsFile",
-      "resourceId": null,
-      "type": "mssql.onprem",
-      "connectionId": "ConnectionStrings:SchoolProject-Somee"
-    },
-    "sqlite1": {
-      "secretStore": "LocalSecretsFile",
-      "resourceId": null,
-      "type": "sqlite.local",
-      "connectionId": "ConnectionStrings:SchoolProject-SQLite"
-    },
     "appInsights1": {
       "secretStore": null,
       "resourceId": null,
       "type": "appInsights.sdk",
       "connectionId": null
     },
-    "sqlite2": {
-      "secretStore": "LocalSecretsFile",
-      "type": "sqlite.local",
-      "connectionId": "ConnectionStrings:Testes-SQLite"
+    "secrets1": {
+      "secretStore": null,
+      "resourceId": null,
+      "type": "secrets.user",
+      "connectionId": null
     }
   }
 }

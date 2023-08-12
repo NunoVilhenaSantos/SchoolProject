@@ -6,7 +6,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -17,7 +17,8 @@ public class GenerateRecoveryCodesModel : PageModel
 
     public GenerateRecoveryCodesModel(
         UserManager<User> userManager,
-        ILogger<GenerateRecoveryCodesModel> logger)
+        ILogger<GenerateRecoveryCodesModel> logger
+        )
     {
         _userManager = userManager;
         _logger = logger;

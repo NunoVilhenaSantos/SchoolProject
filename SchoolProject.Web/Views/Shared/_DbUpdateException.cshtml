@@ -1,0 +1,52 @@
+﻿<!-- --------------------------------------------------------------------------------------------------------------- -->
+<!-- DbUpdateExceptionStaticBackdrop -->
+<!-- Modal -->
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+<div class="modal fade" id="DbUpdateExceptionStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="DbUpdateExceptionStaticBackdropLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                @if (TempData["DbUpdateException"] != null)
+                {
+                    <h1 class="modal-title fs-5" id="DbUpdateExceptionStaticBackdropLabel">@TempData["ErrorTitle"] </h1>
+                }
+                else
+                {
+                    <h1 class="modal-title fs-5" id="DbUpdateExceptionStaticBackdropLabel">Modal title</h1>
+                }
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                @if (TempData["DbUpdateException"] != null)
+                {
+                    <p>
+                        <strong>Request ID:</strong> <code>@Model.Id</code> |
+                        <strong>Product Name:</strong> <code>@Model.Name</code>
+                    </p>
+                    <p class="text-warning">@Html.Raw(TempData["ErrorMessage"])</p>
+                    @* <br/> *@
+                    <p class="text-warning">@Html.Raw(TempData["DbUpdateException"])</p>
+                    <p class="text-warning">@Html.Raw(TempData["DbUpdateInnerException"])</p>
+                    <p class="text-warning">@Html.Raw(TempData["DbUpdateInnerExceptionMessage"])</p>
+                }
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Understood</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->

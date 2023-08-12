@@ -38,6 +38,15 @@ public class GenericRepository<T> : IGenericRepository<T>
     {
         // return _dataContext.Set<T>().AsNoTracking();
         return _dataContext.Set<T>().AsQueryable().AsNoTracking();
+        
+        // _dataContext.Set<T>().Select<>(e => new ObjectViewModel { Property = e.Property } );
+        
+        // usa
+        // _context.Set<T>().Select(e => new ObjectViewModel { Property = e.Property } );
+        // em vez de
+        // _context.Set<T>().Find(); 
+        // ou
+        // _context.Set<T>().AsNoTracking().First();
     }
 
 

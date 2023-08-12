@@ -40,8 +40,8 @@ public interface ICountryRepository : IGenericRepository<Country>
     Task<IIncludableQueryable<Country, City>>
         GetCityWithCountryAsync(City city);
 
-    Task<IIncludableQueryable<Country, City>> GetCityWithCountryAsync(
-        Country country);
+    Task<IIncludableQueryable<Country, City>>
+        GetCityWithCountryAsync(Country country);
 
 
     Task AddCityAsync(CityViewModel model);
