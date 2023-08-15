@@ -35,6 +35,8 @@
         <PackageReference Include="Azure.Storage.Queues" Version="12.15.0"/>
         <PackageReference Include="CsvHelper" Version="30.0.1"/>
         <PackageReference Include="DnsClient" Version="1.7.0"/>
+        <PackageReference Include="EfCore.SchemaCompare" Version="7.0.0"/>
+        <PackageReference Include="ErikEJ.EntityFrameworkCore.DgmlBuilder" Version="6.0.0"/>
         <PackageReference Include="Google.Apis.Storage.v1" Version="1.61.0.3112"/>
         <PackageReference Include="Google.Cloud.Storage.V1" Version="4.6.0"/>
         <PackageReference Include="MailKit" Version="4.1.0"/>
@@ -88,6 +90,7 @@
         <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="3.1.0"/>
         <PackageReference Include="Serilog.Sinks.SQLite" Version="6.0.0"/>
         <PackageReference Include="Serilog.Sinks.Trace" Version="3.0.0"/>
+        <PackageReference Include="System.Globalization" Version="4.3.0"/>
         <PackageReference Include="System.Linq.Async" Version="6.0.1"/>
         <PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1"/>
     </ItemGroup>

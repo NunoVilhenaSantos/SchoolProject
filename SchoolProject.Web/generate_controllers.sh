@@ -1,12 +1,17 @@
 #!/bin/bash
 
-entitiesDirectory='C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\Data\Entities'
-rootDirectory='C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\'
+# Obtém o diretório do script atual
+scriptDirectory="$(cd "$(dirname "$0")" && pwd)"
+
+entitiesDirectory="$scriptDirectory/Data/Entities"
+rootDirectory="$scriptDirectory"
+
+cd "$rootDirectory"
+
 
 # dataContext="DataContextMsSql"
 dataContext="DataContextMySql"
 
-cd "$rootDirectory"
 
 PluralizeControllerName() {
   local modelName="$1"
@@ -43,3 +48,4 @@ GenerateControllersRecursively() {
 
 # Chame a função para gerar scaffolding de controladores para todas as classes em subpastas
 GenerateControllersRecursively "$entitiesDirectory"
+

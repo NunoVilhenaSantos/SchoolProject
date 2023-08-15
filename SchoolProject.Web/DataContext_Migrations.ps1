@@ -1,7 +1,13 @@
-
 Clear-Host
 
-Set-Location "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\"
+# Obtém o diretório do script atual
+$scriptDir = $PSScriptRoot
+
+# Define o diretório para o diretório do script
+Write-Host "Script Directory: $scriptDir"
+Set-Location $scriptDir
+
+# Set-Location "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\"
 
 Remove-Item .\Migrations\ -Recurse -Force
 

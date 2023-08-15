@@ -1,35 +1,51 @@
-$entitiesDirectory = "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\Data\Entities"
-$rootDirectory = "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\"
+Clear-Host
+
+# Obtém o diretório do script atual
+$scriptDir = $PSScriptRoot
+
+# Define o diretório para o diretório do script
+Write-Host "Script Directory: $scriptDir"
+Set-Location $scriptDir
+
+
+$entitiesDirectory = $scriptDir + "\Data\Entities"
+# $rootDirectory = "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\"
+# Set-Location $rootDirectory
 
 # $dataContext = "DataContextMsSql"
 $dataContext = "DataContextMySql"
 
-Set-Location $rootDirectory
 
-function PluralizeControllerName {
+function PluralizeControllerName
+{
     param (
         [string]$modelName
     )
 
-    if ($modelName.EndsWith("y")) {
-        $newModelName = $modelName.substring(0, $modelName.length - 1)+"iesController"
-		return "$newModelName"
+    if ( $modelName.EndsWith("y"))
+    {
+        $newModelName = $modelName.substring(0, $modelName.length - 1) + "iesController"
+        return "$newModelName"
     }
-    elseif ($modelName.EndsWith("ss")) {
+    elseif ($modelName.EndsWith("ss"))
+    {
         return "${modelName}esController"
     }
-    else {
+    else
+    {
         return "${modelName}sController"
     }
 }
 
-function GenerateControllersRecursively {
+function GenerateControllersRecursively
+{
     param (
         [string]$directory
     )
 
     # Loop por todos os arquivos .cs no diretório atual
-    foreach ($model in Get-ChildItem -Path $directory -Filter *.cs) {
+    foreach ($model in Get-ChildItem -Path $directory -Filter *.cs)
+    {
         $modelName = $model.BaseName
         $controllerName = PluralizeControllerName $modelName
 
@@ -38,7 +54,8 @@ function GenerateControllersRecursively {
     }
 
     # Loop recursivamente em todas as subpastas
-    foreach ($dir in Get-ChildItem -Path $directory -Directory) {
+    foreach ($dir in Get-ChildItem -Path $directory -Directory)
+    {
         GenerateControllersRecursively $dir.FullName
     }
 }
