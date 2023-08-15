@@ -1,7 +1,7 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace SchoolProject.Web.Helpers.Email;
 
@@ -41,7 +41,7 @@ public class EmailHelper : IEmailSender
                 Body = htmlMessage,
                 IsBodyHtml = true,
                 BodyEncoding = Encoding.UTF8,
-                To = {emailTo}
+                To = { emailTo }
             };
 
             Console.WriteLine(

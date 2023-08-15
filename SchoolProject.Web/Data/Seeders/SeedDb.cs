@@ -1,7 +1,3 @@
-using System.Diagnostics;
-using System.Drawing;
-using System.Security.Claims;
-using System.Transactions;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
@@ -10,6 +6,10 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
+using System.Diagnostics;
+using System.Drawing;
+using System.Security.Claims;
+using System.Transactions;
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -34,15 +34,15 @@ public class SeedDb
 
 
     private readonly IWebHostEnvironment _hostingEnvironment;
-
-    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
     private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
+
+    private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     private readonly IUserHelper _userHelper;
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     public SeedDb(
@@ -59,10 +59,10 @@ public class SeedDb
         DataContextMySql dataContextMySql,
         DataContextSqLite dataContextSqLite,
         DataContextMySql dataContextInUse
-        // DcMsSqlLocal msSqlLocal,
-        // DCMySqlLocal mySqlLocal,
-        // DcMsSqlOnline msSqlOnline,
-        // DCMySqlOnline mySqlOnline
+    // DcMsSqlLocal msSqlLocal,
+    // DCMySqlLocal mySqlLocal,
+    // DcMsSqlOnline msSqlOnline,
+    // DCMySqlOnline mySqlOnline
     )
     {
         _loggerSeedDbSCs = loggerSeedDbSCs;

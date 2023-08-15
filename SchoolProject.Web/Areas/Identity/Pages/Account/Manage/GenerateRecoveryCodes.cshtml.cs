@@ -18,7 +18,7 @@ public class GenerateRecoveryCodesModel : PageModel
     public GenerateRecoveryCodesModel(
         UserManager<User> userManager,
         ILogger<GenerateRecoveryCodesModel> logger
-        )
+    )
     {
         _userManager = userManager;
         _logger = logger;

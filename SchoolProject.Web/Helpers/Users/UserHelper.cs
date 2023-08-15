@@ -52,7 +52,7 @@ public class UserHelper : IUserHelper
         var result = await _roleManager.RoleExistsAsync(roleName);
 
         if (!result)
-            await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
+            await _roleManager.CreateAsync(new IdentityRole { Name = roleName });
     }
 
 
@@ -110,12 +110,6 @@ public class UserHelper : IUserHelper
     }
 
 
-    public async Task<User?> GetUserByUserNameAsync(string userName)
-    {
-        return await _userManager.FindByNameAsync(userName);
-    }
-
-
     public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
     {
         return await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -125,5 +119,11 @@ public class UserHelper : IUserHelper
         User user, string token)
     {
         return await _userManager.ConfirmEmailAsync(user, token);
+    }
+
+
+    public async Task<User?> GetUserByUserNameAsync(string userName)
+    {
+        return await _userManager.FindByNameAsync(userName);
     }
 }

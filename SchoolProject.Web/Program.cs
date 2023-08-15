@@ -1,12 +1,9 @@
-using System.Diagnostics;
-using System.Globalization;
-using System.Net.NetworkInformation;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
@@ -14,6 +11,13 @@ using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Data.Repositories.Courses;
+using SchoolProject.Web.Data.Repositories.Enrollments;
+using SchoolProject.Web.Data.Repositories.OtherEntities;
+using SchoolProject.Web.Data.Repositories.SchoolClasses;
+using SchoolProject.Web.Data.Repositories.Students;
+using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Data.Seeders;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
@@ -23,6 +27,10 @@ using SchoolProject.Web.Helpers.Services;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using Serilog;
+using System.Diagnostics;
+using System.Globalization;
+using System.Net.NetworkInformation;
+using System.Text;
 
 
 // Create a new web application using the WebApplicationBuilder.
@@ -594,8 +602,15 @@ builder.Logging.AddApplicationInsights();
 
 
 // Configuração do serviço DatabaseConnectionVerifier
-builder.Services.AddTransient<DatabaseConnectionVerifier>();
+builder.Services.TryAddSingleton<DatabaseConnectionVerifier>();
 
+// Inject the IHttpContextAccessor so we can access the HttpContext
+// builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+// Inject the IHttpContextAccessor so we can access the HttpContext
+builder.Services.AddHttpContextAccessor();
+
+// Inject the IWebHostEnvironment so we can access the Environment
+builder.Services.TryAddSingleton<IWebHostEnvironment>(builder.Environment);
 
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
@@ -605,6 +620,7 @@ builder.Services.AddScoped<IEmailSender, EmailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
 builder.Services.AddScoped<IStorageHelper, StorageHelper>();
 builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
+builder.Services.AddScoped<AuthenticatedUserInApp>();
 
 
 // Add seeding for the database.
@@ -628,6 +644,56 @@ builder.Services.AddScoped<SeedDb>();
 // builder.Services.AddTransient<SeedDbSqLite>();
 
 
+//
+// injecting mock repositories
+//
+
+//
+// builder.Services.AddScoped<IRepository, MockRepository>();
+
+
+
+//
+// injecting real repositories
+//
+
+//
+builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<INationalityRepository, NationalityRepository>();
+
+//
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+
+//
+builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+
+//
+builder.Services.AddScoped<IGenderRepository, GenderRepository>();
+
+//
+builder.Services
+    .AddScoped<ISchoolClassCourseRepository, SchoolClassCourseRepository>();
+builder.Services.AddScoped<ISchoolClassRepository, SchoolClassRepository>();
+builder.Services
+    .AddScoped<ISchoolClassStudentRepository, SchoolClassStudentRepository>();
+
+//
+builder.Services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
+//
+builder.Services.AddScoped<ITeacherCourseRepository, TeacherCourseRepository>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+
+
+//
+// injecting cloud repositories
+// builder.Services.AddScoped<GcpConfigOptions>();
+// builder.Services.AddScoped<AWSConfigOptions>();
+// builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
+
+
 // Extrai o nome do servidor da Connection String
 var serverHostName =
     GetServerHostNameFromConnectionString(
@@ -639,6 +705,8 @@ var serverHostName =
 GetServerHostNamePing(serverHostName);
 
 
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 
 // Build the application.

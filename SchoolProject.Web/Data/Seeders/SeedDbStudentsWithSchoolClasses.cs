@@ -86,7 +86,7 @@ public class SeedDbStudentsWithSchoolClasses
                 SchoolClass = schoolClass,
                 StudentId = student.Id,
                 Student = student,
-                CreatedBy = user,
+                CreatedBy = user
             };
 
             _dataContextInUse.SchoolClassStudents.Add(schoolClassStudent);

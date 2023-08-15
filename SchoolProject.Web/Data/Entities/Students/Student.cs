@@ -1,12 +1,12 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using SchoolProject.Web.Data.Entities.Countries;
+﻿using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 
@@ -106,6 +106,17 @@ public class Student : IEntity //: INotifyPropertyChanged
     [Required] public required User User { get; set; }
 
 
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+    [NotMapped]
+    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+
+
+
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
@@ -138,10 +149,10 @@ public class Student : IEntity //: INotifyPropertyChanged
     // public int TotalWorkHours =>
     //     SchoolClasses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
 
-// ---------------------------------------------------------------------- //
-// Navigation property for the many-to-many relationship
-// between Student and SchoolClass
-// ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // between Student and SchoolClass
+    // ---------------------------------------------------------------------- //
 
     [DisplayName("Courses")]
     public ICollection<SchoolClassStudent>? SchoolClassStudents { get; set; } =

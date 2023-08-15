@@ -1,10 +1,9 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.Students;
+﻿using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
@@ -18,7 +17,7 @@ public class SchoolClassStudent : IEntity
 
 
     /// <summary>
-    ///    The real Object for SchoolClass
+    ///     The real Object for SchoolClass
     /// </summary>
     [Required]
     [ForeignKey(nameof(SchoolClassId))]
@@ -26,7 +25,7 @@ public class SchoolClassStudent : IEntity
 
 
     /// <summary>
-    ///   Foreign Guid Key for SchoolClass
+    ///     Foreign Guid Key for SchoolClass
     /// </summary>
     public Guid SchoolClassGuidId => SchoolClass.IdGuid;
 

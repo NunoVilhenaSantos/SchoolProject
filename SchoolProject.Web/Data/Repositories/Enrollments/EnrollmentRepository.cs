@@ -15,7 +15,7 @@ public class EnrollmentRepository : GenericRepository<Enrollment>,
     private readonly DataContextSqLite _dataContextSqLite;
 
     /// <inheritdoc />
-    protected EnrollmentRepository(
+    public EnrollmentRepository(
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
     ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)

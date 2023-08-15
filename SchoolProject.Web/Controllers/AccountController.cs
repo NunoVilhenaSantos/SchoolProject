@@ -1,24 +1,24 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Users;
+using SchoolProject.Web.Models.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Identity;
-using SchoolProject.Web.Data.Entities.Users;
-using SchoolProject.Web.Helpers.Users;
-using SchoolProject.Web.Helpers.Email;
-using SchoolProject.Web.Data.Repositories.Countries;
-using SchoolProject.Web.Models.Users;
-
 
 namespace SchoolProject.Web.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly IUserHelper _userHelper;
-    private readonly IEmailHelper _mailHelper;
     private readonly IConfiguration _configuration;
     private readonly ICountryRepository _countryRepository;
+    private readonly IEmailHelper _mailHelper;
+    private readonly IUserHelper _userHelper;
 
 
     public AccountController(
@@ -40,7 +40,7 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Login()
     {
-        if (User.Identity is {IsAuthenticated: true})
+        if (User.Identity is { IsAuthenticated: true })
             return RedirectToAction("Index", "Home");
 
         return View();
@@ -90,6 +90,8 @@ public class AccountController : Controller
     }
 
 
+
+    [Authorize(Roles = "Admin,SuperUser")]
     // aqui vai para a view RegisterNewUserViewModel
     [HttpGet]
     public IActionResult Register()
@@ -102,7 +104,7 @@ public class AccountController : Controller
             LastName = null,
             Username = null,
             Password = null,
-            ConfirmPassword = null,
+            ConfirmPassword = null
         };
 
 
@@ -132,7 +134,7 @@ public class AccountController : Controller
                     UserName = model.Username,
                     Address = model.Address,
                     PhoneNumber = model.PhoneNumber,
-                    WasDeleted = false,
+                    WasDeleted = false
                     // City = city,
                     // CityId = city.Id,
                     // Country = country,
@@ -175,7 +177,7 @@ public class AccountController : Controller
                         userid = user.Id,
                         token = myToken
                     },
-                    protocol: HttpContext.Request.Scheme
+                    HttpContext.Request.Scheme
                 );
 
 
@@ -233,7 +235,7 @@ public class AccountController : Controller
             LastName = user.LastName,
             Address = user.Address ?? string.Empty,
             PhoneNumber = user.PhoneNumber,
-            Username = user.UserName ?? string.Empty,
+            Username = user.UserName ?? string.Empty
             // CityId = user.CityId,
             // CountryId = user.CountryId,
             // Email = user.Email,
@@ -275,7 +277,9 @@ public class AccountController : Controller
         var response = await _userHelper.UpdateUserAsync(user);
 
         if (response.Succeeded)
+        {
             ViewBag.UserMessage = "User updated!";
+        }
         else
         {
             var errorMessage =

@@ -3,14 +3,14 @@
 
 #nullable disable
 
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Text;
-using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolProject.Web.Data.Entities.Users;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -20,8 +20,8 @@ public class EnableAuthenticatorModel : PageModel
         "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
     private readonly ILogger<EnableAuthenticatorModel> _logger;
-    private readonly UserManager<User> _userManager;
     private readonly UrlEncoder _urlEncoder;
+    private readonly UserManager<User> _userManager;
 
     public EnableAuthenticatorModel(
         UrlEncoder urlEncoder,
@@ -119,22 +119,21 @@ public class EnableAuthenticatorModel : PageModel
 
         if (await _userManager.CountRecoveryCodesAsync(user) != 0)
             return RedirectToPage("./TwoFactorAuthentication");
-        
+
         var recoveryCodes =
             await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user,
                 10);
-            
+
         RecoveryCodes = recoveryCodes.ToArray();
         return RedirectToPage("./ShowRecoveryCodes");
-
     }
 
     private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
     {
         // Load the authenticator key & QR code URI to display on the form
-        var unformattedKey = 
+        var unformattedKey =
             await _userManager.GetAuthenticatorKeyAsync(user);
-        
+
         if (string.IsNullOrEmpty(unformattedKey))
         {
             await _userManager.ResetAuthenticatorKeyAsync(user);

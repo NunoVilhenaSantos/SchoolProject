@@ -16,7 +16,7 @@ public class ConnectivityService
 
             Console.WriteLine($"Ping status for ({hostName}): {reply.Status}");
 
-            if (reply is not {Status: IPStatus.Success}) return false;
+            if (reply is not { Status: IPStatus.Success }) return false;
 
             Console.WriteLine($"Address: {reply.Address}");
             Console.WriteLine($"Roundtrip time: {reply.RoundtripTime}");

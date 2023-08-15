@@ -3,13 +3,13 @@
 
 #nullable disable
 
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using SchoolProject.Web.Data.Entities.Users;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 

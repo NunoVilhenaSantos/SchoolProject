@@ -20,7 +20,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
 
 
     /// <inheritdoc />
-    protected CountryRepository(
+    public CountryRepository(
         IUserHelper userHelper,
         AuthenticatedUserInApp authenticatedUserInApp,
         DataContextMySql dataContext, DataContextMySql dataContextMySql,

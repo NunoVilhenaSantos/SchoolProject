@@ -1,9 +1,9 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
+using System.Text.RegularExpressions;
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -123,7 +123,7 @@ public class SeedDbUsers
                 UserName = userName,
                 Email = email,
                 PhoneNumber = phoneNumber,
-                WasDeleted = false,
+                WasDeleted = false
                 // City = city,
                 // CityId = city.Id,
                 // Country = country,

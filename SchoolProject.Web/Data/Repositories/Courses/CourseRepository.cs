@@ -14,7 +14,7 @@ public class CourseRepository : GenericRepository<Course>, ICourseRepository
     private readonly DataContextSqLite _dataContextSqLite;
 
     /// <inheritdoc />
-    protected CourseRepository(
+    public CourseRepository(
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
     ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)

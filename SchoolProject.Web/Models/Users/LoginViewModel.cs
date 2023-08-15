@@ -5,7 +5,7 @@ namespace SchoolProject.Web.Models.Users;
 
 public class LoginViewModel
 {
-    [Required] [EmailAddress] public required string Username { get; set; }
+    [Required][EmailAddress] public required string Username { get; set; }
 
 
     [Required]

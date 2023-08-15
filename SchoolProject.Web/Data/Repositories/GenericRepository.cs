@@ -9,10 +9,13 @@ namespace SchoolProject.Web.Data.Repositories;
 public class GenericRepository<T> : IGenericRepository<T>
     where T : class, IEntity
 {
+
     private readonly DataContextMySql _dataContext;
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
+
+
 
     /// <summary>
     ///     Constructor of the generic repository.
@@ -37,10 +40,11 @@ public class GenericRepository<T> : IGenericRepository<T>
     public IQueryable<T> GetAll()
     {
         // return _dataContext.Set<T>().AsNoTracking();
+
         return _dataContext.Set<T>().AsQueryable().AsNoTracking();
-        
-        // _dataContext.Set<T>().Select<>(e => new ObjectViewModel { Property = e.Property } );
-        
+
+        // return _dataContext.Set<T>().Select(e => new ObjectViewModel { Property = e.Property }).AsQueryable();
+
         // usa
         // _context.Set<T>().Select(e => new ObjectViewModel { Property = e.Property } );
         // em vez de

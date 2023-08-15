@@ -1,8 +1,8 @@
-﻿using System.Drawing;
-using SchoolProject.Web.Data.DataContexts.MySQL;
+﻿using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Users;
+using System.Drawing;
 
 namespace SchoolProject.Web.Data.Seeders;
 

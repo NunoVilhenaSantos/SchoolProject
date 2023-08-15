@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Models.Errors;
+using System.Diagnostics;
 
 namespace SchoolProject.Web.Controllers;
 

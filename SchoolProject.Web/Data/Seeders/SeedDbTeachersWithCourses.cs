@@ -58,14 +58,16 @@ public class SeedDbTeachersWithCourses
         var random = new Random();
 
         foreach (var teacherCourse in from course in _listOfCoursesFromDb
-                 let teacher = _listOfTeachersFromDb[
-                     random.Next(_listOfTeachersFromDb.Count)]
-                 select new TeacherCourse
-                 {
-                     TeacherId = teacher.Id, Teacher = teacher,
-                     CourseId = course.Id, Course = course,
-                     CreatedBy = user
-                 })
+                                      let teacher = _listOfTeachersFromDb[
+                                          random.Next(_listOfTeachersFromDb.Count)]
+                                      select new TeacherCourse
+                                      {
+                                          TeacherId = teacher.Id,
+                                          Teacher = teacher,
+                                          CourseId = course.Id,
+                                          Course = course,
+                                          CreatedBy = user
+                                      })
             // Add the TeacherCourse association to the context
             dataContextInUse.TeacherCourses.Add(teacherCourse);
 

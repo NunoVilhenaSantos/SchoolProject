@@ -6,8 +6,8 @@ using SchoolProject.Web.Data.Entities.SchoolClasses;
 namespace SchoolProject.Web.Data.Repositories.SchoolClasses;
 
 /// <inheritdoc />
-public class SchoolClassRepository : GenericRepository<SchoolClass>,
-    ISchoolClassRepository
+public class SchoolClassRepository
+    : GenericRepository<SchoolClass>, ISchoolClassRepository
 {
     private readonly DataContextMySql _dataContext;
     private readonly DataContextMsSql _dataContextMsSql;
@@ -15,7 +15,7 @@ public class SchoolClassRepository : GenericRepository<SchoolClass>,
     private readonly DataContextSqLite _dataContextSqLite;
 
     /// <inheritdoc />
-    protected SchoolClassRepository(
+    public SchoolClassRepository(
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
     ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)

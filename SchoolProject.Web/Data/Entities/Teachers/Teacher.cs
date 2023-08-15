@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
-using SchoolProject.Web.Data.Entities.Countries;
+﻿using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace SchoolProject.Web.Data.Entities.Teachers;
 
@@ -102,6 +102,18 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [Required] public required User User { get; set; }
 
 
+
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+    [NotMapped]
+    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+
+
+
     [DisplayName("Profile Photo")] public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
@@ -161,6 +173,14 @@ public class Teacher : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+
+
+
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
 
 
     // ---------------------------------------------------------------------- //

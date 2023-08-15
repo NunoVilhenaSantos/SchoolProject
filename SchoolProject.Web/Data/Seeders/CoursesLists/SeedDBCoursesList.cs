@@ -415,7 +415,7 @@ public class SeedDbCoursesList
     private static async
         Task
         SaveMissingCourses(
-            //Dictionary<string, (string, int, double)> mergedDictionary
+        //Dictionary<string, (string, int, double)> mergedDictionary
         )
     {
         // Get the list of existing course codes from the database

@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.EntitiesOthers;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using SchoolProject.Web.Data.Entities.Users;
-using SchoolProject.Web.Data.EntitiesOthers;
+using System.Runtime.InteropServices;
 
 namespace SchoolProject.Web.Data.Entities.Countries;
 
@@ -15,28 +16,6 @@ public class Country : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
-    [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
-
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
-          ProfilePhotoId;
-
-
-    // Navigation property with lazy-loading enabled
-    public virtual ICollection<City>? Cities { get; set; }
-
-
-    [DisplayName("Number of Cities")]
-    public int NumberCities => Cities?.Count ?? 0;
-
-
-    [Required]
-    // [ForeignKey("NationalityId")]
-    public virtual required Nationality Nationality { get; set; }
-
-    // public int NationalityId => Nationality.Id;
-    public Guid NationalityGuidId => Nationality.IdGuid;
 
 
     [Key]
@@ -71,6 +50,52 @@ public class Country : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+    [NotMapped]
+    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+
+    [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
+          ProfilePhotoId;
+
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+
+    // Navigation property with lazy-loading enabled
+    public virtual ICollection<City>? Cities { get; set; }
+
+
+    [DisplayName("Number of Cities")]
+    public int NumberCities => Cities?.Count ?? 0;
+
+
+    [Required]
+    // [ForeignKey("NationalityId")]
+    public virtual required Nationality Nationality { get; set; }
+
+    // public int NationalityId => Nationality.Id;
+    public Guid NationalityGuidId => Nationality.IdGuid;
+
+
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
 
 
     public event PropertyChangedEventHandler? PropertyChanged;
