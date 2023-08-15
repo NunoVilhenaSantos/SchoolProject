@@ -1,3 +1,6 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +10,6 @@ using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Users;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace SchoolProject.Web.Controllers;
 
@@ -40,7 +40,7 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Login()
     {
-        if (User.Identity is { IsAuthenticated: true })
+        if (User.Identity is {IsAuthenticated: true})
             return RedirectToAction("Index", "Home");
 
         return View();
@@ -88,7 +88,6 @@ public class AccountController : Controller
         await _userHelper.LogOutAsync();
         return RedirectToAction("Index", "Home");
     }
-
 
 
     [Authorize(Roles = "Admin,SuperUser")]

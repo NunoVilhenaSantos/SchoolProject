@@ -1,13 +1,13 @@
-﻿using SchoolProject.Web.Data.Entities.Enrollments;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
 
@@ -52,18 +52,11 @@ public class Course : IEntity, INotifyPropertyChanged
     public required double CreditPoints { get; set; }
 
 
-
-
-
-
-
-
     // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
 
 
-    [NotMapped]
-    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+    [NotMapped] [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
 
 
     /// <summary>
@@ -241,14 +234,8 @@ public class Course : IEntity, INotifyPropertyChanged
     public virtual User? UpdatedBy { get; set; }
 
 
-
-
-
-
     // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
-
-
 
 
     // ---------------------------------------------------------------------- //

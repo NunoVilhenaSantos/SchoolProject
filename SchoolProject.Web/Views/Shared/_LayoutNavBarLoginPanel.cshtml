@@ -17,29 +17,34 @@
         @* <a class="nav-link" href="#">Pricing</a> *@
         @* <a class="nav-link disabled">Disabled</a> *@
 
-        @* @if (User.Identity.IsAuthenticated) *@
-        @* { *@
-        @*     <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")" *@
-        @*        asp-area="" asp-controller="Account" asp-action="ChangeUser"> *@
-        @*         <span class="material-symbols-outlined">settings_account_box</span>@User.Identity?.Name *@
-        @*     </a> *@
-        @* *@
-        @*     <a class="nav-link @(currentAction == "LogOut" && currentController == "Account" ? "active" : "")" *@
-        @*        asp-area="" asp-controller="Account" asp-action="LogOut"> *@
-        @*         <span class="material-symbols-outlined">logout</span>Logout *@
-        @*     </a> *@
-        @* } *@
-        @* else *@
-        @* { *@
-        @*     <a class="nav-link @(currentAction == "Register" && currentController == "Account" ? "active" : "")" *@
-        @*        asp-area="" asp-controller="Account" asp-action="Register"> *@
-        @*         <span class="material-symbols-outlined">person_add</span>Register *@
-        @*     </a> *@
-        @*     <a class="nav-link @(currentAction == "Login" && currentController == "Account" ? "active" : "")" *@
-        @*        asp-area="" asp-controller="Account" asp-action="Login"> *@
-        @*         <span class="material-symbols-outlined">login</span>Login *@
-        @*     </a> *@
-        @* } *@
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="ChangeUser">
+                <span class="material-symbols-outlined">settings_account_box</span>@User.Identity?.Name
+            </a>
+
+            <a class="nav-link @(currentAction == "LogOut" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="LogOut">
+                <span class="material-symbols-outlined">logout</span>Logout
+            </a>
+
+            <a class="nav-link @( currentController == "Users" ? "active" : "")"
+               asp-area="" asp-controller="Users" asp-action="Index">
+                <span class="material-symbols-outlined">Users</span>Logout
+            </a>
+        }
+        else
+        {
+            <a class="nav-link @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="Register">
+                <span class="material-symbols-outlined">person_add</span>Register
+            </a>
+            <a class="nav-link @(currentAction == "Login" && currentController == "Account" ? "active" : "")"
+               asp-area="" asp-controller="Account" asp-action="Login">
+                <span class="material-symbols-outlined">login</span>Login
+            </a>
+        }
     </div>
 
     <partial name="_LoginPartial"/>

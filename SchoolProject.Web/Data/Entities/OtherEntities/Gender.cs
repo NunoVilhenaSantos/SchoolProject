@@ -1,9 +1,9 @@
-﻿using SchoolProject.Web.Data.Entities.Users;
-using SchoolProject.Web.Data.EntitiesOthers;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.OtherEntities;
 
@@ -14,6 +14,21 @@ public class Gender : IEntity, INotifyPropertyChanged
             "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Name { get; set; }
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+    [NotMapped] [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+
+
+    [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
+          ProfilePhotoId;
 
 
     [Key]
@@ -48,25 +63,6 @@ public class Gender : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
-
-
-
-
-    // ----------------------------------------------------------------------------------- //
-    // ----------------------------------------------------------------------------------- //
-
-
-    [NotMapped]
-    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
-
-
-    [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
-
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
-          ProfilePhotoId;
-
 
 
     // ----------------------------------------------------------------------------------- //

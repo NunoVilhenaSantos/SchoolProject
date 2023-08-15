@@ -29,7 +29,7 @@ public class CitiesController : Controller
         //     : Problem("Entity set 'DataContextMySql.Cities'  is null.");
 
         return _cityRepository != null
-            ? View((IEnumerable<City>)_cityRepository.GetCountriesWithCities())
+            ? View((IEnumerable<City>) _cityRepository.GetCountriesWithCities())
             : Problem("Entity set 'DataContextMySql.Cities' is null.");
     }
 

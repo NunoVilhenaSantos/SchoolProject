@@ -1,3 +1,7 @@
+using System.Diagnostics;
+using System.Globalization;
+using System.Net.NetworkInformation;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -27,10 +31,6 @@ using SchoolProject.Web.Helpers.Services;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using Serilog;
-using System.Diagnostics;
-using System.Globalization;
-using System.Net.NetworkInformation;
-using System.Text;
 
 
 // Create a new web application using the WebApplicationBuilder.
@@ -610,7 +610,7 @@ builder.Services.TryAddSingleton<DatabaseConnectionVerifier>();
 builder.Services.AddHttpContextAccessor();
 
 // Inject the IWebHostEnvironment so we can access the Environment
-builder.Services.TryAddSingleton<IWebHostEnvironment>(builder.Environment);
+builder.Services.TryAddSingleton(builder.Environment);
 
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
@@ -650,7 +650,6 @@ builder.Services.AddScoped<SeedDb>();
 
 //
 // builder.Services.AddScoped<IRepository, MockRepository>();
-
 
 
 //

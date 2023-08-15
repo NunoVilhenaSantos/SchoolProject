@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Models.Countries;
-using System.Data;
-
 
 namespace SchoolProject.Web.Controllers;
-
 
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CountriesController : Controller
@@ -208,7 +205,7 @@ public class CountriesController : Controller
         {
             case 1:
                 // Passe as informações do país para a vista
-                model = new CityViewModel { CountryId = country.Id };
+                model = new CityViewModel {CountryId = country.Id};
                 break;
 
             case 2:
@@ -239,7 +236,7 @@ public class CountriesController : Controller
         await _countryRepository.AddCityAsync(model);
 
         return RedirectToAction(
-            nameof(Details), new { id = model.CountryId });
+            nameof(Details), new {id = model.CountryId});
     }
 
 
@@ -255,7 +252,7 @@ public class CountriesController : Controller
 
         var countryId = await _countryRepository.DeleteCityAsync(city);
 
-        return RedirectToAction(nameof(Details), new { id = countryId });
+        return RedirectToAction(nameof(Details), new {id = countryId});
     }
 
 
@@ -287,7 +284,7 @@ public class CountriesController : Controller
 
         if (countryId != 0)
             return RedirectToAction(
-                nameof(Details), new { id = countryId });
+                nameof(Details), new {id = countryId});
 
         return View(city);
     }

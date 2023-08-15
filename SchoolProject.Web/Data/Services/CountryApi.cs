@@ -1,5 +1,5 @@
-﻿using SchoolProject.Web.Data.Entities.Countries;
-using System.Text.Json;
+﻿using System.Text.Json;
+using SchoolProject.Web.Data.Entities.Countries;
 
 namespace SchoolProject.Web.Data.Services;
 

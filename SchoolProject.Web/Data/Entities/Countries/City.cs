@@ -1,9 +1,9 @@
-﻿using SchoolProject.Web.Data.Entities.Users;
-using SchoolProject.Web.Data.EntitiesOthers;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.Countries;
 
@@ -48,9 +48,6 @@ public class City : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
-
-
-
 
 
     // ----------------------------------------------------------------------------------- //

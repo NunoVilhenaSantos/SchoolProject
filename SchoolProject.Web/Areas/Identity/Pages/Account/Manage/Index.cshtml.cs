@@ -3,11 +3,11 @@
 
 #nullable disable
 
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolProject.Web.Data.Entities.Users;
-using System.ComponentModel.DataAnnotations;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -51,7 +51,7 @@ public class IndexModel : PageModel
 
         Username = userName;
 
-        Input = new InputModel { PhoneNumber = phoneNumber };
+        Input = new InputModel {PhoneNumber = phoneNumber};
     }
 
     public async Task<IActionResult> OnGetAsync()

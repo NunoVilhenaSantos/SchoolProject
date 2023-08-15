@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Identity;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Identity;
 
 namespace SchoolProject.Web.Data.Entities.Users;
 
@@ -34,17 +34,11 @@ public class User : IdentityUser, INotifyPropertyChanged
     [DisplayName("Was Deleted?")] public required bool WasDeleted { get; set; }
 
 
-
-
-
     // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
 
 
-    [NotMapped]
-    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
-
-
+    [NotMapped] [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
 
 
     public Guid ProfilePhotoId { get; set; }
@@ -64,10 +58,6 @@ public class User : IdentityUser, INotifyPropertyChanged
     //     string.IsNullOrEmpty(ImageThumbnailUrl)
     //         ? null
     //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
-
-
-
-
 
 
     // ----------------------------------------------------------------------------------- //

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Errors;
-using System.Diagnostics;
 
 namespace SchoolProject.Web.Controllers;
 
@@ -121,6 +121,6 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel
-        { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
     }
 }

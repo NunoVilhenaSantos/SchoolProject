@@ -3,11 +3,11 @@
 
 #nullable disable
 
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolProject.Web.Data.Entities.Users;
-using System.Text.Json;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 

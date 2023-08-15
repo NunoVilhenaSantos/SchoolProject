@@ -1,11 +1,11 @@
-﻿using SchoolProject.Web.Data.DataContexts.MySQL;
+﻿using System.Text.RegularExpressions;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
-using System.Text.RegularExpressions;
 
 namespace SchoolProject.Web.Data.Seeders;
 
@@ -292,7 +292,7 @@ public class SeedDbStudentsAndTeachers
         Country countryOfNationality, Country birthplace, Gender gender,
         // Novo parâmetro para indicar o papel (role)
         string userRole, string password = "Passw0rd"
-    // Restrição genérica para permitir apenas classes
+        // Restrição genérica para permitir apenas classes
     ) where T : class
     {
         var newUser = new User

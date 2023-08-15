@@ -3,15 +3,15 @@
 
 #nullable disable
 
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using SchoolProject.Web.Data.Entities.Users;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -62,7 +62,7 @@ public class EmailModel : PageModel
         var email = await _userManager.GetEmailAsync(user);
         Email = email;
 
-        Input = new InputModel { NewEmail = email };
+        Input = new InputModel {NewEmail = email};
 
         IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
     }
@@ -153,7 +153,7 @@ public class EmailModel : PageModel
         var callbackUrl = Url.Page(
             "/Account/ConfirmEmail",
             null,
-            new { area = "Identity", userId, code },
+            new {area = "Identity", userId, code},
             Request.Scheme);
 
         await _emailSender.SendEmailAsync(

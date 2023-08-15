@@ -348,7 +348,7 @@ public class SeedDbSchoolClasses
 
         // Calculate the total number of days needed for completion
         var totalDays =
-            (int)Math.Ceiling(totalDurationInHours /
+            (int) Math.Ceiling(totalDurationInHours /
                                ((endHour - startHour).TotalHours - 1));
 
 

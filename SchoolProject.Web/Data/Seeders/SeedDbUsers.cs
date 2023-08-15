@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
-using System.Text.RegularExpressions;
 
 namespace SchoolProject.Web.Data.Seeders;
 

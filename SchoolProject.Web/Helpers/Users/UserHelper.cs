@@ -52,7 +52,7 @@ public class UserHelper : IUserHelper
         var result = await _roleManager.RoleExistsAsync(roleName);
 
         if (!result)
-            await _roleManager.CreateAsync(new IdentityRole { Name = roleName });
+            await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
     }
 
 

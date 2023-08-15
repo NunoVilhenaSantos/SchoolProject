@@ -1,12 +1,12 @@
-﻿using SchoolProject.Web.Data.Entities.Courses;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
@@ -103,18 +103,11 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     public required decimal PriceForUnemployed { get; set; }
 
 
-
-
-
-
     // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
 
 
-    [NotMapped]
-    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
-
-
+    [NotMapped] [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
 
 
     [DisplayName("Profile Photo")] public Guid? ProfilePhotoId { get; set; }
@@ -272,9 +265,6 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
-
-
-
 
 
     // ----------------------------------------------------------------------------------- //

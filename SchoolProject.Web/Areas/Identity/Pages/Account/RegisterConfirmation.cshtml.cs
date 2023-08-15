@@ -3,6 +3,7 @@
 
 #nullable disable
 
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using SchoolProject.Web.Data.Entities.Users;
-using System.Text;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
@@ -67,7 +67,7 @@ public class RegisterConfirmationModel : PageModel
             EmailConfirmationUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 null,
-                new { area = "Identity", userId, code, returnUrl },
+                new {area = "Identity", userId, code, returnUrl},
                 Request.Scheme);
         }
 

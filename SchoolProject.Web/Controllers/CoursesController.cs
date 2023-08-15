@@ -5,7 +5,6 @@ using SchoolProject.Web.Data.Entities.Courses;
 
 namespace SchoolProject.Web.Controllers;
 
-
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesController : Controller
 {

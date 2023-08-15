@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Query;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Countries;
 
@@ -14,11 +12,11 @@ namespace SchoolProject.Web.Data.Repositories.Countries;
 public class CityRepository : GenericRepository<City>, ICityRepository
 {
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
-
-    private readonly DataContextSqLite _dataContextSqLite;
+    private readonly DataContextMySql _dataContext;
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
-    private readonly DataContextMySql _dataContext;
+
+    private readonly DataContextSqLite _dataContextSqLite;
 
     // private readonly UserManager<User> _userManager;
     private readonly IUserHelper _userHelper;
@@ -200,7 +198,7 @@ public class CityRepository : GenericRepository<City>, ICityRepository
         {
             Name = model.Name,
             WasDeleted = false,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
         };
 
 
@@ -211,7 +209,7 @@ public class CityRepository : GenericRepository<City>, ICityRepository
         {
             Name = model.Name,
             WasDeleted = false,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
         });
 
         _dataContext.Countries.Update(country);

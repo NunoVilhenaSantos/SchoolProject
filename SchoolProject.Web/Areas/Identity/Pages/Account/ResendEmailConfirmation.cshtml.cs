@@ -3,6 +3,9 @@
 
 #nullable disable
 
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -10,9 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using SchoolProject.Web.Data.Entities.Users;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
@@ -60,7 +60,7 @@ public class ResendEmailConfirmationModel : PageModel
         var callbackUrl = Url.Page(
             "/Account/ConfirmEmail",
             null,
-            new { userId, code },
+            new {userId, code},
             Request.Scheme);
 
         await _emailSender.SendEmailAsync(

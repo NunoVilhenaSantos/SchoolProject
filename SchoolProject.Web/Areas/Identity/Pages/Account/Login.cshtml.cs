@@ -3,12 +3,12 @@
 
 #nullable disable
 
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolProject.Web.Data.Entities.Users;
-using System.ComponentModel.DataAnnotations;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
@@ -89,7 +89,7 @@ public class LoginModel : PageModel
 
             if (result.RequiresTwoFactor)
                 return RedirectToPage("./LoginWith2fa",
-                    new { ReturnUrl = returnUrl, Input.RememberMe });
+                    new {ReturnUrl = returnUrl, Input.RememberMe});
             if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");

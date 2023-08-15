@@ -133,7 +133,7 @@ public partial class InitDB : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_AspNetUserLogins",
-                    x => new { x.LoginProvider, x.ProviderKey });
+                    x => new {x.LoginProvider, x.ProviderKey});
                 table.ForeignKey(
                     "FK_AspNetUserLogins_AspNetUsers_UserId",
                     x => x.UserId,
@@ -152,7 +152,7 @@ public partial class InitDB : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_AspNetUserRoles",
-                    x => new { x.UserId, x.RoleId });
+                    x => new {x.UserId, x.RoleId});
                 table.ForeignKey(
                     "FK_AspNetUserRoles_AspNetRoles_RoleId",
                     x => x.RoleId,
@@ -180,7 +180,7 @@ public partial class InitDB : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_AspNetUserTokens",
-                    x => new { x.UserId, x.LoginProvider, x.Name });
+                    x => new {x.UserId, x.LoginProvider, x.Name});
                 table.ForeignKey(
                     "FK_AspNetUserTokens_AspNetUsers_UserId",
                     x => x.UserId,
@@ -478,7 +478,7 @@ public partial class InitDB : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_SchoolClassCourses",
-                    x => new { x.SchoolClassId, x.CourseId });
+                    x => new {x.SchoolClassId, x.CourseId});
                 table.ForeignKey(
                     "FK_SchoolClassCourses_AspNetUsers_CreatedById",
                     x => x.CreatedById,
@@ -743,7 +743,7 @@ public partial class InitDB : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_Enrollments",
-                    x => new { x.StudentId, x.CourseId });
+                    x => new {x.StudentId, x.CourseId});
                 table.ForeignKey(
                     "FK_Enrollments_AspNetUsers_CreatedById",
                     x => x.CreatedById,
@@ -846,7 +846,7 @@ public partial class InitDB : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_StudentCourses",
-                    x => new { x.StudentId, x.CourseId });
+                    x => new {x.StudentId, x.CourseId});
                 table.ForeignKey(
                     "FK_StudentCourses_AspNetUsers_CreatedById",
                     x => x.CreatedById,
@@ -895,7 +895,7 @@ public partial class InitDB : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_TeacherCourses",
-                    x => new { x.TeacherId, x.CourseId });
+                    x => new {x.TeacherId, x.CourseId});
                 table.ForeignKey(
                     "FK_TeacherCourses_AspNetUsers_CreatedById",
                     x => x.CreatedById,

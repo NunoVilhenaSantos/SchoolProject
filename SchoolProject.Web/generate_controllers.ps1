@@ -50,7 +50,8 @@ function GenerateControllersRecursively
         $controllerName = PluralizeControllerName $modelName
 
         Write-Host "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
-        dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions
+        # dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions
+        Write-Host "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
     }
 
     # Loop recursivamente em todas as subpastas

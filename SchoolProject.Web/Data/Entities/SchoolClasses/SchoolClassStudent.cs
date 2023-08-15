@@ -1,9 +1,9 @@
-﻿using SchoolProject.Web.Data.Entities.Students;
-using SchoolProject.Web.Data.Entities.Users;
-using SchoolProject.Web.Data.EntitiesOthers;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
