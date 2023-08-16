@@ -12,9 +12,17 @@ public interface IUserHelper
     Task<User?> GetUserByIdAsync(string id);
 
 
+    Task<string?> GetUserInitialsAsync();
+
+
     Task<IdentityResult> AddUserAsync(User? user, string password);
 
 
+    /// <summary>
+    ///     Check if role exists, if not create it.
+    /// </summary>
+    /// <param name="roleName"></param>
+    /// <returns></returns>
     Task CheckRoleAsync(string roleName);
 
 

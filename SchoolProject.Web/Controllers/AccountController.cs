@@ -17,19 +17,19 @@ public class AccountController : Controller
 {
     private readonly IConfiguration _configuration;
     private readonly ICountryRepository _countryRepository;
-    private readonly IEmailHelper _mailHelper;
+    private readonly IE_MailHelper _emailHelper;
     private readonly IUserHelper _userHelper;
 
 
     public AccountController(
-        IUserHelper userHelper,
-        IEmailHelper emailHelper,
+        ICountryRepository countryRepository,
         IConfiguration configuration,
-        ICountryRepository countryRepository
+        IE_MailHelper emailHelper,
+        IUserHelper userHelper
     )
     {
         _userHelper = userHelper;
-        _mailHelper = emailHelper;
+        _emailHelper = emailHelper;
         _configuration = configuration;
         _countryRepository = countryRepository;
     }
@@ -180,7 +180,7 @@ public class AccountController : Controller
                 );
 
 
-                var response = _mailHelper.SendEmail(
+                var response = _emailHelper.SendEmail(
                     model.Username,
                     "Email confirmation",
                     $"<h1>Email Confirmation</h1>" +

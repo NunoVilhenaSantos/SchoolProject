@@ -1,8 +1,9 @@
 @using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Helpers.Users
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-
+@inject UserHelper UserHelper
 @* @inject SignInManager<IdentityUser> SignInManager *@
 @* @inject UserManager<IdentityUser> UserManager *@
 
@@ -15,7 +16,8 @@
             <a id="manage" class="nav-link "
                asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 <span class="material-symbols-outlined">settings_account_box</span>
-                Hello @UserManager.GetUserName(User)!
+                @* Hello @UserManager.GetUserName(User) *@
+                Hello @UserHelper.GetUserInitialsAsync()
             </a>
         </li>
         <li class="nav-item">

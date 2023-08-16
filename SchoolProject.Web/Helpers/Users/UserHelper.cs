@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Users;
@@ -32,6 +33,36 @@ public class UserHelper : IUserHelper
     public async Task<User?> GetUserByIdAsync(string id)
     {
         return await _userManager.FindByIdAsync(id);
+    }
+
+
+    public async Task<string?> GetUserInitialsAsync()
+    {
+        // var user = await _userManager.GetUserAsync(
+        //     _signInManager.Context.User);
+        //
+        // if (user == null) return null;
+        //
+        // return string.Concat(
+        //     user.FirstName.AsSpan(0, 1),
+        //     user.LastName.AsSpan(0, 1));
+
+
+        var user = await _userManager.GetUserAsync(
+            _signInManager.Context.User);
+
+        if (user == null || string.IsNullOrEmpty(user.FullName)) return null;
+
+        var nameParts = user.FullName.Split(' ',
+            StringSplitOptions.RemoveEmptyEntries);
+
+        if (nameParts.Length == 0) return null;
+
+        var initials = new StringBuilder();
+
+        foreach (var part in nameParts) initials.Append(part[0]);
+
+        return initials.ToString();
     }
 
 
