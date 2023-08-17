@@ -996,7 +996,7 @@
                     return options.allrules[customRule].alertText;
             } else {
                 alert("jqv:custom type not allowed " + customRule);
-
+                return;
             }
         },
         /**
@@ -1316,7 +1316,7 @@
             var numDigits = cardNumber.length;
             if (numDigits >= 14 && numDigits <= 16 && parseInt(cardNumber) > 0) {
 
-                var sum = 0, i = numDigits - 1, pos = 1, digit, luhn = String();
+                var sum = 0, i = numDigits - 1, pos = 1, digit, luhn = new String();
                 do {
                     digit = parseInt(cardNumber.charAt(i));
                     luhn += (pos++ % 2 == 0) ? digit * 2 : digit;
@@ -1792,12 +1792,15 @@
                         shiftY = parseInt(shift2);
                         if (isNaN(shiftY)) shiftY = 0;
                     }
+                    ;
 
                     shiftX = parseInt(shift1);
                     if (isNaN(shift1)) shift1 = 0;
 
                 }
+                ;
             }
+            ;
 
 
             switch (positionType) {
@@ -1839,6 +1842,7 @@
                     promptTopPosition = 0;
                     marginTopSize = 0;
             }
+            ;
 
 
             //apply adjusments if any

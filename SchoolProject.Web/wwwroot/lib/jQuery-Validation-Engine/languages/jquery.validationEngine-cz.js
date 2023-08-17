@@ -45,7 +45,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Datum po "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Počet vybraných položek přesáhl limit"

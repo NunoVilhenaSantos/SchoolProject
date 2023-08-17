@@ -65,8 +65,7 @@ public class E_MailHelper : IE_MailHelper
         catch (Exception ex)
         {
             Console.WriteLine(
-                "Exception caught in CreateTestMessage4(): {0}",
-                ex);
+                "Exception caught in CreateTestMessage4(): {0}", ex);
 
             return new AppResponse
             {
@@ -74,5 +73,14 @@ public class E_MailHelper : IE_MailHelper
                 Message = ex.ToString()
             };
         }
+    }
+
+    public async Task<AppResponse> SendEmailAsync(
+        string emailTo, string subject, string htmlMessage)
+    {
+        return await
+            Task.Run(() => SendEmail(emailTo, subject, htmlMessage));
+
+        // throw new NotImplementedException();
     }
 }

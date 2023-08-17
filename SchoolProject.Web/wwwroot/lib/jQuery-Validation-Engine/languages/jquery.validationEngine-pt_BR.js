@@ -54,7 +54,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Data posterior a "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Máximo de ",

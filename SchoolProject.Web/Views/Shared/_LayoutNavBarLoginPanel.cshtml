@@ -1,5 +1,15 @@
-﻿@using System.Diagnostics
+﻿@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Helpers.Users
+@using System.Diagnostics
+@using Microsoft.AspNetCore.Identity
 @* @model TModel *@
+
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IUserHelper UserHelper
+
+
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
@@ -21,17 +31,14 @@
         {
             <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
                asp-area="" asp-controller="Account" asp-action="ChangeUser">
-                <span class="material-symbols-outlined">settings_account_box</span>@User.Identity?.Name
+                <span class="material-symbols-outlined">settings_account_box</span>
+                @* @User.Identity?.Name *@
+                Hello @await UserHelper.GetUserInitialsAsync()
             </a>
 
             <a class="nav-link @(currentAction == "LogOut" && currentController == "Account" ? "active" : "")"
                asp-area="" asp-controller="Account" asp-action="LogOut">
                 <span class="material-symbols-outlined">logout</span>Logout
-            </a>
-
-            <a class="nav-link @(currentController == "Users" ? "active" : "")"
-               asp-area="" asp-controller="Users" asp-action="Index">
-                <span class="material-symbols-outlined">person</span>Users
             </a>
         }
         else

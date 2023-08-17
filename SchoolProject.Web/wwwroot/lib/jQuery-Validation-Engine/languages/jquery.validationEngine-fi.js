@@ -41,7 +41,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Päivämäärä jälkeen "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Enintään ",

@@ -73,7 +73,7 @@ function previewImage(event) {
     reader.onload = function () {
         let preview = document.getElementById('preview');
         preview.src = reader.result;
-    }
+    };
 
     reader.readAsDataURL(event.target.files[0]);
 }
@@ -87,7 +87,7 @@ function previewImages(event) {
         for (let i = 0; i < previews.length; i++) {
             previews[i].src = reader.result;
         }
-    }
+    };
 
     reader.readAsDataURL(event.target.files[0]);
 }

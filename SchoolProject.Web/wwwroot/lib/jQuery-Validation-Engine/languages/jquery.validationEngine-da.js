@@ -45,7 +45,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Datoen skal være efter "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Antallet af valg overskredet"

@@ -24,6 +24,8 @@
 }
 
 
+
+
 .inputContainer {
     position: relative;
     float: left;
@@ -97,7 +99,6 @@
     margin: -2px 0 0 13px;
     position: relative;
 }
-
 body[dir='rtl'] .formError .formErrorArrow,
 body.rtl .formError .formErrorArrow {
     margin: -2px 13px 0 0;

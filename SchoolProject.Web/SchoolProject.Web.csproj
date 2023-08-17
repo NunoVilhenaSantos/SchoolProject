@@ -45,6 +45,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.10"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.10"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.10"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.10"/>
         <PackageReference Include="Microsoft.Build.Framework" Version="17.7.0"/>

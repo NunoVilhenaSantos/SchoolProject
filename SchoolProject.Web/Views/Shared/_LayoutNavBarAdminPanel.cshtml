@@ -1,8 +1,11 @@
 ﻿@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Helpers.Users
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject IUserHelper UserHelper
+
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
@@ -18,39 +21,57 @@
 {
     <div class="dropdown">
         @* <span class="material-symbols-outlined">settings</span> *@
-        <a class="nav-link dropdown-toggle @(currentAction is "Users" or "Roles" && currentController == "Account" ? "active" : "")"
+        <a class="nav-link dropdown-toggle @(currentController is "Users" or "Roles" ? "active" : "")"
            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="material-symbols-outlined">admin_panel_settings</i>Admin
+            <i class="material-symbols-outlined">admin_panel_settings</i>Admin Panel
         </a>
 
         <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item @(currentAction == "Users" && currentController == "Account" ? "active" : "")"
-                   asp-area="" asp-controller="" asp-action="">
+                <a class="dropdown-item @(currentAction == "" && currentController == "Users" ? "active" : "")"
+                   asp-area="" asp-controller="Users" asp-action="Index">
                     <i class="bi bi-person-fill"></i>
                     <span class="material-symbols-outlined">person</span>Users
                 </a>
             </li>
+
             <li>
                 <hr class="dropdown-divider">
             </li>
             <li>
-                <a class="dropdown-item @(currentAction == "Roles" && currentController == "Account" ? "active" : "")"
+                <a class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
                    asp-area="" asp-controller="" asp-action="">
                     <i class="bi bi-people-fill"></i>
                     <i class="material-symbols-outlined">group</i>Roles
                 </a>
             </li>
+
             <li>
                 <hr class="dropdown-divider">
             </li>
             <li class="nav-item">
-                <a id="manage" class="nav-link "
+                <a id="manage"
+                   class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
                    asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                     <span class="material-symbols-outlined">settings_account_box</span>
-                    Hello @UserManager.GetUserName(User)!
+                    @* Hello @UserManager.GetUserName(User)! *@
+                    @* @User.Identity?.Name *@
+                    Hello @await UserHelper.GetUserInitialsAsync()
+
                 </a>
             </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(currentController == "Users" ? "active" : "")"
+                   asp-area="" asp-controller="Users" asp-action="Index">
+                    <span class="material-symbols-outlined">person</span>Users
+                </a>
+            </li>
+
         </ul>
+
     </div>
 }

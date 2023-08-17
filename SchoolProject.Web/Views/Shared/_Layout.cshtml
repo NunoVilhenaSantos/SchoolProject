@@ -1,7 +1,7 @@
 ﻿@using System.Reflection
 <!DOCTYPE html>
-
 @inject IWebHostEnvironment HostingEnvironment
+
 
 @{
     ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
@@ -19,15 +19,18 @@
 
     @* <title>@ViewData["Title"] - @ViewData["SolutionName"]</title> *@
     @* <title>@ViewData["Title"] - @ViewData["AssemblyName"]</title> *@
-    @* <title>@ViewData["Title"] - @ViewData["AssemblyName"] v @ViewData["AssemblyVersion"]</title> *@
+
     <title>@ViewData["Title"] - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
+
 
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
     <!-- ----------------------------------- Adicione as referências aos estilos ----------------------------------- -->
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
+
     <partial name="_LayoutHeadImports"></partial>
 
 </head>
+
 
 <body>
 
@@ -36,24 +39,27 @@
     <partial name="_LayoutNavBar"/>
 </header>
 
-<br/>
-<br/>
 
+<br/>
+<br/>
 <div class="container-fluid justify-content-center">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
 </div>
 
-<br/>
-<br/>
-<br/>
 
+<br/>
+<br/>
+<br/>
 <partial name="_LayoutFooter"/>
 <partial name="_LayoutScripts"/>
 
+
 @await RenderSectionAsync("Scripts", false)
 
+
 </body>
+
 
 </html>

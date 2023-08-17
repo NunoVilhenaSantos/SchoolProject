@@ -56,7 +56,7 @@
                 "future": {
                     "regex": "none",
                     "alertText": "* Kuupäev peale "
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* Maksimaalselt ",
@@ -128,7 +128,7 @@
                     "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1}$|^(?:(?:(?:0?[13578]|1[02])(\/|-)31)|(?:(?:0?[1,3-9]|1[0-2])(\/|-)(?:29|30)))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^((1[012]|0?[1-9]){1}\/(0?[1-9]|[12][0-9]|3[01]){1}\/\d{2,4}\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1})$/,
                     "alertText": "* Vigane kuupäev või kuupäeva formaat",
                     "alertText2": "Eeldatud formaat: ",
-                    "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM või ",
+                    "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM või ", 
                     "alertText4": "yyyy-mm-dd hh:mm:ss AM|PM"
                 }
             };

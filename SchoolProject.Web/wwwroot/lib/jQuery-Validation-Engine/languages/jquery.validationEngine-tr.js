@@ -48,7 +48,7 @@
                     "alertText": "* Lütfen ",
                     "alertText2": " tarihinden daha geri bir tarih giriniz "
 
-                },
+                },	
                 "maxCheckbox": {
                     "regex": "none",
                     "alertText": "* En fazla ",

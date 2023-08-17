@@ -13,7 +13,6 @@ using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Data.Repositories.Enrollments;
@@ -323,7 +322,8 @@ builder.Services.AddDbContext<DataContextSqLite>(
 // Configure Identity service with user settings,
 // password settings, and token settings.
 // builder.Services.AddIdentity<IdentityUser, IdentityRole>(
-builder.Services.AddIdentity<User, IdentityRole>(
+builder.Services
+    .AddIdentity<SchoolProject.Web.Data.Entities.Users.User, IdentityRole>(
         cfg =>
         {
             // User settings.
@@ -613,8 +613,11 @@ builder.Services.TryAddSingleton(builder.Environment);
 
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
-builder.Services.AddScoped<UserManager<User>>();
-builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services
+    .AddScoped<UserManager<SchoolProject.Web.Data.Entities.Users.User>>();
+builder.Services
+    .AddScoped<SchoolProject.Web.Helpers.Users.IUserHelper,
+        SchoolProject.Web.Helpers.Users.UserHelper>();
 builder.Services.AddScoped<IE_MailHelper, E_MailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
 builder.Services.AddScoped<IStorageHelper, StorageHelper>();
@@ -692,6 +695,9 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 // builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
 
 
+builder.Services.AddWebEncoders();
+builder.Services.AddAntiforgery();
+
 // Extrai o nome do servidor da Connection String
 var serverHostName =
     GetServerHostNameFromConnectionString(
@@ -702,6 +708,21 @@ var serverHostName =
 // Verifica se o servidor está disponível
 GetServerHostNamePing(serverHostName);
 
+
+// ... outras configurações ...
+
+//builder.Services.AddWebMarkupMin(options =>
+//{
+//    options.DisablePoweredByHttpHeaders = true;
+//})
+//.AddMinification(options =>
+//{
+//    options.ExcludeContentType("application/json");
+//    options.ExcludedHeaders.Add("Content-Length");
+//    options.ExcludedHeaders.Add("X-SourceFiles");
+//});
+
+// ... outras configurações ...
 
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
@@ -726,6 +747,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseWebSockets();
 
 // 
 // app.UseStatusCodePages();

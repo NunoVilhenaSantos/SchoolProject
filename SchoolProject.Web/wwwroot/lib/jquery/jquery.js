@@ -2745,6 +2745,7 @@
     var rsingleTag = (/^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i);
 
 
+
 // Implement the identical functionality for filter and not
     function winnow(elements, qualifier, not) {
         if (isFunction(qualifier)) {
@@ -3131,6 +3132,7 @@
         };
     });
     var rnothtmlwhite = (/[^\x20\t\r\n\f]+/g);
+
 
 
 // Convert String-formatted options into Object-formatted ones
@@ -4102,6 +4104,7 @@
     var dataPriv = new Data();
 
     var dataUser = new Data();
+
 
 
 //	Implementation Summary
@@ -8474,6 +8477,7 @@
     var rquery = (/\?/);
 
 
+
 // Cross-browser xml parsing
     jQuery.parseXML = function (data) {
         var xml, parserErrorElem;
@@ -10612,6 +10616,7 @@
             "" :
             (text + "").replace(rtrim, "$1");
     };
+
 
 
 // Register as a named AMD module, since jQuery can be concatenated with other

@@ -1,11 +1,23 @@
 @using SchoolProject.Web.Data.Entities.Users
 @using SchoolProject.Web.Helpers.Users
+@using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-@inject UserHelper UserHelper
+@inject IUserHelper UserHelper
+
+
 @* @inject SignInManager<IdentityUser> SignInManager *@
 @* @inject UserManager<IdentityUser> UserManager *@
+@* @inject UserHelper UserHelper *@
+
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+
+    Debug.Assert(User.Identity != null, "User.Identity != null");
+}
 
 
 <ul class="navbar-nav">
@@ -17,7 +29,7 @@
                asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 <span class="material-symbols-outlined">settings_account_box</span>
                 @* Hello @UserManager.GetUserName(User) *@
-                Hello @UserHelper.GetUserInitialsAsync()
+                Hello @await UserHelper.GetUserInitialsAsync()
             </a>
         </li>
         <li class="nav-item">
