@@ -2,13 +2,32 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
+
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 using Microsoft.AspNetCore.Localization;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
 using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
+
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
@@ -28,6 +47,7 @@ using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Services;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
+
 using Serilog;
 
 
@@ -239,7 +259,9 @@ static void StopProgramTimer()
 
 StartProgramTimer();
 
+
 // -------------------------------------------------------------------------- //
+
 
 // Configuring Azure services for Blob and Queue clients.
 builder.Services.AddAzureClients(clientBuilder =>
@@ -318,6 +340,8 @@ builder.Services.AddDbContext<DataContextSqLite>(
 
 
 // -------------------------------------------------------------------------- //
+// --------------------------------- --------------------------------------- //
+// --------------------------------- --------------------------------------- //
 
 // Configure Identity service with user settings,
 // password settings, and token settings.
@@ -370,8 +394,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+
             ValidIssuer = builder.Configuration["Tokens:Issuer"],
             ValidAudience = builder.Configuration["Tokens:Audience"],
+
             IssuerSigningKey =
                 new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(
@@ -536,6 +562,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 
+builder.Services.AddAuthenticationCore();
+builder.Services.AddControllersWithViews().AddViewLocalization().AddMicrosoftIdentityUI();
+
 builder.Services.AddMvc().AddViewLocalization();
 builder.Services.AddMvcCore().AddViewLocalization();
 builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();
@@ -590,6 +619,9 @@ builder.Services.AddLogging(cfg =>
     cfg.AddSerilog(dispose: true); // Integrates Serilog as the logging provider
 });
 
+
+// --------------------------------- --------------------------------------- //
+// --------------------------------- --------------------------------------- //
 // --------------------------------- --------------------------------------- //
 
 // builder.Services.AddLogging();
@@ -598,6 +630,11 @@ builder.Logging.AddDebug();
 builder.Logging.AddConsole();
 builder.Logging.AddEventSourceLogger();
 builder.Logging.AddApplicationInsights();
+
+
+// --------------------------------- --------------------------------------- //
+// --------------------------------- --------------------------------------- //
+// --------------------------------- --------------------------------------- //
 
 
 // Configuração do serviço DatabaseConnectionVerifier
@@ -610,6 +647,9 @@ builder.Services.AddHttpContextAccessor();
 
 // Inject the IWebHostEnvironment so we can access the Environment
 builder.Services.TryAddSingleton(builder.Environment);
+
+// --------------------------------- --------------------------------------- //
+
 
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
@@ -624,6 +664,7 @@ builder.Services.AddScoped<IStorageHelper, StorageHelper>();
 builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 builder.Services.AddScoped<AuthenticatedUserInApp>();
 
+// --------------------------------- --------------------------------------- //
 
 // Add seeding for the database.
 // builder.Services.AddTransient<SeedDb>();
@@ -645,6 +686,7 @@ builder.Services.AddScoped<SeedDb>();
 // builder.Services.AddTransient<SeedDbMySql>();
 // builder.Services.AddTransient<SeedDbSqLite>();
 
+// --------------------------------- --------------------------------------- //
 
 //
 // injecting mock repositories
@@ -687,6 +729,7 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ITeacherCourseRepository, TeacherCourseRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 
+// --------------------------------- --------------------------------------- //
 
 //
 // injecting cloud repositories
@@ -694,6 +737,7 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 // builder.Services.AddScoped<AWSConfigOptions>();
 // builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
 
+// --------------------------------- --------------------------------------- //
 
 builder.Services.AddWebEncoders();
 builder.Services.AddAntiforgery();
@@ -760,8 +804,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 
-// Configure routing, authentication, and authorization middle-ware.
+// Add the Microsoft Identity Web cookie policy
+app.UseCookiePolicy();
 app.UseRouting();
+
+// Add the ASP.NET Core authentication service
 app.UseAuthentication();
 app.UseAuthorization();
 

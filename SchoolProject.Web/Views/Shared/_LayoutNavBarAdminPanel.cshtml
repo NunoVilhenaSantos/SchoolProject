@@ -28,7 +28,7 @@
 
         <ul class="dropdown-menu">
             <li>
-                <a class="dropdown-item @(currentAction == "" && currentController == "Users" ? "active" : "")"
+                <a class="dropdown-item @(currentController == "Users" ? "active" : "")"
                    asp-area="" asp-controller="Users" asp-action="Index">
                     <i class="bi bi-person-fill"></i>
                     <span class="material-symbols-outlined">person</span>Users
@@ -39,8 +39,8 @@
                 <hr class="dropdown-divider">
             </li>
             <li>
-                <a class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
-                   asp-area="" asp-controller="" asp-action="">
+                <a class="dropdown-item @(currentController == "Roles" ? "active" : "")"
+                   asp-area="" asp-controller="Roles" asp-action="">
                     <i class="bi bi-people-fill"></i>
                     <i class="material-symbols-outlined">group</i>Roles
                 </a>
