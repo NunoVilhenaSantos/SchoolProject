@@ -12,12 +12,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Helpers.Email;
 
 namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
 public class RegisterModel : PageModel
 {
-    private readonly SchoolProject.Web.Helpers.Email.IE_MailHelper _emailSender;
+    private readonly IE_MailHelper _emailSender;
     private readonly IUserEmailStore<User> _emailStore;
     private readonly ILogger<RegisterModel> _logger;
     private readonly SignInManager<User> _signInManager;
@@ -30,7 +31,7 @@ public class RegisterModel : PageModel
         IUserStore<User> userStore,
         SignInManager<User> signInManager,
         ILogger<RegisterModel> logger,
-        SchoolProject.Web.Helpers.Email.IE_MailHelper emailSender)
+        IE_MailHelper emailSender)
     {
         _userManager = userManager;
         _userStore = userStore;

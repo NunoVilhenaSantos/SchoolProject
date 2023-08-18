@@ -2,36 +2,18 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
-
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Facebook;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Http;
-
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-
 using Microsoft.AspNetCore.Localization;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using Microsoft.Extensions.Azure;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
-
 using SchoolProject.Web;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Data.Repositories.Enrollments;
@@ -47,7 +29,6 @@ using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Services;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
-
 using Serilog;
 
 
@@ -347,7 +328,7 @@ builder.Services.AddDbContext<DataContextSqLite>(
 // password settings, and token settings.
 // builder.Services.AddIdentity<IdentityUser, IdentityRole>(
 builder.Services
-    .AddIdentity<SchoolProject.Web.Data.Entities.Users.User, IdentityRole>(
+    .AddIdentity<User, IdentityRole>(
         cfg =>
         {
             // User settings.
@@ -563,7 +544,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 
 builder.Services.AddAuthenticationCore();
-builder.Services.AddControllersWithViews().AddViewLocalization().AddMicrosoftIdentityUI();
+builder.Services.AddControllersWithViews().AddViewLocalization()
+    .AddMicrosoftIdentityUI();
 
 builder.Services.AddMvc().AddViewLocalization();
 builder.Services.AddMvcCore().AddViewLocalization();
@@ -654,10 +636,10 @@ builder.Services.TryAddSingleton(builder.Environment);
 // Inject repositories and helpers.
 // builder.Services.AddScoped<UserManager<User>>();
 builder.Services
-    .AddScoped<UserManager<SchoolProject.Web.Data.Entities.Users.User>>();
+    .AddScoped<UserManager<User>>();
 builder.Services
-    .AddScoped<SchoolProject.Web.Helpers.Users.IUserHelper,
-        SchoolProject.Web.Helpers.Users.UserHelper>();
+    .AddScoped<IUserHelper,
+        UserHelper>();
 builder.Services.AddScoped<IE_MailHelper, E_MailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
 builder.Services.AddScoped<IStorageHelper, StorageHelper>();

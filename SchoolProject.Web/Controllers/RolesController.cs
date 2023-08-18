@@ -2,25 +2,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace SchoolProject.Web.Controllers;
 
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class RolesController : Controller
 {
-    private readonly
-        Microsoft.AspNetCore.Identity.RoleManager<
-            Microsoft.AspNetCore.Identity.IdentityRole> _roleManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
 
     /// <summary>
-    ///  Constructor for the RolesController
+    ///     Constructor for the RolesController
     /// </summary>
     /// <param name="roleManager"></param>
-    public RolesController(
-        Microsoft.AspNetCore.Identity.RoleManager<
-            Microsoft.AspNetCore.Identity.IdentityRole> roleManager
-    )
+    public RolesController(RoleManager<IdentityRole> roleManager)
     {
         _roleManager = roleManager;
     }
@@ -28,7 +22,7 @@ public class RolesController : Controller
 
     // GET: Roles
     /// <summary>
-    ///  Action to show all the roles
+    ///     Action to show all the roles
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -44,7 +38,7 @@ public class RolesController : Controller
 
     // GET: Roles/Details/5
     /// <summary>
-    ///   Action to show the details of a role
+    ///     Action to show the details of a role
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -63,11 +57,14 @@ public class RolesController : Controller
 
     // GET: Roles/Create
     /// <summary>
-    ///    Action to call the view to create a new role
+    ///     Action to call the view to create a new role
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Roles/Create
@@ -78,7 +75,7 @@ public class RolesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///  Action to validate the model a create a new role
+    ///     Action to validate the model a create a new role
     /// </summary>
     /// <param name="identityRole"></param>
     /// <returns></returns>
@@ -96,7 +93,7 @@ public class RolesController : Controller
         {
             ModelState.AddModelError(
                 "Roles", "This role already exists");
-            
+
             return View(identityRole);
         }
 
@@ -117,7 +114,7 @@ public class RolesController : Controller
 
     // GET: Roles/Edit/5
     /// <summary>
-    /// Action to call the view to edit a role
+    ///     Action to call the view to edit a role
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -142,7 +139,7 @@ public class RolesController : Controller
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     //
     /// <summary>
-    /// Action to validate and then edit a role
+    ///     Action to validate and then edit a role
     /// </summary>
     /// <param name="id"></param>
     /// <param name="identityRole"></param>
@@ -190,7 +187,7 @@ public class RolesController : Controller
 
     // POST: Roles/Delete/5
     /// <summary>
-    /// Action to validate the deletion of the role
+    ///     Action to validate the deletion of the role
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
