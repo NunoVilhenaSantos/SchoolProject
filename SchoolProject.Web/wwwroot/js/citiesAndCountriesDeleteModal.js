@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------- --->
+﻿//
 //
-// popups dos modais par eliminar um país ou uma cidade
+// popups dos modais para eliminar um país ou uma cidade
 //
-// ---------------------------------------------------------------------------------------------------------------- --->
+//
 
 
 function handleDeleteCountryModal(event) {

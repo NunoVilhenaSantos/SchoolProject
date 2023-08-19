@@ -1,12 +1,16 @@
 ﻿@page
+
 @model GenerateRecoveryCodesModel
+
 @{
     ViewData["Title"] = "Generate two-factor authentication (2FA) recovery codes";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
 <partial name="_StatusMessage" for="StatusMessage"/>
+
 <h3>@ViewData["Title"]</h3>
+
 <div class="alert alert-warning" role="alert">
     <p>
         <span class="glyphicon glyphicon-warning-sign"></span>
@@ -21,6 +25,7 @@
         <a asp-page="./ResetAuthenticator">reset your authenticator keys.</a>
     </p>
 </div>
+
 <div>
     <form method="post">
         <button class="btn btn-danger" type="submit">Generate Recovery Codes</button>

@@ -4,7 +4,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers.Email;
@@ -19,6 +21,9 @@ public class AccountController : Controller
     private readonly ICountryRepository _countryRepository;
     private readonly IE_MailHelper _emailHelper;
     private readonly IUserHelper _userHelper;
+
+    // Aqui é que se guarda os países e nacionalidades
+    private List<SelectListItem> _cachedCountriesWithNationalities;
 
 
     public AccountController(
@@ -97,13 +102,18 @@ public class AccountController : Controller
     {
         var model = new RegisterNewUserViewModel
         {
-            Countries = _countryRepository.GetComboCountries(),
-            Cities = _countryRepository.GetComboCities(0),
-            FirstName = null,
-            LastName = null,
-            Username = null,
-            Password = null,
-            ConfirmPassword = null
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            UserName = string.Empty,
+            Password = string.Empty,
+            ConfirmPassword = string.Empty,
+            WasDeleted = false,
+
+            CountryId = 0,
+            Countries = _countryRepository
+                .GetCombinedComboCountriesAndNationalities(),
+            CityId = 0,
+            Cities = _countryRepository.GetComboCities(0)
         };
 
 
@@ -117,7 +127,7 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = await _userHelper.GetUserByEmailAsync(model.Username);
+            var user = await _userHelper.GetUserByEmailAsync(model.UserName);
 
             if (user == null)
             {
@@ -129,8 +139,8 @@ public class AccountController : Controller
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Email = model.Username,
-                    UserName = model.Username,
+                    Email = model.UserName,
+                    UserName = model.UserName,
                     Address = model.Address,
                     PhoneNumber = model.PhoneNumber,
                     WasDeleted = false
@@ -169,8 +179,8 @@ public class AccountController : Controller
                 var myToken =
                     await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
-                var tokenLink = Url.Action(
-                    "ConfirmEmail", "Account",
+                var tokenLink = Url.Action("ConfirmEmail",
+                    "Account",
                     new
                     {
                         userid = user.Id,
@@ -180,13 +190,14 @@ public class AccountController : Controller
                 );
 
 
-                var response = _emailHelper.SendEmail(
-                    model.Username,
+                var response = await _emailHelper.SendEmailAsync(
+                    model.UserName,
                     "Email confirmation",
                     $"<h1>Email Confirmation</h1>" +
                     $"To allow the user, " +
                     $"please click in this link:" +
-                    $"</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+                    $"</br></br><a href = \"{tokenLink}\">" +
+                    $"Confirm Email</a>");
 
 
                 if (response.IsSuccess)
@@ -230,15 +241,22 @@ public class AccountController : Controller
 
         var model = new ChangeUserViewModel
         {
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Address = user.Address ?? string.Empty,
-            PhoneNumber = user.PhoneNumber,
-            Username = user.UserName ?? string.Empty
-            // CityId = user.CityId,
-            // CountryId = user.CountryId,
-            // Email = user.Email,
+            user = user,
+            CountryId = 0,
+            // Countries = _countryRepository.GetCombinedComboCountriesAndNationalities(),
+            CityId = 0,
+            Cities = _countryRepository.GetComboCities(0)
+            // Nationalities = _countryRepository.GetComboNationalities(0),
         };
+
+        if (_cachedCountriesWithNationalities == null)
+        {
+            var response = await GetCountriesWithNationalitesAsync();
+            _cachedCountriesWithNationalities =
+                response.Value as List<SelectListItem>;
+        }
+
+        model.Countries = _cachedCountriesWithNationalities;
 
         return View(model);
     }
@@ -251,21 +269,24 @@ public class AccountController : Controller
         if (!ModelState.IsValid)
         {
             ModelState.AddModelError(
-                string.Empty, "Failed to login!");
+                string.Empty, "Failed to update user information!");
 
-            return View();
+            // Return the view with the invalid model
+            return View(model);
         }
 
         var user =
             await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
 
-        if (user == null) return View();
+        // Return the view, as user is not found
+        if (user == null) return View(model);
 
-        user.FirstName = model.FirstName;
-        user.LastName = model.LastName;
-        user.Address = model.Address;
-        user.PhoneNumber = model.PhoneNumber;
-        user.UserName = model.Username;
+
+        user.FirstName = model.user.FirstName;
+        user.LastName = model.user.LastName;
+        user.Address = model.user.Address;
+        user.PhoneNumber = model.user.PhoneNumber;
+
 
         // user.CityId = model.CityId;
         // user.CountryId = model.CountryId;
@@ -328,18 +349,17 @@ public class AccountController : Controller
 
 
         return View(model);
-
-        // ModelState.AddModelError(
-        //     string.Empty, "Failed to login!");
     }
 
 
     // Aqui o utilizador obtem a lista de cidades de um determinado pais
     [HttpPost]
-    // [Route("api/Account/GetCitiesAsync")]
+    //  [Route("api/Account/GetCitiesAsync")]
     [Route("Account/GetCitiesAsync")]
     public async Task<JsonResult> GetCitiesAsync(int countryId)
     {
+        if (countryId == 0) return Json(new List<City>());
+
         var country =
             await _countryRepository.GetCountryWithCitiesAsync(countryId);
 
@@ -349,7 +369,7 @@ public class AccountController : Controller
 
     // Aqui o utilizador obtem a lista de paises
     [HttpPost]
-    // [Route("api/Account/GetCitiesAsync")]
+    //  [Route("api/Account/GetCountriesAsync")]
     [Route("Account/GetCountriesAsync")]
     public Task<JsonResult> GetCountriesAsync()
     {
@@ -357,6 +377,49 @@ public class AccountController : Controller
             _countryRepository.GetCountriesWithCitiesEnumerable();
 
         return Task.FromResult(Json(country.OrderBy(c => c.Name)));
+    }
+
+
+    // Aqui o utilizador obtem a lista de paises
+    [HttpPost]
+    //  [Route("api/Account/GetNationalitiesAsync")]
+    [Route("Account/GetNationalitiesAsync")]
+    public Task<JsonResult> GetNationalitiesAsync(int countryId)
+    {
+        var nationalities =
+            _countryRepository.GetComboNationalities(countryId);
+
+        // return Task.FromResult(Json(nationalities.OrderBy(c => c.Text)));
+
+        var nationalities1 =
+            _countryRepository.GetComboNationalitiesAsync(countryId);
+
+
+        return Task.FromResult(Json(nationalities1));
+    }
+
+
+    // Aqui o utilizador obtem a lista de paises
+    [HttpPost]
+    //  [Route("api/Account/GetCountriesWithNationalitesAsync")]
+    [Route("Account/GetCountriesWithNationalitesAsync")]
+    public Task<JsonResult> GetCountriesWithNationalitesAsync()
+    {
+        //var country =
+        //    _countryRepository.GetCombinedComboCountriesAndNationalities();
+
+        //return Task.FromResult(Json(country));
+
+        if (_cachedCountriesWithNationalities != null)
+            return Task.FromResult(Json(_cachedCountriesWithNationalities));
+
+        var countriesWithNationalities =
+            _countryRepository.GetCombinedComboCountriesAndNationalities();
+
+        _cachedCountriesWithNationalities =
+            countriesWithNationalities.ToList();
+
+        return Task.FromResult(Json(_cachedCountriesWithNationalities));
     }
 
 

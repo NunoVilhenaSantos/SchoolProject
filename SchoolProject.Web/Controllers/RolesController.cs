@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SchoolProject.Web.Controllers;
 
-[Authorize(Roles = "Admin,SuperUser,Functionary")]
+[Authorize(Roles = "Admin,SuperUser")]
 public class RolesController : Controller
 {
     private readonly RoleManager<IdentityRole> _roleManager;
@@ -24,7 +24,7 @@ public class RolesController : Controller
     /// <summary>
     ///     Action to show all the roles
     /// </summary>
-    /// <returns></returns>
+    /// <returns>a list of roles</returns>
     [HttpGet]
     public Task<IActionResult> Index()
     {

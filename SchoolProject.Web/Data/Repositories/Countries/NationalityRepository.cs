@@ -112,19 +112,23 @@ public class NationalityRepository
 
     public async Task<Country> GetCountryAsync(int cityId)
     {
-        return await _dataContext.Countries
-            .Include(c => c.Cities
-                .FirstOrDefault(ci => ci.Id == cityId))
-            .FirstOrDefaultAsync();
+        var country = await _dataContext.Countries
+            .Include(c => c.Cities)
+            .FirstOrDefaultAsync(
+                c => c.Cities.Any(ci => ci.Id == cityId));
+
+        return country;
     }
 
 
     public async Task<Country> GetCountryAsync(City city)
     {
-        return await _dataContext.Countries
-            .Include(c => c.Cities
-                .FirstOrDefault(ci => ci.Id == city.Id))
-            .FirstOrDefaultAsync();
+        var country = await _dataContext.Countries
+            .Include(c => c.Cities)
+            .FirstOrDefaultAsync(
+                c => c.Cities.Any(ci => ci.Id == city.Id));
+
+        return country;
     }
 
 

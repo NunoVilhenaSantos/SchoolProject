@@ -57,7 +57,6 @@
                     @* Hello @UserManager.GetUserName(User)! *@
                     @* @User.Identity?.Name *@
                     Hello @await UserHelper.GetUserInitialsAsync()
-
                 </a>
             </li>
 
@@ -65,9 +64,9 @@
                 <hr class="dropdown-divider">
             </li>
             <li class="nav-item">
-                <a class="nav-link @(currentController == "Users" ? "active" : "")"
-                   asp-area="" asp-controller="Users" asp-action="Index">
-                    <span class="material-symbols-outlined">person</span>Users
+                <a class="dropdown-item @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="Account" asp-action="Register">
+                    <span class="material-symbols-outlined">person</span>Register New User
                 </a>
             </li>
 

@@ -13,10 +13,20 @@ public interface ICountryRepository : IGenericRepository<Country>
 
     IEnumerable<Country> GetCountriesWithCitiesEnumerableNoTracking();
 
+    IQueryable<Country> GetCountriesWithNationalities();
+
+    IEnumerable<Country> GetCountriesWithNationalitiesEnumerable();
+
 
     IEnumerable<SelectListItem> GetComboCountries();
 
+    IEnumerable<SelectListItem> GetCombinedComboCountriesAndNationalities();
+
     IEnumerable<SelectListItem>? GetComboCities(int countryId);
+
+    IEnumerable<SelectListItem>? GetComboNationalities(int countryId);
+
+    IEnumerable<SelectListItem>? GetComboNationalitiesAsync(int countryId);
 
 
     Task<Country> GetCountryAsync(int modelCityId);

@@ -4,34 +4,13 @@
 //
 // ---------------------------------------------------------------------------------------------------------------- --->
 
+var countryDataCache = {};
 
-function getCities(countryId) {
-
-    $.ajax({
-        data: {countryId: countryId}, dataType: 'json',
-
-        error: function (ex) {
-            alert('Failed to retrieve cities. ' + ex);
-        },
-
-        success: function (cities) {
-            $("#CityId").append('<option value="0">(Select a city...)</option>');
-
-            $.each(cities, function (i, city) {
-                $("#CityId").append('<option value="' + city.id + '">' + city.name + '</option>');
-            });
-        },
-
-        type: 'POST',
-        url: '/Account/GetCitiesAsync'
-    });
-
-}
 
 function getNationalities(countryId) {
-
     $.ajax({
-        data: {countryId: countryId}, dataType: 'json',
+        data: {countryId: countryId},
+        dataType: 'json',
 
         error: function (ex) {
             alert('Failed to retrieve nationalities. ' + ex);
@@ -46,41 +25,49 @@ function getNationalities(countryId) {
             });
         },
 
-        // Coloque o URL correto para a função que busca as nacionalidades
         type: 'POST',
+
+        // Coloque o URL correto para a função que busca as nacionalidades
         url: '/Account/GetNationalitiesAsync'
     });
 }
 
-function getCountries() {
-    // debugger;
 
-    $.ajax({
-        dataType: 'json',
+function getCities(countryId) {
 
-        error: function (ex) {
-            alert('Failed to retrieve countries. ' + ex);
-        },
+    if (countryDataCache.cities && countryDataCache.cities[countryId]) {
+        populateCitiesDropdown(countryDataCache.cities[countryId]);
+    } else {
 
-        success: function (countries) {
-            $("#CountryId").append('<option value="0">(Select a country...)</option>');
-            // debugger;
+        $.ajax({
+            data: {countryId: countryId},
+            dataType: 'json',
+            error: function (ex) {
+                alert('Failed to retrieve cities. ' + ex);
+            },
+            success: function (cities) {
+                countryDataCache.cities = countryDataCache.cities || {};
+                countryDataCache.cities[countryId] = cities;
+                populateCitiesDropdown(cities);
+            },
+            type: 'POST',
+            url: '/Account/GetCitiesAsync'
+        });
 
-            $.each(countries, function (i, country) {
-                $("#CountryId").append('<option value="' + country.value + '">' + country.text + '</option>');
-            });
-        },
+    }
 
-        type: 'POST',
-        // url: '/Account/GetCountriesAsync'
-        url: '/Account/GetCountriesWithNationalitesAsync'
+}
+
+function populateCitiesDropdown(cities) {
+    $("#CityId").empty();
+    $("#CityId").append('<option value="0">(Select a city...)</option>');
+    $.each(cities, function (i, city) {
+        $("#CityId").append('<option value="' + city.id + '">' + city.name + '</option>');
     });
 
-    // debugger;
 }
 
 $(document).ready(function () {
-    // debugger;
 
     // Trigger the change event to populate the corresponding city drop-down list
     $("#CountryId").change(function () {

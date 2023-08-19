@@ -6,6 +6,7 @@
 // ------------------------------------------------------------------------------------------------------------------ //
 
 function darkModeSwitching() {
+
     let switchInput = document.getElementById("darkModeSwitch");
     let htmlElement = document.documentElement;
 
@@ -20,6 +21,7 @@ function darkModeSwitching() {
             htmlElement.setAttribute("data-bs-theme", "light");
         }
     });
+
 }
 
 darkModeSwitching();

@@ -18,9 +18,10 @@ public class LoginWithRecoveryCodeModel : PageModel
     private readonly UserManager<User> _userManager;
 
     public LoginWithRecoveryCodeModel(
+        ILogger<LoginWithRecoveryCodeModel> logger,
         SignInManager<User> signInManager,
-        UserManager<User> userManager,
-        ILogger<LoginWithRecoveryCodeModel> logger)
+        UserManager<User> userManager
+    )
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -28,26 +29,26 @@ public class LoginWithRecoveryCodeModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     public string ReturnUrl { get; set; }
 
     public async Task<IActionResult> OnGetAsync(string returnUrl = null)
     {
         // Ensure the user has gone through the username & password screen first
-        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null)
-            throw new InvalidOperationException(
-                "Unable to load two-factor authentication user.");
-
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync() ??
+                   throw new InvalidOperationException(
+                       "Unable to load two-factor authentication user.");
         ReturnUrl = returnUrl;
 
         return Page();
@@ -57,12 +58,12 @@ public class LoginWithRecoveryCodeModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null)
-            throw new InvalidOperationException(
-                "Unable to load two-factor authentication user.");
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync() ??
+                   throw new InvalidOperationException(
+                       "Unable to load two-factor authentication user.");
 
-        var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);
+        var recoveryCode =
+            Input.RecoveryCode.Replace(" ", string.Empty);
 
         var result =
             await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
@@ -92,14 +93,16 @@ public class LoginWithRecoveryCodeModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure
+        ///     and is not intended to be used directly from your code.
+        ///     This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
         [Required]

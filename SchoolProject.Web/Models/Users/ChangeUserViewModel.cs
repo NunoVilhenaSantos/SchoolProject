@@ -1,55 +1,56 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Models.Users;
 
 public class ChangeUserViewModel
 {
-    [Microsoft.Build.Framework.Required]
-    [DisplayName("First Name")]
-    public string FirstName { get; set; }
+    /// <summary>
+    ///     User class to be used for the view.
+    ///     It is used to get the user's data to create a new user.
+    /// </summary>
+    public User user { get; set; }
 
 
-    [Microsoft.Build.Framework.Required]
-    [DisplayName("Last Name")]
-    public string LastName { get; set; }
+    /// <summary>
+    ///     The country of the user.
+    /// </summary>
+    [Display(Name = "Country")]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
+    public required int CountryId { get; set; }
 
 
-    [Microsoft.Build.Framework.Required]
-    [DataType(DataType.EmailAddress)]
-    public string Username { get; set; }
+    /// <summary>
+    ///     The list of countries for selection.
+    /// </summary>
+    public IEnumerable<SelectListItem>? Countries { get; set; }
 
 
-    [MaxLength(100,
-        ErrorMessage =
-            "The field {0} can only contain {1} characters in lenght.")]
-    public string Address { get; set; }
+    /// <summary>
+    ///     The city of the user.
+    /// </summary>
+    [Display(Name = "City")]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a city...")]
+    public required int CityId { get; set; }
 
 
-    [MaxLength(20,
-        ErrorMessage =
-            "The field {0} can only contain {1} characters in lenght.")]
-    public string? PhoneNumber { get; set; }
+    /// <summary>
+    ///     The list of cities for selection.
+    /// </summary>
+    public IEnumerable<SelectListItem>? Cities { get; set; }
 
 
-    [DisplayName("City")]
-    [Range(1, int.MaxValue, ErrorMessage = "You must select a city.")]
-    public int CityId { get; set; }
+    /// <summary>
+    ///     The nationality of the user.
+    /// </summary>
+    //[Display(Name = "Nationality")]
+    //[Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
+    //public required int NationalityId { get; set; }
 
 
-    public IEnumerable<SelectListItem> Cities { get; set; }
-
-
-    [DisplayName("Country")]
-    [Range(1, int.MaxValue, ErrorMessage = "You must select a country")]
-    public int CountryId { get; set; }
-
-
-    public IEnumerable<SelectListItem> Countries { get; set; }
-
-
-    [DisplayName("Nationality")]
-    public int NationalityId => Convert.ToInt32(
-        Countries.FirstOrDefault(c => c.Selected)?.Value);
+    /// <summary>
+    ///     The list of 1 nationality for selection.
+    /// </summary>
+    //public IEnumerable<SelectListItem> Nationalities { get; set; }
 }

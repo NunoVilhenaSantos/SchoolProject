@@ -25,15 +25,17 @@ public class SetPasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
@@ -43,7 +45,8 @@ public class SetPasswordModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         var hasPassword = await _userManager.HasPasswordAsync(user);
 
@@ -59,7 +62,8 @@ public class SetPasswordModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         var addPasswordResult =
             await _userManager.AddPasswordAsync(user, Input.NewPassword);
@@ -77,14 +81,16 @@ public class SetPasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure
+        ///     and is not intended to be used directly from your code.
+        ///     This API may change or be removed in future releases.
         /// </summary>
         [Required]
         [StringLength(100,
@@ -96,8 +102,9 @@ public class SetPasswordModel : PageModel
         public string NewPassword { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure
+        ///     and is not intended to be used directly from your code.
+        ///     This API may change or be removed in future releases.
         /// </summary>
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]

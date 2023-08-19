@@ -12,17 +12,31 @@
 
         <form method="post">
             <div asp-validation-summary="ModelOnly"></div>
+            <!-- Hidden input for Username -->
+            @* <input type="hidden" asp-for="user.UserName" /> *@
 
             <div class="form-group">
-                <label asp-for="FirstName">First Name</label>
-                <input asp-for="FirstName" class="form-control"/>
-                <span asp-validation-for="FirstName" class="text-warning"></span>
+                <label asp-for="user.FirstName">First Name</label>
+                <input asp-for="user.FirstName" class="form-control"/>
+                <span asp-validation-for="user.FirstName" class="text-warning"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="LastName">Last Name</label>
-                <input asp-for="LastName" class="form-control"/>
-                <span asp-validation-for="LastName" class="text-warning"></span>
+                <label asp-for="user.LastName">Last Name</label>
+                <input asp-for="user.LastName" class="form-control"/>
+                <span asp-validation-for="user.LastName" class="text-warning"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="user.Address" class="control-label">Address</label>
+                <input asp-for="user.Address" class="form-control"/>
+                <span asp-validation-for="user.Address" class="text-warning"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="user.PhoneNumber" class="control-label">Phone Number</label>
+                <input asp-for="user.PhoneNumber" class="form-control"/>
+                <span asp-validation-for="user.PhoneNumber" class="text-warning"></span>
             </div>
 
             <div class="form-group">
@@ -35,18 +49,6 @@
                 <label asp-for="CityId" class="control-label"></label>
                 <select asp-for="CityId" asp-items="Model.Cities" class="form-control"></select>
                 <span asp-validation-for="CityId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Address" class="control-label">Address</label>
-                <input asp-for="Address" class="form-control"/>
-                <span asp-validation-for="Address" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
-                <input asp-for="PhoneNumber" class="form-control"/>
-                <span asp-validation-for="PhoneNumber" class="text-warning"></span>
             </div>
 
             <div class="form-group">
@@ -67,7 +69,11 @@
     <p>@ViewBag.Message</p>
 </div>
 
-<script src="~/js/cities.js"></script>
+
+<script src="~/js/citiesAndCountriesList.js"></script>
+@* <script src="~/js/citiesWithNationalityAndCountries.js"></script> *@
+@* <script src="~/js/citiesWithNationalityAndCountriesList.js"></script> *@
+
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

@@ -61,6 +61,21 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             .AsNoTracking().AsEnumerable();
     }
 
+    public IQueryable<Country> GetCountriesWithNationalities()
+    {
+        return _dataContext.Countries
+            .Include(c => c.Nationality)
+            .OrderBy(c => c.Name);
+    }
+
+    public IEnumerable<Country> GetCountriesWithNationalitiesEnumerable()
+    {
+        return _dataContext.Countries
+            .Include(c => c.Nationality)
+            .OrderBy(c => c.Name)
+            .AsEnumerable();
+    }
+
 
     public IEnumerable<SelectListItem> GetComboCountries()
     {
@@ -88,7 +103,18 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             .Include(c => c.Cities)
             .FirstOrDefault(c => c.Id == countryId);
 
-        if (country == null) return null;
+        // if (country == null) return null;
+
+        if (country == null)
+            // Retornar uma opção vazia se o país não for encontrado
+            return new List<SelectListItem>
+            {
+                new()
+                {
+                    Text = "(Select a country...)",
+                    Value = "0"
+                }
+            };
 
         var citiesList = country.Cities
             .Select(c => new SelectListItem
@@ -109,21 +135,104 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     }
 
 
+    public IEnumerable<SelectListItem>? GetComboNationalities(int countryId)
+    {
+        var country = _dataContext.Countries
+            .Include(c => c.Nationality)
+            .FirstOrDefault(c => c.Id == countryId);
+
+        // if (country == null) return null;
+
+        if (country == null)
+            // Retornar uma opção vazia se o país não for encontrado
+            return new List<SelectListItem>
+            {
+                new()
+                {
+                    Text = "(Select a country...)",
+                    Value = "0"
+                }
+            };
+
+        var nationalityItem = new SelectListItem
+        {
+            Text = country.Nationality.Name,
+            Value = country.Nationality.Id.ToString()
+        };
+
+        return new List<SelectListItem>
+        {
+            nationalityItem
+        };
+    }
+
+    public IEnumerable<SelectListItem>? GetComboNationalitiesAsync(
+        int countryId)
+    {
+        var nationalities = _dataContext.Countries
+            .Include(c => c.Nationality)
+            .Where(c => c.Id == countryId)
+            .Select(c => c.Nationality)
+            .Select(n => new SelectListItem
+            {
+                Text = n.Name,
+                Value = n.Id.ToString()
+            });
+
+        return nationalities;
+    }
+
+
+    public IEnumerable<SelectListItem>
+        GetCombinedComboCountriesAndNationalities()
+    {
+        var combinedList = new List<SelectListItem>();
+
+        // Retrieve countries and their corresponding nationalities
+        var countriesWithNationalities = _dataContext.Countries
+            .Include(c => c.Nationality).ToListAsync().Result;
+
+        countriesWithNationalities.ToList();
+
+        foreach (var country in countriesWithNationalities)
+        {
+            var itemText = $"{country.Name} ({country.Nationality.Name})";
+            var itemValue =
+                country.Id.ToString(); // Use the appropriate ID property
+
+            combinedList.Add(new SelectListItem
+                {Text = itemText, Value = itemValue});
+        }
+
+        combinedList.Insert(0, new SelectListItem
+        {
+            Text = "(Select a country...)",
+            Value = "0"
+        });
+
+        return combinedList;
+    }
+
+
     public async Task<Country> GetCountryAsync(int cityId)
     {
-        return await _dataContext.Countries
-            .Include(c => c.Cities
-                .FirstOrDefault(ci => ci.Id == cityId))
-            .FirstOrDefaultAsync();
+        var country = await _dataContext.Countries
+            .Include(c => c.Cities)
+            .FirstOrDefaultAsync(
+                c => c.Cities.Any(ci => ci.Id == cityId));
+
+        return country;
     }
 
 
     public async Task<Country> GetCountryAsync(City city)
     {
-        return await _dataContext.Countries
-            .Include(c => c.Cities
-                .FirstOrDefault(ci => ci.Id == city.Id))
-            .FirstOrDefaultAsync();
+        var country = await _dataContext.Countries
+            .Include(c => c.Cities)
+            .FirstOrDefaultAsync(
+                c => c.Cities.Any(ci => ci.Id == city.Id));
+
+        return country;
     }
 
 
@@ -232,15 +341,15 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
 
     public async Task<int> DeleteCityAsync(City city)
     {
-        var country = await _dataContextMsSql.Countries
+        var country = await _dataContext.Countries
             .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
             .FirstOrDefaultAsync();
 
         if (country == null) return 0;
 
-        _dataContextMsSql.Cities.Remove(city);
+        _dataContext.Cities.Remove(city);
 
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContext.SaveChangesAsync();
 
         return country.Id;
     }

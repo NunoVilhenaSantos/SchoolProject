@@ -35,34 +35,39 @@ public class EnableAuthenticatorModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     public string SharedKey { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     public string AuthenticatorUri { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     [TempData]
     public string[] RecoveryCodes { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
@@ -72,7 +77,8 @@ public class EnableAuthenticatorModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         await LoadSharedKeyAndQrCodeUriAsync(user);
 
@@ -84,7 +90,8 @@ public class EnableAuthenticatorModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                $"Unable to load user with ID " +
+                $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
         {
@@ -121,8 +128,8 @@ public class EnableAuthenticatorModel : PageModel
             return RedirectToPage("./TwoFactorAuthentication");
 
         var recoveryCodes =
-            await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user,
-                10);
+            await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(
+                user, 10);
 
         RecoveryCodes = recoveryCodes.ToArray();
         return RedirectToPage("./ShowRecoveryCodes");
@@ -174,14 +181,16 @@ public class EnableAuthenticatorModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure
+    ///     and is not intended to be used directly from your code.
+    ///     This API may change or be removed in future releases.
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure
+        ///     and is not intended to be used directly from your code.
+        ///     This API may change or be removed in future releases.
         /// </summary>
         [Required]
         [StringLength(7,

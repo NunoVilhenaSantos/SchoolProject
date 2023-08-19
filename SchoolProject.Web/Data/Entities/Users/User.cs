@@ -8,23 +8,41 @@ namespace SchoolProject.Web.Data.Entities.Users;
 
 public class User : IdentityUser, INotifyPropertyChanged
 {
+    /// <summary>
+    ///     The first name of the user.
+    /// </summary>
     [DisplayName("First Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
-    // [Required(ErrorMessage = "The field {0} is mandatory.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string FirstName { get; set; }
 
 
+    /// <summary>
+    ///     The last name of the user.
+    /// </summary>
     [DisplayName("Last Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
-    // [Required(ErrorMessage = "The field {0} is mandatory.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string LastName { get; set; }
 
 
+    /// <summary>
+    ///     The address of the user.
+    /// </summary>
     [MaxLength(100,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     public string? Address { get; set; }
+
+
+    /// <summary>
+    ///     The phone number of the user.
+    /// </summary>
+    //[MaxLength(20,
+    //    ErrorMessage =
+    //        "The field {0} can only contain {1} characters in lenght.")]
+    //public string? PhoneNumber { get; set; }
 
 
     [Display(Name = "Full Name")]

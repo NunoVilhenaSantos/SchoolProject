@@ -11,10 +11,6 @@
       "destination": "wwwroot/lib/jquery-validate/"
     },
     {
-      "library": "jQuery-Validation-Engine@2.6.4",
-      "destination": "wwwroot/lib/jQuery-Validation-Engine/"
-    },
-    {
       "library": "jquery-validation-unobtrusive@4.0.0",
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     }

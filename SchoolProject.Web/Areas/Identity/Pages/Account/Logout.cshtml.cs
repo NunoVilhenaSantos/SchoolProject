@@ -15,7 +15,8 @@ public class LogoutModel : PageModel
     private readonly ILogger<LogoutModel> _logger;
     private readonly SignInManager<User> _signInManager;
 
-    public LogoutModel(SignInManager<User> signInManager,
+    public LogoutModel(
+        SignInManager<User> signInManager,
         ILogger<LogoutModel> logger)
     {
         _signInManager = signInManager;
@@ -26,8 +27,10 @@ public class LogoutModel : PageModel
     {
         await _signInManager.SignOutAsync();
         _logger.LogInformation("User logged out.");
+
         if (returnUrl != null)
             return LocalRedirect(returnUrl);
+
         // This needs to be a redirect so that the browser performs a new
         // request and the identity for the user gets updated.
         return RedirectToPage();
