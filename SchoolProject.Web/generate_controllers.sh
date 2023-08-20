@@ -38,7 +38,7 @@ GenerateControllersRecursively() {
     dotnet aspnet-codegenerator controller --model "$modelName" --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName "$controllerName" --useAsyncActions
   done
 
-  # Loop recursivamente em todas as subpastas
+  # Loop recursivamente em todas as sub-pastas
   for dir in "$directory"/*; do
     if [ -d "$dir" ]; then
       GenerateControllersRecursively "$dir"
@@ -46,6 +46,6 @@ GenerateControllersRecursively() {
   done
 }
 
-# Chame a função para gerar scaffolding de controladores para todas as classes em subpastas
+# Chame a função para gerar scaffolding de controladores para todas as classes em sub-pastas
 GenerateControllersRecursively "$entitiesDirectory"
 

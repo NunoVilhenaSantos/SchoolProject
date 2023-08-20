@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------------------------------------------------------------ //
 //
-// Exibir a largura em pixels na console do navegador e no html com id="output3" e no rodapé do navbar
+// Exibir a largura em pixels na console do navegador e no HTML com id="output3" e no rodapé do navbar
 //
 // ------------------------------------------------------------------------------------------------------------------ //
 

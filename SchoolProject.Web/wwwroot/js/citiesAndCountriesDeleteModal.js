@@ -1,6 +1,6 @@
 ﻿//
 //
-// popups dos modais para eliminar um país ou uma cidade
+// pop-ups dos modais para eliminar um país ou uma cidade
 //
 //
 

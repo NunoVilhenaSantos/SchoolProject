@@ -54,7 +54,7 @@ function GenerateControllersRecursively
         Write-Host "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
     }
 
-    # Loop recursivamente em todas as subpastas
+    # Loop recursivamente em todas as sub-pastas
     foreach ($dir in Get-ChildItem -Path $directory -Directory)
     {
         GenerateControllersRecursively $dir.FullName
@@ -63,5 +63,5 @@ function GenerateControllersRecursively
 
 Clear-Host
 
-# Chame a função para gerar scaffolding de controladores para todas as classes em subpastas
+# Chame a função para gerar scaffolding de controladores para todas as classes em sub-pastas
 GenerateControllersRecursively $entitiesDirectory

@@ -130,7 +130,7 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
             .WithMany(c => c.Enrollments)
             .HasForeignKey(e => e.CourseId);
 
-        // Configurar coluna Id como autoincrementada sem ser chave principal
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<Enrollment>()
             .Property(e => e.Id)
             // Usar a extensão específica para MySQL
@@ -192,7 +192,7 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
             .WithMany(c => c.StudentCourses)
             .HasForeignKey(sc => sc.CourseId);
 
-        // // Configurar coluna Id como autoincrementada sem ser chave principal
+        // // Configurar coluna Id como auto-incrementada sem ser chave principal
         // modelBuilder.Entity<StudentCourse>()
         //     .Property<int>(sc => sc.Id)
         //     // Usar a extensão específica para MySQL

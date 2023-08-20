@@ -1,11 +1,12 @@
 ﻿@using SchoolProject.Web.Controllers
 @using SchoolProject.Web.Helpers
 @using Microsoft.Extensions.Localization
+
+
 @model IEnumerable<SchoolProject.Web.Data.Entities.Students.Student>
 @* @model IEnumerable<SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass> *@
 
 @inject IStringLocalizer<HomeController> Localizer
-
 
 
 @{
@@ -35,22 +36,22 @@
         $"RunTime do seeding dos cursos (impressão dos dados na consola): {MPElapsedTime} seconds.<br>" +
         $"RunTime do seeding (total): {RSElapsedTime} seconds.<br>" +
         $"RunTime do programa: {SPElapsedTime}.<br>";
-
-
 }
 
 
-<h1>@ViewData["WelcomeMessage"]</h1>
+@* <h1>@ViewData["WelcomeMessage"]</h1> *@
+
+@* <h1>@Localizer["WelcomeMessage"]</h1> *@
+
+@* <p>@Localizer["ContactUs"]</p> *@
+
+@* <p>@Localizer["AboutUs"]</p> *@
 
 
-<h1>@Localizer["WelcomeMessage"]</h1>
-
-<p>@Localizer["ContactUs"]</p>
-
-<p>@Localizer["AboutUs"]</p>
-
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex flex-column text-center">
+    <div class="flex-grow-1">
+        <h1 class="display-4">Welcome to the School Management Information System</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <img src="~/images/cover/school-Project-Cover-1.png" alt="School Management Cover 1">
+    </div>
 </div>

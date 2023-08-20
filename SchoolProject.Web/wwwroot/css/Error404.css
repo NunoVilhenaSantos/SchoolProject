@@ -75,7 +75,8 @@
 
 
 #containerError404 svg {
-    max-width: fit-content(100%);
+    max-width: fit-content;
+    max-width: -moz-fit-content;
     min-height: 40vh;
     max-height: 60vh;
     margin: 0 auto;

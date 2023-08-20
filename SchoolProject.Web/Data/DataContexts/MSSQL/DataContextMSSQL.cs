@@ -153,7 +153,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
             .WithMany(c => c.Enrollments)
             .HasForeignKey(e => e.CourseId);
 
-        // Configurar coluna Id como autoincrementada sem ser chave principal
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<Enrollment>()
             .Property(e => e.Id)
             // Usar a extensão específica para MySQL
@@ -198,7 +198,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
             .WithMany(c => c.SchoolClassCourses)
             .HasForeignKey(scc => scc.CourseId);
 
-        // Configurar coluna Id como autoincrementada sem ser chave principal
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<SchoolClassCourse>()
             .Property(scc => scc.Id)
             // Usar a extensão específica para MySQL
@@ -242,7 +242,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
             .WithMany(c => c.StudentCourses)
             .HasForeignKey(sc => sc.CourseId);
 
-        // Configurar coluna Id como autoincrementada sem ser chave principal
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<StudentCourse>()
             .Property(sc => sc.Id)
             // Usar a extensão específica para MySQL
@@ -287,7 +287,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
             .HasForeignKey(tc => tc.CourseId);
 
 
-        // Configurar coluna Id como autoincrementada sem ser chave principal
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<TeacherCourse>()
             .Property(tc => tc.Id)
             // Usar a extensão específica para MySQL

@@ -6,12 +6,13 @@ html {
 }
 
 /* Estilos padrão para o contêiner (tamanho automático) */
-.container {
-    width: auto;
-    max-width: 100%;
-    padding: 1rem; /* Adicione padding relativo para espaçamento interno */
-    margin: 0 auto; /* Centralizar o contêiner na tela */
-}
+/*.container {*/
+/*    width: auto;*/
+/*    max-width: 100%;*/
+/*    padding: 1rem; !* Adicione padding relativo para espaçamento interno *!*/
+/*    margin: 0 auto; !* Centralizar o contêiner na tela *!*/
+/*}*/
+
 
 /* ---------------------------------------------- */
 /* Media queries para diferentes tamanhos de tela */
@@ -63,7 +64,7 @@ html {
 
     .container {
         max-width: 96rem; /* 960px em relação ao tamanho base de 10px */
-        padding: 0.6rem; /* Ajuste o padding relativo conforme necessário */
+        padding: 0.4rem; /* Ajuste o padding relativo conforme necessário */
     }
 }
 
@@ -75,7 +76,7 @@ html {
 
     .container {
         max-width: 114rem; /* 1140px em relação ao tamanho base de 10px */
-        padding: 0.8rem; /* Ajuste o padding relativo conforme necessário */
+        padding: 0.6rem; /* Ajuste o padding relativo conforme necessário */
     }
 }
 
@@ -87,7 +88,7 @@ html {
 
     .container {
         max-width: 132rem; /* 1320px em relação ao tamanho base de 10px */
-        padding: 0.8rem; /* Ajuste o padding relativo conforme necessário */
+        padding: 0.6rem; /* Ajuste o padding relativo conforme necessário */
     }
 }
 
@@ -95,11 +96,11 @@ html {
 /* Tamanho de Tela: xxxl (1400px e acima) */
 @media (min-width: 2000px) {
     html {
-        font-size: 1.2rem; /* 12px em relação ao tamanho base de 10px */
+        font-size: 1.0rem; /* 12px em relação ao tamanho base de 10px */
     }
 
     .container {
         max-width: 190rem; /* 1320px em relação ao tamanho base de 10px */
-        padding: 1.0rem; /* Ajuste o padding relativo conforme necessário */
+        padding: 0.8rem; /* Ajuste o padding relativo conforme necessário */
     }
 }

@@ -352,7 +352,7 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador obtem a lista de cidades de um determinado pais
+    // Aqui o utilizador obtém a lista de cidades de um determinado pais
     [HttpPost]
     //  [Route("api/Account/GetCitiesAsync")]
     [Route("Account/GetCitiesAsync")]
@@ -367,7 +367,7 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador obtem a lista de paises
+    // Aqui o utilizador obtém a lista de países
     [HttpPost]
     //  [Route("api/Account/GetCountriesAsync")]
     [Route("Account/GetCountriesAsync")]
@@ -380,7 +380,7 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador obtem a lista de paises
+    // Aqui o utilizador obtém a lista de países
     [HttpPost]
     //  [Route("api/Account/GetNationalitiesAsync")]
     [Route("Account/GetNationalitiesAsync")]
@@ -399,7 +399,7 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador obtem a lista de paises
+    // Aqui o utilizador obtém a lista de países
     [HttpPost]
     //  [Route("api/Account/GetCountriesWithNationalitesAsync")]
     [Route("Account/GetCountriesWithNationalitesAsync")]

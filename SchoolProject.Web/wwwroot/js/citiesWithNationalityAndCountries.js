@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------------------------------------------------------- --->
 
 
-// Código para obter e popular as dropdowns
+// Código para obter e popular as drop-downs
 $(document).ready(function () {
     const countryDataCache = {
         cities: {},

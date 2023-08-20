@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 @inject IWebHostEnvironment HostingEnvironment
 
-
 @{
     ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
     ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
@@ -32,26 +31,30 @@
 </head>
 
 
-<body>
-
+@* <body> *@
+<body class="d-flex flex-column min-vh-100">
 
 <header>
     <partial name="_LayoutNavBar"/>
 </header>
 
 
-<br/>
-<br/>
-<div class="container-fluid justify-content-center">
+<!-- Conteúdo principal -->
+<!-- Adicione as classes 
+'container-fluid d-flex flex-column justify-content-center m-4'
+para ocupar espaço vertical, e 'm-4' para criar margem -->
+@* <div class="container-fluid d-flex flex-column justify-content-center m-4"> *@
+@*     <main role="main" class="pb-3"> *@
+@*         @RenderBody() *@
+@*     </main> *@
+@* </div> *@
+
+<div class="flex-grow-1 container-fluid d-flex flex-column justify-content-center m-4">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
 </div>
 
-
-<br/>
-<br/>
-<br/>
 <partial name="_LayoutFooter"/>
 <partial name="_LayoutScripts"/>
 

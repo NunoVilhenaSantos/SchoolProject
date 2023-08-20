@@ -16,7 +16,7 @@
 
 
 @* Verifica se o User está autenticado e se é o Admin!! *@
-@* cria um dropdown com as opções de Users e Roles *@
+@* cria um drop-down com as opções de Users e Roles *@
 @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("SuperUser")))
 {
     <div class="dropdown">

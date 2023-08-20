@@ -19,7 +19,7 @@ public class ConnectivityService
             if (reply is not {Status: IPStatus.Success}) return false;
 
             Console.WriteLine($"Address: {reply.Address}");
-            Console.WriteLine($"Roundtrip time: {reply.RoundtripTime}");
+            Console.WriteLine($"Round-trip time: {reply.RoundtripTime}");
             Console.WriteLine($"Time to live: {reply.Options?.Ttl}");
             Console.WriteLine();
 

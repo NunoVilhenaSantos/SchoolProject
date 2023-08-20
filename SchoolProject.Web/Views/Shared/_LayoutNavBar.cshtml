@@ -13,10 +13,12 @@
     <div class="container-fluid">
 
         @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@ViewData["Title"] - </a> *@
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-            @ViewData["AssemblyName"]
+        @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> *@
+        @*     @ViewData["AssemblyName"] *@
+        @* </a> *@
+        <a class="navbar-brand"  asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/images/icons/school-256x256.ico" alt="@ViewData["AssemblyName"]" width="30" height="24">
         </a>
-
 
         <div class="navbar-collapse collapse justify-content-between" id="navbarNavAltMarkup">
 
@@ -49,6 +51,9 @@
 
         </div>
 
+        @* <partial name="_LayoutNavBarLanguagePanel"/> *@
+        @* <partial name="_LayoutNavBarThemePanel"/> *@
+        <partial name="_LayoutNavBarAccountPanel"/>
         <partial name="_LayoutNavBarAdminPanel"/>
         <partial name="_LayoutNavBarLoginPanel"/>
 

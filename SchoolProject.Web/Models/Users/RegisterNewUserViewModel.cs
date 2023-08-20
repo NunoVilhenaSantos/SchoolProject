@@ -31,27 +31,27 @@ public class RegisterNewUserViewModel : User
 
     /// <summary>
     /// </summary>
-    [Required]
-    [DataType(DataType.EmailAddress)]
-    public required string UserName { get; set; }
+    //[Required]
+    //[DataType(DataType.EmailAddress)]
+    //public required string UserName { get; set; }
 
 
     /// <summary>
     ///     The address of the user.
     /// </summary>
-    [MaxLength(100,
-        ErrorMessage =
-            "The field {0} can only contain {1} characters in lenght.")]
-    public string? Address { get; set; }
+    //[MaxLength(100,
+    //    ErrorMessage =
+    //        "The field {0} can only contain {1} characters in length.")]
+    //public string? Address { get; set; }
 
 
     /// <summary>
     ///     The phone number of the user.
     /// </summary>
-    [MaxLength(20,
-        ErrorMessage =
-            "The field {0} can only contain {1} characters in lenght.")]
-    public string? PhoneNumber { get; set; }
+    //[MaxLength(20,
+    //    ErrorMessage =
+    //        "The field {0} can only contain {1} characters in length.")]
+    //public string? PhoneNumber { get; set; }
 
 
     /// <summary>

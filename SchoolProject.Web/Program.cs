@@ -434,7 +434,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = _ => true;
 
-    options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.MinimumSameSitePolicy = SameSiteMode.Strict;
 
     options.ConsentCookie.IsEssential = true;
     options.ConsentCookie.Expiration = TimeSpan.FromDays(30);
