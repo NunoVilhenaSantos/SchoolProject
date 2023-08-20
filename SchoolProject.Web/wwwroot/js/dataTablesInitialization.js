@@ -5,6 +5,15 @@
 // ------------------------------------------------------------------------------------------------------------------ //
 
 
+//
+// <table class="table">
+//
+// to
+//
+// <table class="table table-hover" sortable="True" id="sortableTable">
+//
+
+
 $(document).ready(function () {
 
     $('#sortableTable').DataTable({

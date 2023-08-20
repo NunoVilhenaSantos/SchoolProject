@@ -10,11 +10,11 @@ namespace SchoolProject.Web.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<HomeController> _logger;
     private readonly SignInManager<User> _signInManager;
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
+    private readonly ILogger<HomeController> _logger;
 
     public HomeController(
         ILogger<HomeController> logger,
@@ -74,7 +74,7 @@ public class HomeController : Controller
     }
 
 
-    public IActionResult Contact()
+    public IActionResult Contacts()
     {
         return View();
     }

@@ -1,14 +1,17 @@
 ﻿@inject IStringLocalizer<HomeController> Localizer
+
 @using SchoolProject.Web.Controllers
 @using SchoolProject.Web.Helpers
 @using Microsoft.Extensions.Localization
+
 @model dynamic
 
 @{
-    ViewBag.Title = "App Threads still running";
-    Layout = "_Layout";
+    ViewData["Title"] = "App Threads still running";
+    // Layout = "_Layout";
 }
 
+<title>@ViewData["Title"] - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
 <h2>title</h2>
 
 
@@ -42,18 +45,47 @@
 }
 
 
-<h1>@ViewData["WelcomeMessage"]</h1>
+@* <h1>@ViewData["WelcomeMessage"]</h1> *@
+
+<div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+
+    <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <div class="my-3 p-3">
+            <h2 class="display-5">List Of Processes</h2>
+            <p class="lead">@ProcessList.ListOfProcesses.Count.</p>
+        </div>
+        <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; height: auto; border-radius: 21px 21px 0 0;">
+            <p>@ProcessList.ListOfProcesses</p>
+        </div>
+    </div>
+
+    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center ">
+        <div class="my-3 py-3">
+            <h2 class="display-5">List Of Processes</h2>
+            <p class="lead">@ProcessList.ListOfProcesses.Count.</p>
+        </div>
+        <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; height: auto; border-radius: 21px 21px 0 0;">
+            <ul>
+                @foreach (var process in ProcessList.ListOfProcesses)
+                {
+                    <li>@process</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
 
 
-<br/>
-<p>@ProcessList.ListOfProcesses</p>
-
-<br/>
-<p>@ProcessList.ListOfProcesses.Count</p>
-<br/>
-<ul>
-    @foreach (var process in ProcessList.ListOfProcesses)
-    {
-        <li>@process</li>
-    }
-</ul>
+@* <br/> *@
+@* <p>@ProcessList.ListOfProcesses</p> *@
+@* *@
+@* <br/> *@
+@* <p>@ProcessList.ListOfProcesses.Count</p> *@
+@* <br/> *@
+@* <ul> *@
+@*     @foreach (var process in ProcessList.ListOfProcesses) *@
+@*     { *@
+@*         <li>@process</li> *@
+@*     } *@
+@* </ul> *@

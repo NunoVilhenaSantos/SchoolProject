@@ -1,5 +1,7 @@
 ﻿@using System.Reflection
+
 <!DOCTYPE html>
+
 @inject IWebHostEnvironment HostingEnvironment
 
 @{
@@ -10,7 +12,8 @@
 }
 
 @* <html lang="pt" data-bs-theme="dark"> *@
-<html lang="pt">
+@* <html lang="pt"> *@
+<html data-bs-theme="auto" lang="en">
 
 <head>
     <meta charset="utf-8"/>
@@ -21,7 +24,6 @@
 
     <title>@ViewData["Title"] - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
 
-
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
     <!-- ----------------------------------- Adicione as referências aos estilos ----------------------------------- -->
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
@@ -30,39 +32,21 @@
 
 </head>
 
+<body>
 
-@* <body> *@
-<body class="d-flex flex-column min-vh-100">
+<partial name="_LayoutHeader"/>
 
-<header>
-    <partial name="_LayoutNavBar"/>
-</header>
-
-
-<!-- Conteúdo principal -->
-<!-- Adicione as classes 
-'container-fluid d-flex flex-column justify-content-center m-4'
-para ocupar espaço vertical, e 'm-4' para criar margem -->
-@* <div class="container-fluid d-flex flex-column justify-content-center m-4"> *@
-@*     <main role="main" class="pb-3"> *@
-@*         @RenderBody() *@
-@*     </main> *@
-@* </div> *@
-
-<div class="flex-grow-1 container-fluid d-flex flex-column justify-content-center m-4">
-    <main role="main" class="pb-3">
+<main>
+    <div class="container-fluid p-4">
         @RenderBody()
-    </main>
-</div>
+    </div>
+</main>
 
 <partial name="_LayoutFooter"/>
 <partial name="_LayoutScripts"/>
 
-
 @await RenderSectionAsync("Scripts", false)
 
-
 </body>
-
 
 </html>
