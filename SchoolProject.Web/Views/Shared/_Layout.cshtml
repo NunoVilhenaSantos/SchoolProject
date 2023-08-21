@@ -28,24 +28,57 @@
     <!-- ----------------------------------- Adicione as referências aos estilos ----------------------------------- -->
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
 
-    <partial name="_LayoutHeadImports"></partial>
-
+    <div class="b-example-divider">
+        <partial name="_LayoutHeadImports"></partial>
+    </div>
 </head>
 
-<body>
+@* <body> *@
+<body class="d-flex flex-column min-vh-100">
 
-<partial name="_LayoutHeader"/>
+<div class="b-example-divider">
+    <partial name="_LayoutHeader"/>
+</div>
 
-<main>
-    <div class="container-fluid p-4">
-        @RenderBody()
-    </div>
-</main>
+@* <div class="b-example-divider"> *@
+@*     <main> *@
+@*         <div class="container-fluid justify-content-center p-4"> *@
+@*             @RenderBody() *@
+@*         </div> *@
+@*     </main> *@
+@* </div> *@
 
-<partial name="_LayoutFooter"/>
-<partial name="_LayoutScripts"/>
+@* <div class="b-example-divider"> *@
+@*     <main class="d-flex flex-column flex-fill"> *@
+@*         <div class="container-fluid d-flex flex-fill justify-content-center p-4"> *@
+@*                 @RenderBody() *@
+@*         </div> *@
+@*     </main> *@
+@* </div> *@
 
-@await RenderSectionAsync("Scripts", false)
+<div class="b-example-divider">
+    <main class="flex-grow-1 d-flex ">
+        <div class="container-fluid d-flex justify-content-center p-4">
+            @RenderBody()
+        </div>
+    </main>
+</div>
+
+<div class="b-example-divider">
+    <partial name="_LayoutFooter"/>
+</div>
+
+<div class="b-example-divider">
+    <partial name="_LayoutDarkModeButton"/>
+</div>
+
+<div class="b-example-divider">
+    <partial name="_LayoutScripts"/>
+</div>
+
+<div class="b-example-divider">
+    @await RenderSectionAsync("Scripts", false)
+</div>
 
 </body>
 

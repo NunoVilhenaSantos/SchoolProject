@@ -32,6 +32,15 @@ public class HomeController : Controller
     }
 
 
+    [ResponseCache(
+        Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel
+            {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+    }
+
+
     public IActionResult Index()
     {
         // Verificar a conectividade de rede
@@ -115,12 +124,33 @@ public class HomeController : Controller
         return View();
     }
 
-
-    [ResponseCache(
-        Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult Features()
     {
-        return View(new ErrorViewModel
-            {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+        return View();
+    }
+
+    public IActionResult Pricing()
+    {
+        return View();
+    }
+
+    public IActionResult FaQs()
+    {
+        return View();
+    }
+
+    public IActionResult Team()
+    {
+        return View();
+    }
+
+    public IActionResult Locations()
+    {
+        return View();
+    }
+
+    public IActionResult Terms()
+    {
+        return View();
     }
 }

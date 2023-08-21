@@ -14,6 +14,12 @@ public class ChangeUserViewModel
 
 
     /// <summary>
+    ///     The list of countries for selection.
+    /// </summary>
+    public IEnumerable<SelectListItem>? Countries { get; set; }
+
+
+    /// <summary>
     ///     The country of the user.
     /// </summary>
     [Display(Name = "Country")]
@@ -22,9 +28,9 @@ public class ChangeUserViewModel
 
 
     /// <summary>
-    ///     The list of countries for selection.
+    ///     The list of cities for selection.
     /// </summary>
-    public IEnumerable<SelectListItem>? Countries { get; set; }
+    public IEnumerable<SelectListItem>? Cities { get; set; }
 
 
     /// <summary>
@@ -33,12 +39,6 @@ public class ChangeUserViewModel
     [Display(Name = "City")]
     [Range(1, int.MaxValue, ErrorMessage = "You must select a city...")]
     public required int CityId { get; set; }
-
-
-    /// <summary>
-    ///     The list of cities for selection.
-    /// </summary>
-    public IEnumerable<SelectListItem>? Cities { get; set; }
 
 
     /// <summary>

@@ -1,0 +1,74 @@
+﻿@* --------------------------------------------------- *@
+@* Barras de navegação para testes número 3            *@
+@* --------------------------------------------------- *@
+
+@* _LayoutNavBarMain *@
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+}
+
+
+<nav class="navbar navbar-expand-xxl bg-body-tertiary nav-tabs">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/images/icons/school-256x256.ico" alt="@ViewData["AssemblyName"]" width="30" height="24">
+        </a>
+
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarHomePanel"/>
+
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarCountriesPanel"/>
+
+
+        <div class="b-example-divider"></div>
+        <a class="nav-link @(currentController == "Courses" ? "active" : "")"
+           asp-area="" asp-controller="Courses" asp-action="Index">
+            <i class="fas fa-person-shelter"></i>Courses
+        </a>
+
+        <a class="nav-link @(currentController == "Enrollments" ? "active" : "")"
+           asp-area="" asp-controller="Enrollments" asp-action="Index">
+            <i class="fas fa-person-through-window"></i>Enrollments
+        </a>
+
+        <a class="nav-link @(currentController == "Genders" ? "active" : "")"
+           asp-area="" asp-controller="Genders" asp-action="Index">
+            @* <i class="fas fa-person-shelter"></i> *@
+            <span class="material-symbols-outlined">transgender</span>Genders
+        </a>
+
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarSchoolClassesPanel"/>
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarStudentsPanel"/>
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarTeachersPanel"/>
+
+        <div class="b-example-divider"></div>
+        @* <partial name="_LayoutNavBarLanguagePanel"/> *@
+
+        <div class="b-example-divider"></div>
+        @* <partial name="_LayoutNavBarThemePanel"/> *@
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarAccountPanel"/>
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarAdminPanel"/>
+
+        <div class="b-example-divider"></div>
+        <partial name="_LayoutNavBarLoginPanel"/>
+
+    </div>
+
+</nav>

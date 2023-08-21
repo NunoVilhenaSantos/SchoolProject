@@ -26,6 +26,18 @@ public class SchoolClassesController : Controller
             : Problem("Entity set 'DataContextMySql.SchoolClasses'  is null.");
     }
 
+
+    // Allow unrestricted access to the Index action
+    [AllowAnonymous]
+    // GET: SchoolClasses
+    public async Task<IActionResult> IndexCards()
+    {
+        return _context.SchoolClasses != null
+            ? View(await _context.SchoolClasses.ToListAsync())
+            : Problem("Entity set 'DataContextMySql.SchoolClasses'  is null.");
+    }
+
+
     // GET: SchoolClasses/Details/5
     public async Task<IActionResult> Details(int? id)
     {
@@ -118,6 +130,7 @@ public class SchoolClassesController : Controller
         return View(schoolClass);
     }
 
+
     // POST: SchoolClasses/Delete/5
     [HttpPost]
     [ActionName("Delete")]
@@ -133,6 +146,7 @@ public class SchoolClassesController : Controller
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
+
 
     private bool SchoolClassExists(int id)
     {

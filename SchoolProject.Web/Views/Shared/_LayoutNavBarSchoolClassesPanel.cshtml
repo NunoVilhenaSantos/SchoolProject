@@ -18,7 +18,7 @@
         <li>
             <a class="dropdown-item @(currentController == "SchoolClasses" ? "active" : "")"
                asp-area="" asp-controller="SchoolClasses" asp-action="Index">
-                <i class="fas fa-person-through-window"></i> SchoolClasses
+                <i class="fas fa-person-through-window"></i> School Classes List
             </a>
         </li>
 
@@ -39,6 +39,17 @@
             <a class="dropdown-item @(currentController == "SchoolClassStudents" ? "active" : "")"
                asp-area="" asp-controller="SchoolClassStudents" asp-action="Index">
                 <i class="fas fa-person-through-window"></i> SchoolClassStudents
+            </a>
+        </li>
+
+
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item @(currentController == "SchoolClassStudents" ? "active" : "")"
+               asp-area="" asp-controller="SchoolClasses" asp-action="IndexCards">
+                <i class="fas fa-person-through-window"></i> School Classes Cards
             </a>
         </li>
 

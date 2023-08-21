@@ -54,17 +54,17 @@
             <h2 class="display-5">List Of Processes</h2>
             <p class="lead">@ProcessList.ListOfProcesses.Count.</p>
         </div>
-        <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; height: auto; border-radius: 21px 21px 0 0;">
+        <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             <p>@ProcessList.ListOfProcesses</p>
         </div>
     </div>
 
-    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center ">
+    <div class="text-bg-primary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-auto">
         <div class="my-3 py-3">
             <h2 class="display-5">List Of Processes</h2>
             <p class="lead">@ProcessList.ListOfProcesses.Count.</p>
         </div>
-        <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; height: auto; border-radius: 21px 21px 0 0;">
+        <div class="bg-body-tertiary shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             <ul>
                 @foreach (var process in ProcessList.ListOfProcesses)
                 {

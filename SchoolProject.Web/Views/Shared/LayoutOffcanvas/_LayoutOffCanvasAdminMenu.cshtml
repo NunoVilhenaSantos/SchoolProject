@@ -1,0 +1,18 @@
+﻿@using System.Diagnostics
+
+@* --------------------------------------------------- *@
+@* Barras de navegação off-canvas do número 0 até ao 9 *@
+@* --------------------------------------------------- *@
+
+@* --------------------------------------------------- *@
+@* Barras de navegação off-canvas para teste número 8  *@
+@* --------------------------------------------------- *@
+
+@* _LayoutOffCanvasAdminMenu *@
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+
+    Debug.Assert(User.Identity != null, "User.Identity != null");
+}

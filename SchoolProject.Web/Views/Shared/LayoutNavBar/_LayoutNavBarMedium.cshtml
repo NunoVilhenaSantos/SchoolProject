@@ -1,0 +1,69 @@
+﻿@* --------------------------------------------------- *@
+@* Barras de navegação para testes número 1            *@
+@* --------------------------------------------------- *@
+
+@* _LayoutNavBarMedium *@
+
+<nav class="navbar navbar-expand-md sticky-top border-bottom">
+
+    <div class="container">
+        <a class="navbar-brand d-md-none" asp-area="" asp-controller="Home" asp-action="Index">
+            <svg class="bi" height="24" width="24">
+                <use xlink:href="#aperture"/>
+            </svg>Aperture
+        </a>
+
+        <button aria-controls="#offcanvas" aria-label="Toggle navigation"
+                class="navbar-toggler"
+                data-bs-target="#offcanvas" data-bs-toggle="offcanvas" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div aria-labelledby="#offcanvasLabel" class="offcanvas offcanvas-end" id="#offcanvas" tabindex="-1">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="#offcanvasLabel">Aperture</h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+            </div>
+
+            <div class="offcanvas-body">
+                <ul class="navbar-nav flex-grow-1 justify-content-between">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <svg class="bi" height="24" width="24">
+                                <use xlink:href="#aperture"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tour</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Enterprise</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Support</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <svg class="bi" height="24" width="24">
+                                <use xlink:href="#cart"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>

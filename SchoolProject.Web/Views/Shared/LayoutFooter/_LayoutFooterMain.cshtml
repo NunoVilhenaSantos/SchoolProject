@@ -1,0 +1,174 @@
+﻿@* --------------------------------------------------- *@
+@* Rodapé para testes número 1                         *@
+@* --------------------------------------------------- *@
+
+@* _LayoutFooterMain *@
+
+<div class="container">
+
+    <footer class="container py-5 bottom-0 bg-body-tertiary">
+
+        <div class="row">
+
+            <div class="col-12 col-md">
+
+                <svg
+                    class="d-block mb-2" fill="none" height="24" role="img"
+                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <title>Product</title>
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/>
+                </svg>
+
+                @* <small class="d-block mb-3 text-body-secondary">&copy; 2017 – @DateTime.Today.Year</small> *@
+
+                <small class="d-block mb-3 text-body-secondary">
+                    @DateTime.Now
+                </small>
+
+                <small class="d-block mb-3 text-body-secondary">
+                    @ViewData["AssemblyName"] &copy; - Version: @ViewData["AssemblyVersion"]
+                </small>
+
+                <small class="d-block mb-3 text-body-secondary">
+                    <!-- Será atualizado com a largura do HTML -->
+                    <span id="htmlWidth-navbar"></span>
+                </small>
+
+                <small class="d-block mb-3 text-body-secondary">
+                    <!-- Será atualizado com a altura do HTML -->
+                    <span id="htmlHeight-navbar"></span>
+                </small>
+
+                <small class="d-block mb-3 text-body-secondary">
+                    <!-- Será atualizado com a largura e altura do HTML -->
+                    <span id="htmlWidthHeight-navbar"></span>
+                </small>
+
+            </div>
+
+            <div class="col-6 col-md">
+                <h5>Features</h5>
+                <ul class="list-unstyled text-small">
+                    <li>
+                        <a class="link-secondary text-decoration-none" href="#">Cool stuff</a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none" href="#">Random feature</a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none" href="#">Team feature</a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none" href="#">Stuff for developers</a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none" href="#">Another one</a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none" href="#">Last time</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-6 col-md">
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="About">
+                            About
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Contacts">
+                            Contacts
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Team">
+                            Team
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Terms">
+                            Terms
+                        </a>
+                    </li>
+                    <li></li><li></li>
+                </ul>
+            </div>
+
+            <div class="col-6 col-md">
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Legal">
+                            Legal
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Privacy">
+                            Privacy
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Cookies">
+                            Cookies
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="CookiesPrivacy">
+                            Cookies Privacy
+                        </a>
+                    </li>
+                    <li></li><li></li>
+                </ul>
+            </div>
+
+            <div class="col-6 col-md">
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Team">
+                            Team
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Locations">
+                            Locations
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="Threads">
+                            Threads
+                        </a>
+                    </li>
+                    <li>
+                        <a class="link-secondary text-decoration-none"
+                           asp-area="" asp-controller="Home" asp-action="TimeTracker">
+                            Time Trackers
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">Back to top</a>
+                    </li>
+                    <li></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </footer>
+</div>

@@ -17,8 +17,8 @@ namespace SchoolProject.Web.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly IConfiguration _configuration;
     private readonly ICountryRepository _countryRepository;
+    private readonly IConfiguration _configuration;
     private readonly IE_MailHelper _emailHelper;
     private readonly IUserHelper _userHelper;
 
@@ -88,6 +88,7 @@ public class AccountController : Controller
     // Aqui o utilizador faz o logout da sua conta
     // Aqui o utilizador é reencaminhado para a view Index do controlador Home
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> LogOut()
     {
         await _userHelper.LogOutAsync();
@@ -229,7 +230,7 @@ public class AccountController : Controller
 
 
     // Aqui o utilizador faz as alterações aos seus dados da sua conta
-    [HttpGet]
+    [HttpGet][Authorize]
     public async Task<IActionResult> ChangeUser()
     {
         if (User.Identity?.Name is null) return View();
@@ -313,7 +314,7 @@ public class AccountController : Controller
     }
 
 
-    [HttpGet]
+    [HttpGet][Authorize]
     public IActionResult ChangePassword()
     {
         return View();
