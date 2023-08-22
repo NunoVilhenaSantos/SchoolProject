@@ -2,12 +2,13 @@
 @using SchoolProject.Web.Helpers.Users
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
-@* @model TModel *@
+
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IUserHelper UserHelper
 
+@* @model TModel *@
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
@@ -52,23 +53,28 @@
         }
     </div>
 
+
+    <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+        <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
+        <hr class="d-lg-none my-2 ">
+    </li>
+
     <partial name="_LoginPartial"/>
 
     @* <partial name="_LayoutNavBarLanguagePanel"/> *@
 
     @* <partial name="_LayoutNavBarThemePanel"/> *@
 
+    <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+        <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
+        <hr class="d-lg-none my-2 ">
+    </li>
+
     <div class="form-check form-switch me-2">
         <div class="d-flex flex-column">
             <input class="form-check-input order-1 align-self-center" type="checkbox" id="darkModeSwitch">
-            <label class="form-check-label order-2 align-self-center" for="darkModeSwitch">Dark Mode</label>
+            <label class="form-check-label order-2 align-self-center text-wrap" for="darkModeSwitch">Dark Mode</label>
         </div>
     </div>
-
-    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
 </div>
