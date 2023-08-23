@@ -28,7 +28,7 @@ public class AccountController : Controller
 
     // Aqui é que se guarda os países e nacionalidades
     private List<SelectListItem> _cachedCountriesWithNationalities;
-
+    private const string BucketName = "users";
 
     public AccountController(
         ICountryRepository countryRepository,
@@ -155,8 +155,7 @@ public class AccountController : Controller
                     PhoneNumber = model.PhoneNumber,
                     WasDeleted = false,
                     ProfilePhotoId = _storageHelper.UploadStorageAsync(
-                            model.ImageFile, "profile-photos")
-                        .Result
+                        model.ImageFile, BucketName).Result
                     // City = city,
                     // CityId = city.Id,
                     // Country = country,
@@ -257,20 +256,24 @@ public class AccountController : Controller
         {
             user = user,
             CountryId = 0,
-            // Countries = _countryRepository.GetCombinedComboCountriesAndNationalities(),
+            Countries = _countryRepository
+                .GetCombinedComboCountriesAndNationalities(),
             CityId = 0,
             Cities = _countryRepository.GetComboCities(0)
             // Nationalities = _countryRepository.GetComboNationalities(0),
         };
 
+
         if (_cachedCountriesWithNationalities == null)
         {
             var response = await GetCountriesWithNationalitesAsync();
+
             _cachedCountriesWithNationalities =
                 response.Value as List<SelectListItem>;
         }
 
         model.Countries = _cachedCountriesWithNationalities;
+
 
         return View(model);
     }
@@ -283,7 +286,8 @@ public class AccountController : Controller
         if (!ModelState.IsValid)
         {
             ModelState.AddModelError(
-                string.Empty, "Failed to update user information!");
+                string.Empty,
+                "Failed to update user information!");
 
             // Return the view with the invalid model
             return View(model);
@@ -295,11 +299,32 @@ public class AccountController : Controller
         // Return the view, as user is not found
         if (user == null) return View(model);
 
+        if (model.user.ImageFile != null)
+        {
+            var profilePhotoId =
+                await _storageHelper.UploadFileAsyncToGcp(
+                    model.user.ImageFile, BucketName);
+
+            var profilePhotoIdAzure =
+                await _storageHelper.UploadStorageAsync(
+                    model.user.ImageFile, BucketName);
+
+            if (profilePhotoId != null)
+            {
+                await _storageHelper.DeleteFileAsyncFromGcp(
+                    user.ProfilePhotoId.ToString(),
+                    BucketName);
+
+                model.user.ProfilePhotoId = profilePhotoId;
+                user.ProfilePhotoId = profilePhotoId;
+            }
+        }
 
         user.FirstName = model.user.FirstName;
         user.LastName = model.user.LastName;
         user.Address = model.user.Address;
         user.PhoneNumber = model.user.PhoneNumber;
+        user.ProfilePhotoId = model.user.ProfilePhotoId;
 
 
         // user.CityId = model.CityId;

@@ -26,7 +26,7 @@ public class Country : IEntity, INotifyPropertyChanged
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/schoolclasses/" +
+        : "https://storage.googleapis.com/storage-nuno/countries/" +
           ProfilePhotoId;
 
 

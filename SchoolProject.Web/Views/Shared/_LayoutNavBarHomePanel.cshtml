@@ -7,49 +7,41 @@
     @* <span class="material-symbols-outlined">settings</span> *@
     <a class="nav-link dropdown-toggle @(currentController == "Home" ? "active" : "")"
        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        @* bootstrap svg icons *@
+        <svg class="bi d-block mx-auto mb-1" fill="white" height="24" width="24">
+            <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#house-door"/>
+        </svg>
+        @* Google Material icons *@
+        <span class="material-icons md-18 md-light">face</span>
+
+        @* Google Material symbols *@
         <span class="material-symbols-outlined">home</span>
+
         @* <i class="material-symbols-outlined">admin_panel_settings</i> *@
         Home
     </a>
 
 
     <ul class="dropdown-menu">
-        @* <li> *@
-        @*     <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")" *@
-        @*        asp-area="" asp-controller="" asp-action=""> *@
-        @*         <i class="bi bi-person-fill"></i> *@
-        @*         <span class="material-symbols-outlined">person</span>Users *@
-        @*     </a> *@
-        @* </li> *@
-        @* <li> *@
-        @*     <hr class="dropdown-divider"> *@
-        @* </li> *@
-        @* <li> *@
-        @*     <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")" *@
-        @*        asp-area="" asp-controller="" asp-action=""> *@
-        @*         <i class="bi bi-people-fill"></i> *@
-        @*         <i class="material-symbols-outlined">group</i>Roles *@
-        @*     </a> *@
-        @* </li> *@
-        @* <li> *@
-        @*     <hr class="dropdown-divider"> *@
-        @* </li> *@
         <li>
             <a class="dropdown-item @(currentAction == "Index" && currentController == "Home" ? "active" : "")"
                asp-area="" asp-controller="Home" asp-action="Index" aria-current="page">
-                <i class="fas fa-house"></i> Home
+                <span class="material-icons md-light">face</span>
+                <span class="fas fa-house"></span> Home
             </a>
         </li>
         <li>
             <a class="dropdown-item @(currentAction == "About" && currentController == "Home" ? "active" : "")"
                asp-area="" asp-controller="Home" asp-action="About">
-                <i class="fas fa-envelope"></i> About
+                <span class="material-icons md-36 md-dark">face</span>
+                <span class="fas fa-envelope"></span> About
             </a>
         </li>
         <li>
             <a class="dropdown-item @(currentAction == "Contact" && currentController == "Home" ? "active" : "")"
                asp-area="" asp-controller="Home" asp-action="Contacts">
-                <i class="fas fa-envelope"></i> Contacts
+                <span class="material-icons md-48 md-inactive">face</span>
+                <span class="fas fa-envelope"></span> Contacts
             </a>
         </li>
 

@@ -643,6 +643,7 @@ builder.Services
 builder.Services.AddScoped<IE_MailHelper, E_MailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
 builder.Services.AddScoped<IStorageHelper, StorageHelper>();
+builder.Services.AddScoped<IStorageHelper0, StorageHelper0>();
 builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 builder.Services.AddScoped<AuthenticatedUserInApp>();
 

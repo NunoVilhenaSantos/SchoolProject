@@ -7,27 +7,42 @@ namespace SchoolProject.Web.Helpers.Storages;
 
 public class StorageHelper : IStorageHelper
 {
+    private const string GcpStorageBucketName = "storage-nuno";
+
+    internal const string GcpStoragePublicUrl =
+        "https://storage.googleapis.com/storage-nuno/";
+    // "GCPStorageAuthFile_Jorge": "C:\\Users\\nunov\\Downloads\\GCP\\lateral-isotope-388820-755e381a94ef-jorge.json",
+    // "GCPStorageAuthFile_Nuno": "C:\\Users\\nunov\\Downloads\\GCP\\lateral-isotope-388820-f36a4ce5137c-nuno.json",
+    // "GCPStorageBucketName_Jorge": "supershoptpsicet77-jorge",
+    // "GCPStorageBucketName_Nuno": "supershoptpsicet77-nuno"
+
     private readonly IConfiguration _configuration;
+    // private readonly ILogger<CloudStorageService> _logger;
 
-    private readonly GoogleCredential _googleCredentialsJorge;
+    // private readonly string _azureBlobKey_1;
+    // private readonly string _azureBlobKey_2;
 
-    private readonly GoogleCredential _googleCredentialsNuno;
+    private readonly GoogleCredential _googleCredentials;
 
-    public StorageHelper(IConfiguration configuration)
+    public StorageHelper(
+        IConfiguration configuration
+        // ILogger<CloudStorageService> logger
+    )
     {
         _configuration = configuration;
 
+        var gcpStorageFileAccess =
+            _configuration["Storage:GCPStorageAuthFile_Nuno"];
 
-        var gcpStorageFileNuno =
-            _configuration["GoogleStorages:GCPStorageAuthFile_Nuno"];
-        _googleCredentialsNuno =
-            GoogleCredential.FromFile(gcpStorageFileNuno);
+        _googleCredentials =
+            GoogleCredential.FromFile(gcpStorageFileAccess);
 
 
-        var gcpStorageFileJorge =
-            _configuration["GoogleStorages:GCPStorageAuthFile_Jorge"];
-        _googleCredentialsJorge =
-            GoogleCredential.FromFile(gcpStorageFileJorge);
+        var uriBuilder =
+            new UriBuilder("https", "storage.googleapis.com");
+        uriBuilder.Path = Path.Combine("storage-jorge", "products" + "ImageId");
+        //
+        // string url = uriBuilder.Uri.ToString();
     }
 
 
@@ -35,6 +50,7 @@ public class StorageHelper : IStorageHelper
         IFormFile file, string bucketName)
     {
         var stream = file.OpenReadStream();
+
         return await UploadStreamAsync(stream, bucketName);
     }
 
@@ -43,6 +59,7 @@ public class StorageHelper : IStorageHelper
         byte[] file, string bucketName)
     {
         var stream = new MemoryStream(file);
+
         return await UploadStreamAsync(stream, bucketName);
     }
 
@@ -51,67 +68,171 @@ public class StorageHelper : IStorageHelper
         string file, string bucketName)
     {
         var stream = File.OpenRead(file);
+
         return await UploadStreamAsync(stream, bucketName);
     }
 
 
-    public async Task<string> UploadFileAsyncToGcp(IFormFile fileToUpload,
-        string fileNameToSave)
+    public async Task<Guid> UploadFileAsyncToGcp(
+        IFormFile fileToUpload, string fileNameInBucket)
     {
         try
         {
-            Log.Logger.Information(
-                "Uploading File Async: " +
-                "{FileName} to {FileNameToSave} " +
-                "into storage {GcpStorageBucket}",
-                fileToUpload.FileName,
-                fileNameToSave,
-                _configuration["GCPStorageBucketName_Nuno"]);
-
+            // Create a memory stream from the file in memory
             using (var memoryStream = new MemoryStream())
             {
+                // Copy the file to the memory stream
                 await fileToUpload.CopyToAsync(memoryStream);
+
 
                 // create storage client using the credentials file.
                 using (var storageClient =
-                       StorageClient.Create(_googleCredentialsNuno))
+                       await StorageClient.CreateAsync(_googleCredentials))
                 {
-                    //var bucketName = _options.GCPStorageBucketName_Nuno;
+                    var uniqueFileName = Guid.NewGuid();
+                    fileNameInBucket += "/" + uniqueFileName;
 
-                    var storageObject = await storageClient.UploadObjectAsync(
-                        _configuration["GCPStorageBucketName_Nuno"],
-                        fileNameToSave, fileToUpload.ContentType,
-                        memoryStream);
 
+                    // await DeleteFileAsyncFromGcp(
+                    //     fileNameInBucket, GcpStorageBucketName);
+
+
+                    // Log information - Begin file upload
                     Log.Logger.Information(
-                        "Uploaded File Async: " +
-                        "{FileName} to {FileNameToSave} " +
-                        "into storage {GcpStorageBucket}",
-                        fileToUpload.FileName,
-                        fileNameToSave,
-                        _configuration["GCPStorageBucketName_Nuno"]);
+                        "Uploading file: " +
+                        "{File} to {Name} in storage bucket {GcpStorage}",
+                        fileToUpload,
+                        fileNameInBucket,
+                        GcpStorageBucketName);
 
-                    return await Task.FromResult(storageObject.MediaLink);
+
+                    // Upload the file to storage
+                    var storageObject =
+                        await storageClient.UploadObjectAsync(
+                            GcpStorageBucketName, fileNameInBucket,
+                            fileToUpload.ContentType, memoryStream);
+
+
+                    // Log information - File upload complete
+                    Log.Logger.Information(
+                        "File uploaded successfully: " +
+                        "{File} to {Name} in storage bucket {GcpStorage}",
+                        fileToUpload,
+                        fileNameInBucket,
+                        GcpStorageBucketName);
+
+
+                    return await Task.FromResult(uniqueFileName);
                 }
             }
         }
         catch (Exception ex)
         {
-            Log.Logger.Error(
-                ex, "{ExMessage}", ex.Message);
-
-            //return $"Error while uploading file {fileNameToSave} {ex.Message}";
-
-            return await Task.FromResult(
-                $"Error while uploading file {fileNameToSave} {ex.Message}");
+            Log.Logger.Error(ex,
+                "Error while uploading file: {File}",
+                fileToUpload);
+            return await Task.FromResult(Guid.Empty);
         }
     }
 
+
+    public async Task<Guid> UploadFileAsyncToGcp(
+        string fileToUpload, string fileNameInBucket
+    )
+    {
+        try
+        {
+            // create a memory stream from the file bytes
+            using (var memoryStream =
+                   new MemoryStream(File.ReadAllBytes(fileToUpload)))
+            {
+                // Create storage client using the credentials file.
+                using (var storageClient =
+                       await StorageClient.CreateAsync(_googleCredentials))
+                {
+                    var uniqueFileName = Guid.NewGuid();
+                    fileNameInBucket += "/" + uniqueFileName;
+
+
+                    await DeleteFileAsyncFromGcp(
+                        fileNameInBucket, GcpStorageBucketName);
+
+
+                    // Log information - Begin file upload
+                    Log.Logger.Information(
+                        "Uploading file: " +
+                        "{File} to {Name} in storage bucket {GcpStorage}",
+                        fileToUpload,
+                        fileNameInBucket,
+                        GcpStorageBucketName);
+
+
+                    // Upload the file to storage
+                    var storageObject =
+                        await storageClient.UploadObjectAsync(
+                            GcpStorageBucketName, fileNameInBucket,
+                            null, memoryStream);
+
+
+                    // Log information - File upload complete
+                    Log.Logger.Information(
+                        "File uploaded successfully: " +
+                        "{File} to {Name} in storage bucket {GcpStorage}",
+                        fileToUpload,
+                        fileNameInBucket,
+                        GcpStorageBucketName);
+
+
+                    return await Task.FromResult(uniqueFileName);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Logger.Error(ex,
+                "Error while uploading file: {File}",
+                fileToUpload);
+            return await Task.FromResult(Guid.Empty);
+        }
+    }
+
+
+    public async Task<bool> DeleteFileAsyncFromGcp(
+        string fileNameInBucket,
+        string gcpStorageBucketName)
+    {
+        // Create storage client using the credentials file.
+        using var storageClient =
+            await StorageClient.CreateAsync(_googleCredentials);
+
+        var assetExists =
+            await storageClient.GetObjectAsync(
+                gcpStorageBucketName,
+                fileNameInBucket);
+
+        switch (assetExists)
+        {
+            case null:
+                return true;
+
+            default:
+                await storageClient.DeleteObjectAsync(assetExists);
+
+                assetExists =
+                    await storageClient.GetObjectAsync(
+                        gcpStorageBucketName,
+                        fileNameInBucket);
+
+                return true;
+            // return assetExists is null;
+        }
+    }
 
     private async Task<Guid> UploadStreamAsync(
         Stream stream, string bucketName)
     {
         var name = Guid.NewGuid();
+
 
         // Get a reference to a container named "sample-container"
         // and then create it
@@ -139,6 +260,6 @@ public class StorageHelper : IStorageHelper
         // Upload local file
         await blobClient.UploadAsync(stream);
 
-        return name;
+        return name; // "Uploaded file to blob storage.";
     }
 }
