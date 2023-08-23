@@ -65,7 +65,8 @@ public class ConverterHelper : IConverterHelper
             WasDeleted = courseViewModel.WasDeleted,
             CreatedBy = courseViewModel.CreatedBy,
             IdGuid = courseViewModel.IdGuid,
-            CreatedAt = courseViewModel.CreatedAt
+            CreatedAt = courseViewModel.CreatedAt,
+            ProfilePhotoId = courseViewModel.ProfilePhotoId,
         };
     }
 
@@ -84,7 +85,8 @@ public class ConverterHelper : IConverterHelper
             ImageFile = null,
             CreatedBy = course.CreatedBy,
             IdGuid = course.IdGuid,
-            CreatedAt = course.CreatedAt
+            CreatedAt = course.CreatedAt,
+            ProfilePhotoId = course.ProfilePhotoId,
         };
     }
 

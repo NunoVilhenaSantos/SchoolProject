@@ -123,7 +123,8 @@ public class SeedDbUsers
                 UserName = userName,
                 Email = email,
                 PhoneNumber = phoneNumber,
-                WasDeleted = false
+                WasDeleted = false,
+                ProfilePhotoId = default
                 // City = city,
                 // CityId = city.Id,
                 // Country = country,

@@ -65,14 +65,14 @@ public class Course : IEntity, INotifyPropertyChanged
     ///     Guid.Empty is the default value of the Guid type.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public Guid ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
 
     /// <summary>
     ///     The profile photo of the course.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        ? "https://ca001.blob.core.windows.net/images/noimage.png"
         : "https://storage.googleapis.com/storage-nuno/courses/" +
           ProfilePhotoId;
 

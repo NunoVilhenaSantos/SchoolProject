@@ -1,0 +1,265 @@
+﻿@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Helpers.Users
+@using System.Diagnostics
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@* @inject HttpContext HttpContext *@
+@inject IUserHelper UserHelper
+
+
+@* --------------------------------------------------- *@
+@* Barras de navegação para testes número 5            *@
+@* --------------------------------------------------- *@
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+
+    Debug.Assert(Context.User.Identity != null, "Context.User.Identity != null");
+
+    @* @Context.User.Identity.IsAuthenticated *@
+    @* @Context.User.Identity.Name *@
+    @* @Context.User.Identity.AuthenticationType *@
+
+    var principal = Context.User;
+    @* @foreach (Claim claim in principal.Claims) *@
+    @* { *@
+    @*     <p>CLAIM TYPE: @claim.Type; CLAIM VALUE: @claim.Value</p> *@
+    @* } *@
+
+
+    Debug.Assert(User != null, "User != null");
+    Debug.Assert(User.Identity != null, "User.Identity != null");
+    @* @User.Identity.IsAuthenticated *@
+    @* @User.Identity.Name *@
+    @* @User.Identity.AuthenticationType *@
+
+    @* @(User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))) *@
+    @* @(User.Identity.IsAuthenticated && User.HasClaim("IsAdmin", "true")) *@
+
+    IList<string> userRoles = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = await UserManager.GetUserAsync(User);
+        userRoles = await UserManager.GetRolesAsync(user);
+        if (user != null)
+            foreach (var role in userRoles)
+            {
+                @* <li>@role</li> *@
+            }
+    }
+}
+
+
+<div class="b-example-divider d-none">Layout Footer Double 1.ª</div>
+
+<div class="px-3 py-2 border-bottom">
+
+    <div class="container">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/"
+               class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="School Management">
+                    <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#bi-house-gear"/>
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li>
+                    <a href="#" class="nav-link text-secondary">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#bi-house-door"/>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link ">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#speedometer2"/>
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link ">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#table"/>
+                        </svg>
+                        Orders
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link ">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#grid"/>
+                        </svg>
+                        Products
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link ">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#person-circle"/>
+
+                        </svg>
+                        Customers
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="b-example-divider d-none">Layout Footer Double 2.ª</div>
+<div class="px-3 py-2 border-bottom mb-3">
+
+    <div class="container d-flex flex-wrap justify-content-center">
+
+        <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
+            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        </form>
+
+        @* <div class="text-end"> *@
+        @*     <button type="button" class="btn btn-light text-dark me-2">Login</button> *@
+        @*     <button type="button" class="btn btn-primary">Sign-up</button> *@
+        @* </div> *@
+
+        @* // altera os botões que iram aparecer consoante o estado do utilizador *@
+        <div class="text-end">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-light text-dark me-2  @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="Account" asp-action="ChangeUser">
+                    <span class="material-symbols-outlined">settings_account_box</span>
+                    @* @User.Identity?.Name *@
+                    Hello @await UserHelper.GetUserInitialsAsync()
+                </a>
+
+                <a class="btn btn-primary  @(currentAction == "LogOut" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="Account" asp-action="LogOut">
+                    <span class="material-symbols-outlined">logout</span>Logout
+                </a>
+            }
+            else
+            {
+                <a class="btn btn-light text-dark me-2  @(currentAction == "Login" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="Account" asp-action="Login">
+                    <span class="material-symbols-outlined">login</span>Login
+                </a>
+
+                <a class="btn btn-primary  @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
+                   asp-area="" asp-controller="Account" asp-action="Register">
+                    <span class="material-symbols-outlined">person_add</span>Register
+                </a>
+            }
+        </div>
+
+        @* // mostra o painel offcanvas de configuração da conta *@
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
+                <hr class="d-lg-none my-2 ">
+            </div>
+
+            <div class="text-end">
+                @* <a *@
+                @*     aria-controls="offCanvasAccountConfiguration" class="btn btn-primary" *@
+                @*     data-bs-toggle="offcanvas" href="#offCanvasAccountConfiguration" role="button"> *@
+                @*     Account Configuration *@
+                @* </a> *@
+
+                <button
+                    aria-controls="offCanvasAccountConfiguration" class="btn btn-primary"
+                    data-bs-target="#offCanvasAccountConfiguration" data-bs-toggle="offcanvas" type="button">
+                    <span class="material-symbols-outlined">settings_account_box</span>
+                    Account Panel
+                </button>
+
+            </div>
+        }
+
+
+        @* // mostra o painel offcanvas do painel do admin (funções exclusivas dos admins) *@
+        @* @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))) *@
+        @if (User.Identity.IsAuthenticated && User.HasClaim("IsAdmin", "true"))
+        {
+            <div class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
+                <hr class="d-lg-none my-2 ">
+            </div>
+
+            <div class="text-end">
+                @* <a *@
+                @*     aria-controls="offCanvasAdminPanel" class="btn btn-primary" *@
+                @*     data-bs-toggle="offcanvas" href="#offCanvasAdminPanel" role="button"> *@
+                @*     Admin Panel *@
+                @* </a> *@
+
+                <button
+                    aria-controls="offCanvasAdminPanel" class="btn btn-primary"
+                    data-bs-target="#offCanvasAdminPanel" data-bs-toggle="offcanvas" type="button">
+                    <span class="material-symbols-outlined">settings_account_box</span>
+                    Admin Panel
+                </button>
+
+                @* <button *@
+                @*     aria-controls="offcanvasRight" class="btn btn-primary" *@
+                @*     data-bs-target="#offCanvasAdminPanel" data-bs-toggle="offcanvas" type="button"> *@
+                @*     <span class="material-symbols-outlined">settings_account_box</span> *@
+                @*     Toggle right offcanvas *@
+                @* </button> *@
+
+            </div>
+        }
+
+        <div class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+            <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
+            <hr class="d-lg-none my-2 ">
+        </div>
+
+        <div class="form-check form-switch me-2">
+            <div class="d-flex flex-column">
+                <input class="form-check-input order-1 align-self-center" type="checkbox" id="darkModeSwitch">
+                <label class="form-check-label order-2 align-self-center text-wrap" for="darkModeSwitch">Dark Mode</label>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Display user roles -->
+@* <div class="container"> *@
+@*     <div class="row"> *@
+@*         <div class="col"> *@
+@*             <h3>Roles:</h3> *@
+@*             <ul> *@
+@*                 @{ *@
+@*                     Debug.Assert(User != null, "User != null"); *@
+@*                     if (User.Identity.IsAuthenticated) *@
+@*                     { *@
+@*                         var userRoles1 = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value); *@
+@*                         foreach (var role in userRoles1) *@
+@*                         { *@
+@*                             <li>@role</li> *@
+@*                         } *@
+@*                     } *@
+@*                     if (userRoles != null) *@
+@*                     { *@
+@*                         foreach (var role in userRoles) *@
+@*                         { *@
+@*                             <li>@role</li> *@
+@*                         } *@
+@*                     } *@
+@*                 } *@
+@*             </ul> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@

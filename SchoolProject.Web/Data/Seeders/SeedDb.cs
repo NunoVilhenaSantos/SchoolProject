@@ -305,6 +305,7 @@ public class SeedDb
             {
                 Name = gender,
                 IdGuid = Guid.NewGuid(),
+                ProfilePhotoId = default,
                 WasDeleted = false,
                 CreatedAt = DateTime.Now,
                 CreatedBy = user
@@ -562,7 +563,8 @@ public class SeedDb
                 WasDeleted = false,
                 Nationality = nationality,
                 IdGuid = Guid.NewGuid(),
-                CreatedBy = createdBy
+                CreatedBy = createdBy,
+                ProfilePhotoId = default
             };
 
             await _dataContextInUse.Countries.AddAsync(country);

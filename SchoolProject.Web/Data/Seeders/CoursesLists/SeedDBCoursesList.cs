@@ -435,7 +435,8 @@ public class SeedDbCoursesList
                         Name = course.Value.Item1,
                         Hours = course.Value.Item2,
                         CreditPoints = course.Value.Item3,
-                        CreatedBy = _user
+                        CreatedBy = _user,
+                        ProfilePhotoId = default
                     })
                 .ToList();
 

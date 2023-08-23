@@ -1,9 +1,4 @@
 ﻿@using System.Diagnostics
-
-@* --------------------------------------------------- *@
-@* Barras de navegação off-canvas do número 0 até ao 9 *@
-@* --------------------------------------------------- *@
-
 @* --------------------------------------------------- *@
 @* Barras de navegação off-canvas para teste número 9  *@
 @* --------------------------------------------------- *@
@@ -17,18 +12,17 @@
     Debug.Assert(User.Identity != null, "User.Identity != null");
 }
 
-
-<a
-    aria-controls="offCanvasAccountConfiguration" class="btn btn-primary"
-    data-bs-toggle="offcanvas" href="#offCanvasAccountConfiguration" role="button">
-    Account Configuration
-</a>
-
-<button
-    aria-controls="offCanvasAccountConfiguration" class="btn btn-primary"
-    data-bs-target="#offCanvasAccountConfiguration" data-bs-toggle="offcanvas" type="button">
-    Account Configuration
-</button>
+@* <a *@
+@*     aria-controls="offCanvasAccountConfiguration" class="btn btn-primary" *@
+@*     data-bs-toggle="offcanvas" href="#offCanvasAccountConfiguration" role="button"> *@
+@*     Account Configuration *@
+@* </a> *@
+@* *@
+@* <button *@
+@*     aria-controls="offCanvasAccountConfiguration" class="btn btn-primary" *@
+@*     data-bs-target="#offCanvasAccountConfiguration" data-bs-toggle="offcanvas" type="button"> *@
+@*     Account Configuration *@
+@* </button> *@
 
 <div class="offcanvas offcanvas-start" tabindex="-1"
      id="offCanvasAccountConfiguration" aria-labelledby="offcanvasAccountConfigurationLabel">

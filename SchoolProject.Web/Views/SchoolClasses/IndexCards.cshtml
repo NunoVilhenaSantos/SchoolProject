@@ -1,16 +1,15 @@
-﻿@page
-
+﻿@using System.Reflection
 @model IEnumerable<SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass>
 
 @{
-    var actionName = ViewContext.RouteData.Values["action"].ToString();
-    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
-    var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
-    ViewData["Title"] = actionName + controllerName + assemblyName;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>@pageTitle</h1>
 
 <p>
     <a asp-action="Create">Create New</a>

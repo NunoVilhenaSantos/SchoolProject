@@ -303,7 +303,8 @@ public class SeedDbStudentsAndTeachers
             UserName = email,
             Email = email,
             PhoneNumber = cellPhone,
-            WasDeleted = false
+            WasDeleted = false,
+            ProfilePhotoId = default
             // City = city,
             // CityId = city.Id,
             // Country = country,

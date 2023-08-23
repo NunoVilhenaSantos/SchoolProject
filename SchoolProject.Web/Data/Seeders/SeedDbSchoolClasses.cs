@@ -383,7 +383,8 @@ public class SeedDbSchoolClasses
                 PriceForUnemployed = 0,
                 IdGuid = default,
                 CreatedBy = user,
-                Courses = courses
+                Courses = courses,
+                ProfilePhotoId = default
             };
 
             await _dataContextInUse.SchoolClasses.AddAsync(schoolClass);

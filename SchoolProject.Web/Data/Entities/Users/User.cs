@@ -59,10 +59,11 @@ public class User : IdentityUser, INotifyPropertyChanged
     [NotMapped] [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
 
 
-    public Guid ProfilePhotoId { get; set; }
+    [DisplayName("Profile Photo")]
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        ? "https://ca001.blob.core.windows.net/images/noimage.png"
         : "https://storage.googleapis.com/storage-nuno/users/" +
           ProfilePhotoId;
     //    "https://storage.googleapis.com/storage-nuno/products/"+

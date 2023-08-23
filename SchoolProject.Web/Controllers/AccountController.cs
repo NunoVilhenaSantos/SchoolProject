@@ -10,6 +10,8 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Images;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Users;
 
@@ -19,7 +21,9 @@ public class AccountController : Controller
 {
     private readonly ICountryRepository _countryRepository;
     private readonly IConfiguration _configuration;
+    private readonly IStorageHelper _storageHelper;
     private readonly IE_MailHelper _emailHelper;
+    private readonly IImageHelper _imageHelper;
     private readonly IUserHelper _userHelper;
 
     // Aqui é que se guarda os países e nacionalidades
@@ -29,12 +33,16 @@ public class AccountController : Controller
     public AccountController(
         ICountryRepository countryRepository,
         IConfiguration configuration,
+        IStorageHelper storageHelper,
         IE_MailHelper emailHelper,
+        IImageHelper imageHelper,
         IUserHelper userHelper
     )
     {
         _userHelper = userHelper;
+        _imageHelper = imageHelper;
         _emailHelper = emailHelper;
+        _storageHelper = storageHelper;
         _configuration = configuration;
         _countryRepository = countryRepository;
     }
@@ -109,12 +117,13 @@ public class AccountController : Controller
             Password = string.Empty,
             ConfirmPassword = string.Empty,
             WasDeleted = false,
+            ProfilePhotoId = default,
 
             CountryId = 0,
             Countries = _countryRepository
                 .GetCombinedComboCountriesAndNationalities(),
             CityId = 0,
-            Cities = _countryRepository.GetComboCities(0)
+            Cities = _countryRepository.GetComboCities(0),
         };
 
 
@@ -144,7 +153,10 @@ public class AccountController : Controller
                     UserName = model.UserName,
                     Address = model.Address,
                     PhoneNumber = model.PhoneNumber,
-                    WasDeleted = false
+                    WasDeleted = false,
+                    ProfilePhotoId = _storageHelper.UploadStorageAsync(
+                            model.ImageFile, "profile-photos")
+                        .Result
                     // City = city,
                     // CityId = city.Id,
                     // Country = country,
@@ -230,7 +242,8 @@ public class AccountController : Controller
 
 
     // Aqui o utilizador faz as alterações aos seus dados da sua conta
-    [HttpGet][Authorize]
+    [HttpGet]
+    [Authorize]
     public async Task<IActionResult> ChangeUser()
     {
         if (User.Identity?.Name is null) return View();
@@ -314,7 +327,8 @@ public class AccountController : Controller
     }
 
 
-    [HttpGet][Authorize]
+    [HttpGet]
+    [Authorize]
     public IActionResult ChangePassword()
     {
         return View();

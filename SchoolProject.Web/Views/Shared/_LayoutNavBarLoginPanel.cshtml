@@ -2,8 +2,6 @@
 @using SchoolProject.Web.Helpers.Users
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
-
-
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IUserHelper UserHelper
@@ -54,10 +52,10 @@
     </div>
 
 
-    <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+    <span class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
         <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
         <hr class="d-lg-none my-2 ">
-    </li>
+    </span>
 
     <partial name="_LoginPartial"/>
 
@@ -65,10 +63,10 @@
 
     @* <partial name="_LayoutNavBarThemePanel"/> *@
 
-    <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+    <span class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
         <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
         <hr class="d-lg-none my-2 ">
-    </li>
+    </span>
 
     <div class="form-check form-switch me-2">
         <div class="d-flex flex-column">

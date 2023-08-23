@@ -1,5 +1,4 @@
 ﻿@using System.Reflection
-
 <!DOCTYPE html>
 
 @inject IWebHostEnvironment HostingEnvironment
@@ -9,12 +8,25 @@
     ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
     ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
     ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["assemblyName"] = assemblyName;
+
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
+    ViewData["pageTitle"] = pageTitle;
 }
 
 @* <html lang="pt" data-bs-theme="dark"> *@
 @* <html lang="pt"> *@
 <html data-bs-theme="auto" lang="en">
 
+<div class="b-example-divider d-none">Layout Head</div>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -22,49 +34,41 @@
     @* <title>@ViewData["Title"] - @ViewData["SolutionName"]</title> *@
     @* <title>@ViewData["Title"] - @ViewData["AssemblyName"]</title> *@
 
-    <title>@ViewData["Title"] - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
+    <title>@ViewData["Title"] - @pageTitle - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
 
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
     <!-- ----------------------------------- Adicione as referências aos estilos ----------------------------------- -->
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
 
-    <div class="b-example-divider">
-        <partial name="_LayoutHeadImports"></partial>
-    </div>
+    <div class="b-example-divider d-none">Layout Head Imports</div>
+    <partial name="_LayoutHeadImports"></partial>
+
 </head>
 
-
+<div class="b-example-divider d-none">Layout Body</div>
 <body class="min-vh-100">
 
-<div class="b-example-divider">
-    <partial name="_LayoutHeader"/>
-</div>
+<div class="b-example-divider d-none">Layout Header</div>
+<partial name="_LayoutHeader"/>
 
+<div class="b-example-divider d-none">Main Render Body</div>
+<main class="flex-grow-1">
+    <div class="container-fluid flex-grow-1 justify-content-center p-4">
+        @RenderBody()
+    </div>
+</main>
 
-<div class="b-example-divider">
-    <main class="flex-grow-1">
-        <div class="container-fluid flex-grow-1 justify-content-center p-4">
-            @RenderBody()
-        </div>
-    </main>
-</div>
+<div class="b-example-divider d-none">Layout Footers</div>
+<partial name="_LayoutFooter"/>
 
+<div class="b-example-divider d-none">Layout Dark Mode Button</div>
+<partial name="_LayoutDarkModeButton"/>
 
-<div class="b-example-divider">
-    <partial name="_LayoutFooter"/>
-</div>
+<div class="b-example-divider d-none">Layout Scripts</div>
+<partial name="_LayoutScripts"/>
 
-<div class="b-example-divider">
-    <partial name="_LayoutDarkModeButton"/>
-</div>
-
-<div class="b-example-divider">
-    <partial name="_LayoutScripts"/>
-</div>
-
-<div class="b-example-divider">
-    @await RenderSectionAsync("Scripts", false)
-</div>
+<div class="b-example-divider d-none">Scripts Render Section</div>
+@await RenderSectionAsync("Scripts", false)
 
 </body>
 

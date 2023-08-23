@@ -1,9 +1,4 @@
 ﻿@using System.Diagnostics
-
-@* --------------------------------------------------- *@
-@* Barras de navegação off-canvas do número 0 até ao 9 *@
-@* --------------------------------------------------- *@
-
 @* --------------------------------------------------- *@
 @* Barras de navegação off-canvas para teste número 8  *@
 @* --------------------------------------------------- *@
@@ -16,3 +11,17 @@
 
     Debug.Assert(User.Identity != null, "User.Identity != null");
 }
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasAdminPanel" aria-labelledby="offCanvasAdminPanelLabel">
+
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offCanvasAdminPanelLabel">Admin Panel | Off-canvas right</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        ...
+    </div>
+
+</div>
