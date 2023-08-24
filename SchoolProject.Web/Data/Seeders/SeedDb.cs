@@ -195,7 +195,7 @@ public class SeedDb
         await _dataContextInUse.SaveChangesAsync();
 
 
-        // TODO: estou aqui a tentar adicionar os cursos aos professores
+        
         // ------------------------------------------------------------------ //
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
@@ -206,7 +206,7 @@ public class SeedDb
         Console.WriteLine("Debug point.", Color.Red);
 
 
-        // TODO: estou aqui a tentar adicionar os cursos as turmas e vice-versa
+        
         // ------------------------------------------------------------------ //
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
@@ -218,7 +218,7 @@ public class SeedDb
         Console.WriteLine("Debug point.", Color.Red);
 
 
-        // TODO: estou aqui a tentar adicionar os cursos as turmas e vice-versa
+        
         // ------------------------------------------------------------------ //
         // adding students to school-classes into the database
         // ------------------------------------------------------------------ //
@@ -230,7 +230,7 @@ public class SeedDb
         Console.WriteLine("Debug point.", Color.Red);
 
 
-        // TODO: estou aqui a tentar adicionar o resto dos seedings que faltam
+        
         // lista de schoolclasses no estudante e vice-versa
 
 

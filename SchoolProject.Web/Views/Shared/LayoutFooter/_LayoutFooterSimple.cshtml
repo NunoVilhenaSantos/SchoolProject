@@ -1,49 +1,69 @@
 ﻿@* --------------------------------------------------- *@
-@* Rodapé para testes número 3                         *@
+@* Rodapé para testes número 2                         *@
 @* --------------------------------------------------- *@
 
-@* _LayoutFooterSimple *@
-
+@* _LayoutFooterMinimal *@
 
 <div class="container">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
 
-        <div class="col-md-4 d-flex align-items-center">
-            <a class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" href="/">
-                <svg class="bi" height="24" width="30">
-                    <use xlink:href="#bootstrap"/>
-                </svg>
-            </a>
+        <p class="col-md-6 mb-0 text-body-secondary">
+            &copy; 2023 @ViewData["AssemblyName"] &copy; - Version: @ViewData["AssemblyVersion"] @ViewData["AssemblyFileVersion"]
+        </p>
 
-            <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2023 Company, Inc.</span>
+        <p class="col-md-6 mb-0 text-body-secondary">
+            &copy; 2017 – @DateTime.Today.Year | @DateTime.Now |
+        </p>
 
-            <p >
-                <span id="htmlWidth-navbar"></span>
-                <span id="htmlHeight-navbar"></span>
-                <span id="htmlWidthHeight-navbar"></span>
-            </p>
-        </div>
+        <a class="col-md-6 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <ul class=" list-unstyled   my-custom-footer-html">
+                <li class="ms-3 footer-content-navbar">
+                    <span class="html-width"></span>
+                </li>
+                <li class="ms-3 footer-content-navbar">
+                    <span class="html-height"></span>
+                </li>
+                <li class="ms-3 footer-content-navbar">
+                    <span class="html-width-height"></span>
+                </li>
+            </ul>
+        </a>
 
-        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-            <li class="ms-3">
-                <a class="text-body-secondary" href="#">
-                    <svg class="bi" height="24" width="24">
-                        <use xlink:href="#twitter"/>
-                    </svg>
+        <a class="col-md-6 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" fill="currentColor" height="32" width="40">
+                <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#house-gear"/>
+            </svg>
+        </a>
+
+        <ul class="nav col-md-4 justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link px-2 text-body-secondary"
+                   asp-area="" asp-controller="Home" asp-action="Index">
+                    Home
                 </a>
             </li>
-            <li class="ms-3">
-                <a class="text-body-secondary" href="#">
-                    <svg class="bi" height="24" width="24">
-                        <use xlink:href="#instagram"/>
-                    </svg>
+            <li class="nav-item">
+                <a class="nav-link px-2 text-body-secondary"
+                   asp-area="" asp-controller="Home" asp-action="Features">
+                    Features
                 </a>
             </li>
-            <li class="ms-3">
-                <a class="text-body-secondary" href="#">
-                    <svg class="bi" height="24" width="24">
-                        <use xlink:href="#facebook"/>
-                    </svg>
+            <li class="nav-item">
+                <a class="nav-link px-2 text-body-secondary"
+                   asp-area="" asp-controller="Home" asp-action="Pricing">
+                    Pricing
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link px-2 text-body-secondary"
+                   asp-area="" asp-controller="Home" asp-action="FAQs">
+                    FAQs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link px-2 text-body-secondary"
+                   asp-area="" asp-controller="Home" asp-action="About">
+                    About
                 </a>
             </li>
         </ul>

@@ -9,7 +9,6 @@
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
 
-
 <nav class="navbar nav-tabs navbar-expand-xxl bg-body-tertiary">
 
     <div class="container-fluid gap-4">
@@ -18,14 +17,14 @@
             <img src="~/images/icons/school-256x256.ico" alt="@ViewData["AssemblyName"]" width="auto" height="60">
         </a>
 
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Home dropdown section</div>
         <partial name="_LayoutNavBarHomePanel"/>
 
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Countries dropdown section</div>
         <partial name="_LayoutNavBarCountriesPanel"/>
 
 
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Courses dropdown section</div>
         <a class="nav-link @(currentController == "Courses" ? "active" : "")"
            asp-area="" asp-controller="Courses" asp-action="Index">
             <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2.0em" viewBox="0 0 576 512"
@@ -37,6 +36,7 @@
             Courses
         </a>
 
+        <div class="b-example-divider d-none">Enrollments dropdown section</div>
         <a class="nav-link @(currentController == "Enrollments" ? "active" : "")"
            asp-area="" asp-controller="Enrollments" asp-action="Index">
             <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 640 512"
@@ -47,6 +47,7 @@
             Enrollments
         </a>
 
+        <div class="b-example-divider d-none">Genders dropdown section</div>
         <a class="nav-link @(currentController == "Genders" ? "active" : "")"
            asp-area="" asp-controller="Genders" asp-action="Index">
             <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 448 512"
@@ -60,36 +61,31 @@
         </a>
 
 
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">SchoolClasses dropdown section</div>
         <partial name="_LayoutNavBarSchoolClassesPanel"/>
 
-
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Students dropdown section</div>
         <partial name="_LayoutNavBarStudentsPanel"/>
 
-
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Teachers dropdown section</div>
         <partial name="_LayoutNavBarTeachersPanel"/>
 
-
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Language dropdown section</div>
         @* <partial name="_LayoutNavBarLanguagePanel"/> *@
 
-
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Theme dropdown section</div>
         @* <partial name="_LayoutNavBarThemePanel"/> *@
 
-
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Account dropdown section</div>
         <partial name="_LayoutNavBarAccountPanel"/>
 
-
-        <div class="b-example-divider d-none"></div>
+        <div class="b-example-divider d-none">Admin dropdown section</div>
         <partial name="_LayoutNavBarAdminPanel"/>
 
-
-        <div class="b-example-divider d-none"></div>
-        <partial name="_LayoutNavBarLoginPanel"/>
+        <div class="b-example-divider d-none">login panel section</div>
+        <div class="b-example-divider login-panel-section">
+            <partial name="_LayoutNavBarLoginPanel"/>
+        </div>
 
     </div>
 

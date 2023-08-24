@@ -313,7 +313,7 @@ public class SeedDbStudentsAndTeachers
         };
 
         // ------------------------------------------------------------------ //
-        // TODO: mudei-me para aqui
+        
         ListOfUsersToAdd.Add(newUser);
 
 
@@ -520,8 +520,6 @@ public class SeedDbStudentsAndTeachers
     private static async Task StoreStudentsOrTeachersInDb()
     {
         // ------------------------------------------------------------------ //
-        // TODO: add students or teachers to the database
-
         Console.WriteLine("Debug zone 1");
 
         foreach (var student in ListOfStudentsToAdd)

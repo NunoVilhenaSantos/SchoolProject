@@ -1,9 +1,31 @@
-/* Set the base font size to 14px */
 
 html {
-    font-size: 14px;
+    font-size: 14px; /* Set the base font size to 14px */
     position: relative;
-    min-height: 100%;
+    min-height: 100vh;
+}
+
+
+/* Estilos para telas maiores ou iguais a 1405px */
+@media screen and (min-width: 1405px) {
+    .login-panel-section {
+        display: block; /* Mostrar a seção */
+    }
+
+    .dark-mode-switch-panel-section {
+        display: none; /* Ocultar a seção */
+    }
+}
+
+/* Estilos para telas menores que 1405px */
+@media screen and (max-width: 1407px) {
+    .login-panel-section {
+        display: none; /* Ocultar a seção */
+    }
+
+    .dark-mode-switch-panel-section {
+        display: inline-block; /* Mostrar a seção */
+    }
 }
 
 

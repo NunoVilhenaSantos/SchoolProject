@@ -12,13 +12,10 @@
 
             <div class="col-12 col-md">
 
-                <svg
-                    class="d-block mb-2" fill="none" height="24" role="img"
-                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="d-block mb-2" fill="currentColor" height="24" role="img"
+                     viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                     <title>Product</title>
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/>
+                    <use xlink:href="/lib/bootstrap-icons/bootstrap-icons.svg#house-gear"/>
                 </svg>
 
                 @* <small class="d-block mb-3 text-body-secondary">&copy; 2017 – @DateTime.Today.Year</small> *@
@@ -31,19 +28,19 @@
                     @ViewData["AssemblyName"] &copy; - Version: @ViewData["AssemblyVersion"]
                 </small>
 
-                <small class="d-block mb-3 text-body-secondary">
+                <small class="d-block mb-3 text-body-secondary my-custom-footer-html">
                     <!-- Será atualizado com a largura do HTML -->
-                    <span id="htmlWidth-navbar"></span>
+                    <span class="html-width"></span>
                 </small>
 
-                <small class="d-block mb-3 text-body-secondary">
+                <small class="d-block mb-3 text-body-secondary my-custom-footer-html">
                     <!-- Será atualizado com a altura do HTML -->
-                    <span id="htmlHeight-navbar"></span>
+                    <span class="html-height"></span>
                 </small>
 
-                <small class="d-block mb-3 text-body-secondary">
+                <small class="d-block mb-3 text-body-secondary my-custom-footer-html">
                     <!-- Será atualizado com a largura e altura do HTML -->
-                    <span id="htmlWidthHeight-navbar"></span>
+                    <span class="html-width-height"></span>
                 </small>
 
             </div>
