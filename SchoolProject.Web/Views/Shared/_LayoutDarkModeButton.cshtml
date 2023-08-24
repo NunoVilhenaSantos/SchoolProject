@@ -5,7 +5,8 @@
 @* ------------------------------------------------------------------------------------------------------------------ *@
 
 <div class="b-example-divider d-none">Bootstrap icons svg for button icons</div>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+
+<svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
     <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
     </symbol>
@@ -35,16 +36,15 @@
         <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
     </button>
 
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-
+    <ul aria-labelledby="bd-theme-text" class="dropdown-menu dropdown-menu-end shadow">
         <li>
-            <button type="button" class="dropdown-item d-flex align-items-center"
-                    data-bs-theme-value="light" aria-pressed="false">
-                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <button aria-pressed="false" class="dropdown-item d-flex align-items-center"
+                    data-bs-theme-value="light" type="button">
+                <svg class="bi me-2 opacity-50 theme-icon" fill="currentColor" width="1em" height="1em">
                     <use href="#sun-fill"></use>
                 </svg>
                 Light
-                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                <svg class="bi ms-auto d-none" fill="currentColor" width="1em" height="1em">
                     <use href="#check2"></use>
                 </svg>
             </button>
@@ -53,11 +53,11 @@
         <li>
             <button type="button" class="dropdown-item d-flex align-items-center"
                     data-bs-theme-value="dark" aria-pressed="false">
-                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                <svg class="bi me-2 opacity-50 theme-icon" fill="currentColor" width="1em" height="1em">
                     <use href="#moon-stars-fill"></use>
                 </svg>
                 Dark
-                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                <svg class="bi ms-auto d-none" fill="currentColor" width="1em" height="1em">
                     <use href="#check2"></use>
                 </svg>
             </button>
@@ -66,11 +66,11 @@
         <li>
             <button type="button" class="dropdown-item d-flex align-items-center active"
                     data-bs-theme-value="auto" aria-pressed="true">
-                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                <svg class="bi me-2 opacity-50 theme-icon" fill="currentColor" width="1em" height="1em">
                     <use href="#circle-half"></use>
                 </svg>
                 Auto
-                <svg class="bi ms-auto d-none" width="1em" height="1em">
+                <svg class="bi ms-auto d-none" fill="currentColor" width="1em" height="1em">
                     <use href="#check2"></use>
                 </svg>
             </button>

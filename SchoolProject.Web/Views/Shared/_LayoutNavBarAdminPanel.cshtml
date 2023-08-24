@@ -1,7 +1,9 @@
 ﻿@using SchoolProject.Web.Data.Entities.Users
 @using SchoolProject.Web.Helpers.Users
+
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IUserHelper UserHelper
@@ -20,18 +22,33 @@
 @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("SuperUser")))
 {
     <div class="dropdown">
-        @* <span class="material-symbols-outlined">settings</span> *@
-        <a class="nav-link dropdown-toggle @(currentController is "Users" or "Roles" ? "active" : "")"
-           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="material-symbols-outlined">admin_panel_settings</i>Admin Panel
+
+        <a aria-expanded="false"
+           class="nav-link dropdown-toggle @(currentController is "Users" or "Roles" ? "active" : "")"
+           data-bs-toggle="dropdown" role="button">
+
+            <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 448 512"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M144 144c0-44.2 35.8-80 80-80c31.9 0 59.4 18.6 72.3 45.7c7.6 16 26.7 22.8 42.6 15.2s22.8-26.7 15.2-42.6C331 33.7 281.5 0 224 0C144.5 0 80 64.5 80 144v48H64c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H144V144z"/>
+            </svg>
+            @* <span class="fa-solid fa-unlock fa-2xl"></span> *@
+
+            @* <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"> *@
+            @*     <path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/> *@
+            @* </svg> *@
+            @* <span class="fa-solid fa-lock fa-2xl"></span> *@
+
+            @* <span class="material-symbols-outlined">admin_panel_settings</span> *@
+            Admin Panel
         </a>
 
         <ul class="dropdown-menu">
             <li>
                 <a class="dropdown-item @(currentController == "Users" ? "active" : "")"
                    asp-area="" asp-controller="Users" asp-action="Index">
-                    <i class="bi bi-person-fill"></i>
-                    <span class="material-symbols-outlined">person</span>Users
+                    <span class="bi bi-person-fill"></span>
+                    <span class="material-symbols-outlined">person</span>
+                    Users
                 </a>
             </li>
 
@@ -41,8 +58,9 @@
             <li>
                 <a class="dropdown-item @(currentController == "Roles" ? "active" : "")"
                    asp-area="" asp-controller="Roles" asp-action="">
-                    <i class="bi bi-people-fill"></i>
-                    <i class="material-symbols-outlined">group</i>Roles
+                    <span class="bi bi-people-fill"></span>
+                    <span class="material-symbols-outlined">group</span>
+                    Roles
                 </a>
             </li>
 
@@ -66,7 +84,8 @@
             <li class="nav-item">
                 <a class="dropdown-item @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
                    asp-area="" asp-controller="Account" asp-action="Register">
-                    <span class="material-symbols-outlined">person</span>Register New User
+                    <span class="material-symbols-outlined">person</span>
+                    Register New User
                 </a>
             </li>
 

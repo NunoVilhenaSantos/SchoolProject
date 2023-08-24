@@ -1,9 +1,19 @@
 ﻿@using System.Diagnostics
+@using Microsoft.AspNetCore.Identity
+
+@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Helpers.Users
+
 @* --------------------------------------------------- *@
 @* Barras de navegação off-canvas para teste número 8  *@
 @* --------------------------------------------------- *@
 
 @* _LayoutOffCanvasAdminMenu *@
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IUserHelper UserHelper
+
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
@@ -13,15 +23,60 @@
 }
 
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasAdminPanel" aria-labelledby="offCanvasAdminPanelLabel">
+
+@* Verifica se o User está autenticado e se é o Admin!! *@
+@* cria um drop-down com as opções de Users e Roles *@
+<div aria-labelledby="offCanvasAdminPanelLabel" class="offcanvas offcanvas-end" id="offCanvasAdminPanel" tabindex="-1">
 
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offCanvasAdminPanelLabel">Admin Panel | Off-canvas right</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
     </div>
 
     <div class="offcanvas-body">
-        ...
+        <div>
+            Admin Panel
+            Off-canvas right
+        </div>
+
+
+        <a class="dropdown-item @(currentController == "Users" ? "active" : "")"
+           asp-area="" asp-controller="Users" asp-action="Index">
+            @* <span class="bi bi-person-fill"></span> *@
+            <span class="material-symbols-outlined" height="32">person</span>
+            Users
+        </a>
+
+        <hr class="dropdown-divider">
+
+        <a class="dropdown-item @(currentController == "Roles" ? "active" : "")"
+           asp-area="" asp-controller="Roles" asp-action="">
+            @* <span class="bi bi-people-fill"></span> *@
+            <span class="material-symbols-outlined" height="32">group</span>
+            Roles
+        </a>
+
+        <hr class="dropdown-divider">
+
+        <a id="manage"
+           class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
+           asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+
+            <span class="material-symbols-outlined" height="32">settings_account_box</span>
+            @* Hello @UserManager.GetUserName(User)! *@
+            @* @User.Identity?.Name *@
+            Hello @await UserHelper.GetUserInitialsAsync()
+        </a>
+
+        <hr class="dropdown-divider">
+
+        <a class="dropdown-item @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
+           asp-area="" asp-controller="Account" asp-action="Register">
+            <span class="material-symbols-outlined" height="32">person</span>
+            Register New User
+        </a>
+
+
     </div>
 
 </div>
