@@ -1,30 +1,41 @@
+/* Content-Type: text/css; charset=utf-8 */
 
 html {
-    font-size: 14px; /* Set the base font size to 14px */
+    /* Set the base font size to 14px */
+    font-size: 14px;
     position: relative;
     min-height: 100vh;
 }
 
+/* Estilo para a imagem de capa */
+.image-cover {
+    max-width: 100%;
+    height: auto;
+}
 
 /* Estilos para telas maiores ou iguais a 1405px */
 @media screen and (min-width: 1405px) {
     .login-panel-section {
-        display: block; /* Mostrar a seção */
+        /* Mostrar a seção */
+        display: block;
     }
 
     .dark-mode-switch-panel-section {
-        display: none; /* Ocultar a seção */
+        /* Ocultar a seção */
+        display: none;
     }
 }
 
 /* Estilos para telas menores que 1405px */
 @media screen and (max-width: 1407px) {
     .login-panel-section {
-        display: none; /* Ocultar a seção */
+        /* Ocultar a seção */
+        display: none;
     }
 
     .dark-mode-switch-panel-section {
-        display: inline-block; /* Mostrar a seção */
+        /* Mostrar a seção */
+        display: inline-block;
     }
 }
 

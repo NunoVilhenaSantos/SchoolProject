@@ -18,12 +18,12 @@
 
 <div class="d-flex ms-auto">
 
-    <div class="navbar-nav">
-        @* <a class="nav-link active" aria-current="page" href="#">Home</a> *@
-        @* <a class="nav-link" href="#">Features</a> *@
-        @* <a class="nav-link" href="#">Pricing</a> *@
-        @* <a class="nav-link disabled">Disabled</a> *@
+    <span class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+        <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
+        <hr class="d-lg-none my-2 ">
+    </span>
 
+    <div class="navbar-nav">
         @if (!User.Identity.IsAuthenticated)
         {
             <a class="nav-link @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
@@ -90,10 +90,12 @@
 
     <partial name="_LoginPartial"/>
 
+
     @* <partial name="_LayoutNavBarLanguagePanel"/> *@
 
     @* <partial name="_LayoutNavBarThemePanel"/> *@
 
+    <div class="b-example-divider d-none">dark mode switch panel section</div>
     <span class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
         <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
         <hr class="d-lg-none my-2 ">
@@ -101,8 +103,11 @@
 
     <div class="form-check form-switch me-2">
         <div class="d-flex flex-column">
-            <input class="form-check-input order-1 align-self-center" type="checkbox" id="darkModeSwitch">
-            <label class="form-check-label order-2 align-self-center text-wrap" for="darkModeSwitch">Dark Mode</label>
+            <input class="form-check-input order-1 align-self-center dark-mode-switch"
+                   type="checkbox" id="darkModeSwitch1">
+            <label class="form-check-label order-2 align-self-center text-wrap" for="darkModeSwitch1">
+                Dark Mode
+            </label>
         </div>
     </div>
 

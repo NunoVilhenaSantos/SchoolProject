@@ -1,4 +1,7 @@
-﻿// ---------------------------------------------------------------------------------------------------------------- --->
+﻿// #!charset=utf-8;
+// Content-Type: text/javascript; charset=utf-8
+
+// ---------------------------------------------------------------------------------------------------------------- --->
 //
 // drop-down list for cities and countries and nationality and the respective functions to populate them
 //

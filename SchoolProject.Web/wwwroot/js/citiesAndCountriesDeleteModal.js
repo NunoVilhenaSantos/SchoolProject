@@ -1,4 +1,7 @@
-﻿//
+﻿// #!charset=utf-8;
+// Content-Type: text/javascript; charset=utf-8
+
+//
 //
 // pop-ups dos modais para eliminar um país ou uma cidade
 //

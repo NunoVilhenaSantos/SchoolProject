@@ -2,11 +2,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.WebEncoders;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
@@ -736,7 +739,13 @@ var serverHostName =
 GetServerHostNamePing(serverHostName);
 
 
-// ... outras configurações ...
+// Configurar o encoding padrão para tipos MIME suportados
+builder.Services.Configure<WebEncoderOptions>(options =>
+{
+    options.TextEncoderSettings =
+        new TextEncoderSettings(UnicodeRanges.All);
+});
+
 
 //builder.Services.AddWebMarkupMin(options =>
 //{
@@ -774,6 +783,21 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.Value.EndsWith(".css"))
+        context.Response.ContentType = "text/css; charset=utf-8";
+
+    else if (context.Request.Path.Value.EndsWith(".js"))
+        context.Response.ContentType = "text/javascript; charset=utf-8";
+
+    else if (context.Request.Path.Value.EndsWith(".svg"))
+        context.Response.ContentType = "image/svg+xml";
+
+    await next.Invoke();
+});
+
+
 app.UseWebSockets();
 
 // 
@@ -781,11 +805,9 @@ app.UseWebSockets();
 app.UseStatusCodePagesWithRedirects("/error/{0}");
 // app.UseStatusCodePagesWithReExecute("/error/{0}");
 
-
 // Enable HTTPS redirection and serve static files.
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 
 // Add the Microsoft Identity Web cookie policy
 app.UseCookiePolicy();
@@ -795,24 +817,19 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 // Map controller routes and Razor pages.
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
 
-
 // 
 app.MapRazorPages();
-
 
 // running processes
 RunningProcessInTheApp();
 
-
 // elapsed time for the program
 StopProgramTimer();
-
 
 // Run the application.
 app.Run();

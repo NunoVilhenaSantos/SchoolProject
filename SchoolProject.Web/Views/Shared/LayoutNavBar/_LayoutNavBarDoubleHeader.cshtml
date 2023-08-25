@@ -2,6 +2,7 @@
 @using SchoolProject.Web.Helpers.Users
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @* @inject HttpContext HttpContext *@
@@ -141,7 +142,7 @@
     <div class="container d-flex flex-wrap justify-content-center">
 
         <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            <input aria-label="Search" class="form-control" id="search-navbar" placeholder="Search..." type="search">
         </form>
 
         @* <div class="text-end"> *@
@@ -253,20 +254,23 @@
             </div>
         }
 
-        <div class="b-example-divider d-none">dark mode switch panel section</div>
-        <div class="b-example-divider dark-mode-switch-panel-section">
-            <div class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
-                <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
-                <hr class="d-lg-none my-2 ">
-            </div>
 
-            <div class="form-check form-switch me-2">
-                <div class="d-flex flex-column">
-                    <input class="form-check-input order-1 align-self-center" type="checkbox" id="darkModeSwitch">
-                    <label class="form-check-label order-2 align-self-center text-wrap" for="darkModeSwitch">Dark Mode</label>
-                </div>
+        <div class="b-example-divider d-none">dark mode switch panel section</div>
+        <span class="nav-item py-2 py-lg-1 col-12 col-lg-auto dark-mode-switch-panel-section">
+            <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
+            <hr class="d-lg-none my-2 ">
+        </span>
+
+        <div class="form-check form-switch me-2 dark-mode-switch-panel-section">
+            <div class="d-flex flex-column">
+                <input class="form-check-input order-1 align-self-center dark-mode-switch"
+                       type="checkbox" id="darkModeSwitch2">
+                <label class="form-check-label order-2 align-self-center text-wrap" for="darkModeSwitch2">
+                    Dark Mode
+                </label>
             </div>
         </div>
+
 
     </div>
 

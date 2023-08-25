@@ -7,21 +7,26 @@
 
 function darkModeSwitching() {
 
-    let switchInput = document.getElementById("darkModeSwitch");
+    let switchInput1 = document.getElementById("darkModeSwitch1");
+    let switchInput2 = document.getElementById("darkModeSwitch2");
     let htmlElement = document.documentElement;
 
-    // Set initial state based on data-bs-theme attribute
-    switchInput.checked = htmlElement.getAttribute("data-bs-theme") === "dark";
+    // Synchronize initial states
+    switchInput1.checked = switchInput2.checked = htmlElement.getAttribute("data-bs-theme") === "dark";
 
-    // Toggle theme when switch is clicked
-    switchInput.addEventListener("change", function () {
-        if (this.checked) {
-            htmlElement.setAttribute("data-bs-theme", "dark");
-        } else {
-            htmlElement.setAttribute("data-bs-theme", "light");
-        }
+    // Toggle theme when either switch is clicked
+    switchInput1.addEventListener("change", function () {
+        htmlElement.setAttribute("data-bs-theme", this.checked ? "dark" : "light");
+        switchInput2.checked = this.checked;
+    });
+
+    switchInput2.addEventListener("change", function () {
+        htmlElement.setAttribute("data-bs-theme", this.checked ? "dark" : "light");
+        switchInput1.checked = this.checked;
     });
 
 }
 
 darkModeSwitching();
+
+// ------------------------------------------------------------------------------------------------------------------ //
