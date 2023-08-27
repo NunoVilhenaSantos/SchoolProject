@@ -2,12 +2,10 @@
 @* Barras de navegação para testes número 0            *@
 @* --------------------------------------------------- *@
 
-
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
-
 
 <nav class="navbar navbar-expand-md sticky-top border-bottom">
 
@@ -147,7 +145,7 @@
 
                 @* <partial name="_LayoutNavBarHomePanel"/> *@
 
-                <partial name="_LayoutNavBarCountriesPanel"/>
+                <partial name="Panels/_LayoutNavBarCountriesPanel"/>
 
                 <a class="nav-link @(currentController == "Courses" ? "active" : "")"
                    asp-area="" asp-controller="Courses" asp-action="Index">
@@ -165,9 +163,9 @@
                     <span class="material-symbols-outlined">transgender</span>Genders
                 </a>
 
-                <partial name="_LayoutNavBarSchoolClassesPanel"/>
-                <partial name="_LayoutNavBarStudentsPanel"/>
-                <partial name="_LayoutNavBarTeachersPanel"/>
+                <partial name="Panels/_LayoutNavBarSchoolClassesPanel"/>
+                <partial name="Panels/_LayoutNavBarStudentsPanel"/>
+                <partial name="Panels/_LayoutNavBarTeachersPanel"/>
 
             </div>
 
@@ -175,9 +173,9 @@
 
         @* <partial name="_LayoutNavBarLanguagePanel"/> *@
         @* <partial name="_LayoutNavBarThemePanel"/> *@
-        <partial name="_LayoutNavBarAccountPanel"/>
-        <partial name="_LayoutNavBarAdminPanel"/>
-        <partial name="_LayoutNavBarLoginPanel"/>
+        <partial name="Panels/_LayoutNavBarAccountPanel"/>
+        <partial name="Panels/_LayoutNavBarAdminPanel"/>
+        <partial name="Panels/_LayoutNavBarLoginDarkModePanel"/>
 
     </div>
 

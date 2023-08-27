@@ -1,0 +1,38 @@
+﻿@model SchoolProject.Web.Data.Entities.OtherEntities.Gender
+
+@* <form asp-area="" asp-controller="Genders" asp-action="Edit" enctype="multipart/form-data"> *@
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<br/>
+<h1>@ViewData["Title"] </h1>
+<br/>
+
+<h4>Product</h4>
+<br/>
+<hr/>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <partial name="_ProductsImages"/>
+
+        <div class="col">
+
+            <partial name="_ProductsDeleteDetails"/>
+
+            <div>
+                <a asp-area="" asp-controller="Genders" asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id">
+                    <span class="material-symbols-outlined">edit</span>Edit
+                </a>
+                <a asp-area="" asp-controller="Genders" asp-action="Index" class="btn btn-secondary">
+                    <span class="material-symbols-outlined">chevron_left</span>Back to List
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>

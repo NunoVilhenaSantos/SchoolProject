@@ -107,6 +107,7 @@
         <Folder Include="Data\DataContexts\DataAccess\"/>
         <Folder Include="Data\Repositories\Interfaces\"/>
         <Folder Include="Docs\"/>
+        <Folder Include="wwwroot\js\Matrix\" />
     </ItemGroup>
 
     <ItemGroup>

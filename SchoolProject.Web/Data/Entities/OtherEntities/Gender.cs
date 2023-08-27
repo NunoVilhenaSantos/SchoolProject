@@ -43,7 +43,7 @@ public class Gender : IEntity, INotifyPropertyChanged
 
     [Required]
     [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
+    public required bool WasDeleted { get; set; }
 
 
     [Required]

@@ -317,7 +317,25 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
 
+
         // Other configurations...
+
+        modelBuilder.Entity<City>()
+            .HasOne(c => c.Country)
+            .WithMany(country => country.Cities)
+            .HasForeignKey(c => c.CountryId);
+
+        // Other configurations...
+
+        modelBuilder.Entity<Nationality>()
+            .HasOne(n => n.Country)
+            .WithOne(country => country.Nationality);
+
+
+        // ... outras configurações ...
+
+
+        // ------------------------------------------------------------------ //
 
 
         base.OnModelCreating(modelBuilder);

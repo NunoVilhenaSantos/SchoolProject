@@ -154,7 +154,7 @@ namespace SchoolProject.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CountryId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -174,6 +174,9 @@ namespace SchoolProject.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -219,9 +222,6 @@ namespace SchoolProject.Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int>("NationalityId")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("ProfilePhotoId")
                         .HasColumnType("char(36)");
 
@@ -238,8 +238,6 @@ namespace SchoolProject.Web.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("NationalityId");
-
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("Countries");
@@ -249,6 +247,9 @@ namespace SchoolProject.Web.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -279,6 +280,9 @@ namespace SchoolProject.Web.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountryId")
+                        .IsUnique();
 
                     b.HasIndex("CreatedById");
 
@@ -1102,10 +1106,11 @@ namespace SchoolProject.Web.Migrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.City", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Countries.Country", null)
+                    b.HasOne("SchoolProject.Web.Data.Entities.Countries.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
                         .WithMany()
@@ -1117,6 +1122,8 @@ namespace SchoolProject.Web.Migrations
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Country");
 
                     b.Navigation("CreatedBy");
 
@@ -1131,12 +1138,6 @@ namespace SchoolProject.Web.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.Countries.Nationality", "Nationality")
-                        .WithMany()
-                        .HasForeignKey("NationalityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
@@ -1144,13 +1145,17 @@ namespace SchoolProject.Web.Migrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("Nationality");
-
                     b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.Nationality", b =>
                 {
+                    b.HasOne("SchoolProject.Web.Data.Entities.Countries.Country", "Country")
+                        .WithOne("Nationality")
+                        .HasForeignKey("SchoolProject.Web.Data.Entities.Countries.Nationality", "CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
@@ -1161,6 +1166,8 @@ namespace SchoolProject.Web.Migrations
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Country");
 
                     b.Navigation("CreatedBy");
 
@@ -1541,6 +1548,9 @@ namespace SchoolProject.Web.Migrations
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Countries.Country", b =>
                 {
                     b.Navigation("Cities");
+
+                    b.Navigation("Nationality")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>

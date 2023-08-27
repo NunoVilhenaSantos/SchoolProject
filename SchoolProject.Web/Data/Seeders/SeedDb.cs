@@ -195,7 +195,6 @@ public class SeedDb
         await _dataContextInUse.SaveChangesAsync();
 
 
-        
         // ------------------------------------------------------------------ //
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
@@ -206,7 +205,6 @@ public class SeedDb
         Console.WriteLine("Debug point.", Color.Red);
 
 
-        
         // ------------------------------------------------------------------ //
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
@@ -218,7 +216,6 @@ public class SeedDb
         Console.WriteLine("Debug point.", Color.Red);
 
 
-        
         // ------------------------------------------------------------------ //
         // adding students to school-classes into the database
         // ------------------------------------------------------------------ //
@@ -230,7 +227,6 @@ public class SeedDb
         Console.WriteLine("Debug point.", Color.Red);
 
 
-        
         // lista de schoolclasses no estudante e vice-versa
 
 
@@ -462,6 +458,7 @@ public class SeedDb
         }
     }
 
+
     private async Task AddCountriesWithCitiesAndNationalities(User createdBy)
     {
         if (await _dataContextInUse.Countries.AnyAsync()) return;
@@ -548,31 +545,36 @@ public class SeedDb
                     .AnyAsync(c => c.Name == countryName))
                 continue;
 
-            var cities = CreateCities(cityNames, createdBy);
             var nationalityName = GetNationalityName(countryName);
+            var country = new Country
+            {
+                Name = countryName,
+                Cities = new List<City>(),
+                WasDeleted = false,
+                Nationality = null,
+                IdGuid = Guid.NewGuid(),
+                CreatedBy = createdBy,
+                ProfilePhotoId = default,
+            };
             var nationality = new Nationality
             {
                 Name = nationalityName,
                 IdGuid = Guid.NewGuid(),
-                CreatedBy = createdBy
-            };
-            var country = new Country
-            {
-                Name = countryName,
-                Cities = cities,
-                WasDeleted = false,
-                Nationality = nationality,
-                IdGuid = Guid.NewGuid(),
                 CreatedBy = createdBy,
-                ProfilePhotoId = default
+                Country = country,
             };
+
+            var cities = CreateCities(cityNames, createdBy, country);
+            country.Cities = cities;
+            country.Nationality = nationality;
 
             await _dataContextInUse.Countries.AddAsync(country);
         }
     }
 
 
-    private List<City> CreateCities(List<string> cityNames, User createdBy)
+    private List<City> CreateCities(
+        IEnumerable<string> cityNames, User createdBy, Country country = null)
     {
         return cityNames.Select(
             cityName => new City
@@ -580,7 +582,10 @@ public class SeedDb
                 Name = cityName,
                 WasDeleted = false,
                 IdGuid = Guid.NewGuid(),
-                CreatedBy = createdBy
+                CreatedBy = createdBy,
+                ProfilePhotoId = default,
+                CountryId = country?.Id ?? 0,
+                Country = country ?? null
             }
         ).ToList();
     }

@@ -13,25 +13,23 @@ public class NationalityRepository
     : GenericRepository<Nationality>, INationalityRepository
 {
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
-    private readonly DataContextMySql _dataContext;
-    private readonly DataContextMsSql _dataContextMsSql;
-    private readonly DataContextMySql _dataContextMySql;
+
     private readonly DataContextSqLite _dataContextSqLite;
-    private readonly IUserHelper _userHelper;
+
+    // private readonly DataContextMsSql _dataContextMsSql;
+    private readonly DataContextMySql _dataContextMySql;
+    private readonly DataContextMySql _dataContext;
 
 
     /// <inheritdoc />
     public NationalityRepository(
-        IUserHelper userHelper,
         AuthenticatedUserInApp authenticatedUserInApp,
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
     ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
     {
-        _userHelper = userHelper;
         _dataContext = dataContext;
-
-        _dataContextMsSql = dataContextMsSql;
+        // _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
         _dataContextSqLite = dataContextSqLite;
 
@@ -39,180 +37,94 @@ public class NationalityRepository
     }
 
 
-    public IQueryable<Country> GetCountriesWithCities()
+    public IQueryable<Nationality> GetNationalitiesWithCountries()
     {
-        return _dataContext.Countries
-            .Include(c => c.Cities)
-            .OrderBy(c => c.Name);
-    }
+        return _dataContext.Nationalities
+            .Include(n => n)
+            .OrderBy(n => n.Name);
 
-    public IEnumerable<Country> GetCountriesWithCitiesEnumerable()
-    {
-        return _dataContext.Countries
-            .Include(c => c.Cities)
-            .OrderBy(c => c.Name)
-            .AsEnumerable();
-    }
-
-    public IEnumerable<Country> GetCountriesWithCitiesEnumerableNoTracking()
-    {
-        return _dataContext.Countries
-            .Include(c => c.Cities)
-            .OrderBy(c => c.Name)
-            .AsNoTracking().AsEnumerable();
+        //return (IQueryable<Nationality>)
+        //    _dataContext.Countries
+        //    .Include(c => c)
+        //    .Include(c => c.Nationality)
+        //    .OrderBy(n => n.Name);
     }
 
 
-    public IEnumerable<SelectListItem> GetComboCountries()
+    public async Task<Nationality?> GetNationalityAsync(int id)
     {
-        var countriesList = _dataContext.Countries
-            .Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString()
-            })
-            .OrderBy(c => c.Text)
-            .ToList();
+        // var nationality = await _dataContext.Nationalities
+        //     .Include(n => n.Country)
+        //     .FirstOrDefaultAsync(n => n.Id == id);
+        //
+        // return nationality;
 
-        countriesList.Insert(0, new SelectListItem
-        {
-            Text = "(Select a country...)",
-            Value = "0"
-        });
-
-        return countriesList;
-    }
-
-    public IEnumerable<SelectListItem>? GetComboCities(int countryId)
-    {
-        var country = _dataContext.Countries
-            .Include(c => c.Cities)
-            .FirstOrDefault(c => c.Id == countryId);
-
-        if (country == null) return null;
-
-        var citiesList = country.Cities
-            .Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString()
-            })
-            .OrderBy(c => c.Text)
-            .ToList();
-
-        citiesList.Insert(0, new SelectListItem
-        {
-            Text = "(Select a city...)",
-            Value = "0"
-        });
-
-        return citiesList;
+        return await _dataContext.Nationalities.FindAsync(id);
     }
 
 
-    public async Task<Country> GetCountryAsync(int cityId)
+    public async Task<Nationality?> GetNationalityAsync(Nationality nationality)
     {
-        var country = await _dataContext.Countries
-            .Include(c => c.Cities)
-            .FirstOrDefaultAsync(
-                c => c.Cities.Any(ci => ci.Id == cityId));
+        // var nationality = await _dataContext.Nationalities
+        //     .Include(n => n.Country)
+        //     .FirstOrDefaultAsync(n => n.Id == nationality.id);
+        //
+        // return nationality;
 
-        return country;
+        return await _dataContext.Nationalities.FindAsync(nationality.Id);
     }
 
 
-    public async Task<Country> GetCountryAsync(City city)
-    {
-        var country = await _dataContext.Countries
-            .Include(c => c.Cities)
-            .FirstOrDefaultAsync(
-                c => c.Cities.Any(ci => ci.Id == city.Id));
-
-        return country;
-    }
-
-
-    public async Task<Country?> GetCountryWithCitiesAsync(int id)
+    public async Task<Country?> GetCountryWithCitiesAsync(int countryId)
     {
         return await _dataContext.Countries
             .Include(c => c.Cities)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .Include(c => c.Nationality)
+            .FirstOrDefaultAsync(c => c.Id == countryId);
     }
 
-    public async Task<Country?> GetCountryWithCitiesAsync(Country country)
+
+    public async Task<Country?> GetCountryWithCitiesAsync(Nationality nationality)
     {
         return await _dataContext.Countries
             .Include(c => c.Cities)
-            .FirstOrDefaultAsync(c => c.Id == country.Id);
-    }
-
-    public async Task<Country?> GetCountryWithCitiesAsync(City city)
-    {
-        return await _dataContext.Countries
-            .Include(c => c.Cities
-                .Where(ci => ci.Id == city.Id))
-            .FirstOrDefaultAsync();
-    }
-
-    public async Task<City?> GetCityAsync(int id)
-    {
-        return await _dataContext.Cities.FindAsync(keyValues: id);
-    }
-
-    public async Task<City?> GetCityAsync(City city)
-    {
-        return await _dataContext.Cities.FindAsync(keyValues: city.Id);
+            .Include(c => c.Nationality)
+            .FirstOrDefaultAsync(c => c.Nationality == nationality);
     }
 
 
-    public Task<IIncludableQueryable<Country, City>>
-        GetCityWithCountryAsync(int id)
-    {
-        return Task.FromResult(_dataContext.Countries
-            .Include(c => c.Cities
-                .FirstOrDefault(ci => ci.Id == id)));
-    }
-
-    public Task<IIncludableQueryable<Country, City>>
-        GetCityWithCountryAsync(City city)
-    {
-        return Task.FromResult(_dataContext.Countries
-            .Include(c => c.Cities
-                .FirstOrDefault(ci => ci.Id == city.Id)));
-    }
-
-    public Task<IIncludableQueryable<Country, City>>
-        GetCityWithCountryAsync(Country country)
-    {
-        return Task.FromResult(_dataContext.Countries
-            .Include(c => c.Cities
-                .FirstOrDefault(ci => ci.Id == country.Id)));
-    }
-
-
-    public async Task AddCityAsync(CityViewModel model)
+    public async Task AddNationalityAsync(NationalityViewModel model)
     {
         var country = await GetCountryWithCitiesAsync(model.CountryId);
 
         if (country == null) return;
 
-        var city = new City
+        country.Nationality = new Nationality
         {
             Name = model.Name,
             WasDeleted = false,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            Country = country,
         };
 
+        _dataContext.Countries.Update(country);
 
-        // assim funciona
-        //
-        // country.Cities.Add(city);
-        country.Cities.Add(new City
+        await _dataContext.SaveChangesAsync();
+    }
+
+    public async Task AddNationalityAsync(Nationality nationality)
+    {
+        var country = await GetCountryWithCitiesAsync(nationality);
+
+        if (country == null) return;
+
+        country.Nationality = new Nationality
         {
-            Name = model.Name,
-            WasDeleted = false,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
-        });
+            Name = nationality.Name,
+            WasDeleted = nationality.WasDeleted,
+            CreatedBy = nationality.CreatedBy,
+            Country = country,
+        };
 
         _dataContext.Countries.Update(country);
 
@@ -220,32 +132,32 @@ public class NationalityRepository
     }
 
 
-    public async Task<int> UpdateCityAsync(City? city)
+    public async Task<int> UpdateNationalityAsync(Nationality nationality)
     {
-        var country = await _dataContext.Countries
-            .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
+        var country = await _dataContext.Nationalities
+            .Where(n => n.Id == nationality.Id)
             .FirstOrDefaultAsync();
 
         if (country == null) return 0;
 
-        _dataContext.Cities.Update(city);
+        _dataContext.Nationalities.Update(country);
 
         await _dataContext.SaveChangesAsync();
 
         return country.Id;
     }
 
-    public async Task<int> DeleteCityAsync(City city)
+    public async Task<int> DeleteNationalityAsync(Nationality nationality)
     {
-        var country = await _dataContextMsSql.Countries
-            .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
+        var country = await _dataContext.Nationalities
+            .Where(n => n.Id == nationality.Id)
             .FirstOrDefaultAsync();
 
         if (country == null) return 0;
 
-        _dataContextMsSql.Cities.Remove(city);
+        _dataContext.Nationalities.Remove(country);
 
-        await _dataContextMsSql.SaveChangesAsync();
+        await _dataContext.SaveChangesAsync();
 
         return country.Id;
     }

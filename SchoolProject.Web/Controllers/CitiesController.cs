@@ -10,36 +10,54 @@ namespace SchoolProject.Web.Controllers;
 public class CitiesController : Controller
 {
     private readonly ICityRepository _cityRepository;
-    private readonly DataContextMySql _context;
+    // private readonly ICountryRepository _countryRepository;
+
 
     public CitiesController(
-        DataContextMySql context,
-        ICityRepository cityRepository
+        ICityRepository cityRepository,
+        ICountryRepository countryRepository
     )
     {
-        _context = context;
         _cityRepository = cityRepository;
+        // _countryRepository = countryRepository;
     }
+
 
     // GET: Cities
     public async Task<IActionResult> Index()
     {
-        // return _context.Cities != null
-        //     ? View(await _context.Cities.ToListAsync())
-        //     : Problem("Entity set 'DataContextMySql.Cities'  is null.");
+        var citiesWithCountries =
+            _cityRepository?.GetCitiesWithCountriesAsync();
 
-        return _cityRepository != null
-            ? View((IEnumerable<City>) _cityRepository.GetCountriesWithCities())
-            : Problem("Entity set 'DataContextMySql.Cities' is null.");
+        if (citiesWithCountries != null)
+            return View(citiesWithCountries);
+
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Data Error",
+            Detail = "Entity set 'DataContextMySql.Nationalities' is null.",
+            Status = StatusCodes.Status500InternalServerError
+            // You can add more properties to the ProblemDetails if needed
+        };
+
+        return StatusCode(
+            StatusCodes.Status500InternalServerError, problemDetails);
     }
+
+    public async Task<IActionResult> IndexCards()
+    {
+        return await Index();
+    }
+
 
     // GET: Cities/Details/5
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null || _context.Cities == null) return NotFound();
+        if (id == null) return NotFound();
 
-        var city = await _context.Cities
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var city = await _cityRepository.GetCityAsync(id.Value);
+
         if (city == null) return NotFound();
 
         return View(city);
@@ -59,15 +77,13 @@ public class CitiesController : Controller
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        City city)
+    public async Task<IActionResult> Create(City city)
     {
         if (!ModelState.IsValid) return View(city);
 
-        _context.Add(city);
+        await _cityRepository.AddCityAsync(city);
 
-        await _context.SaveChangesAsync();
+        await _cityRepository.SaveAllAsync();
 
         return RedirectToAction(nameof(Index));
     }
@@ -75,56 +91,56 @@ public class CitiesController : Controller
     // GET: Cities/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null || _context.Cities == null) return NotFound();
+        if (id == null) return NotFound();
 
-        var city = await _context.Cities.FindAsync(id);
+        var city = await _cityRepository.GetCityAsync(id.Value);
+
         if (city == null) return NotFound();
 
         return View(city);
     }
 
     // POST: Cities/Edit/5
-    // To protect from over-posting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // To protect from over-posting attacks,
+    // enable the specific properties you want to bind to.
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        City city)
+    public async Task<IActionResult> Edit(int id, City city)
     {
         if (id != city.Id) return NotFound();
 
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(city);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CityExists(city.Id))
-                    return NotFound();
-                throw;
-            }
+        if (!ModelState.IsValid) return View(city);
 
-            return RedirectToAction(nameof(Index));
+        try
+        {
+            await _cityRepository.UpdateCityAsync(city);
+            await _cityRepository.SaveAllAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            var test = await _cityRepository.GetCityAsync(city.Id);
+
+            if (test == null) return NotFound();
+            throw;
         }
 
-        return View(city);
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: Cities/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null || _context.Cities == null) return NotFound();
+        if (id == null) return NotFound();
 
-        var city = await _context.Cities
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var city = await _cityRepository.GetCityAsync(id.Value);
+
         if (city == null) return NotFound();
 
         return View(city);
     }
+
 
     // POST: Cities/Delete/5
     [HttpPost]
@@ -132,19 +148,71 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        if (_context.Cities == null)
-            return Problem(
-                "Entity set 'DataContextMySql.Cities'  is null.");
+        var city = await _cityRepository.GetCityAsync(id);
 
-        var city = await _context.Cities.FindAsync(id);
-        if (city != null) _context.Cities.Remove(city);
+        if (city != null)
+        {
+            try
+            {
+                _cityRepository.DeleteCityAsync(city);
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.Message);
 
-        await _context.SaveChangesAsync();
+                if (ex.InnerException == null ||
+                    !ex.InnerException.Message.Contains("DELETE"))
+                    return View("Error");
+
+
+                TempData["DbUpdateException"] = true;
+
+                TempData["ModalErrorTitle"] =
+                    "Está a ser usada como chave estrangeira!!";
+
+                TempData["ModalErrorMessage"] =
+                    $"{city.Name} não pode ser apagado visto ter relações " +
+                    "com outras tabelas e que se encontra em uso.</br></br>";
+                // "Experimente primeiro apagar todas as encomendas " +
+                // "que o estão a usar, e torne novamente a apagá-lo";
+
+
+                TempData["DbUpdateException"] = ex.Message;
+                TempData["DbUpdateInnerException"] = ex.InnerException;
+                TempData["DbUpdateInnerExceptionMessage"] =
+                    ex.InnerException.Message;
+
+
+                return RedirectToAction(
+                    nameof(Delete),
+                    new {id = city.Id, showErrorModal = true});
+
+                // return RedirectToAction(nameof(Delete));
+                // return View("Error");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                if (ex.InnerException == null ||
+                    !ex.InnerException.Message.Contains("DELETE"))
+                    return View("Error");
+
+                TempData["ErrorTitle"] =
+                    $"{city.Name} provavelmente está a ser usado!!";
+
+                TempData["ErrorMessage"] =
+                    $"{city.Name} não pode ser apagado visto " +
+                    $"haverem encomendas que o usam.</br></br>" +
+                    $"Experimente primeiro apagar todas as encomendas " +
+                    $"que o estão a usar, e torne novamente a apagá-lo";
+
+                return View("Error");
+            }
+        }
+
+        await _cityRepository.SaveAllAsync();
+
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool CityExists(int id)
-    {
-        return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

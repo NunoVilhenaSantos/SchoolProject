@@ -49,6 +49,26 @@ public class Nationality : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
+
+
+    // ----------------------------------------------------------------------------------- //
+
+    // ... outras propriedades da cidade ...
+
+    [Required]
+    public int CountryId { get; set; }
+
+
+    [Required]
+    [ForeignKey(nameof(CountryId))]
+    public required Country Country { get; set; }
+
+
+    public Guid CountryGuidId => Country.IdGuid;
+
+
+
+    // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
 

@@ -42,12 +42,23 @@ public class Country : IEntity, INotifyPropertyChanged
     public int NumberCities => Cities?.Count ?? 0;
 
 
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+
     [Required]
     // [ForeignKey("NationalityId")]
     public virtual required Nationality Nationality { get; set; }
 
     // public int NationalityId => Nationality.Id;
     public Guid NationalityGuidId => Nationality.IdGuid;
+
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
 
 
     [Key]

@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,10 +28,18 @@ public class AccountController : Controller
     private readonly IImageHelper _imageHelper;
     private readonly IUserHelper _userHelper;
 
-    // Aqui é que se guarda os países e nacionalidades
-    private List<SelectListItem> _cachedCountriesWithNationalities;
     private const string BucketName = "users";
 
+
+    /// <summary>
+    ///    Constructor for the Account controller
+    /// </summary>
+    /// <param name="countryRepository"></param>
+    /// <param name="configuration"></param>
+    /// <param name="storageHelper"></param>
+    /// <param name="emailHelper"></param>
+    /// <param name="imageHelper"></param>
+    /// <param name="userHelper"></param>
     public AccountController(
         ICountryRepository countryRepository,
         IConfiguration configuration,
@@ -48,8 +58,10 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador é reencaminhado para a view de Login
-    // caso não esteja autenticado
+    /// <summary>
+    ///   Aqui o utilizador é reencaminhado para a view de Login caso não esteja autenticado
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Login()
     {
@@ -60,7 +72,11 @@ public class AccountController : Controller
     }
 
 
-    // Aqui é que se valida as informações do usuário
+    /// <summary>
+    ///  Aqui é que se valida as informações do utilizador
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
@@ -93,8 +109,11 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador faz o logout da sua conta
-    // Aqui o utilizador é reencaminhado para a view Index do controlador Home
+    /// <summary>
+    ///  Aqui o utilizador faz o logout da sua conta
+    ///  Aqui o utilizador é reencaminhado para a view Index do controlador Home
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> LogOut()
@@ -104,9 +123,12 @@ public class AccountController : Controller
     }
 
 
-    [Authorize(Roles = "Admin,SuperUser")]
-    // aqui vai para a view RegisterNewUserViewModel
+    /// <summary>
+    /// Aqui o utilizador é reencaminhado para a view Register para criar uma nova conta
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
+    [Authorize(Roles = "Admin,SuperUser")]
     public IActionResult Register()
     {
         var model = new RegisterNewUserViewModel
@@ -121,7 +143,7 @@ public class AccountController : Controller
 
             CountryId = 0,
             Countries = _countryRepository
-                .GetCombinedComboCountriesAndNationalities(),
+                .GetComboCountriesAndNationalities(),
             CityId = 0,
             Cities = _countryRepository.GetComboCities(0),
         };
@@ -131,7 +153,11 @@ public class AccountController : Controller
     }
 
 
-    // Aqui é que se valida as informações do utilizador
+    /// <summary>
+    /// Aqui é que se valida as informações do utilizador para a criação de uma nova conta
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> Register(RegisterNewUserViewModel model)
     {
@@ -141,9 +167,10 @@ public class AccountController : Controller
 
             if (user == null)
             {
-                var city = await _countryRepository.GetCityAsync(model.CityId);
-                var country =
-                    await _countryRepository.GetCountryAsync(model.CountryId);
+                // var city = await
+                //     _countryRepository.GetCityAsync(model.CityId);
+                // var country = await
+                //     _countryRepository.GetCountryAsync(model.CountryId);
 
                 user = new User
                 {
@@ -209,7 +236,8 @@ public class AccountController : Controller
                     $"To allow the user, " +
                     $"please click in this link:" +
                     $"</br></br><a href = \"{tokenLink}\">" +
-                    $"Confirm Email</a>");
+                    $"Confirm Email</a></br><p>Temporary Password: " +
+                    $"{model.Password}</p>");
 
 
                 if (response.IsSuccess)
@@ -240,7 +268,10 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador faz as alterações aos seus dados da sua conta
+    /// <summary>
+    /// Aqui o utilizador faz as alterações aos seus dados da sua conta
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> ChangeUser()
@@ -257,29 +288,22 @@ public class AccountController : Controller
             user = user,
             CountryId = 0,
             Countries = _countryRepository
-                .GetCombinedComboCountriesAndNationalities(),
+                .GetComboCountriesAndNationalities(),
             CityId = 0,
             Cities = _countryRepository.GetComboCities(0)
             // Nationalities = _countryRepository.GetComboNationalities(0),
         };
 
 
-        if (_cachedCountriesWithNationalities == null)
-        {
-            var response = await GetCountriesWithNationalitesAsync();
-
-            _cachedCountriesWithNationalities =
-                response.Value as List<SelectListItem>;
-        }
-
-        model.Countries = _cachedCountriesWithNationalities;
-
-
         return View(model);
     }
 
 
-    // Aqui é que se alteram as informações do utilizador
+    /// <summary>
+    ///     Aqui é que se alteram as informações do utilizador
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
     {
@@ -309,15 +333,12 @@ public class AccountController : Controller
                 await _storageHelper.UploadStorageAsync(
                     model.user.ImageFile, BucketName);
 
-            if (profilePhotoId != null)
-            {
-                await _storageHelper.DeleteFileAsyncFromGcp(
-                    user.ProfilePhotoId.ToString(),
-                    BucketName);
+            await _storageHelper.DeleteFileAsyncFromGcp(
+                user.ProfilePhotoId.ToString(),
+                BucketName);
 
-                model.user.ProfilePhotoId = profilePhotoId;
-                user.ProfilePhotoId = profilePhotoId;
-            }
+            model.user.ProfilePhotoId = profilePhotoId;
+            user.ProfilePhotoId = profilePhotoId;
         }
 
         user.FirstName = model.user.FirstName;
@@ -352,6 +373,10 @@ public class AccountController : Controller
     }
 
 
+    /// <summary>
+    /// Aqui o utilizador faz as alterações da sua password
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [Authorize]
     public IActionResult ChangePassword()
@@ -360,6 +385,11 @@ public class AccountController : Controller
     }
 
 
+    /// <summary>
+    ///    Aqui é que se altera a password do utilizador
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> ChangePassword(
         ChangePasswordViewModel model)
@@ -392,120 +422,25 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador obtém a lista de cidades de um determinado pais
-    [HttpPost]
-    //  [Route("api/Account/GetCitiesAsync")]
-    [Route("Account/GetCitiesAsync")]
-    public async Task<JsonResult> GetCitiesAsync(int countryId)
-    {
-        if (countryId == 0) return Json(new List<City>());
-
-        var country =
-            await _countryRepository.GetCountryWithCitiesAsync(countryId);
-
-        return Json(country.Cities.OrderBy(c => c.Name));
-    }
-
-
-    // Aqui o utilizador obtém a lista de países
-    [HttpPost]
-    //  [Route("api/Account/GetCountriesAsync")]
-    [Route("Account/GetCountriesAsync")]
-    public Task<JsonResult> GetCountriesAsync()
-    {
-        var country =
-            _countryRepository.GetCountriesWithCitiesEnumerable();
-
-        return Task.FromResult(Json(country.OrderBy(c => c.Name)));
-    }
-
-
-    // Aqui o utilizador obtém a lista de países
-    [HttpPost]
-    //  [Route("api/Account/GetNationalitiesAsync")]
-    [Route("Account/GetNationalitiesAsync")]
-    public Task<JsonResult> GetNationalitiesAsync(int countryId)
-    {
-        var nationalities =
-            _countryRepository.GetComboNationalities(countryId);
-
-        // return Task.FromResult(Json(nationalities.OrderBy(c => c.Text)));
-
-        var nationalities1 =
-            _countryRepository.GetComboNationalitiesAsync(countryId);
-
-
-        return Task.FromResult(Json(nationalities1));
-    }
-
-
-    // Aqui o utilizador obtém a lista de países
-    [HttpPost]
-    //  [Route("api/Account/GetCountriesWithNationalitesAsync")]
-    [Route("Account/GetCountriesWithNationalitesAsync")]
-    public Task<JsonResult> GetCountriesWithNationalitesAsync()
-    {
-        //var country =
-        //    _countryRepository.GetCombinedComboCountriesAndNationalities();
-
-        //return Task.FromResult(Json(country));
-
-        if (_cachedCountriesWithNationalities != null)
-            return Task.FromResult(Json(_cachedCountriesWithNationalities));
-
-        var countriesWithNationalities =
-            _countryRepository.GetCombinedComboCountriesAndNationalities();
-
-        _cachedCountriesWithNationalities =
-            countriesWithNationalities.ToList();
-
-        return Task.FromResult(Json(_cachedCountriesWithNationalities));
-    }
-
-
-    // https://localhost:5001/Account/NotAuthorized
-    [HttpGet]
-    public IActionResult NotAuthorized()
-    {
-        return View();
-    }
-
-
-    // https://localhost:5001/Account/AccessDenied
-    // [HttpGet]
-    // public IActionResult AccessDenied()
-    // {
-    //     return View();
-    // }
-
-
-    // https://localhost:5001/Account/Error
-    [HttpGet]
-    public IActionResult Error()
-    {
-        return View();
-    }
-
-
     // https://localhost:5001/Account/CreateToken
     // [Route("Account/CreateToken")]
+    /// <summary>
+    ///    Aqui é que se cria o token para o utilizador validar a sua conta
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> CreateToken(
         [FromBody] LoginViewModel model)
     {
         if (!ModelState.IsValid) return BadRequest();
 
-
         var user = await _userHelper.GetUserByEmailAsync(model.Username);
-
         if (user == null) return BadRequest();
-
 
         var result = await _userHelper.ValidatePasswordAsync(
             user, model.Password);
-
         if (!result.Succeeded) return BadRequest();
-
 
         var claims = new[]
         {
@@ -544,6 +479,12 @@ public class AccountController : Controller
     }
 
 
+    /// <summary>
+    ///   Aqui é que se confirma o email do utilizador
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public async Task<IActionResult> ConfirmEmail(string userId, string token)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
@@ -567,6 +508,151 @@ public class AccountController : Controller
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
+
+
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+    // Aqui o utilizador obtém a lista de cidades de um determinado pais
+    [HttpPost]
+    //  [Route("api/Account/GetCitiesAsync")]
+    [Route("Account/GetCitiesAsync")]
+    public async Task<JsonResult> GetCitiesAsync(int countryId)
+    {
+        if (countryId == 0) return Json(new List<City>());
+
+        var country =
+            await _countryRepository.GetCountryWithCitiesAsync(countryId);
+
+
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        Console.WriteLine(country);
+        Console.WriteLine(country.Cities);
+        Console.WriteLine(
+            Json(country.Cities.OrderBy(c => c.Name)));
+
+
+        var cities = country.Cities.OrderBy(c => c.Name);
+
+        Console.WriteLine(cities);
+        Console.WriteLine(Json(cities));
+        Console.WriteLine(Json(cities.OrderBy(c => c.Name)));
+
+
+        // Serialize the country object to JSON with ReferenceHandler.Preserve
+        var countryJson = JsonSerializer.Serialize(country,
+            new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
+
+        // Print the JSON representation to the console
+        Console.WriteLine(countryJson);
+
+        var cities1 =
+            _countryRepository.GetComboCities(countryId);
+        return Json(cities1);
+
+        return Json(country.Cities.OrderBy(c => c.Name));
+    }
+
+
+    // Aqui o utilizador obtém a lista de países
+    [HttpPost]
+    //  [Route("api/Account/GetCountriesAsync")]
+    [Route("Account/GetCountriesAsync")]
+    public Task<JsonResult> GetCountriesAsync()
+    {
+        var country =
+            _countryRepository.GetCountriesWithCitiesEnumerable();
+
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.WriteLine(country);
+        Console.WriteLine(
+            Json(country.OrderBy(c => c.Name)));
+
+        return Task.FromResult(Json(country.OrderBy(c => c.Name)));
+    }
+
+
+    // Aqui o utilizador obtém a lista de países
+    [HttpPost]
+    //  [Route("api/Account/GetNationalitiesAsync")]
+    [Route("Account/GetNationalitiesAsync")]
+    public Task<JsonResult> GetNationalitiesAsync(int countryId)
+    {
+        var nationalities =
+            _countryRepository.GetComboNationalities(countryId);
+
+        return Task.FromResult(
+            Json(nationalities.OrderBy(c => c.Text)));
+
+        // return Task.FromResult(Json(nationalities));
+    }
+
+
+    // Aqui o utilizador obtém a lista de países
+    /// <summary>
+    ///  Aqui o utilizador obtém a lista de países com as suas nacionalidades
+    /// via JSON para o preenchimento do dropdownlist
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    // [Route("api/Account/GetCountriesWithNationalitiesAsync")]
+    [Route("Account/GetCountriesWithNationalitiesAsync")]
+    public Task<JsonResult> GetCountriesWithNationalitiesAsync()
+    {
+        var countriesWithNationalities =
+            _countryRepository.GetComboCountriesAndNationalities();
+
+
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.WriteLine(countriesWithNationalities);
+        Console.WriteLine(
+            Json(countriesWithNationalities.OrderBy(c => c.Text)));
+
+
+        return Task.FromResult(
+            Json(countriesWithNationalities.OrderBy(c => c.Text)));
+    }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    // https://localhost:5001/Account/NotAuthorized
+    /// <summary>
+    ///   Aqui é que se mostra a view de NotAuthorized
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult NotAuthorized()
+    {
+        return View();
+    }
+
+
+    // https://localhost:5001/Account/AccessDenied
+    // [HttpGet]
+    // public IActionResult AccessDenied()
+    // {
+    //     return View();
+    // }
+
+
+    // https://localhost:5001/Account/Error
+    /// <summary>
+    ///  Aqui é que se mostra a view de Error
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult Error()
+    {
+        return View();
+    }
 }

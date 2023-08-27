@@ -2,34 +2,61 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Repositories.Countries;
 
 namespace SchoolProject.Web.Controllers;
 
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
-    private readonly DataContextMySql _context;
+    private readonly INationalityRepository _nationalityRepository;
 
-    public NationalitiesController(DataContextMySql context)
+
+    public NationalitiesController(
+        ICountryRepository countryRepository,
+        INationalityRepository nationalityRepository
+    )
     {
-        _context = context;
+        _nationalityRepository = nationalityRepository;
     }
 
     // GET: Nationalities
     public async Task<IActionResult> Index()
     {
-        return _context.Nationalities != null
-            ? View(await _context.Nationalities.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Nationalities'  is null.");
+        var nationalitiesWithCountries =
+            _nationalityRepository?.GetNationalitiesWithCountries();
+
+        if (nationalitiesWithCountries != null)
+            return View(nationalitiesWithCountries);
+
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Data Error",
+            Detail = "Entity set 'DataContextMySql.Nationalities' is null.",
+            Status = StatusCodes.Status500InternalServerError
+            // You can add more properties to the ProblemDetails if needed
+        };
+
+        return StatusCode(
+            StatusCodes.Status500InternalServerError, problemDetails);
     }
+
+
+    public async Task<IActionResult> IndexCards()
+    {
+        return await Index();
+    }
+
 
     // GET: Nationalities/Details/5
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null || _context.Nationalities == null) return NotFound();
+        if (id == null) return NotFound();
 
-        var nationality = await _context.Nationalities
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var nationality =
+            await _nationalityRepository.GetNationalityAsync(id.Value);
+
         if (nationality == null) return NotFound();
 
         return View(nationality);
@@ -42,72 +69,75 @@ public class NationalitiesController : Controller
     }
 
     // POST: Nationalities/Create
-    // To protect from over-posting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // To protect from over-posting attacks,
+    // enable the specific properties you want to bind to.
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Nationality nationality)
+    public async Task<IActionResult> Create(Nationality nationality)
     {
-        if (ModelState.IsValid)
-        {
-            _context.Add(nationality);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        if (!ModelState.IsValid) return View(nationality);
 
-        return View(nationality);
+        await _nationalityRepository.AddNationalityAsync(nationality);
+
+        await _nationalityRepository.SaveAllAsync();
+
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: Nationalities/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null || _context.Nationalities == null) return NotFound();
+        if (id == null) return NotFound();
 
-        var nationality = await _context.Nationalities.FindAsync(id);
+        var nationality = await
+            _nationalityRepository.GetNationalityAsync(id.Value);
+
         if (nationality == null) return NotFound();
+
         return View(nationality);
     }
 
     // POST: Nationalities/Edit/5
-    // To protect from over-posting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // To protect from over-posting attacks,
+    // enable the specific properties you want to bind to.
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind("Name,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Nationality nationality)
+    public async Task<IActionResult> Edit(int id, Nationality nationality)
     {
         if (id != nationality.Id) return NotFound();
 
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(nationality);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NationalityExists(nationality.Id))
-                    return NotFound();
-                throw;
-            }
+        if (!ModelState.IsValid) return View(nationality);
 
-            return RedirectToAction(nameof(Index));
+        try
+        {
+            await _nationalityRepository.UpdateNationalityAsync(nationality);
+            await _nationalityRepository.SaveAllAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            var test = await _nationalityRepository
+                .GetNationalityAsync(nationality.Id);
+
+            if (test == null) return NotFound();
+
+            throw;
         }
 
-        return View(nationality);
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: Nationalities/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null || _context.Nationalities == null) return NotFound();
+        if (id == null) return NotFound();
 
-        var nationality = await _context.Nationalities
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var nationality = await _nationalityRepository
+            .GetNationalityAsync(id.Value);
+
         if (nationality == null) return NotFound();
 
         return View(nationality);
@@ -119,19 +149,14 @@ public class NationalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        if (_context.Nationalities == null)
-            return Problem(
-                "Entity set 'DataContextMySql.Nationalities'  is null.");
-        var nationality = await _context.Nationalities.FindAsync(id);
-        if (nationality != null) _context.Nationalities.Remove(nationality);
+        var nationality =
+            await _nationalityRepository.GetNationalityAsync(id);
 
-        await _context.SaveChangesAsync();
+        if (nationality != null)
+            await _nationalityRepository.DeleteNationalityAsync(nationality);
+
+        await _nationalityRepository.SaveAllAsync();
+
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool NationalityExists(int id)
-    {
-        return (_context.Nationalities?.Any(e => e.Id == id))
-            .GetValueOrDefault();
     }
 }

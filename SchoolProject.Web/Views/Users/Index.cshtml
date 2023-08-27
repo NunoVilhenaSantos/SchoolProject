@@ -1,5 +1,4 @@
 @* @model IEnumerable<SchoolProject.Web.Data.Entities.Users.User> *@
-
 @model IEnumerable<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
 
 @{
@@ -9,12 +8,11 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-primary"><span class="fa-solid fa-stethoscope"></span> Create New </a>
+    @* <a asp-action="Create" class="btn btn-outline-primary"><span class="fa-solid fa-stethoscope"></span> New Medic</a> *@
 </p>
 
 <table class="table table-hover" sortable="True" id="sortableTable">
-
-
     <thead>
     <tr>
         <th>@Html.DisplayNameFor(model => model.User.FirstName)</th>
@@ -67,10 +65,14 @@
             <td>@Html.DisplayFor(modelItem => item.User.AccessFailedCount)</td>
             <td>@Html.DisplayFor(modelItem => item.Role.RoleId)</td>
             <td>@Html.DisplayFor(modelItem => item.Roles)</td>
+
             <td>
-                <a asp-action="Edit" asp-route-id="@item.User.Id">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.User.Id">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.User.Id">Delete</a>
+                @* <a asp-action="Edit" asp-route-id="@item.User.Id">Edit</a> *@
+                @* <a asp-action="Details" asp-route-id="@item.User.Id">Details</a> *@
+                @* <a asp-action="Delete" asp-route-id="@item.User.Id">Delete</a> *@
+                <a asp-action="Edit" asp-route-id="@item.User.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit</a>
+                <a asp-action="Details" asp-route-id="@item.User.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details</a>
+                <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete</a>
             </td>
         </tr>
     }

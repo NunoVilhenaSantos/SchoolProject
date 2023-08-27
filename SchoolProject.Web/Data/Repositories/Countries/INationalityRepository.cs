@@ -7,46 +7,20 @@ namespace SchoolProject.Web.Data.Repositories.Countries;
 
 public interface INationalityRepository : IGenericRepository<Nationality>
 {
-    IQueryable<Country> GetCountriesWithCities();
-
-    IEnumerable<Country> GetCountriesWithCitiesEnumerable();
-
-    IEnumerable<Country> GetCountriesWithCitiesEnumerableNoTracking();
+    IQueryable<Nationality> GetNationalitiesWithCountries();
 
 
-    IEnumerable<SelectListItem> GetComboCountries();
+    Task<Nationality?> GetNationalityAsync(int id);
 
-    IEnumerable<SelectListItem>? GetComboCities(int countryId);
-
-
-    Task<Country> GetCountryAsync(int modelCityId);
-
-    Task<Country> GetCountryAsync(City city);
+    Task<Nationality?> GetNationalityAsync(Nationality nationality);
 
 
-    Task<Country?> GetCountryWithCitiesAsync(int id);
+    Task AddNationalityAsync(NationalityViewModel model);
 
-    Task<Country?> GetCountryWithCitiesAsync(Country country);
-
-    Task<Country?> GetCountryWithCitiesAsync(City city);
+    Task AddNationalityAsync(Nationality nationality);
 
 
-    Task<City?> GetCityAsync(int id);
+    Task<int> UpdateNationalityAsync(Nationality nationality);
 
-    Task<City?> GetCityAsync(City city);
-
-    Task<IIncludableQueryable<Country, City>> GetCityWithCountryAsync(int id);
-
-    Task<IIncludableQueryable<Country, City>>
-        GetCityWithCountryAsync(City city);
-
-    Task<IIncludableQueryable<Country, City>>
-        GetCityWithCountryAsync(Country country);
-
-
-    Task AddCityAsync(CityViewModel model);
-
-    Task<int> UpdateCityAsync(City? city);
-
-    Task<int> DeleteCityAsync(City city);
+    Task<int> DeleteNationalityAsync(Nationality nationality);
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 
@@ -50,6 +51,43 @@ public class City : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+    [NotMapped][DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+
+    [DisplayName("Profile Photo")]
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://ca001.blob.core.windows.net/images/noimage.png"
+        : "https://storage.googleapis.com/storage-nuno/countries/" +
+          ProfilePhotoId;
+
+
+    // ----------------------------------------------------------------------------------- //
+    // ----------------------------------------------------------------------------------- //
+
+
+
+    // ----------------------------------------------------------------------------------- //
+
+    // ... outras propriedades da cidade ...
+
+    [Required]
+    public required int CountryId { get; set; }
+
+
+    [Required]
+    [ForeignKey(nameof(CountryId))]
+    public required virtual Country Country { get; set; }
+
+
+    public Guid CountryGuidId => Country.IdGuid;
+
+
+    // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------------- //
 

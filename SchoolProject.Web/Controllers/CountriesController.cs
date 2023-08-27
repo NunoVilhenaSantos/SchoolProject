@@ -50,6 +50,28 @@ public class CountriesController : Controller
     }
 
 
+    // GET: Countries
+    [HttpGet]
+    public IActionResult IndexCards()
+    {
+        var countriesWithCities =
+            _countryRepository?.GetCountriesWithCities();
+
+        if (countriesWithCities != null) return View(countriesWithCities);
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Data Error",
+            Detail = "Entity set 'DataContextMySql.Countries' is null.",
+            Status = StatusCodes.Status500InternalServerError
+            // You can add more properties to the ProblemDetails if needed
+        };
+
+        return StatusCode(
+            StatusCodes.Status500InternalServerError, problemDetails);
+    }
+
+
     // GET: Countries/Details/5
     [HttpGet]
     public async Task<IActionResult> Details(int? id)
@@ -205,7 +227,12 @@ public class CountriesController : Controller
         {
             case 1:
                 // Passe as informações do país para a vista
-                model = new CityViewModel {CountryId = country.Id};
+                model = new CityViewModel
+                {
+                    CountryId = country.Id,
+                    CityId = 0,
+                    Name = string.Empty,
+                };
                 break;
 
             case 2:
@@ -213,7 +240,9 @@ public class CountriesController : Controller
                 model = new CityViewModel
                 {
                     CountryId = country.Id,
-                    CountryName = country.Name
+                    CountryName = country.Name,
+                    CityId = 0,
+                    Name = string.Empty,
                 };
                 break;
 

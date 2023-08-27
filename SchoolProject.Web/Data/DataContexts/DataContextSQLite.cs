@@ -255,7 +255,56 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
         //     .HasForeignKey(tc => tc.CourseGuidId);
 
 
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
+        // Countries and Nationalities (one-to-one)
+        // ------------------------------------------------------------------ //
+
         // Other configurations...
+        // modelBuilder.Entity<Country>()
+        //     // Configure Country.Nationality as principal
+        //     .HasOne(c => c.Nationality)
+        //     // Configure Nationality.Country as dependent
+        //     .WithOne(n => n.Country)
+        //     // Configure the foreign key property
+        //     .HasForeignKey<Nationality>(n => n.CountryId);
+        //
+        // // Configure Country.Nationality
+        // modelBuilder.Entity<Country>()
+        //     .HasOne(c => c.Nationality)
+        //     .WithOne(n => n.Country)
+        //     .HasForeignKey<Nationality>(n => n.CountryId);
+        //
+        // // Configure Nationality.Country
+        // modelBuilder.Entity<Nationality>()
+        //     .HasOne(n => n.Country)
+        //     .WithOne(country => country.Nationality)
+        //     .HasForeignKey<Country>(c => c.Nationality);
+
+
+
+        // ------------------------------------------------------------------ //
+        // Countries and Cities (one-to-many)
+        // ------------------------------------------------------------------ //
+
+        // Other configurations...
+        // modelBuilder.Entity<City>()
+        //     .HasOne(c => c.Country)
+        //     .WithMany(country => country.Cities)
+        //     .HasForeignKey(c => c.CountryId);
+
+
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+
+
+        // ... outras configurações ...
+
+
+        // ------------------------------------------------------------------ //
 
 
         base.OnModelCreating(modelBuilder);

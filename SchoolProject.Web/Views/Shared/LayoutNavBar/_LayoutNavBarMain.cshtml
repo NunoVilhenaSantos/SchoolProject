@@ -18,76 +18,60 @@
         </a>
 
         <div class="b-example-divider d-none">Home dropdown section</div>
-        <partial name="_LayoutNavBarHomePanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarHomePanel"/>
 
         <div class="b-example-divider d-none">Countries dropdown section</div>
-        <partial name="_LayoutNavBarCountriesPanel"/>
-
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarCountriesPanel"/>
 
         <div class="b-example-divider d-none">Courses dropdown section</div>
-        <a class="nav-link @(currentController == "Courses" ? "active" : "")"
-           asp-area="" asp-controller="Courses" asp-action="Index">
-            <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2.0em" viewBox="0 0 576 512"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path d="M96 32C60.7 32 32 60.7 32 96V384H96V96l384 0V384h64V96c0-35.3-28.7-64-64-64H96zM224 384v32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H416V384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32z"/>
-            </svg>
-            @* <span class="fa-solid fa-chalkboard fa-lg"></span> *@
-            @* <span class="fas fa-person-shelter"></span> *@
-            Courses
-        </a>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarCoursesPanel"/>
 
         <div class="b-example-divider d-none">Enrollments dropdown section</div>
-        <a class="nav-link @(currentController == "Enrollments" ? "active" : "")"
-           asp-area="" asp-controller="Enrollments" asp-action="Index">
-            <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 640 512"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path d="M337.8 5.4C327-1.8 313-1.8 302.2 5.4L166.3 96H48C21.5 96 0 117.5 0 144V464c0 26.5 21.5 48 48 48H320v0H256V416c0-35.3 28.7-64 64-64l.3 0h.5c3.4-37.7 18.7-72.1 42.2-99.1C350.2 260 335.6 264 320 264c-48.6 0-88-39.4-88-88s39.4-88 88-88s88 39.4 88 88c0 18.3-5.6 35.3-15.1 49.4c29-21 64.6-33.4 103.1-33.4c59.5 0 112.1 29.6 144 74.8V144c0-26.5-21.5-48-48-48H473.7L337.8 5.4zM96 192h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V208c0-8.8 7.2-16 16-16zm0 128h32c8.8 0 16 7.2 16 16v64c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V336c0-8.8 7.2-16 16-16zM320 128c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H336V144c0-8.8-7.2-16-16-16zM640 368a144 144 0 1 0 -288 0 144 144 0 1 0 288 0zm-99.3-43.3c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6l-72 72c-6.2 6.2-16.4 6.2-22.6 0l-40-40c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L480 385.4l60.7-60.7z"/>
-            </svg>
-            @* <span class="fas fa-person-through-window"></span> *@
-            Enrollments
-        </a>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarEnrollmentsPanel"/>
 
         <div class="b-example-divider d-none">Genders dropdown section</div>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarGendersPanel"/>
+
+        <div class="b-example-divider d-none">Products dropdown section</div>
+        @* <partial name="_LayoutNavBarProductsPanel"/> *@
         <a class="nav-link @(currentController == "Genders" ? "active" : "")"
            asp-area="" asp-controller="Genders" asp-action="Index">
-            <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 448 512"
+            <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 512 512"
                  xmlns="http://www.w3.org/2000/svg">
-                <path d="M416 0c17.7 0 32 14.3 32 32c0 59.8-30.3 107.5-69.4 146.6c-28 28-62.5 53.5-97.3 77.4l-2.5 1.7c-11.9 8.1-23.8 16.1-35.5 23.9l0 0 0 0 0 0-1.6 1c-6 4-11.9 7.9-17.8 11.9c-20.9 14-40.8 27.7-59.3 41.5H283.3c-9.8-7.4-20.1-14.7-30.7-22.1l7-4.7 3-2c15.1-10.1 30.9-20.6 46.7-31.6c25 18.1 48.9 37.3 69.4 57.7C417.7 372.5 448 420.2 448 480c0 17.7-14.3 32-32 32s-32-14.3-32-32H64c0 17.7-14.3 32-32 32s-32-14.3-32-32c0-59.8 30.3-107.5 69.4-146.6c28-28 62.5-53.5 97.3-77.4c-34.8-23.9-69.3-49.3-97.3-77.4C30.3 139.5 0 91.8 0 32C0 14.3 14.3 0 32 0S64 14.3 64 32H384c0-17.7 14.3-32 32-32zM338.6 384H109.4c-10.1 10.6-18.6 21.3-25.5 32H364.1c-6.8-10.7-15.3-21.4-25.5-32zM109.4 128H338.6c10.1-10.7 18.6-21.3 25.5-32H83.9c6.8 10.7 15.3 21.3 25.5 32zm55.4 48c18.4 13.8 38.4 27.5 59.3 41.5c20.9-14 40.8-27.7 59.3-41.5H164.7z"/>
+                <path d="M326.3 218.8c0 20.5-16.7 37.2-37.2 37.2h-70.3v-74.4h70.3c20.5 0 37.2 16.7 37.2 37.2zM504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-128.1-37.2c0-47.9-38.9-86.8-86.8-86.8H169.2v248h49.6v-74.4h70.3c47.9 0 86.8-38.9 86.8-86.8z"/>
             </svg>
+            @* <span class="fa-brands fa-product-hunt fa-2xl"></span> *@
             @* <span class="fa-solid fa-dna fa-2xl"></span> *@
             @* <span class="fas fa-person-shelter"></span> *@
             @* <span class="material-symbols-outlined">transgender</span> *@
             Genders
         </a>
 
-
         <div class="b-example-divider d-none">SchoolClasses dropdown section</div>
-        <partial name="_LayoutNavBarSchoolClassesPanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarSchoolClassesPanel"/>
 
         <div class="b-example-divider d-none">Students dropdown section</div>
-        <partial name="_LayoutNavBarStudentsPanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarStudentsPanel"/>
 
         <div class="b-example-divider d-none">Teachers dropdown section</div>
-        <partial name="_LayoutNavBarTeachersPanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarTeachersPanel"/>
 
         <div class="b-example-divider d-none">Language dropdown section</div>
-        @* <partial name="_LayoutNavBarLanguagePanel"/> *@
+        @* <partial name="LayoutNavBar/Panels/_LayoutNavBarLanguagePanel"/> *@
 
         <div class="b-example-divider d-none">Theme dropdown section</div>
-        @* <partial name="_LayoutNavBarThemePanel"/> *@
+        @* <partial name="LayoutNavBar/Panels/_LayoutNavBarThemePanel"/> *@
 
         <div class="b-example-divider d-none">Account dropdown section</div>
-        <partial name="_LayoutNavBarAccountPanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarAccountPanel"/>
 
         <div class="b-example-divider d-none">Admin dropdown section</div>
-        <partial name="_LayoutNavBarAdminPanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarAdminPanel"/>
 
         <div class="b-example-divider d-none">login panel section</div>
         <div class="b-example-divider login-panel-section">
-            <partial name="_LayoutNavBarLoginDarkModePanel"/>
+            <partial name="LayoutNavBar/Panels/_LayoutNavBarLoginDarkModePanel"/>
         </div>
-
-
 
     </div>
 

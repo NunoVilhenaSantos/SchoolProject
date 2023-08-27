@@ -1,7 +1,4 @@
-﻿// #!charset=utf-8;
-// Content-Type: text/javascript; charset=utf-8
-
-// ---------------------------------------------------------------------------------------------------------------- --->
+﻿// ---------------------------------------------------------------------------------------------------------------- --->
 //
 // drop-down list for cities and countries and nationality and the respective functions to populate them
 //
@@ -9,19 +6,26 @@
 
 
 function getCities(countryId) {
+    // debugger;
 
     $.ajax({
         data: {countryId: countryId}, dataType: 'json',
 
         error: function (ex) {
             alert('Failed to retrieve cities. ' + ex);
+            debugger;
         },
 
         success: function (cities) {
             $("#CityId").append('<option value="0">(Select a city...)</option>');
+            // debugger;
+
+            // $.each(cities, function (i, city) {
+            //     $("#CityId").append('<option value="' + city.id + '">' + city.name + '</option>');
+            // });
 
             $.each(cities, function (i, city) {
-                $("#CityId").append('<option value="' + city.id + '">' + city.name + '</option>');
+                $("#CityId").append('<option value="' + city.value + '">' + city.text + '</option>');
             });
         },
 
@@ -32,12 +36,14 @@ function getCities(countryId) {
 }
 
 function getNationalities(countryId) {
+    // debugger;
 
     $.ajax({
         data: {countryId: countryId}, dataType: 'json',
 
         error: function (ex) {
             alert('Failed to retrieve nationalities. ' + ex);
+            debugger;
         },
 
         success: function (nationalities) {
@@ -63,6 +69,7 @@ function getCountries() {
 
         error: function (ex) {
             alert('Failed to retrieve countries. ' + ex);
+            debugger;
         },
 
         success: function (countries) {
@@ -76,7 +83,7 @@ function getCountries() {
 
         type: 'POST',
         // url: '/Account/GetCountriesAsync'
-        url: '/Account/GetCountriesWithNationalitesAsync'
+        url: '/Account/GetCountriesWithNationalitiesAsync'
     });
 
     // debugger;

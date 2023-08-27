@@ -7,7 +7,7 @@ $scriptDir = $PSScriptRoot
 Write-Host "Script Directory: $scriptDir"
 Set-Location $scriptDir
 
-# Set-Location "C:\Users\nunov\source\repos\SchoolProject\SchoolProject.Web\"
+# Set-Location "C:\repos\SchoolProject\SchoolProject.Web\"
 
 Remove-Item .\Migrations\ -Recurse -Force
 

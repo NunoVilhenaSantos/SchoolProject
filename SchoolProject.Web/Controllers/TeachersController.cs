@@ -2,24 +2,37 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
 
+
 namespace SchoolProject.Web.Controllers;
 
 public class TeachersController : Controller
 {
     private readonly DataContextMySql _context;
 
+
     public TeachersController(DataContextMySql context)
     {
         _context = context;
     }
+
 
     // GET: Teachers
     public async Task<IActionResult> Index()
     {
         return _context.Teachers != null
             ? View(await _context.Teachers.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Teachers'  is null.");
+            : Problem("Entity set 'DataContextMySql.Teachers' is null.");
     }
+
+
+    // GET: Teachers
+    public async Task<IActionResult> IndexCards()
+    {
+        return _context.Teachers != null
+            ? View(await _context.Teachers.ToListAsync())
+            : Problem("Entity set 'DataContextMySql.Teachers' is null.");
+    }
+
 
     // GET: Teachers/Details/5
     public async Task<IActionResult> Details(int? id)

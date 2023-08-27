@@ -1,0 +1,62 @@
+﻿<!-- --------------------------------------------------------------------------------------------------------------- -->
+<!-- -->
+<!-- popup de confirmação do carrinho de compras -->
+<!-- -->
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+
+<!-- Modal "Confirm Order" -->
+<div aria-hidden="true" aria-labelledby="confirmOrderLabel" class="modal fade"
+     data-bs-backdrop="static" data-bs-keyboard="false" id="confirmOrder" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmOrderLabel">Confirm Order</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Do you want to confirm the order?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmOrderOk">Understood</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+<!-- -->
+<!-- popup de confirmação da eliminação de um item do carrinho de compras -->
+<!-- -->
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+
+
+<!-- Modal "Delete Order Item" -->
+<div aria-hidden="true" aria-labelledby="deleteOrderItemLabel" class="modal fade"
+     data-bs-backdrop="static" data-bs-keyboard="false" id="deleteOrderItem" tabindex="-1">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteOrderItemLabel">Delete Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Do you want to delete this item from the order?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="deleteItemOk">Understood</button>
+            </div>
+
+        </div>
+    </div>
+</div>

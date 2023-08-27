@@ -1,0 +1,43 @@
+﻿@using System.Diagnostics
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+    Debug.Assert(User.Identity != null, "User.Identity != null");
+}
+
+<div class="dropdown">
+
+    <a class="nav-link dropdown-toggle @(currentController is "Courses" ? "active" : "")"
+       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2.0em" viewBox="0 0 576 512"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M96 32C60.7 32 32 60.7 32 96V384H96V96l384 0V384h64V96c0-35.3-28.7-64-64-64H96zM224 384v32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H416V384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32z"/>
+        </svg>
+        @* <span class="fa-solid fa-chalkboard fa-lg"></span> *@
+        @* <span class="fas fa-person-shelter"></span> *@
+        Courses
+    </a>
+
+    <ul class="dropdown-menu">
+        <li>
+            <a asp-action="Index" asp-area="" asp-controller="Courses"
+               class="dropdown-item @(currentController == "Courses" ? "active" : "")">
+                @* <span class="fa-solid fa-chalkboard fa-lg"></span> *@
+                @* <span class="fas fa-person-shelter"></span> *@
+                Courses
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a asp-action="IndexCards" asp-area="" asp-controller="Courses"
+               class="dropdown-item @(currentController == "Courses" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                Courses Cards
+            </a>
+        </li>
+    </ul>
+
+</div>

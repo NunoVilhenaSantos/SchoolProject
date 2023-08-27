@@ -9,19 +9,38 @@ public class EnrollmentsController : Controller
 {
     private readonly DataContextMySql _context;
 
+
     public EnrollmentsController(DataContextMySql context)
     {
         _context = context;
     }
 
+
     // GET: Enrollments
     public async Task<IActionResult> Index()
     {
-        var dataContextMySql = _context.Enrollments.Include(e => e.Course)
-            .Include(e => e.CreatedBy).Include(e => e.Student)
-            .Include(e => e.UpdatedBy);
-        return View(await dataContextMySql.ToListAsync());
+        var enrollments =
+            _context.Enrollments.Include(e => e.Course)
+                .Include(e => e.CreatedBy)
+                .Include(e => e.Student)
+                .Include(e => e.UpdatedBy);
+
+        return View(await enrollments.ToListAsync());
     }
+
+
+    // GET: Enrollments
+    public  async Task<IActionResult>  IndexCards()
+    {
+        var enrollments =
+            _context.Enrollments.Include(e => e.Course)
+                .Include(e => e.CreatedBy)
+                .Include(e => e.Student)
+                .Include(e => e.UpdatedBy);
+
+        return View(await enrollments.ToListAsync());
+    }
+
 
     // GET: Enrollments/Details/5
     public async Task<IActionResult> Details(int? id)

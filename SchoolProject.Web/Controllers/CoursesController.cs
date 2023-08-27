@@ -10,6 +10,7 @@ public class CoursesController : Controller
 {
     private readonly DataContextMySql _context;
 
+
     public CoursesController(DataContextMySql context)
     {
         _context = context;
@@ -25,6 +26,18 @@ public class CoursesController : Controller
             ? View(await _context.Courses.ToListAsync())
             : Problem("Entity set 'DataContextMySql.Courses' is null.");
     }
+
+
+    // Allow unrestricted access to the Index action
+    [AllowAnonymous]
+    // GET: Courses
+    public async Task<IActionResult> IndexCards()
+    {
+        return _context.Courses != null
+            ? View(await _context.Courses.ToListAsync())
+            : Problem("Entity set 'DataContextMySql.Courses' is null.");
+    }
+
 
     // GET: Courses/Details/5
     public async Task<IActionResult> Details(int? id)
