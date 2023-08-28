@@ -10,6 +10,11 @@ public class SchoolClassesController : Controller
 {
     private readonly DataContextMySql _context;
 
+
+    private const string BucketName = "schoolclasses";
+
+
+
     public SchoolClassesController(DataContextMySql context)
     {
         _context = context;

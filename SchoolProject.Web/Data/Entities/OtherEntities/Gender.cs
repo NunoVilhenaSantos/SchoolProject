@@ -16,16 +16,27 @@ public class Gender : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
-    // ----------------------------------------------------------------------------------- //
-    // ----------------------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
 
-    [NotMapped] [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+    /// <summary>
+    ///   The image of the user file from the form to be inserted in the database.
+    /// </summary>
+    [NotMapped]
+    [DisplayName("Image")]
+    public IFormFile? ImageFile { get; set; }
 
 
+    /// <summary>
+    ///    The profile photo of the user.
+    /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
+    public required Guid ProfilePhotoId { get; set; }
 
+    /// <summary>
+    ///    The profile photo of the user in URL format.
+    /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
         : "https://storage.googleapis.com/storage-nuno/genders/" +
@@ -66,9 +77,9 @@ public class Gender : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
-    // ----------------------------------------------------------------------------------- //
-    // ----------------------------------------------------------------------------------- //
-    // ----------------------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

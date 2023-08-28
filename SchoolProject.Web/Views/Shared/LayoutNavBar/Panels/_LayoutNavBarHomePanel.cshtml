@@ -12,35 +12,29 @@
              xmlns="http://www.w3.org/2000/svg">
             <path d="M320 33.8V160H48.5C100.2 82.8 188.1 32 288 32c10.8 0 21.5 .6 32 1.8zM352 160V39.1C424.9 55.7 487.2 99.8 527.5 160H352zM29.9 192H96V320H0c0-46 10.8-89.4 29.9-128zM192 320H128V192H448V320H384v32H576v80c0 26.5-21.5 48-48 48H352V352c0-35.3-28.7-64-64-64s-64 28.7-64 64V480H48c-26.5 0-48-21.5-48-48V352H192V320zm288 0V192h66.1c19.2 38.6 29.9 82 29.9 128H480z"/>
         </svg>
-        @* <span class="fa-solid fa-igloo fa-2xl"></span> *@
-        @* Google Material icons *@
-        @* <span class="material-icons md-48 md-light">home</span> *@
-
-        @* Google Material symbols *@
-        @* <span class="material-symbols-outlined">home</span> *@
         Home
     </a>
 
     <ul class="dropdown-menu">
         <li>
-            <a class="dropdown-item @(currentAction == "Index" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="Index" aria-current="page">
+            <a aria-current="page" asp-action="Index" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "Index" && currentController == "Home" ? "active" : "")">
                 <span class="material-icons md-light">home</span>
                 <span class="material-symbols-outlined">home</span>
                 <span class="fas fa-house"></span> Home
             </a>
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "About" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="About">
+            <a asp-action="About" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "About" && currentController == "Home" ? "active" : "")">
                 <span class="material-icons md-36 md-dark">face</span>
                 <span class="material-symbols-outlined">home</span>
                 <span class="fas fa-envelope"></span> About
             </a>
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "Contact" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="Contacts">
+            <a asp-action="Contacts" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "Contacts" && currentController == "Home" ? "active" : "")">
                 <span class="material-icons md-48 md-inactive">face</span>
                 <span class="fas fa-envelope"></span> Contacts
             </a>
@@ -50,15 +44,15 @@
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "Cookies" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="Cookies">
+            <a asp-action="Cookies" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "Cookies" && currentController == "Home" ? "active" : "")">
                 <span class="material-symbols-outlined">home</span>
                 <span class="fas fa-envelope"></span> Cookies
             </a>
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "CookiesPrivacy" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="CookiesPrivacy">
+            <a asp-action="CookiesPrivacy" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "CookiesPrivacy" && currentController == "Home" ? "active" : "")">
                 <span class="material-symbols-outlined">home</span>
                 <span class="fas fa-envelope"></span> Cookies Privacy
             </a>
@@ -68,15 +62,15 @@
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "Legal" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="Legal">
+            <a asp-action="Legal" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "Legal" && currentController == "Home" ? "active" : "")">
                 <span class="material-symbols-outlined">home</span>
                 <span class="fas fa-envelope"></span> Legal
             </a>
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "Privacy" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="Privacy">
+            <a asp-action="Privacy" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "Privacy" && currentController == "Home" ? "active" : "")">
                 <span class="material-symbols-outlined">home</span>
                 <span class="fas fa-envelope"></span> Privacy
             </a>
@@ -86,8 +80,8 @@
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "TimeTracker" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="TimeTracker">
+            <a asp-action="TimeTracker" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "TimeTracker" && currentController == "Home" ? "active" : "")">
                 <span class="bi bi-stopwatch"></span>
                 <span class="fa-regular fa-hourglass-half fa-beat-fade"></span>
                 <span class="material-symbols-outlined"> timer </span>
@@ -98,8 +92,8 @@
             </a>
         </li>
         <li>
-            <a class="dropdown-item @(currentAction == "Threads" && currentController == "Home" ? "active" : "")"
-               asp-area="" asp-controller="Home" asp-action="Threads">
+            <a asp-action="Threads" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "Threads" && currentController == "Home" ? "active" : "")">
                 <span class="material-symbols-outlined">running_with_errors</span>
                 <span class="fa-brands fa-threads fa-beat-fade"></span>
                 Threads

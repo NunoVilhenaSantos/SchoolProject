@@ -9,6 +9,8 @@ public class TeachersController : Controller
 {
     private readonly DataContextMySql _context;
 
+    private const string BucketName = "teachers";
+
 
     public TeachersController(DataContextMySql context)
     {

@@ -11,31 +11,14 @@
 <h1>@pageTitle</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-outline-primary"><i class="fa-solid fa-stethoscope"></i> Create New </a>
+    <a asp-action="Create" class="btn btn-outline-primary"><span class="material-symbols-outlined">add_box</span>Create New</a>
+    <a asp-action="Create" class="btn btn-secondary"><span class="material-symbols-outlined">person_add</span>Create New</a>
 </p>
-
-
-@* <section class="py-5 text-center container"> *@
-@*     <div class="row py-lg-5"> *@
-@*         <div class="col-lg-6 col-md-8 mx-auto"> *@
-@*             <h1 class="fw-light">Album example</h1> *@
-@*             <p class="lead text-body-secondary"> *@
-@*                 Something short and leading about the collection below—its contents, *@
-@*                 the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it *@
-@*                 entirely. *@
-@*             </p> *@
-@*             <p> *@
-@*                 <a href="#" class="btn btn-primary my-2">Main call to action</a> *@
-@*                 <a href="#" class="btn btn-secondary my-2">Secondary action</a> *@
-@*             </p> *@
-@*         </div> *@
-@*     </div> *@
-@* </section> *@
 
 
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-3">
             @foreach (var item in Model)
             {
                 <div class="col">

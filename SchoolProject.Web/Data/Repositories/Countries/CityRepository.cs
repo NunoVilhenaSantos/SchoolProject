@@ -40,7 +40,11 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     /// <inheritdoc />
     public IQueryable<City> GetCitiesWithCountriesAsync()
     {
-        return _dataContext.Cities.OrderBy(c => c.Name);
+        return _dataContext.Cities
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Cities)
+            .OrderBy(c => c.Country.Name)
+            .ThenBy(c => c.Name);
     }
 
 
@@ -54,7 +58,6 @@ public class CityRepository : GenericRepository<City>, ICityRepository
 
     private async Task<Country?> GetCountryWithCitiesAsync(City city)
     {
-
         //var country = await _dataContext.Countries
         //    .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
         //    .FirstOrDefaultAsync();
@@ -66,19 +69,16 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     }
 
 
-
     public async Task<City?> GetCityAsync(int id)
     {
         return await _dataContext.Cities.FindAsync(id);
     }
 
 
-
     public async Task<City?> GetCityAsync(City city)
     {
         return await _dataContext.Cities.FindAsync(city.Id);
     }
-
 
 
     public async Task AddCityAsync(CityViewModel model)

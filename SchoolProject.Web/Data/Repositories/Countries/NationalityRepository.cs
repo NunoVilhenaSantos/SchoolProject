@@ -40,42 +40,27 @@ public class NationalityRepository
     public IQueryable<Nationality> GetNationalitiesWithCountries()
     {
         return _dataContext.Nationalities
-            .Include(n => n)
-            .OrderBy(n => n.Name);
-
-        //return (IQueryable<Nationality>)
-        //    _dataContext.Countries
-        //    .Include(c => c)
-        //    .Include(c => c.Nationality)
-        //    .OrderBy(n => n.Name);
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Cities)
+            .OrderBy(c => c.Country.Name)
+            .ThenBy(c => c.Name);
     }
 
 
     public async Task<Nationality?> GetNationalityAsync(int id)
     {
-        // var nationality = await _dataContext.Nationalities
-        //     .Include(n => n.Country)
-        //     .FirstOrDefaultAsync(n => n.Id == id);
-        //
-        // return nationality;
-
         return await _dataContext.Nationalities.FindAsync(id);
     }
 
 
     public async Task<Nationality?> GetNationalityAsync(Nationality nationality)
     {
-        // var nationality = await _dataContext.Nationalities
-        //     .Include(n => n.Country)
-        //     .FirstOrDefaultAsync(n => n.Id == nationality.id);
-        //
-        // return nationality;
 
         return await _dataContext.Nationalities.FindAsync(nationality.Id);
     }
 
 
-    public async Task<Country?> GetCountryWithCitiesAsync(int countryId)
+    internal async Task<Country?> GetCountryWithCitiesAsync(int countryId)
     {
         return await _dataContext.Countries
             .Include(c => c.Cities)
@@ -84,7 +69,8 @@ public class NationalityRepository
     }
 
 
-    public async Task<Country?> GetCountryWithCitiesAsync(Nationality nationality)
+    public async Task<Country?> GetCountryWithCitiesAsync(
+        Nationality nationality)
     {
         return await _dataContext.Countries
             .Include(c => c.Cities)
@@ -105,6 +91,7 @@ public class NationalityRepository
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             Country = country,
+            CountryId = country.Id,
         };
 
         _dataContext.Countries.Update(country);
@@ -124,6 +111,7 @@ public class NationalityRepository
             WasDeleted = nationality.WasDeleted,
             CreatedBy = nationality.CreatedBy,
             Country = country,
+            CountryId = country.Id,
         };
 
         _dataContext.Countries.Update(country);

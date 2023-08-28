@@ -4,14 +4,23 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 
+
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+/// Controller for the Nationalities entity.
+/// </summary>
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
     private readonly INationalityRepository _nationalityRepository;
 
 
+    /// <summary>
+    /// Constructor for the NationalitiesController.
+    /// </summary>
+    /// <param name="countryRepository"></param>
+    /// <param name="nationalityRepository"></param>
     public NationalitiesController(
         ICountryRepository countryRepository,
         INationalityRepository nationalityRepository
@@ -20,20 +29,32 @@ public class NationalitiesController : Controller
         _nationalityRepository = nationalityRepository;
     }
 
-    // GET: Nationalities
-    public async Task<IActionResult> Index()
+
+    private IEnumerable<Nationality> GetNationalitiesWithCountries()
     {
         var nationalitiesWithCountries =
             _nationalityRepository?.GetNationalitiesWithCountries();
 
-        if (nationalitiesWithCountries != null)
-            return View(nationalitiesWithCountries);
+        return nationalitiesWithCountries ?? Enumerable.Empty<Nationality>();
+    }
 
+
+    /// <summary>
+    /// GET: Nationalities
+    /// </summary>
+    /// <returns></returns>
+    /// GET: Nationalities
+    public IActionResult Index()
+    {
+        var nationalitiesWithCountries =
+            GetNationalitiesWithCountries();
+
+        return View(GetNationalitiesWithCountries());
 
         var problemDetails = new ProblemDetails
         {
             Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Nationalities' is null.",
+            Detail = "Entity set 'DataContextMySql.Countries' is null.",
             Status = StatusCodes.Status500InternalServerError
             // You can add more properties to the ProblemDetails if needed
         };
@@ -43,9 +64,28 @@ public class NationalitiesController : Controller
     }
 
 
-    public async Task<IActionResult> IndexCards()
+    public IActionResult IndexCards()
     {
-        return await Index();
+        return View(GetNationalitiesWithCountries());
+
+        return View((IEnumerable<Nationality>) Index());
+
+        var nationalitiesWithCountries =
+            _nationalityRepository?.GetNationalitiesWithCountries();
+
+        if (nationalitiesWithCountries != null)
+            return View(nationalitiesWithCountries);
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Data Error",
+            Detail = "Entity set 'DataContextMySql.Countries' is null.",
+            Status = StatusCodes.Status500InternalServerError
+            // You can add more properties to the ProblemDetails if needed
+        };
+
+        return StatusCode(
+            StatusCodes.Status500InternalServerError, problemDetails);
     }
 
 

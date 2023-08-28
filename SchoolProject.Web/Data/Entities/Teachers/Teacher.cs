@@ -102,16 +102,27 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [Required] public required User User { get; set; }
 
 
-    // ----------------------------------------------------------------------------------- //
-    // ----------------------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
 
-    [NotMapped] [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+    /// <summary>
+    ///   The image of the user file from the form to be inserted in the database.
+    /// </summary>
+    [NotMapped]
+    [DisplayName("Image")]
+    public IFormFile? ImageFile { get; set; }
 
 
+    /// <summary>
+    ///    The profile photo of the user.
+    /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
+    public required Guid ProfilePhotoId { get; set; }
 
+    /// <summary>
+    ///    The profile photo of the user in URL format.
+    /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
         : "https://storage.googleapis.com/storage-nuno/teachers/" +
@@ -171,8 +182,8 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
-    // ----------------------------------------------------------------------------------- //
-    // ----------------------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
 
     // ---------------------------------------------------------------------- //

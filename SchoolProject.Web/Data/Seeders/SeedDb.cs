@@ -562,6 +562,7 @@ public class SeedDb
                 IdGuid = Guid.NewGuid(),
                 CreatedBy = createdBy,
                 Country = country,
+                CountryId = country.Id,
             };
 
             var cities = CreateCities(cityNames, createdBy, country);

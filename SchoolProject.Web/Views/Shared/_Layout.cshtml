@@ -18,7 +18,8 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
     ViewData["assemblyName"] = assemblyName;
 
-    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
     ViewData["pageTitle"] = pageTitle;
 }
 
@@ -34,7 +35,8 @@
     @* <title>@ViewData["Title"] - @ViewData["SolutionName"]</title> *@
     @* <title>@ViewData["Title"] - @ViewData["AssemblyName"]</title> *@
 
-    <title>@ViewData["Title"] - @pageTitle - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title>
+    @* <title>@ViewData["Title"] - @pageTitle - @ViewData["AssemblyName"] @ViewData["vAssemblyVersion"]</title> *@
+    <title> @pageTitle </title>
 
     <!-- ----------------------------------- ----------------------------------- ----------------------------------- -->
     <!-- ----------------------------------- Adicione as referências aos estilos ----------------------------------- -->

@@ -12,6 +12,8 @@ public class CitiesController : Controller
     private readonly ICityRepository _cityRepository;
     // private readonly ICountryRepository _countryRepository;
 
+    private const string BucketName = "cities";
+
 
     public CitiesController(
         ICityRepository cityRepository,
@@ -24,19 +26,17 @@ public class CitiesController : Controller
 
 
     // GET: Cities
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         var citiesWithCountries =
             _cityRepository?.GetCitiesWithCountriesAsync();
 
-        if (citiesWithCountries != null)
-            return View(citiesWithCountries);
-
+        if (citiesWithCountries != null) return View(citiesWithCountries);
 
         var problemDetails = new ProblemDetails
         {
             Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Nationalities' is null.",
+            Detail = "Entity set 'DataContextMySql.Countries' is null.",
             Status = StatusCodes.Status500InternalServerError
             // You can add more properties to the ProblemDetails if needed
         };
@@ -45,9 +45,23 @@ public class CitiesController : Controller
             StatusCodes.Status500InternalServerError, problemDetails);
     }
 
-    public async Task<IActionResult> IndexCards()
+    public IActionResult IndexCards()
     {
-        return await Index();
+        var citiesWithCountries =
+            _cityRepository?.GetCitiesWithCountriesAsync();
+
+        if (citiesWithCountries != null) return View(citiesWithCountries);
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Data Error",
+            Detail = "Entity set 'DataContextMySql.Countries' is null.",
+            Status = StatusCodes.Status500InternalServerError
+            // You can add more properties to the ProblemDetails if needed
+        };
+
+        return StatusCode(
+            StatusCodes.Status500InternalServerError, problemDetails);
     }
 
 
@@ -154,7 +168,7 @@ public class CitiesController : Controller
         {
             try
             {
-                _cityRepository.DeleteCityAsync(city);
+                await _cityRepository.DeleteCityAsync(city);
             }
             catch (DbUpdateException ex)
             {

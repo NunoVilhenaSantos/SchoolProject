@@ -9,6 +9,9 @@ public class GendersController : Controller
     private readonly DataContextMySql _context;
 
 
+    private const string BucketName = "genders";
+
+
     public GendersController(DataContextMySql context)
     {
         _context = context;
@@ -18,18 +21,14 @@ public class GendersController : Controller
     // GET: Genders
     public async Task<IActionResult> Index()
     {
-        return _context.Genders != null
-            ? View(await _context.Genders.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Genders' is null.");
+        return View(await _context.Genders.ToListAsync());
     }
 
 
     // GET: Genders
     public async Task<IActionResult> IndexCards()
     {
-        return _context.Genders != null
-            ? View(await _context.Genders.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Genders' is null.");
+        return View(await _context.Genders.ToListAsync());
     }
 
 

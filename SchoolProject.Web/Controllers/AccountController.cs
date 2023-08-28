@@ -181,8 +181,10 @@ public class AccountController : Controller
                     Address = model.Address,
                     PhoneNumber = model.PhoneNumber,
                     WasDeleted = false,
-                    ProfilePhotoId = _storageHelper.UploadStorageAsync(
-                        model.ImageFile, BucketName).Result
+                    ProfilePhotoId = model.ImageFile is null
+                        ? default
+                        : _storageHelper.UploadFileAsyncToGcp(
+                            model.ImageFile, BucketName).Result
                     // City = city,
                     // CityId = city.Id,
                     // Country = country,
@@ -285,13 +287,20 @@ public class AccountController : Controller
 
         var model = new ChangeUserViewModel
         {
-            user = user,
             CountryId = 0,
             Countries = _countryRepository
                 .GetComboCountriesAndNationalities(),
             CityId = 0,
-            Cities = _countryRepository.GetComboCities(0)
-            // Nationalities = _countryRepository.GetComboNationalities(0),
+            Cities = _countryRepository.GetComboCities(0),
+
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            UserName = user.UserName,
+            Address = user.Address,
+            PhoneNumber = user.PhoneNumber,
+
+            WasDeleted = user.WasDeleted,
+            ProfilePhotoId = user.ProfilePhotoId,
         };
 
 
@@ -323,30 +332,30 @@ public class AccountController : Controller
         // Return the view, as user is not found
         if (user == null) return View(model);
 
-        if (model.user.ImageFile != null)
+        if (model.ImageFile != null)
         {
             var profilePhotoId =
                 await _storageHelper.UploadFileAsyncToGcp(
-                    model.user.ImageFile, BucketName);
+                    model.ImageFile, BucketName);
 
-            var profilePhotoIdAzure =
-                await _storageHelper.UploadStorageAsync(
-                    model.user.ImageFile, BucketName);
+            // var profilePhotoIdAzure =
+            //     await _storageHelper.UploadStorageAsync(
+            //         model.ImageFile, BucketName);
 
-            await _storageHelper.DeleteFileAsyncFromGcp(
-                user.ProfilePhotoId.ToString(),
-                BucketName);
+            // await _storageHelper.DeleteFileAsyncFromGcp(
+            //     user.ProfilePhotoId.ToString(),
+            //     BucketName);
 
-            model.user.ProfilePhotoId = profilePhotoId;
+            model.ProfilePhotoId = profilePhotoId;
             user.ProfilePhotoId = profilePhotoId;
         }
 
-        user.FirstName = model.user.FirstName;
-        user.LastName = model.user.LastName;
-        user.Address = model.user.Address;
-        user.PhoneNumber = model.user.PhoneNumber;
-        user.ProfilePhotoId = model.user.ProfilePhotoId;
-
+        user.FirstName = model.FirstName;
+        user.LastName = model.LastName;
+        user.Address = model.Address;
+        user.PhoneNumber = model.PhoneNumber;
+        user.WasDeleted = model.WasDeleted;
+        user.ProfilePhotoId = model.ProfilePhotoId;
 
         // user.CityId = model.CityId;
         // user.CountryId = model.CountryId;

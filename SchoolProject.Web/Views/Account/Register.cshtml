@@ -6,70 +6,88 @@
 
 <h1>Register</h1>
 
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly"></div>
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
 
-            <div class="form-group">
-                <label asp-for="FirstName">First Name</label>
-                <input asp-for="FirstName" class="form-control"/>
-                <span asp-validation-for="FirstName" class="text-warning"></span>
+<hr/>
+@* <div class="container-fluid"> *@
+<div class="container-md">
+    <div class="row">
+        <partial name="_DisplayImages"/>
+
+        <div class="col">
+            <div class="row">
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control"/>
+                        <span asp-validation-for="FirstName" class="text-warning"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control"/>
+                        <span asp-validation-for="LastName" class="text-warning"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label">Username</label>
+                        <input asp-for="UserName" class="form-control"/>
+                        <span asp-validation-for="UserName" class="text-warning"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label">Address</label>
+                        <input asp-for="Address" class="form-control"/>
+                        <span asp-validation-for="Address" class="text-warning"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
+                        <input asp-for="PhoneNumber" class="form-control"/>
+                        <span asp-validation-for="PhoneNumber" class="text-warning"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control"/>
+                        <span asp-validation-for="Password" class="text-warning"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control"/>
+                        <span asp-validation-for="ConfirmPassword" class="text-warning"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CountryId" class="control-label"></label>
+                        <select asp-for="CountryId" asp-items="Model.Countries" class="form-control"></select>
+                        <span asp-validation-for="CountryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CityId" class="control-label"></label>
+                        <select asp-for="CityId" asp-items="Model.Cities" class="form-control"></select>
+                        <span asp-validation-for="CityId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ImageFile" class="control-label"></label>
+                        <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+
+                    <br/>
+                    <div class="form-group">
+                        <input type="submit" value="Register New User" class="btn btn-primary"/>
+                    </div>
+                </form>
+
             </div>
-
-            <div class="form-group">
-                <label asp-for="LastName">Last Name</label>
-                <input asp-for="LastName" class="form-control"/>
-                <span asp-validation-for="LastName" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="UserName">Username</label>
-                <input asp-for="UserName" class="form-control"/>
-                <span asp-validation-for="UserName" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="CountryId" class="control-label"></label>
-                <select asp-for="CountryId" asp-items="Model.Countries" class="form-control"></select>
-                <span asp-validation-for="CountryId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" asp-items="Model.Cities" class="form-control"></select>
-                <span asp-validation-for="CityId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Address" class="control-label">Address</label>
-                <input asp-for="Address" class="form-control"/>
-                <span asp-validation-for="Address" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
-                <input asp-for="PhoneNumber" class="form-control"/>
-                <span asp-validation-for="PhoneNumber" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Password">Password</label>
-                <input asp-for="Password" type="password" class="form-control"/>
-                <span asp-validation-for="Password" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="ConfirmPassword">Confirm Password</label>
-                <input asp-for="ConfirmPassword" type="password" class="form-control"/>
-                <span asp-validation-for="ConfirmPassword" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Register New User" class="btn btn-primary"/>
-            </div>
-
-        </form>
+        </div>
     </div>
 </div>
 

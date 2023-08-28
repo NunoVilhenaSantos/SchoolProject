@@ -11,6 +11,8 @@ public class CountriesController : Controller
 {
     private readonly ICountryRepository _countryRepository;
 
+    private const string BucketName = "countries";
+
 
     public CountriesController(ICountryRepository countryRepository)
     {
@@ -156,7 +158,7 @@ public class CountriesController : Controller
 
         try
         {
-            _countryRepository.UpdateAsync(country);
+            await _countryRepository.UpdateAsync(country);
             await _countryRepository.SaveAllAsync();
         }
         catch (DbUpdateConcurrencyException)

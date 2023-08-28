@@ -363,6 +363,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             // UpdatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             Country = country,
+            CountryId = country.Id,
         };
 
         _dataContext.Countries.Update(country);
