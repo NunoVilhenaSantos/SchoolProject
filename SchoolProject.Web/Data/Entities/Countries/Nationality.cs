@@ -49,10 +49,12 @@ public class Nationality : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
-    // --------------------------------------------------------------------- //
 
 
     // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
 
     [Required] public required int CountryId { get; set; }
 
@@ -62,14 +64,17 @@ public class Nationality : IEntity, INotifyPropertyChanged
     public virtual required Country Country { get; set; }
 
     [DisplayName("Number of Cities")]
-    public virtual int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
+    public int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
 
     public Guid CountryGuidId => Country.IdGuid;
 
 
+
+
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
+
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -7,28 +7,19 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
+    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
+    @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a> *@
 </p>
 
 <table class="table table-hover" sortable="True" id="sortableTable">
 
     <thead>
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IdGuid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WasDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
+        <th>@Html.DisplayNameFor(model => model.Name)        </th>
+        <th>@Html.DisplayNameFor(model => model.IdGuid)        </th>
+        <th>@Html.DisplayNameFor(model => model.WasDeleted)        </th>
+        <th>@Html.DisplayNameFor(model => model.CreatedAt)        </th>
+        <th>@Html.DisplayNameFor(model => model.UpdatedAt)        </th>
         <th></th>
     </tr>
     </thead>
@@ -36,25 +27,17 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)            </td>
+            <td>@Html.DisplayFor(modelItem => item.IdGuid)            </td>
+            <td>@Html.DisplayFor(modelItem => item.WasDeleted)            </td>
+            <td>@Html.DisplayFor(modelItem => item.CreatedAt)            </td>
+            <td>@Html.DisplayFor(modelItem => item.UpdatedAt)            </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdGuid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                <div class="btn-group">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                </div>
             </td>
         </tr>
     }

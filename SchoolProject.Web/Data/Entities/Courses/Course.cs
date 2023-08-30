@@ -52,131 +52,11 @@ public class Course : IEntity, INotifyPropertyChanged
     public required double CreditPoints { get; set; }
 
 
+
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
 
-    /// <summary>
-    ///   The image of the user file from the form to be inserted in the database.
-    /// </summary>
-    [NotMapped]
-    [DisplayName("Image")]
-    public IFormFile? ImageFile { get; set; }
-
-
-    /// <summary>
-    ///    The profile photo of the user.
-    /// </summary>
-    [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
-
-    /// <summary>
-    ///    The profile photo of the user in URL format.
-    /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/courses/" +
-          ProfilePhotoId;
-
-
-    // ---------------------------------------------------------------------- //
-    // Navigation property for the many-to-many relationship
-    // ---------------------------------------------------------------------- //
-
-    // ---------------------------------------------------------------------- //
-    // SchoolClassCourse relationship
-    // ---------------------------------------------------------------------- //
-
-    /// <summary>
-    ///     Navigation property for the many-to-many relationship between SchoolClass and Course
-    /// </summary>
-    public ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
-        new List<SchoolClassCourse>();
-
-    /// <summary>
-    ///     Returns the number of the course for this school classes
-    /// </summary>
-    public int SchoolClassCoursesCount => SchoolClassCourses.Count;
-
-
-    // ---------------------------------------------------------------------- //
-    // Teacher Courses relationship
-    // ---------------------------------------------------------------------- //
-
-    /// <summary>
-    ///     Navigation property for the many-to-many relationship between Teacher and Course
-    /// </summary>
-    public ICollection<TeacherCourse> TeacherCourses { get; set; } =
-        new List<TeacherCourse>();
-
-    /// <summary>
-    ///     Returns the number of the course for this teachers
-    /// </summary>
-    public int TeacherCoursesCount => TeacherCourses.Count;
-
-    public int TeachersCount => TeacherCourses
-        .Select(tc => tc.Teacher).Distinct().Count();
-
-
-    // ---------------------------------------------------------------------- //
-    // Student Courses relationship
-    // ---------------------------------------------------------------------- //
-
-    /// <summary>
-    ///     Navigation property for the many-to-many relationship between Courses and Students
-    /// </summary>
-    public ICollection<StudentCourse> StudentCourses { get; set; } =
-        new List<StudentCourse>();
-
-    public int StudentCoursesCount => StudentCourses.Count;
-
-    public int StudentCount => StudentCourses
-        .Select(sc => sc.Student).Distinct().Count();
-
-
-    // ---------------------------------------------------------------------- //
-    // Enrollments relationship
-    // ---------------------------------------------------------------------- //
-
-    /// <summary>
-    ///     Navigation property for the one-to-many relationship between Course and Enrollment
-    /// </summary>
-    public ICollection<Enrollment>? Enrollments { get; set; }
-
-
-    /// <summary>
-    ///     Returns the number of students enrolled in the course
-    /// </summary>
-    [DisplayName("Enrolled Students")]
-    public int? StudentsCount =>
-        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
-
-
-    /// <summary>
-    ///     Returns the highest grade of the course
-    /// </summary>
-    [DisplayName("Highest Grade")]
-    public decimal? HighestGrade => Enrollments?
-        .Where(e => e.CourseId == Id)
-        .Max(e => e.Grade) ?? null;
-
-
-    /// <summary>
-    ///     Returns the average grade of the course
-    /// </summary>
-    [DisplayName("Average Grade")]
-    public decimal? AveregaGrade => Enrollments?
-        .Where(e => e.CourseId == Id)
-        .Average(e => e.Grade) ?? null;
-
-
-    /// <summary>
-    ///     Returns the lowest grade of the course
-    /// </summary>
-    [DisplayName("Lowest Grade")]
-    public decimal? LowestGrade => Enrollments?
-        .Where(e => e.CourseId == Id)
-        .Min(e => e.Grade) ?? null;
 
 
     /// <summary>
@@ -238,6 +118,148 @@ public class Course : IEntity, INotifyPropertyChanged
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
+
+
+
+
+    /// <summary>
+    ///   The image of the user file from the form to be inserted in the database.
+    /// </summary>
+    [NotMapped]
+    [DisplayName("Image")]
+    public IFormFile? ImageFile { get; set; }
+
+
+    /// <summary>
+    ///    The profile photo of the user.
+    /// </summary>
+    [DisplayName("Profile Photo")]
+    public required Guid ProfilePhotoId { get; set; }
+
+    /// <summary>
+    ///    The profile photo of the user in URL format.
+    /// </summary>
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://ca001.blob.core.windows.net/images/noimage.png"
+        : "https://storage.googleapis.com/storage-nuno/courses/" +
+          ProfilePhotoId;
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+    // ---------------------------------------------------------------------- //
+    // SchoolClassCourse relationship
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///     Navigation property for the many-to-many relationship between SchoolClass and Course
+    /// </summary>
+    public virtual ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
+        new List<SchoolClassCourse>();
+
+    /// <summary>
+    ///     Returns the number of the course for this school classes
+    /// </summary>
+    public int SchoolClassCoursesCount => SchoolClassCourses.Count;
+
+
+    // ---------------------------------------------------------------------- //
+    // Teacher Courses relationship
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///     Navigation property for the many-to-many relationship between Teacher and Course
+    /// </summary>
+    public virtual ICollection<TeacherCourse> TeacherCourses { get; set; } =
+        new List<TeacherCourse>();
+
+    /// <summary>
+    ///     Returns the number of the course for this teachers
+    /// </summary>
+    public int TeacherCoursesCount => TeacherCourses.Count;
+
+    public int TeachersCount => TeacherCourses
+        .Select(tc => tc.Teacher).Distinct().Count();
+
+
+    // ---------------------------------------------------------------------- //
+    // Student Courses relationship
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///     Navigation property for the many-to-many relationship between Courses and Students
+    /// </summary>
+    public virtual ICollection<StudentCourse> StudentCourses { get; set; } =
+        new List<StudentCourse>();
+
+    public int StudentCoursesCount => StudentCourses.Count;
+
+    public int StudentCount => StudentCourses
+        .Select(sc => sc.Student).Distinct().Count();
+
+
+    // ---------------------------------------------------------------------- //
+    // Enrollments relationship
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///     Navigation property for the one-to-many relationship between Course and Enrollment
+    /// </summary>
+    public virtual ICollection<Enrollment>? Enrollments { get; set; }
+
+
+    /// <summary>
+    ///     Returns the number of students enrolled in the course
+    /// </summary>
+    [DisplayName("Enrolled Students")]
+    public int? StudentsCount =>
+        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
+
+
+    /// <summary>
+    ///     Returns the highest grade of the course
+    /// </summary>
+    [DisplayName("Highest Grade")]
+    public decimal? HighestGrade => Enrollments?
+        .Where(e => e.CourseId == Id)
+        .Max(e => e.Grade) ?? null;
+
+
+    /// <summary>
+    ///     Returns the average grade of the course
+    /// </summary>
+    [DisplayName("Average Grade")]
+    public decimal? AveregaGrade => Enrollments?
+        .Where(e => e.CourseId == Id)
+        .Average(e => e.Grade) ?? null;
+
+
+    /// <summary>
+    ///     Returns the lowest grade of the course
+    /// </summary>
+    [DisplayName("Lowest Grade")]
+    public decimal? LowestGrade => Enrollments?
+        .Where(e => e.CourseId == Id)
+        .Min(e => e.Grade) ?? null;
+
+
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+
+
 
 
     // ---------------------------------------------------------------------- //

@@ -12,9 +12,9 @@
 <h1>@pageTitle</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-secondary"><span class="fa-solid fa-stethoscope"></span> Create New </a>
+    @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
+    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
 </p>
-
 
 <div class="album py-5 bg-body-tertiary">
     <div class="container-fluid">
@@ -39,15 +39,11 @@
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
                                 <small class="text-body-secondary">
-                                    @Html.DisplayNameFor(modelItem => item.Code)
-                                </small>
-                                <small class="text-body-secondary">
+                                    @Html.DisplayNameFor(modelItem => item.Code)<br />
                                     @Html.DisplayFor(modelItem => item.Code)
                                 </small>
                                 <small class="text-body-secondary">
-                                    @Html.DisplayNameFor(modelItem => item.Hours)
-                                </small>
-                                <small class="text-body-secondary">
+                                    @Html.DisplayNameFor(modelItem => item.Hours)<br />
                                     @Html.DisplayFor(modelItem => item.Hours)
                                 </small>
                             </div>

@@ -18,24 +18,53 @@ public class StudentsController : Controller
     }
 
 
+
+
+
+    private IEnumerable<Student> GetStudentsList()
+    {
+        var studentsList =
+           _context.Students.ToListAsync();
+
+        return studentsList.Result ?? Enumerable.Empty<Student>();
+    }
+
+
+
+
     // GET: Students
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        return _context.Students != null
-            ? View(await _context.Students.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Students' is null.");
+        return View(GetStudentsList());
     }
 
 
     // GET: Students
     [HttpGet]
-    public async Task<IActionResult> IndexCards()
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
-        return _context.Students != null
-            ? View(await _context.Students.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Students' is null.");
+        return View(GetStudentsList());
     }
+
+
+    // GET: Students
+    [HttpGet]
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetStudentsList());
+    }
+
+
+    // GET: Students
+    [HttpGet]
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetStudentsList());
+    }
+
+
+
 
 
     // GET: Students/Details/5
@@ -51,6 +80,7 @@ public class StudentsController : Controller
         return View(student);
     }
 
+
     // GET: Students/Create
     public IActionResult Create()
     {
@@ -58,8 +88,10 @@ public class StudentsController : Controller
     }
 
     // POST: Students/Create
-    // To protect from over-posting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // To protect from over-posting attacks,
+    // enable the specific properties you want to bind to.
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Student student)

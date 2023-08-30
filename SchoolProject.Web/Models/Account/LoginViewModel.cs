@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolProject.Web.Models.Users;
+namespace SchoolProject.Web.Models.Account;
 
 public class LoginViewModel
 {

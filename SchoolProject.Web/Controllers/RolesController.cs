@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SchoolProject.Web.Data.Entities.Countries;
 
 namespace SchoolProject.Web.Controllers;
 
@@ -20,20 +21,65 @@ public class RolesController : Controller
     }
 
 
+
+
+    private IEnumerable<IdentityRole> GetRolesList()
+    {
+        //var nationalitiesWithCountries =
+        //    _nationalityRepository?.GetNationalitiesWithCountries();
+        
+        var rolesList = _roleManager.Roles;
+
+        return rolesList ?? Enumerable.Empty<IdentityRole>();
+    }
+
+
+    // GET: Roles
+    /// <summary>
+    ///     Action to show all the roles
+    /// </summary>
+    /// <returns>a list of roles</returns>
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetRolesList());
+    }
+
+
+    // GET: Roles
+    /// <summary>
+    ///     Action to show all the roles
+    /// </summary>
+    /// <returns>a list of roles</returns>
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetRolesList());
+    }
+
+
+
     // GET: Roles
     /// <summary>
     ///     Action to show all the roles
     /// </summary>
     /// <returns>a list of roles</returns>
     [HttpGet]
-    public Task<IActionResult> Index()
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
     {
-        var roles = _roleManager.Roles;
-
-        return Task.FromResult<IActionResult>(View(roles));
-
-        // return View(roles);
+        return View(GetRolesList());
     }
+
+
+    // GET: Roles
+    /// <summary>
+    ///     Action to show all the roles
+    /// </summary>
+    /// <returns>a list of roles</returns>
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetRolesList());
+    }
+
+
 
 
     // GET: Roles/Details/5

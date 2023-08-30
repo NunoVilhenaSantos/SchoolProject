@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Models.Account;
 using SchoolProject.Web.Models.Users;
 
 namespace SchoolProject.Web.Helpers.Users;

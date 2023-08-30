@@ -1,16 +1,35 @@
 {
   "dependencies": {
+    "secrets1": {
+      "secretStore": null,
+      "resourceId": null,
+      "type": "secrets.user",
+      "connectionId": null
+    },
     "appInsights1": {
       "secretStore": null,
       "resourceId": null,
       "type": "appInsights.sdk",
       "connectionId": null
     },
-    "secrets1": {
-      "secretStore": null,
+    "sqlite1": {
+      "secretStore": "LocalSecretsFile",
       "resourceId": null,
-      "type": "secrets.user",
-      "connectionId": null
+      "type": "sqlite.local",
+      "connectionId": "ConnectionStrings:SP-SQLite-Local"
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "",
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:SP-MSSql-Somee",
+      "dynamicId": null
+    },
+    "mssql2": {
+      "serviceConnectorResourceId": "",
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:SP-SmarterASP-MSSQL"
     }
   }
 }

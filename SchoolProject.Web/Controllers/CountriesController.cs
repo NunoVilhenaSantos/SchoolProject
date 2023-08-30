@@ -25,52 +25,30 @@ public class CountriesController : Controller
     // ------------------------------ --------- ----------------------------- //
 
 
-    // GET: Countries
-    [HttpGet]
-    public IActionResult Index()
+
+    private IEnumerable<Country> CountriesWithCities()
     {
         var countriesWithCities =
-            _countryRepository?.GetCountriesWithCities();
+           _countryRepository?.GetCountriesWithCities();
 
-        if (countriesWithCities != null) return View(countriesWithCities);
-
-        var problemDetails = new ProblemDetails
-        {
-            Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Countries' is null.",
-            Status = StatusCodes.Status500InternalServerError
-            // You can add more properties to the ProblemDetails if needed
-        };
-
-        return StatusCode(
-            StatusCodes.Status500InternalServerError, problemDetails);
+        return countriesWithCities ?? Enumerable.Empty<Country>();
+    }
 
 
-        // return _countryRepository?.GetCountriesWithCities() != null
-        //     ? View(_countryRepository?.GetCountriesWithCities())
-        //     : Problem("Entity set 'DataContextMySql.Countries'  is null.");
+    
+    // GET: Countries
+    [HttpGet]
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(CountriesWithCities());
     }
 
 
     // GET: Countries
     [HttpGet]
-    public IActionResult IndexCards()
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
-        var countriesWithCities =
-            _countryRepository?.GetCountriesWithCities();
-
-        if (countriesWithCities != null) return View(countriesWithCities);
-
-        var problemDetails = new ProblemDetails
-        {
-            Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Countries' is null.",
-            Status = StatusCodes.Status500InternalServerError
-            // You can add more properties to the ProblemDetails if needed
-        };
-
-        return StatusCode(
-            StatusCodes.Status500InternalServerError, problemDetails);
+        return View(CountriesWithCities());
     }
 
 

@@ -1,13 +1,33 @@
+@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Users.User
 
 @{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
     ViewData["Title"] = "Create";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
-<h4>User</h4>
+<h4>@controllerName</h4>
 <hr/>
+
 <div class="row">
     <partial name="_DisplayImages"/>
 
@@ -15,12 +35,14 @@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <partial name="_UsersCE" for="@Model" />
+            <partial name="_UsersCE" for="@Model"/>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-outline-primary"><span class="fa fa-save"></span> Create </button>
+                <button class="btn btn-outline-primary" type="submit"><span class="fa fa-save"></span> Create </button>
                 <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List </a>
             </div>
         </form>
+
     </div>
+
 </div>

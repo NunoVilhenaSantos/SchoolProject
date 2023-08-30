@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Enrollments;
 
 namespace SchoolProject.Web.Controllers;
@@ -16,30 +18,85 @@ public class EnrollmentsController : Controller
     }
 
 
-    // GET: Enrollments
-    public async Task<IActionResult> Index()
-    {
-        var enrollments =
-            _context.Enrollments.Include(e => e.Course)
-                .Include(e => e.CreatedBy)
-                .Include(e => e.Student)
-                .Include(e => e.UpdatedBy);
 
-        return View(await enrollments.ToListAsync());
+
+    private IEnumerable<Enrollment> EnrollmentsWithStudent()
+    {
+        //var citiesWithCountries =
+        //    _cityRepository?.GetCitiesWithCountriesAsync();
+
+        var enrollmentsWithStudent =
+            _context.Enrollments
+            .Include(e => e.Course)
+            .Include(e => e.Student)
+            .Include(e => e.CreatedBy)
+            .Include(e => e.UpdatedBy);
+
+
+        return enrollmentsWithStudent ?? Enumerable.Empty<Enrollment>();
     }
 
 
     // GET: Enrollments
-    public  async Task<IActionResult>  IndexCards()
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        var enrollments =
-            _context.Enrollments.Include(e => e.Course)
-                .Include(e => e.CreatedBy)
-                .Include(e => e.Student)
-                .Include(e => e.UpdatedBy);
-
-        return View(await enrollments.ToListAsync());
+        return View(EnrollmentsWithStudent());
     }
+
+
+    // GET: Enrollments
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(EnrollmentsWithStudent());
+    }
+
+
+
+    // GET: Cities
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        var totalCount = _context.Enrollments.Count();
+
+        var records = _context.Enrollments
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        //var model = new PaginationViewModel
+        //{
+        //    Records = records,
+        //    PageNumber = pageNumber,
+        //    PageSize = pageSize,
+        //    TotalCount = totalCount
+        //};
+
+        //return View(model);
+        return View(records);
+        
+    }
+
+    // GET: Cities
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        var totalCount = _context.Enrollments.Count();
+
+        var records = _context.Enrollments
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        //var model = new PaginationViewModel
+        //{
+        //    Records = records,
+        //    PageNumber = pageNumber,
+        //    PageSize = pageSize,
+        //    TotalCount = totalCount
+        //};
+
+        //return View(model);
+        return View(records);
+    }
+
 
 
     // GET: Enrollments/Details/5

@@ -6,7 +6,7 @@ scriptDirectory="$(cd "$(dirname "$0")" && pwd)"
 entitiesDirectory="$scriptDirectory/Data/Entities"
 rootDirectory="$scriptDirectory"
 
-cd "$rootDirectory"
+cd "$rootDirectory" || exit
 
 
 # dataContext="DataContextMsSql"

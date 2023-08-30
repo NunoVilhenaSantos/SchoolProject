@@ -15,7 +15,6 @@
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     },
     {
-      "provider": "cdnjs",
       "library": "bootstrap-icons@1.10.5",
       "destination": "wwwroot/lib/bootstrap-icons/"
     }

@@ -4,6 +4,9 @@ using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Models.Users;
 
+/// <summary>
+///     view model class to register a new user using the the main class user
+/// </summary>
 public class RegisterNewUserViewModel : User
 {
     /// <summary>

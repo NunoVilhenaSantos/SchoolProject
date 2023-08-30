@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 
 namespace SchoolProject.Web.Controllers;
@@ -14,14 +15,57 @@ public class TeacherCoursesController : Controller
         _context = context;
     }
 
-    // GET: TeacherCourses
-    public async Task<IActionResult> Index()
+
+
+    private IEnumerable<TeacherCourse> GetTeacherCoursesList()
     {
-        var dataContextMySql = _context.TeacherCourses.Include(t => t.Course)
-            .Include(t => t.CreatedBy).Include(t => t.Teacher)
-            .Include(t => t.UpdatedBy);
-        return View(await dataContextMySql.ToListAsync());
+        var teacherCoursesList =
+            _context.TeacherCourses
+            .Include(t => t.Course)
+            .Include(t => t.Teacher)
+            .Include(t => t.CreatedBy)
+            .Include(t => t.UpdatedBy)
+            .ToListAsync();
+
+        return teacherCoursesList.Result ?? Enumerable.Empty<TeacherCourse>();
     }
+
+
+
+
+    // GET: TeacherCourses
+    [HttpGet]
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetTeacherCoursesList());
+    }
+
+
+    // GET: TeacherCourses
+    [HttpGet]
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetTeacherCoursesList());
+    }
+
+
+    // GET: TeacherCourses
+    [HttpGet]
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetTeacherCoursesList());
+    }
+
+
+    // GET: TeacherCourses
+    [HttpGet]
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetTeacherCoursesList());
+    }
+
+
+
 
     // GET: TeacherCourses/Details/5
     public async Task<IActionResult> Details(int? id)
@@ -30,10 +74,11 @@ public class TeacherCoursesController : Controller
 
         var teacherCourse = await _context.TeacherCourses
             .Include(t => t.Course)
-            .Include(t => t.CreatedBy)
             .Include(t => t.Teacher)
+            .Include(t => t.CreatedBy)
             .Include(t => t.UpdatedBy)
             .FirstOrDefaultAsync(m => m.TeacherId == id);
+
         if (teacherCourse == null) return NotFound();
 
         return View(teacherCourse);

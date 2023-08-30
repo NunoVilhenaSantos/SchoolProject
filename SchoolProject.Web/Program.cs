@@ -70,19 +70,27 @@ static string GetServerHostNameFromConnectionString(string connectionString)
 {
     var parts = connectionString.Split(';');
 
+    Console.WriteLine("Connection string:" + connectionString + "\n");
+    Console.WriteLine("Parts of the connection string:" +
+                      parts + "\n\n");
+
     foreach (var part in parts)
-        if (part.StartsWith("Data Source="))
-            return part["Data Source=".Length..];
+    {
+        var lowerCasePart = part.ToLower(); // Converter para minúsculas
 
-        else if (part.StartsWith("workstation id="))
-            return part["workstation id=".Length..];
+        Console.WriteLine("Part of the connection string:" + part + "\n");
+        Console.WriteLine("Part of the connection string:" +
+                          lowerCasePart + "\n");
 
-        else if (part.StartsWith("Server="))
-            return part["Server=".Length..];
 
-        else if (part.StartsWith("Host="))
-            return part["Host=".Length..];
-
+        if (lowerCasePart.StartsWith("data source=") ||
+            lowerCasePart.StartsWith("workstation id=") ||
+            lowerCasePart.StartsWith("server=") ||
+            lowerCasePart.StartsWith("host="))
+        {
+            return part.Substring(part.IndexOf('=') + 1);
+        }
+    }
 
     throw new ArgumentException(
         "Connection String inválida. Nome do servidor não encontrado.");
@@ -727,6 +735,8 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 
 builder.Services.AddWebEncoders();
 builder.Services.AddAntiforgery();
+builder.Services.AddMemoryCache();
+
 
 // Extrai o nome do servidor da Connection String
 var serverHostName =

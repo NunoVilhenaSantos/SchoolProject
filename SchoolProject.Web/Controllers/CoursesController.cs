@@ -19,22 +19,36 @@ public class CoursesController : Controller
     }
 
 
-    // Allow unrestricted access to the Index action
-    [AllowAnonymous]
-    // GET: Courses
-    public async Task<IActionResult> Index()
+
+    private IEnumerable<Course> CoursesList()
     {
-        return View(await _context.Courses.ToListAsync());
+        //var coursesList =
+        //    _cityRepository?.GetCitiesWithCountriesAsync();
+
+         var coursesList = _context.Courses.ToList();
+
+        return coursesList ?? Enumerable.Empty<Course>();
     }
 
 
     // Allow unrestricted access to the Index action
     [AllowAnonymous]
     // GET: Courses
-    public async Task<IActionResult> IndexCards()
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        return View(await _context.Courses.ToListAsync());
+        return View(CoursesList());
     }
+
+
+    // Allow unrestricted access to the Index action
+    [AllowAnonymous]
+    // GET: Courses
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(CoursesList());
+    }
+
+
 
 
     // GET: Courses/Details/5

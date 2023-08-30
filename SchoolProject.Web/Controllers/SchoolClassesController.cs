@@ -21,25 +21,53 @@ public class SchoolClassesController : Controller
     }
 
 
+
+    private IEnumerable<SchoolClass> GetSchoolClasses()
+    {
+        var schoolClassesList =
+            _context.SchoolClasses.ToListAsync();
+
+        return schoolClassesList.Result ?? Enumerable.Empty<SchoolClass>();
+    }
+
+
+
+
     // Allow unrestricted access to the Index action
     [AllowAnonymous]
     // GET: SchoolClasses
-    public async Task<IActionResult> Index()
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        return _context.SchoolClasses != null
-            ? View(await _context.SchoolClasses.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.SchoolClasses'  is null.");
+        return View(GetSchoolClasses());
     }
 
 
     // Allow unrestricted access to the Index action
     [AllowAnonymous]
     // GET: SchoolClasses
-    public async Task<IActionResult> IndexCards()
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
-        return _context.SchoolClasses != null
-            ? View(await _context.SchoolClasses.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.SchoolClasses'  is null.");
+        return View(GetSchoolClasses());
+    }
+
+
+
+
+    // Allow unrestricted access to the Index action
+    [AllowAnonymous]
+    // GET: SchoolClasses
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetSchoolClasses());
+    }
+
+
+    // Allow unrestricted access to the Index action
+    [AllowAnonymous]
+    // GET: SchoolClasses
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetSchoolClasses());
     }
 
 

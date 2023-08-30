@@ -2,10 +2,10 @@
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Models.Course;
-using SchoolProject.Web.Models.SchoolClass;
-using SchoolProject.Web.Models.Student;
-using SchoolProject.Web.Models.Teacher;
+using SchoolProject.Web.Models.Courses;
+using SchoolProject.Web.Models.SchoolClasses;
+using SchoolProject.Web.Models.Students;
+using SchoolProject.Web.Models.Teachers;
 
 namespace SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 

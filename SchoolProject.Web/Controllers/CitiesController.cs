@@ -25,43 +25,27 @@ public class CitiesController : Controller
     }
 
 
-    // GET: Cities
-    public IActionResult Index()
+
+    
+    private IEnumerable<City> CitiesWithCountries()
     {
         var citiesWithCountries =
             _cityRepository?.GetCitiesWithCountriesAsync();
 
-        if (citiesWithCountries != null) return View(citiesWithCountries);
-
-        var problemDetails = new ProblemDetails
-        {
-            Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Countries' is null.",
-            Status = StatusCodes.Status500InternalServerError
-            // You can add more properties to the ProblemDetails if needed
-        };
-
-        return StatusCode(
-            StatusCodes.Status500InternalServerError, problemDetails);
+        return citiesWithCountries ?? Enumerable.Empty<City>();
     }
 
-    public IActionResult IndexCards()
+
+    // GET: Cities
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        var citiesWithCountries =
-            _cityRepository?.GetCitiesWithCountriesAsync();
+        return View(CitiesWithCountries());
+    }
 
-        if (citiesWithCountries != null) return View(citiesWithCountries);
-
-        var problemDetails = new ProblemDetails
-        {
-            Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Countries' is null.",
-            Status = StatusCodes.Status500InternalServerError
-            // You can add more properties to the ProblemDetails if needed
-        };
-
-        return StatusCode(
-            StatusCodes.Status500InternalServerError, problemDetails);
+    // GET: Cities
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(CitiesWithCountries());
     }
 
 

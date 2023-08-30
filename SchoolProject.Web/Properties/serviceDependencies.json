@@ -1,12 +1,25 @@
 {
   "dependencies": {
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": null
+    },
     "appInsights1": {
       "type": "appInsights",
       "connectionId": null
     },
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": null
+    "sqlite1": {
+      "type": "sqlite",
+      "connectionId": "ConnectionStrings:SP-SQLite-Local"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:SP-MSSql-Somee",
+      "dynamicId": null
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:SP-SmarterASP-MSSQL"
     }
   }
 }

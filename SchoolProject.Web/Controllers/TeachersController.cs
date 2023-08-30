@@ -18,25 +18,55 @@ public class TeachersController : Controller
     }
 
 
-    // GET: Teachers
-    public async Task<IActionResult> Index()
+
+    private IEnumerable<Teacher> GetTeachersList()
     {
-        return _context.Teachers != null
-            ? View(await _context.Teachers.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Teachers' is null.");
+        var teachersList =
+            _context.Teachers.ToListAsync();
+
+        return teachersList.Result ?? Enumerable.Empty<Teacher>();
+    }
+
+
+
+
+    // GET: Teachers
+    [HttpGet]
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetTeachersList());
     }
 
 
     // GET: Teachers
-    public async Task<IActionResult> IndexCards()
+    [HttpGet]
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
-        return _context.Teachers != null
-            ? View(await _context.Teachers.ToListAsync())
-            : Problem("Entity set 'DataContextMySql.Teachers' is null.");
+        return View(GetTeachersList());
     }
+
+
+    // GET: Teachers
+    [HttpGet]
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetTeachersList());
+    }
+
+
+    // GET: Teachers
+    [HttpGet]
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetTeachersList());
+    }
+
+
+
 
 
     // GET: Teachers/Details/5
+    [HttpGet]
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null || _context.Teachers == null) return NotFound();
@@ -48,21 +78,23 @@ public class TeachersController : Controller
         return View(teacher);
     }
 
+
+
     // GET: Teachers/Create
+    [HttpGet]
     public IActionResult Create()
     {
         return View();
     }
 
     // POST: Teachers/Create
-    // To protect from over-posting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // To protect from over-posting attacks,
+    // enable the specific properties you want to bind to.
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        [Bind(
-            "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Teacher teacher)
+    public async Task<IActionResult> Create(Teacher teacher)
     {
         if (ModelState.IsValid)
         {
@@ -89,10 +121,7 @@ public class TeachersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind(
-            "FirstName,LastName,Address,PostalCode,MobilePhone,Email,Active,DateOfBirth,IdentificationNumber,IdentificationType,ExpirationDateIdentificationNumber,TaxIdentificationNumber,EnrollDate,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Teacher teacher)
+    public async Task<IActionResult> Edit(int id, Teacher teacher)
     {
         if (id != teacher.Id) return NotFound();
 

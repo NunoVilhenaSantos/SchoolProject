@@ -9,6 +9,11 @@ namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
 public class SchoolClassCourse : IEntity
 {
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
     /// <summary>
     ///     Foreign Key for SchoolClass
     /// </summary>
@@ -22,6 +27,11 @@ public class SchoolClassCourse : IEntity
 
 
     public Guid SchoolClassGuidId => SchoolClass.IdGuid;
+
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
 
     /// <summary>
@@ -41,12 +51,11 @@ public class SchoolClassCourse : IEntity
     public Guid CourseGuidId => Course.IdGuid;
 
 
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
 
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
 
 
     // [Key]
@@ -63,6 +72,16 @@ public class SchoolClassCourse : IEntity
     public bool WasDeleted { get; set; }
 
 
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
+
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
@@ -75,6 +94,16 @@ public class SchoolClassCourse : IEntity
     [DisplayName("Created By")]
     [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
+
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
 
 
     // [Required]

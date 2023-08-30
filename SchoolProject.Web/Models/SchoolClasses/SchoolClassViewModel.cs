@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SchoolProject.Web.Models.SchoolClass;
+namespace SchoolProject.Web.Models.SchoolClasses;
 
 public class SchoolClassViewModel : Data.Entities.SchoolClasses.SchoolClass
 {

@@ -49,15 +49,21 @@ public class SeedDbStudentsAndTeachers
 
         await PopulateExistingUsersStudentsAndTeachersFromDb();
 
+
+
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with students...");
         await GenerateStudentsNames(user);
 
+
+
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with teachers...");
         await GenerateTeachersNames(user);
+
+
 
         // ------------------------------------------------------------------ //
         Console.WriteLine(
@@ -79,6 +85,7 @@ public class SeedDbStudentsAndTeachers
             await _dataContextInUse.Users.ToListAsync();
         _listOfUsersFromDb = existingUsersList.ToList();
 
+
         // Fill the existing emails HashSet for efficient email lookups
         ExistingEmailsOfUsersFromDb
             .UnionWith(_listOfUsersFromDb.Select(u => u.Email));
@@ -88,6 +95,8 @@ public class SeedDbStudentsAndTeachers
         var existingStudents =
             await _dataContextInUse.Students.ToListAsync();
         _listOfStudentsFromDb = existingStudents.ToList();
+
+
 
 
         // ------------------------------------------------------------------ //
@@ -268,8 +277,10 @@ public class SeedDbStudentsAndTeachers
         // ------------------------------------------------------------------ //
         Console.WriteLine($"Created {namesToAdd.Count} {userRole.ToLower()}s");
 
+
         // ------------------------------------------------------------------ //
         Console.WriteLine($"Saving {userRole.ToLower()}s to the database...");
+
 
         // ------------------------------------------------------------------ //
         Console.WriteLine($"Saved {userRole.ToLower()}s to the database");
@@ -277,6 +288,7 @@ public class SeedDbStudentsAndTeachers
 
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone..");
+
 
         // ------------------------------------------------------------------ //
         await _dataContextInUse.SaveChangesAsync();
@@ -383,6 +395,8 @@ public class SeedDbStudentsAndTeachers
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             $"Creating {userRole.ToLower()}: {firstName} {lastName}");
+
+
         // ------------------------------------------------------------------ //
 
         Console.WriteLine("debug zone 1");
@@ -456,17 +470,22 @@ public class SeedDbStudentsAndTeachers
         //  Define a regular expression for repeated words.
         var pattern = @"[^0-9a-zA-Z]+";
 
+
         // Remove any spaces and special characters from the names
         var sanitizedFirstName =
             Regex.Replace(firstName, pattern, "");
+        
         var sanitizedLastName =
             Regex.Replace(lastName, pattern, "");
 
+        
         // Concatenate the sanitized names to create the email address
-        var email = $"{sanitizedFirstName}.{sanitizedLastName}@mail.pt";
+        var email = $"{sanitizedFirstName}.{sanitizedLastName}.cinel.pt@yopmail.com";
+
 
         // You can also convert the email to lowercase, if desired
         email = email.ToLower();
+
 
         return email;
     }

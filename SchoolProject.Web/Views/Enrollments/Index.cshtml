@@ -7,83 +7,47 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
+    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
+    @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a> *@
 </p>
-<table class="table table-hover" sortable="True" id="sortableTable">
 
+<table class="table table-hover" sortable="True" id="sortableTable">
     <thead>
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Student)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Course)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Grade)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IdGuid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WasDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </th>
+        <th>@Html.DisplayNameFor(model => model.Student)   </th>
+        <th>@Html.DisplayNameFor(model => model.Course)    </th>
+        <th>@Html.DisplayNameFor(model => model.Grade)     </th>
+        <th>@Html.DisplayNameFor(model => model.Id)        </th>
+        <th>@Html.DisplayNameFor(model => model.IdGuid)    </th>
+        <th>@Html.DisplayNameFor(model => model.WasDeleted)</th>
+        <th>@Html.DisplayNameFor(model => model.CreatedAt) </th>
+        <th>@Html.DisplayNameFor(model => model.CreatedBy) </th>
+        <th>@Html.DisplayNameFor(model => model.UpdatedAt) </th>
+        <th>@Html.DisplayNameFor(model => model.UpdatedBy) </th>
         <th></th>
     </tr>
     </thead>
+
     <tbody>
     @foreach (var item in Model)
     {
         <tr>
+            <td>@Html.DisplayFor(modelItem => item.Student.Address)</td>
+            <td>@Html.DisplayFor(modelItem => item.Course.Code) </td>
+            <td>@Html.DisplayFor(modelItem => item.Grade)       </td>
+            <td>@Html.DisplayFor(modelItem => item.Id)          </td>
+            <td>@Html.DisplayFor(modelItem => item.IdGuid)      </td>
+            <td>@Html.DisplayFor(modelItem => item.WasDeleted)  </td>
+            <td>@Html.DisplayFor(modelItem => item.CreatedAt)   </td>
+            <td>@Html.DisplayFor(modelItem => item.CreatedBy.Id)</td>
+            <td>@Html.DisplayFor(modelItem => item.UpdatedAt)   </td>
+            <td>@Html.DisplayFor(modelItem => item.UpdatedBy.Id)</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdGuid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy.Id)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                <div class="btn-group">
+                    @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
+                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                </div>
             </td>
         </tr>
     }

@@ -44,48 +44,15 @@ public class NationalitiesController : Controller
     /// </summary>
     /// <returns></returns>
     /// GET: Nationalities
-    public IActionResult Index()
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        var nationalitiesWithCountries =
-            GetNationalitiesWithCountries();
-
         return View(GetNationalitiesWithCountries());
-
-        var problemDetails = new ProblemDetails
-        {
-            Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Countries' is null.",
-            Status = StatusCodes.Status500InternalServerError
-            // You can add more properties to the ProblemDetails if needed
-        };
-
-        return StatusCode(
-            StatusCodes.Status500InternalServerError, problemDetails);
     }
 
 
-    public IActionResult IndexCards()
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
         return View(GetNationalitiesWithCountries());
-
-        return View((IEnumerable<Nationality>) Index());
-
-        var nationalitiesWithCountries =
-            _nationalityRepository?.GetNationalitiesWithCountries();
-
-        if (nationalitiesWithCountries != null)
-            return View(nationalitiesWithCountries);
-
-        var problemDetails = new ProblemDetails
-        {
-            Title = "Data Error",
-            Detail = "Entity set 'DataContextMySql.Countries' is null.",
-            Status = StatusCodes.Status500InternalServerError
-            // You can add more properties to the ProblemDetails if needed
-        };
-
-        return StatusCode(
-            StatusCodes.Status500InternalServerError, problemDetails);
     }
 
 

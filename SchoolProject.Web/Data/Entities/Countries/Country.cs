@@ -41,34 +41,6 @@ public class Country : IEntity, INotifyPropertyChanged
         : "https://storage.googleapis.com/storage-nuno/countries/" +
           ProfilePhotoId;
 
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    // Navigation property with lazy-loading enabled
-    public virtual ICollection<City>? Cities { get; set; }
-
-
-    [DisplayName("Number of Cities")]
-    public int NumberCities => Cities?.Count ?? 0;
-
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-
-    [Required]
-    // [ForeignKey("NationalityId")]
-    public virtual required Nationality Nationality { get; set; }
-
-    // public int NationalityId => Nationality.Id;
-    public Guid NationalityGuidId => Nationality.IdGuid;
-
-
-
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
@@ -105,6 +77,33 @@ public class Country : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    // Navigation property with lazy-loading enabled
+    public virtual ICollection<City>? Cities { get; set; }
+
+
+    [DisplayName("Number of Cities")]
+    public int NumberCities => Cities?.Count ?? 0;
+
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+
+    [Required]
+    // [ForeignKey("NationalityId")]
+    public virtual required Nationality Nationality { get; set; }
+
+    // public int NationalityId => Nationality.Id;
+    public Guid NationalityGuidId => Nationality.IdGuid;
+
 
 
     // --------------------------------------------------------------------- //

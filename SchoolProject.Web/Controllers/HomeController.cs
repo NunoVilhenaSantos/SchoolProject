@@ -44,7 +44,7 @@ public class HomeController : Controller
     }
 
 
-    public IActionResult Index()
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
         // Verificar a conectividade de rede
         // if (_httpContextAccessor.HttpContext != null)

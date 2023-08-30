@@ -34,12 +34,12 @@ public class Student : IEntity //: INotifyPropertyChanged
     public required string PostalCode { get; set; }
 
 
-    [Required] public required City City { get; set; }
+    [Required] public virtual required City City { get; set; }
 
 
     [Required]
     // [ForeignKey("CountryId")]
-    public required Country Country { get; set; }
+    public virtual required Country Country { get; set; }
 
     // public  int CountryId => Country.Id;
     public Guid CountryGuidId => Country.IdGuid;
@@ -57,7 +57,7 @@ public class Student : IEntity //: INotifyPropertyChanged
 
     [Required] public required bool Active { get; set; } = true;
 
-    [Required] public required Gender Gender { get; set; }
+    [Required] public virtual required Gender Gender { get; set; }
 
 
     [Required]
@@ -84,17 +84,21 @@ public class Student : IEntity //: INotifyPropertyChanged
     public required string TaxIdentificationNumber { get; set; }
 
 
-    [Required]
-    [DisplayName("Country Of Nationality")]
-    public required Country CountryOfNationality { get; set; }
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
 
     [Required]
-    public Nationality Nationality => CountryOfNationality.Nationality;
+    [DisplayName("Country Of Nationality")]
+    public required virtual Country CountryOfNationality { get; set; }
+
+    
+    public virtual Nationality Nationality => CountryOfNationality?.Nationality;
 
     // [Required] public required Nationality Nationality { get; set; }
 
 
-    [Required] public required Country Birthplace { get; set; }
+    [Required] public required virtual Country Birthplace { get; set; }
 
 
     [Required]
@@ -103,7 +107,7 @@ public class Student : IEntity //: INotifyPropertyChanged
     public required DateTime EnrollDate { get; set; }
 
 
-    [Required] public required User User { get; set; }
+    [Required] public required virtual User User { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -133,19 +137,72 @@ public class Student : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid IdGuid { get; set; }
+
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
+
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+    // [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
-    // between Student and SchoolClass
+    // between Student and Courses
     // ---------------------------------------------------------------------- //
 
 
     // [DisplayName("Courses")]
-    // public ICollection<SchoolClass>? SchoolClasses { get; set; } =
-    //     new List<SchoolClass>();
+    // public ICollection<SchoolClass>? SchoolClasses { get; set; }
+    
 
     [DisplayName("Courses")]
-    public ICollection<StudentCourse>? StudentCourses { get; set; } =
-        new List<StudentCourse>();
+    public virtual ICollection<StudentCourse>? StudentCourses { get; set; } 
+    
 
 
     // [DisplayName("Courses Count")]
@@ -162,21 +219,20 @@ public class Student : IEntity //: INotifyPropertyChanged
     // between Student and SchoolClass
     // ---------------------------------------------------------------------- //
 
-    [DisplayName("Courses")]
-    public ICollection<SchoolClassStudent>? SchoolClassStudents { get; set; } =
-        new List<SchoolClassStudent>();
+    [DisplayName("SchoolClass")]
+    public virtual ICollection<SchoolClassStudent>? SchoolClassStudents { get; set; }
 
     [DisplayName("School Classes Count")]
     public int SchoolClassesCount =>
         SchoolClassStudents?.Count ?? 0;
 
-    [DisplayName("Courses Count")]
+    [DisplayName("SchoolClass With Courses Count")]
     public int SCSCoursesCount => SchoolClassStudents?
         .Where(scs => scs.StudentId == Id)
-        // Assuming SchoolClass navigation property in SchoolClassStudent
+        // SchoolClass navigation property in SchoolClassStudent
         .Select(scs => scs.SchoolClass)
         .Where(sc => sc != null)
-        // Assuming Courses navigation property in SchoolClass
+        // Courses navigation property in SchoolClass
         .SelectMany(sc => sc.Courses)
         .Where(c => c != null)
         .Count() ?? 0;
@@ -197,9 +253,11 @@ public class Student : IEntity //: INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
     // between Student and Courses
+    //
+    // Using the Enrollment entity
     // ---------------------------------------------------------------------- //
 
-    public ICollection<Enrollment>? Enrollments { get; set; }
+    public virtual ICollection<Enrollment>? Enrollments { get; set; }
 
 
     [DisplayName("Courses Count")]
@@ -230,36 +288,9 @@ public class Student : IEntity //: INotifyPropertyChanged
         .Min(e => e.Grade) ?? 0;
 
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
 
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid IdGuid { get; set; }
-
-
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [Required]
-    [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
-
-
-    // [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 }

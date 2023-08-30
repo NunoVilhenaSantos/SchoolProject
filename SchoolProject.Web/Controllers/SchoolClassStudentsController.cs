@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -14,17 +15,51 @@ public class SchoolClassStudentsController : Controller
         _context = context;
     }
 
-    // GET: SchoolClassStudents
-    public async Task<IActionResult> Index()
-    {
-        var dataContextMySql =
-            _context.SchoolClassStudents
-                .Include(s => s.CreatedBy)
-                .Include(s => s.SchoolClass)
-                .Include(s => s.Student)
-                .Include(s => s.UpdatedBy);
 
-        return View(await dataContextMySql.ToListAsync());
+
+    private IEnumerable<SchoolClassStudent> GetSchoolClassesAndStudent()
+    {
+
+        var schoolClassesStudentList =
+           _context.SchoolClassStudents
+               .Include(s => s.SchoolClass)
+               .Include(s => s.Student)
+               .Include(s => s.CreatedBy)
+               .Include(s => s.UpdatedBy);
+
+        
+
+        return schoolClassesStudentList ?? Enumerable.Empty<SchoolClassStudent>();
+    }
+
+
+
+
+    // GET: SchoolClassStudents
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetSchoolClassesAndStudent());
+    }
+
+
+    // GET: SchoolClassStudents
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetSchoolClassesAndStudent());
+    }
+
+
+    // GET: SchoolClassStudents
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetSchoolClassesAndStudent());
+    }
+
+
+    // GET: SchoolClassStudents
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetSchoolClassesAndStudent());
     }
 
     // GET: SchoolClassStudents/Details/5

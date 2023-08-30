@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Controllers;
@@ -14,18 +15,52 @@ public class StudentCoursesController : Controller
         _context = context;
     }
 
-    // GET: StudentCourses
-    public async Task<IActionResult> Index()
-    {
-        var dataContextMySql =
-            _context.StudentCourses
-                .Include(s => s.Course)
-                .Include(s => s.CreatedBy)
-                .Include(s => s.Student)
-                .Include(s => s.UpdatedBy);
 
-        return View(await dataContextMySql.ToListAsync());
+
+    private IEnumerable<StudentCourse> GetStudentCourses()
+    {
+
+        var studentCoursesList =
+           _context.StudentCourses
+               .Include(s => s.Course)
+               .Include(s => s.CreatedBy)
+               .Include(s => s.Student)
+               .Include(s => s.UpdatedBy);
+
+        return studentCoursesList ?? Enumerable.Empty<StudentCourse>();
     }
+
+
+
+
+    // GET: StudentCourses
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetStudentCourses());
+    }
+
+
+    // GET: StudentCourses
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetStudentCourses());
+    }
+
+
+    // GET: StudentCourses
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetStudentCourses());
+    }
+
+
+    // GET: StudentCourses
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GetStudentCourses());
+    }
+
+
 
     // GET: StudentCourses/Details/5
     public async Task<IActionResult> Details(int? id)
@@ -34,11 +69,12 @@ public class StudentCoursesController : Controller
 
         var studentCourse = await _context.StudentCourses
             .Include(s => s.Course)
-            .Include(s => s.CreatedBy)
             .Include(s => s.Student)
+            .Include(s => s.CreatedBy)
             .Include(s => s.UpdatedBy)
             .FirstOrDefaultAsync(m => m.StudentId == id);
 
+        
         if (studentCourse == null) return NotFound();
 
         return View(studentCourse);

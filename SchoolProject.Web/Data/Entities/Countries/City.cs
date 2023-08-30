@@ -93,7 +93,7 @@ public class City : IEntity, INotifyPropertyChanged
 
     // --------------------------------------------------------------------- //
 
-    [Required] public required int CountryId { get; set; }
+    [Required] public  required int CountryId { get; set; }
 
 
     [Required]
@@ -101,7 +101,7 @@ public class City : IEntity, INotifyPropertyChanged
     public virtual required Country Country { get; set; }
 
     [DisplayName("Number of Cities")]
-    public virtual int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
+    public  int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
 
     public Guid CountryGuidId => Country.IdGuid;
 

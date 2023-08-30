@@ -7,14 +7,15 @@
 
 <br/>
 <h1>@ViewData["Title"]</h1>
-
 <br/>
+
 <p>
-    <a asp-area="" asp-controller="Genders" asp-action="Create" class="btn btn-primary">Create New</a>
-    <a asp-area="" asp-controller="Genders" asp-action="Create" class="btn btn-outline-primary"><span class="fa-solid fa-stethoscope"></span> New Medic</a>
+    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
+    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
 </p>
-<br/>
 
+
+<br/>
 <div class="table-responsive-sm">
     <table class="table table-sm table-hover">
         <thead>
@@ -32,11 +33,6 @@
         </thead>
 
         <tbody class="table-group-divider">
-        @if (Model == null || !Model.Any())
-        {
-            <p>Não há produtos disponíveis.</p>
-            <p>O tipo do modelo é: @Model.GetType().FullName</p>
-        }
         @foreach (var item in Model)
         {
             <tr>
@@ -46,9 +42,6 @@
                 <td>
                     <img alt="Image" class="img-thumbnail" height="150" src="@Url.Content(item.ProfilePhotoIdUrl)" width="150"/>
                 </td>
-                @* <td> *@
-                @*     <img alt="Image" class="img-thumbnail" height="150" src="@Url.Content(item.ProfilePhotoIdUrl)" width="150" /> *@
-                @* </td> *@
 
                 <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
                 <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>

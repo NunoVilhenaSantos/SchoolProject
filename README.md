@@ -1,8 +1,5 @@
 # SchoolProject
 
-* https://schoolprojectweb20230617182721.azurewebsites.net (TO BE CHANGE)
-*
-
 ## No âmbito das unidades de formação Programação Web – Server side – e Client side, propõem- se a conceção de uma aplicação web asp.net de um sistema de informação para uma Escola.
 
 A referida aplicação deverá fazer uso de:

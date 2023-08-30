@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 
 namespace SchoolProject.Web.Controllers;
@@ -18,17 +19,42 @@ public class GendersController : Controller
     }
 
 
-    // GET: Genders
-    public async Task<IActionResult> Index()
+
+    private IEnumerable<Gender> GendersList()
     {
-        return View(await _context.Genders.ToListAsync());
+        //var citiesWithCountries =
+        //    _cityRepository?.GetCitiesWithCountriesAsync();
+
+        var gendersList = _context.Genders.ToListAsync();
+
+        return gendersList.Result ?? Enumerable.Empty<Gender>();
     }
 
 
     // GET: Genders
-    public async Task<IActionResult> IndexCards()
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        return View(await _context.Genders.ToListAsync());
+        return View(GendersList());
+    }
+
+
+    // GET: Genders
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GendersList());
+    }
+
+    // GET: Genders
+    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GendersList());
+    }
+
+
+    // GET: Genders
+    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    {
+        return View(GendersList());
     }
 
 
