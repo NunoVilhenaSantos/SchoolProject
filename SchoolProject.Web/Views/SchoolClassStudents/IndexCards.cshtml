@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
-@model IEnumerable<SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClass>
+
+@model IEnumerable<SchoolProject.Web.Data.Entities.SchoolClasses.SchoolClassStudent>
 
 @{
     var actionName = ViewContext.RouteData.Values["action"]?.ToString();
@@ -26,11 +27,11 @@
                     @* <div class="card shadow-sm"> *@
                     <div class="card shadow-sm">
                         <div class="card-img-top">
-                            <img src="@item.ProfilePhotoIdUrl" alt="Profile Photo" class="img-fluid">
+                            <img src="~/images/PlaceHolders/4131088.webp" alt="Profile Photo" class="img-fluid">
                         </div>
 
                         <div class="card-body">
-                            <p class="card-text">@Html.DisplayFor(modelItem => item.Name)</p>
+                            <p class="card-text">@Html.DisplayFor(modelItem => item.Id)</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
@@ -38,12 +39,12 @@
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
                                 <small class="text-body-secondary">
-                                    @Html.DisplayNameFor(modelItem => item.Code)<br/>
-                                    @Html.DisplayFor(modelItem => item.Code)
+                                    @Html.DisplayNameFor(modelItem => item.SchoolClass.Name)<br/>
+                                    @Html.DisplayFor(modelItem => item.SchoolClass.Name)
                                 </small>
                                 <small class="text-body-secondary">
-                                    @Html.DisplayNameFor(modelItem => item.Acronym)<br/>
-                                    @Html.DisplayFor(modelItem => item.Acronym)
+                                    @Html.DisplayNameFor(modelItem => item.Student.FullName)<br/>
+                                    @Html.DisplayFor(modelItem => item.Student.FullName)
                                 </small>
                             </div>
                         </div>

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Repositories.OtherEntities;
 using SchoolProject.Web.Models;
 
 
@@ -11,17 +12,24 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class GendersController : Controller
 {
-    private const string BucketName = "genders";
+    private readonly IGenderRepository _genderRepository;
     private readonly DataContextMySql _context;
+
+
+    private const string BucketName = "genders";
 
 
     /// <summary>
     ///  GendersController constructor.
     /// </summary>
     /// <param name="context"></param>
-    public GendersController(DataContextMySql context)
+    /// <param name="genderRepository"></param>
+    public GendersController(
+        DataContextMySql context, IGenderRepository genderRepository
+    )
     {
         _context = context;
+        _genderRepository = genderRepository;
     }
 
 
@@ -30,9 +38,7 @@ public class GendersController : Controller
         //var citiesWithCountries =
         //    _cityRepository?.GetCitiesWithCountriesAsync();
 
-        var gendersList = _context.Genders.ToListAsync();
-
-        return gendersList.Result ?? Enumerable.Empty<Gender>();
+        return _context.Genders.ToListAsync().Result;
     }
 
 
@@ -71,8 +77,29 @@ public class GendersController : Controller
     // /// <returns></returns>
     // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
     // {
-    //     return View(GendersList());
+    //     var records = GendersList(pageNumber, pageSize);
+    //
+    //     var model = new PaginationViewModel<Gender>
+    //     {
+    //         Records = records,
+    //         PageNumber = pageNumber,
+    //         PageSize = pageSize,
+    //         TotalCount = _context.Teachers.Count(),
+    //     };
+    //
+    //     return View(model);
     // }
+
+
+    private List<Gender> GendersList(int pageNumber, int pageSize)
+    {
+        var records = GendersList()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return records;
+    }
 
 
     // GET: Genders
@@ -84,19 +111,14 @@ public class GendersController : Controller
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        var totalCount = _context.Genders.Count();
-
-        var records = _context.Genders
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+        var records = GendersList(pageNumber, pageSize);
 
         var model = new PaginationViewModel<Gender>
         {
             Records = records,
             PageNumber = pageNumber,
             PageSize = pageSize,
-            TotalCount = totalCount
+            TotalCount = _context.Teachers.Count(),
         };
 
         return View(model);
@@ -104,6 +126,11 @@ public class GendersController : Controller
 
 
     // GET: Genders/Details/5
+    /// <summary>
+    /// Details action, to open the view for details.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
@@ -117,16 +144,23 @@ public class GendersController : Controller
     }
 
     // GET: Genders/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
+    /// <summary>
+    ///    Create action, to open the view for creating.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Create() => View();
+
 
     // POST: Genders/Create
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    ///    Create action validation and confirmation.
+    /// </summary>
+    /// <param name="gender"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Gender gender)
@@ -141,12 +175,19 @@ public class GendersController : Controller
     }
 
     // GET: Genders/Edit/5
+    /// <summary>
+    ///     Edit action, to open the view for editing.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null || _context.Genders == null) return NotFound();
+        if (id == null) return NotFound();
 
         var gender = await _context.Genders.FindAsync(id);
+
         if (gender == null) return NotFound();
+
         return View(gender);
     }
 
@@ -155,11 +196,15 @@ public class GendersController : Controller
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Edit action validation and confirmation.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="gender"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind("Name,ProfilePhotoId,Id,IdGuid,WasDeleted,CreatedAt,UpdatedAt")]
-        Gender gender)
+    public async Task<IActionResult> Edit(int id, Gender gender)
     {
         if (id != gender.Id) return NotFound();
 
@@ -172,8 +217,8 @@ public class GendersController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!GenderExists(gender.Id))
-                return NotFound();
+            if (!GenderExists(gender.Id)) return NotFound();
+
             throw;
         }
 
@@ -181,6 +226,11 @@ public class GendersController : Controller
     }
 
     // GET: Genders/Delete/5
+    /// <summary>
+    /// Delete action, to open the view for confirmation.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
@@ -194,23 +244,25 @@ public class GendersController : Controller
     }
 
     // POST: Genders/Delete/5
+    /// <summary>
+    /// Delete action confirmed.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        if (_context.Genders == null)
-            return Problem("Entity set 'DataContextMySql.Genders' is null.");
-
         var gender = await _context.Genders.FindAsync(id);
+
         if (gender != null) _context.Genders.Remove(gender);
 
         await _context.SaveChangesAsync();
+
         return RedirectToAction(nameof(Index));
     }
 
-    private bool GenderExists(int id)
-    {
-        return (_context.Genders?.Any(e => e.Id == id)).GetValueOrDefault();
-    }
+    private bool GenderExists(int id) =>
+        _context.Genders.Any(e => e.Id == id);
 }

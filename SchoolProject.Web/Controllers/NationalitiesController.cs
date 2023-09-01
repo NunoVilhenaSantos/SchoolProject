@@ -31,15 +31,6 @@ public class NationalitiesController : Controller
     }
 
 
-    private IEnumerable<Nationality> GetNationalitiesWithCountries()
-    {
-        var nationalitiesWithCountries =
-            _nationalityRepository?.GetNationalitiesWithCountries();
-
-        return nationalitiesWithCountries ?? Enumerable.Empty<Nationality>();
-    }
-
-
     /// <summary>
     ///     GET: Nationalities
     /// </summary>
@@ -49,6 +40,10 @@ public class NationalitiesController : Controller
     {
         return View(GetNationalitiesWithCountries());
     }
+
+
+    private IEnumerable<Nationality> GetNationalitiesWithCountries() =>
+        _nationalityRepository.GetNationalitiesWithCountries();
 
 
     /// <summary>
@@ -64,6 +59,38 @@ public class NationalitiesController : Controller
 
 
     // GET: Countries
+    // /// <summary>
+    // /// Index action for testing the pagination
+    // /// </summary>
+    // /// <param name="pageNumber"></param>
+    // /// <param name="pageSize"></param>
+    // /// <returns></returns>
+    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
+    // {
+    //     var records =
+    //         GetNationalitiesWithCountries(pageNumber, pageSize);
+    //
+    //     var model = new PaginationViewModel<Nationality>
+    //     {
+    //         Records = records,
+    //         PageNumber = pageNumber,
+    //         PageSize = pageSize,
+    //         TotalCount = _nationalityRepository.GetCount().Result,
+    //     };
+    //
+    //     return View(model);
+    // }
+
+
+    private List<Nationality> GetNationalitiesWithCountries(
+        int pageNumber, int pageSize) =>
+        GetNationalitiesWithCountries()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+
+    // GET: Countries
     /// <summary>
     /// IndexCards1 method for the cards view with pagination mode.
     /// </summary>
@@ -72,19 +99,15 @@ public class NationalitiesController : Controller
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        var totalCount = _nationalityRepository.GetCount().Result;
-
-        var records = _nationalityRepository.GetAll()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+        var records =
+            GetNationalitiesWithCountries(pageNumber, pageSize);
 
         var model = new PaginationViewModel<Nationality>
         {
             Records = records,
             PageNumber = pageNumber,
             PageSize = pageSize,
-            TotalCount = totalCount
+            TotalCount = _nationalityRepository.GetCount().Result,
         };
 
         return View(model);

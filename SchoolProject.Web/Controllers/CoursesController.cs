@@ -2,31 +2,33 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+///     courses controller
+/// </summary>
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesController : Controller
 {
-    private const string BucketName = "courses";
+    private readonly ICourseRepository _courseRepository;
     private readonly DataContextMySql _context;
 
+    private const string BucketName = "courses";
 
-    public CoursesController(DataContextMySql context)
+    /// <summary>
+    ///    constructor for the courses controller
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="courseRepository"></param>
+    public CoursesController(
+        DataContextMySql context, ICourseRepository courseRepository
+    )
     {
         _context = context;
-    }
-
-
-    private IEnumerable<Course> CoursesList()
-    {
-        //var coursesList =
-        //    _cityRepository?.GetCitiesWithCountriesAsync();
-
-        var coursesList = _context.Courses.ToList();
-
-        return coursesList ?? Enumerable.Empty<Course>();
+        _courseRepository = courseRepository;
     }
 
 
@@ -45,6 +47,15 @@ public class CoursesController : Controller
     }
 
 
+    private IEnumerable<Course> CoursesList()
+    {
+        //var coursesList =
+        //    _cityRepository?.GetCitiesWithCountriesAsync();
+
+        return _context.Courses.ToList();
+    }
+
+
     // Allow unrestricted access to the Index action
     /// <summary>
     ///   Index action cards
@@ -60,6 +71,40 @@ public class CoursesController : Controller
     }
 
 
+    // GET: Courses
+    // /// <summary>
+    // ///     Action to show all the roles
+    // /// </summary>
+    // /// <returns>a list of roles</returns>
+    // [HttpGet]
+    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
+    // {
+    //     var records = CoursesList(pageNumber, pageSize);
+    //
+    //     var model = new PaginationViewModel<Course>
+    //     {
+    //         Records = records,
+    //         PageNumber = pageNumber,
+    //         PageSize = pageSize,
+    //         TotalCount = _context.Courses.Count(),
+    //     };
+    //
+    //     return View(model);
+    // }
+
+
+    private List<Course> CoursesList(int pageNumber, int pageSize)
+    {
+        var records = CoursesList()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return records;
+    }
+
+
+    // GET: Courses
     /// <summary>
     ///  IndexCards method for the cards view.
     /// </summary>
@@ -68,19 +113,14 @@ public class CoursesController : Controller
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        var totalCount = _context.Courses.Count();
-
-        var records = _context.Courses
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+        var records = CoursesList(pageNumber, pageSize);
 
         var model = new PaginationViewModel<Course>
         {
             Records = records,
             PageNumber = pageNumber,
             PageSize = pageSize,
-            TotalCount = totalCount
+            TotalCount = _context.Courses.Count(),
         };
 
         return View(model);
@@ -112,9 +152,17 @@ public class CoursesController : Controller
     /// <returns></returns>
     public IActionResult Create() => View();
 
+
     // POST: Courses/Create
-    // To protect from over-posting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // To protect from over-posting attacks,
+    // enable the specific properties you want to bind to.
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    ///  Create action
+    /// </summary>
+    /// <param name="course"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Course course)
@@ -128,7 +176,13 @@ public class CoursesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+
     // GET: Courses/Edit/5
+    /// <summary>
+    ///  Edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
@@ -145,6 +199,12 @@ public class CoursesController : Controller
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="course"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Course course)
@@ -167,7 +227,13 @@ public class CoursesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+
     // GET: Courses/Delete/5
+    /// <summary>
+    /// Delete action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
@@ -181,6 +247,11 @@ public class CoursesController : Controller
     }
 
     // POST: Courses/Delete/5
+    /// <summary>
+    /// Delete action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
@@ -196,8 +267,6 @@ public class CoursesController : Controller
     }
 
 
-    private bool CourseExists(int id)
-    {
-        return (_context.Courses?.Any(e => e.Id == id)).GetValueOrDefault();
-    }
+    private bool CourseExists(int id) =>
+        _context.Courses.Any(e => e.Id == id);
 }

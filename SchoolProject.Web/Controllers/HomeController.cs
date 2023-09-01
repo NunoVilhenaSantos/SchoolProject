@@ -13,13 +13,14 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class HomeController : Controller
 {
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
+
     private readonly ILogger<HomeController> _logger;
 
 
     private readonly SignInManager<User> _signInManager;
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
 
 
     /// <summary>

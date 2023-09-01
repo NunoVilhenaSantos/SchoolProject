@@ -98,7 +98,8 @@ public class AccountController : Controller
                 // Exemplo: ProductsController [Authorize]
                 //
                 return Request.Query.Keys.Contains("ReturnUrl")
-                    ? Redirect(Request.Query["ReturnUrl"].First())
+                    ? Redirect(Request.Query["ReturnUrl"].First() ??
+                               string.Empty)
                     : RedirectToAction("Index", "Home");
 
             ModelState.AddModelError(
@@ -587,19 +588,16 @@ public class AccountController : Controller
             await _countryRepository.GetCountryWithCitiesAsync(countryId);
 
 
-        Console.OutputEncoding = Encoding.UTF8;
+        // Console.OutputEncoding = Encoding.UTF8;
 
-        Console.WriteLine(country);
-        Console.WriteLine(country.Cities);
-        Console.WriteLine(
-            Json(country.Cities.OrderBy(c => c.Name)));
+        // Console.WriteLine(country);
+        // Console.WriteLine(country?.Cities);
+        // Console.WriteLine(Json(country?.Cities.OrderBy(c => c.Name)));
 
-
-        var cities = country.Cities.OrderBy(c => c.Name);
-
-        Console.WriteLine(cities);
-        Console.WriteLine(Json(cities));
-        Console.WriteLine(Json(cities.OrderBy(c => c.Name)));
+        // var cities = country.Cities.OrderBy(c => c.Name);
+        // Console.WriteLine(cities);
+        // Console.WriteLine(Json(cities));
+        // Console.WriteLine(Json(cities.OrderBy(c => c.Name)));
 
 
         // Serialize the country object to JSON with ReferenceHandler.Preserve
@@ -632,10 +630,10 @@ public class AccountController : Controller
         var country =
             _countryRepository.GetCountriesWithCitiesEnumerable();
 
-        Console.OutputEncoding = Encoding.UTF8;
-        Console.WriteLine(country);
-        Console.WriteLine(
-            Json(country.OrderBy(c => c.Name)));
+        // Console.OutputEncoding = Encoding.UTF8;
+        // Console.WriteLine(country);
+        // Console.WriteLine(
+        //     Json(country.OrderBy(c => c.Name)));
 
         return Task.FromResult(Json(country.OrderBy(c => c.Name)));
     }
@@ -663,7 +661,7 @@ public class AccountController : Controller
 
     /// <summary>
     /// Aqui o utilizador obtém a lista de países e a respetiva nacionalidade
-    /// via JSON para o preenchimento do dropdownlist
+    /// via JSON para o preenchimento do dropdown-list
     /// </summary>
     /// <returns></returns>
     [HttpPost]
@@ -675,11 +673,11 @@ public class AccountController : Controller
             _countryRepository.GetComboCountriesAndNationalities();
 
 
-        Console.OutputEncoding = Encoding.UTF8;
-        Console.WriteLine(countriesWithNationalities);
-        Console.WriteLine(
-            Json(countriesWithNationalities
-                .OrderBy(c => c.Text)));
+        // Console.OutputEncoding = Encoding.UTF8;
+        // Console.WriteLine(countriesWithNationalities);
+        // Console.WriteLine(
+        //     Json(countriesWithNationalities
+        //         .OrderBy(c => c.Text)));
 
 
         return Task.FromResult(

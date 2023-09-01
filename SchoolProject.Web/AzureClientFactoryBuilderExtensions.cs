@@ -17,6 +17,7 @@ internal static class AzureClientFactoryBuilderExtensions
             : builder.AddBlobServiceClient(serviceUriOrConnectionString);
     }
 
+
     public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions>
         AddQueueServiceClient(this AzureClientFactoryBuilder builder,
             string? serviceUriOrConnectionString, bool preferMsi)

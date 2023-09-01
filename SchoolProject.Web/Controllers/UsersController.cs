@@ -114,15 +114,11 @@ public class UsersController : Controller
 
 
     private List<UserWithRolesViewModel> GetUsersWithRoles(
-        int pageNumber, int pageSize)
-    {
-        var usersWithRoles = GetUsersWithRolesList();
-
-        return usersWithRoles
+        int pageNumber, int pageSize) =>
+        GetUsersWithRolesList()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
-    }
 
 
     // GET: Roles

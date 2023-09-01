@@ -15,7 +15,6 @@ namespace SchoolProject.Web.Controllers;
 public class CountriesController : Controller
 {
     private readonly ICountryRepository _countryRepository;
-
     private const string BucketName = "countries";
 
 
@@ -34,13 +33,8 @@ public class CountriesController : Controller
     // ------------------------------ --------- ----------------------------- //
 
 
-    private IEnumerable<Country> CountriesWithCities()
-    {
-        var countriesWithCities =
-            _countryRepository?.GetCountriesWithCities();
-
-        return countriesWithCities ?? Enumerable.Empty<Country>();
-    }
+    private IEnumerable<Country> CountriesWithCities() =>
+        _countryRepository.GetCountriesWithCities();
 
 
     // GET: Countries

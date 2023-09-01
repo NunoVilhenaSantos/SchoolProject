@@ -38,9 +38,9 @@ public class CitiesController : Controller
     private IEnumerable<City> CitiesWithCountries()
     {
         var citiesWithCountries =
-            _cityRepository?.GetCitiesWithCountriesAsync();
+            _cityRepository.GetCitiesWithCountriesAsync();
 
-        return citiesWithCountries ?? Enumerable.Empty<City>();
+        return citiesWithCountries;
     }
 
 
@@ -78,8 +78,6 @@ public class CitiesController : Controller
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        var totalCount = _cityRepository.GetCount().Result;
-
         var records = _cityRepository.GetAll()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -90,7 +88,7 @@ public class CitiesController : Controller
             Records = records,
             PageNumber = pageNumber,
             PageSize = pageSize,
-            TotalCount = totalCount
+            TotalCount = _cityRepository.GetCount().Result,
         };
 
         return View(model);

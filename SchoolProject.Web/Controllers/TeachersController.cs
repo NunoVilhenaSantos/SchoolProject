@@ -18,7 +18,6 @@ public class TeachersController : Controller
     private const string BucketName = "teachers";
 
 
-
     /// <summary>
     ///  TeachersController constructor.
     /// </summary>
@@ -31,15 +30,6 @@ public class TeachersController : Controller
     {
         _context = context;
         _teacherRepository = teacherRepository;
-    }
-
-
-    private IEnumerable<Teacher> GetTeachersList()
-    {
-        var teachersList =
-            _context.Teachers.ToListAsync();
-
-        return teachersList.Result;
     }
 
 
@@ -57,6 +47,10 @@ public class TeachersController : Controller
     }
 
 
+    private IEnumerable<Teacher> GetTeachersList() =>
+        _context.Teachers.ToListAsync().Result;
+
+
     // GET: Teachers
     /// <summary>
     /// IndexCards method for the cards view.
@@ -72,32 +66,35 @@ public class TeachersController : Controller
 
 
     // GET: Teachers
-    /// <summary>
-    /// Index1 method, for the main view, for testing purposes.
-    /// </summary>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    {
-        var totalCount = _context.Teachers.Count();
+    // /// <summary>
+    // /// Index1 method, for the main view, for testing purposes.
+    // /// </summary>
+    // /// <param name="pageNumber"></param>
+    // /// <param name="pageSize"></param>
+    // /// <returns></returns>
+    // [HttpGet]
+    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
+    // {
+    //     var records = GetTeachersListForCards(pageNumber, pageSize);
+    //
+    //     var model = new PaginationViewModel<Teacher>
+    //     {
+    //         Records = records,
+    //         PageNumber = pageNumber,
+    //         PageSize = pageSize,
+    //         TotalCount = _context.Teachers.Count(),
+    //     };
+    //
+    //     return View(model);
+    // }
 
-        var records = _context.Teachers
+
+    private List<Teacher> GetTeachersListForCards(
+        int pageNumber, int pageSize) =>
+        GetTeachersList()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
-
-        var model = new PaginationViewModel<Teacher>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = totalCount
-        };
-
-        return View(model);
-    }
 
 
     // GET: Teachers
@@ -110,19 +107,14 @@ public class TeachersController : Controller
     [HttpGet]
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        var totalCount = _context.Teachers.Count();
-
-        var records = _context.Teachers
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+        var records = GetTeachersListForCards(pageNumber, pageSize);
 
         var model = new PaginationViewModel<Teacher>
         {
             Records = records,
             PageNumber = pageNumber,
             PageSize = pageSize,
-            TotalCount = totalCount
+            TotalCount = _context.Teachers.Count(),
         };
 
         return View(model);
@@ -273,8 +265,6 @@ public class TeachersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool TeacherExists(int id)
-    {
-        return (_context.Teachers?.Any(e => e.Id == id)).GetValueOrDefault();
-    }
+    private bool TeacherExists(int id) =>
+        _context.Teachers.Any(e => e.Id == id);
 }
