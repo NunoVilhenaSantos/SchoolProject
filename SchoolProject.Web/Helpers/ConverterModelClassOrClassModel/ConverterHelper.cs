@@ -66,7 +66,7 @@ public class ConverterHelper : IConverterHelper
             CreatedBy = courseViewModel.CreatedBy,
             IdGuid = courseViewModel.IdGuid,
             CreatedAt = courseViewModel.CreatedAt,
-            ProfilePhotoId = courseViewModel.ProfilePhotoId,
+            ProfilePhotoId = courseViewModel.ProfilePhotoId
         };
     }
 
@@ -86,7 +86,7 @@ public class ConverterHelper : IConverterHelper
             CreatedBy = course.CreatedBy,
             IdGuid = course.IdGuid,
             CreatedAt = course.CreatedAt,
-            ProfilePhotoId = course.ProfilePhotoId,
+            ProfilePhotoId = course.ProfilePhotoId
         };
     }
 

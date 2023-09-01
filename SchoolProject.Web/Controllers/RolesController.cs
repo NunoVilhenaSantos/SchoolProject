@@ -1,10 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+/// RolesController class, inherits from Controller.
+/// Authorisation is required to access this controller.
+/// Roles that can access this controller are Admin and SuperUser.
+/// </summary>
 [Authorize(Roles = "Admin,SuperUser")]
 public class RolesController : Controller
 {
@@ -18,19 +23,6 @@ public class RolesController : Controller
     public RolesController(RoleManager<IdentityRole> roleManager)
     {
         _roleManager = roleManager;
-    }
-
-
-
-
-    private IEnumerable<IdentityRole> GetRolesList()
-    {
-        //var nationalitiesWithCountries =
-        //    _nationalityRepository?.GetNationalitiesWithCountries();
-        
-        var rolesList = _roleManager.Roles;
-
-        return rolesList ?? Enumerable.Empty<IdentityRole>();
     }
 
 
@@ -56,30 +48,57 @@ public class RolesController : Controller
     }
 
 
+    private IEnumerable<IdentityRole> GetRolesList() => _roleManager.Roles;
+
+
+    // GET: Roles
+    // /// <summary>
+    // ///     Action to show all the roles
+    // /// </summary>
+    // /// <returns>a list of roles</returns>
+    // [HttpGet]
+    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
+    // {
+    //     var records = GetRoles(pageNumber, pageSize);
+    //
+    //     var model = new PaginationViewModel<IdentityRole>
+    //     {
+    //         Records = records,
+    //         PageNumber = pageNumber,
+    //         PageSize = pageSize,
+    //         TotalCount = _roleManager.Roles.Count()
+    //     };
+    //
+    //     return View(model);
+    // }
+
+
+    private List<IdentityRole> GetRoles(int pageNumber, int pageSize) =>
+        _roleManager.Roles
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
 
     // GET: Roles
     /// <summary>
     ///     Action to show all the roles
     /// </summary>
     /// <returns>a list of roles</returns>
-    [HttpGet]
-    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        return View(GetRolesList());
+        var records = GetRoles(pageNumber, pageSize);
+
+        var model = new PaginationViewModel<IdentityRole>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = _roleManager.Roles.Count()
+        };
+
+        return View(model);
     }
-
-
-    // GET: Roles
-    /// <summary>
-    ///     Action to show all the roles
-    /// </summary>
-    /// <returns>a list of roles</returns>
-    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetRolesList());
-    }
-
-
 
 
     // GET: Roles/Details/5

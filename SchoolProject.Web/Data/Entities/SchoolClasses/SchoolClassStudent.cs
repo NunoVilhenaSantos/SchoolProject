@@ -9,8 +9,6 @@ namespace SchoolProject.Web.Data.Entities.SchoolClasses;
 
 public class SchoolClassStudent : IEntity
 {
-
-
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
@@ -34,7 +32,6 @@ public class SchoolClassStudent : IEntity
     ///     Foreign Guid Key for SchoolClass
     /// </summary>
     public Guid SchoolClassGuidId => SchoolClass.IdGuid;
-
 
 
     // --------------------------------------------------------------------- //
@@ -62,6 +59,21 @@ public class SchoolClassStudent : IEntity
     // --------------------------------------------------------------------- //
 
 
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
 
     // [Key]
     // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -77,15 +89,6 @@ public class SchoolClassStudent : IEntity
     public bool WasDeleted { get; set; }
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
-
-
-
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
@@ -98,16 +101,6 @@ public class SchoolClassStudent : IEntity
     [DisplayName("Created By")]
     [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
-
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
-
 
 
     // [Required]

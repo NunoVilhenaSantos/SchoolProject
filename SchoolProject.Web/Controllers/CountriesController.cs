@@ -2,10 +2,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Countries;
+
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+/// countries controller, only the admins, superusers and the functionaries
+/// </summary>
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CountriesController : Controller
 {
@@ -14,6 +19,10 @@ public class CountriesController : Controller
     private const string BucketName = "countries";
 
 
+    /// <summary>
+    /// constructor
+    /// </summary>
+    /// <param name="countryRepository"></param>
     public CountriesController(ICountryRepository countryRepository)
     {
         _countryRepository = countryRepository;
@@ -25,18 +34,22 @@ public class CountriesController : Controller
     // ------------------------------ --------- ----------------------------- //
 
 
-
     private IEnumerable<Country> CountriesWithCities()
     {
         var countriesWithCities =
-           _countryRepository?.GetCountriesWithCities();
+            _countryRepository?.GetCountriesWithCities();
 
         return countriesWithCities ?? Enumerable.Empty<Country>();
     }
 
 
-    
     // GET: Countries
+    /// <summary>
+    /// index action
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
@@ -45,6 +58,12 @@ public class CountriesController : Controller
 
 
     // GET: Countries
+    /// <summary>
+    /// index action with cards
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
@@ -52,7 +71,40 @@ public class CountriesController : Controller
     }
 
 
+    // GET: Countries
+    /// <summary>
+    /// IndexCards1 method for the cards view with pagination mode.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    {
+        var totalCount = _countryRepository.GetCount().Result;
+
+        var records = _countryRepository.GetAll()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var model = new PaginationViewModel<Country>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+
+        return View(model);
+    }
+
+
     // GET: Countries/Details/5
+    /// <summary>
+    /// details action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Details(int? id)
     {
@@ -68,11 +120,12 @@ public class CountriesController : Controller
 
 
     // GET: Countries/Create
+    /// <summary>
+    /// create action
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
 
     // POST: Countries/Create
@@ -81,6 +134,11 @@ public class CountriesController : Controller
     //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// create action
+    /// </summary>
+    /// <param name="country"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Country country)
@@ -94,6 +152,11 @@ public class CountriesController : Controller
 
 
     // GET: Countries/Edit/5
+    /// <summary>
+    /// edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Edit(int? id)
     {
@@ -108,6 +171,11 @@ public class CountriesController : Controller
 
 
     // POST: Countries/Edit/5
+    /// <summary>
+    /// edit action
+    /// </summary>
+    /// <param name="country"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Country country)
@@ -126,6 +194,12 @@ public class CountriesController : Controller
     //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="country"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Country country)
@@ -141,7 +215,8 @@ public class CountriesController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!CountryExists(country.Id)) return NotFound();
+            if (!await _countryRepository.ExistAsync(country.Id))
+                return NotFound();
 
             throw;
         }
@@ -151,6 +226,11 @@ public class CountriesController : Controller
 
 
     // GET: Countries/Delete/5
+    /// <summary>
+    /// delete action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Delete(int? id)
     {
@@ -166,31 +246,20 @@ public class CountriesController : Controller
     }
 
 
-    // POST: Countries/Delete/5
-    // [HttpPost, ActionName("Delete")]
-    // [ValidateAntiForgeryToken]
-    // public async Task<IActionResult> DeleteConfirmed(int id)
-    // {
-    //     if (_countryRepository?.GetAll() == null)
-    //         return Problem(
-    //             "Entity set 'DataContextMySql.Countries' is null.");
-    //
-    //     var country = await _countryRepository.GetByIdAsync(id);
-    //
-    //     if (country != null) await _countryRepository.DeleteAsync(country);
-    //
-    //     await _countryRepository.SaveAllAsync();
-    //
-    //     return RedirectToAction(nameof(Index));
-    // }
-
-
     // ------------------------------- ------ ------------------------------- //
     // ------------------------------- Cities ------------------------------- //
     // ------------------------------- ------ ------------------------------- //
 
 
     // GET: Countries/AddCity/5
+    /// <summary>
+    /// add city action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="countryId"></param>
+    /// <param name="countryName"></param>
+    /// <param name="method"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> AddCity(
         int? id, int countryId, string countryName, int method)
@@ -211,7 +280,7 @@ public class CountriesController : Controller
                 {
                     CountryId = country.Id,
                     CityId = 0,
-                    Name = string.Empty,
+                    Name = string.Empty
                 };
                 break;
 
@@ -222,7 +291,7 @@ public class CountriesController : Controller
                     CountryId = country.Id,
                     CountryName = country.Name,
                     CityId = 0,
-                    Name = string.Empty,
+                    Name = string.Empty
                 };
                 break;
 
@@ -237,6 +306,11 @@ public class CountriesController : Controller
 
 
     // POST: Countries/AddCity
+    /// <summary>
+    /// add city action
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> AddCity(CityViewModel model)
     {
@@ -250,6 +324,11 @@ public class CountriesController : Controller
 
 
     // GET: Countries/DeleteCity/5
+    /// <summary>
+    /// delete city action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> DeleteCity(int? id)
     {
@@ -266,6 +345,13 @@ public class CountriesController : Controller
 
 
     // GET: Countries/EditCity/5
+    /// <summary>
+    /// edit city action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="countryId"></param>
+    /// <param name="countryName"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> EditCity(
         int? id, int countryId, string countryName)
@@ -284,6 +370,11 @@ public class CountriesController : Controller
 
 
     // POST: Countries/EditCity/5
+    /// <summary>
+    /// edit city action
+    /// </summary>
+    /// <param name="city"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> EditCity(City city)
     {
@@ -296,11 +387,5 @@ public class CountriesController : Controller
                 nameof(Details), new {id = countryId});
 
         return View(city);
-    }
-
-
-    private bool CountryExists(int id)
-    {
-        return _countryRepository.GetCountryAsync(id).Result != null;
     }
 }

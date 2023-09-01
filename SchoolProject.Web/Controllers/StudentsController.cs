@@ -2,14 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Students;
 
-
 namespace SchoolProject.Web.Controllers;
 
 public class StudentsController : Controller
 {
-    private readonly DataContextMySql _context;
-
     private const string BucketName = "students";
+    private readonly DataContextMySql _context;
 
 
     public StudentsController(DataContextMySql context)
@@ -18,18 +16,13 @@ public class StudentsController : Controller
     }
 
 
-
-
-
     private IEnumerable<Student> GetStudentsList()
     {
         var studentsList =
-           _context.Students.ToListAsync();
+            _context.Students.ToListAsync();
 
         return studentsList.Result ?? Enumerable.Empty<Student>();
     }
-
-
 
 
     // GET: Students
@@ -62,9 +55,6 @@ public class StudentsController : Controller
     {
         return View(GetStudentsList());
     }
-
-
-
 
 
     // GET: Students/Details/5

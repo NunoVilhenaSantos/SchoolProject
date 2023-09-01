@@ -4,17 +4,28 @@ using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+///   ErrorsController class.
+/// </summary>
 public class ErrorsController : Controller
 {
     private readonly ILogger<ErrorsController> _logger;
 
 
+    /// <summary>
+    ///   ErrorsController constructor.
+    /// </summary>
+    /// <param name="logger"></param>
     public ErrorsController(ILogger<ErrorsController> logger)
     {
         _logger = logger;
     }
 
 
+    /// <summary>
+    ///  Error action.
+    /// </summary>
+    /// <returns></returns>
     [ResponseCache(
         Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -26,6 +37,10 @@ public class ErrorsController : Controller
     }
 
 
+    /// <summary>
+    ///  Error403 action.
+    /// </summary>
+    /// <returns></returns>
     [Route("error/403")]
     public IActionResult Error403()
     {
@@ -33,6 +48,10 @@ public class ErrorsController : Controller
     }
 
 
+    /// <summary>
+    /// Error404 action.
+    /// </summary>
+    /// <returns></returns>
     [Route("error/404")]
     public IActionResult Error404()
     {
@@ -40,6 +59,11 @@ public class ErrorsController : Controller
     }
 
 
+    /// <summary>
+    /// handling error codes.
+    /// </summary>
+    /// <param name="statusCode"></param>
+    /// <returns></returns>
     [Route("error/{statusCode}")]
     public IActionResult HandleErrorCode(int statusCode)
     {

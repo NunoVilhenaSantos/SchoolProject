@@ -5,7 +5,7 @@ using SchoolProject.Web.Data.Entities.Users;
 namespace SchoolProject.Web.Models.Users;
 
 /// <summary>
-/// view model class to change user data
+///     view model class to change user data
 /// </summary>
 public class ChangeUserViewModel : User
 {

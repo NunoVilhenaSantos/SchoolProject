@@ -1,5 +1,4 @@
 ﻿@using System.Diagnostics
-
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -9,7 +8,7 @@
 <div class="dropdown">
 
     <a aria-expanded="false"
-       class="nav-link dropdown-toggle @(currentController is "SchoolClassCourses" or "SchoolClasses" or "SchoolClassStudents" ? "active" : "")"
+       class="nav-link dropdown-toggle @(currentController is "SchoolClassCourses" or "SchoolClasses" or "SchoolClassStudents" ? "active" : "") p-1"
        data-bs-toggle="dropdown" role="button">
         <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 640 512"
              xmlns="http://www.w3.org/2000/svg">
@@ -23,7 +22,7 @@
     <ul class="dropdown-menu">
         <li>
             <a asp-action="Index" asp-area="" asp-controller="SchoolClasses"
-               class="nav-link @(currentAction == "Index" && currentController == "SchoolClasses" ? "active" : "")">
+               class="dropdown-item  @(currentAction == "Index" && currentController == "SchoolClasses" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
                 School Classes List
             </a>
@@ -33,7 +32,7 @@
         </li>
         <li>
             <a asp-action="IndexCards" asp-area="" asp-controller="SchoolClasses"
-               class="nav-link @(currentAction == "IndexCards" && currentController == "SchoolClasses" ? "active" : "")">
+               class="dropdown-item  @(currentAction == "IndexCards" && currentController == "SchoolClasses" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
                 School Classes Cards
             </a>
@@ -43,7 +42,7 @@
         </li>
         <li>
             <a asp-action="Index" asp-area="" asp-controller="SchoolClassCourses"
-               class="nav-link @(currentAction == "Index" && currentController == "SchoolClassCourses" ? "active" : "")">
+               class="dropdown-item  @(currentAction == "Index" && currentController == "SchoolClassCourses" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
                 SchoolClass Courses List
             </a>
@@ -53,7 +52,7 @@
         </li>
         <li>
             <a asp-action="Index" asp-area="" asp-controller="SchoolClassStudents"
-               class="nav-link @(currentAction == "Index" && currentController == "SchoolClassStudents" ? "active" : "")">
+               class="dropdown-item  @(currentAction == "Index" && currentController == "SchoolClassStudents" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
                 SchoolClass Students List
             </a>

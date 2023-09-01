@@ -8,17 +8,28 @@ using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+///    HomeController class.
+/// </summary>
 public class HomeController : Controller
 {
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<HomeController> _logger;
 
 
     private readonly SignInManager<User> _signInManager;
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
 
 
+    /// <summary>
+    ///    HomeController constructor.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="signInManager"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="htmlLocalizer"></param>
+    /// <param name="stringLocalizer"></param>
     public HomeController(
         ILogger<HomeController> logger,
         SignInManager<User> signInManager,
@@ -35,6 +46,10 @@ public class HomeController : Controller
     }
 
 
+    /// <summary>
+    ///   Error action.
+    /// </summary>
+    /// <returns></returns>
     [ResponseCache(
         Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -44,6 +59,12 @@ public class HomeController : Controller
     }
 
 
+    /// <summary>
+    ///   Index action.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
         // Verificar a conectividade de rede
@@ -80,80 +101,100 @@ public class HomeController : Controller
     }
 
 
-    public IActionResult About()
-    {
-        return View();
-    }
+    /// <summary>
+    ///  About action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult About() => View();
 
 
-    public IActionResult Contacts()
-    {
-        return View();
-    }
+    /// <summary>
+    /// Contact action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Contacts() => View();
 
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    /// <summary>
+    /// CookiesPrivacy action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Privacy() => View();
 
 
-    public IActionResult CookiesPrivacy()
-    {
-        return View();
-    }
+    /// <summary>
+    /// CookiesPrivacy action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult CookiesPrivacy() => View();
 
 
-    public IActionResult Cookies()
-    {
-        return View();
-    }
+    /// <summary>
+    /// Cookies action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Cookies() => View();
 
 
-    public IActionResult Legal()
-    {
-        return View();
-    }
+    /// <summary>
+    /// Legal action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Legal() => View();
 
 
-    public IActionResult TimeTracker()
-    {
-        return View();
-    }
+    /// <summary>
+    /// TimeTracker action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult TimeTracker() => View();
 
 
-    public IActionResult Threads()
-    {
-        return View();
-    }
+    /// <summary>
+    /// Threads action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Threads() => View();
 
-    public IActionResult Features()
-    {
-        return View();
-    }
 
-    public IActionResult Pricing()
-    {
-        return View();
-    }
+    /// <summary>
+    /// Features action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Features() => View();
 
-    public IActionResult FaQs()
-    {
-        return View();
-    }
 
-    public IActionResult Team()
-    {
-        return View();
-    }
+    /// <summary>
+    /// Pricing action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Pricing() => View();
 
-    public IActionResult Locations()
-    {
-        return View();
-    }
 
-    public IActionResult Terms()
-    {
-        return View();
-    }
+    /// <summary>
+    /// FaQs action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult FaQs() => View();
+
+
+    /// <summary>
+    /// Locations action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Team() => View();
+
+
+    /// <summary>
+    ///     Locations action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Locations() => View();
+
+
+    /// <summary>
+    /// Terms action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Terms() => View();
 }

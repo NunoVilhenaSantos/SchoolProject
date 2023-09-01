@@ -1,23 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Models;
+
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+///     GendersController class.
+/// </summary>
 public class GendersController : Controller
 {
+    private const string BucketName = "genders";
     private readonly DataContextMySql _context;
 
 
-    private const string BucketName = "genders";
-
-
+    /// <summary>
+    ///  GendersController constructor.
+    /// </summary>
+    /// <param name="context"></param>
     public GendersController(DataContextMySql context)
     {
         _context = context;
     }
-
 
 
     private IEnumerable<Gender> GendersList()
@@ -32,6 +37,12 @@ public class GendersController : Controller
 
 
     // GET: Genders
+    /// <summary>
+    ///  Index action
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
         return View(GendersList());
@@ -39,22 +50,56 @@ public class GendersController : Controller
 
 
     // GET: Genders
+    /// <summary>
+    /// Index action cards
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
         return View(GendersList());
     }
 
+
     // GET: Genders
-    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GendersList());
-    }
+    // /// <summary>
+    // /// Index action for testing the pagination
+    // /// </summary>
+    // /// <param name="pageNumber"></param>
+    // /// <param name="pageSize"></param>
+    // /// <returns></returns>
+    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
+    // {
+    //     return View(GendersList());
+    // }
 
 
     // GET: Genders
-    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    /// <summary>
+    ///  IndexCards method for the cards view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        return View(GendersList());
+        var totalCount = _context.Genders.Count();
+
+        var records = _context.Genders
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var model = new PaginationViewModel<Gender>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+
+        return View(model);
     }
 
 
@@ -93,7 +138,6 @@ public class GendersController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
-
     }
 
     // GET: Genders/Edit/5
@@ -134,7 +178,6 @@ public class GendersController : Controller
         }
 
         return RedirectToAction(nameof(Index));
-
     }
 
     // GET: Genders/Delete/5

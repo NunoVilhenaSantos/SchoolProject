@@ -10,6 +10,11 @@ public class TeacherMockRepository : IGenericRepository<Teacher>
         throw new NotImplementedException();
     }
 
+    public async Task<int> GetCount()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Teacher?> GetByIdAsync(int id)
     {
         throw new NotImplementedException();

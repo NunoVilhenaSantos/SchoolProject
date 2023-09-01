@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
@@ -20,8 +19,13 @@ using SchoolProject.Web.Models.Users;
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+/// Account Controller for adding, editing, deleting, change password
+/// </summary>
 public class AccountController : Controller
 {
+    private const string BucketName = "users";
+
     private readonly ICountryRepository _countryRepository;
     private readonly IConfiguration _configuration;
     private readonly IStorageHelper _storageHelper;
@@ -29,11 +33,9 @@ public class AccountController : Controller
     private readonly IImageHelper _imageHelper;
     private readonly IUserHelper _userHelper;
 
-    private const string BucketName = "users";
-
 
     /// <summary>
-    ///    Constructor for the Account controller
+    /// Constructor for the Account controller
     /// </summary>
     /// <param name="countryRepository"></param>
     /// <param name="configuration"></param>
@@ -60,7 +62,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///   Aqui o utilizador é reencaminhado para a view de Login caso não esteja autenticado
+    /// Aqui o utilizador é reencaminhado para a view de Login caso não esteja autenticado
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -74,7 +76,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///  Aqui é que se valida as informações do utilizador
+    /// Aqui é que se valida as informações do utilizador
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -111,8 +113,8 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///  Aqui o utilizador faz o logout da sua conta
-    ///  Aqui o utilizador é reencaminhado para a view Index do controlador Home
+    /// Aqui o utilizador faz o logout da sua conta
+    /// Aqui o utilizador é reencaminhado para a view Index do controlador Home
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -146,7 +148,7 @@ public class AccountController : Controller
             Countries = _countryRepository
                 .GetComboCountriesAndNationalities(),
             CityId = 0,
-            Cities = _countryRepository.GetComboCities(0),
+            Cities = _countryRepository.GetComboCities(0)
         };
 
 
@@ -155,7 +157,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui é que se valida as informações do utilizador para a criação de uma nova conta
+    ///     Aqui é que se valida as informações do utilizador para a criação de uma nova conta
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -164,95 +166,100 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = await _userHelper.GetUserByEmailAsync(model.UserName);
-
-            if (user == null)
+            if (model.UserName != null)
             {
-                // var city = await
-                //     _countryRepository.GetCityAsync(model.CityId);
-                // var country = await
-                //     _countryRepository.GetCountryAsync(model.CountryId);
+                var user =
+                    await _userHelper.GetUserByEmailAsync(model.UserName);
 
-                user = new User
+                if (user == null)
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.UserName,
-                    UserName = model.UserName,
-                    Address = model.Address,
-                    PhoneNumber = model.PhoneNumber,
-                    WasDeleted = false,
-                    ProfilePhotoId = model.ImageFile is null
-                        ? default
-                        : _storageHelper.UploadFileAsyncToGcp(
-                            model.ImageFile, BucketName).Result
-                    // City = city,
-                    // CityId = city.Id,
-                    // Country = country,
-                    // CountryId = country.Id,
-                    // NationalityId = country.Nationality.Id,
-                };
+                    // var city = await
+                    //     _countryRepository.GetCityAsync(model.CityId);
+                    // var country = await
+                    //     _countryRepository.GetCountryAsync(model.CountryId);
 
-
-                var result =
-                    await _userHelper.AddUserAsync(user, model.Password);
-
-                if (result != IdentityResult.Success)
-                {
-                    ModelState.AddModelError(
-                        string.Empty,
-                        "The user couldn't be created.");
-                    return View(model);
-                }
-
-
-                // var loginViewModel = new LoginViewModel
-                // {
-                //     Password = model.Password,
-                //     RememberMe = false,
-                //     Username = model.Username
-                // };
-
-                // var result2 = await _userHelper.LoginAsync(loginViewModel);
-                // if (result2.Succeeded)
-                //     return RedirectToAction("Index", "Home");
-
-
-                var myToken =
-                    await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-
-                var tokenLink = Url.Action("ConfirmEmail",
-                    "Account",
-                    new
+                    user = new User
                     {
-                        userid = user.Id,
-                        token = myToken
-                    },
-                    HttpContext.Request.Scheme
-                );
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.UserName,
+                        UserName = model.UserName,
+                        Address = model.Address,
+                        PhoneNumber = model.PhoneNumber,
+                        WasDeleted = false,
+                        ProfilePhotoId = model.ImageFile is null
+                            ? default
+                            : _storageHelper.UploadFileAsyncToGcp(
+                                model.ImageFile, BucketName).Result
+                        // City = city,
+                        // CityId = city.Id,
+                        // Country = country,
+                        // CountryId = country.Id,
+                        // NationalityId = country.Nationality.Id,
+                    };
 
 
-                var response = await _emailHelper.SendEmailAsync(
-                    model.UserName,
-                    "Email confirmation",
-                    $"<h1>Email Confirmation</h1>" +
-                    $"To allow the user, " +
-                    $"please click in this link:" +
-                    $"</br></br><a href = \"{tokenLink}\">" +
-                    $"Confirm Email</a></br><p>Temporary Password: " +
-                    $"{model.Password}</p>");
+                    var result =
+                        await _userHelper.AddUserAsync(user, model.Password);
+
+                    if (result != IdentityResult.Success)
+                    {
+                        ModelState.AddModelError(
+                            string.Empty,
+                            "The user couldn't be created.");
+                        return View(model);
+                    }
 
 
-                if (response.IsSuccess)
-                {
-                    ViewBag.Message = "The instructions to verify the " +
-                                      "account have been sent to email";
+                    // var loginViewModel = new LoginViewModel
+                    // {
+                    //     Password = model.Password,
+                    //     RememberMe = false,
+                    //     Username = model.Username
+                    // };
+
+                    // var result2 = await _userHelper.LoginAsync(loginViewModel);
+                    // if (result2.Succeeded)
+                    //     return RedirectToAction("Index", "Home");
+
+
+                    var myToken =
+                        await _userHelper.GenerateEmailConfirmationTokenAsync(
+                            user);
+
+                    var tokenLink = Url.Action("ConfirmEmail",
+                        "Account",
+                        new
+                        {
+                            userid = user.Id,
+                            token = myToken
+                        },
+                        HttpContext.Request.Scheme
+                    );
+
+
+                    var response = await _emailHelper.SendEmailAsync(
+                        model.UserName,
+                        "Email confirmation",
+                        $"<h1>Email Confirmation</h1>" +
+                        $"To allow the user, " +
+                        $"please click in this link:" +
+                        $"</br></br><a href = \"{tokenLink}\">" +
+                        $"Confirm Email</a></br><p>Temporary Password: " +
+                        $"{model.Password}</p>");
+
+
+                    if (response.IsSuccess)
+                    {
+                        ViewBag.Message = "The instructions to verify the " +
+                                          "account have been sent to email";
+                        return View(model);
+                    }
+
+                    ModelState.AddModelError(string.Empty,
+                        "The User couldn't be logged.");
                     return View(model);
                 }
-
-                ModelState.AddModelError(string.Empty,
-                    "The User couldn't be logged.");
-                return View(model);
             }
 
             ModelState.AddModelError(
@@ -301,7 +308,7 @@ public class AccountController : Controller
             PhoneNumber = user.PhoneNumber,
 
             WasDeleted = user.WasDeleted,
-            ProfilePhotoId = user.ProfilePhotoId,
+            ProfilePhotoId = user.ProfilePhotoId
         };
 
 
@@ -310,7 +317,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///     Aqui é que se alteram as informações do utilizador
+    /// Aqui é que se alteram as informações do utilizador
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -326,6 +333,8 @@ public class AccountController : Controller
             // Return the view with the invalid model
             return View(model);
         }
+
+        if (User.Identity?.Name == null) return View(model);
 
         var user =
             await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
@@ -396,7 +405,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///    Aqui é que se altera a password do utilizador
+    /// Aqui é que se altera a password do utilizador
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -435,7 +444,7 @@ public class AccountController : Controller
     // https://localhost:5001/Account/CreateToken
     // [Route("Account/CreateToken")]
     /// <summary>
-    ///    Aqui é que se cria o token para o utilizador validar a sua conta
+    /// Aqui é que se cria o token para o utilizador validar a sua conta
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -482,15 +491,8 @@ public class AccountController : Controller
     }
 
 
-    // Adicione um método para calcular o tempo restante para o token expirar.
-    private TimeSpan GetTimeRemaining(DateTime expirationDate)
-    {
-        return expirationDate - DateTime.UtcNow;
-    }
-
-
     /// <summary>
-    ///   Aqui é que se confirma o email do utilizador
+    /// Aqui é que se confirma o email do utilizador
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="token"></param>
@@ -520,11 +522,60 @@ public class AccountController : Controller
     // ---------------------------------------------------------------------- //
 
 
-    // ---------------------------------------------------------------------- //
+    // https://localhost:5001/Account/NotAuthorized
+    /// <summary>
+    ///     Aqui é que se mostra a view de NotAuthorized
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult NotAuthorized() => View();
+
+
+    // https://localhost:5001/Account/AccessDenied
+    /// <summary>
+    ///    Aqui é que se mostra a view de AccessDenied
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
+
+
+    // https://localhost:5001/Account/Error
+    /// <summary>
+    ///     Aqui é que se mostra a view de Error
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult Error() => View();
+
+
+    /// <summary>
+    ///    Aqui é que se mostra a vista para fazer a recuperação da password
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    public IActionResult ResetPassword(string token) => View();
+
+
+    /// <summary>
+    ///   Aqui é que se mostra a vista para fazer a recuperação da password
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult RecoverPassword() => View();
+
+
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
 
-    // Aqui o utilizador obtém a lista de cidades de um determinado pais
+
+    /// <summary>
+    ///    Aqui o utilizador obtém a lista de cidades de um determinado pais
+    /// </summary>
+    /// <param name="countryId"></param>
+    /// <returns></returns>
     [HttpPost]
     //  [Route("api/Account/GetCitiesAsync")]
     [Route("Account/GetCitiesAsync")]
@@ -536,7 +587,7 @@ public class AccountController : Controller
             await _countryRepository.GetCountryWithCitiesAsync(countryId);
 
 
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
 
         Console.WriteLine(country);
         Console.WriteLine(country.Cities);
@@ -564,13 +615,15 @@ public class AccountController : Controller
 
         var cities1 =
             _countryRepository.GetComboCities(countryId);
-        return Json(cities1);
 
-        return Json(country.Cities.OrderBy(c => c.Name));
+        return Json(cities1);
     }
 
 
-    // Aqui o utilizador obtém a lista de países
+    /// <summary>
+    ///    Aqui o utilizador obtém a lista de países que existem no sistema
+    /// </summary>
+    /// <returns></returns>
     [HttpPost]
     //  [Route("api/Account/GetCountriesAsync")]
     [Route("Account/GetCountriesAsync")]
@@ -579,7 +632,7 @@ public class AccountController : Controller
         var country =
             _countryRepository.GetCountriesWithCitiesEnumerable();
 
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
         Console.WriteLine(country);
         Console.WriteLine(
             Json(country.OrderBy(c => c.Name)));
@@ -588,7 +641,11 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador obtém a lista de países
+    /// <summary>
+    ///    Aqui o utilizador obtém a nacionalidade desse país
+    /// </summary>
+    /// <param name="countryId"></param>
+    /// <returns></returns>
     [HttpPost]
     //  [Route("api/Account/GetNationalitiesAsync")]
     [Route("Account/GetNationalitiesAsync")]
@@ -604,9 +661,8 @@ public class AccountController : Controller
     }
 
 
-    // Aqui o utilizador obtém a lista de países
     /// <summary>
-    ///  Aqui o utilizador obtém a lista de países com as suas nacionalidades
+    /// Aqui o utilizador obtém a lista de países e a respetiva nacionalidade
     /// via JSON para o preenchimento do dropdownlist
     /// </summary>
     /// <returns></returns>
@@ -619,50 +675,30 @@ public class AccountController : Controller
             _countryRepository.GetComboCountriesAndNationalities();
 
 
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
         Console.WriteLine(countriesWithNationalities);
         Console.WriteLine(
-            Json(countriesWithNationalities.OrderBy(c => c.Text)));
+            Json(countriesWithNationalities
+                .OrderBy(c => c.Text)));
 
 
         return Task.FromResult(
-            Json(countriesWithNationalities.OrderBy(c => c.Text)));
+            Json(countriesWithNationalities
+                .OrderBy(c => c.Text)));
     }
 
 
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
 
 
-    // https://localhost:5001/Account/NotAuthorized
-    /// <summary>
-    ///   Aqui é que se mostra a view de NotAuthorized
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult NotAuthorized()
+    // Adicione um método para calcular o tempo restante para o token expirar.
+    private TimeSpan GetTimeRemaining(DateTime expirationDate)
     {
-        return View();
+        return expirationDate - DateTime.UtcNow;
     }
 
 
-    // https://localhost:5001/Account/AccessDenied
-    // [HttpGet]
-    // public IActionResult AccessDenied()
-    // {
-    //     return View();
-    // }
-
-
-    // https://localhost:5001/Account/Error
-    /// <summary>
-    ///  Aqui é que se mostra a view de Error
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult Error()
-    {
-        return View();
-    }
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
 }

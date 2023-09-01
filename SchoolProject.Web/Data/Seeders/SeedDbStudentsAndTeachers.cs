@@ -50,19 +50,16 @@ public class SeedDbStudentsAndTeachers
         await PopulateExistingUsersStudentsAndTeachersFromDb();
 
 
-
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with students...");
         await GenerateStudentsNames(user);
 
 
-
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with teachers...");
         await GenerateTeachersNames(user);
-
 
 
         // ------------------------------------------------------------------ //
@@ -95,8 +92,6 @@ public class SeedDbStudentsAndTeachers
         var existingStudents =
             await _dataContextInUse.Students.ToListAsync();
         _listOfStudentsFromDb = existingStudents.ToList();
-
-
 
 
         // ------------------------------------------------------------------ //
@@ -325,7 +320,7 @@ public class SeedDbStudentsAndTeachers
         };
 
         // ------------------------------------------------------------------ //
-        
+
         ListOfUsersToAdd.Add(newUser);
 
 
@@ -474,13 +469,14 @@ public class SeedDbStudentsAndTeachers
         // Remove any spaces and special characters from the names
         var sanitizedFirstName =
             Regex.Replace(firstName, pattern, "");
-        
+
         var sanitizedLastName =
             Regex.Replace(lastName, pattern, "");
 
-        
+
         // Concatenate the sanitized names to create the email address
-        var email = $"{sanitizedFirstName}.{sanitizedLastName}.cinel.pt@yopmail.com";
+        var email =
+            $"{sanitizedFirstName}.{sanitizedLastName}.cinel.pt@yopmail.com";
 
 
         // You can also convert the email to lowercase, if desired

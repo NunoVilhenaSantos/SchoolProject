@@ -8,18 +8,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class SchoolClassesController : Controller
 {
-    private readonly DataContextMySql _context;
-
-
     private const string BucketName = "schoolclasses";
-
+    private readonly DataContextMySql _context;
 
 
     public SchoolClassesController(DataContextMySql context)
     {
         _context = context;
     }
-
 
 
     private IEnumerable<SchoolClass> GetSchoolClasses()
@@ -29,8 +25,6 @@ public class SchoolClassesController : Controller
 
         return schoolClassesList.Result ?? Enumerable.Empty<SchoolClass>();
     }
-
-
 
 
     // Allow unrestricted access to the Index action
@@ -49,8 +43,6 @@ public class SchoolClassesController : Controller
     {
         return View(GetSchoolClasses());
     }
-
-
 
 
     // Allow unrestricted access to the Index action

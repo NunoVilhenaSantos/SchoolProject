@@ -15,12 +15,20 @@ public interface IGenericRepository<T> where T : class, IEntity
     IQueryable<T> GetAll();
 
 
+
+
+    Task<int> GetCount();
+
+
+
     /// <summary>
     ///     Get an entity by it's id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns> returns an entity or null. </returns>
     Task<T?> GetByIdAsync(int id);
+
+
 
 
     /// <summary>
@@ -31,12 +39,16 @@ public interface IGenericRepository<T> where T : class, IEntity
     Task<T?> GetByIdGuidAsync(Guid idGuid);
 
 
+
+
     /// <summary>
     ///     Create an entity.
     /// </summary>
     /// <param name="entity"></param>
     /// <returns>if the entity was successfully created or not.</returns>
     Task<bool> CreateAsync(T entity);
+
+
 
 
     /// <summary>
@@ -47,6 +59,8 @@ public interface IGenericRepository<T> where T : class, IEntity
     Task<bool> UpdateAsync(T entity);
 
 
+
+
     /// <summary>
     ///     Delete an entity.
     /// </summary>
@@ -55,12 +69,17 @@ public interface IGenericRepository<T> where T : class, IEntity
     Task<bool> DeleteAsync(T entity);
 
 
+
+
     /// <summary>
     ///     Check if an entity exist, using it's id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<bool> ExistAsync(int id);
+
+
+
 
     /// <summary>
     ///     Check if an entity exist, using it's idGuid.

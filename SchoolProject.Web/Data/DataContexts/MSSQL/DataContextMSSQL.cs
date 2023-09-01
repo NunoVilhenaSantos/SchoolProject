@@ -317,7 +317,6 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
 
-
         // Other configurations...
 
         modelBuilder.Entity<City>()

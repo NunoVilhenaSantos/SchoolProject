@@ -1,32 +1,40 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Models;
+
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+/// cities controller, only the admins,
+/// superusers and the functionaries can access this controller
+/// </summary>
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
+    private readonly ICountryRepository _countryRepository;
     private readonly ICityRepository _cityRepository;
-    // private readonly ICountryRepository _countryRepository;
 
     private const string BucketName = "cities";
 
 
+    /// <summary>
+    /// constructor
+    /// </summary>
+    /// <param name="cityRepository"></param>
+    /// <param name="countryRepository"></param>
     public CitiesController(
-        ICityRepository cityRepository,
-        ICountryRepository countryRepository
+        ICountryRepository countryRepository,
+        ICityRepository cityRepository
     )
     {
         _cityRepository = cityRepository;
-        // _countryRepository = countryRepository;
+        _countryRepository = countryRepository;
     }
 
 
-
-    
     private IEnumerable<City> CitiesWithCountries()
     {
         var citiesWithCountries =
@@ -37,19 +45,64 @@ public class CitiesController : Controller
 
 
     // GET: Cities
+    /// <summary>
+    /// index action
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
         return View(CitiesWithCountries());
     }
 
     // GET: Cities
+    /// <summary>
+    /// index action with cards
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
         return View(CitiesWithCountries());
     }
 
 
+    // GET: Cities
+    /// <summary>
+    /// IndexCards1 method for the cards view with pagination mode.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    {
+        var totalCount = _cityRepository.GetCount().Result;
+
+        var records = _cityRepository.GetAll()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var model = new PaginationViewModel<City>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+
+        return View(model);
+    }
+
+
     // GET: Cities/Details/5
+    /// <summary>
+    /// details action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
@@ -62,10 +115,15 @@ public class CitiesController : Controller
     }
 
     // GET: Cities/Create
+    /// <summary>
+    /// create action
+    /// </summary>
+    /// <returns></returns>
     public IActionResult Create()
     {
         return View();
     }
+
 
     // POST: Cities/Create
     // To protect from over-posting attacks,
@@ -73,6 +131,11 @@ public class CitiesController : Controller
     //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// create action
+    /// </summary>
+    /// <param name="city"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(City city)
@@ -86,7 +149,13 @@ public class CitiesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+
     // GET: Cities/Edit/5
+    /// <summary>
+    /// edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
@@ -98,11 +167,18 @@ public class CitiesController : Controller
         return View(city);
     }
 
+
     // POST: Cities/Edit/5
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="city"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, City city)
@@ -128,6 +204,11 @@ public class CitiesController : Controller
     }
 
     // GET: Cities/Delete/5
+    /// <summary>
+    /// delete action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
@@ -149,7 +230,6 @@ public class CitiesController : Controller
         var city = await _cityRepository.GetCityAsync(id);
 
         if (city != null)
-        {
             try
             {
                 await _cityRepository.DeleteCityAsync(city);
@@ -171,10 +251,10 @@ public class CitiesController : Controller
                 TempData["ModalErrorMessage"] =
                     $"{city.Name} não pode ser apagado visto ter relações " +
                     "com outras tabelas e que se encontra em uso.</br></br>";
+
+
                 // "Experimente primeiro apagar todas as encomendas " +
                 // "que o estão a usar, e torne novamente a apagá-lo";
-
-
                 TempData["DbUpdateException"] = ex.Message;
                 TempData["DbUpdateInnerException"] = ex.InnerException;
                 TempData["DbUpdateInnerExceptionMessage"] =
@@ -184,7 +264,6 @@ public class CitiesController : Controller
                 return RedirectToAction(
                     nameof(Delete),
                     new {id = city.Id, showErrorModal = true});
-
                 // return RedirectToAction(nameof(Delete));
                 // return View("Error");
             }
@@ -207,7 +286,6 @@ public class CitiesController : Controller
 
                 return View("Error");
             }
-        }
 
         await _cityRepository.SaveAllAsync();
 

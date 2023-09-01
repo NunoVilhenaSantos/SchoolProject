@@ -1,23 +1,23 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
-
+using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-/// Controller for the Nationalities entity.
+///     Controller for the Nationalities entity.
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
     private readonly INationalityRepository _nationalityRepository;
+    private readonly ICountryRepository _countryRepository;
 
 
     /// <summary>
-    /// Constructor for the NationalitiesController.
+    ///     Constructor for the NationalitiesController.
     /// </summary>
     /// <param name="countryRepository"></param>
     /// <param name="nationalityRepository"></param>
@@ -26,6 +26,7 @@ public class NationalitiesController : Controller
         INationalityRepository nationalityRepository
     )
     {
+        _countryRepository = countryRepository;
         _nationalityRepository = nationalityRepository;
     }
 
@@ -40,7 +41,7 @@ public class NationalitiesController : Controller
 
 
     /// <summary>
-    /// GET: Nationalities
+    ///     GET: Nationalities
     /// </summary>
     /// <returns></returns>
     /// GET: Nationalities
@@ -50,13 +51,52 @@ public class NationalitiesController : Controller
     }
 
 
+    /// <summary>
+    ///    IndexCards method for the cards view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
         return View(GetNationalitiesWithCountries());
     }
 
 
+    // GET: Countries
+    /// <summary>
+    /// IndexCards1 method for the cards view with pagination mode.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    {
+        var totalCount = _nationalityRepository.GetCount().Result;
+
+        var records = _nationalityRepository.GetAll()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var model = new PaginationViewModel<Nationality>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+
+        return View(model);
+    }
+
+
     // GET: Nationalities/Details/5
+    /// <summary>
+    ///    details action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
@@ -70,16 +110,22 @@ public class NationalitiesController : Controller
     }
 
     // GET: Nationalities/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
+    /// <summary>
+    ///   create action
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Create() => View();
 
     // POST: Nationalities/Create
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    ///  create action
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Nationality nationality)
@@ -93,7 +139,13 @@ public class NationalitiesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+
     // GET: Nationalities/Edit/5
+    /// <summary>
+    /// edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
@@ -111,6 +163,12 @@ public class NationalitiesController : Controller
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// edit action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Nationality nationality)
@@ -138,6 +196,11 @@ public class NationalitiesController : Controller
     }
 
     // GET: Nationalities/Delete/5
+    /// <summary>
+    /// delete action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
@@ -151,6 +214,11 @@ public class NationalitiesController : Controller
     }
 
     // POST: Nationalities/Delete/5
+    /// <summary>
+    /// delete action confirmation
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]

@@ -1,5 +1,7 @@
 ﻿@using System.Reflection
-@model IEnumerable<SchoolProject.Web.Data.Entities.Users.User>
+
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Users.User> *@
+@model IEnumerable<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
 
 @{
     var actionName = ViewContext.RouteData.Values["action"]?.ToString();
@@ -25,24 +27,24 @@
                     @* <div class="card shadow-sm"> *@
                     <div class="card shadow-sm">
                         <div class="card-img-top">
-                            <img src="@item.ProfilePhotoIdUrl" alt="Profile Photo" class="img-fluid">
+                            <img src="@item.User.ProfilePhotoIdUrl" alt="Profile Photo" class="img-fluid">
                         </div>
 
                         <div class="card-body">
-                            <p class="card-text">@Html.DisplayFor(modelItem => item.FullName)</p>
+                            <p class="card-text">@Html.DisplayFor(modelItem => item.User.FullName)</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                                    <a asp-action="Edit" asp-route-id="@item.User.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                                    <a asp-action="Details" asp-route-id="@item.User.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
+                                    <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
                                 <small class="text-body-secondary px-2">
-                                    @Html.DisplayNameFor(modelItem => item.Email)<br />
-                                    @Html.DisplayFor(modelItem => item.Email)
+                                    @Html.DisplayNameFor(modelItem => item.User.Email)<br/>
+                                    @Html.DisplayFor(modelItem => item.User.Email)
                                 </small>
                                 <small class="text-body-secondary">
-                                    @Html.DisplayNameFor(modelItem => item.Address)<br />
-                                    @Html.DisplayFor(modelItem => item.Address)
+                                    @Html.DisplayNameFor(modelItem => item.User.Address)<br/>
+                                    @Html.DisplayFor(modelItem => item.User.Address)
                                 </small>
                             </div>
                         </div>

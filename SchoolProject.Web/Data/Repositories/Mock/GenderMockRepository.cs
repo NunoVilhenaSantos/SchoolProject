@@ -10,6 +10,11 @@ public class GenderMockRepository : IGenericRepository<Gender>
         throw new NotImplementedException();
     }
 
+    public async Task<int> GetCount()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Gender?> GetByIdAsync(int id)
     {
         throw new NotImplementedException();

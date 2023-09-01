@@ -7,9 +7,9 @@ namespace SchoolProject.Web.Helpers.Storages;
 
 public class StorageHelper0 : IStorageHelper0
 {
+    private readonly IConfiguration _configuration;
     private readonly GoogleCredential _googleCredentialsJorge;
     private readonly GoogleCredential _googleCredentialsNuno;
-    private readonly IConfiguration _configuration;
 
 
     public StorageHelper0(IConfiguration configuration)

@@ -90,15 +90,15 @@ public class Student : IEntity //: INotifyPropertyChanged
 
     [Required]
     [DisplayName("Country Of Nationality")]
-    public required virtual Country CountryOfNationality { get; set; }
+    public virtual required Country CountryOfNationality { get; set; }
 
-    
+
     public virtual Nationality Nationality => CountryOfNationality?.Nationality;
 
     // [Required] public required Nationality Nationality { get; set; }
 
 
-    [Required] public required virtual Country Birthplace { get; set; }
+    [Required] public virtual required Country Birthplace { get; set; }
 
 
     [Required]
@@ -107,7 +107,7 @@ public class Student : IEntity //: INotifyPropertyChanged
     public required DateTime EnrollDate { get; set; }
 
 
-    [Required] public required virtual User User { get; set; }
+    [Required] public virtual required User User { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -115,7 +115,7 @@ public class Student : IEntity //: INotifyPropertyChanged
 
 
     /// <summary>
-    ///   The image of the user file from the form to be inserted in the database.
+    ///     The image of the user file from the form to be inserted in the database.
     /// </summary>
     [NotMapped]
     [DisplayName("Image")]
@@ -123,13 +123,13 @@ public class Student : IEntity //: INotifyPropertyChanged
 
 
     /// <summary>
-    ///    The profile photo of the user.
+    ///     The profile photo of the user.
     /// </summary>
     [DisplayName("Profile Photo")]
     public required Guid ProfilePhotoId { get; set; }
 
     /// <summary>
-    ///    The profile photo of the user in URL format.
+    ///     The profile photo of the user in URL format.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
@@ -137,57 +137,9 @@ public class Student : IEntity //: INotifyPropertyChanged
           ProfilePhotoId;
 
 
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid IdGuid { get; set; }
-
-
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [Required]
-    [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
-
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-    // [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
-
-
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
-
 
 
     // ---------------------------------------------------------------------- //
@@ -198,11 +150,10 @@ public class Student : IEntity //: INotifyPropertyChanged
 
     // [DisplayName("Courses")]
     // public ICollection<SchoolClass>? SchoolClasses { get; set; }
-    
+
 
     [DisplayName("Courses")]
-    public virtual ICollection<StudentCourse>? StudentCourses { get; set; } 
-    
+    public virtual ICollection<StudentCourse>? StudentCourses { get; set; }
 
 
     // [DisplayName("Courses Count")]
@@ -220,7 +171,11 @@ public class Student : IEntity //: INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     [DisplayName("SchoolClass")]
-    public virtual ICollection<SchoolClassStudent>? SchoolClassStudents { get; set; }
+    public virtual ICollection<SchoolClassStudent>? SchoolClassStudents
+    {
+        get;
+        set;
+    }
 
     [DisplayName("School Classes Count")]
     public int SchoolClassesCount =>
@@ -290,7 +245,49 @@ public class Student : IEntity //: INotifyPropertyChanged
 
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
+
+
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid IdGuid { get; set; }
+
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
 
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+    // [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
 }

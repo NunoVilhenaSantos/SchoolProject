@@ -87,9 +87,7 @@ static string GetServerHostNameFromConnectionString(string connectionString)
             lowerCasePart.StartsWith("workstation id=") ||
             lowerCasePart.StartsWith("server=") ||
             lowerCasePart.StartsWith("host="))
-        {
             return part.Substring(part.IndexOf('=') + 1);
-        }
     }
 
     throw new ArgumentException(

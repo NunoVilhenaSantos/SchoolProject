@@ -42,27 +42,27 @@
             <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedBy.Id)</td>
             <td>
-                    <div class="btn-group">
-                @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-pen-to-square"></span>
-                @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-file"></span>
-                @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-trash-can"></span>
-                    </div>
+                <div class="btn-group">
+                    @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-pen-to-square"></span>
+                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-file"></span>
+                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-trash-can"></span>
+                </div>
 
                 <div class="col-md-1 border-start"></div> <!-- Vertical separator -->
 
-                        <div class="btn-group">
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
-                    </div>
+                <div class="btn-group">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                </div>
 
                 <div class="col-md-1 border-start"></div> <!-- Vertical separator -->
 
-                            <div class="btn-group">
-                                <a asp-action="Edit" asp-route-classId="@item.SchoolClassId" asp-route-studentId="@item.StudentId" class="btn btn-outline-warning"><span class="fa-regular fa-pen-to-square"></span> Edit</a>
-                <a asp-action="Details" asp-route-classId="@item.SchoolClassId" asp-route-studentId="@item.StudentId" class="btn btn-outline-info"><span class="fa-regular fa-file"></span> Details</a>
-                <a asp-action="Delete" asp-route-classId="@item.SchoolClassId" asp-route-studentId="@item.StudentId" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete</a>
-                    </div>
+                <div class="btn-group">
+                    <a asp-action="Edit" asp-route-classId="@item.SchoolClassId" asp-route-studentId="@item.StudentId" class="btn btn-outline-warning"><span class="fa-regular fa-pen-to-square"></span> Edit</a>
+                    <a asp-action="Details" asp-route-classId="@item.SchoolClassId" asp-route-studentId="@item.StudentId" class="btn btn-outline-info"><span class="fa-regular fa-file"></span> Details</a>
+                    <a asp-action="Delete" asp-route-classId="@item.SchoolClassId" asp-route-studentId="@item.StudentId" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete</a>
+                </div>
 
             </td>
         </tr>

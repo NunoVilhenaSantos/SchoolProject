@@ -32,6 +32,21 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)] public decimal? Grade { get; set; }
 
+
+    // ---------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+    // Deve ser do mesmo tipo da propriedade Id de User
+    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
+
     // [Key]
     // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -44,16 +59,6 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
-
-
-
-    // ---------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
 
 
     [Required]
@@ -70,14 +75,6 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     public virtual required User CreatedBy { get; set; }
 
 
-
-    // ---------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
-
-
     // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
@@ -89,8 +86,6 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")]
     [ForeignKey(nameof(UpdatedById))]
     public virtual User? UpdatedBy { get; set; }
-
-
 
 
     // ---------------------------------------------------------------------- //

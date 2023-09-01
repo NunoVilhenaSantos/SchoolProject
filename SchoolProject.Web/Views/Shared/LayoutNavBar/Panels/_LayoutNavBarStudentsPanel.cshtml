@@ -1,5 +1,4 @@
 ﻿@using System.Diagnostics
-
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -9,7 +8,7 @@
 <div class="dropdown">
 
     <a aria-expanded="false"
-       class="nav-link dropdown-toggle @(currentController is "StudentCourses" or "Students" ? "active" : "")"
+       class="nav-link dropdown-toggle @(currentController is "StudentCourses" or "Students" ? "active" : "")  p-1"
        data-bs-toggle="dropdown" role="button">
         <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 640 512"
              xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +20,7 @@
     <ul class="dropdown-menu">
         <li>
             <a asp-action="Index" asp-area="" asp-controller="Students"
-               class="nav-link @(currentAction == "Index" && currentController == "Students" ? "active" : "")">
+               class="dropdown-item  @(currentAction == "Index" && currentController == "Students" ? "active" : "")">
                 <span class="fas fa-person-shelter"></span>
                 Students
             </a>
@@ -31,7 +30,7 @@
         </li>
         <li>
             <a asp-action="IndexCards" asp-area="" asp-controller="Students"
-               class="nav-link @(currentAction == "IndexCards" && currentController == "Students" ? "active" : "")">
+               class="dropdown-item  @(currentAction == "IndexCards" && currentController == "Students" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
                 Students Cards
             </a>
@@ -41,7 +40,7 @@
         </li>
         <li>
             <a asp-action="Index" asp-area="" asp-controller="StudentCourses"
-               class="nav-link @(currentAction == "Index" && currentController == "SchoolClasses" ? "active" : "")">
+               class="dropdown-item  @(currentAction == "Index" && currentController == "SchoolClasses" ? "active" : "")">
                 <span class="fas fa-person-shelter"></span>
                 StudentCourses
             </a>

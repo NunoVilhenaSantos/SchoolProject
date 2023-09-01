@@ -2,15 +2,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
 
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesController : Controller
 {
-    private readonly DataContextMySql _context;
-
     private const string BucketName = "courses";
+    private readonly DataContextMySql _context;
 
 
     public CoursesController(DataContextMySql context)
@@ -19,19 +19,24 @@ public class CoursesController : Controller
     }
 
 
-
     private IEnumerable<Course> CoursesList()
     {
         //var coursesList =
         //    _cityRepository?.GetCitiesWithCountriesAsync();
 
-         var coursesList = _context.Courses.ToList();
+        var coursesList = _context.Courses.ToList();
 
         return coursesList ?? Enumerable.Empty<Course>();
     }
 
 
     // Allow unrestricted access to the Index action
+    /// <summary>
+    ///    Index action
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     // GET: Courses
     public IActionResult Index(int pageNumber = 1, int pageSize = 10)
@@ -41,6 +46,12 @@ public class CoursesController : Controller
 
 
     // Allow unrestricted access to the Index action
+    /// <summary>
+    ///   Index action cards
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     // GET: Courses
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
@@ -49,25 +60,57 @@ public class CoursesController : Controller
     }
 
 
+    /// <summary>
+    ///  IndexCards method for the cards view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    {
+        var totalCount = _context.Courses.Count();
+
+        var records = _context.Courses
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var model = new PaginationViewModel<Course>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+
+        return View(model);
+    }
 
 
     // GET: Courses/Details/5
+    /// <summary>
+    ///  Details action
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
 
         var course = await _context.Courses
             .FirstOrDefaultAsync(m => m.Id == id);
+
         if (course == null) return NotFound();
 
         return View(course);
     }
 
     // GET: Courses/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
+    /// <summary>
+    ///   Create action
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Create() => View();
 
     // POST: Courses/Create
     // To protect from over-posting attacks, enable the specific properties you want to bind to.

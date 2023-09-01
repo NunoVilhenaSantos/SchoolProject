@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 
 namespace SchoolProject.Web.Controllers;
@@ -16,21 +15,18 @@ public class TeacherCoursesController : Controller
     }
 
 
-
     private IEnumerable<TeacherCourse> GetTeacherCoursesList()
     {
         var teacherCoursesList =
             _context.TeacherCourses
-            .Include(t => t.Course)
-            .Include(t => t.Teacher)
-            .Include(t => t.CreatedBy)
-            .Include(t => t.UpdatedBy)
-            .ToListAsync();
+                .Include(t => t.Course)
+                .Include(t => t.Teacher)
+                .Include(t => t.CreatedBy)
+                .Include(t => t.UpdatedBy)
+                .ToListAsync();
 
         return teacherCoursesList.Result ?? Enumerable.Empty<TeacherCourse>();
     }
-
-
 
 
     // GET: TeacherCourses
@@ -63,8 +59,6 @@ public class TeacherCoursesController : Controller
     {
         return View(GetTeacherCoursesList());
     }
-
-
 
 
     // GET: TeacherCourses/Details/5

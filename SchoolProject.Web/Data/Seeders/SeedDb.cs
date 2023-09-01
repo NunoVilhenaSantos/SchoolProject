@@ -554,7 +554,7 @@ public class SeedDb
                 Nationality = null,
                 IdGuid = Guid.NewGuid(),
                 CreatedBy = createdBy,
-                ProfilePhotoId = default,
+                ProfilePhotoId = default
             };
             var nationality = new Nationality
             {
@@ -562,7 +562,7 @@ public class SeedDb
                 IdGuid = Guid.NewGuid(),
                 CreatedBy = createdBy,
                 Country = country,
-                CountryId = country.Id,
+                CountryId = country.Id
             };
 
             var cities = CreateCities(cityNames, createdBy, country);

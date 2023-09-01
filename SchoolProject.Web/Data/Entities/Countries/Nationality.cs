@@ -15,6 +15,23 @@ public class Nationality : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    [Required] public required int CountryId { get; set; }
+
+
+    [Required]
+    [ForeignKey(nameof(CountryId))]
+    public virtual required Country Country { get; set; }
+
+    [DisplayName("Number of Cities")]
+    public int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
+
+    public Guid CountryGuidId => Country.IdGuid;
+
+
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -49,32 +66,9 @@ public class Nationality : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-
-    [Required] public required int CountryId { get; set; }
-
-
-    [Required]
-    [ForeignKey(nameof(CountryId))]
-    public virtual required Country Country { get; set; }
-
-    [DisplayName("Number of Cities")]
-    public int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
-
-    public Guid CountryGuidId => Country.IdGuid;
-
-
-
-
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
-
 
 
     public event PropertyChangedEventHandler? PropertyChanged;

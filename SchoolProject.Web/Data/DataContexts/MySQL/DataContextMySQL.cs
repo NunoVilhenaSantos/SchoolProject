@@ -387,7 +387,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 
         // ... outras configurações ...
 
-        
+
         // ------------------------------------------------------------------ //
 
 

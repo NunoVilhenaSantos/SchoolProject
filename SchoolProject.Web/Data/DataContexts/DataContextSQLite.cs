@@ -285,7 +285,6 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
         //     .HasForeignKey<Country>(c => c.Nationality);
 
 
-
         // ------------------------------------------------------------------ //
         // Countries and Cities (one-to-many)
         // ------------------------------------------------------------------ //

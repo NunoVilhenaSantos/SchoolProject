@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -16,23 +15,19 @@ public class SchoolClassStudentsController : Controller
     }
 
 
-
     private IEnumerable<SchoolClassStudent> GetSchoolClassesAndStudent()
     {
-
         var schoolClassesStudentList =
-           _context.SchoolClassStudents
-               .Include(s => s.SchoolClass)
-               .Include(s => s.Student)
-               .Include(s => s.CreatedBy)
-               .Include(s => s.UpdatedBy);
+            _context.SchoolClassStudents
+                .Include(s => s.SchoolClass)
+                .Include(s => s.Student)
+                .Include(s => s.CreatedBy)
+                .Include(s => s.UpdatedBy);
 
-        
 
-        return schoolClassesStudentList ?? Enumerable.Empty<SchoolClassStudent>();
+        return schoolClassesStudentList ??
+               Enumerable.Empty<SchoolClassStudent>();
     }
-
-
 
 
     // GET: SchoolClassStudents

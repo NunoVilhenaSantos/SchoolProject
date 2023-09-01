@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Controllers;
@@ -16,21 +15,17 @@ public class StudentCoursesController : Controller
     }
 
 
-
     private IEnumerable<StudentCourse> GetStudentCourses()
     {
-
         var studentCoursesList =
-           _context.StudentCourses
-               .Include(s => s.Course)
-               .Include(s => s.CreatedBy)
-               .Include(s => s.Student)
-               .Include(s => s.UpdatedBy);
+            _context.StudentCourses
+                .Include(s => s.Course)
+                .Include(s => s.CreatedBy)
+                .Include(s => s.Student)
+                .Include(s => s.UpdatedBy);
 
         return studentCoursesList ?? Enumerable.Empty<StudentCourse>();
     }
-
-
 
 
     // GET: StudentCourses
@@ -61,7 +56,6 @@ public class StudentCoursesController : Controller
     }
 
 
-
     // GET: StudentCourses/Details/5
     public async Task<IActionResult> Details(int? id)
     {
@@ -74,7 +68,7 @@ public class StudentCoursesController : Controller
             .Include(s => s.UpdatedBy)
             .FirstOrDefaultAsync(m => m.StudentId == id);
 
-        
+
         if (studentCourse == null) return NotFound();
 
         return View(studentCourse);

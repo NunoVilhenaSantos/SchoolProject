@@ -50,7 +50,7 @@ public class User : IdentityUser, INotifyPropertyChanged
 
 
     /// <summary>
-    ///    Was Deleted?
+    ///     Was Deleted?
     /// </summary>
     [DisplayName("Was Deleted?")]
     public required bool WasDeleted { get; set; }
@@ -61,7 +61,7 @@ public class User : IdentityUser, INotifyPropertyChanged
 
 
     /// <summary>
-    ///   The image of the user file from the form to be inserted in the database.
+    ///     The image of the user file from the form to be inserted in the database.
     /// </summary>
     [NotMapped]
     [DisplayName("Image")]
@@ -69,13 +69,13 @@ public class User : IdentityUser, INotifyPropertyChanged
 
 
     /// <summary>
-    ///    The profile photo of the user.
+    ///     The profile photo of the user.
     /// </summary>
     [DisplayName("Profile Photo")]
     public required Guid ProfilePhotoId { get; set; }
 
     /// <summary>
-    ///    The profile photo of the user in URL format.
+    ///     The profile photo of the user in URL format.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"

@@ -16,10 +16,10 @@
         <form asp-action="Edit" enctype="multipart/form-data">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="ProfilePhotoId" />
+            <input type="hidden" asp-for="Id"/>
+            <input type="hidden" asp-for="ProfilePhotoId"/>
 
-            <partial name="_UsersCE" for="@Model" />
+            <partial name="_UsersCE" for="@Model"/>
 
             <div class="form-group">
                 <button class="btn btn-outline-primary" type="submit"><span class="fa-regular fa-floppy-disk"></span> Save </button>

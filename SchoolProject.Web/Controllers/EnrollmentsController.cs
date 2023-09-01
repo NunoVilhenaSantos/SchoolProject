@@ -1,36 +1,40 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Enrollments;
+using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+///    EnrollmentsController class.
+/// </summary>
 public class EnrollmentsController : Controller
 {
     private readonly DataContextMySql _context;
 
 
+    /// <summary>
+    ///   EnrollmentsController constructor.
+    /// </summary>
+    /// <param name="context"></param>
     public EnrollmentsController(DataContextMySql context)
     {
         _context = context;
     }
 
 
-
-
-    private IEnumerable<Enrollment> EnrollmentsWithStudent()
+    private IEnumerable<Enrollment> GetEnrollmentsWithCoursesAndStudents()
     {
         //var citiesWithCountries =
         //    _cityRepository?.GetCitiesWithCountriesAsync();
 
         var enrollmentsWithStudent =
             _context.Enrollments
-            .Include(e => e.Course)
-            .Include(e => e.Student)
-            .Include(e => e.CreatedBy)
-            .Include(e => e.UpdatedBy);
+                .Include(e => e.Course)
+                .Include(e => e.Student)
+                .Include(e => e.CreatedBy)
+                .Include(e => e.UpdatedBy);
 
 
         return enrollmentsWithStudent ?? Enumerable.Empty<Enrollment>();
@@ -38,22 +42,67 @@ public class EnrollmentsController : Controller
 
 
     // GET: Enrollments
+    /// <summary>
+    ///   Index method, for the main view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
-        return View(EnrollmentsWithStudent());
+        return View(GetEnrollmentsWithCoursesAndStudents());
     }
 
 
     // GET: Enrollments
+    /// <summary>
+    ///   IndexCards method for the cards view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
-        return View(EnrollmentsWithStudent());
+        return View(GetEnrollmentsWithCoursesAndStudents());
     }
 
 
+    // GET: Enrollments
+    // /// <summary>
+    // ///  Index1 method for the view to test pagination.
+    // /// </summary>
+    // /// <param name="pageNumber"></param>
+    // /// <param name="pageSize"></param>
+    // /// <returns></returns>
+    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
+    // {
+    //     var totalCount = _context.Enrollments.Count();
+    //
+    //     var records = _context.Enrollments
+    //         .Skip((pageNumber - 1) * pageSize)
+    //         .Take(pageSize)
+    //         .ToList();
+    //
+    //     var model = new PaginationViewModel<Enrollment>
+    //     {
+    //         Records = records,
+    //         PageNumber = pageNumber,
+    //         PageSize = pageSize,
+    //         TotalCount = totalCount
+    //     };
+    //
+    //     return View(model);
+    // }
 
-    // GET: Cities
-    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+
+    // GET: Enrollments
+    /// <summary>
+    ///  IndexCards method for the cards view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
         var totalCount = _context.Enrollments.Count();
 
@@ -62,41 +111,16 @@ public class EnrollmentsController : Controller
             .Take(pageSize)
             .ToList();
 
-        //var model = new PaginationViewModel
-        //{
-        //    Records = records,
-        //    PageNumber = pageNumber,
-        //    PageSize = pageSize,
-        //    TotalCount = totalCount
-        //};
+        var model = new PaginationViewModel<Enrollment>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
 
-        //return View(model);
-        return View(records);
-        
+        return View(model);
     }
-
-    // GET: Cities
-    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
-    {
-        var totalCount = _context.Enrollments.Count();
-
-        var records = _context.Enrollments
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        //var model = new PaginationViewModel
-        //{
-        //    Records = records,
-        //    PageNumber = pageNumber,
-        //    PageSize = pageSize,
-        //    TotalCount = totalCount
-        //};
-
-        //return View(model);
-        return View(records);
-    }
-
 
 
     // GET: Enrollments/Details/5

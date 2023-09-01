@@ -107,51 +107,8 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
-    [Key]
-    [DatabaseGenerated(
-        DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-
-    [DatabaseGenerated(
-        DatabaseGeneratedOption.Identity)]
-    public Guid IdGuid { get; set; }
-
-
-    [Required]
-    [DisplayName("Was Deleted?")]
-    public bool WasDeleted { get; set; }
-
-
-    [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Created At")]
-    [DatabaseGenerated(
-        DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [Required]
-    [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
-
-
-    // [Required]
-    [DataType(DataType.Date)]
-    [DisplayName("Update At")]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
-
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
     /// <summary>
-    ///   The image of the user file from the form to be inserted in the database.
+    ///     The image of the user file from the form to be inserted in the database.
     /// </summary>
     [NotMapped]
     [DisplayName("Image")]
@@ -159,13 +116,13 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///    The profile photo of the user.
+    ///     The profile photo of the user.
     /// </summary>
     [DisplayName("Profile Photo")]
     public required Guid ProfilePhotoId { get; set; }
 
     /// <summary>
-    ///    The profile photo of the user in URL format.
+    ///     The profile photo of the user in URL format.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
@@ -181,7 +138,11 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship between SchoolClass and Course
     /// </summary>
-    public virtual ICollection<SchoolClassCourse> SchoolClassCourses { get; set; } =
+    public virtual ICollection<SchoolClassCourse> SchoolClassCourses
+    {
+        get;
+        set;
+    } =
         new List<SchoolClassCourse>();
 
 
@@ -206,7 +167,8 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship between SchoolClass and Student
     /// </summary>
-    public virtual ICollection<Student>? Students { get; set; } = new List<Student>();
+    public virtual ICollection<Student>? Students { get; set; } =
+        new List<Student>();
 
 
     [DisplayName("Students Count")]
@@ -220,7 +182,11 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship between SchoolClass and Student
     /// </summary>
-    public virtual ICollection<SchoolClassStudent>? SchoolClassStudents { get; set; } =
+    public virtual ICollection<SchoolClassStudent>? SchoolClassStudents
+    {
+        get;
+        set;
+    } =
         new List<SchoolClassStudent>();
 
 
@@ -284,6 +250,47 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     /// </summary>
     public virtual IEnumerable<Course>? Courses { get; init; }
 
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    [Key]
+    [DatabaseGenerated(
+        DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+
+    [DatabaseGenerated(
+        DatabaseGeneratedOption.Identity)]
+    public Guid IdGuid { get; set; }
+
+
+    [Required]
+    [DisplayName("Was Deleted?")]
+    public bool WasDeleted { get; set; }
+
+
+    [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Created At")]
+    [DatabaseGenerated(
+        DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    [Required]
+    [DisplayName("Created By")]
+    public virtual required User CreatedBy { get; set; }
+
+
+    // [Required]
+    [DataType(DataType.Date)]
+    [DisplayName("Update At")]
+    // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
+
+    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 
     // --------------------------------------------------------------------- //

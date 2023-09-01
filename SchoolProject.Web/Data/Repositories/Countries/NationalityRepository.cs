@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Query;
-using SchoolProject.Web.Data.DataContexts;
+﻿using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
@@ -13,12 +11,12 @@ public class NationalityRepository
     : GenericRepository<Nationality>, INationalityRepository
 {
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
-
-    private readonly DataContextSqLite _dataContextSqLite;
+    private readonly DataContextMySql _dataContext;
 
     // private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
-    private readonly DataContextMySql _dataContext;
+
+    private readonly DataContextSqLite _dataContextSqLite;
 
 
     /// <inheritdoc />
@@ -55,27 +53,7 @@ public class NationalityRepository
 
     public async Task<Nationality?> GetNationalityAsync(Nationality nationality)
     {
-
         return await _dataContext.Nationalities.FindAsync(nationality.Id);
-    }
-
-
-    internal async Task<Country?> GetCountryWithCitiesAsync(int countryId)
-    {
-        return await _dataContext.Countries
-            .Include(c => c.Cities)
-            .Include(c => c.Nationality)
-            .FirstOrDefaultAsync(c => c.Id == countryId);
-    }
-
-
-    public async Task<Country?> GetCountryWithCitiesAsync(
-        Nationality nationality)
-    {
-        return await _dataContext.Countries
-            .Include(c => c.Cities)
-            .Include(c => c.Nationality)
-            .FirstOrDefaultAsync(c => c.Nationality == nationality);
     }
 
 
@@ -91,7 +69,7 @@ public class NationalityRepository
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             Country = country,
-            CountryId = country.Id,
+            CountryId = country.Id
         };
 
         _dataContext.Countries.Update(country);
@@ -111,7 +89,7 @@ public class NationalityRepository
             WasDeleted = nationality.WasDeleted,
             CreatedBy = nationality.CreatedBy,
             Country = country,
-            CountryId = country.Id,
+            CountryId = country.Id
         };
 
         _dataContext.Countries.Update(country);
@@ -148,5 +126,24 @@ public class NationalityRepository
         await _dataContext.SaveChangesAsync();
 
         return country.Id;
+    }
+
+
+    internal async Task<Country?> GetCountryWithCitiesAsync(int countryId)
+    {
+        return await _dataContext.Countries
+            .Include(c => c.Cities)
+            .Include(c => c.Nationality)
+            .FirstOrDefaultAsync(c => c.Id == countryId);
+    }
+
+
+    public async Task<Country?> GetCountryWithCitiesAsync(
+        Nationality nationality)
+    {
+        return await _dataContext.Countries
+            .Include(c => c.Cities)
+            .Include(c => c.Nationality)
+            .FirstOrDefaultAsync(c => c.Nationality == nationality);
     }
 }

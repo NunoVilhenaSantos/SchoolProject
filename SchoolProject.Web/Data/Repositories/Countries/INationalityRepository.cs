@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Query;
-using SchoolProject.Web.Data.Entities.Countries;
+﻿using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Models.Countries;
 
 namespace SchoolProject.Web.Data.Repositories.Countries;

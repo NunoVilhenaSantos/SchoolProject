@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -20,15 +19,14 @@ public class SchoolClassCoursesController : Controller
     {
         var schoolClassesWithCourses =
             _context.SchoolClassCourses
-            .Include(s => s.Course)
-            .Include(s => s.SchoolClass)
-            .Include(s => s.CreatedBy)
-            .Include(s => s.UpdatedBy);
+                .Include(s => s.Course)
+                .Include(s => s.SchoolClass)
+                .Include(s => s.CreatedBy)
+                .Include(s => s.UpdatedBy);
 
-        return schoolClassesWithCourses ?? Enumerable.Empty<SchoolClassCourse>();
+        return schoolClassesWithCourses ??
+               Enumerable.Empty<SchoolClassCourse>();
     }
-
-
 
 
     // GET: SchoolClassCourses
@@ -44,7 +42,6 @@ public class SchoolClassCoursesController : Controller
     }
 
 
-
     // GET: SchoolClassCourses
     public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
     {
@@ -56,10 +53,6 @@ public class SchoolClassCoursesController : Controller
     {
         return View(GetSchoolClassesWithCourses());
     }
-
-
-
-
 
 
     // GET: SchoolClassCourses/Details/5

@@ -1,22 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
+using SchoolProject.Web.Data.Repositories.Teachers;
+using SchoolProject.Web.Models;
 
 
 namespace SchoolProject.Web.Controllers;
 
+/// <summary>
+///   TeachersController class.
+/// </summary>
 public class TeachersController : Controller
 {
+    private readonly ITeacherRepository _teacherRepository;
     private readonly DataContextMySql _context;
 
     private const string BucketName = "teachers";
 
 
-    public TeachersController(DataContextMySql context)
+
+    /// <summary>
+    ///  TeachersController constructor.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="teacherRepository"></param>
+    public TeachersController(
+        DataContextMySql context,
+        ITeacherRepository teacherRepository
+    )
     {
         _context = context;
+        _teacherRepository = teacherRepository;
     }
-
 
 
     private IEnumerable<Teacher> GetTeachersList()
@@ -24,13 +39,17 @@ public class TeachersController : Controller
         var teachersList =
             _context.Teachers.ToListAsync();
 
-        return teachersList.Result ?? Enumerable.Empty<Teacher>();
+        return teachersList.Result;
     }
 
 
-
-
     // GET: Teachers
+    /// <summary>
+    ///  Index method, for the main view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Index(int pageNumber = 1, int pageSize = 10)
     {
@@ -39,6 +58,12 @@ public class TeachersController : Controller
 
 
     // GET: Teachers
+    /// <summary>
+    /// IndexCards method for the cards view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
@@ -47,128 +72,204 @@ public class TeachersController : Controller
 
 
     // GET: Teachers
+    /// <summary>
+    /// Index1 method, for the main view, for testing purposes.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet]
-    public IActionResult Index2(int pageNumber = 1, int pageSize = 10)
+    public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
     {
-        return View(GetTeachersList());
+        var totalCount = _context.Teachers.Count();
+
+        var records = _context.Teachers
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var model = new PaginationViewModel<Teacher>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+
+        return View(model);
     }
 
 
     // GET: Teachers
+    /// <summary>
+    /// IndexCards1 method for the cards view, for testing purposes.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet]
-    public IActionResult IndexCards2(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
     {
-        return View(GetTeachersList());
+        var totalCount = _context.Teachers.Count();
+
+        var records = _context.Teachers
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var model = new PaginationViewModel<Teacher>
+        {
+            Records = records,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+
+        return View(model);
     }
 
 
-
-
-
     // GET: Teachers/Details/5
+    /// <summary>
+    /// Details method, for the details view.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null || _context.Teachers == null) return NotFound();
+        if (id == null) return NotFound();
 
         var teacher = await _context.Teachers
             .FirstOrDefaultAsync(m => m.Id == id);
+
         if (teacher == null) return NotFound();
 
         return View(teacher);
     }
 
 
-
     // GET: Teachers/Create
+    /// <summary>
+    /// Create method, for the create view.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Create()
     {
         return View();
     }
 
+
     // POST: Teachers/Create
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Create method, for adding a new teacher.
+    /// </summary>
+    /// <param name="teacher"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Teacher teacher)
     {
-        if (ModelState.IsValid)
-        {
-            _context.Add(teacher);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        if (!ModelState.IsValid) return View(teacher);
 
-        return View(teacher);
+        _context.Add(teacher);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
     }
+
 
     // GET: Teachers/Edit/5
+    /// <summary>
+    /// Edit method, for the edit view.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null || _context.Teachers == null) return NotFound();
+        if (id == null) return NotFound();
 
         var teacher = await _context.Teachers.FindAsync(id);
+
         if (teacher == null) return NotFound();
+
         return View(teacher);
     }
+
 
     // POST: Teachers/Edit/5
     // To protect from over-posting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Edit method, for editing a teacher.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="teacher"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Teacher teacher)
     {
         if (id != teacher.Id) return NotFound();
 
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(teacher);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TeacherExists(teacher.Id))
-                    return NotFound();
-                throw;
-            }
+        if (!ModelState.IsValid) return View(teacher);
 
-            return RedirectToAction(nameof(Index));
+        try
+        {
+            _context.Update(teacher);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!TeacherExists(teacher.Id))
+                return NotFound();
+            throw;
         }
 
-        return View(teacher);
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: Teachers/Delete/5
+    /// <summary>
+    /// Delete method, for the delete view.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null || _context.Teachers == null) return NotFound();
+        if (id == null) return NotFound();
 
         var teacher = await _context.Teachers
             .FirstOrDefaultAsync(m => m.Id == id);
+
         if (teacher == null) return NotFound();
 
         return View(teacher);
     }
 
     // POST: Teachers/Delete/5
+    /// <summary>
+    /// DeleteConfirmed method, for deleting a teacher.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        if (_context.Teachers == null)
-            return Problem("Entity set 'DataContextMySql.Teachers'  is null.");
         var teacher = await _context.Teachers.FindAsync(id);
+
         if (teacher != null) _context.Teachers.Remove(teacher);
 
         await _context.SaveChangesAsync();
+
         return RedirectToAction(nameof(Index));
     }
 
