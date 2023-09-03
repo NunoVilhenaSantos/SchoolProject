@@ -113,20 +113,32 @@ public class TeacherCoursesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = "FirstName")
     {
         var records =
             GetTeacherCoursesList(pageNumber, pageSize);
 
-        var model = new PaginationViewModel<TeacherCourse>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = _context.Teachers.Count(),
-        };
+        // TODO: Fix the sort order
+        // var model = new PaginationViewModel<TeacherCourse>
+        // {
+        //     Records = records,
+        //     PageNumber = pageNumber,
+        //     PageSize = pageSize,
+        //     TotalCount = _context.TeacherCourses.Count(),
+        //     SortOrder = "asc",
+        // };
+
+        var model = new PaginationViewModel<TeacherCourse>(
+            records.ToList(),
+            pageNumber, pageSize,
+            _context.TeacherCourses.Count(),
+            sortOrder, sortProperty
+        );
 
         return View(model);
     }

@@ -37,7 +37,7 @@
         <ul class="dropdown-menu">
             <li>
                 <a asp-action="Index" asp-area="" asp-controller="Users"
-                   class="dropdown-item @(currentAction == "Index" && currentController == "Users" ? "Roles" : "")">
+                   class="dropdown-item @(currentAction == "Index" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
                     Users
@@ -45,18 +45,18 @@
             </li>
             <li>
                 <a asp-action="IndexCards" asp-area="" asp-controller="Users"
-                   class="dropdown-item @(currentAction == "IndexCards" && currentController == "Users" ? "Roles" : "")">
+                   class="dropdown-item @(currentAction == "IndexCards" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    Users
+                    Users Cards
                 </a>
             </li>
             <li>
                 <a asp-action="IndexCards1" asp-area="" asp-controller="Users"
-                   class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Users" ? "Roles" : "")">
+                   class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    Users
+                    Users Cards 1
                 </a>
             </li>
             <li>
@@ -64,7 +64,7 @@
             </li>
             <li>
                 <a asp-action="" asp-area="" asp-controller="Roles"
-                   class="dropdown-item @(currentAction == "Index" && currentController == "Home" ? "Roles" : "")">
+                   class="dropdown-item @(currentAction == "Index" && currentController == "Roles" ? "active" : "")">
                     <span class="bi bi-people-fill"></span>
                     <span class="material-symbols-outlined">group</span>
                     Roles
@@ -72,18 +72,18 @@
             </li>
             <li>
                 <a asp-action="IndexCards" asp-area="" asp-controller="Roles"
-                   class="dropdown-item @(currentAction == "IndexCards" && currentController == "Home" ? "Roles" : "")">
+                   class="dropdown-item @(currentAction == "IndexCards" && currentController == "Roles" ? "active" : "")">
                     <span class="bi bi-people-fill"></span>
                     <span class="material-symbols-outlined">group</span>
-                    Roles
+                    Roles Cards
                 </a>
             </li>
             <li>
                 <a asp-action="IndexCards1" asp-area="" asp-controller="Roles"
-                   class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Home" ? "Roles" : "")">
+                   class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Roles" ? "active" : "")">
                     <span class="bi bi-people-fill"></span>
                     <span class="material-symbols-outlined">group</span>
-                    Roles
+                    Roles Cards 1
                 </a>
             </li>
             <li>

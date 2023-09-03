@@ -46,29 +46,6 @@ public class Country : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
-    // Navigation property with lazy-loading enabled
-    public virtual ICollection<City>? Cities { get; set; }
-
-
-    [DisplayName("Number of Cities")]
-    public int NumberCities => Cities?.Count ?? 0;
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    [Required]
-    // [ForeignKey("NationalityId")]
-    public virtual required Nationality Nationality { get; set; }
-
-    // public int NationalityId => Nationality.Id;
-    public Guid NationalityGuidId => Nationality.IdGuid;
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -101,6 +78,37 @@ public class Country : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    // Navigation property with lazy-loading enabled
+    public virtual ICollection<City>? Cities { get; set; }
+
+
+    [DisplayName("Number of Cities")]
+    public int NumberCities => Cities?.Count ?? 0;
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    // Principal (parent)
+
+    //[Required]
+    //[ForeignKey(nameof(Nationality))]
+    //public int NationalityId { get; set; }
+
+    [Required]
+    public virtual required Nationality Nationality { get; set; }
+
+
+    public Guid NationalityGuidId => Nationality.IdGuid;
+
 
 
     // --------------------------------------------------------------------- //

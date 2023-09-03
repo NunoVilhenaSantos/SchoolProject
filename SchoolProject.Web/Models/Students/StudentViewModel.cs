@@ -3,7 +3,13 @@ using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Models.Students;
 
+/// <summary>
+///  The student view model.
+/// </summary>
 public class StudentViewModel : Student
 {
-    [DisplayName("Image")] public IFormFile? ImageFile { get; set; }
+    /// <summary>
+    ///  Gets or sets the image file.
+    /// </summary>
+    [DisplayName("Image")] public new IFormFile? ImageFile { get; set; }
 }

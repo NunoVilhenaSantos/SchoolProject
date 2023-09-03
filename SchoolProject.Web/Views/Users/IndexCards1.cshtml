@@ -1,119 +1,85 @@
-﻿@model SchoolProject.Web.Models.PaginationViewModel<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
+﻿@using System.Reflection
+
+@model SchoolProject.Web.Models.PaginationViewModel<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
 
 @{
     ViewData["Title"] = "List of Users";
     // Layout = "_Layout";
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
 <h2>@ViewData["Title"]</h2>
 
+<p>
+    @* <a asp-action="Create" class="btn btn-outline-primary"><span class="material-symbols-outlined">add_box</span>Create New</a> *@
+    <a asp-action="Create" class="btn btn-secondary"><span class="material-symbols-outlined">person_add</span>Create New</a>
+</p>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
 
-        @* <!-- First page link --> *@
-        <li class="page-item @if (Model.PageNumber == 1) { <text>disabled</text> }">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = 1, pageSize = Model.PageSize})">First</a>
-        </li>
-        <li class="page-item @if (Model.PageNumber == 1) { <text>disabled</text> }">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize})">Previous</a>
-        </li>
+<partial name="Pagination/_PageNavigationTop" model="Model"/>
 
-        <!-- Page links -->
-        @for (var i = 1; i <= Model.TotalPages; i++)
-        {
-            @* <!-- Display first page --> *@
-            @if (i == 1)
+
+<div class="album py-5 bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-3">
+            @foreach (var item in Model.Records)
             {
-                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = i, pageSize = Model.PageSize})">@i</a>
-                </li>
+                <div class="col">
+                    @* <div class="card shadow-sm"> *@
+                    <div class="card shadow-sm">
+                        <div class="card-img-top">
+                            <img src="@item.User.ProfilePhotoIdUrl" alt="Profile Photo" class="img-fluid">
+                        </div>
+
+                        <div class="card-body">
+                            <p class="card-text">@Html.DisplayFor(modelItem => item.User.FullName)</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.User.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                                    <a asp-action="Details" asp-route-id="@item.User.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
+                                    <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                                </div>
+                                @* <small class="text-body-secondary px-2"> *@
+                                @*     @Html.DisplayNameFor(modelItem => item.User.Email)<br/> *@
+                                @*     @Html.DisplayFor(modelItem => item.User.Email) *@
+                                @* </small> *@
+                                @* <small class="text-body-secondary"> *@
+                                @*     @Html.DisplayNameFor(modelItem => item.User.Address)<br/> *@
+                                @*     @Html.DisplayFor(modelItem => item.User.Address) *@
+                                @* </small> *@
+                                <small class="text-body-secondary px-2">
+                                    @Html.DisplayFor(modelItem => item.User.Email)<br/>
+                                    @Html.DisplayFor(modelItem => item.User.Address)
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
-
-            @* <!-- Display last page --> *@
-            else if (i == Model.TotalPages)
-            {
-                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = i, pageSize = Model.PageSize})">@i</a>
-                </li>
-            }
-
-            @* <!-- Display up to 2 pages before and after current page --> *@
-            else if ((i >= Model.PageNumber - 2 && i <= Model.PageNumber + 2) || i == 1 || i == Model.TotalPages)
-            {
-                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = i, pageSize = Model.PageSize})">@i</a>
-                </li>
-            }
-
-            @* <!-- Display "..." when there are more pages --> *@
-            else if ((i == Model.PageNumber - 3 || i == Model.PageNumber + 3) && Model.TotalPages > 7)
-            {
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">...</a>
-                </li>
-            }
-        }
-
-        <!-- Next page link -->
-        <li class="page-item @if (Model.PageNumber == Model.TotalPages) { <text>disabled</text> }">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize})">Next</a>
-        </li>
-        <li class="page-item @if (Model.PageNumber == Model.TotalPages) { <text>disabled</text> }">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = Model.TotalPages, pageSize = Model.PageSize})">Last</a>
-        </li>
-
-    </ul>
-</nav>
+        </div>
+    </div>
+</div>
 
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
-
-        <!-- First page link -->
-        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = 1, pageSize = Model.PageSize})">First</a>
-        </li>
-        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize})">Previous</a>
-        </li>
-
-        <!-- Page links -->
-        @for (var i = 1; i <= Model.TotalPages; i++)
-        {
-            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = i, pageSize = Model.PageSize})">@i</a>
-            </li>
-        }
-
-        <!-- Next page link -->
-        <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize})">Next</a>
-        </li>
-        <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("IndexCards1", new {pageNumber = Model.TotalPages, pageSize = Model.PageSize})">Last</a>
-        </li>
-
-    </ul>
-</nav>
+<partial name="Pagination/_PageNavigationBottom" model="Model"/>
 
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
-        <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">3</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-        </li>
-    </ul>
-</nav>
+<script>
+   $(document).ready(function () {
+
+       $('#pageSizeSelect').change(function () {
+           const selectedPageSize = $(this).val();
+           const selectedSortProperty = $('#sortProperty').val();
+           const selectedSortOrder = $('#sortOrder').val();
+
+           // Redireciona para a primeira página com os parâmetros selecionados
+           window.location.href = '@Url.Action("IndexCards1", new {pageNumber = 1, pageSize = " + selectedPageSize + ", sortOrder = " + selectedSortOrder + ", sortProperty = " + selectedSortProperty + "})';
+       });
+   });
+
+</script>

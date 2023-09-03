@@ -120,19 +120,32 @@ public class EnrollmentsController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
-    {
-        var records =
-            GetEnrollmentsWithCoursesAndStudents(pageNumber, pageSize);
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = "FirstName")
 
-        var model = new PaginationViewModel<Enrollment>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = _context.Enrollments.Count(),
-        };
+    {
+        // var records =
+        //     GetEnrollmentsWithCoursesAndStudents(pageNumber, pageSize);
+
+        // TODO: Fix the sort order
+        // var model = new PaginationViewModel<Enrollment>
+        // {
+        //     Records = records,
+        //     PageNumber = pageNumber,
+        //     PageSize = pageSize,
+        //     TotalCount = _context.Enrollments.Count(),
+        //     SortOrder = "asc",
+        // };
+
+        var model = new PaginationViewModel<Enrollment>(
+            GetEnrollmentsWithCoursesAndStudents().ToList(),
+            pageNumber, pageSize,
+            _context.Enrollments.Count(),
+            sortOrder, sortProperty
+        );
 
         return View(model);
     }

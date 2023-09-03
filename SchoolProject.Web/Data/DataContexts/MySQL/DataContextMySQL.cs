@@ -369,25 +369,48 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 
         // ------------------------------------------------------------------ //
 
+
+
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
         // ------------------------------------------------------------------ //
 
-        // Other configurations...
 
+
+        // ... Other configurations ...
+        // ... Outras configurações ...
+
+
+        // Relação entre City e Country
         modelBuilder.Entity<City>()
             .HasOne(c => c.Country)
             .WithMany(country => country.Cities)
             .HasForeignKey(c => c.CountryId);
 
-        // Other configurations...
 
-        modelBuilder.Entity<Nationality>()
-            .HasOne(n => n.Country)
-            .WithOne(country => country.Nationality);
+        // Required one-to-one with primary key to primary key relationship
+
+        // Relação entre Country e Nationality
+        modelBuilder.Entity<Country>()
+            .HasOne(c => c.Nationality)
+            .WithOne(n => n.Country)
+            .HasForeignKey<Nationality>(n =>n.CountryId)
+            .IsRequired(); 
 
 
-        // ... outras configurações ...
+        //// Relação entre Country e Nationality
+        //modelBuilder.Entity<Nationality>()
+        //    .HasOne(n => n.Country)
+        //    .WithOne(c => c.Nationality)
+        //    .HasForeignKey<Country>(c => c.NationalityId)
+        //    .IsRequired();
 
 
+        // ... Other configurations ...
+        // ... Outras configurações ...
+
+
+        // ------------------------------------------------------------------ //
         // ------------------------------------------------------------------ //
 
 

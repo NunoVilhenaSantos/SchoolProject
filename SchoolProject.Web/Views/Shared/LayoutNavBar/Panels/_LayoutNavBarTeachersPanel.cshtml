@@ -1,4 +1,5 @@
 ﻿@using System.Diagnostics
+
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -39,10 +40,40 @@
             <hr class="dropdown-divider">
         </li>
         <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="Teachers"
+               class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "Teachers" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                Teachers Cards 1
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
             <a asp-action="Index" asp-area="" asp-controller="TeacherCourses"
                class="dropdown-item  @(currentAction == "Index" && currentController == "TeacherCourses" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
                 TeacherCourses
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a asp-action="IndexCards" asp-area="" asp-controller="TeacherCourses"
+               class="dropdown-item  @(currentAction == "IndexCards" && currentController == "TeacherCourses" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                TeacherCourses Cards
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="TeacherCourses"
+               class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "TeacherCourses" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                TeacherCourses Cards 1
             </a>
         </li>
     </ul>

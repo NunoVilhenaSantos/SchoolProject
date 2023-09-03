@@ -121,7 +121,7 @@ public class SeedDb
 
         Console.WriteLine("Seeding the database.", Color.Green);
         Console.WriteLine(
-            _dataContextInUse.Database.GetConnectionString(), Color.Green);
+            _dataContextInUse.Database.GetConnectionString() ?? string.Empty, Color.Green);
         Console.WriteLine(
             _dataContextInUse.Database.GetDbConnection().DataSource,
             Color.Green);
@@ -562,7 +562,7 @@ public class SeedDb
                 IdGuid = Guid.NewGuid(),
                 CreatedBy = createdBy,
                 Country = country,
-                CountryId = country.Id
+                //CountryId = country.Id
             };
 
             var cities = CreateCities(cityNames, createdBy, country);
@@ -575,7 +575,7 @@ public class SeedDb
 
 
     private List<City> CreateCities(
-        IEnumerable<string> cityNames, User createdBy, Country country = null)
+        IEnumerable<string> cityNames, User createdBy, Country country)
     {
         return cityNames.Select(
             cityName => new City
@@ -586,7 +586,8 @@ public class SeedDb
                 CreatedBy = createdBy,
                 ProfilePhotoId = default,
                 CountryId = country?.Id ?? 0,
-                Country = country ?? null
+                Country = country ?? _dataContextSqLite.Countries
+                    .FirstOrDefault(c => c.Name == "Portugal"),
             }
         ).ToList();
     }

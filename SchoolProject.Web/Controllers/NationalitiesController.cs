@@ -96,19 +96,32 @@ public class NationalitiesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        var records =
-            GetNationalitiesWithCountries(pageNumber, pageSize);
+        // var records =
+        //     GetNationalitiesWithCountries(pageNumber, pageSize);
 
-        var model = new PaginationViewModel<Nationality>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = _nationalityRepository.GetCount().Result,
-        };
+        // TODO: Fix the sort order
+        // var model = new PaginationViewModel<Nationality>
+        // {
+        //     Records = records,
+        //     PageNumber = pageNumber,
+        //     PageSize = pageSize,
+        //     TotalCount = _nationalityRepository.GetCount().Result,
+        //     SortOrder = "asc",
+        // };
+
+        var model = new PaginationViewModel<Nationality>(
+            GetNationalitiesWithCountries().ToList(),
+            pageNumber, pageSize,
+            _nationalityRepository.GetCount().Result,
+            sortOrder, sortProperty
+        );
+
 
         return View(model);
     }

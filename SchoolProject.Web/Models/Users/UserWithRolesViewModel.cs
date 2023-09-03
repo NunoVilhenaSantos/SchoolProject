@@ -16,15 +16,19 @@ public class UserWithRolesViewModel
 
     // public IdentityUser IUser { get; set; }
 
+
+
     /// <summary>
     ///     user roles
     /// </summary>
     public IdentityUserRole<string> Role { get; set; }
 
+
     /// <summary>
     ///     user primary role
     /// </summary>
     public string RoleName => Roles.FirstOrDefault();
+
 
 
     /// <summary>

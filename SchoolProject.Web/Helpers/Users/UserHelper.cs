@@ -5,6 +5,9 @@ using SchoolProject.Web.Models.Account;
 
 namespace SchoolProject.Web.Helpers.Users;
 
+/// <summary>
+/// The user helper.
+/// </summary>
 public class UserHelper : IUserHelper
 {
     private readonly RoleManager<IdentityRole> _roleManager;
@@ -12,6 +15,12 @@ public class UserHelper : IUserHelper
     private readonly UserManager<User> _userManager;
 
 
+    /// <summary>
+    ///  The user helper constructor.
+    /// </summary>
+    /// <param name="userManager"></param>
+    /// <param name="signInManager"></param>
+    /// <param name="roleManager"></param>
     public UserHelper(
         UserManager<User> userManager,
         SignInManager<User> signInManager,
@@ -24,18 +33,28 @@ public class UserHelper : IUserHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
     }
 
 
+    /// <inheritdoc />
     public async Task<User?> GetUserByIdAsync(string id)
     {
         return await _userManager.FindByIdAsync(id);
     }
 
 
+    /// <inheritdoc />
+    public async Task<User?> GetUserByUserNameAsync(string userName)
+    {
+        return await _userManager.FindByNameAsync(userName);
+    }
+
+
+    /// <inheritdoc />
     public async Task<string?> GetUserInitialsAsync()
     {
         // var user = await _userManager.GetUserAsync(
@@ -66,6 +85,7 @@ public class UserHelper : IUserHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<IdentityResult> AddUserAsync(
         User user, string password)
     {
@@ -78,6 +98,7 @@ public class UserHelper : IUserHelper
     }
 
 
+    /// <inheritdoc />
     public async Task CheckRoleAsync(string roleName)
     {
         var result = await _roleManager.RoleExistsAsync(roleName);
@@ -87,6 +108,7 @@ public class UserHelper : IUserHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<SignInResult> LoginAsync(LoginViewModel model)
     {
         return await _signInManager.PasswordSignInAsync(
@@ -97,17 +119,21 @@ public class UserHelper : IUserHelper
     }
 
 
+    /// <inheritdoc />
     public async Task LogOutAsync()
     {
         await _signInManager.SignOutAsync();
     }
 
+
+    /// <inheritdoc />
     public async Task<IdentityResult> UpdateUserAsync(User user)
     {
         return await _userManager.UpdateAsync(user);
     }
 
 
+    /// <inheritdoc />
     public async Task<IdentityResult> ChangePasswordAsync(
         User user, string oldPassword, string newPassword)
     {
@@ -115,24 +141,29 @@ public class UserHelper : IUserHelper
             user, oldPassword, newPassword);
     }
 
+
+    /// <inheritdoc />
     public async Task AddUserToRoleAsync(User user, string roleName)
     {
         await _userManager.AddToRoleAsync(user, roleName);
     }
 
 
+    /// <inheritdoc />
     public async Task RemoveUserFromRoleAsync(User user, string roleName)
     {
         await _userManager.RemoveFromRoleAsync(user, roleName);
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> IsUserInRoleAsync(User user, string roleName)
     {
         return await _userManager.IsInRoleAsync(user, roleName);
     }
 
 
+    /// <inheritdoc />
     public async Task<SignInResult> ValidatePasswordAsync(
         User user, string password)
     {
@@ -141,20 +172,17 @@ public class UserHelper : IUserHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
     {
         return await _userManager.GenerateEmailConfirmationTokenAsync(user);
     }
 
+
+    /// <inheritdoc />
     public async Task<IdentityResult> ConfirmEmailAsync(
         User user, string token)
     {
         return await _userManager.ConfirmEmailAsync(user, token);
-    }
-
-
-    public async Task<User?> GetUserByUserNameAsync(string userName)
-    {
-        return await _userManager.FindByNameAsync(userName);
     }
 }

@@ -35,27 +35,50 @@
             Off-canvas right
         </div>
 
-
-        <a class="dropdown-item @(currentController == "Users" ? "active" : "")"
-           asp-area="" asp-controller="Users" asp-action="Index">
+        <a asp-action="Index" asp-area="" asp-controller="Users"
+           class="nav-item @(currentAction == "Index" && currentController == "Users" ? "active" : "")">
             @* <span class="bi bi-person-fill"></span> *@
             <span class="material-symbols-outlined" height="32">person</span>
             Users
         </a>
+        <a asp-action="IndexCards" asp-area="" asp-controller="Users"
+           class="nav-item @(currentAction == "IndexCards" && currentController == "Users" ? "active" : "")">
+            @* <span class="bi bi-person-fill"></span> *@
+            <span class="material-symbols-outlined" height="32">person</span>
+            Users Cards
+        </a>
+        <a asp-action="IndexCards1" asp-area="" asp-controller="Users"
+           class="nav-item @(currentAction == "IndexCards1" && currentController == "Users" ? "active" : "")">
+            @* <span class="bi bi-person-fill"></span> *@
+            <span class="material-symbols-outlined" height="32">person</span>
+            Users Cards 1
+        </a>
 
-        <hr class="dropdown-divider">
+        <hr/>
 
-        <a class="dropdown-item @(currentController == "Roles" ? "active" : "")"
-           asp-area="" asp-controller="Roles" asp-action="">
+        <a asp-action="Index" asp-area="" asp-controller="Roles"
+           class="nav-item @(currentAction == "Index" && currentController == "Roles" ? "active" : "")">
             @* <span class="bi bi-people-fill"></span> *@
             <span class="material-symbols-outlined" height="32">group</span>
             Roles
         </a>
+        <a asp-action="IndexCards" asp-area="" asp-controller="Roles"
+           class="nav-item @(currentAction == "IndexCards" && currentController == "Roles" ? "active" : "")">
+            @* <span class="bi bi-people-fill"></span> *@
+            <span class="material-symbols-outlined" height="32">group</span>
+            Roles Cards
+        </a>
+        <a asp-action="IndexCards1" asp-area="" asp-controller="Roles"
+           class="nav-item @(currentAction == "IndexCards1" && currentController == "Roles" ? "active" : "")">
+            @* <span class="bi bi-people-fill"></span> *@
+            <span class="material-symbols-outlined" height="32">group</span>
+            Roles Cards 1
+        </a>
 
-        <hr class="dropdown-divider">
+        <hr/>
 
         <a id="manage"
-           class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
+           class="nav-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
            asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
 
             <span class="material-symbols-outlined" height="32">settings_account_box</span>
@@ -64,14 +87,13 @@
             Hello @await UserHelper.GetUserInitialsAsync()
         </a>
 
-        <hr class="dropdown-divider">
+        <hr/>
 
-        <a class="dropdown-item @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
+        <a class="nav-item @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="Register">
             <span class="material-symbols-outlined" height="32">person</span>
             Register New User
         </a>
-
 
     </div>
 

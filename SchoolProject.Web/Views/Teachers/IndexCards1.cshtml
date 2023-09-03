@@ -8,20 +8,30 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
+
 }
 
-<h1>@pageTitle</h1>
+<h2>@pageTitle</h2>
 
-<p>
-    @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
-    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
-</p>
+<div class="container-fluid py-3">
+    <div class="row">
+        @* <div class="col-md-4"> *@
+        <div class="col">
+            @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
+            <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
+        </div>
+        @* <div class="col-md-8 justify-content-end"> *@
+        <div class="col justify-content-end">
+            <partial model="Model" name="Pagination/_PageNavigationTop"/>
+        </div>
+    </div>
+</div>
 
 
-<div class="album py-5 bg-body-tertiary">
+<div class="album bg-body-tertiary p-4">
     <div class="container-fluid">
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-5 g-3">
-            @foreach (var item in Model.Records)
+            @foreach (var item in Model.RecordsQuery)
             {
                 <div class="col">
                     @* <div class="card shadow-sm"> *@
@@ -38,12 +48,16 @@
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
+                                @* <small class="text-body-secondary px-2"> *@
+                                @*     @Html.DisplayNameFor(modelItem => item.Email)<br/> *@
+                                @*     @Html.DisplayFor(modelItem => item.Email) *@
+                                @* </small> *@
+                                @* <small class="text-body-secondary"> *@
+                                @*     @Html.DisplayNameFor(modelItem => item.Address)<br/> *@
+                                @*     @Html.DisplayFor(modelItem => item.Address) *@
+                                @* </small> *@
                                 <small class="text-body-secondary px-2">
-                                    @Html.DisplayNameFor(modelItem => item.Email)<br/>
-                                    @Html.DisplayFor(modelItem => item.Email)
-                                </small>
-                                <small class="text-body-secondary">
-                                    @Html.DisplayNameFor(modelItem => item.Address)<br/>
+                                    @Html.DisplayFor(modelItem => item.Email)<br/><br/>
                                     @Html.DisplayFor(modelItem => item.Address)
                                 </small>
                             </div>
@@ -56,9 +70,14 @@
 </div>
 
 
-<div class="pagination">
-    @for (var i = 1; i <= Model.TotalPages; i++)
-    {
-        <a href="@Url.Action("Index", new {pageNumber = i, pageSize = Model.PageSize})">@i</a>
-    }
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col" id="pagination-info">
+            @* <p> Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries </p> *@
+            Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries
+        </div>
+        <div class="col justify-content-end">
+            <partial model="Model" name="Pagination/_PageNavigationBottom"/>
+        </div>
+    </div>
 </div>

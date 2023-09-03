@@ -75,21 +75,34 @@ public class CitiesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = "FirstName")
     {
         var records = _cityRepository.GetAll()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
 
-        var model = new PaginationViewModel<City>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = _cityRepository.GetCount().Result,
-        };
+        // TODO: fix this
+        // var model = new PaginationViewModel<City>
+        // {
+        //     Records = records,
+        //     PageNumber = pageNumber,
+        //     PageSize = pageSize,
+        //     TotalCount = _cityRepository.GetCount().Result,
+        //     SortOrder = "asc",
+        //     // SortProperties = SortProperties(),
+        // };
+
+        var model = new PaginationViewModel<City>(
+            records,
+            pageNumber, pageSize,
+            _cityRepository.GetCount().Result,
+            sortOrder, sortProperty
+        );
 
         return View(model);
     }

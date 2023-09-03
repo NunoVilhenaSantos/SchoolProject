@@ -110,18 +110,29 @@ public class CoursesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        var records = CoursesList(pageNumber, pageSize);
+        // var records = CoursesList(pageNumber, pageSize);
 
-        var model = new PaginationViewModel<Course>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = _context.Courses.Count(),
-        };
+        // var model = new PaginationViewModel<Course>
+        // {
+        //     Records = records,
+        //     PageNumber = pageNumber,
+        //     PageSize = pageSize,
+        //     TotalCount = _context.Courses.Count(),
+        //     SortOrder = "asc",
+        // };
+
+        var model = new PaginationViewModel<Course>(
+            CoursesList().ToList(),
+            pageNumber, pageSize,
+            _context.Courses.Count(),
+            sortOrder, sortProperty
+        );
 
         return View(model);
     }

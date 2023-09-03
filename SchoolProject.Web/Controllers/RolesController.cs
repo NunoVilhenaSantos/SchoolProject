@@ -73,7 +73,7 @@ public class RolesController : Controller
     // }
 
 
-    private List<IdentityRole> GetRoles(int pageNumber, int pageSize) =>
+    private List<IdentityRole> GetRolesList(int pageNumber, int pageSize) =>
         _roleManager.Roles
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -85,17 +85,27 @@ public class RolesController : Controller
     ///     Action to show all the roles
     /// </summary>
     /// <returns>a list of roles</returns>
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        var records = GetRoles(pageNumber, pageSize);
+        // var records = GetRolesList(pageNumber, pageSize);
 
-        var model = new PaginationViewModel<IdentityRole>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = _roleManager.Roles.Count()
-        };
+        // TODO: Fix the sort order
+        // var model = new PaginationViewModel<IdentityRole>
+        // {
+        //     Records = records,
+        //     PageNumber = pageNumber,
+        //     PageSize = pageSize,
+        //     TotalCount = _roleManager.Roles.Count(),
+        //     SortOrder = "asc",
+        // };
+
+        var model = new PaginationViewModel<IdentityRole>(
+            GetRolesList().ToList(),
+            pageNumber, pageSize,
+            _roleManager.Roles.Count(),
+            sortOrder, sortProperty
+        );
 
         return View(model);
     }

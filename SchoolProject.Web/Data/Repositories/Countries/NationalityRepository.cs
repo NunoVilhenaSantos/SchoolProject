@@ -69,7 +69,7 @@ public class NationalityRepository
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             Country = country,
-            CountryId = country.Id
+            //CountryId = country.Id,
         };
 
         _dataContext.Countries.Update(country);
@@ -89,7 +89,7 @@ public class NationalityRepository
             WasDeleted = nationality.WasDeleted,
             CreatedBy = nationality.CreatedBy,
             Country = country,
-            CountryId = country.Id
+            //CountryId = country.Id,
         };
 
         _dataContext.Countries.Update(country);

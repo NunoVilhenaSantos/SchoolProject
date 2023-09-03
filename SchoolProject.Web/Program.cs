@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Google.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -90,8 +91,10 @@ static string GetServerHostNameFromConnectionString(string connectionString)
             return part.Substring(part.IndexOf('=') + 1);
     }
 
-    throw new ArgumentException(
-        "Connection String inválida. Nome do servidor não encontrado.");
+    return "SchoolProject-NunoVSantos.mssql.somee.com";
+
+    // throw new ArgumentException(
+    //     "Connection String inválida. Nome do servidor não encontrado.");
 }
 
 
@@ -734,7 +737,8 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddWebEncoders();
 builder.Services.AddAntiforgery();
 builder.Services.AddMemoryCache();
-
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 
 // Extrai o nome do servidor da Connection String
 var serverHostName =
@@ -820,6 +824,7 @@ app.UseStaticFiles();
 // Add the Microsoft Identity Web cookie policy
 app.UseCookiePolicy();
 app.UseRouting();
+app.UseSession();
 
 // Add the ASP.NET Core authentication service
 app.UseAuthentication();

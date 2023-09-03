@@ -39,10 +39,40 @@
             <hr class="dropdown-divider">
         </li>
         <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="Students"
+               class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "Students" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                Students Cards 1
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
             <a asp-action="Index" asp-area="" asp-controller="StudentCourses"
                class="dropdown-item  @(currentAction == "Index" && currentController == "SchoolClasses" ? "active" : "")">
                 <span class="fas fa-person-shelter"></span>
                 StudentCourses
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a asp-action="IndexCards" asp-area="" asp-controller="StudentCourses"
+               class="dropdown-item  @(currentAction == "IndexCards" && currentController == "SchoolClasses" ? "active" : "")">
+                <span class="fas fa-person-shelter"></span>
+                StudentCourses Cards
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="StudentCourses"
+               class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "SchoolClasses" ? "active" : "")">
+                <span class="fas fa-person-shelter"></span>
+                StudentCourses Cards 1
             </a>
         </li>
     </ul>

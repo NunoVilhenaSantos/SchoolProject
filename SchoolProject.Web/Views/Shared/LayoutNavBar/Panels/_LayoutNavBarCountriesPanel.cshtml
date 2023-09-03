@@ -31,6 +31,13 @@
                 Countries Cards
             </a>
         </li>
+        <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="Countries"
+               class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Countries" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                Countries Cards 1
+            </a>
+        </li>
 
         <li>
             <hr class="dropdown-divider">
@@ -48,6 +55,13 @@
                class="dropdown-item @(currentAction == "IndexCards" && currentController == "Nationalities" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
                 Nationalities Cards
+            </a>
+        </li>
+        <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="Nationalities"
+               class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Nationalities" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                Nationalities Cards 1
             </a>
         </li>
 
@@ -68,7 +82,13 @@
                 Cities Cards
             </a>
         </li>
-
+        <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="Cities"
+               class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Cities" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                Cities Cards 1
+            </a>
+        </li>
     </ul>
 
 </div>

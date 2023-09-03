@@ -13,7 +13,7 @@ using SchoolProject.Web.Data.DataContexts.MSSQL;
 namespace SchoolProject.Web.Migrations.DataContextMsSqlMigrations
 {
     [DbContext(typeof(DataContextMsSql))]
-    [Migration("20230831112336_InitDB")]
+    [Migration("20230903203922_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />

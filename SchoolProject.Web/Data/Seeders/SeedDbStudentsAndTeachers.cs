@@ -9,6 +9,9 @@ using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 
+/// <summary>
+/// Seed the database with students and teachers
+/// </summary>
 public class SeedDbStudentsAndTeachers
 {
     private static Random _random;
@@ -32,6 +35,11 @@ public class SeedDbStudentsAndTeachers
 
 
     // Add a constructor to receive IUserHelper through dependency injection
+    /// <summary>
+    /// Add a constructor to receive IUserHelper through dependency injection
+    /// </summary>
+    /// <param name="userHelper"></param>
+    /// <param name="dataContext"></param>
     public static void Initialize(
         IUserHelper userHelper, DataContextMySql dataContext
     )

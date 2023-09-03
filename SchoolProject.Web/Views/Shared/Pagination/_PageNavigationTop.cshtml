@@ -1,0 +1,45 @@
+﻿<div class="container justify-content-end dataTablesCards" id="pageSizeSelectCardsTable">
+    <div class="row justify-content-end">
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label" for="pageSizeSelect">Show entries</label>
+                <select asp-items="Model.PageSizeList" class="form-control" id="pageSizeSelect">
+                    @foreach (var property in Model.PageSizeList)
+                    {
+                        <option value="@property.Value" selected="@(int.Parse(property.Value) == Model.PageSize)">@property.Text</option>
+                    }
+                    @* <option value="10" selected="@(Model.PageSize == 10)">10</option> *@
+                    @* <option value="25" selected="@(Model.PageSize == 25)">25</option> *@
+                    @* <option value="50" selected="@(Model.PageSize == 50)">50</option> *@
+                    @* <option value="100" selected="@(Model.PageSize == 100)">100</option> *@
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label" for="sortOrder">Order:</label>
+                <select asp-items="Model.SortOrderList" class="form-control" id="sortOrder" name="sortOrder">
+                    @foreach (var property in Model.SortOrderList)
+                    {
+                        <option value="@property.Value" selected="@(property.Value == Model.SortOrder)">@property.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label" for="sortProperty">Order by:</label>
+                <select asp-items="Model.SortPropertiesList" class="form-control" id="sortProperty" name="sortProperty">
+                    @foreach (var property in Model.SortPropertiesList)
+                    {
+                        <option value="@property.Value" selected="@(property.Value == Model.SortProperty)">@property.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -4,69 +4,177 @@ using SchoolProject.Web.Models.Countries;
 
 namespace SchoolProject.Web.Data.Repositories.Countries;
 
+/// <summary>
+///   ICountryRepository interface.
+/// </summary>
 public interface ICountryRepository : IGenericRepository<Country>
 {
     // ---------------- Countries, Cities and Nationalities ----------------- //
 
 
     // --------------------- List Queryable or Enumerable ------------------- //
-    IQueryable<Country> GetCountriesWithCities();
+    /// <summary>
+    ///  Get countries with cities.
+    /// </summary>
+    /// <returns></returns>
+    IEnumerable<Country> GetCountriesWithCities();
 
+
+    /// <summary>
+    /// Get countries with cities.
+    /// </summary>
+    /// <returns></returns>
     IEnumerable<Country> GetCountriesWithCitiesEnumerable();
 
 
     // ------------------------- Combo boxes list  -------------------------- //
+    /// <summary>
+    /// Get combo countries.
+    /// </summary>
+    /// <returns></returns>
     IEnumerable<SelectListItem> GetComboCountries();
 
+    /// <summary>
+    /// Get combo countries and nationalities.
+    /// </summary>
+    /// <returns></returns>
     IEnumerable<SelectListItem> GetComboCountriesAndNationalities();
 
-    IEnumerable<SelectListItem> GetComboCities(int countryId);
+    /// <summary>
+    /// Get combo cities.
+    /// </summary>
+    /// <param name="countryId"></param>
+    /// <returns></returns>
+    IEnumerable<SelectListItem>? GetComboCities(int countryId);
 
+    /// <summary>
+    /// Get combo nationalities.
+    /// </summary>
+    /// <param name="countryId"></param>
+    /// <returns></returns>
     IEnumerable<SelectListItem> GetComboNationalities(int countryId);
 
 
     // ------------------------------ Countries ----------------------------- //
 
+    /// <summary>
+    /// Get country.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     Task<Country?> GetCountryAsync(int id);
 
+    /// <summary>
+    /// Get country.
+    /// </summary>
+    /// <param name="city"></param>
+    /// <returns></returns>
     Task<Country?> GetCountryAsync(City city);
 
 
-    Task<Country?> GetCountryWithCitiesAsync(int id);
+    /// <summary>
+    /// Get country with cities.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<Country> GetCountryWithCitiesAsync(int id);
 
-    Task<Country?> GetCountryWithCitiesAsync(Country country);
+    /// <summary>
+    /// Get country with cities.
+    /// </summary>
+    /// <param name="country"></param>
+    /// <returns></returns>
+    Task<Country> GetCountryWithCitiesAsync(Country country);
 
-    Task<Country?> GetCountryWithCitiesAsync(City city);
+    /// <summary>
+    /// Get country with cities.
+    /// </summary>
+    /// <param name="city"></param>
+    /// <returns></returns>
+    Task<Country> GetCountryWithCitiesAsync(City city);
 
 
     // -------------------------------- Cities ------------------------------ //
 
+    /// <summary>
+    /// Get city.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     Task<City?> GetCityAsync(int id);
 
+    /// <summary>
+    /// Get city.
+    /// </summary>
+    /// <param name="city"></param>
+    /// <returns></returns>
     Task<City?> GetCityAsync(City city);
 
 
     // ------------------- Cities Add, Update and Delete -------------------- //
 
+    /// <summary>
+    /// Add city.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     Task AddCityAsync(CityViewModel model);
 
+    /// <summary>
+    /// update city.
+    /// </summary>
+    /// <param name="city"></param>
+    /// <returns></returns>
     Task<int> UpdateCityAsync(City city);
 
+
+    /// <summary>
+    /// Delete city.
+    /// </summary>
+    /// <param name="city"></param>
+    /// <returns></returns>
     Task<int> DeleteCityAsync(City city);
 
 
     // ---------------------------- Nationalities --------------------------- //
 
+    /// <summary>
+    /// get nationality.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     Task<Nationality?> GetNationalityAsync(int id);
 
+    /// <summary>
+    /// get nationality.
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
     Task<Nationality?> GetNationalityAsync(Nationality nationality);
 
 
     // ----------------- Nationality Add, Update and Delete ----------------- //
 
+    /// <summary>
+    /// add nationality.
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     Task AddNationalityAsync(NationalityViewModel model);
 
+
+    /// <summary>
+    /// update nationality.
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
     Task<int> UpdateNationalityAsync(Nationality nationality);
 
+
+    /// <summary>
+    /// delete nationality.
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
     Task<int> DeleteNationalityAsync(Nationality nationality);
 }

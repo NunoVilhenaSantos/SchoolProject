@@ -44,12 +44,24 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     // tabelas auxiliares
     // ---------------------------------------------------------------------- //
 
+    /// <summary>
+    ///    Tabela auxiliar para armazenar os dados de cidades.
+    /// </summary>
     public DbSet<City> Cities { get; set; }
 
-    public DbSet<Country?> Countries { get; set; }
+    /// <summary>
+    ///   Tabela auxiliar para armazenar os dados de países.
+    /// </summary>
+    public DbSet<Country> Countries { get; set; }
 
+    /// <summary>
+    ///  Tabela auxiliar para armazenar os dados de nacionalidades.
+    /// </summary>
     public DbSet<Nationality> Nationalities { get; set; }
 
+    /// <summary>
+    ///  Tabela auxiliar para armazenar os dados de gêneros.
+    /// </summary>
     public DbSet<Gender> Genders { get; set; }
 
 
@@ -57,12 +69,24 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     // tabelas principais com relações de um para muitos e de muitos para um
     // ---------------------------------------------------------------------- //
 
+    /// <summary>
+    ///  Tabela principal para armazenar os dados de cursos.
+    /// </summary>
     public DbSet<Course> Courses { get; set; }
 
+    /// <summary>
+    /// Tabela principal para armazenar os dados de escolas "Turmas".
+    /// </summary>
     public DbSet<SchoolClass> SchoolClasses { get; set; }
 
+    /// <summary>
+    /// Tabela principal para armazenar os dados dos estudantes.
+    /// </summary>
     public DbSet<Student> Students { get; set; }
 
+    /// <summary>
+    /// Tabela principal para armazenar os dados dos professores.
+    /// </summary>
     public DbSet<Teacher> Teachers { get; set; }
 
 
@@ -70,12 +94,24 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     // muitos para muitos
     // ---------------------------------------------------------------------- //
 
+    /// <summary>
+    /// Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
     public DbSet<Enrollment> Enrollments { get; set; }
 
+    /// <summary>
+    /// Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
     public DbSet<SchoolClassCourse> SchoolClassCourses { get; set; }
 
+    /// <summary>
+    /// Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
     public DbSet<StudentCourse> StudentCourses { get; set; }
 
+    /// <summary>
+    /// Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
 
 
@@ -317,21 +353,40 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
 
-        // Other configurations...
 
+
+        // ... Other configurations ...
+        // ... Outras configurações ...
+
+
+        // Relação entre City e Country
         modelBuilder.Entity<City>()
             .HasOne(c => c.Country)
             .WithMany(country => country.Cities)
             .HasForeignKey(c => c.CountryId);
 
-        // Other configurations...
 
-        modelBuilder.Entity<Nationality>()
-            .HasOne(n => n.Country)
-            .WithOne(country => country.Nationality);
+        // Required one-to-one with primary key to primary key relationship
 
 
-        // ... outras configurações ...
+        // Relação entre Country e Nationality
+        modelBuilder.Entity<Country>()
+            .HasOne(c => c.Nationality)
+            .WithOne(n => n.Country)
+            .HasForeignKey<Nationality>(n => n.CountryId)
+            .IsRequired();
+
+
+        //// Relação entre Country e Nationality
+        //modelBuilder.Entity<Nationality>()
+        //    .HasOne(n => n.Country)
+        //    .WithOne(c => c.Nationality)
+        //    .HasForeignKey<Country>(c => c.NationalityId)
+        //    .IsRequired();
+
+
+        // ... Other configurations ...
+        // ... Outras configurações ...
 
 
         // ------------------------------------------------------------------ //

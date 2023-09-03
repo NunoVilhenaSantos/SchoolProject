@@ -94,7 +94,7 @@ public class SchoolClassesController : Controller
     // }
 
 
-    private List<SchoolClass> GetSchoolClassesList(
+    private List<SchoolClass> GetSchoolClasses(
         int pageNumber, int pageSize) =>
         GetSchoolClasses()
             .Skip((pageNumber - 1) * pageSize)
@@ -108,20 +108,32 @@ public class SchoolClassesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [AllowAnonymous]
     // GET: SchoolClasses
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        var records = GetSchoolClassesList(pageNumber, pageSize);
+        // var records = GetSchoolClasses(pageNumber, pageSize);
 
-        var model = new PaginationViewModel<SchoolClass>
-        {
-            Records = records,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            TotalCount = _context.Teachers.Count(),
-        };
+        // TODO: Fix the sort order
+        // var model = new PaginationViewModel<SchoolClass>
+        // {
+        //     Records = records,
+        //     PageNumber = pageNumber,
+        //     PageSize = pageSize,
+        //     TotalCount = _context.SchoolClasses.Count(),
+        //     SortOrder = "asc",
+        // };
+
+        var model = new PaginationViewModel<SchoolClass>(
+            GetSchoolClasses().ToList(),
+            pageNumber, pageSize,
+            _context.SchoolClasses.Count(),
+            sortOrder, sortProperty
+        );
 
         return View(model);
     }

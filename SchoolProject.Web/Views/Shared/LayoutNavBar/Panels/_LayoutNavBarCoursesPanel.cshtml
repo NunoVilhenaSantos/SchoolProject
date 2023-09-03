@@ -33,6 +33,16 @@
                 Courses Cards
             </a>
         </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a asp-action="IndexCards1" asp-area="" asp-controller="Courses"
+               class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Courses" ? "active" : "")">
+                <span class="fas fa-person-through-window"></span>
+                Courses Cards 1
+            </a>
+        </li>
     </ul>
 
 </div>
