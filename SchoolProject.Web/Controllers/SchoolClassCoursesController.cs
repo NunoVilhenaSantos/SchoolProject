@@ -8,16 +8,16 @@ using SchoolProject.Web.Models;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///         School class with courses
+///     School class with courses
 /// </summary>
 public class SchoolClassCoursesController : Controller
 {
-    private readonly ISchoolClassCourseRepository _schoolClassCourseRepository;
     private readonly DataContextMySql _context;
+    private readonly ISchoolClassCourseRepository _schoolClassCourseRepository;
 
 
     /// <summary>
-    ///    School class with courses
+    ///     School class with courses
     /// </summary>
     /// <param name="context"></param>
     /// <param name="schoolClassCourseRepository"></param>
@@ -33,7 +33,7 @@ public class SchoolClassCoursesController : Controller
 
     // GET: SchoolClassCourses
     /// <summary>
-    ///    Index, list of school class with courses
+    ///     Index, list of school class with courses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -59,7 +59,7 @@ public class SchoolClassCoursesController : Controller
 
     // GET: SchoolClassCourses
     /// <summary>
-    ///   Index with cards, list of school class with courses
+    ///     Index with cards, list of school class with courses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -95,16 +95,18 @@ public class SchoolClassCoursesController : Controller
 
 
     private List<SchoolClassCourse> GetSchoolClassesWithCoursesList(
-        int pageNumber = 1, int pageSize = 10) =>
-        GetSchoolClassesWithCourses()
+        int pageNumber = 1, int pageSize = 10)
+    {
+        return GetSchoolClassesWithCourses()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
     // GET: SchoolClassCourses
     /// <summary>
-    ///  Index with cards, list of school class with courses
+    ///     Index with cards, list of school class with courses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -140,7 +142,7 @@ public class SchoolClassCoursesController : Controller
 
     // GET: SchoolClassCourses/Details/5
     /// <summary>
-    ///   Details, school class with courses
+    ///     Details, school class with courses
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -163,7 +165,7 @@ public class SchoolClassCoursesController : Controller
 
     // GET: SchoolClassCourses/Create
     /// <summary>
-    ///  Create, school class with courses
+    ///     Create, school class with courses
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
@@ -193,7 +195,7 @@ public class SchoolClassCoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create, school class with courses
+    ///     Create, school class with courses
     /// </summary>
     /// <param name="schoolClassCourse"></param>
     /// <returns></returns>
@@ -233,7 +235,7 @@ public class SchoolClassCoursesController : Controller
 
     // GET: SchoolClassCourses/Edit/5
     /// <summary>
-    /// Edit, school class with courses
+    ///     Edit, school class with courses
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -274,7 +276,7 @@ public class SchoolClassCoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit, school class with courses
+    ///     Edit, school class with courses
     /// </summary>
     /// <param name="id"></param>
     /// <param name="schoolClassCourse"></param>
@@ -329,7 +331,7 @@ public class SchoolClassCoursesController : Controller
 
     // GET: SchoolClassCourses/Delete/5
     /// <summary>
-    /// Delete, school class with courses
+    ///     Delete, school class with courses
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -352,7 +354,7 @@ public class SchoolClassCoursesController : Controller
 
     // POST: SchoolClassCourses/Delete/5
     /// <summary>
-    /// Delete, school class with courses
+    ///     Delete, school class with courses
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -371,7 +373,9 @@ public class SchoolClassCoursesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool SchoolClassCourseExists(int id) =>
-        _context.SchoolClassCourses
+    private bool SchoolClassCourseExists(int id)
+    {
+        return _context.SchoolClassCourses
             .Any(e => e.SchoolClassId == id);
+    }
 }

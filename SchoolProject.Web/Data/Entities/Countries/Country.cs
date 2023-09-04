@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Countries;
 
@@ -38,8 +39,36 @@ public class Country : IEntity, INotifyPropertyChanged
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/countries/" +
-          ProfilePhotoId;
+        // : StorageHelper.GcpStoragePublicUrl + "countries/" + ProfilePhotoId;
+        : StorageHelper.AzureStoragePublicUrl + "countries/" + ProfilePhotoId;
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    // Navigation property with lazy-loading enabled
+    public virtual ICollection<City>? Cities { get; set; }
+
+
+    [DisplayName("Number of Cities")]
+    public int NumberCities => Cities?.Count ?? 0;
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    // Principal (parent)
+
+    //[Required]
+    //[ForeignKey(nameof(Nationality))]
+    //public int NationalityId { get; set; }
+
+    [Required] public virtual required Nationality Nationality { get; set; }
+
+
+    public Guid NationalityGuidId => Nationality.IdGuid;
 
 
     // --------------------------------------------------------------------- //
@@ -78,37 +107,6 @@ public class Country : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
-
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    // Navigation property with lazy-loading enabled
-    public virtual ICollection<City>? Cities { get; set; }
-
-
-    [DisplayName("Number of Cities")]
-    public int NumberCities => Cities?.Count ?? 0;
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    // Principal (parent)
-
-    //[Required]
-    //[ForeignKey(nameof(Nationality))]
-    //public int NationalityId { get; set; }
-
-    [Required]
-    public virtual required Nationality Nationality { get; set; }
-
-
-    public Guid NationalityGuidId => Nationality.IdGuid;
-
 
 
     // --------------------------------------------------------------------- //

@@ -3,9 +3,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Identity;
+using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Users;
 
+/// <summary>
+/// user class, inherited from IdentityUser.
+/// </summary>
 public class User : IdentityUser, INotifyPropertyChanged
 {
     /// <summary>
@@ -79,10 +83,8 @@ public class User : IdentityUser, INotifyPropertyChanged
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/users/" +
-          ProfilePhotoId;
-    //    "https://storage.googleapis.com/storage-nuno/products/"+
-    //    "130cd374-c068-47ca-b542-3af5ddb9f478";
+        // : StorageHelper.GcpStoragePublicUrl + "users/" + ProfilePhotoId;
+        : StorageHelper.AzureStoragePublicUrl + "users/" + ProfilePhotoId;
 
 
     // [Display(Name = "Thumbnail")]
@@ -96,8 +98,10 @@ public class User : IdentityUser, INotifyPropertyChanged
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
+
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
 

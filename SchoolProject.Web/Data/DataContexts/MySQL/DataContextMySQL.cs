@@ -370,11 +370,9 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
 
-
         // ------------------------------------------------------------------ //
         // ------------------------------------------------------------------ //
         // ------------------------------------------------------------------ //
-
 
 
         // ... Other configurations ...
@@ -394,8 +392,8 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         modelBuilder.Entity<Country>()
             .HasOne(c => c.Nationality)
             .WithOne(n => n.Country)
-            .HasForeignKey<Nationality>(n =>n.CountryId)
-            .IsRequired(); 
+            .HasForeignKey<Nationality>(n => n.CountryId)
+            .IsRequired();
 
 
         //// Relação entre Country e Nationality

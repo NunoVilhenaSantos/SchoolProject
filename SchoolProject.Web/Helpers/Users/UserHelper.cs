@@ -6,7 +6,7 @@ using SchoolProject.Web.Models.Account;
 namespace SchoolProject.Web.Helpers.Users;
 
 /// <summary>
-/// The user helper.
+///     The user helper.
 /// </summary>
 public class UserHelper : IUserHelper
 {
@@ -16,7 +16,7 @@ public class UserHelper : IUserHelper
 
 
     /// <summary>
-    ///  The user helper constructor.
+    ///     The user helper constructor.
     /// </summary>
     /// <param name="userManager"></param>
     /// <param name="signInManager"></param>

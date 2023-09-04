@@ -68,7 +68,7 @@ public class NationalityRepository
             Name = model.Name,
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
-            Country = country,
+            Country = country
             //CountryId = country.Id,
         };
 
@@ -88,7 +88,7 @@ public class NationalityRepository
             Name = nationality.Name,
             WasDeleted = nationality.WasDeleted,
             CreatedBy = nationality.CreatedBy,
-            Country = country,
+            Country = country
             //CountryId = country.Id,
         };
 

@@ -6,9 +6,9 @@ using SchoolProject.Web.Models;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-/// RolesController class, inherits from Controller.
-/// Authorisation is required to access this controller.
-/// Roles that can access this controller are Admin and SuperUser.
+///     RolesController class, inherits from Controller.
+///     Authorisation is required to access this controller.
+///     Roles that can access this controller are Admin and SuperUser.
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser")]
 public class RolesController : Controller
@@ -48,7 +48,10 @@ public class RolesController : Controller
     }
 
 
-    private IEnumerable<IdentityRole> GetRolesList() => _roleManager.Roles;
+    private IEnumerable<IdentityRole> GetRolesList()
+    {
+        return _roleManager.Roles;
+    }
 
 
     // GET: Roles
@@ -73,11 +76,13 @@ public class RolesController : Controller
     // }
 
 
-    private List<IdentityRole> GetRolesList(int pageNumber, int pageSize) =>
-        _roleManager.Roles
+    private List<IdentityRole> GetRolesList(int pageNumber, int pageSize)
+    {
+        return _roleManager.Roles
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
     // GET: Roles

@@ -4,7 +4,6 @@ using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Repositories.OtherEntities;
 using SchoolProject.Web.Models;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
@@ -12,15 +11,13 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class GendersController : Controller
 {
-    private readonly IGenderRepository _genderRepository;
-    private readonly DataContextMySql _context;
-
-
     private const string BucketName = "genders";
+    private readonly DataContextMySql _context;
+    private readonly IGenderRepository _genderRepository;
 
 
     /// <summary>
-    ///  GendersController constructor.
+    ///     GendersController constructor.
     /// </summary>
     /// <param name="context"></param>
     /// <param name="genderRepository"></param>
@@ -44,7 +41,7 @@ public class GendersController : Controller
 
     // GET: Genders
     /// <summary>
-    ///  Index action
+    ///     Index action
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -57,7 +54,7 @@ public class GendersController : Controller
 
     // GET: Genders
     /// <summary>
-    /// Index action cards
+    ///     Index action cards
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -104,7 +101,7 @@ public class GendersController : Controller
 
     // GET: Genders
     /// <summary>
-    ///  IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -139,7 +136,7 @@ public class GendersController : Controller
 
     // GET: Genders/Details/5
     /// <summary>
-    /// Details action, to open the view for details.
+    ///     Details action, to open the view for details.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -157,10 +154,13 @@ public class GendersController : Controller
 
     // GET: Genders/Create
     /// <summary>
-    ///    Create action, to open the view for creating.
+    ///     Create action, to open the view for creating.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Genders/Create
@@ -169,7 +169,7 @@ public class GendersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///    Create action validation and confirmation.
+    ///     Create action validation and confirmation.
     /// </summary>
     /// <param name="gender"></param>
     /// <returns></returns>
@@ -209,7 +209,7 @@ public class GendersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit action validation and confirmation.
+    ///     Edit action validation and confirmation.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="gender"></param>
@@ -239,7 +239,7 @@ public class GendersController : Controller
 
     // GET: Genders/Delete/5
     /// <summary>
-    /// Delete action, to open the view for confirmation.
+    ///     Delete action, to open the view for confirmation.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -257,7 +257,7 @@ public class GendersController : Controller
 
     // POST: Genders/Delete/5
     /// <summary>
-    /// Delete action confirmed.
+    ///     Delete action confirmed.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -275,6 +275,8 @@ public class GendersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool GenderExists(int id) =>
-        _context.Genders.Any(e => e.Id == id);
+    private bool GenderExists(int id)
+    {
+        return _context.Genders.Any(e => e.Id == id);
+    }
 }

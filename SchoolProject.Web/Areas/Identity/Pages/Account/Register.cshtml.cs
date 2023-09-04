@@ -18,7 +18,7 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
 public class RegisterModel : PageModel
 {
-    private readonly IE_MailHelper _emailSender;
+    private readonly IEMailHelper _emailSender;
 
     private readonly IUserEmailStore<User> _emailStore;
     private readonly ILogger<RegisterModel> _logger;
@@ -33,7 +33,7 @@ public class RegisterModel : PageModel
         ILogger<RegisterModel> logger,
         UserManager<User> userManager,
         IUserStore<User> userStore,
-        IE_MailHelper emailSender
+        IEMailHelper emailSender
     )
     {
         _signInManager = signInManager;

@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Azure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
@@ -21,22 +21,22 @@ using SchoolProject.Web.Models.Users;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-/// Account Controller for adding, editing, deleting, change password
+///     Account Controller for adding, editing, deleting, change password
 /// </summary>
 public class AccountController : Controller
 {
     private const string BucketName = "users";
+    private readonly IConfiguration _configuration;
 
     private readonly ICountryRepository _countryRepository;
-    private readonly IConfiguration _configuration;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IE_MailHelper _emailHelper;
+    private readonly IEMailHelper _emailHelper;
     private readonly IImageHelper _imageHelper;
+    private readonly IStorageHelper _storageHelper;
     private readonly IUserHelper _userHelper;
 
 
     /// <summary>
-    /// Constructor for the Account controller
+    ///     Constructor for the Account controller
     /// </summary>
     /// <param name="countryRepository"></param>
     /// <param name="configuration"></param>
@@ -48,7 +48,7 @@ public class AccountController : Controller
         ICountryRepository countryRepository,
         IConfiguration configuration,
         IStorageHelper storageHelper,
-        IE_MailHelper emailHelper,
+        IEMailHelper emailHelper,
         IImageHelper imageHelper,
         IUserHelper userHelper
     )
@@ -63,7 +63,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui o utilizador é reencaminhado para a view de Login caso não esteja autenticado
+    ///     Aqui o utilizador é reencaminhado para a view de Login caso não esteja autenticado
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -77,7 +77,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui é que se valida as informações do utilizador
+    ///     Aqui é que se valida as informações do utilizador
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -115,8 +115,8 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui o utilizador faz o logout da sua conta
-    /// Aqui o utilizador é reencaminhado para a view Index do controlador Home
+    ///     Aqui o utilizador faz o logout da sua conta
+    ///     Aqui o utilizador é reencaminhado para a view Index do controlador Home
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -129,7 +129,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui o utilizador é reencaminhado para a view Register para criar uma nova conta
+    ///     Aqui o utilizador é reencaminhado para a view Register para criar uma nova conta
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -189,10 +189,14 @@ public class AccountController : Controller
                         Address = model.Address,
                         PhoneNumber = model.PhoneNumber,
                         WasDeleted = false,
+                        // ProfilePhotoId = model.ImageFile is null
+                        //     ? default
+                        //     : _storageHelper.UploadFileAsyncToGcp(
+                        //         model.ImageFile, BucketName).Result,
                         ProfilePhotoId = model.ImageFile is null
                             ? default
-                            : _storageHelper.UploadFileAsyncToGcp(
-                                model.ImageFile, BucketName).Result
+                            : _storageHelper.UploadStorageAsync(
+                                model.ImageFile, BucketName).Result,
                         // City = city,
                         // CityId = city.Id,
                         // Country = country,
@@ -251,6 +255,7 @@ public class AccountController : Controller
                         $"{model.Password}</p>");
 
 
+                    // Todo: 
                     if (response.IsSuccess)
                     {
                         ViewBag.Message = "The instructions to verify the " +
@@ -281,7 +286,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui o utilizador faz as alterações aos seus dados da sua conta
+    ///     Aqui o utilizador faz as alterações aos seus dados da sua conta
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -319,7 +324,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui é que se alteram as informações do utilizador
+    ///     Aqui é que se alteram as informações do utilizador
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -350,9 +355,9 @@ public class AccountController : Controller
                 await _storageHelper.UploadFileAsyncToGcp(
                     model.ImageFile, BucketName);
 
-            // var profilePhotoIdAzure =
-            //     await _storageHelper.UploadStorageAsync(
-            //         model.ImageFile, BucketName);
+            var profilePhotoIdAzure =
+                await _storageHelper.UploadStorageAsync(
+                    model.ImageFile, BucketName);
 
             // await _storageHelper.DeleteFileAsyncFromGcp(
             //     user.ProfilePhotoId.ToString(),
@@ -360,6 +365,9 @@ public class AccountController : Controller
 
             model.ProfilePhotoId = profilePhotoId;
             user.ProfilePhotoId = profilePhotoId;
+
+            model.ProfilePhotoId = profilePhotoIdAzure;
+            user.ProfilePhotoId = profilePhotoIdAzure;
         }
 
         user.FirstName = model.FirstName;
@@ -395,7 +403,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui o utilizador faz as alterações da sua password
+    ///     Aqui o utilizador faz as alterações da sua password
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -407,7 +415,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui é que se altera a password do utilizador
+    ///     Aqui é que se altera a password do utilizador
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -446,7 +454,7 @@ public class AccountController : Controller
     // https://localhost:5001/Account/CreateToken
     // [Route("Account/CreateToken")]
     /// <summary>
-    /// Aqui é que se cria o token para o utilizador validar a sua conta
+    ///     Aqui é que se cria o token para o utilizador validar a sua conta
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -494,7 +502,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui é que se confirma o email do utilizador
+    ///     Aqui é que se confirma o email do utilizador
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="token"></param>
@@ -530,12 +538,15 @@ public class AccountController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult NotAuthorized() => View();
+    public IActionResult NotAuthorized()
+    {
+        return View();
+    }
 
 
     // https://localhost:5001/Account/AccessDenied
     /// <summary>
-    ///    Aqui é que se mostra a view de AccessDenied
+    ///     Aqui é que se mostra a view de AccessDenied
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -551,22 +562,31 @@ public class AccountController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Error() => View();
+    public IActionResult Error()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    ///    Aqui é que se mostra a vista para fazer a recuperação da password
+    ///     Aqui é que se mostra a vista para fazer a recuperação da password
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
-    public IActionResult ResetPassword(string token) => View();
+    public IActionResult ResetPassword(string token)
+    {
+        return View();
+    }
 
 
     /// <summary>
-    ///   Aqui é que se mostra a vista para fazer a recuperação da password
+    ///     Aqui é que se mostra a vista para fazer a recuperação da password
     /// </summary>
     /// <returns></returns>
-    public IActionResult RecoverPassword() => View();
+    public IActionResult RecoverPassword()
+    {
+        return View();
+    }
 
 
     // ---------------------------------------------------------------------- //
@@ -574,7 +594,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///    Aqui o utilizador obtém a lista de cidades de um determinado pais
+    ///     Aqui o utilizador obtém a lista de cidades de um determinado pais
     /// </summary>
     /// <param name="countryId"></param>
     /// <returns></returns>
@@ -620,7 +640,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///    Aqui o utilizador obtém a lista de países que existem no sistema
+    ///     Aqui o utilizador obtém a lista de países que existem no sistema
     /// </summary>
     /// <returns></returns>
     [HttpPost]
@@ -641,7 +661,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///    Aqui o utilizador obtém a nacionalidade desse país
+    ///     Aqui o utilizador obtém a nacionalidade desse país
     /// </summary>
     /// <param name="countryId"></param>
     /// <returns></returns>
@@ -661,8 +681,8 @@ public class AccountController : Controller
 
 
     /// <summary>
-    /// Aqui o utilizador obtém a lista de países e a respetiva nacionalidade
-    /// via JSON para o preenchimento do dropdown-list
+    ///     Aqui o utilizador obtém a lista de países e a respetiva nacionalidade
+    ///     via JSON para o preenchimento do dropdown-list
     /// </summary>
     /// <returns></returns>
     [HttpPost]

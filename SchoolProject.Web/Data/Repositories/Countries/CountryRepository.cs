@@ -14,12 +14,12 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
 {
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
-
-    private readonly DataContextSqLite _dataContextSqLite;
+    private readonly DataContextMySql _dataContext;
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
 
-    private readonly DataContextMySql _dataContext;
+
+    private readonly DataContextSqLite _dataContextSqLite;
 
     private readonly IStorageHelper _storageHelper;
     private readonly IUserHelper _userHelper;
@@ -371,7 +371,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             // UpdatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
-            Country = country,
+            Country = country
             //CountryId = country.Id,
         };
 

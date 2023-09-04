@@ -121,7 +121,8 @@ public class SeedDb
 
         Console.WriteLine("Seeding the database.", Color.Green);
         Console.WriteLine(
-            _dataContextInUse.Database.GetConnectionString() ?? string.Empty, Color.Green);
+            _dataContextInUse.Database.GetConnectionString() ?? string.Empty,
+            Color.Green);
         Console.WriteLine(
             _dataContextInUse.Database.GetDbConnection().DataSource,
             Color.Green);
@@ -561,7 +562,7 @@ public class SeedDb
                 Name = nationalityName,
                 IdGuid = Guid.NewGuid(),
                 CreatedBy = createdBy,
-                Country = country,
+                Country = country
                 //CountryId = country.Id
             };
 
@@ -587,7 +588,7 @@ public class SeedDb
                 ProfilePhotoId = default,
                 CountryId = country?.Id ?? 0,
                 Country = country ?? _dataContextSqLite.Countries
-                    .FirstOrDefault(c => c.Name == "Portugal"),
+                    .FirstOrDefault(c => c.Name == "Portugal")
             }
         ).ToList();
     }

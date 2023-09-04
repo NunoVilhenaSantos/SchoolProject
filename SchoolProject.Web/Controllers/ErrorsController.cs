@@ -5,7 +5,7 @@ using SchoolProject.Web.Models.Errors;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///   ErrorsController class.
+///     ErrorsController class.
 /// </summary>
 public class ErrorsController : Controller
 {
@@ -13,7 +13,7 @@ public class ErrorsController : Controller
 
 
     /// <summary>
-    ///   ErrorsController constructor.
+    ///     ErrorsController constructor.
     /// </summary>
     /// <param name="logger"></param>
     public ErrorsController(ILogger<ErrorsController> logger)
@@ -23,7 +23,7 @@ public class ErrorsController : Controller
 
 
     /// <summary>
-    ///  Error action.
+    ///     Error action.
     /// </summary>
     /// <returns></returns>
     [ResponseCache(
@@ -38,7 +38,7 @@ public class ErrorsController : Controller
 
 
     /// <summary>
-    ///  Error403 action.
+    ///     Error403 action.
     /// </summary>
     /// <returns></returns>
     [Route("error/403")]
@@ -49,7 +49,7 @@ public class ErrorsController : Controller
 
 
     /// <summary>
-    /// Error404 action.
+    ///     Error404 action.
     /// </summary>
     /// <returns></returns>
     [Route("error/404")]
@@ -60,7 +60,7 @@ public class ErrorsController : Controller
 
 
     /// <summary>
-    /// handling error codes.
+    ///     handling error codes.
     /// </summary>
     /// <param name="statusCode"></param>
     /// <returns></returns>

@@ -4,7 +4,6 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using Google.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -348,10 +347,10 @@ builder.Services
 
             // Password settings.
             cfg.Password.RequireDigit = true;
-            cfg.Password.RequiredLength = 8;
+            cfg.Password.RequiredLength = 6;
             cfg.Password.RequiredUniqueChars = 0;
-            cfg.Password.RequireUppercase = true;
-            cfg.Password.RequireLowercase = true;
+            cfg.Password.RequireUppercase = false;
+            cfg.Password.RequireLowercase = false;
             cfg.Password.RequireNonAlphanumeric = false;
 
             // SignIn settings.
@@ -652,7 +651,7 @@ builder.Services
 builder.Services
     .AddScoped<IUserHelper,
         UserHelper>();
-builder.Services.AddScoped<IE_MailHelper, E_MailHelper>();
+builder.Services.AddScoped<IEMailHelper, EMailHelper>();
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
 builder.Services.AddScoped<IStorageHelper, StorageHelper>();
 builder.Services.AddScoped<IStorageHelper0, StorageHelper0>();
@@ -736,8 +735,19 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 
 builder.Services.AddWebEncoders();
 builder.Services.AddAntiforgery();
-builder.Services.AddMemoryCache();
-builder.Services.AddSession();
+
+// In ConfigureServices method
+builder.Services
+    .AddDistributedMemoryCache(); // This is for in-memory storage of session data
+
+// builder.Services.AddMemoryCache();
+builder.Services.AddSession(options =>
+{
+    // Set the session timeout (adjust as needed)
+    options.IdleTimeout =
+        TimeSpan.FromMinutes(30); // This example sets a 30-minute timeout
+});
+
 builder.Services.AddHttpContextAccessor();
 
 // Extrai o nome do servidor da Connection String

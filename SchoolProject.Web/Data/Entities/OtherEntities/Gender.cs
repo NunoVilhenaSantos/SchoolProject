@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.OtherEntities;
 
@@ -39,10 +40,16 @@ public class Gender : IEntity, INotifyPropertyChanged
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/genders/" +
-          ProfilePhotoId;
+        // : StorageHelper.GcpStoragePublicUrl + "genders/" + ProfilePhotoId;
+        : StorageHelper.AzureStoragePublicUrl + "genders/" + ProfilePhotoId;
+
+
+
+
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
+
+
 
 
     [Key]

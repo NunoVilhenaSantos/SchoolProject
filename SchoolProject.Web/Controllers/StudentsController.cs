@@ -4,7 +4,6 @@ using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Repositories.Students;
 using SchoolProject.Web.Models;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
@@ -12,14 +11,13 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class StudentsController : Controller
 {
-    private readonly IStudentRepository _studentRepository;
-    private readonly DataContextMySql _context;
-
     private const string BucketName = "students";
+    private readonly DataContextMySql _context;
+    private readonly IStudentRepository _studentRepository;
 
 
     /// <summary>
-    /// students controller constructor
+    ///     students controller constructor
     /// </summary>
     /// <param name="context"></param>
     /// <param name="studentRepository"></param>
@@ -34,7 +32,7 @@ public class StudentsController : Controller
 
     // GET: Students
     /// <summary>
-    ///    students index
+    ///     students index
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -46,13 +44,15 @@ public class StudentsController : Controller
     }
 
 
-    private IEnumerable<Student> GetStudentsList() =>
-        _context.Students.ToListAsync().Result;
+    private IEnumerable<Student> GetStudentsList()
+    {
+        return _context.Students.ToListAsync().Result;
+    }
 
 
     // GET: Students
     /// <summary>
-    ///   students index
+    ///     students index
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -89,16 +89,18 @@ public class StudentsController : Controller
 
 
     private List<Student> GetStudentsListForCards(
-        int pageNumber, int pageSize) =>
-        GetStudentsList()
+        int pageNumber, int pageSize)
+    {
+        return GetStudentsList()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
     // GET: Students
     /// <summary>
-    /// Index1 method, for the main view, for testing purposes.
+    ///     Index1 method, for the main view, for testing purposes.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -134,7 +136,7 @@ public class StudentsController : Controller
 
     // GET: Students/Details/5
     /// <summary>
-    /// students details
+    ///     students details
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -153,10 +155,13 @@ public class StudentsController : Controller
 
     // GET: Students/Create
     /// <summary>
-    /// students create
+    ///     students create
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Students/Create
@@ -165,7 +170,7 @@ public class StudentsController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// students create
+    ///     students create
     /// </summary>
     /// <param name="student"></param>
     /// <returns></returns>
@@ -185,7 +190,7 @@ public class StudentsController : Controller
 
     // GET: Students/Edit/5
     /// <summary>
-    /// students edit
+    ///     students edit
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -202,7 +207,7 @@ public class StudentsController : Controller
     // To protect from over-posting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// students edit
+    ///     students edit
     /// </summary>
     /// <param name="id"></param>
     /// <param name="student"></param>
@@ -233,7 +238,7 @@ public class StudentsController : Controller
 
     // GET: Students/Delete/5
     /// <summary>
-    /// students delete
+    ///     students delete
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -252,7 +257,7 @@ public class StudentsController : Controller
 
     // POST: Students/Delete/5
     /// <summary>
-    /// students delete
+    ///     students delete
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -271,6 +276,8 @@ public class StudentsController : Controller
     }
 
 
-    private bool StudentExists(int id) =>
-        _context.Students.Any(e => e.Id == id);
+    private bool StudentExists(int id)
+    {
+        return _context.Students.Any(e => e.Id == id);
+    }
 }

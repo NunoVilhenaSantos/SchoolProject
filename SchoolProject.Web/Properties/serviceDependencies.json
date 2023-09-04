@@ -20,6 +20,11 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:SP-SmarterASP-MSSQL"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "Storage:Azure",
+      "dynamicId": null
     }
   }
 }

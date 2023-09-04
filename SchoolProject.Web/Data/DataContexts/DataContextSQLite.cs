@@ -287,10 +287,6 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
             .HasForeignKey(c => c.CountryId);
 
 
-
-
-
-
         // ------------------------------------------------------------------ //
         // ------------------------------------------------------------------ //
 

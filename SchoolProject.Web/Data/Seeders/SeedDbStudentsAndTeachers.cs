@@ -10,7 +10,7 @@ using SchoolProject.Web.Helpers.Users;
 namespace SchoolProject.Web.Data.Seeders;
 
 /// <summary>
-/// Seed the database with students and teachers
+///     Seed the database with students and teachers
 /// </summary>
 public class SeedDbStudentsAndTeachers
 {
@@ -36,7 +36,7 @@ public class SeedDbStudentsAndTeachers
 
     // Add a constructor to receive IUserHelper through dependency injection
     /// <summary>
-    /// Add a constructor to receive IUserHelper through dependency injection
+    ///     Add a constructor to receive IUserHelper through dependency injection
     /// </summary>
     /// <param name="userHelper"></param>
     /// <param name="dataContext"></param>

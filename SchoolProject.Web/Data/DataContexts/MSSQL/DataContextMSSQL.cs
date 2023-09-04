@@ -45,22 +45,22 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///    Tabela auxiliar para armazenar os dados de cidades.
+    ///     Tabela auxiliar para armazenar os dados de cidades.
     /// </summary>
     public DbSet<City> Cities { get; set; }
 
     /// <summary>
-    ///   Tabela auxiliar para armazenar os dados de países.
+    ///     Tabela auxiliar para armazenar os dados de países.
     /// </summary>
     public DbSet<Country> Countries { get; set; }
 
     /// <summary>
-    ///  Tabela auxiliar para armazenar os dados de nacionalidades.
+    ///     Tabela auxiliar para armazenar os dados de nacionalidades.
     /// </summary>
     public DbSet<Nationality> Nationalities { get; set; }
 
     /// <summary>
-    ///  Tabela auxiliar para armazenar os dados de gêneros.
+    ///     Tabela auxiliar para armazenar os dados de gêneros.
     /// </summary>
     public DbSet<Gender> Genders { get; set; }
 
@@ -70,22 +70,22 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///  Tabela principal para armazenar os dados de cursos.
+    ///     Tabela principal para armazenar os dados de cursos.
     /// </summary>
     public DbSet<Course> Courses { get; set; }
 
     /// <summary>
-    /// Tabela principal para armazenar os dados de escolas "Turmas".
+    ///     Tabela principal para armazenar os dados de escolas "Turmas".
     /// </summary>
     public DbSet<SchoolClass> SchoolClasses { get; set; }
 
     /// <summary>
-    /// Tabela principal para armazenar os dados dos estudantes.
+    ///     Tabela principal para armazenar os dados dos estudantes.
     /// </summary>
     public DbSet<Student> Students { get; set; }
 
     /// <summary>
-    /// Tabela principal para armazenar os dados dos professores.
+    ///     Tabela principal para armazenar os dados dos professores.
     /// </summary>
     public DbSet<Teacher> Teachers { get; set; }
 
@@ -95,22 +95,22 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    /// Tabela auxiliar para armazenar os dados de matrículas.
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
     public DbSet<Enrollment> Enrollments { get; set; }
 
     /// <summary>
-    /// Tabela auxiliar para armazenar os dados de matrículas.
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
     public DbSet<SchoolClassCourse> SchoolClassCourses { get; set; }
 
     /// <summary>
-    /// Tabela auxiliar para armazenar os dados de matrículas.
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
     public DbSet<StudentCourse> StudentCourses { get; set; }
 
     /// <summary>
-    /// Tabela auxiliar para armazenar os dados de matrículas.
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
 
@@ -351,8 +351,6 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-
-
 
 
         // ... Other configurations ...

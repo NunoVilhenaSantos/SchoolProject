@@ -5,21 +5,20 @@ using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Countries;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-/// countries controller, only the admins, superusers and the functionaries
+///     countries controller, only the admins, superusers and the functionaries
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CountriesController : Controller
 {
-    private readonly ICountryRepository _countryRepository;
     private const string BucketName = "countries";
+    private readonly ICountryRepository _countryRepository;
 
 
     /// <summary>
-    /// constructor
+    ///     constructor
     /// </summary>
     /// <param name="countryRepository"></param>
     public CountriesController(ICountryRepository countryRepository)
@@ -33,13 +32,15 @@ public class CountriesController : Controller
     // ------------------------------ --------- ----------------------------- //
 
 
-    private IEnumerable<Country> CountriesWithCities() =>
-        _countryRepository.GetCountriesWithCities();
+    private IEnumerable<Country> CountriesWithCities()
+    {
+        return _countryRepository.GetCountriesWithCities();
+    }
 
 
     // GET: Countries
     /// <summary>
-    /// index action
+    ///     index action
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -53,7 +54,7 @@ public class CountriesController : Controller
 
     // GET: Countries
     /// <summary>
-    /// index action with cards
+    ///     index action with cards
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -67,7 +68,7 @@ public class CountriesController : Controller
 
     // GET: Countries
     /// <summary>
-    /// IndexCards1 method for the cards view with pagination mode.
+    ///     IndexCards1 method for the cards view with pagination mode.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -108,7 +109,7 @@ public class CountriesController : Controller
 
     // GET: Countries/Details/5
     /// <summary>
-    /// details action
+    ///     details action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -128,11 +129,14 @@ public class CountriesController : Controller
 
     // GET: Countries/Create
     /// <summary>
-    /// create action
+    ///     create action
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Countries/Create
@@ -142,7 +146,7 @@ public class CountriesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// create action
+    ///     create action
     /// </summary>
     /// <param name="country"></param>
     /// <returns></returns>
@@ -160,7 +164,7 @@ public class CountriesController : Controller
 
     // GET: Countries/Edit/5
     /// <summary>
-    /// edit action
+    ///     edit action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -179,7 +183,7 @@ public class CountriesController : Controller
 
     // POST: Countries/Edit/5
     /// <summary>
-    /// edit action
+    ///     edit action
     /// </summary>
     /// <param name="country"></param>
     /// <returns></returns>
@@ -202,7 +206,7 @@ public class CountriesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// edit action
+    ///     edit action
     /// </summary>
     /// <param name="id"></param>
     /// <param name="country"></param>
@@ -234,7 +238,7 @@ public class CountriesController : Controller
 
     // GET: Countries/Delete/5
     /// <summary>
-    /// delete action
+    ///     delete action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -260,7 +264,7 @@ public class CountriesController : Controller
 
     // GET: Countries/AddCity/5
     /// <summary>
-    /// add city action
+    ///     add city action
     /// </summary>
     /// <param name="id"></param>
     /// <param name="countryId"></param>
@@ -314,7 +318,7 @@ public class CountriesController : Controller
 
     // POST: Countries/AddCity
     /// <summary>
-    /// add city action
+    ///     add city action
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -332,7 +336,7 @@ public class CountriesController : Controller
 
     // GET: Countries/DeleteCity/5
     /// <summary>
-    /// delete city action
+    ///     delete city action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -353,7 +357,7 @@ public class CountriesController : Controller
 
     // GET: Countries/EditCity/5
     /// <summary>
-    /// edit city action
+    ///     edit city action
     /// </summary>
     /// <param name="id"></param>
     /// <param name="countryId"></param>
@@ -378,7 +382,7 @@ public class CountriesController : Controller
 
     // POST: Countries/EditCity/5
     /// <summary>
-    /// edit city action
+    ///     edit city action
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>

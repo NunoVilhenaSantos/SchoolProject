@@ -4,24 +4,22 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Models;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-/// cities controller, only the admins,
-/// superusers and the functionaries can access this controller
+///     cities controller, only the admins,
+///     superusers and the functionaries can access this controller
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
-    private readonly ICountryRepository _countryRepository;
-    private readonly ICityRepository _cityRepository;
-
     private const string BucketName = "cities";
+    private readonly ICityRepository _cityRepository;
+    private readonly ICountryRepository _countryRepository;
 
 
     /// <summary>
-    /// constructor
+    ///     constructor
     /// </summary>
     /// <param name="cityRepository"></param>
     /// <param name="countryRepository"></param>
@@ -46,7 +44,7 @@ public class CitiesController : Controller
 
     // GET: Cities
     /// <summary>
-    /// index action
+    ///     index action
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -58,7 +56,7 @@ public class CitiesController : Controller
 
     // GET: Cities
     /// <summary>
-    /// index action with cards
+    ///     index action with cards
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -71,7 +69,7 @@ public class CitiesController : Controller
 
     // GET: Cities
     /// <summary>
-    /// IndexCards1 method for the cards view with pagination mode.
+    ///     IndexCards1 method for the cards view with pagination mode.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -110,7 +108,7 @@ public class CitiesController : Controller
 
     // GET: Cities/Details/5
     /// <summary>
-    /// details action
+    ///     details action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -127,7 +125,7 @@ public class CitiesController : Controller
 
     // GET: Cities/Create
     /// <summary>
-    /// create action
+    ///     create action
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
@@ -143,7 +141,7 @@ public class CitiesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// create action
+    ///     create action
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
@@ -163,7 +161,7 @@ public class CitiesController : Controller
 
     // GET: Cities/Edit/5
     /// <summary>
-    /// edit action
+    ///     edit action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -185,7 +183,7 @@ public class CitiesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// edit action
+    ///     edit action
     /// </summary>
     /// <param name="id"></param>
     /// <param name="city"></param>
@@ -216,7 +214,7 @@ public class CitiesController : Controller
 
     // GET: Cities/Delete/5
     /// <summary>
-    /// delete action
+    ///     delete action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

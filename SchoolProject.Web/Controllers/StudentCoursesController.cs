@@ -8,15 +8,15 @@ using SchoolProject.Web.Models;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///    StudentCoursesController
+///     StudentCoursesController
 /// </summary>
 public class StudentCoursesController : Controller
 {
-    private readonly IStudentCourseRepository _studentCourseRepository;
     private readonly DataContextMySql _context;
+    private readonly IStudentCourseRepository _studentCourseRepository;
 
     /// <summary>
-    ///   StudentCoursesController
+    ///     StudentCoursesController
     /// </summary>
     /// <param name="context"></param>
     /// <param name="studentCourseRepository"></param>
@@ -32,7 +32,7 @@ public class StudentCoursesController : Controller
 
     // GET: StudentCourses
     /// <summary>
-    ///  Index, list all StudentCourses
+    ///     Index, list all StudentCourses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -58,7 +58,7 @@ public class StudentCoursesController : Controller
 
     // GET: StudentCourses
     /// <summary>
-    /// Index with cards, list all StudentCourses
+    ///     Index with cards, list all StudentCourses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -107,7 +107,7 @@ public class StudentCoursesController : Controller
 
     // GET: StudentCourses
     /// <summary>
-    /// Index with cards, list all StudentCourses
+    ///     Index with cards, list all StudentCourses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -143,7 +143,7 @@ public class StudentCoursesController : Controller
 
     // GET: StudentCourses/Details/5
     /// <summary>
-    /// Details, show details of a StudentCourse
+    ///     Details, show details of a StudentCourse
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -188,7 +188,7 @@ public class StudentCoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create, create a new StudentCourse
+    ///     Create, create a new StudentCourse
     /// </summary>
     /// <param name="studentCourse"></param>
     /// <returns></returns>
@@ -229,7 +229,7 @@ public class StudentCoursesController : Controller
 
     // GET: StudentCourses/Edit/5
     /// <summary>
-    /// Edit, edit a StudentCourse
+    ///     Edit, edit a StudentCourse
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -270,7 +270,7 @@ public class StudentCoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit, edit a StudentCourse
+    ///     Edit, edit a StudentCourse
     /// </summary>
     /// <param name="id"></param>
     /// <param name="studentCourse"></param>
@@ -325,7 +325,7 @@ public class StudentCoursesController : Controller
 
     // GET: StudentCourses/Delete/5
     /// <summary>
-    /// Delete, delete a StudentCourse
+    ///     Delete, delete a StudentCourse
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -348,7 +348,7 @@ public class StudentCoursesController : Controller
 
     // POST: StudentCourses/Delete/5
     /// <summary>
-    /// Delete, delete a StudentCourse
+    ///     Delete, delete a StudentCourse
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -367,6 +367,8 @@ public class StudentCoursesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool StudentCourseExists(int id) =>
-        _context.StudentCourses.Any(e => e.StudentId == id);
+    private bool StudentCourseExists(int id)
+    {
+        return _context.StudentCourses.Any(e => e.StudentId == id);
+    }
 }

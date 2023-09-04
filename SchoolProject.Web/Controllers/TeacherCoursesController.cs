@@ -5,20 +5,19 @@ using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Models;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///  TeacherCoursesController class.
+///     TeacherCoursesController class.
 /// </summary>
 public class TeacherCoursesController : Controller
 {
-    private readonly ITeacherCourseRepository _teacherCourseRepository;
     private readonly DataContextMySql _context;
+    private readonly ITeacherCourseRepository _teacherCourseRepository;
 
 
     /// <summary>
-    /// TeacherCoursesController constructor.
+    ///     TeacherCoursesController constructor.
     /// </summary>
     /// <param name="context"></param>
     /// <param name="teacherCourseRepository"></param>
@@ -34,7 +33,7 @@ public class TeacherCoursesController : Controller
 
     // GET: TeacherCourses
     /// <summary>
-    /// Index method, for the main view.
+    ///     Index method, for the main view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -62,7 +61,7 @@ public class TeacherCoursesController : Controller
 
     // GET: TeacherCourses
     /// <summary>
-    /// IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -100,16 +99,18 @@ public class TeacherCoursesController : Controller
 
 
     private List<TeacherCourse> GetTeacherCoursesList(
-        int pageNumber, int pageSize) =>
-        GetTeacherCoursesList()
+        int pageNumber, int pageSize)
+    {
+        return GetTeacherCoursesList()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
     // GET: TeacherCourses
     /// <summary>
-    /// IndexCards1 method for the cards view with pagination, for testing purposes.
+    ///     IndexCards1 method for the cards view with pagination, for testing purposes.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -146,7 +147,7 @@ public class TeacherCoursesController : Controller
 
     // GET: TeacherCourses/Details/5
     /// <summary>
-    /// Details method, for the details view.
+    ///     Details method, for the details view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -168,7 +169,7 @@ public class TeacherCoursesController : Controller
 
     // GET: TeacherCourses/Create
     /// <summary>
-    /// Create method, for the create view.
+    ///     Create method, for the create view.
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
@@ -198,7 +199,7 @@ public class TeacherCoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create method, for the create view.
+    ///     Create method, for the create view.
     /// </summary>
     /// <param name="teacherCourse"></param>
     /// <returns></returns>
@@ -241,7 +242,7 @@ public class TeacherCoursesController : Controller
 
     // GET: TeacherCourses/Edit/5
     /// <summary>
-    /// Edit method, for the edit view.
+    ///     Edit method, for the edit view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -282,7 +283,7 @@ public class TeacherCoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit method, for the edit view.
+    ///     Edit method, for the edit view.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="teacherCourse"></param>
@@ -338,7 +339,7 @@ public class TeacherCoursesController : Controller
 
     // GET: TeacherCourses/Delete/5
     /// <summary>
-    /// Delete method, for the delete view.
+    ///     Delete method, for the delete view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -361,7 +362,7 @@ public class TeacherCoursesController : Controller
 
     // POST: TeacherCourses/Delete/5
     /// <summary>
-    /// DeleteConfirmed method, for the delete view.
+    ///     DeleteConfirmed method, for the delete view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -380,6 +381,8 @@ public class TeacherCoursesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool TeacherCourseExists(int id) =>
-        _context.TeacherCourses.Any(e => e.TeacherId == id);
+    private bool TeacherCourseExists(int id)
+    {
+        return _context.TeacherCourses.Any(e => e.TeacherId == id);
+    }
 }

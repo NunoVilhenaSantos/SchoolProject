@@ -8,18 +8,18 @@ using SchoolProject.Web.Models;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///   SchoolClassStudentsController
+///     SchoolClassStudentsController
 /// </summary>
 public class SchoolClassStudentsController : Controller
 {
+    private readonly DataContextMySql _context;
+
     private readonly ISchoolClassStudentRepository
         _schoolClassStudentRepository;
 
-    private readonly DataContextMySql _context;
-
 
     /// <summary>
-    ///  SchoolClassStudentsController
+    ///     SchoolClassStudentsController
     /// </summary>
     /// <param name="context"></param>
     /// <param name="schoolClassStudentRepository"></param>
@@ -35,7 +35,7 @@ public class SchoolClassStudentsController : Controller
 
     // GET: SchoolClassStudents
     /// <summary>
-    ///  Index, list all SchoolClassStudents
+    ///     Index, list all SchoolClassStudents
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -61,7 +61,7 @@ public class SchoolClassStudentsController : Controller
 
     // GET: SchoolClassStudents
     /// <summary>
-    /// IndexCards, list all SchoolClassStudents
+    ///     IndexCards, list all SchoolClassStudents
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -110,7 +110,7 @@ public class SchoolClassStudentsController : Controller
 
     // GET: SchoolClassStudents
     /// <summary>
-    /// IndexCards1, list all SchoolClassStudents
+    ///     IndexCards1, list all SchoolClassStudents
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -146,7 +146,7 @@ public class SchoolClassStudentsController : Controller
 
     // GET: SchoolClassStudents/Details/5
     /// <summary>
-    /// Details, details of a SchoolClassStudent
+    ///     Details, details of a SchoolClassStudent
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -169,7 +169,7 @@ public class SchoolClassStudentsController : Controller
 
     // GET: SchoolClassStudents/Create
     /// <summary>
-    ///  Create, create a new SchoolClassStudent
+    ///     Create, create a new SchoolClassStudent
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
@@ -199,7 +199,7 @@ public class SchoolClassStudentsController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create, create a new SchoolClassStudent
+    ///     Create, create a new SchoolClassStudent
     /// </summary>
     /// <param name="schoolClassStudent"></param>
     /// <returns></returns>
@@ -243,7 +243,7 @@ public class SchoolClassStudentsController : Controller
 
     // GET: SchoolClassStudents/Edit/5
     /// <summary>
-    /// Edit, edit a SchoolClassStudent
+    ///     Edit, edit a SchoolClassStudent
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -285,7 +285,7 @@ public class SchoolClassStudentsController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit, edit a SchoolClassStudent
+    ///     Edit, edit a SchoolClassStudent
     /// </summary>
     /// <param name="id"></param>
     /// <param name="schoolClassStudent"></param>
@@ -364,7 +364,7 @@ public class SchoolClassStudentsController : Controller
 
     // POST: SchoolClassStudents/Delete/5
     /// <summary>
-    /// DeleteConfirmed, delete a SchoolClassStudent
+    ///     DeleteConfirmed, delete a SchoolClassStudent
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -385,7 +385,9 @@ public class SchoolClassStudentsController : Controller
     }
 
 
-    private bool SchoolClassStudentExists(int id) =>
-        _context.SchoolClassStudents
+    private bool SchoolClassStudentExists(int id)
+    {
+        return _context.SchoolClassStudents
             .Any(e => e.SchoolClassId == id);
+    }
 }

@@ -12,7 +12,7 @@ using SchoolProject.Web.Models.Users;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///   UsersController class.
+///     UsersController class.
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser")]
 public class UsersController : Controller
@@ -22,7 +22,7 @@ public class UsersController : Controller
 
 
     /// <summary>
-    ///  UsersController constructor.
+    ///     UsersController constructor.
     /// </summary>
     /// <param name="userHelper"></param>
     /// <param name="context"></param>
@@ -35,7 +35,7 @@ public class UsersController : Controller
 
     // GET: Users
     /// <summary>
-    ///  Index method, for the main view.
+    ///     Index method, for the main view.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -75,7 +75,7 @@ public class UsersController : Controller
 
     // GET: Users
     /// <summary>
-    /// IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -109,11 +109,13 @@ public class UsersController : Controller
 
 
     private List<UserWithRolesViewModel> GetUsersWithRoles(
-        int pageNumber, int pageSize) =>
-        GetUsersWithRolesList()
+        int pageNumber, int pageSize)
+    {
+        return GetUsersWithRolesList()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
     // GET: Users
@@ -194,7 +196,7 @@ public class UsersController : Controller
     private List<SelectListItem> SortProperties()
     {
         // Obtém o tipo da classe
-        Type userType = typeof(UserWithRolesViewModel);
+        var userType = typeof(UserWithRolesViewModel);
 
 
         // Obtém as propriedades públicas da classe
@@ -240,7 +242,7 @@ public class UsersController : Controller
 
         // Obtém o tipo da classe
         // Type userType = typeof(UserWithRolesViewModel);
-        Type userType = typeof(User);
+        var userType = typeof(User);
 
         // Verifica se a propriedade de ordenação existe na classe
         var propertyInfo =
@@ -284,7 +286,7 @@ public class UsersController : Controller
 
     // GET: Users/Details/5
     /// <summary>
-    ///  Details method, to open the details view of specific id.
+    ///     Details method, to open the details view of specific id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -304,7 +306,7 @@ public class UsersController : Controller
 
     // GET: Users/Create
     /// <summary>
-    /// Create method, to open the create view.
+    ///     Create method, to open the create view.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -320,7 +322,7 @@ public class UsersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create method, to create a new user.
+    ///     Create method, to create a new user.
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
@@ -340,7 +342,7 @@ public class UsersController : Controller
 
     // GET: Users/Edit/5
     /// <summary>
-    /// Edit method, to open the edit view of specific id.
+    ///     Edit method, to open the edit view of specific id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -363,7 +365,7 @@ public class UsersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit method, to edit a specific user.
+    ///     Edit method, to edit a specific user.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="user"></param>
@@ -393,7 +395,7 @@ public class UsersController : Controller
 
     // GET: Users/Delete/5
     /// <summary>
-    /// Delete method, to open the delete view of specific id.
+    ///     Delete method, to open the delete view of specific id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -413,7 +415,7 @@ public class UsersController : Controller
 
     // POST: Users/Delete/5
     /// <summary>
-    /// Delete method, to delete a specific user, confirmation.
+    ///     Delete method, to delete a specific user, confirmation.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

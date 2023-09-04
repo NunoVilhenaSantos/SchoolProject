@@ -5,25 +5,29 @@ using Serilog;
 
 namespace SchoolProject.Web.Helpers.Storages;
 
+/// <inheritdoc />
 public class StorageHelper : IStorageHelper
 {
     private const string GcpStorageBucketName = "storage-nuno";
 
     internal const string GcpStoragePublicUrl =
         "https://storage.googleapis.com/storage-nuno/";
-    // "GCPStorageAuthFile_Jorge": "C:\\Users\\nunov\\Downloads\\GCP\\lateral-isotope-388820-755e381a94ef-jorge.json",
-    // "GCPStorageAuthFile_Nuno": "C:\\Users\\nunov\\Downloads\\GCP\\lateral-isotope-388820-f36a4ce5137c-nuno.json",
-    // "GCPStorageBucketName_Jorge": "supershoptpsicet77-jorge",
-    // "GCPStorageBucketName_Nuno": "supershoptpsicet77-nuno"
+
+    internal const string AzureStoragePublicUrl =
+        "https://armazenamentoshell.blob.core.windows.net/";
+
 
     private readonly IConfiguration _configuration;
     // private readonly ILogger<CloudStorageService> _logger;
 
-    // private readonly string _azureBlobKey_1;
-    // private readonly string _azureBlobKey_2;
 
     private readonly GoogleCredential _googleCredentials;
 
+
+    /// <summary>
+    ///    StorageHelper constructor.
+    /// </summary>
+    /// <param name="configuration"></param>
     public StorageHelper(
         IConfiguration configuration
         // ILogger<CloudStorageService> logger
@@ -238,7 +242,7 @@ public class StorageHelper : IStorageHelper
         // and then create it
         var blobContainerClient =
             new BlobContainerClient(
-                _configuration["Storages:AzureBlobKeyNuno"],
+                _configuration["Storage:Azure"],
                 bucketName);
 
 

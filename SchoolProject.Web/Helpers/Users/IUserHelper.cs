@@ -5,12 +5,12 @@ using SchoolProject.Web.Models.Account;
 namespace SchoolProject.Web.Helpers.Users;
 
 /// <summary>
-///  The user helper interface.
+///     The user helper interface.
 /// </summary>
 public interface IUserHelper
 {
     /// <summary>
-    ///   Gets the user by email.
+    ///     Gets the user by email.
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
@@ -18,7 +18,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///  Gets the user by id.
+    ///     Gets the user by id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -26,7 +26,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    /// Gets the user by user name.
+    ///     Gets the user by user name.
     /// </summary>
     /// <param name="userName"></param>
     /// <returns></returns>
@@ -34,14 +34,14 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///  Gets the user initials.
+    ///     Gets the user initials.
     /// </summary>
     /// <returns></returns>
     Task<string?> GetUserInitialsAsync();
 
 
     /// <summary>
-    ///    Creates a new user.
+    ///     Creates a new user.
     /// </summary>
     /// <param name="user"></param>
     /// <param name="password"></param>
@@ -58,7 +58,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///  logs in the user.
+    ///     logs in the user.
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -66,14 +66,14 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///   Logs out the user.
+    ///     Logs out the user.
     /// </summary>
     /// <returns></returns>
     Task LogOutAsync();
 
 
     /// <summary>
-    ///    Updates the user.
+    ///     Updates the user.
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
@@ -81,7 +81,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///    Changes the password of the user.
+    ///     Changes the password of the user.
     /// </summary>
     /// <param name="user"></param>
     /// <param name="oldPassword"></param>
@@ -92,7 +92,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///   Adds the user to the specified role.
+    ///     Adds the user to the specified role.
     /// </summary>
     /// <param name="user"></param>
     /// <param name="roleName"></param>
@@ -101,7 +101,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///  Removes the user from the specified role.
+    ///     Removes the user from the specified role.
     /// </summary>
     /// <param name="user"></param>
     /// <param name="roleName"></param>
@@ -110,7 +110,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///   Checks if the user is in the specified role.
+    ///     Checks if the user is in the specified role.
     /// </summary>
     /// <param name="user"></param>
     /// <param name="roleName"></param>
@@ -119,7 +119,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///   Checks if the user and the password are valid.
+    ///     Checks if the user and the password are valid.
     /// </summary>
     /// <param name="user"></param>
     /// <param name="password"></param>
@@ -128,7 +128,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///    Generates a token for the user to validate the email.
+    ///     Generates a token for the user to validate the email.
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
@@ -136,7 +136,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///    Confirms the email of the user.
+    ///     Confirms the email of the user.
     /// </summary>
     /// <param name="user"></param>
     /// <param name="token"></param>

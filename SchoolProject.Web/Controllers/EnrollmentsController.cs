@@ -8,16 +8,16 @@ using SchoolProject.Web.Models;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///    EnrollmentsController class.
+///     EnrollmentsController class.
 /// </summary>
 public class EnrollmentsController : Controller
 {
-    private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly DataContextMySql _context;
+    private readonly IEnrollmentRepository _enrollmentRepository;
 
 
     /// <summary>
-    ///   EnrollmentsController constructor.
+    ///     EnrollmentsController constructor.
     /// </summary>
     /// <param name="context"></param>
     /// <param name="enrollmentRepository"></param>
@@ -32,7 +32,7 @@ public class EnrollmentsController : Controller
 
     // GET: Enrollments
     /// <summary>
-    ///   Index method, for the main view.
+    ///     Index method, for the main view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -61,7 +61,7 @@ public class EnrollmentsController : Controller
 
     // GET: Enrollments
     /// <summary>
-    ///   IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -116,7 +116,7 @@ public class EnrollmentsController : Controller
 
     // GET: Enrollments
     /// <summary>
-    ///  IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -153,7 +153,7 @@ public class EnrollmentsController : Controller
 
     // GET: Enrollments/Details/5
     /// <summary>
-    ///  Details method.
+    ///     Details method.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -176,7 +176,7 @@ public class EnrollmentsController : Controller
 
     // GET: Enrollments/Create
     /// <summary>
-    /// Create method, for the create view.
+    ///     Create method, for the create view.
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
@@ -206,7 +206,7 @@ public class EnrollmentsController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create method, for adding a new enrollment.
+    ///     Create method, for adding a new enrollment.
     /// </summary>
     /// <param name="enrollment"></param>
     /// <returns></returns>
@@ -249,7 +249,7 @@ public class EnrollmentsController : Controller
 
     // GET: Enrollments/Edit/5
     /// <summary>
-    /// Edit method, for the edit view.
+    ///     Edit method, for the edit view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -290,7 +290,7 @@ public class EnrollmentsController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit method, for editing a enrollment.
+    ///     Edit method, for editing a enrollment.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="enrollment"></param>
@@ -345,7 +345,7 @@ public class EnrollmentsController : Controller
 
     // GET: Enrollments/Delete/5
     /// <summary>
-    /// Delete method, for the delete view.
+    ///     Delete method, for the delete view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -367,7 +367,7 @@ public class EnrollmentsController : Controller
 
     // POST: Enrollments/Delete/5
     /// <summary>
-    /// DeleteConfirmed method, for deleting a enrollment.
+    ///     DeleteConfirmed method, for deleting a enrollment.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -385,6 +385,8 @@ public class EnrollmentsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool EnrollmentExists(int id) =>
-        _context.Enrollments.Any(e => e.StudentId == id);
+    private bool EnrollmentExists(int id)
+    {
+        return _context.Enrollments.Any(e => e.StudentId == id);
+    }
 }

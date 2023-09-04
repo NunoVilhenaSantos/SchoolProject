@@ -5,7 +5,7 @@ using SchoolProject.Web.Models.Countries;
 namespace SchoolProject.Web.Data.Repositories.Countries;
 
 /// <summary>
-///   ICountryRepository interface.
+///     ICountryRepository interface.
 /// </summary>
 public interface ICountryRepository : IGenericRepository<Country>
 {
@@ -14,14 +14,14 @@ public interface ICountryRepository : IGenericRepository<Country>
 
     // --------------------- List Queryable or Enumerable ------------------- //
     /// <summary>
-    ///  Get countries with cities.
+    ///     Get countries with cities.
     /// </summary>
     /// <returns></returns>
     IEnumerable<Country> GetCountriesWithCities();
 
 
     /// <summary>
-    /// Get countries with cities.
+    ///     Get countries with cities.
     /// </summary>
     /// <returns></returns>
     IEnumerable<Country> GetCountriesWithCitiesEnumerable();
@@ -29,26 +29,26 @@ public interface ICountryRepository : IGenericRepository<Country>
 
     // ------------------------- Combo boxes list  -------------------------- //
     /// <summary>
-    /// Get combo countries.
+    ///     Get combo countries.
     /// </summary>
     /// <returns></returns>
     IEnumerable<SelectListItem> GetComboCountries();
 
     /// <summary>
-    /// Get combo countries and nationalities.
+    ///     Get combo countries and nationalities.
     /// </summary>
     /// <returns></returns>
     IEnumerable<SelectListItem> GetComboCountriesAndNationalities();
 
     /// <summary>
-    /// Get combo cities.
+    ///     Get combo cities.
     /// </summary>
     /// <param name="countryId"></param>
     /// <returns></returns>
     IEnumerable<SelectListItem>? GetComboCities(int countryId);
 
     /// <summary>
-    /// Get combo nationalities.
+    ///     Get combo nationalities.
     /// </summary>
     /// <param name="countryId"></param>
     /// <returns></returns>
@@ -58,14 +58,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     // ------------------------------ Countries ----------------------------- //
 
     /// <summary>
-    /// Get country.
+    ///     Get country.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<Country?> GetCountryAsync(int id);
 
     /// <summary>
-    /// Get country.
+    ///     Get country.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
@@ -73,21 +73,21 @@ public interface ICountryRepository : IGenericRepository<Country>
 
 
     /// <summary>
-    /// Get country with cities.
+    ///     Get country with cities.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<Country> GetCountryWithCitiesAsync(int id);
 
     /// <summary>
-    /// Get country with cities.
+    ///     Get country with cities.
     /// </summary>
     /// <param name="country"></param>
     /// <returns></returns>
     Task<Country> GetCountryWithCitiesAsync(Country country);
 
     /// <summary>
-    /// Get country with cities.
+    ///     Get country with cities.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
@@ -97,14 +97,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     // -------------------------------- Cities ------------------------------ //
 
     /// <summary>
-    /// Get city.
+    ///     Get city.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<City?> GetCityAsync(int id);
 
     /// <summary>
-    /// Get city.
+    ///     Get city.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
@@ -114,14 +114,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     // ------------------- Cities Add, Update and Delete -------------------- //
 
     /// <summary>
-    /// Add city.
+    ///     Add city.
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
     Task AddCityAsync(CityViewModel model);
 
     /// <summary>
-    /// update city.
+    ///     update city.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
@@ -129,7 +129,7 @@ public interface ICountryRepository : IGenericRepository<Country>
 
 
     /// <summary>
-    /// Delete city.
+    ///     Delete city.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
@@ -139,14 +139,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     // ---------------------------- Nationalities --------------------------- //
 
     /// <summary>
-    /// get nationality.
+    ///     get nationality.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<Nationality?> GetNationalityAsync(int id);
 
     /// <summary>
-    /// get nationality.
+    ///     get nationality.
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>
@@ -156,7 +156,7 @@ public interface ICountryRepository : IGenericRepository<Country>
     // ----------------- Nationality Add, Update and Delete ----------------- //
 
     /// <summary>
-    /// add nationality.
+    ///     add nationality.
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -164,7 +164,7 @@ public interface ICountryRepository : IGenericRepository<Country>
 
 
     /// <summary>
-    /// update nationality.
+    ///     update nationality.
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>
@@ -172,7 +172,7 @@ public interface ICountryRepository : IGenericRepository<Country>
 
 
     /// <summary>
-    /// delete nationality.
+    ///     delete nationality.
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>

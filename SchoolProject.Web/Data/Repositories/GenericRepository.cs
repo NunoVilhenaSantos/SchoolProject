@@ -2,7 +2,6 @@ using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.EntitiesOthers;
-using System.Linq;
 
 namespace SchoolProject.Web.Data.Repositories;
 
@@ -51,16 +50,13 @@ public class GenericRepository<T> : IGenericRepository<T>
         // ou
         // _context.Set<T>().AsNoTracking().First();
     }
-    
-    
+
+
     public async Task<int> GetCount()
     {
-
         return await _dataContext.Set<T>().CountAsync();
         // return await _dataContext.Set<T>().TryGetNonEnumeratedCount();
-
     }
-
 
 
     public async Task<T?> GetByIdAsync(int id)

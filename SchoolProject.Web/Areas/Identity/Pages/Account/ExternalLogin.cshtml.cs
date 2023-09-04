@@ -20,7 +20,7 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 [AllowAnonymous]
 public class ExternalLoginModel : PageModel
 {
-    private readonly IE_MailHelper _emailSender;
+    private readonly IEMailHelper _emailSender;
     private readonly IUserEmailStore<User> _emailStore;
 
     private readonly ILogger<ExternalLoginModel> _logger;
@@ -37,7 +37,7 @@ public class ExternalLoginModel : PageModel
         UserManager<User> userManager,
         IUserStore<User> userStore,
         // IEmailSender emailSender
-        IE_MailHelper emailSender
+        IEMailHelper emailSender
     )
     {
         _signInManager = signInManager;

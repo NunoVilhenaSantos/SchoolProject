@@ -5,7 +5,6 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Countries;
 
-
 namespace SchoolProject.Web.Data.Repositories.Countries;
 
 /// <inheritdoc cref="SchoolProject.Web.Data.Repositories.GenericRepository {City}" />

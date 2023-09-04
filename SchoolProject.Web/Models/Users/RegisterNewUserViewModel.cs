@@ -44,7 +44,7 @@ public class RegisterNewUserViewModel : User
     /// </summary>
     [Required]
     [DataType(DataType.Password)]
-    [MinLength(8)]
+    [MinLength(6)]
     public required string Password { get; set; }
 
 
@@ -54,6 +54,6 @@ public class RegisterNewUserViewModel : User
     [Required]
     [DataType(DataType.Password)]
     [Compare("Password")]
-    [MinLength(8)]
+    [MinLength(6)]
     public required string ConfirmPassword { get; set; }
 }

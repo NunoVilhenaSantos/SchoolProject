@@ -2,47 +2,46 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Models;
-using SchoolProject.Web.Models.Users;
-
 
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///   TeachersController class.
+///     TeachersController class.
 /// </summary>
 public class TeachersController : Controller
 {
-    private readonly ITeacherRepository _teacherRepository;
-    private readonly DataContextMySql _context;
-
     private const string BucketName = "teachers";
-
+    private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly ITeacherRepository _teacherRepository;
 
 
     /// <summary>
-    ///  TeachersController constructor.
+    ///     TeachersController constructor.
     /// </summary>
     /// <param name="context"></param>
     /// <param name="teacherRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public TeachersController(
         DataContextMySql context,
         ITeacherRepository teacherRepository
+        , IWebHostEnvironment hostingEnvironment
     )
     {
         _context = context;
         _teacherRepository = teacherRepository;
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
     // GET: Teachers
     /// <summary>
-    ///  Index method, for the main view.
+    ///     Index method, for the main view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -54,30 +53,36 @@ public class TeachersController : Controller
     }
 
 
-    private IEnumerable<Teacher> GetTeachersList() =>
-        _context.Teachers.ToListAsync().Result;
-    
-    
+    private IEnumerable<Teacher> GetTeachersList()
+    {
+        return _context.Teachers.ToListAsync().Result;
+    }
 
-    private async Task<IEnumerable<Teacher>> GetTeachersListAsync() =>
-    await _context.Teachers
-        .Include(t => t.Country).ThenInclude(c => c.Nationality)
-        .Include(t => t.City)
-        .Include(t => t.CountryOfNationality).ThenInclude(c => c.Nationality)
-        .Include(t => t.Birthplace).ThenInclude(c => c.Nationality)
-        .Include(t => t.Gender)
-        .Include(t => t.User)
-        // Se desejar carregar os cursos associados
-        .Include(t => t.TeacherCourses)
-        // E seus detalhes, se necessário
-        .ThenInclude(tc => tc.Course)
-        .ToListAsync();
 
+    private async Task<IEnumerable<Teacher>> GetTeachersListAsync()
+    {
+        return await _context.Teachers
+            .Include(t => t.Country).ThenInclude(c => c.Nationality)
+            .Include(t => t.Country).ThenInclude(c => c.CreatedBy)
+            .Include(t => t.City).ThenInclude(c => c.CreatedBy)
+            .Include(t => t.CountryOfNationality)
+            .ThenInclude(c => c.Nationality)
+            .Include(t => t.CountryOfNationality).ThenInclude(c => c.CreatedBy)
+            .Include(t => t.Birthplace).ThenInclude(c => c.Nationality)
+            .Include(t => t.Birthplace).ThenInclude(c => c.CreatedBy)
+            .Include(t => t.Gender).ThenInclude(c => c.CreatedBy)
+            .Include(t => t.User)
+            // Se desejar carregar os cursos associados
+            .Include(t => t.TeacherCourses)
+            // E seus detalhes, se necessário
+            .ThenInclude(tc => tc.Course)
+            .ToListAsync();
+    }
 
 
     // GET: Teachers
     /// <summary>
-    /// IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -114,16 +119,19 @@ public class TeachersController : Controller
 
 
     private List<Teacher> GetTeachersList(
-        int pageNumber, int pageSize) =>
-        GetTeachersList()
+        int pageNumber, int pageSize)
+    {
+        return GetTeachersList()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
+    // TODO: Corrigir todos os erros e passar para métodos dentro do modelo PaginationViewModel
     // GET: Teachers
     /// <summary>
-    /// IndexCards1 method for the cards view, for testing purposes.
+    ///     IndexCards1 method for the cards view, for testing purposes.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -145,7 +153,7 @@ public class TeachersController : Controller
 
 
         // Tente obter a lista de professores da sessão
-        if (HttpContext.Session.TryGetValue("AllTeachers", out byte[] teacherData))
+        if (HttpContext.Session.TryGetValue("AllTeachers", out var teacherData))
         {
             // Se a lista estiver na sessão, desserializa-a
             var json = Encoding.UTF8.GetString(teacherData);
@@ -158,14 +166,37 @@ public class TeachersController : Controller
 
 
             // Armazene a lista na sessão para uso futuro
-            var json = JsonConvert.SerializeObject(allTeachers, new JsonSerializerSettings
+            var json = JsonConvert.SerializeObject(allTeachers,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting =
+                        Formatting.Indented // Indent the JSON for readability
+                });
+
+            // TODO: passar para o modelo PaginationViewModel
+            try
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                // Specify the file path where you want to save the JSON file
+                var filePath = Path.Combine(_hostingEnvironment.ContentRootPath,
+                    "Data", "teachers.json");
 
-            HttpContext.Session.Set("AllTeachers", Encoding.UTF8.GetBytes(json));
+                // Save the JSON to the file
+                System.IO.File.WriteAllText(filePath, json);
+
+                // return Ok("JSON file saved successfully!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+
+
+            Console.WriteLine("JSON file saved successfully!");
+
+            HttpContext.Session.Set("AllTeachers",
+                Encoding.UTF8.GetBytes(json));
         }
-
 
 
         // Obter todos os registros
@@ -209,7 +240,7 @@ public class TeachersController : Controller
 
         // Obtém o tipo da classe
         // Type userType = typeof(UserWithRolesViewModel);
-        Type userType = typeof(Teacher);
+        var userType = typeof(Teacher);
 
         // Verifica se a propriedade de ordenação existe na classe
         var propertyInfo =
@@ -249,7 +280,7 @@ public class TeachersController : Controller
 
     // GET: Teachers/Details/5
     /// <summary>
-    /// Details method, for the details view.
+    ///     Details method, for the details view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -269,7 +300,7 @@ public class TeachersController : Controller
 
     // GET: Teachers/Create
     /// <summary>
-    /// Create method, for the create view.
+    ///     Create method, for the create view.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -285,7 +316,7 @@ public class TeachersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create method, for adding a new teacher.
+    ///     Create method, for adding a new teacher.
     /// </summary>
     /// <param name="teacher"></param>
     /// <returns></returns>
@@ -305,7 +336,7 @@ public class TeachersController : Controller
 
     // GET: Teachers/Edit/5
     /// <summary>
-    /// Edit method, for the edit view.
+    ///     Edit method, for the edit view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -325,7 +356,7 @@ public class TeachersController : Controller
     // To protect from over-posting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit method, for editing a teacher.
+    ///     Edit method, for editing a teacher.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="teacher"></param>
@@ -355,7 +386,7 @@ public class TeachersController : Controller
 
     // GET: Teachers/Delete/5
     /// <summary>
-    /// Delete method, for the delete view.
+    ///     Delete method, for the delete view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -373,7 +404,7 @@ public class TeachersController : Controller
 
     // POST: Teachers/Delete/5
     /// <summary>
-    /// DeleteConfirmed method, for deleting a teacher.
+    ///     DeleteConfirmed method, for deleting a teacher.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -391,6 +422,8 @@ public class TeachersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool TeacherExists(int id) =>
-        _context.Teachers.Any(e => e.Id == id);
+    private bool TeacherExists(int id)
+    {
+        return _context.Teachers.Any(e => e.Id == id);
+    }
 }

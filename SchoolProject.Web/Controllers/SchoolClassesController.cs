@@ -5,23 +5,21 @@ using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Repositories.SchoolClasses;
 using SchoolProject.Web.Models;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-/// SchoolClassesController
+///     SchoolClassesController
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser")]
 public class SchoolClassesController : Controller
 {
-    private readonly ISchoolClassRepository _schoolClassRepository;
-    private readonly DataContextMySql _context;
-
     private const string BucketName = "schoolclasses";
+    private readonly DataContextMySql _context;
+    private readonly ISchoolClassRepository _schoolClassRepository;
 
 
     /// <summary>
-    /// SchoolClassesController
+    ///     SchoolClassesController
     /// </summary>
     /// <param name="context"></param>
     /// <param name="schoolClassRepository"></param>
@@ -37,7 +35,7 @@ public class SchoolClassesController : Controller
 
     // Allow unrestricted access to the Index action
     /// <summary>
-    /// Index
+    ///     Index
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -50,13 +48,15 @@ public class SchoolClassesController : Controller
     }
 
 
-    private IEnumerable<SchoolClass> GetSchoolClasses() =>
-        _context.SchoolClasses.ToListAsync().Result;
+    private IEnumerable<SchoolClass> GetSchoolClasses()
+    {
+        return _context.SchoolClasses.ToListAsync().Result;
+    }
 
 
     // Allow unrestricted access to the Index action
     /// <summary>
-    /// Index cards
+    ///     Index cards
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -95,16 +95,18 @@ public class SchoolClassesController : Controller
 
 
     private List<SchoolClass> GetSchoolClasses(
-        int pageNumber, int pageSize) =>
-        GetSchoolClasses()
+        int pageNumber, int pageSize)
+    {
+        return GetSchoolClasses()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
     // Allow unrestricted access to the Index action
     /// <summary>
-    /// Index cards 1 method, for the main view, for testing purposes.
+    ///     Index cards 1 method, for the main view, for testing purposes.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -141,7 +143,7 @@ public class SchoolClassesController : Controller
 
     // GET: SchoolClasses/Details/5
     /// <summary>
-    /// Details of a school class, view.
+    ///     Details of a school class, view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -159,10 +161,13 @@ public class SchoolClassesController : Controller
 
     // GET: SchoolClasses/Create
     /// <summary>
-    /// Create a new school class, view.
+    ///     Create a new school class, view.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: SchoolClasses/Create
@@ -171,8 +176,8 @@ public class SchoolClassesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Create a new school class, post.
-    /// validates and saves the new school class.
+    ///     Create a new school class, post.
+    ///     validates and saves the new school class.
     /// </summary>
     /// <param name="schoolClass"></param>
     /// <returns></returns>
@@ -192,7 +197,7 @@ public class SchoolClassesController : Controller
 
     // GET: SchoolClasses/Edit/5
     /// <summary>
-    /// Edit a school class, view.
+    ///     Edit a school class, view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -213,8 +218,8 @@ public class SchoolClassesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit a school class, post.
-    /// validate and save the edited school class.
+    ///     Edit a school class, post.
+    ///     validate and save the edited school class.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="schoolClass"></param>
@@ -246,7 +251,7 @@ public class SchoolClassesController : Controller
 
     // GET: SchoolClasses/Delete/5
     /// <summary>
-    /// Delete a school class, view.
+    ///     Delete a school class, view.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -265,7 +270,7 @@ public class SchoolClassesController : Controller
 
     // POST: SchoolClasses/Delete/5
     /// <summary>
-    /// Delete a school class, post.
+    ///     Delete a school class, post.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -284,6 +289,8 @@ public class SchoolClassesController : Controller
     }
 
 
-    private bool SchoolClassExists(int id) =>
-        _context.SchoolClasses.Any(e => e.Id == id);
+    private bool SchoolClassExists(int id)
+    {
+        return _context.SchoolClasses.Any(e => e.Id == id);
+    }
 }

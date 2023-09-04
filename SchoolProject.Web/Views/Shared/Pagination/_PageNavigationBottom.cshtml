@@ -6,7 +6,7 @@
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
 
-        @* <!-- First page link --> *@
+        @* <!-- First page and Previous page link --> *@
         <li class="page-item @if (Model.PageNumber == 1) { <text>disabled</text> }">
             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = 1, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">First</a>
         </li>
@@ -15,42 +15,68 @@
         </li>
 
         <!-- Page links -->
-        @for (var i = 1; i <= Model.TotalPages; i++)
-        {
-            @* <!-- Display first page --> *@
-            @if (i == 1)
-            {
-                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a>
-                </li>
-            }
+        @* @for (var i = 1; i <= Model.TotalPages; i++) *@
+        @* { *@
+        @*     $1$ <!-- Display first page --> #1# *@
+        @*     @if (i == 1) *@
+        @*     { *@
+        @*         <li class="page-item @(i == Model.PageNumber ? "active" : "")"> *@
+        @*             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a> *@
+        @*         </li> *@
+        @*     } *@
+        @* *@
+        @*     $1$ <!-- Display last page --> #1# *@
+        @*     else if (i == Model.TotalPages) *@
+        @*     { *@
+        @*         <li class="page-item @(i == Model.PageNumber ? "active" : "")"> *@
+        @*             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a> *@
+        @*         </li> *@
+        @*     } *@
+        @* *@
+        @*     $1$ <!-- Display up to 2 pages before and after current page --> #1# *@
+        @*     $1$ else if ((i >= Model.PageNumber - 2 && i <= Model.PageNumber + 2) || i == 1 || i == Model.TotalPages) #1# *@
+        @*     else if (i >= Model.PageNumber - 2 && i <= Model.PageNumber + 2) *@
+        @*     { *@
+        @*         <li class="page-item @(i == Model.PageNumber ? "active" : "")"> *@
+        @*             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a> *@
+        @*         </li> *@
+        @*     } *@
+        @* *@
+        @*     $1$ <!-- Display "..." when there are more pages --> #1# *@
+        @*     else if ((i == Model.PageNumber - 3 || i == Model.PageNumber + 3) && Model.TotalPages > 7) *@
+        @*     { *@
+        @*         <li class="page-item disabled"> *@
+        @*             <a class="page-link" href="#">...</a> *@
+        @*         </li> *@
+        @*     } *@
+        @* } *@
 
-            @* <!-- Display last page --> *@
-            else if (i == Model.TotalPages)
-            {
-                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a>
-                </li>
-            }
 
-            @* <!-- Display up to 2 pages before and after current page --> *@
-            else if ((i >= Model.PageNumber - 2 && i <= Model.PageNumber + 2) || i == Model.TotalPages)
-            {
-                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a>
-                </li>
-            }
+        <!-- Page numbers links -->
+        @{
+            var totalPages = Model.TotalPages;
+            var currentPage = Model.PageNumber;
+            var pageRange = 3; // Number of pages to display before and after the current page
 
-            @* <!-- Display "..." when there are more pages --> *@
-            else if ((i == Model.PageNumber - 3 || i == Model.PageNumber + 3) && Model.TotalPages > 7)
+            for (var i = 1; i <= totalPages; i++)
             {
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">...</a>
-                </li>
+                if (i == 1 || i == totalPages || (i >= currentPage - pageRange && i <= currentPage + pageRange))
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a>
+                    </li>
+                }
+                else if ((i == currentPage - (pageRange + 1) && currentPage > pageRange + 1) || (i == currentPage + (pageRange + 1) && currentPage < totalPages - pageRange - 1))
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
             }
         }
 
-        <!-- Next page link -->
+
+        <!-- Next page and last page link -->
         <li class="page-item @if (Model.PageNumber == Model.TotalPages) { <text>disabled</text> }">
             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">Next</a>
         </li>

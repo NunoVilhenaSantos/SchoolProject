@@ -9,11 +9,10 @@ using SchoolProject.Web.Models.Errors;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///    HomeController class.
+///     HomeController class.
 /// </summary>
 public class HomeController : Controller
 {
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -21,10 +20,11 @@ public class HomeController : Controller
 
 
     private readonly SignInManager<User> _signInManager;
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
 
 
     /// <summary>
-    ///    HomeController constructor.
+    ///     HomeController constructor.
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="signInManager"></param>
@@ -48,7 +48,7 @@ public class HomeController : Controller
 
 
     /// <summary>
-    ///   Error action.
+    ///     Error action.
     /// </summary>
     /// <returns></returns>
     [ResponseCache(
@@ -61,7 +61,7 @@ public class HomeController : Controller
 
 
     /// <summary>
-    ///   Index action.
+    ///     Index action.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -103,99 +103,141 @@ public class HomeController : Controller
 
 
     /// <summary>
-    ///  About action.
+    ///     About action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult About() => View();
+    public IActionResult About()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// Contact action.
+    ///     Contact action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Contacts() => View();
+    public IActionResult Contacts()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// CookiesPrivacy action.
+    ///     CookiesPrivacy action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Privacy() => View();
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// CookiesPrivacy action.
+    ///     CookiesPrivacy action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult CookiesPrivacy() => View();
+    public IActionResult CookiesPrivacy()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// Cookies action.
+    ///     Cookies action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Cookies() => View();
+    public IActionResult Cookies()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// Legal action.
+    ///     Legal action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Legal() => View();
+    public IActionResult Legal()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// TimeTracker action.
+    ///     TimeTracker action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult TimeTracker() => View();
+    public IActionResult TimeTracker()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// Threads action.
+    ///     Threads action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Threads() => View();
+    public IActionResult Threads()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// Features action.
+    ///     Features action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Features() => View();
+    public IActionResult Features()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// Pricing action.
+    ///     Pricing action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Pricing() => View();
+    public IActionResult Pricing()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// FaQs action.
+    ///     FaQs action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult FaQs() => View();
-
-
-    /// <summary>
-    /// Locations action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult Team() => View();
+    public IActionResult FaQs()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Locations action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Locations() => View();
+    public IActionResult Team()
+    {
+        return View();
+    }
 
 
     /// <summary>
-    /// Terms action.
+    ///     Locations action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Terms() => View();
+    public IActionResult Locations()
+    {
+        return View();
+    }
+
+
+    /// <summary>
+    ///     Terms action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Terms()
+    {
+        return View();
+    }
 }

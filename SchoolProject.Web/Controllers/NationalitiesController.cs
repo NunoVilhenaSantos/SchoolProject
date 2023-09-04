@@ -12,8 +12,8 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
-    private readonly INationalityRepository _nationalityRepository;
     private readonly ICountryRepository _countryRepository;
+    private readonly INationalityRepository _nationalityRepository;
 
 
     /// <summary>
@@ -42,12 +42,14 @@ public class NationalitiesController : Controller
     }
 
 
-    private IEnumerable<Nationality> GetNationalitiesWithCountries() =>
-        _nationalityRepository.GetNationalitiesWithCountries();
+    private IEnumerable<Nationality> GetNationalitiesWithCountries()
+    {
+        return _nationalityRepository.GetNationalitiesWithCountries();
+    }
 
 
     /// <summary>
-    ///    IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -83,16 +85,18 @@ public class NationalitiesController : Controller
 
 
     private List<Nationality> GetNationalitiesWithCountries(
-        int pageNumber, int pageSize) =>
-        GetNationalitiesWithCountries()
+        int pageNumber, int pageSize)
+    {
+        return GetNationalitiesWithCountries()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+    }
 
 
     // GET: Countries
     /// <summary>
-    /// IndexCards1 method for the cards view with pagination mode.
+    ///     IndexCards1 method for the cards view with pagination mode.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -129,7 +133,7 @@ public class NationalitiesController : Controller
 
     // GET: Nationalities/Details/5
     /// <summary>
-    ///    details action
+    ///     details action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -147,10 +151,13 @@ public class NationalitiesController : Controller
 
     // GET: Nationalities/Create
     /// <summary>
-    ///   create action
+    ///     create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
     // POST: Nationalities/Create
     // To protect from over-posting attacks,
@@ -158,7 +165,7 @@ public class NationalitiesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///  create action
+    ///     create action
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>
@@ -178,7 +185,7 @@ public class NationalitiesController : Controller
 
     // GET: Nationalities/Edit/5
     /// <summary>
-    /// edit action
+    ///     edit action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -200,7 +207,7 @@ public class NationalitiesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// edit action
+    ///     edit action
     /// </summary>
     /// <param name="id"></param>
     /// <param name="nationality"></param>
@@ -233,7 +240,7 @@ public class NationalitiesController : Controller
 
     // GET: Nationalities/Delete/5
     /// <summary>
-    /// delete action
+    ///     delete action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -251,7 +258,7 @@ public class NationalitiesController : Controller
 
     // POST: Nationalities/Delete/5
     /// <summary>
-    /// delete action confirmation
+    ///     delete action confirmation
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

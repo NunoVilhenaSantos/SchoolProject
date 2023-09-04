@@ -13,13 +13,12 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesController : Controller
 {
-    private readonly ICourseRepository _courseRepository;
-    private readonly DataContextMySql _context;
-
     private const string BucketName = "courses";
+    private readonly DataContextMySql _context;
+    private readonly ICourseRepository _courseRepository;
 
     /// <summary>
-    ///    constructor for the courses controller
+    ///     constructor for the courses controller
     /// </summary>
     /// <param name="context"></param>
     /// <param name="courseRepository"></param>
@@ -34,7 +33,7 @@ public class CoursesController : Controller
 
     // Allow unrestricted access to the Index action
     /// <summary>
-    ///    Index action
+    ///     Index action
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -58,7 +57,7 @@ public class CoursesController : Controller
 
     // Allow unrestricted access to the Index action
     /// <summary>
-    ///   Index action cards
+    ///     Index action cards
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -106,7 +105,7 @@ public class CoursesController : Controller
 
     // GET: Courses
     /// <summary>
-    ///  IndexCards method for the cards view.
+    ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -140,7 +139,7 @@ public class CoursesController : Controller
 
     // GET: Courses/Details/5
     /// <summary>
-    ///  Details action
+    ///     Details action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -158,10 +157,13 @@ public class CoursesController : Controller
 
     // GET: Courses/Create
     /// <summary>
-    ///   Create action
+    ///     Create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Courses/Create
@@ -170,7 +172,7 @@ public class CoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///  Create action
+    ///     Create action
     /// </summary>
     /// <param name="course"></param>
     /// <returns></returns>
@@ -190,7 +192,7 @@ public class CoursesController : Controller
 
     // GET: Courses/Edit/5
     /// <summary>
-    ///  Edit action
+    ///     Edit action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -211,7 +213,7 @@ public class CoursesController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Edit action
+    ///     Edit action
     /// </summary>
     /// <param name="id"></param>
     /// <param name="course"></param>
@@ -241,7 +243,7 @@ public class CoursesController : Controller
 
     // GET: Courses/Delete/5
     /// <summary>
-    /// Delete action
+    ///     Delete action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -259,7 +261,7 @@ public class CoursesController : Controller
 
     // POST: Courses/Delete/5
     /// <summary>
-    /// Delete action
+    ///     Delete action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -278,6 +280,8 @@ public class CoursesController : Controller
     }
 
 
-    private bool CourseExists(int id) =>
-        _context.Courses.Any(e => e.Id == id);
+    private bool CourseExists(int id)
+    {
+        return _context.Courses.Any(e => e.Id == id);
+    }
 }

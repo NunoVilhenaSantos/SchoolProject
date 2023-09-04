@@ -4,12 +4,12 @@ using SchoolProject.Web.Data.Entities.Teachers;
 namespace SchoolProject.Web.Models.Teachers;
 
 /// <summary>
-///  TeacherViewModel class.
+///     TeacherViewModel class.
 /// </summary>
 public class TeacherViewModel : Teacher
 {
     /// <summary>
-    ///   ImageFile property.
+    ///     ImageFile property.
     /// </summary>
     [DisplayName("Image")]
     public new IFormFile? ImageFile { get; set; }

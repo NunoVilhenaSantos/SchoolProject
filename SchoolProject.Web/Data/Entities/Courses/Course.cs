@@ -8,6 +8,7 @@ using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
+using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
 
@@ -75,8 +76,8 @@ public class Course : IEntity, INotifyPropertyChanged
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        : "https://storage.googleapis.com/storage-nuno/courses/" +
-          ProfilePhotoId;
+        // : StorageHelper.GcpStoragePublicUrl + "courses/" + ProfilePhotoId;
+        : StorageHelper.AzureStoragePublicUrl + "courses/" + ProfilePhotoId;
 
 
     // --------------------------------------------------------------------- //

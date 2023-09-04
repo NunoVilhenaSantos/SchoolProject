@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SchoolProject.Web.Models;
 
 /// <summary>
-/// PaginationViewModel class for all view models.
+///     PaginationViewModel class for all view models.
 /// </summary>
 /// <typeparam name="T"> T will assume each class</typeparam>
 public class PaginationViewModel<T> where T : class
 {
     /// <summary>
-    /// PaginationViewModel constructor.
+    ///     PaginationViewModel constructor.
     /// </summary>
     /// <param name="records">List&lt;T&gt; where T is a class</param>
     /// <param name="pageNumber">integer</param>
@@ -40,88 +40,88 @@ public class PaginationViewModel<T> where T : class
 
 
     /// <summary>
-    /// Records for the class T.
+    ///     Records for the class T.
     /// </summary>
     public List<T> Records { get; set; }
 
     /// <summary>
-    /// RecordsQuery for the class T.
+    ///     RecordsQuery for the class T.
     /// </summary>
     public IQueryable<T> RecordsQuery { get; set; }
 
 
     /// <summary>
-    /// PageNumber property.
+    ///     PageNumber property.
     /// </summary>
     public int PageNumber { get; set; }
 
 
     /// <summary>
-    /// PageSize property.
+    ///     PageSize property.
     /// </summary>
     public int PageSize { get; set; }
 
 
     /// <summary>
-    /// SortOrder select list item.
+    ///     SortOrder select list item.
     /// </summary>
     public List<SelectListItem> PageSizeList { get; } = new()
     {
         new SelectListItem {Value = "10", Text = "10"},
         new SelectListItem {Value = "25", Text = "25"},
         new SelectListItem {Value = "50", Text = "50"},
-        new SelectListItem {Value = "100", Text = "100"},
+        new SelectListItem {Value = "100", Text = "100"}
     };
 
 
     /// <summary>
-    /// TotalCount property.
+    ///     TotalCount property.
     /// </summary>
     public int TotalCount { get; set; }
 
 
     /// <summary>
-    /// SortOrder property.
+    ///     SortOrder property.
     /// </summary>
     public string SortOrder { get; set; }
 
 
     /// <summary>
-    /// SortOrder select list item.
+    ///     SortOrder select list item.
     /// </summary>
     public List<SelectListItem> SortOrderList { get; } = new()
     {
         new SelectListItem {Value = "asc", Text = "Ascending"},
-        new SelectListItem {Value = "desc", Text = "Descending"},
+        new SelectListItem {Value = "desc", Text = "Descending"}
     };
 
 
     /// <summary>
-    /// Sort Property for the class.
+    ///     Sort Property for the class.
     /// </summary>
     public string SortProperty { get; set; }
 
 
     /// <summary>
-    /// SortProperties property.
+    ///     SortProperties property.
     /// </summary>
     public List<SelectListItem> SortPropertiesList { get; set; }
 
 
     /// <summary>
-    /// TotalPages property.
+    ///     TotalPages property.
     /// </summary>
     public int TotalPages => (int) Math.Ceiling((double) TotalCount / PageSize);
 
 
     /// <summary>
-    /// generate sort properties to be display in the view,
-    /// using the class sent
+    ///     generate sort properties to be display in the view,
+    ///     using the class sent
     /// </summary>
     /// <returns></returns>
     public List<SelectListItem> GetSortProperties()
     {
-        Type modelType = typeof(T);
+        var modelType = typeof(T);
 
         var publicProperties = modelType.GetProperties(
             BindingFlags.Public |
@@ -146,7 +146,7 @@ public class PaginationViewModel<T> where T : class
 
 
         // Check if sortProperty is valid
-        Type modelType = typeof(T);
+        var modelType = typeof(T);
 
 
         // Check if sortProperty exists in the class
