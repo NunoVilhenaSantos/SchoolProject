@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
 
-
 namespace SchoolProject.Web.Models;
-
-
 
 /// <summary>
 ///     PaginationViewModel class for all view models.
@@ -210,12 +207,13 @@ public class PaginationViewModel<T> where T : class
         var recordsQuerySorted =
             query.Provider.CreateQuery<T>(orderByExpression);
 
+        return recordsQuerySorted.ToList();
+
         // Obter uma página específica de um determinado tamanho
         RecordsQuery = recordsQuerySorted
             .Skip((PageNumber - 1) * PageSize)
             .Take(PageSize)
             .ToList();
-
 
         return RecordsQuery;
     }

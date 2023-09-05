@@ -63,15 +63,22 @@ public class TeachersController : Controller
     private List<Teacher> GetTeachersListAsync()
     {
         return _context.Teachers
-            .Include(t => t.Country).ThenInclude(c => c.Nationality)
-            .Include(t => t.Country).ThenInclude(c => c.CreatedBy)
-            .Include(t => t.City).ThenInclude(c => c.CreatedBy)
+            .Include(t => t.Country)
+            .ThenInclude(c => c.Nationality)
+            .Include(t => t.Country)
+            .ThenInclude(c => c.CreatedBy)
+            .Include(t => t.City)
+            .ThenInclude(c => c.CreatedBy)
             .Include(t => t.CountryOfNationality)
             .ThenInclude(c => c.Nationality)
-            .Include(t => t.CountryOfNationality).ThenInclude(c => c.CreatedBy)
-            .Include(t => t.Birthplace).ThenInclude(c => c.Nationality)
-            .Include(t => t.Birthplace).ThenInclude(c => c.CreatedBy)
-            .Include(t => t.Gender).ThenInclude(c => c.CreatedBy)
+            .Include(t => t.CountryOfNationality)
+            .ThenInclude(c => c.CreatedBy)
+            .Include(t => t.Birthplace)
+            .ThenInclude(c => c.Nationality)
+            .Include(t => t.Birthplace)
+            .ThenInclude(c => c.CreatedBy)
+            .Include(t => t.Gender)
+            .ThenInclude(c => c.CreatedBy)
             .Include(t => t.User)
             // Se desejar carregar os cursos associados
             .Include(t => t.TeacherCourses)
@@ -180,7 +187,7 @@ public class TeachersController : Controller
         var model = new PaginationViewModel<Teacher>(
             recordsQuery,
             pageNumber, pageSize,
-            _context.Teachers.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 

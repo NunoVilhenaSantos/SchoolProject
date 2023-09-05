@@ -444,7 +444,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 // Configure consent cookie options.
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
-    options.CheckConsentNeeded = _ => true;
+    // options.CheckConsentNeeded = context => true;
+    options.CheckConsentNeeded = context => false;
 
     options.MinimumSameSitePolicy = SameSiteMode.Strict;
 
@@ -742,16 +743,18 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddWebEncoders();
 builder.Services.AddAntiforgery();
 
-// In ConfigureServices method
-builder.Services
-    .AddDistributedMemoryCache(); // This is for in-memory storage of session data
+ // This is for in-memory storage of session data
+builder.Services.AddDistributedMemoryCache();
 
 // builder.Services.AddMemoryCache();
 builder.Services.AddSession(options =>
 {
     // Set the session timeout (adjust as needed)
-    options.IdleTimeout =
-        TimeSpan.FromMinutes(30); // This example sets a 30-minute timeout
+    // This example sets a 30-minute timeout
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+
+    // make the session cookie Essential
+    options.Cookie.IsEssential = true;
 });
 
 builder.Services.AddHttpContextAccessor();
