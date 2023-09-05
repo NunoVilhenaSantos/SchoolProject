@@ -46,14 +46,15 @@ public class SchoolClassStudentsController : Controller
     }
 
 
-    private IEnumerable<SchoolClassStudent> GetSchoolClassesAndStudent()
+    private List<SchoolClassStudent> GetSchoolClassesAndStudent()
     {
         var schoolClassesStudentList =
             _context.SchoolClassStudents
                 .Include(s => s.SchoolClass)
                 .Include(s => s.Student)
                 .Include(s => s.CreatedBy)
-                .Include(s => s.UpdatedBy);
+                .Include(s => s.UpdatedBy)
+                .ToList();
 
         return schoolClassesStudentList;
     }
@@ -134,7 +135,7 @@ public class SchoolClassStudentsController : Controller
         // };
 
         var model = new PaginationViewModel<SchoolClassStudent>(
-            GetSchoolClassesAndStudent().ToList(),
+            GetSchoolClassesAndStudent(),
             pageNumber, pageSize,
             _context.SchoolClassStudents.Count(),
             sortOrder, sortProperty

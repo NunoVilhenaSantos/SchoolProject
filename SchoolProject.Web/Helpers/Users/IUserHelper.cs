@@ -142,4 +142,21 @@ public interface IUserHelper
     /// <param name="token"></param>
     /// <returns></returns>
     Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+ 
+    
+    
+    Task SignInAsync(User user, bool rememberMe = true, string? authenticationMethod = null);
+    
+
+
+
+    Task<bool> PasswordSignInAsync(User user, bool isPersistent = false, bool lockoutOnFailure = false);
+    
+
+
+    bool IsUserSignInAsync(User user, bool rememberMe = true, string? authenticationMethod = null);
+    
+
+
+    bool IsUserAuthenticated();
 }

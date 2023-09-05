@@ -52,7 +52,7 @@ public class ConverterHelper : IConverterHelper
         CourseViewModel courseViewModel, string? filePath,
         Guid fileStorageId, bool isNew)
     {
-        return new Course
+        return new()
         {
             Code = courseViewModel.Code,
             Name = courseViewModel.Name,
@@ -73,7 +73,7 @@ public class ConverterHelper : IConverterHelper
 
     public CourseViewModel ToCourseViewModel(Course course)
     {
-        return new CourseViewModel
+        return new()
         {
             Code = course.Code,
             Name = course.Name,

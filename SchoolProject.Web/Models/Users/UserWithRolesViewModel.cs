@@ -32,5 +32,5 @@ public class UserWithRolesViewModel
     /// <summary>
     ///     List of roles for this user
     /// </summary>
-    public List<string>? Roles { get; set; }
+    public List<string?> Roles { get; set; }
 }

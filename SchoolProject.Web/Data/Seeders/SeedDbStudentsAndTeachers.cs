@@ -44,7 +44,7 @@ public class SeedDbStudentsAndTeachers
         IUserHelper userHelper, DataContextMySql dataContext
     )
     {
-        _random = new Random();
+        _random = new();
         _userHelper = userHelper;
         _dataContextInUse = dataContext;
     }
@@ -265,7 +265,7 @@ public class SeedDbStudentsAndTeachers
             {
                 try
                 {
-                    throw new Exception(
+                    throw new(
                         $"Invalid userRole: {userRole}");
                 }
                 catch (Exception e)
@@ -339,13 +339,13 @@ public class SeedDbStudentsAndTeachers
             var result =
                 await _userHelper.GetUserByEmailAsync(newUser.Email);
             if (result != null)
-                throw new Exception(
+                throw new(
                     $"User {email} already exists in the database");
 
             var resultUser = await _userHelper.AddUserAsync(newUser, password);
 
             if (!resultUser.Succeeded)
-                throw new Exception(
+                throw new(
                     $"User {email} was not created: " +
                     $"{resultUser.Errors.FirstOrDefault()?.Description}");
         }
@@ -365,7 +365,7 @@ public class SeedDbStudentsAndTeachers
                 await _userHelper.IsUserInRoleAsync(newUser, userRole);
 
             if (!result)
-                throw new Exception(
+                throw new(
                     $"User {email} was not added to role {userRole}");
         }
         catch (Exception ex)
@@ -387,7 +387,7 @@ public class SeedDbStudentsAndTeachers
                 // Nenhuma alteração foi salva no banco de dados.
                 // Você pode optar por lançar uma exceção ou lidar com isso de alguma outra maneira.
                 // Por exemplo:
-                throw new Exception("No changes were saved to the database.");
+                throw new("No changes were saved to the database.");
         }
         catch (Exception ex)
         {
@@ -464,7 +464,7 @@ public class SeedDbStudentsAndTeachers
 
         Console.WriteLine("Date of birth generated: " +
                           new DateTime(year, month, day));
-        return new DateTime(year, month, day);
+        return new(year, month, day);
     }
 
 

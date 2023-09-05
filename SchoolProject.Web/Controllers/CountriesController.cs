@@ -32,9 +32,9 @@ public class CountriesController : Controller
     // ------------------------------ --------- ----------------------------- //
 
 
-    private IEnumerable<Country> CountriesWithCities()
+    private List<Country> CountriesWithCities()
     {
-        return _countryRepository.GetCountriesWithCities();
+        return _countryRepository.GetCountriesWithCities().ToList();
     }
 
 
@@ -80,23 +80,11 @@ public class CountriesController : Controller
     {
         var totalCount = _countryRepository.GetCount().Result;
 
-        var records = _countryRepository.GetAll()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
 
         // TODO: fix this
-        // var model = new PaginationViewModel<Country>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = totalCount,
-        //     SortOrder ="asc",
-        // };
 
         var model = new PaginationViewModel<Country>(
-            records,
+            CountriesWithCities(),
             pageNumber, pageSize,
             // _countryRepository.GetCount().Result,
             totalCount,
@@ -287,7 +275,7 @@ public class CountriesController : Controller
         {
             case 1:
                 // Passe as informações do país para a vista
-                model = new CityViewModel
+                model = new()
                 {
                     CountryId = country.Id,
                     CityId = 0,
@@ -297,7 +285,7 @@ public class CountriesController : Controller
 
             case 2:
                 // Passe as informações do país para a vista
-                model = new CityViewModel
+                model = new()
                 {
                     CountryId = country.Id,
                     CountryName = country.Name,

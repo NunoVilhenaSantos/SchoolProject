@@ -1,4 +1,8 @@
-﻿using Azure.Identity;
+﻿
+
+using MimeKit;
+
+
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -17,8 +21,8 @@ public class EMailHelper : IEMailHelper
 
 
 
-/// <inheritdoc/>
-    public AppResponse SendEmail(
+    /// <inheritdoc/>
+    public AppResponse SendEmail1(
         string emailTo, string subject, string htmlMessage)
     {
         var fromEmail = _configuration["Email:From"];
@@ -31,7 +35,7 @@ public class EMailHelper : IEMailHelper
 
         try
         {
-            using (var client = new SmtpClient(smtpHost, smtpPort))
+            using (var client = new System.Net.Mail.SmtpClient(smtpHost, smtpPort))
             {
                 client.UseDefaultCredentials = false;
                 client.Credentials =
@@ -40,7 +44,7 @@ public class EMailHelper : IEMailHelper
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress(
+                    From = new(
                         fromEmail ?? "nuno.santos.26288.cinel.pt@gmail.com",
                         fromName ?? "Admin School Project"),
                     Subject = subject,
@@ -63,7 +67,7 @@ public class EMailHelper : IEMailHelper
                 {
                     if (result.IsFaulted)
                     {
-                        return new AppResponse
+                        return new()
                         {
                             IsSuccess = false,
                             Message = result.Exception?.Message
@@ -78,7 +82,7 @@ public class EMailHelper : IEMailHelper
                 {
                     if (result1.IsFaulted)
                     {
-                        return new AppResponse
+                        return new()
                         {
                             IsSuccess = false,
                             Message = result1.Exception?.Message
@@ -86,7 +90,7 @@ public class EMailHelper : IEMailHelper
                     }
                 }
 
-                return new AppResponse
+                return new()
                 {
                     IsSuccess = true
                 };
@@ -97,7 +101,7 @@ public class EMailHelper : IEMailHelper
             Console.WriteLine(
                 "Exception caught in CreateTestMessage4(): {0}", ex);
 
-            return new AppResponse
+            return new()
             {
                 IsSuccess = false,
                 Message = ex.ToString()
@@ -105,6 +109,55 @@ public class EMailHelper : IEMailHelper
         }
     }
 
+
+
+
+    public AppResponse SendEmail(string to, string subject, string body)
+    {
+        var nameFrom = _configuration["Email:NameFrom"];
+        var from = _configuration["Email:From"];
+        var smtp = _configuration["Email:Smtp"];
+        var port = _configuration["Email:Port"];
+        var password = _configuration["Email:Password"];
+
+
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress(nameFrom, from));
+        message.To.Add(new MailboxAddress(to, to));
+        message.Subject = subject;
+
+
+        var bodybuilder = new BodyBuilder
+        {
+            HtmlBody = body,
+        };
+        message.Body = bodybuilder.ToMessageBody();
+
+
+        try
+        {
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                client.Connect(smtp, int.Parse(port), false);
+                client.Authenticate(from, password);
+                client.Send(message);
+                client.Disconnect(true);
+            }
+        }
+        catch (Exception ex)
+        {
+            return new()
+            {
+                IsSuccess = false,
+                Message = ex.ToString(),
+            };
+        }
+
+        return new()
+        {
+            IsSuccess = true,
+        };
+    }
 
 
     /// <inheritdoc/>

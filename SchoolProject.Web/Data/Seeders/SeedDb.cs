@@ -444,7 +444,7 @@ public class SeedDb
 
     private async Task CreateRoleAsync(string role)
     {
-        await _roleManager.CreateAsync(new IdentityRole(role));
+        await _roleManager.CreateAsync(new(role));
     }
 
 

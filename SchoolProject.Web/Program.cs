@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Google.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -380,7 +381,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie()
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        options.TokenValidationParameters = new()
         {
             ValidateIssuer = true,
             ValidateAudience = true,
@@ -399,7 +400,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 )
         };
 
-        options.Events = new JwtBearerEvents
+        options.Events = new()
         {
             OnAuthenticationFailed = context =>
             {
@@ -547,7 +548,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new CultureInfo("pt-BR")
     };
 
-    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.DefaultRequestCulture = new("en-US");
 
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
@@ -626,6 +627,11 @@ builder.Logging.AddApplicationInsights();
 
 
 // --------------------------------- --------------------------------------- //
+
+// builder.Services.AddScoped<SemaphoreService>();
+builder.Services.TryAddSingleton<SemaphoreService>();
+
+
 // --------------------------------- --------------------------------------- //
 // --------------------------------- --------------------------------------- //
 
@@ -765,7 +771,7 @@ GetServerHostNamePing(serverHostName);
 builder.Services.Configure<WebEncoderOptions>(options =>
 {
     options.TextEncoderSettings =
-        new TextEncoderSettings(UnicodeRanges.All);
+        new(UnicodeRanges.All);
 });
 
 
@@ -805,19 +811,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.Use(async (context, next) =>
-{
-    if (context.Request.Path.Value.EndsWith(".css"))
-        context.Response.ContentType = "text/css; charset=utf-8";
 
-    else if (context.Request.Path.Value.EndsWith(".js"))
-        context.Response.ContentType = "text/javascript; charset=utf-8";
+//app.Use(async (context, next) =>
+//{
+//    if (context.Request.Path.Value.EndsWith(".css"))
+//        context.Response.ContentType = "text/css; charset=utf-8";
 
-    else if (context.Request.Path.Value.EndsWith(".svg"))
-        context.Response.ContentType = "image/svg+xml";
+//    else if (context.Request.Path.Value.EndsWith(".js"))
+//        context.Response.ContentType = "text/javascript; charset=utf-8";
 
-    await next.Invoke();
-});
+//    else if (context.Request.Path.Value.EndsWith(".svg"))
+//        context.Response.ContentType = "image/svg+xml";
+
+//    await next.Invoke();
+//});
 
 
 app.UseWebSockets();

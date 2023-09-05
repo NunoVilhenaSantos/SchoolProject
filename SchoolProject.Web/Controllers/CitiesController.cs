@@ -33,12 +33,12 @@ public class CitiesController : Controller
     }
 
 
-    private IEnumerable<City> CitiesWithCountries()
+    private List<City> CitiesWithCountries()
     {
         var citiesWithCountries =
             _cityRepository.GetCitiesWithCountriesAsync();
 
-        return citiesWithCountries;
+        return citiesWithCountries.ToList();
     }
 
 
@@ -79,24 +79,9 @@ public class CitiesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        var records = _cityRepository.GetAll()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
         // TODO: fix this
-        // var model = new PaginationViewModel<City>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _cityRepository.GetCount().Result,
-        //     SortOrder = "asc",
-        //     // SortProperties = SortProperties(),
-        // };
-
         var model = new PaginationViewModel<City>(
-            records,
+            CitiesWithCountries(),
             pageNumber, pageSize,
             _cityRepository.GetCount().Result,
             sortOrder, sortProperty

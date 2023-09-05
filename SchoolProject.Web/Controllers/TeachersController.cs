@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
@@ -59,9 +60,9 @@ public class TeachersController : Controller
     }
 
 
-    private async Task<IEnumerable<Teacher>> GetTeachersListAsync()
+    private List<Teacher> GetTeachersListAsync()
     {
-        return await _context.Teachers
+        return _context.Teachers
             .Include(t => t.Country).ThenInclude(c => c.Nationality)
             .Include(t => t.Country).ThenInclude(c => c.CreatedBy)
             .Include(t => t.City).ThenInclude(c => c.CreatedBy)
@@ -75,8 +76,7 @@ public class TeachersController : Controller
             // Se desejar carregar os cursos associados
             .Include(t => t.TeacherCourses)
             // E seus detalhes, se necessário
-            .ThenInclude(tc => tc.Course)
-            .ToListAsync();
+            .ThenInclude(tc => tc.Course).ToList();
     }
 
 
@@ -148,133 +148,43 @@ public class TeachersController : Controller
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
 
-        // TODO: Obter todos os registros
-        IEnumerable<Teacher> allTeachers;
-
+        // TODO: Obter todos os registos
+        List<Teacher> recordsQuery;
 
         // Tente obter a lista de professores da sessão
         if (HttpContext.Session.TryGetValue("AllTeachers", out var teacherData))
         {
             // Se a lista estiver na sessão, desserializa-a
             var json = Encoding.UTF8.GetString(teacherData);
-            allTeachers = JsonConvert.DeserializeObject<List<Teacher>>(json);
+
+            recordsQuery = JsonConvert.DeserializeObject<List<Teacher>>(json) ??
+                           new List<Teacher>();
         }
         else
         {
-            // Caso contrário, obtenha a lista completa de professores do banco de dados
-            allTeachers = await GetTeachersListAsync();
+            // Caso contrário,
+            // obtenha a lista completa do banco de dados
+            recordsQuery = GetTeachersListAsync();
 
+            PaginationViewModel<Teacher>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<Teacher>
+                .StoreListToFileInJson(recordsQuery);
 
             // Armazene a lista na sessão para uso futuro
-            var json = JsonConvert.SerializeObject(allTeachers,
-                new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    Formatting =
-                        Formatting.Indented // Indent the JSON for readability
-                });
-
-            // TODO: passar para o modelo PaginationViewModel
-            try
-            {
-                // Specify the file path where you want to save the JSON file
-                var filePath = Path.Combine(_hostingEnvironment.ContentRootPath,
-                    "Data", "teachers.json");
-
-                // Save the JSON to the file
-                System.IO.File.WriteAllText(filePath, json);
-
-                // return Ok("JSON file saved successfully!");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
-            }
-
-
-            Console.WriteLine("JSON file saved successfully!");
-
-            HttpContext.Session.Set("AllTeachers",
-                Encoding.UTF8.GetBytes(json));
+            HttpContext.Session.Set(
+                "AllTeachers", Encoding.UTF8.GetBytes(json));
         }
 
 
-        // Obter todos os registros
-        // var recordsQuery = GetTeachersList().AsQueryable();
-
-        // Aplicar ordenação com base em sortOrder e sortProperty
-        // recordsQuery =
-        //     ApplySorting(recordsQuery, sortOrder, sortProperty);
-
-        // Obter uma página específica de usuários
-        var records = _context.Teachers
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
         var model = new PaginationViewModel<Teacher>(
-            records,
+            recordsQuery,
             pageNumber, pageSize,
             _context.Teachers.Count(),
             sortOrder, sortProperty
         );
 
         return View(model);
-    }
-
-
-    private IQueryable<Teacher> ApplySorting(
-        IQueryable<Teacher> query, string sortOrder, string sortProperty)
-    {
-        // Verifica se sortOrder é válido
-        var validSortOrders = new[] {"asc", "desc"};
-
-
-        // Tratar ordenação inválida, por exemplo, aplicar ordenação padrão
-        if (!validSortOrders.Contains(sortOrder)) sortOrder = "asc";
-
-
-        // Tratar a propriedade padrão para ordenação, defina a propriedade padrão aqui
-        if (string.IsNullOrEmpty(sortProperty)) sortProperty = "FirstName";
-
-
-        // Obtém o tipo da classe
-        // Type userType = typeof(UserWithRolesViewModel);
-        var userType = typeof(Teacher);
-
-        // Verifica se a propriedade de ordenação existe na classe
-        var propertyInfo =
-            userType.GetProperty(sortProperty,
-                BindingFlags.IgnoreCase |
-                BindingFlags.Public |
-                BindingFlags.Instance) ??
-            userType.GetProperty("FirstName",
-                BindingFlags.IgnoreCase |
-                BindingFlags.Public |
-                BindingFlags.Instance);
-
-
-        // Cria uma expressão de ordenação dinâmica
-        var parameter = Expression.Parameter(typeof(Teacher), "x");
-        var property = Expression.Property(parameter, propertyInfo);
-        var lambda = Expression.Lambda(property, parameter);
-
-
-        // Aplica a ordenação com base na expressão dinâmica
-        var orderByMethod =
-            sortOrder == "asc" ? "OrderBy" : "OrderByDescending";
-
-        var orderByExpression = Expression.Call(
-            typeof(Queryable),
-            orderByMethod,
-            new[] {userType, propertyInfo.PropertyType},
-            query.Expression,
-            lambda
-        );
-
-
-        // Retorna o resultado ordenado
-        return query.Provider.CreateQuery<Teacher>(orderByExpression);
     }
 
 

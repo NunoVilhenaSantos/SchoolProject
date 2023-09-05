@@ -30,12 +30,12 @@ public class GendersController : Controller
     }
 
 
-    private IEnumerable<Gender> GendersList()
+    private List<Gender> GendersList()
     {
         //var citiesWithCountries =
         //    _cityRepository?.GetCitiesWithCountriesAsync();
 
-        return _context.Genders.ToListAsync().Result;
+        return _context.Genders.ToList();
     }
 
 
@@ -88,17 +88,6 @@ public class GendersController : Controller
     // }
 
 
-    private List<Gender> GendersList(int pageNumber, int pageSize)
-    {
-        var records = GendersList()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return records;
-    }
-
-
     // GET: Genders
     /// <summary>
     ///     IndexCards method for the cards view.
@@ -114,17 +103,8 @@ public class GendersController : Controller
         // var records = GendersList(pageNumber, pageSize);
 
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<Gender>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.Genders.Count(),
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<Gender>(
-            GendersList().ToList(),
+            GendersList(),
             pageNumber, pageSize,
             _context.Genders.Count(),
             sortOrder, sortProperty

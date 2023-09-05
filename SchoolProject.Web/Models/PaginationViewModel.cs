@@ -1,8 +1,13 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+
+
 
 namespace SchoolProject.Web.Models;
+
+
 
 /// <summary>
 ///     PaginationViewModel class for all view models.
@@ -10,6 +15,8 @@ namespace SchoolProject.Web.Models;
 /// <typeparam name="T"> T will assume each class</typeparam>
 public class PaginationViewModel<T> where T : class
 {
+    private static IWebHostEnvironment _hostingEnvironment;
+
     /// <summary>
     ///     PaginationViewModel constructor.
     /// </summary>
@@ -33,9 +40,26 @@ public class PaginationViewModel<T> where T : class
             : "asc";
 
         SortProperty = sortProperty;
-
         SortPropertiesList = GetSortProperties();
-        RecordsQuery = ApplySorting(Records.AsQueryable());
+
+        var recordsQuerySorted = ApplySorting(
+            records.AsQueryable(), sortOrder, sortProperty);
+
+        // Obter uma página específica de um determinado tamanho
+        RecordsQuery = recordsQuerySorted
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="hostingEnvironment"></param>
+    public static void Initialize(IWebHostEnvironment hostingEnvironment)
+    {
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
@@ -47,7 +71,7 @@ public class PaginationViewModel<T> where T : class
     /// <summary>
     ///     RecordsQuery for the class T.
     /// </summary>
-    public IQueryable<T> RecordsQuery { get; set; }
+    public List<T> RecordsQuery { get; set; }
 
 
     /// <summary>
@@ -67,10 +91,10 @@ public class PaginationViewModel<T> where T : class
     /// </summary>
     public List<SelectListItem> PageSizeList { get; } = new()
     {
-        new SelectListItem {Value = "10", Text = "10"},
-        new SelectListItem {Value = "25", Text = "25"},
-        new SelectListItem {Value = "50", Text = "50"},
-        new SelectListItem {Value = "100", Text = "100"}
+        new() {Value = "10", Text = "10"},
+        new() {Value = "25", Text = "25"},
+        new() {Value = "50", Text = "50"},
+        new() {Value = "100", Text = "100"}
     };
 
 
@@ -91,8 +115,8 @@ public class PaginationViewModel<T> where T : class
     /// </summary>
     public List<SelectListItem> SortOrderList { get; } = new()
     {
-        new SelectListItem {Value = "asc", Text = "Ascending"},
-        new SelectListItem {Value = "desc", Text = "Descending"}
+        new() {Value = "asc", Text = "Ascending"},
+        new() {Value = "desc", Text = "Descending"}
     };
 
 
@@ -138,10 +162,11 @@ public class PaginationViewModel<T> where T : class
     }
 
 
-    private IQueryable<T> ApplySorting(IQueryable<T> query)
+    private List<T> ApplySorting(
+        IQueryable<T> query, string sortOrder, string sortProperty)
     {
         // Check if sortOrder is valid
-        if (!SortOrderList.Select(item => item.Value).Contains(SortOrder))
+        if (!SortOrderList.Select(item => item.Value).Contains(sortOrder))
             SortOrder = "asc";
 
 
@@ -151,7 +176,7 @@ public class PaginationViewModel<T> where T : class
 
         // Check if sortProperty exists in the class
         var propertyInfo =
-            modelType.GetProperty(SortProperty,
+            modelType.GetProperty(sortProperty,
                 BindingFlags.IgnoreCase |
                 BindingFlags.Public |
                 BindingFlags.Instance) ??
@@ -161,7 +186,7 @@ public class PaginationViewModel<T> where T : class
                 BindingFlags.Instance);
 
 
-        if (propertyInfo == null) return new List<T>().AsQueryable();
+        if (propertyInfo == null) return new List<T>();
 
 
         var parameter = Expression.Parameter(modelType, "x");
@@ -170,7 +195,7 @@ public class PaginationViewModel<T> where T : class
 
 
         var orderByMethod =
-            SortOrder == "asc" ? "OrderBy" : "OrderByDescending";
+            sortOrder == "asc" ? "OrderBy" : "OrderByDescending";
 
 
         var orderByExpression = Expression.Call(
@@ -181,6 +206,61 @@ public class PaginationViewModel<T> where T : class
             lambda
         );
 
-        return query.Provider.CreateQuery<T>(orderByExpression);
+        // return query.Provider.CreateQuery<T>(orderByExpression);
+        var recordsQuerySorted =
+            query.Provider.CreateQuery<T>(orderByExpression);
+
+        // Obter uma página específica de um determinado tamanho
+        RecordsQuery = recordsQuerySorted
+            .Skip((PageNumber - 1) * PageSize)
+            .Take(PageSize)
+            .ToList();
+
+
+        return RecordsQuery;
+    }
+
+
+    /// <summary>
+    /// Stores the json list in a file
+    /// </summary>
+    /// <param name="enumerable"></param>
+    /// <returns></returns>
+    public static string StoreListToFileInJson(IEnumerable<T> enumerable)
+    {
+        // Armazene a lista na sessão para uso futuro
+        var json = JsonConvert.SerializeObject(enumerable,
+            new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+
+                // Indent the JSON for readability
+                Formatting = Formatting.Indented
+            });
+
+        try
+        {
+            // Obtenha o nome da classe T
+            var typeName = typeof(T).Name + "s";
+
+            // Specify the file path where you queremos salvar o JSON file
+            var filePath =
+                Path.Combine(_hostingEnvironment.ContentRootPath,
+                    "Data", typeName, ".json");
+
+
+            // Save the JSON to the file
+            System.IO.File.WriteAllText(filePath, json);
+
+            Console.WriteLine("JSON file saved successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+
+        Console.WriteLine("JSON file saved successfully!");
+
+        return json;
     }
 }

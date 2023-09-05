@@ -44,10 +44,7 @@ public class StudentsController : Controller
     }
 
 
-    private IEnumerable<Student> GetStudentsList()
-    {
-        return _context.Students.ToListAsync().Result;
-    }
+    private List<Student> GetStudentsList() => _context.Students.ToList();
 
 
     // GET: Students
@@ -88,16 +85,6 @@ public class StudentsController : Controller
     // }
 
 
-    private List<Student> GetStudentsListForCards(
-        int pageNumber, int pageSize)
-    {
-        return GetStudentsList()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-    }
-
-
     // GET: Students
     /// <summary>
     ///     Index1 method, for the main view, for testing purposes.
@@ -111,20 +98,9 @@ public class StudentsController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        // var records = GetStudentsListForCards(pageNumber, pageSize);
-
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<Student>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.Students.Count(),
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<Student>(
-            GetStudentsList().ToList(),
+            GetStudentsList(),
             pageNumber, pageSize,
             _context.Students.Count(),
             sortOrder, sortProperty

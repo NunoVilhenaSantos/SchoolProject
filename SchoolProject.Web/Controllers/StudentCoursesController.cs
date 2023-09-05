@@ -43,14 +43,15 @@ public class StudentCoursesController : Controller
     }
 
 
-    private IEnumerable<StudentCourse> GetStudentCourses()
+    private List<StudentCourse> GetStudentCourses()
     {
         var studentCoursesList =
             _context.StudentCourses
                 .Include(s => s.Course)
                 .Include(s => s.Student)
                 .Include(s => s.CreatedBy)
-                .Include(s => s.UpdatedBy);
+                .Include(s => s.UpdatedBy)
+                .ToList();
 
         return studentCoursesList;
     }
@@ -117,21 +118,9 @@ public class StudentCoursesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        // var records =
-        //     GetStudentCourses(pageNumber, pageSize);
-
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<StudentCourse>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.StudentCourses.Count(),
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<StudentCourse>(
-            GetStudentCourses().ToList(),
+            GetStudentCourses(),
             pageNumber, pageSize,
             _context.StudentCourses.Count(),
             sortOrder, sortProperty

@@ -42,9 +42,9 @@ public class NationalitiesController : Controller
     }
 
 
-    private IEnumerable<Nationality> GetNationalitiesWithCountries()
+    private List<Nationality> GetNationalitiesWithCountries()
     {
-        return _nationalityRepository.GetNationalitiesWithCountries();
+        return _nationalityRepository.GetNationalitiesWithCountries().ToList();
     }
 
 
@@ -84,16 +84,6 @@ public class NationalitiesController : Controller
     // }
 
 
-    private List<Nationality> GetNationalitiesWithCountries(
-        int pageNumber, int pageSize)
-    {
-        return GetNationalitiesWithCountries()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-    }
-
-
     // GET: Countries
     /// <summary>
     ///     IndexCards1 method for the cards view with pagination mode.
@@ -106,21 +96,9 @@ public class NationalitiesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        // var records =
-        //     GetNationalitiesWithCountries(pageNumber, pageSize);
-
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<Nationality>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _nationalityRepository.GetCount().Result,
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<Nationality>(
-            GetNationalitiesWithCountries().ToList(),
+            GetNationalitiesWithCountries(),
             pageNumber, pageSize,
             _nationalityRepository.GetCount().Result,
             sortOrder, sortProperty

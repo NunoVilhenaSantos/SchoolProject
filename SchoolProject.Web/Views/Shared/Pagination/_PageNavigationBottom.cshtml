@@ -14,49 +14,12 @@
             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">Previous</a>
         </li>
 
-        <!-- Page links -->
-        @* @for (var i = 1; i <= Model.TotalPages; i++) *@
-        @* { *@
-        @*     $1$ <!-- Display first page --> #1# *@
-        @*     @if (i == 1) *@
-        @*     { *@
-        @*         <li class="page-item @(i == Model.PageNumber ? "active" : "")"> *@
-        @*             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a> *@
-        @*         </li> *@
-        @*     } *@
-        @* *@
-        @*     $1$ <!-- Display last page --> #1# *@
-        @*     else if (i == Model.TotalPages) *@
-        @*     { *@
-        @*         <li class="page-item @(i == Model.PageNumber ? "active" : "")"> *@
-        @*             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a> *@
-        @*         </li> *@
-        @*     } *@
-        @* *@
-        @*     $1$ <!-- Display up to 2 pages before and after current page --> #1# *@
-        @*     $1$ else if ((i >= Model.PageNumber - 2 && i <= Model.PageNumber + 2) || i == 1 || i == Model.TotalPages) #1# *@
-        @*     else if (i >= Model.PageNumber - 2 && i <= Model.PageNumber + 2) *@
-        @*     { *@
-        @*         <li class="page-item @(i == Model.PageNumber ? "active" : "")"> *@
-        @*             <a class="page-link" href="@Url.Action("IndexCards1", controllerName, new {pageNumber = i, pageSize = Model.PageSize, sortOrder = Model.SortOrder, sortProperty = Model.SortProperty})">@i</a> *@
-        @*         </li> *@
-        @*     } *@
-        @* *@
-        @*     $1$ <!-- Display "..." when there are more pages --> #1# *@
-        @*     else if ((i == Model.PageNumber - 3 || i == Model.PageNumber + 3) && Model.TotalPages > 7) *@
-        @*     { *@
-        @*         <li class="page-item disabled"> *@
-        @*             <a class="page-link" href="#">...</a> *@
-        @*         </li> *@
-        @*     } *@
-        @* } *@
-
 
         <!-- Page numbers links -->
         @{
             var totalPages = Model.TotalPages;
             var currentPage = Model.PageNumber;
-            var pageRange = 3; // Number of pages to display before and after the current page
+            const int pageRange = 3; // Number of pages to display before and after the current page
 
             for (var i = 1; i <= totalPages; i++)
             {

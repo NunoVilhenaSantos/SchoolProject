@@ -44,14 +44,15 @@ public class SchoolClassCoursesController : Controller
     }
 
 
-    private IEnumerable<SchoolClassCourse> GetSchoolClassesWithCourses()
+    private List<SchoolClassCourse> GetSchoolClassesWithCourses()
     {
         var schoolClassesWithCourses =
             _context.SchoolClassCourses
                 .Include(s => s.Course)
                 .Include(s => s.SchoolClass)
                 .Include(s => s.CreatedBy)
-                .Include(s => s.UpdatedBy);
+                .Include(s => s.UpdatedBy)
+                .ToList();
 
         return schoolClassesWithCourses;
     }
@@ -94,16 +95,6 @@ public class SchoolClassCoursesController : Controller
     // }
 
 
-    private List<SchoolClassCourse> GetSchoolClassesWithCoursesList(
-        int pageNumber = 1, int pageSize = 10)
-    {
-        return GetSchoolClassesWithCourses()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-    }
-
-
     // GET: SchoolClassCourses
     /// <summary>
     ///     Index with cards, list of school class with courses
@@ -120,17 +111,8 @@ public class SchoolClassCoursesController : Controller
         //     GetSchoolClassesWithCoursesList(pageNumber, pageSize);
 
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<SchoolClassCourse>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.SchoolClassCourses.Count(),
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<SchoolClassCourse>(
-            GetSchoolClassesWithCoursesList().ToList(),
+            GetSchoolClassesWithCourses(),
             pageNumber, pageSize,
             _context.SchoolClassCourses.Count(),
             sortOrder, sortProperty

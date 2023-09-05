@@ -46,7 +46,7 @@ public class CoursesController : Controller
     }
 
 
-    private IEnumerable<Course> CoursesList()
+    private List<Course> CoursesList()
     {
         //var coursesList =
         //    _cityRepository?.GetCitiesWithCountriesAsync();
@@ -127,7 +127,7 @@ public class CoursesController : Controller
         // };
 
         var model = new PaginationViewModel<Course>(
-            CoursesList().ToList(),
+            CoursesList(),
             pageNumber, pageSize,
             _context.Courses.Count(),
             sortOrder, sortProperty

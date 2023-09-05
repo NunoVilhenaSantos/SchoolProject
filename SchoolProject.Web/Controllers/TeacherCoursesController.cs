@@ -45,7 +45,7 @@ public class TeacherCoursesController : Controller
     }
 
 
-    private IEnumerable<TeacherCourse> GetTeacherCoursesList()
+    private List<TeacherCourse> GetTeacherCoursesList()
     {
         var teacherCoursesList =
             _context.TeacherCourses
@@ -53,9 +53,9 @@ public class TeacherCoursesController : Controller
                 .Include(t => t.Teacher)
                 .Include(t => t.CreatedBy)
                 .Include(t => t.UpdatedBy)
-                .ToListAsync();
+                .ToList();
 
-        return teacherCoursesList.Result;
+        return teacherCoursesList;
     }
 
 
@@ -98,16 +98,6 @@ public class TeacherCoursesController : Controller
     // }
 
 
-    private List<TeacherCourse> GetTeacherCoursesList(
-        int pageNumber, int pageSize)
-    {
-        return GetTeacherCoursesList()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-    }
-
-
     // GET: TeacherCourses
     /// <summary>
     ///     IndexCards1 method for the cards view with pagination, for testing purposes.
@@ -121,21 +111,9 @@ public class TeacherCoursesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        var records =
-            GetTeacherCoursesList(pageNumber, pageSize);
-
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<TeacherCourse>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.TeacherCourses.Count(),
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<TeacherCourse>(
-            records.ToList(),
+            GetTeacherCoursesList(),
             pageNumber, pageSize,
             _context.TeacherCourses.Count(),
             sortOrder, sortProperty

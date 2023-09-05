@@ -48,9 +48,9 @@ public class RolesController : Controller
     }
 
 
-    private IEnumerable<IdentityRole> GetRolesList()
+    private List<IdentityRole> GetRolesList()
     {
-        return _roleManager.Roles;
+        return _roleManager.Roles.ToList();
     }
 
 
@@ -76,15 +76,6 @@ public class RolesController : Controller
     // }
 
 
-    private List<IdentityRole> GetRolesList(int pageNumber, int pageSize)
-    {
-        return _roleManager.Roles
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-    }
-
-
     // GET: Roles
     /// <summary>
     ///     Action to show all the roles
@@ -96,17 +87,8 @@ public class RolesController : Controller
         // var records = GetRolesList(pageNumber, pageSize);
 
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<IdentityRole>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _roleManager.Roles.Count(),
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<IdentityRole>(
-            GetRolesList().ToList(),
+            GetRolesList(),
             pageNumber, pageSize,
             _roleManager.Roles.Count(),
             sortOrder, sortProperty
@@ -177,7 +159,7 @@ public class RolesController : Controller
             return View(identityRole);
         }
 
-        var result = await _roleManager.CreateAsync(new IdentityRole
+        var result = await _roleManager.CreateAsync(new()
         {
             Name = identityRole.Name
         });

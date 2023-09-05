@@ -9,7 +9,7 @@ public class LoginViewModel
 
 
     [Required]
-    [MinLength(8)]
+    [MinLength(6)]
     [DataType(DataType.Password)]
     public required string Password { get; set; }
 

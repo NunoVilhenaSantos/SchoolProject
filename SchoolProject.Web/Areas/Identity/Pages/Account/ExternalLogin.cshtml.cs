@@ -142,7 +142,7 @@ public class ExternalLoginModel : PageModel
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-            Input = new InputModel
+            Input = new()
             {
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email)
             };

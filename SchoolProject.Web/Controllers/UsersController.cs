@@ -45,29 +45,66 @@ public class UsersController : Controller
     }
 
 
-    private IEnumerable<UserWithRolesViewModel> GetUsersWithRolesList()
+    // old methode, only returns users that have roles
+    // private IEnumerable<UserWithRolesViewModel> GetUsersWithRolesList()
+    // {
+    //     var usersWithRoles = _context.Users
+    //         .Join(_context.UserRoles, user => user.Id,
+    //             userRole => userRole.UserId,
+    //             (user, userRole) => new
+    //             {
+    //                 User = user,
+    //                 UserRole = userRole
+    //             })
+    //         .Join(_context.Roles,
+    //             userUserRole =>
+    //                 userUserRole.UserRole.RoleId,
+    //             role => role.Id,
+    //             (userUserRole, role) =>
+    //                 new UserWithRolesViewModel
+    //                 {
+    //                     User = userUserRole.User,
+    //                     // You can modify this if users can have multiple roles
+    //                     Role = userUserRole.UserRole,
+    //                     Roles = new List<string> {role.Name}
+    //                 })
+    //         .AsQueryable().ToList();
+    //
+    //     return usersWithRoles;
+    // }
+
+
+    private List<UserWithRolesViewModel> GetUsersWithRolesList()
     {
         var usersWithRoles = _context.Users
-            .Join(_context.UserRoles, user => user.Id,
+            .GroupJoin(_context.UserRoles,
+                user => user.Id,
                 userRole => userRole.UserId,
-                (user, userRole) => new
+                (user, userRoles) => new
                 {
                     User = user,
-                    UserRole = userRole
+                    UserRoles = userRoles
                 })
-            .Join(_context.Roles,
-                userUserRole =>
-                    userUserRole.UserRole.RoleId,
+            .SelectMany(
+                x => x.UserRoles.DefaultIfEmpty(),
+                (user, userRole) =>
+                    new
+                    {
+                        User = user.User,
+                        UserRole = userRole
+                    })
+            .GroupJoin(_context.Roles,
+                userUserRole => userUserRole.UserRole.RoleId,
                 role => role.Id,
-                (userUserRole, role) =>
+                (userUserRole,
+                        roles) =>
                     new UserWithRolesViewModel
                     {
                         User = userUserRole.User,
-                        // You can modify this if users can have multiple roles
                         Role = userUserRole.UserRole,
-                        Roles = new List<string> {role.Name}
+                        Roles = roles.Select(role => role.Name).ToList()
                     })
-            .AsQueryable().ToList();
+            .ToList();
 
         return usersWithRoles;
     }
@@ -108,41 +145,7 @@ public class UsersController : Controller
     // }
 
 
-    private List<UserWithRolesViewModel> GetUsersWithRoles(
-        int pageNumber, int pageSize)
-    {
-        return GetUsersWithRolesList()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-    }
-
-
     // GET: Users
-    ///// <summary>
-    /////     IndexCards1, Action to show all the roles
-    ///// </summary>
-    ///// <returns>a list of roles</returns>
-    //public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10)
-    //{
-    //    var records =
-    //        GetUsersWithRoles(pageNumber, pageSize);
-
-    //    // TODO: Fix the sort order
-    //    var model = new PaginationViewModel<UserWithRolesViewModel>
-    //    {
-    //        Records = records,
-    //        PageNumber = pageNumber,
-    //        PageSize = pageSize,
-    //        TotalCount = _context.Users.Count(),
-    //        SortOrder = "asc",
-    //        // SortProperties = SortProperties(),
-    //    };
-
-    //    return View(model);
-    //}
-
-
     /// <summary>
     ///     IndexCards1, Action to show all the roles
     /// </summary>
@@ -160,31 +163,8 @@ public class UsersController : Controller
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
 
-        // Obter todos os registros
-        // var recordsQuery =
-        //     GetUsersWithRolesList().AsQueryable();
-
-        // Aplicar ordenação com base em sortOrder e sortProperty
-        // recordsQuery = ApplySorting(recordsQuery, sortOrder, sortProperty);
-
-        // Obter uma página específica de usuários
-        // var records = recordsQuery
-        //     .Skip((pageNumber - 1) * pageSize)
-        //     .Take(pageSize)
-        //     .ToList();
-
-        // var model = new PaginationViewModel<UserWithRolesViewModel>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.Users.Count(),
-        //     SortOrder = sortOrder, // Passa o valor de ordenação para o modelo
-        //     // SortProperties = SortProperties(), // Passa a lista de propriedades de ordenação para o modelo
-        // };
-
         var model = new PaginationViewModel<UserWithRolesViewModel>(
-            GetUsersWithRolesList().ToList(),
+            GetUsersWithRolesList(),
             pageNumber, pageSize,
             _context.Users.Count(),
             sortOrder, sortProperty
@@ -214,7 +194,7 @@ public class UsersController : Controller
 
 
         // Adiciona um item para ordenação padrão
-        sortProperties.Insert(0, new SelectListItem
+        sortProperties.Insert(0, new()
         {
             Value = "FirstName",
             Text = "Ordenar por..."

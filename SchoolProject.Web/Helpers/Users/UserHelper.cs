@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Account;
 
+
 namespace SchoolProject.Web.Helpers.Users;
 
 /// <summary>
@@ -13,23 +14,33 @@ public class UserHelper : IUserHelper
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
+    
+
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    
+
 
 
     /// <summary>
     ///     The user helper constructor.
     /// </summary>
+    /// <param name="httpContextAccessor"></param>
     /// <param name="userManager"></param>
     /// <param name="signInManager"></param>
     /// <param name="roleManager"></param>
     public UserHelper(
+        IHttpContextAccessor httpContextAccessor,
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         RoleManager<IdentityRole> roleManager
-    )
+        )
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
+
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -104,7 +115,7 @@ public class UserHelper : IUserHelper
         var result = await _roleManager.RoleExistsAsync(roleName);
 
         if (!result)
-            await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
+            await _roleManager.CreateAsync(new() {Name = roleName});
     }
 
 
@@ -164,8 +175,8 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
-    public async Task<SignInResult> ValidatePasswordAsync(
-        User user, string password)
+    public async Task<Microsoft.AspNetCore.Identity.SignInResult> 
+        ValidatePasswordAsync(User user, string password)
     {
         return await _signInManager.CheckPasswordSignInAsync(
             user, password, false);
@@ -180,9 +191,45 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
-    public async Task<IdentityResult> ConfirmEmailAsync(
-        User user, string token)
+    public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
     {
         return await _userManager.ConfirmEmailAsync(user, token);
     }
+
+
+
+    /// <inheritdoc/>
+    public async Task SignInAsync(User user, bool rememberMe = true, string? authenticationMethod = null)
+    {
+        await _signInManager.SignInAsync(user, rememberMe, authenticationMethod);
+    }
+
+
+    /// <inheritdoc/>
+    public async Task<bool> PasswordSignInAsync(User user, bool isPersistent= false, bool lockoutOnFailure = false)
+    {
+        bool signInResult = false;
+
+
+        // Faz o signin do usuário
+        var result = await _signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, isPersistent, lockoutOnFailure);
+
+
+        // Verifica se o usuário foi autenticado com sucesso
+        signInResult = result.Succeeded;
+
+
+        return signInResult;
+    }
+
+
+    /// <inheritdoc/>
+    public bool IsUserSignInAsync(
+        User user, bool rememberMe = true, string? authenticationMethod = null) => _signInManager.Context.User.Identity.IsAuthenticated;
+
+
+
+    /// <inheritdoc/>
+    public bool IsUserAuthenticated() => _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+
 }

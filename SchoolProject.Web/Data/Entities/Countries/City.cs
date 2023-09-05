@@ -12,7 +12,7 @@ namespace SchoolProject.Web.Data.Entities.Countries;
 /// <summary>
 ///     Class for cities data
 /// </summary>
-public class City : IEntity, INotifyPropertyChanged
+public class City : IEntity, INotifyPropertyChanged //, IComparable<City>
 {
     /// <summary>
     ///     Name of the city
@@ -50,12 +50,8 @@ public class City : IEntity, INotifyPropertyChanged
         : StorageHelper.AzureStoragePublicUrl + "cities/" + ProfilePhotoId;
 
 
-
-
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
-
-
 
 
     [Required]
@@ -121,7 +117,7 @@ public class City : IEntity, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
+            new(propertyName));
     }
 
     protected bool SetField<T>(ref T field, T value,
@@ -132,4 +128,6 @@ public class City : IEntity, INotifyPropertyChanged
         OnPropertyChanged(propertyName);
         return true;
     }
+
+
 }

@@ -54,7 +54,7 @@ public class IndexModel : PageModel
 
         Username = userName;
 
-        Input = new InputModel {PhoneNumber = phoneNumber};
+        Input = new() {PhoneNumber = phoneNumber};
     }
 
     public async Task<IActionResult> OnGetAsync()

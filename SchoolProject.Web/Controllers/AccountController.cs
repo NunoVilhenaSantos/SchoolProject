@@ -3,14 +3,15 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Azure.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
@@ -27,6 +28,7 @@ public class AccountController : Controller
 {
     private const string BucketName = "users";
     private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     private readonly ICountryRepository _countryRepository;
     private readonly IEMailHelper _emailHelper;
@@ -50,15 +52,26 @@ public class AccountController : Controller
         IStorageHelper storageHelper,
         IEMailHelper emailHelper,
         IImageHelper imageHelper,
-        IUserHelper userHelper
-    )
+        IUserHelper userHelper,
+        IHttpContextAccessor httpContextAccessor,
+        SignInManager<User> signInManager
+
+        //SemaphoreSlim signInSemaphore,
+        //SemaphoreService semaphoreService
+        )
     {
+        _httpContextAccessor = httpContextAccessor;
+
         _userHelper = userHelper;
         _imageHelper = imageHelper;
         _emailHelper = emailHelper;
         _storageHelper = storageHelper;
         _configuration = configuration;
         _countryRepository = countryRepository;
+        
+        // _signInSemaphore = signInSemaphore;
+        _signInManager = signInManager;
+        //_semaphoreService = semaphoreService;
     }
 
 
@@ -180,7 +193,7 @@ public class AccountController : Controller
                     // var country = await
                     //     _countryRepository.GetCountryAsync(model.CountryId);
 
-                    user = new User
+                    user = new()
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
@@ -253,6 +266,19 @@ public class AccountController : Controller
                         $"</br></br><a href = \"{tokenLink}\">" +
                         $"Confirm Email</a></br><p>Temporary Password: " +
                         $"{model.Password}</p>");
+
+                    var response1 = await _emailHelper.SendEmailAsync(
+    model.UserName,
+    "Confirmação de Email",
+    $"<h1>Confirmação de Email</h1>" +
+    $"Para permitir o acesso do usuário, " +
+    $"por favor clique no seguinte link:" +
+    $"</br></br><a href = \"{tokenLink}\">" +
+    $"Confirmar Email</a></br><p>Senha Temporária: " +
+    $"{model.Password}</p>" +
+    $"<p>Obrigado por se juntar a nós!</p>"
+);
+
 
 
                     // Todo: 
@@ -518,12 +544,45 @@ public class AccountController : Controller
 
         var result = await _userHelper.ConfirmEmailAsync(user, token);
 
+
         if (!result.Succeeded)
         {
+            ViewBag.ErrorTitle = "Email cannot be confirmed";
+
+            return View("Error");
         }
 
-        return View();
+
+        Task.Delay(1000).Wait();
+
+        var result1 = await _userHelper.LoginAsync(new()
+        {
+            Password = "123456",
+            Username = user.Email,
+            RememberMe = false,
+        });
+
+        if (result1.Succeeded) return RedirectToAction(nameof(ChangePassword));
+
+
+        await _userHelper.SignInAsync(user, true, null);
+
+
+        // Faça o signin do usuário
+        var result2 = await _userHelper.PasswordSignInAsync(user,  false, false);
+
+        if (result2) return RedirectToAction(nameof(ChangePassword));
+
+
+
+        // return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Home");
+
+        // return View();
     }
+
+    private readonly SignInManager<User> _signInManager;
+
 
 
     // ---------------------------------------------------------------------- //

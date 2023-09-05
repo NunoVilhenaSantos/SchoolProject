@@ -85,7 +85,7 @@ public class Nationality : IEntity, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
+            new(propertyName));
     }
 
 

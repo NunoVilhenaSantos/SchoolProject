@@ -43,7 +43,7 @@ public class EnrollmentsController : Controller
     }
 
 
-    private IEnumerable<Enrollment> GetEnrollmentsWithCoursesAndStudents()
+    private List<Enrollment> GetEnrollmentsWithCoursesAndStudents()
     {
         //var citiesWithCountries =
         //    _cityRepository?.GetCitiesWithCountriesAsync();
@@ -53,7 +53,7 @@ public class EnrollmentsController : Controller
                 .Include(e => e.Course)
                 .Include(e => e.Student)
                 .Include(e => e.CreatedBy)
-                .Include(e => e.UpdatedBy);
+                .Include(e => e.UpdatedBy).ToList();
 
         return enrollmentsWithStudent;
     }
@@ -69,48 +69,6 @@ public class EnrollmentsController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
     {
         return View(GetEnrollmentsWithCoursesAndStudents());
-    }
-
-
-    // GET: Enrollments
-    // /// <summary>
-    // ///  Index1 method for the view to test pagination.
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var totalCount = _context.Enrollments.Count();
-    //
-    //     var records = _context.Enrollments
-    //         .Skip((pageNumber - 1) * pageSize)
-    //         .Take(pageSize)
-    //         .ToList();
-    //
-    //     var model = new PaginationViewModel<Enrollment>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = totalCount
-    //     };
-    //
-    //     return View(model);
-    // }
-
-    private List<Enrollment> GetEnrollmentsWithCoursesAndStudents(
-        int pageNumber, int pageSize = 10)
-    {
-        //var citiesWithCountries =
-        //    _cityRepository?.GetCitiesWithCountriesAsync();
-
-        var records = GetEnrollmentsWithCoursesAndStudents()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return records;
     }
 
 
@@ -131,17 +89,9 @@ public class EnrollmentsController : Controller
         //     GetEnrollmentsWithCoursesAndStudents(pageNumber, pageSize);
 
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<Enrollment>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.Enrollments.Count(),
-        //     SortOrder = "asc",
-        // };
 
         var model = new PaginationViewModel<Enrollment>(
-            GetEnrollmentsWithCoursesAndStudents().ToList(),
+            GetEnrollmentsWithCoursesAndStudents(),
             pageNumber, pageSize,
             _context.Enrollments.Count(),
             sortOrder, sortProperty

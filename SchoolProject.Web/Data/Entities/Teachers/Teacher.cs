@@ -198,7 +198,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
+            new(propertyName));
     }
 
     protected bool SetField<T>(ref T field, T value,

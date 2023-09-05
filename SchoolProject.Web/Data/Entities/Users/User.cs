@@ -109,7 +109,7 @@ public class User : IdentityUser, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
+            new(propertyName));
     }
 
 

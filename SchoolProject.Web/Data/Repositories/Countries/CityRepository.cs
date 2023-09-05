@@ -68,7 +68,7 @@ public class CityRepository : GenericRepository<City>, ICityRepository
 
         if (country == null) return;
 
-        country.Cities?.Add(new City
+        country.Cities?.Add(new()
         {
             Name = model.Name,
             ProfilePhotoId = default,
@@ -91,7 +91,7 @@ public class CityRepository : GenericRepository<City>, ICityRepository
 
         if (country == null) return;
 
-        country.Cities?.Add(new City
+        country.Cities?.Add(new()
         {
             Name = city.Name,
             ProfilePhotoId = default,

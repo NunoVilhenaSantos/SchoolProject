@@ -48,9 +48,9 @@ public class SchoolClassesController : Controller
     }
 
 
-    private IEnumerable<SchoolClass> GetSchoolClasses()
+    private List<SchoolClass> GetSchoolClasses()
     {
-        return _context.SchoolClasses.ToListAsync().Result;
+        return _context.SchoolClasses.ToList();
     }
 
 
@@ -118,20 +118,9 @@ public class SchoolClassesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = "FirstName")
     {
-        // var records = GetSchoolClasses(pageNumber, pageSize);
-
         // TODO: Fix the sort order
-        // var model = new PaginationViewModel<SchoolClass>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.SchoolClasses.Count(),
-        //     SortOrder = "asc",
-        // };
-
         var model = new PaginationViewModel<SchoolClass>(
-            GetSchoolClasses().ToList(),
+            GetSchoolClasses(),
             pageNumber, pageSize,
             _context.SchoolClasses.Count(),
             sortOrder, sortProperty
