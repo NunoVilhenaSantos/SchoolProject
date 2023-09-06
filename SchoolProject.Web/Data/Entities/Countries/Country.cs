@@ -114,9 +114,13 @@ public class Country : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
 
+
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
@@ -124,6 +128,9 @@ public class Country : IEntity, INotifyPropertyChanged
             new(propertyName));
     }
 
+
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {

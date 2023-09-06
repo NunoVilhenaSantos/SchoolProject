@@ -1,4 +1,6 @@
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Repositories.OtherEntities;
@@ -11,9 +13,13 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class GendersController : Controller
 {
+    private const string SessionVarName = "AllGendersList";
     private const string BucketName = "genders";
+    private const string SortProperty = "Name";
+
     private readonly DataContextMySql _context;
     private readonly IGenderRepository _genderRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>
@@ -21,12 +27,15 @@ public class GendersController : Controller
     /// </summary>
     /// <param name="context"></param>
     /// <param name="genderRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public GendersController(
-        DataContextMySql context, IGenderRepository genderRepository
-    )
+        DataContextMySql context,
+        IGenderRepository genderRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _context = context;
         _genderRepository = genderRepository;
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
@@ -39,16 +48,54 @@ public class GendersController : Controller
     }
 
 
+    private List<Gender> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<Gender> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery = JsonConvert.DeserializeObject<List<Gender>>(json) ??
+                           new List<Gender>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GendersList();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<Gender>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
     // GET: Genders
     /// <summary>
     ///     Index action
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GendersList());
+        var recordsQuery = SessionData<Gender>();
+        return View(recordsQuery);
     }
 
 
@@ -58,34 +105,15 @@ public class GendersController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GendersList());
+        var recordsQuery = SessionData<Gender>();
+        return View(recordsQuery);
     }
-
-
-    // GET: Genders
-    // /// <summary>
-    // /// Index action for testing the pagination
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records = GendersList(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<Gender>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Teachers.Count(),
-    //     };
-    //
-    //     return View(model);
-    // }
 
 
     // GET: Genders
@@ -98,15 +126,18 @@ public class GendersController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // var records = GendersList(pageNumber, pageSize);
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
-        // TODO: Fix the sort order
+        var recordsQuery = SessionData<Gender>();
+
         var model = new PaginationViewModel<Gender>(
-            GendersList(),
+            recordsQuery,
             pageNumber, pageSize,
-            _context.Genders.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 
@@ -131,6 +162,7 @@ public class GendersController : Controller
 
         return View(gender);
     }
+
 
     // GET: Genders/Create
     /// <summary>

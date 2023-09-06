@@ -1,4 +1,6 @@
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Repositories.Students;
@@ -11,9 +13,14 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class StudentsController : Controller
 {
+    private const string SessionVarName = "AllStudentsList";
     private const string BucketName = "students";
-    private readonly DataContextMySql _context;
+    private const string SortProperty = "FirstName";
+
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IStudentRepository _studentRepository;
+    private readonly DataContextMySql _context;
 
 
     /// <summary>
@@ -21,68 +28,89 @@ public class StudentsController : Controller
     /// </summary>
     /// <param name="context"></param>
     /// <param name="studentRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public StudentsController(
-        DataContextMySql context, IStudentRepository studentRepository
-    )
+        DataContextMySql context,
+        IStudentRepository studentRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _context = context;
         _studentRepository = studentRepository;
-    }
-
-
-    // GET: Students
-    /// <summary>
-    ///     students index
-    /// </summary>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetStudentsList());
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
     private List<Student> GetStudentsList() => _context.Students.ToList();
 
 
+    private List<Student> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<Student> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery = JsonConvert.DeserializeObject<List<Student>>(json) ??
+                           new List<Student>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetStudentsList();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<Student>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
     // GET: Students
     /// <summary>
     ///     students index
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetStudentsList());
+        var recordsQuery = SessionData<Student>();
+        return View(recordsQuery);
     }
 
 
     // GET: Students
-    // /// <summary>
-    // ///  students index, for the main view, for testing purposes.
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // [HttpGet]
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records = GetStudentsListForCards(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<Student>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Teachers.Count(),
-    //     };
-    //
-    //     return View(model);
-    // }
+    /// <summary>
+    ///     students index
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery = SessionData<Student>();
+        return View(recordsQuery);
+    }
 
 
     // GET: Students
@@ -96,13 +124,18 @@ public class StudentsController : Controller
     /// <returns></returns>
     [HttpGet]
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // TODO: Fix the sort order
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
+
+        var recordsQuery = SessionData<Student>();
+
         var model = new PaginationViewModel<Student>(
-            GetStudentsList(),
+            recordsQuery,
             pageNumber, pageSize,
-            _context.Students.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 

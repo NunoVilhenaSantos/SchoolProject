@@ -8,8 +8,12 @@ using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
 
+
 namespace SchoolProject.Web.Data.Entities.Teachers;
 
+/// <summary>
+///     teacher class for ef
+/// </summary>
 public class Teacher : IEntity, INotifyPropertyChanged
 {
     [Required]
@@ -192,15 +196,19 @@ public class Teacher : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new(propertyName));
+            new PropertyChangedEventArgs(propertyName));
     }
 
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {

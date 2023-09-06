@@ -9,7 +9,8 @@
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
-<h1>@pageTitle</h1>
+@* <h2>@pageTitle</h2> *@
+<h2>@ViewData["Title"]</h2>
 
 <p>
     @* <a asp-action="Create" class="btn btn-outline-primary"><span class="material-symbols-outlined">add_box</span>Create New</a> *@
@@ -37,12 +38,16 @@
                                     <a asp-action="Details" asp-route-id="@item.User.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
                                     <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
+                                @* <small class="text-body-secondary px-2"> *@
+                                @*     @Html.DisplayNameFor(modelItem => item.User.Email)<br/> *@
+                                @*     @Html.DisplayFor(modelItem => item.User.Email) *@
+                                @* </small> *@
+                                @* <small class="text-body-secondary"> *@
+                                @*     @Html.DisplayNameFor(modelItem => item.User.Address)<br/> *@
+                                @*     @Html.DisplayFor(modelItem => item.User.Address) *@
+                                @* </small> *@
                                 <small class="text-body-secondary px-2">
-                                    @Html.DisplayNameFor(modelItem => item.User.Email)<br/>
-                                    @Html.DisplayFor(modelItem => item.User.Email)
-                                </small>
-                                <small class="text-body-secondary">
-                                    @Html.DisplayNameFor(modelItem => item.User.Address)<br/>
+                                    @Html.DisplayFor(modelItem => item.User.Email)<br/><br/>
                                     @Html.DisplayFor(modelItem => item.User.Address)
                                 </small>
                             </div>

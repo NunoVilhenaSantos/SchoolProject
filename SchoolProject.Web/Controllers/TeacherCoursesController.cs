@@ -1,5 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Repositories.Teachers;
@@ -12,8 +14,12 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class TeacherCoursesController : Controller
 {
-    private readonly DataContextMySql _context;
+    private const string SessionVarName = "AllTeachersAndCourses";
+    private const string SortProperty = "Name";
+
     private readonly ITeacherCourseRepository _teacherCourseRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly DataContextMySql _context;
 
 
     /// <summary>
@@ -21,13 +27,65 @@ public class TeacherCoursesController : Controller
     /// </summary>
     /// <param name="context"></param>
     /// <param name="teacherCourseRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public TeacherCoursesController(
         DataContextMySql context,
-        ITeacherCourseRepository teacherCourseRepository
-    )
+        ITeacherCourseRepository teacherCourseRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _context = context;
+        _hostingEnvironment = hostingEnvironment;
         _teacherCourseRepository = teacherCourseRepository;
+    }
+
+
+    private List<TeacherCourse> GetTeacherCoursesList()
+    {
+        var teacherCoursesList =
+            _context.TeacherCourses
+                .Include(tc => tc.Course)
+                .Include(tc => tc.Teacher)
+                .Include(tc => tc.CreatedBy)
+                .Include(tc => tc.UpdatedBy)
+                .ToList();
+
+        return teacherCoursesList;
+    }
+
+
+    private List<TeacherCourse> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<TeacherCourse> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery =
+                JsonConvert.DeserializeObject<List<TeacherCourse>>(json) ??
+                new List<TeacherCourse>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetTeacherCoursesList();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json =
+                PaginationViewModel<TeacherCourse>.StoreListToFileInJson(
+                    recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
     }
 
 
@@ -39,23 +97,11 @@ public class TeacherCoursesController : Controller
     /// <param name="pageSize"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetTeacherCoursesList());
-    }
-
-
-    private List<TeacherCourse> GetTeacherCoursesList()
-    {
-        var teacherCoursesList =
-            _context.TeacherCourses
-                .Include(t => t.Course)
-                .Include(t => t.Teacher)
-                .Include(t => t.CreatedBy)
-                .Include(t => t.UpdatedBy)
-                .ToList();
-
-        return teacherCoursesList;
+        var recordsQuery = SessionData<TeacherCourse>();
+        return View(recordsQuery);
     }
 
 
@@ -65,37 +111,16 @@ public class TeacherCoursesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetTeacherCoursesList());
+        var recordsQuery = SessionData<TeacherCourse>();
+        return View(recordsQuery);
     }
-
-
-    // GET: TeacherCourses
-    // /// <summary>
-    // /// Index1 method, for the main view with pagination, for testing purposes.
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // [HttpGet]
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records =
-    //         GetTeacherCoursesList(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<TeacherCourse>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Teachers.Count(),
-    //     };
-    //
-    //     return View(model);
-    // }
 
 
     // GET: TeacherCourses
@@ -109,13 +134,18 @@ public class TeacherCoursesController : Controller
     /// <returns></returns>
     [HttpGet]
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // TODO: Fix the sort order
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
+
+        var recordsQuery = SessionData<TeacherCourse>();
+
         var model = new PaginationViewModel<TeacherCourse>(
-            GetTeacherCoursesList(),
+            recordsQuery,
             pageNumber, pageSize,
-            _context.TeacherCourses.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 

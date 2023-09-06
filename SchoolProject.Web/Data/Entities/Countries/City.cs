@@ -12,7 +12,7 @@ namespace SchoolProject.Web.Data.Entities.Countries;
 /// <summary>
 ///     Class for cities data
 /// </summary>
-public class City : IEntity, INotifyPropertyChanged //, IComparable<City>
+public class City : IEntity, INotifyPropertyChanged
 {
     /// <summary>
     ///     Name of the city
@@ -111,8 +111,11 @@ public class City : IEntity, INotifyPropertyChanged //, IComparable<City>
     // --------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
@@ -120,6 +123,8 @@ public class City : IEntity, INotifyPropertyChanged //, IComparable<City>
             new(propertyName));
     }
 
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
@@ -128,6 +133,4 @@ public class City : IEntity, INotifyPropertyChanged //, IComparable<City>
         OnPropertyChanged(propertyName);
         return true;
     }
-
-
 }

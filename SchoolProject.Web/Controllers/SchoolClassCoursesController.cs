@@ -1,5 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Repositories.SchoolClasses;
@@ -12,7 +14,12 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class SchoolClassCoursesController : Controller
 {
+    private const string SessionVarName = "AllSchoolClassesAndCourses";
+    private const string BucketName = "teachers";
+    private const string SortProperty = "Name";
+
     private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ISchoolClassCourseRepository _schoolClassCourseRepository;
 
 
@@ -20,31 +27,20 @@ public class SchoolClassCoursesController : Controller
     ///     School class with courses
     /// </summary>
     /// <param name="context"></param>
+    /// <param name="hostingEnvironment"></param>
     /// <param name="schoolClassCourseRepository"></param>
     public SchoolClassCoursesController(
         DataContextMySql context,
-        ISchoolClassCourseRepository schoolClassCourseRepository
-    )
+        IWebHostEnvironment hostingEnvironment,
+        ISchoolClassCourseRepository schoolClassCourseRepository)
     {
         _context = context;
         _schoolClassCourseRepository = schoolClassCourseRepository;
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
-    // GET: SchoolClassCourses
-    /// <summary>
-    ///     Index, list of school class with courses
-    /// </summary>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns></returns>
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetSchoolClassesWithCourses());
-    }
-
-
-    private List<SchoolClassCourse> GetSchoolClassesWithCourses()
+    private List<SchoolClassCourse> GetSchoolClassesAndCourses()
     {
         var schoolClassesWithCourses =
             _context.SchoolClassCourses
@@ -58,41 +54,73 @@ public class SchoolClassCoursesController : Controller
     }
 
 
+    private List<SchoolClassCourse> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<SchoolClassCourse> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery =
+                JsonConvert.DeserializeObject<List<SchoolClassCourse>>(json) ??
+                new List<SchoolClassCourse>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetSchoolClassesAndCourses();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<SchoolClassCourse>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
+    // GET: SchoolClassCourses
+    /// <summary>
+    ///     Index, list of school class with courses
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
+    /// <returns></returns>
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery = SessionData<SchoolClassCourse>();
+        return View(recordsQuery);
+    }
+
+
     // GET: SchoolClassCourses
     /// <summary>
     ///     Index with cards, list of school class with courses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetSchoolClassesWithCourses());
+        var recordsQuery = SessionData<SchoolClassCourse>();
+        return View(recordsQuery);
     }
-
-
-    // GET: SchoolClassCourses
-    // /// <summary>
-    // /// Index1 for testing pagination, list of school class with courses
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records =
-    //         GetSchoolClassesWithCoursesList(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<SchoolClassCourse>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Genders.Count(),
-    //     };
-    //
-    //     return View(model);
-    // }
 
 
     // GET: SchoolClassCourses
@@ -105,16 +133,18 @@ public class SchoolClassCoursesController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // var records =
-        //     GetSchoolClassesWithCoursesList(pageNumber, pageSize);
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
-        // TODO: Fix the sort order
+        var recordsQuery = SessionData<SchoolClassCourse>();
+
         var model = new PaginationViewModel<SchoolClassCourse>(
-            GetSchoolClassesWithCourses(),
+            recordsQuery,
             pageNumber, pageSize,
-            _context.SchoolClassCourses.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 

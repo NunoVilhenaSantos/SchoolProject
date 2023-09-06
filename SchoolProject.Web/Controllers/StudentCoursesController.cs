@@ -1,5 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Repositories.Students;
@@ -12,7 +14,12 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class StudentCoursesController : Controller
 {
+    private const string SessionVarName = "AllStudentAndCourses";
+    private const string BucketName = "teachers";
+    private const string SortProperty = "Name";
+
     private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IStudentCourseRepository _studentCourseRepository;
 
     /// <summary>
@@ -20,30 +27,19 @@ public class StudentCoursesController : Controller
     /// </summary>
     /// <param name="context"></param>
     /// <param name="studentCourseRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public StudentCoursesController(
         DataContextMySql context,
-        IStudentCourseRepository studentCourseRepository
-    )
+        IStudentCourseRepository studentCourseRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _context = context;
+        _hostingEnvironment = hostingEnvironment;
         _studentCourseRepository = studentCourseRepository;
     }
 
 
-    // GET: StudentCourses
-    /// <summary>
-    ///     Index, list all StudentCourses
-    /// </summary>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns></returns>
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetStudentCourses());
-    }
-
-
-    private List<StudentCourse> GetStudentCourses()
+    private List<StudentCourse> GetStudentAndCourses()
     {
         var studentCoursesList =
             _context.StudentCourses
@@ -57,52 +53,72 @@ public class StudentCoursesController : Controller
     }
 
 
+    private List<StudentCourse> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<StudentCourse> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery =
+                JsonConvert.DeserializeObject<List<StudentCourse>>(json) ??
+                new List<StudentCourse>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetStudentAndCourses();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<StudentCourse>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
+    // GET: StudentCourses
+    /// <summary>
+    ///     Index, list all StudentCourses
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
+    /// <returns></returns>
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery = SessionData<StudentCourse>();
+        return View(recordsQuery);
+    }
+
+
     // GET: StudentCourses
     /// <summary>
     ///     Index with cards, list all StudentCourses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetStudentCourses());
-    }
-
-
-    // GET: StudentCourses
-    // /// <summary>
-    // /// Index, list all StudentCourses
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records =
-    //         GetStudentCourses(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<StudentCourse>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Teachers.Count(),
-    //     };
-    //
-    //     return View(model);
-    // }
-
-
-    private List<StudentCourse> GetStudentCourses(
-        int pageNumber, int pageSize)
-    {
-        var records = GetStudentCourses()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return records;
+        var recordsQuery = SessionData<StudentCourse>();
+        return View(recordsQuery);
     }
 
 
@@ -116,13 +132,18 @@ public class StudentCoursesController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // TODO: Fix the sort order
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
+
+        var recordsQuery = SessionData<StudentCourse>();
+
         var model = new PaginationViewModel<StudentCourse>(
-            GetStudentCourses(),
+            recordsQuery,
             pageNumber, pageSize,
-            _context.StudentCourses.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 

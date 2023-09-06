@@ -1,8 +1,7 @@
-using System.Linq.Expressions;
-using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Users;
@@ -17,61 +16,29 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class UsersController : Controller
 {
+    private const string SessionVarName = "AllUsersWithRolesList";
+    private const string BucketName = "users";
+    private const string SortProperty = "FirstName";
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly DataContextMySql _context;
     private readonly IUserHelper _userHelper;
-
 
     /// <summary>
     ///     UsersController constructor.
     /// </summary>
     /// <param name="userHelper"></param>
     /// <param name="context"></param>
-    public UsersController(IUserHelper userHelper, DataContextMySql context)
+    /// <param name="hostingEnvironment"></param>
+    public UsersController(
+        IUserHelper userHelper,
+        DataContextMySql context,
+        IWebHostEnvironment hostingEnvironment)
     {
         _context = context;
         _userHelper = userHelper;
+        _hostingEnvironment = hostingEnvironment;
     }
-
-
-    // GET: Users
-    /// <summary>
-    ///     Index method, for the main view.
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult Index()
-    {
-        return View(GetUsersWithRolesList());
-    }
-
-
-    // old methode, only returns users that have roles
-    // private IEnumerable<UserWithRolesViewModel> GetUsersWithRolesList()
-    // {
-    //     var usersWithRoles = _context.Users
-    //         .Join(_context.UserRoles, user => user.Id,
-    //             userRole => userRole.UserId,
-    //             (user, userRole) => new
-    //             {
-    //                 User = user,
-    //                 UserRole = userRole
-    //             })
-    //         .Join(_context.Roles,
-    //             userUserRole =>
-    //                 userUserRole.UserRole.RoleId,
-    //             role => role.Id,
-    //             (userUserRole, role) =>
-    //                 new UserWithRolesViewModel
-    //                 {
-    //                     User = userUserRole.User,
-    //                     // You can modify this if users can have multiple roles
-    //                     Role = userUserRole.UserRole,
-    //                     Roles = new List<string> {role.Name}
-    //                 })
-    //         .AsQueryable().ToList();
-    //
-    //     return usersWithRoles;
-    // }
 
 
     private List<UserWithRolesViewModel> GetUsersWithRolesList()
@@ -110,39 +77,71 @@ public class UsersController : Controller
     }
 
 
+    private List<UserWithRolesViewModel> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<UserWithRolesViewModel> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery =
+                JsonConvert
+                    .DeserializeObject<List<UserWithRolesViewModel>>(json) ??
+                new List<UserWithRolesViewModel>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetUsersWithRolesList();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json =
+                PaginationViewModel<UserWithRolesViewModel>
+                    .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
+    // GET: Users
+    /// <summary>
+    ///     Index method, for the main view.
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery =
+            SessionData<UserWithRolesViewModel>();
+        return View(recordsQuery);
+    }
+
+
     // GET: Users
     /// <summary>
     ///     IndexCards method for the cards view.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult IndexCards()
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetUsersWithRolesList());
+        var recordsQuery =
+            SessionData<UserWithRolesViewModel>();
+        return View(recordsQuery);
     }
-
-
-    // GET: Users
-    // /// <summary>
-    // ///     Action to show all the roles
-    // /// </summary>
-    // /// <returns>a list of roles</returns>
-    // [HttpGet]
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records =
-    //         GetUsersWithRoles(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<UserWithRolesViewModel>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Users.Count()
-    //     };
-    //
-    //     return View(model);
-    // }
 
 
     // GET: Users
@@ -154,113 +153,24 @@ public class UsersController : Controller
     /// <param name="sortOrder"></param>
     /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards1(
-        int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
+        var recordsQuery =
+            SessionData<UserWithRolesViewModel>();
 
         var model = new PaginationViewModel<UserWithRolesViewModel>(
-            GetUsersWithRolesList(),
+            recordsQuery,
             pageNumber, pageSize,
-            _context.Users.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
+
         return View(model);
-    }
-
-
-    private List<SelectListItem> SortProperties()
-    {
-        // Obtém o tipo da classe
-        var userType = typeof(UserWithRolesViewModel);
-
-
-        // Obtém as propriedades públicas da classe
-        var publicProperties = userType
-            .GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-
-        // Cria uma lista de SelectListItem a partir das propriedades
-        var sortProperties =
-            publicProperties.Select(prop => new SelectListItem
-            {
-                Value = prop.Name,
-                Text = prop.Name // Use o nome da propriedade como texto
-            }).ToList();
-
-
-        // Adiciona um item para ordenação padrão
-        sortProperties.Insert(0, new()
-        {
-            Value = "FirstName",
-            Text = "Ordenar por..."
-        });
-
-        return sortProperties;
-    }
-
-
-    private IQueryable<UserWithRolesViewModel> ApplySorting(
-        IQueryable<UserWithRolesViewModel> query,
-        string sortOrder, string sortProperty)
-    {
-        // Verifica se sortOrder é válido
-        var validSortOrders = new[] {"asc", "desc"};
-
-
-        // Tratar ordenação inválida, por exemplo, aplicar ordenação padrão
-        if (!validSortOrders.Contains(sortOrder)) sortOrder = "asc";
-
-
-        // Tratar a propriedade padrão para ordenação, defina a propriedade padrão aqui
-        if (string.IsNullOrEmpty(sortProperty)) sortProperty = "FirstName";
-
-
-        // Obtém o tipo da classe
-        // Type userType = typeof(UserWithRolesViewModel);
-        var userType = typeof(User);
-
-        // Verifica se a propriedade de ordenação existe na classe
-        var propertyInfo =
-            userType.GetProperty(sortProperty,
-                BindingFlags.IgnoreCase |
-                BindingFlags.Public |
-                BindingFlags.Instance) ??
-            userType.GetProperty("FirstName",
-                BindingFlags.IgnoreCase |
-                BindingFlags.Public |
-                BindingFlags.Instance);
-
-
-        // Cria uma expressão de ordenação dinâmica
-        var parameter =
-            Expression.Parameter(typeof(UserWithRolesViewModel), "x");
-        //var parameter =
-        //    Expression.Parameter(typeof(User), "x");
-        var property = Expression.Property(parameter, propertyInfo);
-        var lambda = Expression.Lambda(property, parameter);
-
-
-        // Aplica a ordenação com base na expressão dinâmica
-        var orderByMethod =
-            sortOrder == "asc" ? "OrderBy" : "OrderByDescending";
-
-        var orderByExpression = Expression.Call(
-            typeof(Queryable),
-            orderByMethod,
-            new[] {userType, propertyInfo.PropertyType},
-            query.Expression,
-            lambda
-        );
-
-
-        // Retorna o resultado ordenado
-        return query.Provider
-            .CreateQuery<UserWithRolesViewModel>(orderByExpression);
     }
 
 

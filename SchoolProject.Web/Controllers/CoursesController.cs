@@ -1,5 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Repositories.Courses;
@@ -13,21 +15,73 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesController : Controller
 {
+    private const string SessionVarName = "AllCoursesList";
     private const string BucketName = "courses";
+    private const string SortProperty = "Code";
+
+
     private readonly DataContextMySql _context;
     private readonly ICourseRepository _courseRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+
 
     /// <summary>
     ///     constructor for the courses controller
     /// </summary>
     /// <param name="context"></param>
     /// <param name="courseRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public CoursesController(
-        DataContextMySql context, ICourseRepository courseRepository
-    )
+        DataContextMySql context,
+        ICourseRepository courseRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _context = context;
         _courseRepository = courseRepository;
+        _hostingEnvironment = hostingEnvironment;
+    }
+
+
+    private List<Course> GetCoursesList()
+    {
+        //var coursesList =
+        //    _cityRepository?.GetCitiesWithCountriesAsync();
+
+        return _context.Courses.ToList();
+    }
+
+
+    private List<Course> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<Course> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery = JsonConvert.DeserializeObject<List<Course>>(json) ??
+                           new List<Course>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetCoursesList();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<Course>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
     }
 
 
@@ -40,18 +94,11 @@ public class CoursesController : Controller
     /// <returns></returns>
     [AllowAnonymous]
     // GET: Courses
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(CoursesList());
-    }
-
-
-    private List<Course> CoursesList()
-    {
-        //var coursesList =
-        //    _cityRepository?.GetCitiesWithCountriesAsync();
-
-        return _context.Courses.ToList();
+        var recordsQuery = SessionData<Course>();
+        return View(recordsQuery);
     }
 
 
@@ -64,42 +111,11 @@ public class CoursesController : Controller
     /// <returns></returns>
     [AllowAnonymous]
     // GET: Courses
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(CoursesList());
-    }
-
-
-    // GET: Courses
-    // /// <summary>
-    // ///     Action to show all the roles
-    // /// </summary>
-    // /// <returns>a list of roles</returns>
-    // [HttpGet]
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records = CoursesList(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<Course>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Courses.Count(),
-    //     };
-    //
-    //     return View(model);
-    // }
-
-
-    private List<Course> CoursesList(int pageNumber, int pageSize)
-    {
-        var records = CoursesList()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return records;
+        var recordsQuery = SessionData<Course>();
+        return View(recordsQuery);
     }
 
 
@@ -113,23 +129,18 @@ public class CoursesController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // var records = CoursesList(pageNumber, pageSize);
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
-        // var model = new PaginationViewModel<Course>
-        // {
-        //     Records = records,
-        //     PageNumber = pageNumber,
-        //     PageSize = pageSize,
-        //     TotalCount = _context.Courses.Count(),
-        //     SortOrder = "asc",
-        // };
+        var recordsQuery = SessionData<Course>();
 
         var model = new PaginationViewModel<Course>(
-            CoursesList(),
+            recordsQuery,
             pageNumber, pageSize,
-            _context.Courses.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 
@@ -155,15 +166,13 @@ public class CoursesController : Controller
         return View(course);
     }
 
+
     // GET: Courses/Create
     /// <summary>
     ///     Create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
 
     // POST: Courses/Create
@@ -258,6 +267,7 @@ public class CoursesController : Controller
 
         return View(course);
     }
+
 
     // POST: Courses/Delete/5
     /// <summary>

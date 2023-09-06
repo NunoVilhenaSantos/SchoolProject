@@ -105,6 +105,7 @@ public class User : IdentityUser, INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
 
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     private void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
@@ -113,6 +114,7 @@ public class User : IdentityUser, INotifyPropertyChanged
     }
 
 
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     private bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
@@ -11,7 +12,7 @@ using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 
-public class Student : IEntity //: INotifyPropertyChanged
+public class Student : IEntity, INotifyPropertyChanged
 {
     [Required]
     [DisplayName("First Name")]
@@ -291,4 +292,32 @@ public class Student : IEntity //: INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
+
+
+    // ---------------------------------------------------------------------- //
+    // Property Changed Event Handler
+    // ---------------------------------------------------------------------- //
+
+
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
+    protected virtual void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
+    }
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
+    protected bool SetField<T>(ref T field, T value,
+        [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }

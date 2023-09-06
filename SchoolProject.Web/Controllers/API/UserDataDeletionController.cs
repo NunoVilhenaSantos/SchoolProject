@@ -7,10 +7,7 @@ namespace SchoolProject.Web.Controllers.API;
 [ApiController]
 public class UserDataDeletionController : ControllerBase
 {
-    //public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-    //{
-    //    return View();
-    //}
+
 
 
     [HttpPost("/datadeletion")]

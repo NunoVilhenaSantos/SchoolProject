@@ -1,5 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Models;
@@ -13,9 +15,13 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
+    private const string SessionVarName = "AllCitiesWithCountries";
     private const string BucketName = "cities";
-    private readonly ICityRepository _cityRepository;
+    private const string SortProperty = "Name";
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ICountryRepository _countryRepository;
+    private readonly ICityRepository _cityRepository;
 
 
     /// <summary>
@@ -23,12 +29,14 @@ public class CitiesController : Controller
     /// </summary>
     /// <param name="cityRepository"></param>
     /// <param name="countryRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public CitiesController(
         ICountryRepository countryRepository,
-        ICityRepository cityRepository
-    )
+        ICityRepository cityRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _cityRepository = cityRepository;
+        _hostingEnvironment = hostingEnvironment;
         _countryRepository = countryRepository;
     }
 
@@ -42,17 +50,56 @@ public class CitiesController : Controller
     }
 
 
+    private List<City> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<City> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery = JsonConvert.DeserializeObject<List<City>>(json) ??
+                           new List<City>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = CitiesWithCountries();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<City>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
     // GET: Cities
     /// <summary>
     ///     index action
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(CitiesWithCountries());
+        var recordsQuery = SessionData<City>();
+        return View(recordsQuery);
     }
+
 
     // GET: Cities
     /// <summary>
@@ -60,10 +107,14 @@ public class CitiesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(CitiesWithCountries());
+        var recordsQuery = SessionData<City>();
+        return View(recordsQuery);
     }
 
 
@@ -77,13 +128,18 @@ public class CitiesController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // TODO: fix this
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
+
+        var recordsQuery = SessionData<City>();
+
         var model = new PaginationViewModel<City>(
-            CitiesWithCountries(),
+            recordsQuery,
             pageNumber, pageSize,
-            _cityRepository.GetCount().Result,
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 

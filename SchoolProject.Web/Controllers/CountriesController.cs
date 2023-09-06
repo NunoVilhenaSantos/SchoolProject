@@ -1,5 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Models;
@@ -13,7 +15,11 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CountriesController : Controller
 {
+    private const string SessionVarName = "AllCountriesWithCities";
     private const string BucketName = "countries";
+    private const string SortProperty = "Name";
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ICountryRepository _countryRepository;
 
 
@@ -21,9 +27,13 @@ public class CountriesController : Controller
     ///     constructor
     /// </summary>
     /// <param name="countryRepository"></param>
-    public CountriesController(ICountryRepository countryRepository)
+    /// <param name="hostingEnvironment"></param>
+    public CountriesController(
+        ICountryRepository countryRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _countryRepository = countryRepository;
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
@@ -38,17 +48,55 @@ public class CountriesController : Controller
     }
 
 
+    private List<Country> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<Country> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery = JsonConvert.DeserializeObject<List<Country>>(json) ??
+                           new List<Country>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = CountriesWithCities();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<Country>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
     // GET: Countries
     /// <summary>
     ///     index action
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(CountriesWithCities());
+        var recordsQuery = SessionData<Country>();
+        return View(recordsQuery);
     }
 
 
@@ -58,11 +106,15 @@ public class CountriesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(CountriesWithCities());
+        var recordsQuery = SessionData<Country>();
+        return View(recordsQuery);
     }
 
 
@@ -76,18 +128,18 @@ public class CountriesController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        var totalCount = _countryRepository.GetCount().Result;
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
-
-        // TODO: fix this
+        var recordsQuery = SessionData<Country>();
 
         var model = new PaginationViewModel<Country>(
-            CountriesWithCities(),
+            recordsQuery,
             pageNumber, pageSize,
-            // _countryRepository.GetCount().Result,
-            totalCount,
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 
@@ -106,10 +158,8 @@ public class CountriesController : Controller
     {
         if (id == null) return NotFound();
 
-        var country =
-            await _countryRepository.GetCountryWithCitiesAsync(id.Value);
-
-        if (country == null) return NotFound();
+        var country = await
+            _countryRepository.GetCountryWithCitiesAsync(id.Value);
 
         return View(country);
     }

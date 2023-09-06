@@ -1,6 +1,9 @@
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -13,38 +16,24 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class RolesController : Controller
 {
+    private const string SessionVarName = "AllRolesList";
+    private const string BucketName = "roles";
+    private const string SortProperty = "Name";
+
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>
     ///     Constructor for the RolesController
     /// </summary>
     /// <param name="roleManager"></param>
-    public RolesController(RoleManager<IdentityRole> roleManager)
+    /// <param name="hostingEnvironment"></param>
+    public RolesController(RoleManager<IdentityRole> roleManager,
+        IWebHostEnvironment hostingEnvironment)
     {
         _roleManager = roleManager;
-    }
-
-
-    // GET: Roles
-    /// <summary>
-    ///     Action to show all the roles
-    /// </summary>
-    /// <returns>a list of roles</returns>
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetRolesList());
-    }
-
-
-    // GET: Roles
-    /// <summary>
-    ///     Action to show all the roles
-    /// </summary>
-    /// <returns>a list of roles</returns>
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetRolesList());
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
@@ -54,26 +43,65 @@ public class RolesController : Controller
     }
 
 
+    private List<IdentityRole> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<IdentityRole> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery =
+                JsonConvert.DeserializeObject<List<IdentityRole>>(json) ??
+                new List<IdentityRole>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetRolesList();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<IdentityRole>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
     // GET: Roles
-    // /// <summary>
-    // ///     Action to show all the roles
-    // /// </summary>
-    // /// <returns>a list of roles</returns>
-    // [HttpGet]
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records = GetRoles(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<IdentityRole>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _roleManager.Roles.Count()
-    //     };
-    //
-    //     return View(model);
-    // }
+    /// <summary>
+    ///     Action to show all the roles
+    /// </summary>
+    /// <returns>a list of roles</returns>
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery = SessionData<IdentityRole>();
+        return View(recordsQuery);
+    }
+
+
+    // GET: Roles
+    /// <summary>
+    ///     Action to show all the roles
+    /// </summary>
+    /// <returns>a list of roles</returns>
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery = SessionData<IdentityRole>();
+        return View(recordsQuery);
+    }
 
 
     // GET: Roles
@@ -82,15 +110,18 @@ public class RolesController : Controller
     /// </summary>
     /// <returns>a list of roles</returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // var records = GetRolesList(pageNumber, pageSize);
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
-        // TODO: Fix the sort order
+        var recordsQuery = SessionData<IdentityRole>();
+
         var model = new PaginationViewModel<IdentityRole>(
-            GetRolesList(),
+            recordsQuery,
             pageNumber, pageSize,
-            _roleManager.Roles.Count(),
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
 

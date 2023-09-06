@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 
-public class StudentCourse : IEntity
+public class StudentCourse : IEntity, INotifyPropertyChanged
 {
     [Required] public required int StudentId { get; set; }
 
@@ -74,4 +75,34 @@ public class StudentCourse : IEntity
     [DisplayName("Updated By")]
     [ForeignKey(nameof(UpdatedById))]
     public virtual User? UpdatedBy { get; set; }
+
+
+
+
+    // ---------------------------------------------------------------------- //
+    // Property Changed Event Handler
+    // ---------------------------------------------------------------------- //
+
+
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
+    protected virtual void OnPropertyChanged(
+        [CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this,
+            new PropertyChangedEventArgs(propertyName));
+    }
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
+    protected bool SetField<T>(ref T field, T value,
+        [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }

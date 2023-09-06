@@ -9,16 +9,21 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class ErrorsController : Controller
 {
+
     private readonly ILogger<ErrorsController> _logger;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>
     ///     ErrorsController constructor.
     /// </summary>
     /// <param name="logger"></param>
-    public ErrorsController(ILogger<ErrorsController> logger)
+    /// <param name="hostingEnvironment"></param>
+    public ErrorsController(ILogger<ErrorsController> logger,
+        IWebHostEnvironment hostingEnvironment)
     {
         _logger = logger;
+        _hostingEnvironment = hostingEnvironment;
     }
 
 

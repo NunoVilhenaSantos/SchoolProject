@@ -33,7 +33,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The description of the course.
     /// </summary>
-    public int Description { get; set; }
+    public string? Description { get; set; }
 
 
     /// <summary>
@@ -260,8 +260,11 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
@@ -269,6 +272,8 @@ public class Course : IEntity, INotifyPropertyChanged
             new(propertyName));
     }
 
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {

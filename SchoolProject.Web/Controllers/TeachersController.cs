@@ -1,8 +1,5 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
@@ -16,10 +13,14 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class TeachersController : Controller
 {
+    private const string SessionVarName = "AllTeachersList";
     private const string BucketName = "teachers";
-    private readonly DataContextMySql _context;
+    private const string SortProperty = "FirstName";
+
+
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ITeacherRepository _teacherRepository;
+    private readonly DataContextMySql _context;
 
 
     /// <summary>
@@ -30,8 +31,8 @@ public class TeachersController : Controller
     /// <param name="hostingEnvironment"></param>
     public TeachersController(
         DataContextMySql context,
-        ITeacherRepository teacherRepository
-        , IWebHostEnvironment hostingEnvironment
+        ITeacherRepository teacherRepository,
+        IWebHostEnvironment hostingEnvironment
     )
     {
         _context = context;
@@ -40,27 +41,7 @@ public class TeachersController : Controller
     }
 
 
-    // GET: Teachers
-    /// <summary>
-    ///     Index method, for the main view.
-    /// </summary>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetTeachersList());
-    }
-
-
-    private IEnumerable<Teacher> GetTeachersList()
-    {
-        return _context.Teachers.ToListAsync().Result;
-    }
-
-
-    private List<Teacher> GetTeachersListAsync()
+    private List<Teacher> GetTeachersList()
     {
         return _context.Teachers
             .Include(t => t.Country)
@@ -87,55 +68,74 @@ public class TeachersController : Controller
     }
 
 
+    private List<Teacher> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<Teacher> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery = JsonConvert.DeserializeObject<List<Teacher>>(json) ??
+                           new List<Teacher>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetTeachersList();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<Teacher>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
+    // GET: Teachers
+    /// <summary>
+    ///     Index method, for the main view.
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery = SessionData<Teacher>();
+        return View(recordsQuery);
+    }
+
+
     // GET: Teachers
     /// <summary>
     ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetTeachersList());
+        var recordsQuery = SessionData<Teacher>();
+        return View(recordsQuery);
     }
 
 
-    // GET: Teachers
-    // /// <summary>
-    // /// Index1 method, for the main view, for testing purposes.
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // [HttpGet]
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records = GetTeachersListForCards(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<Teacher>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _context.Teachers.Count(),
-    //     };
-    //
-    //     return View(model);
-    // }
-
-
-    private List<Teacher> GetTeachersList(
-        int pageNumber, int pageSize)
-    {
-        return GetTeachersList()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-    }
-
-
-    // TODO: Corrigir todos os erros e passar para métodos dentro do modelo PaginationViewModel
     // GET: Teachers
     /// <summary>
     ///     IndexCards1 method for the cards view, for testing purposes.
@@ -146,43 +146,14 @@ public class TeachersController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> IndexCards1Async(
-        int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
-
-        // TODO: Obter todos os registos
-        List<Teacher> recordsQuery;
-
-        // Tente obter a lista de professores da sessão
-        if (HttpContext.Session.TryGetValue("AllTeachers", out var teacherData))
-        {
-            // Se a lista estiver na sessão, desserializa-a
-            var json = Encoding.UTF8.GetString(teacherData);
-
-            recordsQuery = JsonConvert.DeserializeObject<List<Teacher>>(json) ??
-                           new List<Teacher>();
-        }
-        else
-        {
-            // Caso contrário,
-            // obtenha a lista completa do banco de dados
-            recordsQuery = GetTeachersListAsync();
-
-            PaginationViewModel<Teacher>.Initialize(_hostingEnvironment);
-
-            var json = PaginationViewModel<Teacher>
-                .StoreListToFileInJson(recordsQuery);
-
-            // Armazene a lista na sessão para uso futuro
-            HttpContext.Session.Set(
-                "AllTeachers", Encoding.UTF8.GetBytes(json));
-        }
-
+        var recordsQuery = SessionData<Teacher>();
 
         var model = new PaginationViewModel<Teacher>(
             recordsQuery,

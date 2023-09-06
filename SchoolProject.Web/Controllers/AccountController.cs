@@ -27,13 +27,15 @@ namespace SchoolProject.Web.Controllers;
 public class AccountController : Controller
 {
     private const string BucketName = "users";
-    private readonly IConfiguration _configuration;
+
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IConfiguration _configuration;
 
     private readonly ICountryRepository _countryRepository;
+    private readonly IStorageHelper _storageHelper;
     private readonly IEMailHelper _emailHelper;
     private readonly IImageHelper _imageHelper;
-    private readonly IStorageHelper _storageHelper;
     private readonly IUserHelper _userHelper;
 
 
@@ -46,6 +48,9 @@ public class AccountController : Controller
     /// <param name="emailHelper"></param>
     /// <param name="imageHelper"></param>
     /// <param name="userHelper"></param>
+    /// <param name="signInManager"></param>
+    /// <param name="hostingEnvironment"></param>
+    /// <param name="httpContextAccessor"></param>
     public AccountController(
         ICountryRepository countryRepository,
         IConfiguration configuration,
@@ -53,14 +58,17 @@ public class AccountController : Controller
         IEMailHelper emailHelper,
         IImageHelper imageHelper,
         IUserHelper userHelper,
-        IHttpContextAccessor httpContextAccessor,
-        SignInManager<User> signInManager
+        SignInManager<User> signInManager,
+        IWebHostEnvironment hostingEnvironment,
+        IHttpContextAccessor httpContextAccessor
 
         //SemaphoreSlim signInSemaphore,
         //SemaphoreService semaphoreService
-        )
+    )
+
     {
         _httpContextAccessor = httpContextAccessor;
+        _signInManager = signInManager;
 
         _userHelper = userHelper;
         _imageHelper = imageHelper;
@@ -68,9 +76,10 @@ public class AccountController : Controller
         _storageHelper = storageHelper;
         _configuration = configuration;
         _countryRepository = countryRepository;
-        
+
         // _signInSemaphore = signInSemaphore;
-        _signInManager = signInManager;
+        // _signInManager = signInManager;
+        _hostingEnvironment = hostingEnvironment;
         //_semaphoreService = semaphoreService;
     }
 
@@ -268,20 +277,19 @@ public class AccountController : Controller
                         $"{model.Password}</p>");
 
                     var response1 = await _emailHelper.SendEmailAsync(
-    model.UserName,
-    "Confirmação de Email",
-    $"<h1>Confirmação de Email</h1>" +
-    $"Para permitir o acesso do usuário, " +
-    $"por favor clique no seguinte link:" +
-    $"</br></br><a href = \"{tokenLink}\">" +
-    $"Confirmar Email</a></br><p>Senha Temporária: " +
-    $"{model.Password}</p>" +
-    $"<p>Obrigado por se juntar a nós!</p>"
-);
+                        model.UserName,
+                        "Confirmação de Email",
+                        $"<h1>Confirmação de Email</h1>" +
+                        $"Para permitir o acesso do usuário, " +
+                        $"por favor clique no seguinte link:" +
+                        $"</br></br><a href = \"{tokenLink}\">" +
+                        $"Confirmar Email</a></br><p>Senha Temporária: " +
+                        $"{model.Password}</p>" +
+                        $"<p>Obrigado por se juntar a nós!</p>"
+                    );
 
 
-
-                    // Todo: 
+                    // Todo:
                     if (response.IsSuccess)
                     {
                         ViewBag.Message = "The instructions to verify the " +
@@ -569,10 +577,9 @@ public class AccountController : Controller
 
 
         // Faça o signin do usuário
-        var result2 = await _userHelper.PasswordSignInAsync(user,  false, false);
+        var result2 = await _userHelper.PasswordSignInAsync(user, false, false);
 
         if (result2) return RedirectToAction(nameof(ChangePassword));
-
 
 
         // return RedirectToAction("Index", "Home");
@@ -582,7 +589,6 @@ public class AccountController : Controller
     }
 
     private readonly SignInManager<User> _signInManager;
-
 
 
     // ---------------------------------------------------------------------- //

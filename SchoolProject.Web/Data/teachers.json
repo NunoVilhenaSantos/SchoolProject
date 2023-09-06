@@ -554,7 +554,7 @@
         "Course": {
           "Code": "6133",
           "Name": "Redes de comunicações - dimensionamento de redes IP",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -647,7 +647,7 @@
         "Course": {
           "Code": "5400",
           "Name": "Animação 3D",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -740,7 +740,7 @@
         "Course": {
           "Code": "5411",
           "Name": "Bases de dados - sistemas de gestão",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -1416,7 +1416,7 @@
         "Course": {
           "Code": "5088",
           "Name": "Disponibilização de conteúdos na web",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -1509,7 +1509,7 @@
         "Course": {
           "Code": "5119",
           "Name": "Estrutura de dados estática, composta e dinâmica",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -2185,7 +2185,7 @@
         "Course": {
           "Code": "9192",
           "Name": "Análise de vulnerabilidades – iniciação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -2278,7 +2278,7 @@
         "Course": {
           "Code": "FCT500",
           "Name": "Formação em Contexto de Trabalho",
-          "Description": 0,
+          "Description": "0",
           "Hours": 500,
           "CreditPoints": 15.0,
           "ImageFile": null,
@@ -2371,7 +2371,7 @@
         "Course": {
           "Code": "5141",
           "Name": "Projeto integrado de automação e controlo - implementação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -3047,7 +3047,7 @@
         "Course": {
           "Code": "0770",
           "Name": "Dispositivos e periféricos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -3140,7 +3140,7 @@
         "Course": {
           "Code": "FCT210",
           "Name": "Formação em Contexto de Trabalho",
-          "Description": 0,
+          "Description": "0",
           "Hours": 210,
           "CreditPoints": 20.0,
           "ImageFile": null,
@@ -3233,7 +3233,7 @@
         "Course": {
           "Code": "5398",
           "Name": "Aplicações em tecnologia Web 2.0",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -3326,7 +3326,7 @@
         "Course": {
           "Code": "5399",
           "Name": "Animação multimédia",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -4584,7 +4584,7 @@
         "Course": {
           "Code": "6139",
           "Name": "Redes de acesso",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -4677,7 +4677,7 @@
         "Course": {
           "Code": "5402",
           "Name": "Iluminação e \"renderização\" 3D",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -4770,7 +4770,7 @@
         "Course": {
           "Code": "5121",
           "Name": "Gestão de projeto - eletrónica e automação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -4863,7 +4863,7 @@
         "Course": {
           "Code": "5140",
           "Name": "Projeto - bases",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -4956,7 +4956,7 @@
         "Course": {
           "Code": "5407",
           "Name": "Sistemas de informação - fundamentos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -5632,7 +5632,7 @@
         "Course": {
           "Code": "0773",
           "Name": "Rede local - instalação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -5725,7 +5725,7 @@
         "Course": {
           "Code": "6138",
           "Name": "Redes de comunicações - configuração de routers",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -5818,7 +5818,7 @@
         "Course": {
           "Code": "5404",
           "Name": "Pós-produção de vídeo",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -5911,7 +5911,7 @@
         "Course": {
           "Code": "5122",
           "Name": "Organização e gestão da manutenção",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -6004,7 +6004,7 @@
         "Course": {
           "Code": "5127",
           "Name": "Máquinas elétricas - motores e controladores de velocidade",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -6680,7 +6680,7 @@
         "Course": {
           "Code": "10805",
           "Name": "Programação em Python",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -6773,7 +6773,7 @@
         "Course": {
           "Code": "5414",
           "Name": "Programação para a WEB - cliente (client-side)",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -7449,7 +7449,7 @@
         "Course": {
           "Code": "6134",
           "Name": "Redes locais",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -7542,7 +7542,7 @@
         "Course": {
           "Code": "10808",
           "Name": "Limpeza e transformação de dados em Python",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -8218,7 +8218,7 @@
         "Course": {
           "Code": "5068",
           "Name": "Gestão comercial e aprovisionamento",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -8311,7 +8311,7 @@
         "Course": {
           "Code": "10804",
           "Name": "Projeto de business intelligence",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -8987,7 +8987,7 @@
         "Course": {
           "Code": "5102",
           "Name": "Redes de computadores (avançado)",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -9080,7 +9080,7 @@
         "Course": {
           "Code": "5382",
           "Name": "Publicidade e marketing",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -9173,7 +9173,7 @@
         "Course": {
           "Code": "5069",
           "Name": "Aplicações de gestão de empresas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -9849,7 +9849,7 @@
         "Course": {
           "Code": "6406",
           "Name": "Técnicas aplicadas ao desenvolvimento humano nas organizações",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -10525,7 +10525,7 @@
         "Course": {
           "Code": "0781",
           "Name": "Análise de sistemas de informação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -10618,7 +10618,7 @@
         "Course": {
           "Code": "0145",
           "Name": "Som/áudio - captação, registo e edição",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -11294,7 +11294,7 @@
         "Course": {
           "Code": "6136",
           "Name": "Redes wireless",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -11387,7 +11387,7 @@
         "Course": {
           "Code": "6194",
           "Name": "Televisão digital",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -11480,7 +11480,7 @@
         "Course": {
           "Code": "5397",
           "Name": "Sistemas de gestão de conteúdos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -11573,7 +11573,7 @@
         "Course": {
           "Code": "5087",
           "Name": "Tecnologias de acesso a base de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -11666,7 +11666,7 @@
         "Course": {
           "Code": "5413",
           "Name": "Programação de computadores - orientada a objetos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -12342,7 +12342,7 @@
         "Course": {
           "Code": "5103",
           "Name": "Avaliação das necessidades de rede numa organização",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -12435,7 +12435,7 @@
         "Course": {
           "Code": "10799",
           "Name": "Modelação de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -12528,7 +12528,7 @@
         "Course": {
           "Code": "5419",
           "Name": "Segurança em sistemas informáticos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -13204,7 +13204,7 @@
         "Course": {
           "Code": "5089",
           "Name": "Programação - Algoritmos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -13297,7 +13297,7 @@
         "Course": {
           "Code": "10810",
           "Name": "Fundamentos do desenvolvimento de modelos analíticos em Python",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -13390,7 +13390,7 @@
         "Course": {
           "Code": "5135",
           "Name": "Robótica - avançado",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -14066,7 +14066,7 @@
         "Course": {
           "Code": "9191",
           "Name": "Introdução às técnicas de análise de evidências",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -14159,7 +14159,7 @@
         "Course": {
           "Code": "9194",
           "Name": "Introdução à cibersegurança e à ciberdefesa",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -14252,7 +14252,7 @@
         "Course": {
           "Code": "6190",
           "Name": "Sistema operativo Windows",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -14928,7 +14928,7 @@
         "Course": {
           "Code": "0789",
           "Name": "Fundamentos de linguagem JAVA",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -15021,7 +15021,7 @@
         "Course": {
           "Code": "6140",
           "Name": "Redes de comunicações - encaminhamento dinâmico",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -15697,7 +15697,7 @@
         "Course": {
           "Code": "5106",
           "Name": "Serviços de rede",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -15790,7 +15790,7 @@
         "Course": {
           "Code": "5062",
           "Name": "Língua portuguesa",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -15883,7 +15883,7 @@
         "Course": {
           "Code": "5125",
           "Name": "Técnicas de programação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -15976,7 +15976,7 @@
         "Course": {
           "Code": "5136",
           "Name": "Sistemas de micro controladores",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -16652,7 +16652,7 @@
         "Course": {
           "Code": "9193",
           "Name": "Análise de vulnerabilidades - desenvolvimento",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -16745,7 +16745,7 @@
         "Course": {
           "Code": "5401",
           "Name": "Modelação 3D",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -16838,7 +16838,7 @@
         "Course": {
           "Code": "5075",
           "Name": "Avaliação de necessidades de equipamento e de redes numa organização",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -16931,7 +16931,7 @@
         "Course": {
           "Code": "10797",
           "Name": "Gestão e armazenamento de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -17024,7 +17024,7 @@
         "Course": {
           "Code": "5418",
           "Name": "Redes de comunicação de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -17700,7 +17700,7 @@
         "Course": {
           "Code": "CLC_7",
           "Name": "Fundamentos de cultura, língua e comunicação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -17793,7 +17793,7 @@
         "Course": {
           "Code": "5131",
           "Name": "Controlo industrial - fundamentos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -17886,7 +17886,7 @@
         "Course": {
           "Code": "5421",
           "Name": "Integração de sistemas de informação - tecnologias e níveis de Integração",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -18562,7 +18562,7 @@
         "Course": {
           "Code": "CP_5",
           "Name": "Deontologia e princípios éticos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -18655,7 +18655,7 @@
         "Course": {
           "Code": "CLC_6",
           "Name": "Culturas de urbanismo e mobilidade",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -18748,7 +18748,7 @@
         "Course": {
           "Code": "0779",
           "Name": "Utilitário de apresentação gráfica",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -18841,7 +18841,7 @@
         "Course": {
           "Code": "5071",
           "Name": "Aplicações de gestão contabilística / financeira",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -18934,7 +18934,7 @@
         "Course": {
           "Code": "5115",
           "Name": "Sistema operativo servidor open source",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -19027,7 +19027,7 @@
         "Course": {
           "Code": "10807",
           "Name": "Princípios básicos da análise exploratória de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -19120,7 +19120,7 @@
         "Course": {
           "Code": "5123",
           "Name": "Língua Inglesa no contexto profissional",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -19796,7 +19796,7 @@
         "Course": {
           "Code": "6191",
           "Name": "Serviços de rede Windows",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -19889,7 +19889,7 @@
         "Course": {
           "Code": "5078",
           "Name": "Instalação e gestão de sistemas operativos de redes",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -19982,7 +19982,7 @@
         "Course": {
           "Code": "10788",
           "Name": "Fundamentos da linguagem SQL",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -20658,7 +20658,7 @@
         "Course": {
           "Code": "0785",
           "Name": "Programação em C/C++ - formas complexas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -20751,7 +20751,7 @@
         "Course": {
           "Code": "6403",
           "Name": "Comunicação oral e escrita",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -20844,7 +20844,7 @@
         "Course": {
           "Code": "5390",
           "Name": "Ilustração digital",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -20937,7 +20937,7 @@
         "Course": {
           "Code": "5083",
           "Name": "Análise de sistemas e estruturação de bases de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -21030,7 +21030,7 @@
         "Course": {
           "Code": "2166",
           "Name": "Estatística aplicada à gestão",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -21123,7 +21123,7 @@
         "Course": {
           "Code": "5408",
           "Name": "Sistemas de informação - conceção",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -21799,7 +21799,7 @@
         "Course": {
           "Code": "0776",
           "Name": "Sistema de informação da empresa",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -21892,7 +21892,7 @@
         "Course": {
           "Code": "FCT400",
           "Name": "Formação em Contexto de Trabalho",
-          "Description": 0,
+          "Description": "0",
           "Hours": 400,
           "CreditPoints": 15.0,
           "ImageFile": null,
@@ -21985,7 +21985,7 @@
         "Course": {
           "Code": "5100",
           "Name": "Deteção de avarias",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -22078,7 +22078,7 @@
         "Course": {
           "Code": "5107",
           "Name": "Servidor de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -22171,7 +22171,7 @@
         "Course": {
           "Code": "10798",
           "Name": "Ingestão de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -22847,7 +22847,7 @@
         "Course": {
           "Code": "5406",
           "Name": "Projeto integrado de multimédia",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -22940,7 +22940,7 @@
         "Course": {
           "Code": "5063",
           "Name": "Língua Inglesa",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -23033,7 +23033,7 @@
         "Course": {
           "Code": "5066",
           "Name": "Gestão de recursos humanos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -23126,7 +23126,7 @@
         "Course": {
           "Code": "5137",
           "Name": "Instrumentação industrial - conceitos básicos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -23802,7 +23802,7 @@
         "Course": {
           "Code": "9187",
           "Name": "Legislação, segurança e privacidade",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -23895,7 +23895,7 @@
         "Course": {
           "Code": "6195",
           "Name": "Projeto de comunicações e redes",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -23988,7 +23988,7 @@
         "Course": {
           "Code": "5385",
           "Name": "Algoritmos e programação orientada a objetos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -24664,7 +24664,7 @@
         "Course": {
           "Code": "CPPRA",
           "Name": "Portefólio reflexivo de aprendizagens",
-          "Description": 0,
+          "Description": "0",
           "Hours": 85,
           "CreditPoints": 25.0,
           "ImageFile": null,
@@ -24757,7 +24757,7 @@
         "Course": {
           "Code": "6135",
           "Name": "Redes de operador",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -24850,7 +24850,7 @@
         "Course": {
           "Code": "5415",
           "Name": "WEB - hipermédia e acessibilidades",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -25526,7 +25526,7 @@
         "Course": {
           "Code": "CP_4",
           "Name": "Processos identitários",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -25619,7 +25619,7 @@
         "Course": {
           "Code": "0774",
           "Name": "Rede local - instalação de software base",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -25712,7 +25712,7 @@
         "Course": {
           "Code": "0788",
           "Name": "Instalação e administração de servidores WEB",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -25805,7 +25805,7 @@
         "Course": {
           "Code": "FCT560",
           "Name": "Formação em Contexto de Trabalho",
-          "Description": 0,
+          "Description": "0",
           "Hours": 560,
           "CreditPoints": 15.0,
           "ImageFile": null,
@@ -26481,7 +26481,7 @@
         "Course": {
           "Code": "5064",
           "Name": "Matemática",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -26574,7 +26574,7 @@
         "Course": {
           "Code": "5389",
           "Name": "Imagem digital",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -26667,7 +26667,7 @@
         "Course": {
           "Code": "5118",
           "Name": "Programação orientada a objetos - introdução",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -26760,7 +26760,7 @@
         "Course": {
           "Code": "10802",
           "Name": "Storytelling com dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -26853,7 +26853,7 @@
         "Course": {
           "Code": "5139",
           "Name": "Domótica - projeto",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -27529,7 +27529,7 @@
         "Course": {
           "Code": "3769",
           "Name": "Probabilidades e estatística",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -27622,7 +27622,7 @@
         "Course": {
           "Code": "5384",
           "Name": "Desenho e representações gráficas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -27715,7 +27715,7 @@
         "Course": {
           "Code": "5090",
           "Name": "Estruturas de controlo num programa informático",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -28391,7 +28391,7 @@
         "Course": {
           "Code": "5387",
           "Name": "Técnicas de design",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -29067,7 +29067,7 @@
         "Course": {
           "Code": "6144",
           "Name": "Redes de comunicações - deteção de avarias e equipamentos de rede",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -29160,7 +29160,7 @@
         "Course": {
           "Code": "5070",
           "Name": "Aplicações de gestão de recursos humanos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -29253,7 +29253,7 @@
         "Course": {
           "Code": "5081",
           "Name": "Gestão e manipulação avançada de aplicações informáticas de folha de cálculo",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -29346,7 +29346,7 @@
         "Course": {
           "Code": "10806",
           "Name": "Linguagens de scripting e linha de comandos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -29439,7 +29439,7 @@
         "Course": {
           "Code": "5130",
           "Name": "Automação industrial - automatos programáveis",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -29532,7 +29532,7 @@
         "Course": {
           "Code": "5412",
           "Name": "Programação de computadores - estruturada",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -30208,7 +30208,7 @@
         "Course": {
           "Code": "CLC_5",
           "Name": "Cultura, comunicação e média",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -30301,7 +30301,7 @@
         "Course": {
           "Code": "0772",
           "Name": "Sistemas operativos - instalação e configuração",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -30394,7 +30394,7 @@
         "Course": {
           "Code": "5391",
           "Name": "Desenho bitmap",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -31070,7 +31070,7 @@
         "Course": {
           "Code": "5065",
           "Name": "Empresa - estrutura e funções",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -31163,7 +31163,7 @@
         "Course": {
           "Code": "5892",
           "Name": "Modelos de gestão de redes e de suporte a clientes",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -31256,7 +31256,7 @@
         "Course": {
           "Code": "5124",
           "Name": "Técnicas de expressão oral e escrita",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -31932,7 +31932,7 @@
         "Course": {
           "Code": "STC_7",
           "Name": "Sociedade, tecnologia e ciência - fundamentos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -32025,7 +32025,7 @@
         "Course": {
           "Code": "5084",
           "Name": "Metodologias de análise e desenvolvimento de sistemas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -32118,7 +32118,7 @@
         "Course": {
           "Code": "5086",
           "Name": "Programação em SQL",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -32211,7 +32211,7 @@
         "Course": {
           "Code": "10672",
           "Name": "Introdução à utilização e proteção dos dados pessoais",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -32304,7 +32304,7 @@
         "Course": {
           "Code": "5422",
           "Name": "Integração de sistemas de informação - ferramentas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -32980,7 +32980,7 @@
         "Course": {
           "Code": "0778",
           "Name": "Folha de cálculo",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -33073,7 +33073,7 @@
         "Course": {
           "Code": "0349",
           "Name": "Ambiente, Segurança, Higiene e Saúde no Trabalho - conceitos básicos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -33749,7 +33749,7 @@
         "Course": {
           "Code": "0792",
           "Name": "Criação de páginas para a web em hipertexto",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -33842,7 +33842,7 @@
         "Course": {
           "Code": "5104",
           "Name": "Instalação de redes locais",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -33935,7 +33935,7 @@
         "Course": {
           "Code": "9188",
           "Name": "Fundamentos de cibersegurança",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -34028,7 +34028,7 @@
         "Course": {
           "Code": "9196",
           "Name": "Cibersegurança ativa",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -34121,7 +34121,7 @@
         "Course": {
           "Code": "5392",
           "Name": "Imagem vetorial",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -34214,7 +34214,7 @@
         "Course": {
           "Code": "7825",
           "Name": "Empresa – estrutura organizacional",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -34307,7 +34307,7 @@
         "Course": {
           "Code": "5133",
           "Name": "Introdução ao CIM",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -34983,7 +34983,7 @@
         "Course": {
           "Code": "0775",
           "Name": "Rede local - administração",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -35076,7 +35076,7 @@
         "Course": {
           "Code": "9197",
           "Name": "Wargamming",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -35169,7 +35169,7 @@
         "Course": {
           "Code": "6402",
           "Name": "Cálculo diferencial e integral",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -35262,7 +35262,7 @@
         "Course": {
           "Code": "10801",
           "Name": "Visualização de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -35355,7 +35355,7 @@
         "Course": {
           "Code": "5409",
           "Name": "Engenharia de software",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -36031,7 +36031,7 @@
         "Course": {
           "Code": "6193",
           "Name": "Serviços de rede Linux",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -36124,7 +36124,7 @@
         "Course": {
           "Code": "5383",
           "Name": "Inglês técnico aplicado à produção multimédia",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -36217,7 +36217,7 @@
         "Course": {
           "Code": "5095",
           "Name": "Introdução à programação orientada a objetos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -36310,7 +36310,7 @@
         "Course": {
           "Code": "5112",
           "Name": "Introdução aos sistemas operativos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -36403,7 +36403,7 @@
         "Course": {
           "Code": "5134",
           "Name": "Robótica - fundamentos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -37079,7 +37079,7 @@
         "Course": {
           "Code": "0791",
           "Name": "Programação em JAVA - avançada",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -37172,7 +37172,7 @@
         "Course": {
           "Code": "5410",
           "Name": "Bases de dados - conceitos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -37265,7 +37265,7 @@
         "Course": {
           "Code": "6137",
           "Name": "Redes de nova geração",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -37358,7 +37358,7 @@
         "Course": {
           "Code": "6192",
           "Name": "Sistema operativo Linux",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -37451,7 +37451,7 @@
         "Course": {
           "Code": "5074",
           "Name": "Componentes físicas numa rede de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -38127,7 +38127,7 @@
         "Course": {
           "Code": "6142",
           "Name": "Redes de comunicações - protocolos de redes de distribuição",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -38220,7 +38220,7 @@
         "Course": {
           "Code": "5393",
           "Name": "Desenho de sítios Web",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -38313,7 +38313,7 @@
         "Course": {
           "Code": "5099",
           "Name": "Montagem de hardware",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -38406,7 +38406,7 @@
         "Course": {
           "Code": "5110",
           "Name": "Servidor de correio eletrónico",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -39082,7 +39082,7 @@
         "Course": {
           "Code": "5117",
           "Name": "Primeiros conceitos de programação e algoritmia e estruturas de controlo num programa informático",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -39175,7 +39175,7 @@
         "Course": {
           "Code": "5113",
           "Name": "Sistema operativo cliente (plataforma proprietária)",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -39268,7 +39268,7 @@
         "Course": {
           "Code": "6404",
           "Name": "Inglês técnico aplicado às telecomunicações",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -39361,7 +39361,7 @@
         "Course": {
           "Code": "5143",
           "Name": "Língua portuguesa - escrita de textos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -39454,7 +39454,7 @@
         "Course": {
           "Code": "5142",
           "Name": "Projeto integrado de automação e controlo - otimização",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -40130,7 +40130,7 @@
         "Course": {
           "Code": "STC_6",
           "Name": "Modelos de urbanismo e mobilidade",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -40223,7 +40223,7 @@
         "Course": {
           "Code": "0754",
           "Name": "Processador de texto",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -40316,7 +40316,7 @@
         "Course": {
           "Code": "9189",
           "Name": "Tecnologias de análise de evidências",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -40409,7 +40409,7 @@
         "Course": {
           "Code": "5091",
           "Name": "Programação estruturada e tipos de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -40502,7 +40502,7 @@
         "Course": {
           "Code": "5092",
           "Name": "Estruturas de dados estáticas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -40595,7 +40595,7 @@
         "Course": {
           "Code": "5108",
           "Name": "Configuração avançada de sistemas operativos servidores",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -40688,7 +40688,7 @@
         "Course": {
           "Code": "10811",
           "Name": "Projeto de análise de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -41364,7 +41364,7 @@
         "Course": {
           "Code": "0780",
           "Name": "Aplicações de gestão administrativa",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -41457,7 +41457,7 @@
         "Course": {
           "Code": "0782",
           "Name": "Programação em C/C++ - estrutura básica e conceitos fundamentais",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -41550,7 +41550,7 @@
         "Course": {
           "Code": "6027",
           "Name": "Circuitos sequenciais síncronos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -41643,7 +41643,7 @@
         "Course": {
           "Code": "5395",
           "Name": "Tecnologias multimédia na internet",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -41736,7 +41736,7 @@
         "Course": {
           "Code": "5396",
           "Name": "Desenho e administração de bases de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -41829,7 +41829,7 @@
         "Course": {
           "Code": "5072",
           "Name": "Aplicações de gestão comercial e aprovisionamento",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -41922,7 +41922,7 @@
         "Course": {
           "Code": "10803",
           "Name": "Análise avançada de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -42015,7 +42015,7 @@
         "Course": {
           "Code": "5423",
           "Name": "Acesso móvel a sistemas de informação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -42691,7 +42691,7 @@
         "Course": {
           "Code": "6189",
           "Name": "Interfaces e suportes de transmissão",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -42784,7 +42784,7 @@
         "Course": {
           "Code": "5093",
           "Name": "Estruturas de dados compostas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -42877,7 +42877,7 @@
         "Course": {
           "Code": "5097",
           "Name": "História da informática",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -42970,7 +42970,7 @@
         "Course": {
           "Code": "5144",
           "Name": "Língua inglesa no quotidiano",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -43646,7 +43646,7 @@
         "Course": {
           "Code": "6090",
           "Name": "Instalações ITED - elaboração de projeto",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -43739,7 +43739,7 @@
         "Course": {
           "Code": "5080",
           "Name": "Gestão e manipulação avançada de aplicações informáticas de processamento de texto",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -44415,7 +44415,7 @@
         "Course": {
           "Code": "0787",
           "Name": "Administração de bases de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -44508,7 +44508,7 @@
         "Course": {
           "Code": "0793",
           "Name": "Scripts CGI e folhas de estilo",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -44601,7 +44601,7 @@
         "Course": {
           "Code": "9190",
           "Name": "Introdução à programação aplicada à cibersegurança",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -44694,7 +44694,7 @@
         "Course": {
           "Code": "6188",
           "Name": "Transmissão de sinais",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -44787,7 +44787,7 @@
         "Course": {
           "Code": "5381",
           "Name": "Comunicação e média",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -44880,7 +44880,7 @@
         "Course": {
           "Code": "5138",
           "Name": "Instrumentação industrial - avançado",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -45556,7 +45556,7 @@
         "Course": {
           "Code": "5109",
           "Name": "Políticas de segurança",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -46232,7 +46232,7 @@
         "Course": {
           "Code": "STC_5",
           "Name": "Redes de informação e comunicação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -46325,7 +46325,7 @@
         "Course": {
           "Code": "5101",
           "Name": "Hardware e redes de computadores",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -46418,7 +46418,7 @@
         "Course": {
           "Code": "6143",
           "Name": "Redes de comunicações - arquitetura e construção da rede de distribuição",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -46511,7 +46511,7 @@
         "Course": {
           "Code": "5386",
           "Name": "Direitos de autor, proteção de dados e propriedade industrial",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -46604,7 +46604,7 @@
         "Course": {
           "Code": "5067",
           "Name": "Gestão contabilística",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -46697,7 +46697,7 @@
         "Course": {
           "Code": "5077",
           "Name": "Avaliação de necessidades de programas e instalação de software numa organização",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -46790,7 +46790,7 @@
         "Course": {
           "Code": "10809",
           "Name": "Visualização de dados em Python",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -46883,7 +46883,7 @@
         "Course": {
           "Code": "5417",
           "Name": "Programação para a WEB - servidor (server-side)",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -46976,7 +46976,7 @@
         "Course": {
           "Code": "5420",
           "Name": "Integração de sistemas de informação - conceitos",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -47652,7 +47652,7 @@
         "Course": {
           "Code": "CP_1",
           "Name": "Liberdade e responsabilidade democráticas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 5.0,
           "ImageFile": null,
@@ -47745,7 +47745,7 @@
         "Course": {
           "Code": "5082",
           "Name": "Introdução aos sistemas de informação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -47838,7 +47838,7 @@
         "Course": {
           "Code": "5094",
           "Name": "Estruturas de dados dinâmicas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -47931,7 +47931,7 @@
         "Course": {
           "Code": "5096",
           "Name": "Programação orientada a objetos - aprofundamento",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -48024,7 +48024,7 @@
         "Course": {
           "Code": "5132",
           "Name": "Controlo industrial - avançado",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -48700,7 +48700,7 @@
         "Course": {
           "Code": "0783",
           "Name": "Programação em C/C++ - ciclos e decisões",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -48793,7 +48793,7 @@
         "Course": {
           "Code": "0784",
           "Name": "Programação em C/C++ - funções e estruturas",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -48886,7 +48886,7 @@
         "Course": {
           "Code": "5114",
           "Name": "Sistema operativo servidor (plataforma proprietária)",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -48979,7 +48979,7 @@
         "Course": {
           "Code": "5394",
           "Name": "Técnicas avançadas de programação Web",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -49072,7 +49072,7 @@
         "Course": {
           "Code": "5403",
           "Name": "Composição e efeitos audiovisuais",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -49165,7 +49165,7 @@
         "Course": {
           "Code": "10796",
           "Name": "Gestão de informação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -49841,7 +49841,7 @@
         "Course": {
           "Code": "6405",
           "Name": "Gestão",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -49934,7 +49934,7 @@
         "Course": {
           "Code": "0146",
           "Name": "Imagem/vídeo - captação, registo e edição",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -50027,7 +50027,7 @@
         "Course": {
           "Code": "5098",
           "Name": "Arquitetura de hardware",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -50120,7 +50120,7 @@
         "Course": {
           "Code": "9950",
           "Name": "Conceitos fundamentais de programação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -50213,7 +50213,7 @@
         "Course": {
           "Code": "5424",
           "Name": "Planeamento e gestão de projetos de sistemas de informação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -50889,7 +50889,7 @@
         "Course": {
           "Code": "0769",
           "Name": "Arquitetura interna do computador",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -50982,7 +50982,7 @@
         "Course": {
           "Code": "0683",
           "Name": "Ética e deontologia profissionais",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.5,
           "ImageFile": null,
@@ -51075,7 +51075,7 @@
         "Course": {
           "Code": "5745",
           "Name": "Inglês técnico",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -51751,7 +51751,7 @@
         "Course": {
           "Code": "10791",
           "Name": "Desenvolvimento de aplicações web em JAVA",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -51844,7 +51844,7 @@
         "Course": {
           "Code": "6141",
           "Name": "Redes de comunicações - segurança",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -51937,7 +51937,7 @@
         "Course": {
           "Code": "5405",
           "Name": "Metodologia e gestão de projetos multimédia",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -52030,7 +52030,7 @@
         "Course": {
           "Code": "5085",
           "Name": "Criação de estrutura de base de dados em SQL",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -52123,7 +52123,7 @@
         "Course": {
           "Code": "5111",
           "Name": "Configuração de serviços num servidor linux",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -52216,7 +52216,7 @@
         "Course": {
           "Code": "11027",
           "Name": "Desenvolvimento de aplicações móveis (plataforma iOS)",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -52892,7 +52892,7 @@
         "Course": {
           "Code": "0771",
           "Name": "Conexões de rede",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -52985,7 +52985,7 @@
         "Course": {
           "Code": "5388",
           "Name": "Design multimédia",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -53078,7 +53078,7 @@
         "Course": {
           "Code": "5073",
           "Name": "Componentes físicas de um sistema informático",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -53171,7 +53171,7 @@
         "Course": {
           "Code": "5105",
           "Name": "Arquitetura cliente - servidor",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -53264,7 +53264,7 @@
         "Course": {
           "Code": "5116",
           "Name": "Sistemas operativos open source",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -53940,7 +53940,7 @@
         "Course": {
           "Code": "9195",
           "Name": "Enquadramento operacional da cibersegurança",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -54033,7 +54033,7 @@
         "Course": {
           "Code": "5076",
           "Name": "Montagem e configuração de sistemas informáticos e de redes",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -54126,7 +54126,7 @@
         "Course": {
           "Code": "5079",
           "Name": "Políticas de segurança dos sistemas informáticos e de redes",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -54219,7 +54219,7 @@
         "Course": {
           "Code": "5126",
           "Name": "Eletrónica industrial",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -54312,7 +54312,7 @@
         "Course": {
           "Code": "5416",
           "Name": "WEB - ferramentas multimédia",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -54405,7 +54405,7 @@
         "Course": {
           "Code": "5425",
           "Name": "Projeto de tecnologias e programação de sistemas de informação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -55081,7 +55081,7 @@
         "Course": {
           "Code": "0786",
           "Name": "Instalação e configuração de sistemas de gestão de bases de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -55174,7 +55174,7 @@
         "Course": {
           "Code": "10800",
           "Name": "Transformação de dados",
-          "Description": 0,
+          "Description": "0",
           "Hours": 25,
           "CreditPoints": 2.25,
           "ImageFile": null,
@@ -55267,7 +55267,7 @@
         "Course": {
           "Code": "5128",
           "Name": "Pneutrónica",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,
@@ -55360,7 +55360,7 @@
         "Course": {
           "Code": "5129",
           "Name": "Automação",
-          "Description": 0,
+          "Description": "0",
           "Hours": 50,
           "CreditPoints": 4.5,
           "ImageFile": null,

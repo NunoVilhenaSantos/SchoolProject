@@ -1,5 +1,7 @@
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Models;
@@ -12,8 +14,13 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
-    private readonly ICountryRepository _countryRepository;
+    private const string SessionVarName = "AllTeachersAndCourses";
+    private const string BucketName = "nationalities";
+    private const string SortProperty = "Name";
+
     private readonly INationalityRepository _nationalityRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly ICountryRepository _countryRepository;
 
 
     /// <summary>
@@ -21,24 +28,15 @@ public class NationalitiesController : Controller
     /// </summary>
     /// <param name="countryRepository"></param>
     /// <param name="nationalityRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public NationalitiesController(
         ICountryRepository countryRepository,
-        INationalityRepository nationalityRepository
-    )
+        INationalityRepository nationalityRepository,
+        IWebHostEnvironment hostingEnvironment)
     {
         _countryRepository = countryRepository;
         _nationalityRepository = nationalityRepository;
-    }
-
-
-    /// <summary>
-    ///     GET: Nationalities
-    /// </summary>
-    /// <returns></returns>
-    /// GET: Nationalities
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10)
-    {
-        return View(GetNationalitiesWithCountries());
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
@@ -48,40 +46,71 @@ public class NationalitiesController : Controller
     }
 
 
+    private List<Nationality> SessionData<T>() where T : class
+    {
+        // Obtém todos os registos
+        List<Nationality> recordsQuery;
+
+        // Tente obter a lista de professores da sessão
+        if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
+        {
+            // Se a lista estiver na sessão, desserializa-a
+            var json = Encoding.UTF8.GetString(allData);
+
+            recordsQuery =
+                JsonConvert.DeserializeObject<List<Nationality>>(json) ??
+                new List<Nationality>();
+        }
+        else
+        {
+            // Caso contrário, obtenha a lista completa do banco de dados
+            // Chame a função GetTeachersList com o tipo T
+            recordsQuery = GetNationalitiesWithCountries();
+
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+
+            var json = PaginationViewModel<Nationality>
+                .StoreListToFileInJson(recordsQuery);
+
+            // Armazene a lista na sessão para uso futuro
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
+        }
+
+        return recordsQuery;
+    }
+
+
+    // GET: Nationalities
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
+    /// <returns></returns>
+    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
+    {
+        var recordsQuery = SessionData<Nationality>();
+        return View(recordsQuery);
+    }
+
     /// <summary>
     ///     IndexCards method for the cards view.
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10)
+    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        return View(GetNationalitiesWithCountries());
+        var recordsQuery = SessionData<Nationality>();
+        return View(recordsQuery);
     }
-
-
-    // GET: Countries
-    // /// <summary>
-    // /// Index action for testing the pagination
-    // /// </summary>
-    // /// <param name="pageNumber"></param>
-    // /// <param name="pageSize"></param>
-    // /// <returns></returns>
-    // public IActionResult Index1(int pageNumber = 1, int pageSize = 10)
-    // {
-    //     var records =
-    //         GetNationalitiesWithCountries(pageNumber, pageSize);
-    //
-    //     var model = new PaginationViewModel<Nationality>
-    //     {
-    //         Records = records,
-    //         PageNumber = pageNumber,
-    //         PageSize = pageSize,
-    //         TotalCount = _nationalityRepository.GetCount().Result,
-    //     };
-    //
-    //     return View(model);
-    // }
 
 
     // GET: Countries
@@ -94,16 +123,20 @@ public class NationalitiesController : Controller
     /// <param name="sortProperty"></param>
     /// <returns></returns>
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
-        string sortOrder = "asc", string sortProperty = "FirstName")
+        string sortOrder = "asc", string sortProperty = SortProperty)
     {
-        // TODO: Fix the sort order
+        // Validar parâmetros de página e tamanho da página
+        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
+        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
+
+        var recordsQuery = SessionData<Nationality>();
+
         var model = new PaginationViewModel<Nationality>(
-            GetNationalitiesWithCountries(),
+            recordsQuery,
             pageNumber, pageSize,
-            _nationalityRepository.GetCount().Result,
+            recordsQuery.Count,
             sortOrder, sortProperty
         );
-
 
         return View(model);
     }

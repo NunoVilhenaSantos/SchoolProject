@@ -757,7 +757,10 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+
 builder.Services.AddHttpContextAccessor();
+
+
 
 // Extrai o nome do servidor da Connection String
 var serverHostName =

@@ -8,6 +8,9 @@ using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.OtherEntities;
 
+/// <summary>
+///
+/// </summary>
 public class Gender : IEntity, INotifyPropertyChanged
 {
     [MaxLength(20,
@@ -44,12 +47,8 @@ public class Gender : IEntity, INotifyPropertyChanged
         : StorageHelper.AzureStoragePublicUrl + "genders/" + ProfilePhotoId;
 
 
-
-
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
-
-
 
 
     [Key]
@@ -91,8 +90,11 @@ public class Gender : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
@@ -100,6 +102,8 @@ public class Gender : IEntity, INotifyPropertyChanged
             new(propertyName));
     }
 
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
