@@ -16,7 +16,7 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class UsersController : Controller
 {
-    private const string SessionVarName = "AllUsersWithRolesList";
+    internal const string SessionVarName = "AllUsersWithRolesList";
     private const string BucketName = "users";
     private const string SortProperty = "FirstName";
 

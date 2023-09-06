@@ -54,19 +54,33 @@ public class City : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
+    /// <summary>
+    /// CountryId
+    /// </summary>
     [Required]
     [ForeignKey(nameof(Country))]
     public int CountryId { get; set; }
 
 
-    [Required] public virtual required Country Country { get; set; }
+    /// <summary>
+    /// country class to be able to navigate
+    /// </summary>
+    [Required]
+    public virtual required Country Country { get; set; }
 
 
+    /// <summary>
+    /// country GuidId
+    /// </summary>
+    [DisplayName("Country Guid")]
+    public Guid CountryGuidId => Country.IdGuid;
+
+
+    /// <summary>
+    /// Count of cities belonging to the country
+    /// </summary>
     [DisplayName("Number of Cities")]
-    public int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
-
-
-    [DisplayName("Country Guid")] public Guid CountryGuidId => Country.IdGuid;
+    public int NumberOfCitiesInCountry => Country?.Cities?.Count ?? 0;
 
 
     // --------------------------------------------------------------------- //

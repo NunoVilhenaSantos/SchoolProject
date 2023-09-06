@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -12,9 +13,10 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     EnrollmentsController class.
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class EnrollmentsController : Controller
 {
-    private const string SessionVarName =
+    internal const string SessionVarName =
         "AllEnrollmentsWithCoursesAndStudents";
     private const string BucketName = "enrollments";
     private const string SortProperty = "Name";

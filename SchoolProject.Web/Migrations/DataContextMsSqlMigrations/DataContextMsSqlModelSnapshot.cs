@@ -329,8 +329,8 @@ namespace SchoolProject.Web.Migrations.DataContextMsSqlMigrations
                     b.Property<double>("CreditPoints")
                         .HasColumnType("float");
 
-                    b.Property<int>("Description")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Hours")
                         .HasColumnType("int");

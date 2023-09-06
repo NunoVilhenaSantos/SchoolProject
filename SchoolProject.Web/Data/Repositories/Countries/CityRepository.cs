@@ -37,11 +37,15 @@ public class CityRepository : GenericRepository<City>, ICityRepository
 
 
     /// <inheritdoc />
-    public IQueryable<City> GetCitiesWithCountriesAsync()
+    public IEnumerable<City> GetCitiesWithCountriesAsync()
     {
         return _dataContext.Cities
             .Include(c => c.Country)
             .ThenInclude(country => country.Cities)
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Nationality)
+            .Include(c => c.CreatedBy)
+            .Include(c => c.UpdatedBy)
             .OrderBy(c => c.Country.Name)
             .ThenBy(c => c.Name);
     }

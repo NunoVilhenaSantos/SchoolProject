@@ -313,8 +313,8 @@ namespace SchoolProject.Web.Migrations
                     b.Property<double>("CreditPoints")
                         .HasColumnType("double");
 
-                    b.Property<int>("Description")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Hours")
                         .HasColumnType("int");

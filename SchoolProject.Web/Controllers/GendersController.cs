@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -11,9 +12,10 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     GendersController class.
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class GendersController : Controller
 {
-    private const string SessionVarName = "AllGendersList";
+    internal const string SessionVarName = "AllGendersList";
     private const string BucketName = "genders";
     private const string SortProperty = "Name";
 

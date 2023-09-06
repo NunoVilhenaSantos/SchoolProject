@@ -158,14 +158,14 @@ GO
 CREATE TABLE [Cities] (
     [Id] int NOT NULL IDENTITY,
     [Name] nvarchar(50) NOT NULL,
+    [ProfilePhotoId] uniqueidentifier NOT NULL,
+    [CountryId] int NOT NULL,
     [IdGuid] uniqueidentifier NOT NULL DEFAULT ((NEWSEQUENTIALID())),
     [WasDeleted] bit NOT NULL,
     [CreatedAt] datetime2 NOT NULL,
     [CreatedById] nvarchar(450) NOT NULL,
     [UpdatedAt] datetime2 NULL,
     [UpdatedById] nvarchar(450) NULL,
-    [ProfilePhotoId] uniqueidentifier NOT NULL,
-    [CountryId] int NOT NULL,
     CONSTRAINT [PK_Cities] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_Cities_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_Cities_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
@@ -176,13 +176,13 @@ GO
 CREATE TABLE [Nationalities] (
     [Id] int NOT NULL IDENTITY,
     [Name] nvarchar(50) NOT NULL,
+    [CountryId] int NOT NULL,
     [IdGuid] uniqueidentifier NOT NULL DEFAULT ((NEWSEQUENTIALID())),
     [WasDeleted] bit NOT NULL,
     [CreatedAt] datetime2 NOT NULL,
     [CreatedById] nvarchar(450) NOT NULL,
     [UpdatedAt] datetime2 NULL,
     [UpdatedById] nvarchar(450) NULL,
-    [CountryId] int NOT NULL,
     CONSTRAINT [PK_Nationalities] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_Nationalities_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_Nationalities_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
@@ -194,7 +194,7 @@ CREATE TABLE [Courses] (
     [Id] int NOT NULL IDENTITY,
     [Code] nvarchar(7) NOT NULL,
     [Name] nvarchar(max) NOT NULL,
-    [Description] int NOT NULL,
+    [Description] nvarchar(max) NULL,
     [Hours] int NOT NULL,
     [CreditPoints] float NOT NULL,
     [ProfilePhotoId] uniqueidentifier NOT NULL,
@@ -556,7 +556,7 @@ CREATE INDEX [IX_Teachers_UserId] ON [Teachers] ([UserId]);
 GO
 
 INSERT INTO [_MyMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20230903203922_InitDB', N'7.0.10');
+VALUES (N'20230906163530_InitDB', N'7.0.10');
 GO
 
 COMMIT;

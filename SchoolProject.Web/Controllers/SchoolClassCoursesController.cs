@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -12,10 +13,11 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     School class with courses
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser")]
 public class SchoolClassCoursesController : Controller
 {
-    private const string SessionVarName = "AllSchoolClassesAndCourses";
-    private const string BucketName = "teachers";
+    internal const string SessionVarName = "AllSchoolClassesAndCourses";
+    private const string BucketName = "schoolclasscourses";
     private const string SortProperty = "Name";
 
     private readonly DataContextMySql _context;
@@ -35,8 +37,8 @@ public class SchoolClassCoursesController : Controller
         ISchoolClassCourseRepository schoolClassCourseRepository)
     {
         _context = context;
-        _schoolClassCourseRepository = schoolClassCourseRepository;
         _hostingEnvironment = hostingEnvironment;
+        _schoolClassCourseRepository = schoolClassCourseRepository;
     }
 
 

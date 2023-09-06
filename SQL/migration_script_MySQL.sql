@@ -143,14 +143,14 @@ CREATE TABLE `SchoolClasses` (
 CREATE TABLE `Cities` (
     `Id` int NOT NULL AUTO_INCREMENT,
     `Name` varchar(50) NOT NULL,
+    `ProfilePhotoId` char(36) NOT NULL,
+    `CountryId` int NOT NULL,
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
     `UpdatedById` varchar(255) NULL,
-    `ProfilePhotoId` char(36) NOT NULL,
-    `CountryId` int NOT NULL,
     PRIMARY KEY (`Id`),
     CONSTRAINT `FK_Cities_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Cities_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
@@ -160,13 +160,13 @@ CREATE TABLE `Cities` (
 CREATE TABLE `Nationalities` (
     `Id` int NOT NULL AUTO_INCREMENT,
     `Name` varchar(50) NOT NULL,
+    `CountryId` int NOT NULL,
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
     `UpdatedById` varchar(255) NULL,
-    `CountryId` int NOT NULL,
     PRIMARY KEY (`Id`),
     CONSTRAINT `FK_Nationalities_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Nationalities_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
@@ -177,7 +177,7 @@ CREATE TABLE `Courses` (
     `Id` int NOT NULL AUTO_INCREMENT,
     `Code` varchar(7) NOT NULL,
     `Name` longtext NOT NULL,
-    `Description` int NOT NULL,
+    `Description` longtext NULL,
     `Hours` int NOT NULL,
     `CreditPoints` double NOT NULL,
     `ProfilePhotoId` char(36) NOT NULL,
@@ -473,7 +473,7 @@ CREATE INDEX `IX_Teachers_UpdatedById` ON `Teachers` (`UpdatedById`);
 CREATE INDEX `IX_Teachers_UserId` ON `Teachers` (`UserId`);
 
 INSERT INTO `_MyMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20230903203307_InitDB', '7.0.10');
+VALUES ('20230906163156_InitDB', '7.0.10');
 
 COMMIT;
 

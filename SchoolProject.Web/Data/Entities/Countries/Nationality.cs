@@ -7,8 +7,14 @@ using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.Countries;
 
+/// <summary>
+/// Nationality class
+/// </summary>
 public class Nationality : IEntity, INotifyPropertyChanged
 {
+    /// <summary>
+    /// the name of the nationality
+    /// </summary>
     [Required]
     [DisplayName("Nationality")]
     [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
@@ -29,10 +35,11 @@ public class Nationality : IEntity, INotifyPropertyChanged
     [Required] public virtual required Country Country { get; set; }
 
 
-    [DisplayName("Number of Cities")]
-    public int NumberCitiesInCountry => Country?.Cities?.Count ?? 0;
-
     public Guid CountryGuidId => Country.IdGuid;
+
+
+    [DisplayName("Number of Cities")]
+    public int NumberOfCitiesInCountry => Country?.Cities?.Count ?? 0;
 
 
     // --------------------------------------------------------------------- //

@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -11,9 +12,10 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     students controller
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class StudentsController : Controller
 {
-    private const string SessionVarName = "AllStudentsList";
+    internal const string SessionVarName = "AllStudentsList";
     private const string BucketName = "students";
     private const string SortProperty = "FirstName";
 
@@ -40,7 +42,38 @@ public class StudentsController : Controller
     }
 
 
-    private List<Student> GetStudentsList() => _context.Students.ToList();
+    private List<Student> GetStudentsList()
+    {
+        return _context.Students
+            .Include(s => s.Country)
+            .ThenInclude(c => c.Nationality)
+            .Include(s => s.Country)
+            .ThenInclude(c => c.CreatedBy)
+            .Include(s => s.City)
+            .ThenInclude(c => c.CreatedBy)
+            .Include(s => s.CountryOfNationality)
+            .ThenInclude(c => c.Nationality)
+            .Include(s => s.CountryOfNationality)
+            .ThenInclude(c => c.CreatedBy)
+            .Include(s => s.Birthplace)
+            .ThenInclude(c => c.Nationality)
+            .Include(s => s.Birthplace)
+            .ThenInclude(c => c.CreatedBy)
+            .Include(s => s.Gender)
+            .ThenInclude(g => g.CreatedBy)
+            .Include(s => s.User).ToList();
+
+            // Se desejar carregar as turmas associadas
+            // .Include(s => s.SchoolClassStudents)
+            // .ThenInclude(scs => scs.SchoolClass)
+            // .ThenInclude(sc => sc.Courses)
+
+            // Se desejar carregar os cursos associados
+            // E seus detalhes, se necessário
+            // .Include(t => t.StudentCourses)
+            // .ThenInclude(tc => tc.Course)
+            // .ToList();
+    }
 
 
     private List<Student> SessionData<T>() where T : class

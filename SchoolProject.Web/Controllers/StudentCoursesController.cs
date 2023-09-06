@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -12,9 +13,10 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     StudentCoursesController
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class StudentCoursesController : Controller
 {
-    private const string SessionVarName = "AllStudentAndCourses";
+    internal const string SessionVarName = "AllStudentAndCourses";
     private const string BucketName = "teachers";
     private const string SortProperty = "Name";
 

@@ -1,10 +1,23 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
+using System.Text;
+using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
+using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Enrollments;
+using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models.Errors;
+using SchoolProject.Web.Models.Users;
 
 namespace SchoolProject.Web.Controllers;
 
@@ -103,6 +116,92 @@ public class HomeController : Controller
 
         ViewData["WelcomeMessage"] = _stringLocalizer["WelcomeMessage"];
         return View();
+    }
+
+
+    private int GetSessionDataSize(string sessionVarName)
+    {
+        return HttpContext.Session.TryGetValue(sessionVarName, out var allData)
+            ? allData.Length
+            : 0;
+    }
+
+
+    private int GetSessionDataObjectsCount<T>(string sessionVarName)
+    {
+        // Se os dados não estiverem na sessão, retorne 0.
+        if (!HttpContext.Session.TryGetValue(sessionVarName, out var allData))
+            return 0;
+
+        // Isso depende de como os dados estão estruturados na sessão.
+        var json = Encoding.UTF8.GetString(allData);
+
+        var objectsList = JsonConvert.DeserializeObject<List<T>>(json);
+
+        // Contagem de objetos e retorne essa contagem de objetos.
+        if (objectsList == null) return 0;
+
+        var objectsCount = objectsList.Count;
+        return objectsCount;
+    }
+
+
+    private List<VariableInfoViewModel> GetVariableInfoList()
+    {
+        return (from sessionVarName in _sessionVariableTypes.Keys
+
+                let sessionVarType = _sessionVariableTypes[sessionVarName]
+                let dataSize = GetSessionDataSize(sessionVarName)
+                let objectsCount =
+                    GetSessionDataObjectsCount<object>(sessionVarName)
+
+                select new VariableInfoViewModel
+                {
+                    VariableName = sessionVarName,
+                    ClassName = sessionVarType.Name,
+                    ObjectsCount = objectsCount,
+                    SizeInBytes = dataSize,
+                })
+            .ToList();
+    }
+
+
+    private readonly Dictionary<string, Type> _sessionVariableTypes =
+        new()
+        {
+            {CitiesController.SessionVarName, typeof(City)},
+            {CountriesController.SessionVarName, typeof(Country)},
+            {CoursesController.SessionVarName, typeof(Course)},
+            {EnrollmentsController.SessionVarName, typeof(Enrollment)},
+            {GendersController.SessionVarName, typeof(Gender)},
+            {NationalitiesController.SessionVarName, typeof(Nationality)},
+            {RolesController.SessionVarName, typeof(IdentityRole)},
+            {
+                SchoolClassCoursesController.SessionVarName,
+                typeof(SchoolClassCourse)
+            },
+            {SchoolClassesController.SessionVarName, typeof(SchoolClass)},
+            {
+                SchoolClassStudentsController.SessionVarName,
+                typeof(SchoolClassStudent)
+            },
+            {StudentCoursesController.SessionVarName, typeof(StudentCourse)},
+            {StudentsController.SessionVarName, typeof(Student)},
+            {TeacherCoursesController.SessionVarName, typeof(TeacherCourse)},
+            {TeachersController.SessionVarName, typeof(Teacher)},
+            {UsersController.SessionVarName, typeof(UserWithRolesViewModel)},
+            // Adicione mais nomes de variáveis de sessão aqui com os tipos correspondentes
+        };
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult VariableInfo()
+    {
+        var viewModel = GetVariableInfoList();
+        return View(viewModel);
     }
 
 

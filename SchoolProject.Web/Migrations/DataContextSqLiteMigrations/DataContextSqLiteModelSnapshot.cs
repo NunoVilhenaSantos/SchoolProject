@@ -311,8 +311,8 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<double>("CreditPoints")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("Description")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Hours")
                         .HasColumnType("INTEGER");

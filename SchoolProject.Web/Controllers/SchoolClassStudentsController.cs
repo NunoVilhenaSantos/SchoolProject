@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -12,9 +13,10 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     SchoolClassStudentsController
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class SchoolClassStudentsController : Controller
 {
-    private const string SessionVarName = "AllSchoolClassesAndStudent";
+    internal const string SessionVarName = "AllSchoolClassesAndStudent";
     private const string BucketName = "teachers";
     private const string SortProperty = "Name";
 
@@ -48,8 +50,33 @@ public class SchoolClassStudentsController : Controller
     {
         var schoolClassesStudentList =
             _context.SchoolClassStudents
-                .Include(s => s.SchoolClass)
-                .Include(s => s.Student)
+                // ------------------ SchoolClass section ------------------- //
+                .Include(scs => scs.SchoolClass)
+
+                // -------------------- Student section --------------------- //
+                .Include(scs => scs.Student)
+                .ThenInclude(s => s.Country)
+                .ThenInclude(c => c.Nationality)
+                .ThenInclude(n => n.CreatedBy)
+                .Include(scs => scs.Student)
+                .ThenInclude(s => s.CountryOfNationality)
+                .ThenInclude(c => c.Nationality)
+                .ThenInclude(n => n.CreatedBy)
+                .Include(scs => scs.Student)
+                .ThenInclude(s => s.Birthplace)
+                .ThenInclude(c => c.Nationality)
+                .ThenInclude(n => n.CreatedBy)
+                .Include(scs => scs.Student)
+                .ThenInclude(s => s.Gender)
+                .ThenInclude(g => g.CreatedBy)
+                .Include(scs => scs.Student)
+                .ThenInclude(s => s.User)
+
+                // ----------------- Student Others section ----------------- //
+                .Include(scs => scs.Student)
+                .ThenInclude(s => s.SchoolClassStudents)
+
+                // --------------------- Others section --------------------- //
                 .Include(s => s.CreatedBy)
                 .Include(s => s.UpdatedBy)
                 .ToList();

@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -12,9 +13,10 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     TeacherCoursesController class.
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class TeacherCoursesController : Controller
 {
-    private const string SessionVarName = "AllTeachersAndCourses";
+    internal const string SessionVarName = "AllTeachersAndCourses";
     private const string SortProperty = "Name";
 
     private readonly ITeacherCourseRepository _teacherCourseRepository;
@@ -43,8 +45,29 @@ public class TeacherCoursesController : Controller
     {
         var teacherCoursesList =
             _context.TeacherCourses
+                // --------------------- Course section --------------------- //
                 .Include(tc => tc.Course)
+
+                // --------------------- Teacher section -------------------- //
                 .Include(tc => tc.Teacher)
+                .ThenInclude(t => t.Country)
+                .ThenInclude(c => c.Nationality)
+                .ThenInclude(c => c.CreatedBy)
+                .Include(tc => tc.Teacher)
+                .ThenInclude(t => t.CountryOfNationality)
+                .ThenInclude(c => c.Nationality)
+                .ThenInclude(c => c.CreatedBy)
+                .Include(tc => tc.Teacher)
+                .ThenInclude(t => t.Birthplace)
+                .ThenInclude(c => c.Nationality)
+                .ThenInclude(c => c.CreatedBy)
+                .Include(tc => tc.Teacher)
+                .ThenInclude(t => t.Gender)
+                .ThenInclude(g => g.CreatedBy)
+                .Include(tc => tc.Teacher)
+                .ThenInclude(t => t.User)
+
+                // --------------------- Others section --------------------- //
                 .Include(tc => tc.CreatedBy)
                 .Include(tc => tc.UpdatedBy)
                 .ToList();

@@ -77,7 +77,10 @@ public class PaginationViewModel<T> where T : class
         {
             // Se a classe for UserWithRolesViewModel,
             // aplique a ordenação específica
-            recordsQuerySorted = ApplySortingUserWithRoles(
+            //recordsQuerySorted = ApplySortingUserWithRoles(
+            //    records.AsQueryable(), sortOrder, sortProperty);
+
+            recordsQuerySorted = ApplySortingUserWithRoles1(
                 records.AsQueryable(), sortOrder, sortProperty);
         }
         else
@@ -195,11 +198,12 @@ public class PaginationViewModel<T> where T : class
 
 
     /// <summary>
-    ///
+    /// Get or set data in the session.
     /// </summary>
-    /// <param name="sessionVarName"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <typeparam name="T">The type of data to store in the session.</typeparam>
+    /// <param name="sessionVarName">The name of the session variable.</param>
+    /// <param name="queryRecords">A list of records to initialize from if the session data is not found.</param>
+    /// <returns>The list of records from the session or the provided queryRecords.</returns>
     public List<T> SessionData(string sessionVarName, List<T> queryRecords)
     {
         var modelType = typeof(T);
@@ -263,7 +267,7 @@ public class PaginationViewModel<T> where T : class
         {
             // Specify the directory path
             var directoryPath =
-                Path.Combine(_hostingEnvironment.ContentRootPath, "Data");
+                Path.Combine(_hostingEnvironment.ContentRootPath, "Data","Json");
 
             // Check if the directory exists, and create it if it doesn't
             if (!Directory.Exists(directoryPath))
@@ -271,12 +275,11 @@ public class PaginationViewModel<T> where T : class
 
 
             // Obtenha o nome da classe T
-            var typeName = typeof(T).Name + "s";
+            var typeName = typeof(T).Name ;
 
             // Specify the file path where you queremos salvar o JSON file
             var filePath =
-                Path.Combine(_hostingEnvironment.ContentRootPath,
-                    "Data", $"{typeName}.json");
+                Path.Combine(directoryPath, $"{typeName}.json");
 
 
             // Save the JSON to the file
@@ -406,9 +409,12 @@ public class PaginationViewModel<T> where T : class
 
         var propertyInfo =
             typeof(T).GetProperty(sortProperty) ??
-            throw new ArgumentException(
-                $"Property {sortProperty} " +
-                $"not found in type UserWithRolesViewModels");
+            typeof(T).GetNestedType("User")?.GetProperty(sortProperty);
+
+
+        //throw new ArgumentException(
+        //        $"Property {sortProperty} " +
+        //        $"not found in type UserWithRolesViewModels");
 
         Expression propertyAccess =
             Expression.Property(parameter, propertyInfo);
@@ -430,4 +436,42 @@ public class PaginationViewModel<T> where T : class
 
         return query.Provider.CreateQuery<T>(orderByCall);
     }
+
+
+    private IQueryable<T> ApplySortingUserWithRoles1(
+    IQueryable<T> query, string sortOrder, string sortProperty)
+    {
+        if (string.IsNullOrEmpty(sortProperty)) return query;
+
+        var parameter = Expression.Parameter(typeof(T), "x");
+
+        // Modify the propertyInfo retrieval to navigate into the "User" property
+        var userPropertyInfo = typeof(T).GetProperty("User");
+        var propertyInfo = userPropertyInfo.PropertyType.GetProperty(sortProperty);
+
+        if (propertyInfo == null)
+        {
+            throw new ArgumentException(
+                $"Property {sortProperty} not found in type {typeof(T).FullName}");
+        }
+
+        Expression propertyAccess = Expression.Property(
+            Expression.Property(parameter, userPropertyInfo), propertyInfo);
+
+        var orderByExp = Expression.Lambda<Func<T, object>>(
+            Expression.Convert(propertyAccess, typeof(object)), parameter);
+
+        var orderByMethod = sortOrder == "asc" ? "OrderBy" : "OrderByDescending";
+
+        var orderByCall = Expression.Call(
+            typeof(Queryable),
+            orderByMethod,
+            new[] { typeof(T), propertyInfo.PropertyType },
+            query.Expression,
+            Expression.Quote(orderByExp)
+        );
+
+        return query.Provider.CreateQuery<T>(orderByCall);
+    }
+
 }

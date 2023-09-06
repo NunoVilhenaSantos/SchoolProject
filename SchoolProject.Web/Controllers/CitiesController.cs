@@ -15,7 +15,7 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
-    private const string SessionVarName = "AllCitiesWithCountries";
+    internal const string SessionVarName = "AllCitiesWithCountries";
     private const string BucketName = "cities";
     private const string SortProperty = "Name";
 

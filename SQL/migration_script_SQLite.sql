@@ -135,14 +135,14 @@ CREATE TABLE "SchoolClasses" (
 CREATE TABLE "Cities" (
     "Id" INTEGER NOT NULL CONSTRAINT "PK_Cities" PRIMARY KEY AUTOINCREMENT,
     "Name" TEXT NOT NULL,
+    "ProfilePhotoId" TEXT NOT NULL,
+    "CountryId" INTEGER NOT NULL,
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
     "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
     "UpdatedById" TEXT NULL,
-    "ProfilePhotoId" TEXT NOT NULL,
-    "CountryId" INTEGER NOT NULL,
     CONSTRAINT "FK_Cities_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Cities_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Cities_Countries_CountryId" FOREIGN KEY ("CountryId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT
@@ -151,13 +151,13 @@ CREATE TABLE "Cities" (
 CREATE TABLE "Nationalities" (
     "Id" INTEGER NOT NULL CONSTRAINT "PK_Nationalities" PRIMARY KEY AUTOINCREMENT,
     "Name" TEXT NOT NULL,
+    "CountryId" INTEGER NOT NULL,
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
     "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
     "UpdatedById" TEXT NULL,
-    "CountryId" INTEGER NOT NULL,
     CONSTRAINT "FK_Nationalities_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Nationalities_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Nationalities_Countries_CountryId" FOREIGN KEY ("CountryId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT
@@ -167,7 +167,7 @@ CREATE TABLE "Courses" (
     "Id" INTEGER NOT NULL CONSTRAINT "PK_Courses" PRIMARY KEY AUTOINCREMENT,
     "Code" TEXT NOT NULL,
     "Name" TEXT NOT NULL,
-    "Description" INTEGER NOT NULL,
+    "Description" TEXT NULL,
     "Hours" INTEGER NOT NULL,
     "CreditPoints" REAL NOT NULL,
     "ProfilePhotoId" TEXT NOT NULL,
@@ -461,7 +461,7 @@ CREATE INDEX "IX_Teachers_UpdatedById" ON "Teachers" ("UpdatedById");
 CREATE INDEX "IX_Teachers_UserId" ON "Teachers" ("UserId");
 
 INSERT INTO "_MyMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20230903203657_InitDB', '7.0.10');
+VALUES ('20230906163347_InitDB', '7.0.10');
 
 COMMIT;
 

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SchoolProject.Web.Helpers.VariableInfoViewModel>
+
+@{
+    ViewData["Title"] = "Informações das Variáveis";
+}
+
+@* <h1>@ViewData["Title"]</h1> *@
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-hover" sortable="True" id="sortableTable">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.VariableName) </th>
+        <th>@Html.DisplayNameFor(model => model.ClassName) </th>
+        <th>@Html.DisplayNameFor(model => model.ObjectsCount) </th>
+        <th>@Html.DisplayNameFor(model => model.SizeInBytes) </th>
+        <th>@Html.DisplayNameFor(model => model.SizeInKilobytes) </th>
+        <th>@Html.DisplayNameFor(model => model.SizeInMegabytes) </th>
+        <th>@Html.DisplayNameFor(model => model.SizeInGigabytes) </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.VariableName) </td>
+            <td>@Html.DisplayFor(modelItem => item.ClassName) </td>
+            <td>@Html.DisplayFor(modelItem => item.ObjectsCount) </td>
+            <td>@Html.DisplayFor(modelItem => item.SizeInBytes) </td>
+            <td>@Html.DisplayFor(modelItem => item.SizeInKilobytes) </td>
+            <td>@Html.DisplayFor(modelItem => item.SizeInMegabytes) </td>
+            <td>@Html.DisplayFor(modelItem => item.SizeInGigabytes) </td>
+        </tr>
+    }
+    </tbody>
+</table>

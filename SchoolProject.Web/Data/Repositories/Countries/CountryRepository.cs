@@ -57,6 +57,8 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
         return _dataContext.Countries
             .Include(c => c.Cities)
             .Include(c => c.Nationality)
+            .Include(c => c.CreatedBy)
+            .Include(c => c.UpdatedBy)
             .OrderBy(c => c.Name);
     }
 
@@ -67,6 +69,8 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
         return _dataContext.Countries
             .Include(c => c.Cities)
             .Include(c => c.Nationality)
+            .Include(c => c.CreatedBy)
+            .Include(c => c.UpdatedBy)
             .OrderBy(c => c.Name)
             .AsEnumerable();
     }

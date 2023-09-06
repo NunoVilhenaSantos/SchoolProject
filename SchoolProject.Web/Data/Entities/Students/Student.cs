@@ -173,38 +173,97 @@ public class Student : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     [DisplayName("SchoolClass")]
-    public virtual ICollection<SchoolClassStudent>? SchoolClassStudents
-    {
-        get;
-        set;
-    }
+    public virtual ICollection<SchoolClassStudent>? 
+        SchoolClassStudents { get; set; }
 
     [DisplayName("School Classes Count")]
     public int SchoolClassesCount =>
         SchoolClassStudents?.Count ?? 0;
 
     [DisplayName("SchoolClass With Courses Count")]
-    public int SCSCoursesCount => SchoolClassStudents?
-        .Where(scs => scs.StudentId == Id)
-        // SchoolClass navigation property in SchoolClassStudent
-        .Select(scs => scs.SchoolClass)
-        .Where(sc => sc != null)
-        // Courses navigation property in SchoolClass
-        .SelectMany(sc => sc.Courses)
-        .Where(c => c != null)
-        .Count() ?? 0;
+    //public int SCSCoursesCount => SchoolClassStudents?
+    //    .Where(scs => scs.StudentId == Id)
+    //    // SchoolClass navigation property in SchoolClassStudent
+    //    .Select(scs => scs.SchoolClass)
+    //    .Where(sc => sc != null)
+    //    // Courses navigation property in SchoolClass
+    //    .SelectMany(sc => sc.Courses)
+    //    .Where(c => c != null)
+    //    .Count() ?? 0;
+
+    //public int SCSCoursesCount
+    //{
+    //    get
+    //    {
+    //        if (SchoolClassStudents == null)
+    //            return 0;
+
+    //        return SchoolClassStudents
+    //            .Where(scs => scs != null && scs.SchoolClass != null)
+    //            .Select(scs => scs.SchoolClass)
+    //            .SelectMany(sc => sc.Courses)
+    //            .Where(c => c != null)
+    //            .Count();
+    //    }
+    //}
+
+    public int SCSCoursesCount
+    {
+        get
+        {
+            if (SchoolClassStudents == null) return 0;
+
+            int count = 0;
+
+            foreach (var scs in SchoolClassStudents)
+            {
+                if (scs != null && scs.SchoolClass != null && scs.SchoolClass.Courses != null)
+                {
+                    count += scs.SchoolClass.Courses.Count(c => c != null);
+                }
+            }
+
+            return count;
+        }
+    }
 
 
     [DisplayName("Total Work Hours")]
-    public int SCSTotalWorkHours => SchoolClassStudents?
-        .Where(scs => scs.StudentId == Id)
-        // Assuming SchoolClass navigation property in SchoolClassStudent
-        .Select(scs => scs.SchoolClass)
-        .Where(sc => sc != null)
-        // Assuming Courses navigation property in SchoolClass
-        .SelectMany(sc => sc.Courses)
-        .Where(c => c != null)
-        .Sum(c => c.Hours) ?? 0;
+    //public int SCSTotalWorkHours => SchoolClassStudents?
+    //    .Where(scs => scs.StudentId == Id)
+    //    // Assuming SchoolClass navigation property in SchoolClassStudent
+    //    .Select(scs => scs.SchoolClass)
+    //    .Where(sc => sc != null)
+    //    // Assuming Courses navigation property in SchoolClass
+    //    .SelectMany(sc => sc.Courses)
+    //    .Where(c => c != null)
+    //    .Sum(c => c.Hours) ?? 0;
+
+    public int SCSTotalWorkHours
+    {
+        get
+        {
+            if (SchoolClassStudents == null)
+                return 0;
+
+            int totalWorkHours = 0;
+
+            foreach (var scs in SchoolClassStudents)
+            {
+                if (scs != null && scs.SchoolClass != null)
+                {
+                    var courses = scs.SchoolClass.Courses;
+
+                    if (courses != null)
+                    {
+                        totalWorkHours += courses.Where(c => c != null).Sum(c => c.Hours);
+                    }
+                }
+            }
+
+            return totalWorkHours;
+        }
+    }
 
 
     // ---------------------------------------------------------------------- //

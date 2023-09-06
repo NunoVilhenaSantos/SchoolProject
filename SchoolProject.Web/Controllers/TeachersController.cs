@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -11,9 +12,10 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     TeachersController class.
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class TeachersController : Controller
 {
-    private const string SessionVarName = "AllTeachersList";
+    internal const string SessionVarName = "AllTeachersList";
     private const string BucketName = "teachers";
     private const string SortProperty = "FirstName";
 
@@ -59,7 +61,7 @@ public class TeachersController : Controller
             .Include(t => t.Birthplace)
             .ThenInclude(c => c.CreatedBy)
             .Include(t => t.Gender)
-            .ThenInclude(c => c.CreatedBy)
+            .ThenInclude(g => g.CreatedBy)
             .Include(t => t.User)
             // Se desejar carregar os cursos associados
             .Include(t => t.TeacherCourses)

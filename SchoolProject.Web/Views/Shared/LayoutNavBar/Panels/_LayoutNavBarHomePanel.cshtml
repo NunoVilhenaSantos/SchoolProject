@@ -98,6 +98,14 @@
                 Threads
             </a>
         </li>
+        <li>
+            <a asp-action="VariableInfo" asp-area="" asp-controller="Home"
+               class="dropdown-item @(currentAction == "VariableInfo" && currentController == "Home" ? "active" : "")">
+                <span class="material-symbols-outlined">running_with_errors</span>
+                <span class="fa-brands fa-threads fa-beat-fade"></span>
+                Session Variable Info
+            </a>
+        </li>
         <li></li>
         <li></li>
     </ul>
