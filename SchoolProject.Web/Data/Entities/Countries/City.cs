@@ -55,7 +55,7 @@ public class City : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    /// CountryId
+    ///     CountryId
     /// </summary>
     [Required]
     [ForeignKey(nameof(Country))]
@@ -63,21 +63,21 @@ public class City : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    /// country class to be able to navigate
+    ///     country class to be able to navigate
     /// </summary>
     [Required]
     public virtual required Country Country { get; set; }
 
 
     /// <summary>
-    /// country GuidId
+    ///     country GuidId
     /// </summary>
     [DisplayName("Country Guid")]
     public Guid CountryGuidId => Country.IdGuid;
 
 
     /// <summary>
-    /// Count of cities belonging to the country
+    ///     Count of cities belonging to the country
     /// </summary>
     [DisplayName("Number of Cities")]
     public int NumberOfCitiesInCountry => Country?.Cities?.Count ?? 0;
@@ -134,7 +134,7 @@ public class City : IEntity, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new(propertyName));
+            new PropertyChangedEventArgs(propertyName));
     }
 
 

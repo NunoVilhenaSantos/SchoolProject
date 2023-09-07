@@ -36,7 +36,7 @@ public class ResetPasswordModel : PageModel
             return BadRequest(
                 "A code must be supplied for password reset.");
 
-        Input = new()
+        Input = new InputModel
         {
             Code =
                 Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))

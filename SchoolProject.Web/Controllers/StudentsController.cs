@@ -18,11 +18,11 @@ public class StudentsController : Controller
     internal const string SessionVarName = "AllStudentsList";
     private const string BucketName = "students";
     private const string SortProperty = "FirstName";
+    private readonly DataContextMySql _context;
 
 
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IStudentRepository _studentRepository;
-    private readonly DataContextMySql _context;
 
 
     /// <summary>
@@ -63,16 +63,16 @@ public class StudentsController : Controller
             .ThenInclude(g => g.CreatedBy)
             .Include(s => s.User).ToList();
 
-            // Se desejar carregar as turmas associadas
-            // .Include(s => s.SchoolClassStudents)
-            // .ThenInclude(scs => scs.SchoolClass)
-            // .ThenInclude(sc => sc.Courses)
+        // Se desejar carregar as turmas associadas
+        // .Include(s => s.SchoolClassStudents)
+        // .ThenInclude(scs => scs.SchoolClass)
+        // .ThenInclude(sc => sc.Courses)
 
-            // Se desejar carregar os cursos associados
-            // E seus detalhes, se necessário
-            // .Include(t => t.StudentCourses)
-            // .ThenInclude(tc => tc.Course)
-            // .ToList();
+        // Se desejar carregar os cursos associados
+        // E seus detalhes, se necessário
+        // .Include(t => t.StudentCourses)
+        // .ThenInclude(tc => tc.Course)
+        // .ToList();
     }
 
 

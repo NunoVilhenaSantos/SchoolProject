@@ -172,7 +172,10 @@ public class CoursesController : Controller
     ///     Create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Courses/Create

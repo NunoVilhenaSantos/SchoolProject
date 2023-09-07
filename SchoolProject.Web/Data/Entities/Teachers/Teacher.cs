@@ -8,7 +8,6 @@ using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
 
-
 namespace SchoolProject.Web.Data.Entities.Teachers;
 
 /// <summary>

@@ -1,11 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Models.Users;
-
 
 namespace SchoolProject.Web.Models;
 
@@ -18,28 +16,18 @@ public class PaginationViewModel<T> where T : class
     private static IWebHostEnvironment _hostingEnvironment;
     private static IHttpContextAccessor _httpContextAccessor;
 
+    // Lista de propriedades que são classes e devem ser tratadas como "Code"
+    private readonly List<string> _codeProperties = new()
+        {"Course", "SchoolClass"};
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="hostingEnvironment"></param>
-    public static void Initialize(IWebHostEnvironment hostingEnvironment)
-    {
-        _hostingEnvironment = hostingEnvironment;
-    }
+    // Lista de propriedades que são classes e devem ser tratadas como "FirstName"
+    private readonly List<string> _firstNameProperties = new()
+        {"Teacher", "Student", "User", "CreatedBy", "UpdatedBy"};
 
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="hostingEnvironment"></param>
-    /// <param name="httpContextAccessor"></param>
-    public static void Initialize(IWebHostEnvironment hostingEnvironment,
-        IHttpContextAccessor httpContextAccessor)
-    {
-        _hostingEnvironment = hostingEnvironment;
-        _httpContextAccessor = httpContextAccessor;
-    }
+    // Lista de propriedades que são classes e devem ser tratadas como "Name"
+    private readonly List<string> _nameProperties = new()
+        {"Country", "Nationality", "City", "Gender", "CountryOfNationality"};
 
 
     /// <summary>
@@ -74,21 +62,16 @@ public class PaginationViewModel<T> where T : class
 
         IQueryable<T> recordsQuerySorted;
         if (typeName == nameof(UserWithRolesViewModel))
-        {
             // Se a classe for UserWithRolesViewModel,
             // aplique a ordenação específica
             //recordsQuerySorted = ApplySortingUserWithRoles(
             //    records.AsQueryable(), sortOrder, sortProperty);
-
             recordsQuerySorted = ApplySortingUserWithRoles1(
                 records.AsQueryable(), sortOrder, sortProperty);
-        }
         else
-        {
             // Caso contrário, aplique a ordenação padrão
             recordsQuerySorted = ApplySorting(
                 records.AsQueryable(), sortOrder, sortProperty);
-        }
 
         // Obter uma página específica de um determinado tamanho
         RecordsQuery = recordsQuerySorted
@@ -126,10 +109,10 @@ public class PaginationViewModel<T> where T : class
     /// </summary>
     public List<SelectListItem> PageSizeList { get; } = new()
     {
-        new() {Value = "10", Text = "10"},
-        new() {Value = "25", Text = "25"},
-        new() {Value = "50", Text = "50"},
-        new() {Value = "100", Text = "100"}
+        new SelectListItem {Value = "10", Text = "10"},
+        new SelectListItem {Value = "25", Text = "25"},
+        new SelectListItem {Value = "50", Text = "50"},
+        new SelectListItem {Value = "100", Text = "100"}
     };
 
 
@@ -150,8 +133,8 @@ public class PaginationViewModel<T> where T : class
     /// </summary>
     public List<SelectListItem> SortOrderList { get; } = new()
     {
-        new() {Value = "asc", Text = "Ascending"},
-        new() {Value = "desc", Text = "Descending"}
+        new SelectListItem {Value = "asc", Text = "Ascending"},
+        new SelectListItem {Value = "desc", Text = "Descending"}
     };
 
 
@@ -171,6 +154,27 @@ public class PaginationViewModel<T> where T : class
     ///     TotalPages property.
     /// </summary>
     public int TotalPages => (int) Math.Ceiling((double) TotalCount / PageSize);
+
+
+    /// <summary>
+    /// </summary>
+    /// <param name="hostingEnvironment"></param>
+    public static void Initialize(IWebHostEnvironment hostingEnvironment)
+    {
+        _hostingEnvironment = hostingEnvironment;
+    }
+
+
+    /// <summary>
+    /// </summary>
+    /// <param name="hostingEnvironment"></param>
+    /// <param name="httpContextAccessor"></param>
+    public static void Initialize(IWebHostEnvironment hostingEnvironment,
+        IHttpContextAccessor httpContextAccessor)
+    {
+        _hostingEnvironment = hostingEnvironment;
+        _httpContextAccessor = httpContextAccessor;
+    }
 
 
     /// <summary>
@@ -198,7 +202,7 @@ public class PaginationViewModel<T> where T : class
 
 
     /// <summary>
-    /// Get or set data in the session.
+    ///     Get or set data in the session.
     /// </summary>
     /// <typeparam name="T">The type of data to store in the session.</typeparam>
     /// <param name="sessionVarName">The name of the session variable.</param>
@@ -247,7 +251,7 @@ public class PaginationViewModel<T> where T : class
 
 
     /// <summary>
-    /// Stores the json list in a file
+    ///     Stores the json list in a file
     /// </summary>
     /// <param name="enumerable"></param>
     /// <returns></returns>
@@ -267,7 +271,8 @@ public class PaginationViewModel<T> where T : class
         {
             // Specify the directory path
             var directoryPath =
-                Path.Combine(_hostingEnvironment.ContentRootPath, "Data","Json");
+                Path.Combine(_hostingEnvironment.ContentRootPath, "Data",
+                    "Json");
 
             // Check if the directory exists, and create it if it doesn't
             if (!Directory.Exists(directoryPath))
@@ -275,7 +280,7 @@ public class PaginationViewModel<T> where T : class
 
 
             // Obtenha o nome da classe T
-            var typeName = typeof(T).Name ;
+            var typeName = typeof(T).Name;
 
             // Specify the file path where you queremos salvar o JSON file
             var filePath =
@@ -294,19 +299,6 @@ public class PaginationViewModel<T> where T : class
 
         return json;
     }
-
-
-    // Lista de propriedades que são classes e devem ser tratadas como "Name"
-    private readonly List<string> _nameProperties = new()
-        {"Country", "Nationality", "City", "Gender", "CountryOfNationality"};
-
-    // Lista de propriedades que são classes e devem ser tratadas como "FirstName"
-    private readonly List<string> _firstNameProperties = new()
-        {"Teacher", "Student", "User", "CreatedBy", "UpdatedBy"};
-
-    // Lista de propriedades que são classes e devem ser tratadas como "Code"
-    private readonly List<string> _codeProperties = new()
-        {"Course", "SchoolClass"};
 
 
     private IQueryable<T> ApplySorting(
@@ -375,11 +367,9 @@ public class PaginationViewModel<T> where T : class
             if (propertyInfo.PropertyType.IsGenericType &&
                 propertyInfo.PropertyType.GetGenericTypeDefinition() ==
                 typeof(Nullable<>))
-            {
                 // Handle null values by using the GetValueOrDefault method
                 propertyAccess = Expression.Call(propertyAccess,
                     "GetValueOrDefault", null);
-            }
         }
 
         var orderByExp = Expression.Lambda(propertyAccess, parameter);
@@ -439,7 +429,7 @@ public class PaginationViewModel<T> where T : class
 
 
     private IQueryable<T> ApplySortingUserWithRoles1(
-    IQueryable<T> query, string sortOrder, string sortProperty)
+        IQueryable<T> query, string sortOrder, string sortProperty)
     {
         if (string.IsNullOrEmpty(sortProperty)) return query;
 
@@ -447,13 +437,12 @@ public class PaginationViewModel<T> where T : class
 
         // Modify the propertyInfo retrieval to navigate into the "User" property
         var userPropertyInfo = typeof(T).GetProperty("User");
-        var propertyInfo = userPropertyInfo.PropertyType.GetProperty(sortProperty);
+        var propertyInfo =
+            userPropertyInfo.PropertyType.GetProperty(sortProperty);
 
         if (propertyInfo == null)
-        {
             throw new ArgumentException(
                 $"Property {sortProperty} not found in type {typeof(T).FullName}");
-        }
 
         Expression propertyAccess = Expression.Property(
             Expression.Property(parameter, userPropertyInfo), propertyInfo);
@@ -461,17 +450,17 @@ public class PaginationViewModel<T> where T : class
         var orderByExp = Expression.Lambda<Func<T, object>>(
             Expression.Convert(propertyAccess, typeof(object)), parameter);
 
-        var orderByMethod = sortOrder == "asc" ? "OrderBy" : "OrderByDescending";
+        var orderByMethod =
+            sortOrder == "asc" ? "OrderBy" : "OrderByDescending";
 
         var orderByCall = Expression.Call(
             typeof(Queryable),
             orderByMethod,
-            new[] { typeof(T), propertyInfo.PropertyType },
+            new[] {typeof(T), propertyInfo.PropertyType},
             query.Expression,
             Expression.Quote(orderByExp)
         );
 
         return query.Provider.CreateQuery<T>(orderByCall);
     }
-
 }

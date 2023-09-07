@@ -97,17 +97,13 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
 
-
-
     /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
     protected virtual void OnPropertyChanged(
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new(propertyName));
+            new PropertyChangedEventArgs(propertyName));
     }
-
-
 
 
     /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />

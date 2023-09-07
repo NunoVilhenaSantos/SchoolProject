@@ -9,9 +9,9 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class ErrorsController : Controller
 {
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
     private readonly ILogger<ErrorsController> _logger;
-    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>

@@ -18,10 +18,10 @@ public class CitiesController : Controller
     internal const string SessionVarName = "AllCitiesWithCountries";
     private const string BucketName = "cities";
     private const string SortProperty = "Name";
+    private readonly ICityRepository _cityRepository;
+    private readonly ICountryRepository _countryRepository;
 
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly ICountryRepository _countryRepository;
-    private readonly ICityRepository _cityRepository;
 
 
     /// <summary>

@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
-using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Repositories.SchoolClasses;
 using SchoolProject.Web.Models;
-
 
 namespace SchoolProject.Web.Controllers;
 
@@ -102,7 +100,6 @@ public class SchoolClassesController : Controller
     {
         var recordsQuery = SessionData<SchoolClass>();
         return View(recordsQuery);
-
     }
 
 
@@ -122,7 +119,6 @@ public class SchoolClassesController : Controller
     {
         var recordsQuery = SessionData<SchoolClass>();
         return View(recordsQuery);
-
     }
 
 

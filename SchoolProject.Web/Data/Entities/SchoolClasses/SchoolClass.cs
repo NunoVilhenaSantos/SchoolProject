@@ -128,7 +128,8 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
         // : StorageHelper.GcpStoragePublicUrl + "school-classes/" + ProfilePhotoId;
-        : StorageHelper.AzureStoragePublicUrl + "school-classes/" + ProfilePhotoId;
+        : StorageHelper.AzureStoragePublicUrl + "school-classes/" +
+          ProfilePhotoId;
 
 
     // ---------------------------------------------------------------------- //
@@ -312,7 +313,7 @@ public class SchoolClass : IEntity, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new(propertyName));
+            new PropertyChangedEventArgs(propertyName));
     }
 
 

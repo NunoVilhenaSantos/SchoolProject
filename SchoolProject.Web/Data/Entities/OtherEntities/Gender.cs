@@ -9,7 +9,6 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.OtherEntities;
 
 /// <summary>
-///
 /// </summary>
 public class Gender : IEntity, INotifyPropertyChanged
 {
@@ -99,7 +98,7 @@ public class Gender : IEntity, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new(propertyName));
+            new PropertyChangedEventArgs(propertyName));
     }
 
 

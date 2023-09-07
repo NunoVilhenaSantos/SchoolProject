@@ -3,12 +3,12 @@
 namespace SchoolProject.Web.Helpers.Storages;
 
 /// <summary>
-///  IStorageHelper interface.
+///     IStorageHelper interface.
 /// </summary>
 public interface IStorageHelper
 {
     /// <summary>
-    ///  Copy files from storage to storage in GCP.
+    ///     Copy files from storage to storage in GCP.
     /// </summary>
     /// <param name="sourceBucketName"></param>
     /// <param name="sourceObjectName"></param>
@@ -41,7 +41,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///  Other method to upload files to storage in GCP.
+    ///     Other method to upload files to storage in GCP.
     /// </summary>
     /// <param name="bucketName"></param>
     /// <param name="localPath"></param>
@@ -66,7 +66,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///   Upload file to storage in GCP, using the IFromFile.
+    ///     Upload file to storage in GCP, using the IFromFile.
     /// </summary>
     /// <param name="fileToUpload"></param>
     /// <param name="fileNameInBucket"></param>
@@ -76,7 +76,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///   Upload file to storage in GCP, using a string of the filename.
+    ///     Upload file to storage in GCP, using a string of the filename.
     /// </summary>
     /// <param name="fileToUpload"></param>
     /// <param name="fileNameInBucket"></param>
@@ -86,7 +86,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///    Delete file from storage in GCP.
+    ///     Delete file from storage in GCP.
     /// </summary>
     /// <param name="fileNameInBucket"></param>
     /// <param name="gcpStorageBucketName"></param>
@@ -102,7 +102,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///    Upload file to storage to Azure, using the IFromFile.
+    ///     Upload file to storage to Azure, using the IFromFile.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="bucketName"></param>
@@ -111,7 +111,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///  Upload file to storage to Azure, using a byte array.
+    ///     Upload file to storage to Azure, using a byte array.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="bucketName"></param>
@@ -120,7 +120,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///   Upload file to storage to Azure, using a string with the filename.
+    ///     Upload file to storage to Azure, using a string with the filename.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="bucketName"></param>

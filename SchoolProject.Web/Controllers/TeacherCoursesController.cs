@@ -18,10 +18,10 @@ public class TeacherCoursesController : Controller
 {
     internal const string SessionVarName = "AllTeachersAndCourses";
     private const string SortProperty = "Name";
+    private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
     private readonly ITeacherCourseRepository _teacherCourseRepository;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly DataContextMySql _context;
 
 
     /// <summary>

@@ -8,7 +8,7 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.Users;
 
 /// <summary>
-/// user class, inherited from IdentityUser.
+///     user class, inherited from IdentityUser.
 /// </summary>
 public class User : IdentityUser, INotifyPropertyChanged
 {
@@ -110,7 +110,7 @@ public class User : IdentityUser, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new(propertyName));
+            new PropertyChangedEventArgs(propertyName));
     }
 
 

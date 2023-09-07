@@ -8,12 +8,12 @@ using SchoolProject.Web.Data.EntitiesOthers;
 namespace SchoolProject.Web.Data.Entities.Countries;
 
 /// <summary>
-/// Nationality class
+///     Nationality class
 /// </summary>
 public class Nationality : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    /// the name of the nationality
+    ///     the name of the nationality
     /// </summary>
     [Required]
     [DisplayName("Nationality")]
@@ -94,7 +94,7 @@ public class Nationality : IEntity, INotifyPropertyChanged
         [CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this,
-            new(propertyName));
+            new PropertyChangedEventArgs(propertyName));
     }
 
 

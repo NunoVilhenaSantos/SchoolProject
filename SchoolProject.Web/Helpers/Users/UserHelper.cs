@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Account;
 
-
 namespace SchoolProject.Web.Helpers.Users;
 
 /// <summary>
@@ -11,15 +10,10 @@ namespace SchoolProject.Web.Helpers.Users;
 /// </summary>
 public class UserHelper : IUserHelper
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
-    
-
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    
-
 
 
     /// <summary>
@@ -34,7 +28,7 @@ public class UserHelper : IUserHelper
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         RoleManager<IdentityRole> roleManager
-        )
+    )
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -115,7 +109,7 @@ public class UserHelper : IUserHelper
         var result = await _roleManager.RoleExistsAsync(roleName);
 
         if (!result)
-            await _roleManager.CreateAsync(new() {Name = roleName});
+            await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
     }
 
 
@@ -175,7 +169,7 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
-    public async Task<Microsoft.AspNetCore.Identity.SignInResult> 
+    public async Task<SignInResult>
         ValidatePasswordAsync(User user, string password)
     {
         return await _signInManager.CheckPasswordSignInAsync(
@@ -197,22 +191,25 @@ public class UserHelper : IUserHelper
     }
 
 
-
-    /// <inheritdoc/>
-    public async Task SignInAsync(User user, bool rememberMe = true, string? authenticationMethod = null)
+    /// <inheritdoc />
+    public async Task SignInAsync(User user, bool rememberMe = true,
+        string? authenticationMethod = null)
     {
-        await _signInManager.SignInAsync(user, rememberMe, authenticationMethod);
+        await _signInManager.SignInAsync(user, rememberMe,
+            authenticationMethod);
     }
 
 
-    /// <inheritdoc/>
-    public async Task<bool> PasswordSignInAsync(User user, bool isPersistent= false, bool lockoutOnFailure = false)
+    /// <inheritdoc />
+    public async Task<bool> PasswordSignInAsync(User user,
+        bool isPersistent = false, bool lockoutOnFailure = false)
     {
-        bool signInResult = false;
+        var signInResult = false;
 
 
         // Faz o signin do usuário
-        var result = await _signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, isPersistent, lockoutOnFailure);
+        var result = await _signInManager.PasswordSignInAsync(user.UserName,
+            user.PasswordHash, isPersistent, lockoutOnFailure);
 
 
         // Verifica se o usuário foi autenticado com sucesso
@@ -223,13 +220,17 @@ public class UserHelper : IUserHelper
     }
 
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsUserSignInAsync(
-        User user, bool rememberMe = true, string? authenticationMethod = null) => _signInManager.Context.User.Identity.IsAuthenticated;
+        User user, bool rememberMe = true, string? authenticationMethod = null)
+    {
+        return _signInManager.Context.User.Identity.IsAuthenticated;
+    }
 
 
-
-    /// <inheritdoc/>
-    public bool IsUserAuthenticated() => _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
-
+    /// <inheritdoc />
+    public bool IsUserAuthenticated()
+    {
+        return _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+    }
 }

@@ -4,14 +4,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
-using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
@@ -27,15 +25,17 @@ namespace SchoolProject.Web.Controllers;
 public class AccountController : Controller
 {
     private const string BucketName = "users";
-
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IConfiguration _configuration;
 
     private readonly ICountryRepository _countryRepository;
-    private readonly IStorageHelper _storageHelper;
     private readonly IEMailHelper _emailHelper;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IImageHelper _imageHelper;
+
+    private readonly SignInManager<User> _signInManager;
+    private readonly IStorageHelper _storageHelper;
     private readonly IUserHelper _userHelper;
 
 
@@ -202,7 +202,7 @@ public class AccountController : Controller
                     // var country = await
                     //     _countryRepository.GetCountryAsync(model.CountryId);
 
-                    user = new()
+                    user = new User
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
@@ -218,7 +218,7 @@ public class AccountController : Controller
                         ProfilePhotoId = model.ImageFile is null
                             ? default
                             : _storageHelper.UploadStorageAsync(
-                                model.ImageFile, BucketName).Result,
+                                model.ImageFile, BucketName).Result
                         // City = city,
                         // CityId = city.Id,
                         // Country = country,
@@ -563,21 +563,21 @@ public class AccountController : Controller
 
         Task.Delay(1000).Wait();
 
-        var result1 = await _userHelper.LoginAsync(new()
+        var result1 = await _userHelper.LoginAsync(new LoginViewModel
         {
             Password = "123456",
             Username = user.Email,
-            RememberMe = false,
+            RememberMe = false
         });
 
         if (result1.Succeeded) return RedirectToAction(nameof(ChangePassword));
 
 
-        await _userHelper.SignInAsync(user, true, null);
+        await _userHelper.SignInAsync(user);
 
 
         // Faça o signin do usuário
-        var result2 = await _userHelper.PasswordSignInAsync(user, false, false);
+        var result2 = await _userHelper.PasswordSignInAsync(user);
 
         if (result2) return RedirectToAction(nameof(ChangePassword));
 
@@ -587,8 +587,6 @@ public class AccountController : Controller
 
         // return View();
     }
-
-    private readonly SignInManager<User> _signInManager;
 
 
     // ---------------------------------------------------------------------- //

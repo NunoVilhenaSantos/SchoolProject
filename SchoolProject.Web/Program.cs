@@ -4,7 +4,6 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using Google.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -381,7 +380,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie()
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = new()
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
@@ -400,7 +399,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 )
         };
 
-        options.Events = new()
+        options.Events = new JwtBearerEvents
         {
             OnAuthenticationFailed = context =>
             {
@@ -549,7 +548,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new CultureInfo("pt-BR")
     };
 
-    options.DefaultRequestCulture = new("en-US");
+    options.DefaultRequestCulture = new RequestCulture("en-US");
 
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
@@ -743,7 +742,7 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddWebEncoders();
 builder.Services.AddAntiforgery();
 
- // This is for in-memory storage of session data
+// This is for in-memory storage of session data
 builder.Services.AddDistributedMemoryCache();
 
 // builder.Services.AddMemoryCache();
@@ -761,7 +760,6 @@ builder.Services.AddSession(options =>
 builder.Services.AddHttpContextAccessor();
 
 
-
 // Extrai o nome do servidor da Connection String
 var serverHostName =
     GetServerHostNameFromConnectionString(
@@ -777,7 +775,7 @@ GetServerHostNamePing(serverHostName);
 builder.Services.Configure<WebEncoderOptions>(options =>
 {
     options.TextEncoderSettings =
-        new(UnicodeRanges.All);
+        new TextEncoderSettings(UnicodeRanges.All);
 });
 
 

@@ -63,7 +63,7 @@ public class NationalityRepository
 
         if (country == null) return;
 
-        country.Nationality = new()
+        country.Nationality = new Nationality
         {
             Name = model.Name,
             WasDeleted = false,
@@ -83,7 +83,7 @@ public class NationalityRepository
 
         if (country == null) return;
 
-        country.Nationality = new()
+        country.Nationality = new Nationality
         {
             Name = nationality.Name,
             WasDeleted = nationality.WasDeleted,

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -19,9 +18,9 @@ public class RolesController : Controller
     internal const string SessionVarName = "AllRolesList";
     private const string BucketName = "roles";
     private const string SortProperty = "Name";
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>
@@ -190,7 +189,7 @@ public class RolesController : Controller
             return View(identityRole);
         }
 
-        var result = await _roleManager.CreateAsync(new()
+        var result = await _roleManager.CreateAsync(new IdentityRole
         {
             Name = identityRole.Name
         });

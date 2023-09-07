@@ -7,9 +7,6 @@ namespace SchoolProject.Web.Controllers.API;
 [ApiController]
 public class UserDataDeletionController : ControllerBase
 {
-
-
-
     [HttpPost("/datadeletion")]
     public IActionResult HandleDataDeletionRequest(
         [FromBody] FacebookDataDeletionRequest request)

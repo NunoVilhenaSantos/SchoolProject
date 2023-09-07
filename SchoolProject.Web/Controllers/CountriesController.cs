@@ -18,9 +18,9 @@ public class CountriesController : Controller
     internal const string SessionVarName = "AllCountriesWithCities";
     private const string BucketName = "countries";
     private const string SortProperty = "Name";
+    private readonly ICountryRepository _countryRepository;
 
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly ICountryRepository _countryRepository;
 
 
     /// <summary>
@@ -325,7 +325,7 @@ public class CountriesController : Controller
         {
             case 1:
                 // Passe as informações do país para a vista
-                model = new()
+                model = new CityViewModel
                 {
                     CountryId = country.Id,
                     CityId = 0,
@@ -335,7 +335,7 @@ public class CountriesController : Controller
 
             case 2:
                 // Passe as informações do país para a vista
-                model = new()
+                model = new CityViewModel
                 {
                     CountryId = country.Id,
                     CountryName = country.Name,

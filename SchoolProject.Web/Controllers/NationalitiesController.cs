@@ -17,10 +17,10 @@ public class NationalitiesController : Controller
     internal const string SessionVarName = "AllNationalitiesWithCountries";
     private const string BucketName = "nationalities";
     private const string SortProperty = "Name";
+    private readonly ICountryRepository _countryRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
     private readonly INationalityRepository _nationalityRepository;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly ICountryRepository _countryRepository;
 
 
     /// <summary>
@@ -83,7 +83,6 @@ public class NationalitiesController : Controller
 
     // GET: Nationalities
     /// <summary>
-    ///
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>

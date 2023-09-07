@@ -18,12 +18,13 @@ public class EnrollmentsController : Controller
 {
     internal const string SessionVarName =
         "AllEnrollmentsWithCoursesAndStudents";
+
     private const string BucketName = "enrollments";
     private const string SortProperty = "Name";
 
     private readonly DataContextMySql _context;
-    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>

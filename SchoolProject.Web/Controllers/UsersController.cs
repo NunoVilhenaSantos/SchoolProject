@@ -19,9 +19,9 @@ public class UsersController : Controller
     internal const string SessionVarName = "AllUsersWithRolesList";
     private const string BucketName = "users";
     private const string SortProperty = "FirstName";
+    private readonly DataContextMySql _context;
 
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly DataContextMySql _context;
     private readonly IUserHelper _userHelper;
 
     /// <summary>
@@ -57,7 +57,7 @@ public class UsersController : Controller
                 (user, userRole) =>
                     new
                     {
-                        User = user.User,
+                        user.User,
                         UserRole = userRole
                     })
             .GroupJoin(_context.Roles,

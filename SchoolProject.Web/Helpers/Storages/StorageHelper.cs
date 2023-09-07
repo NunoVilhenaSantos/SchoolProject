@@ -25,7 +25,7 @@ public class StorageHelper : IStorageHelper
 
 
     /// <summary>
-    ///    StorageHelper constructor.
+    ///     StorageHelper constructor.
     /// </summary>
     /// <param name="configuration"></param>
     public StorageHelper(

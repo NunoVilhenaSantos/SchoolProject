@@ -18,11 +18,11 @@ public class TeachersController : Controller
     internal const string SessionVarName = "AllTeachersList";
     private const string BucketName = "teachers";
     private const string SortProperty = "FirstName";
+    private readonly DataContextMySql _context;
 
 
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ITeacherRepository _teacherRepository;
-    private readonly DataContextMySql _context;
 
 
     /// <summary>

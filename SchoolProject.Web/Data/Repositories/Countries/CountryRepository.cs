@@ -90,7 +90,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             .OrderBy(c => c.Text)
             .ToList();
 
-        countriesList.Insert(0, new()
+        countriesList.Insert(0, new SelectListItem
         {
             Text = "(Select a country...)",
             Value = "0"
@@ -192,7 +192,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             }
         ).ToList();
 
-        combinedList.Insert(0, new()
+        combinedList.Insert(0, new SelectListItem
         {
             Text = "(Select a country...)",
             Value = "0"
@@ -286,7 +286,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
 
         if (country == null) return;
 
-        country.Cities?.Add(new()
+        country.Cities?.Add(new City
         {
             Name = model.Name,
             WasDeleted = false,
@@ -369,7 +369,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
 
         if (country == null) return;
 
-        country.Nationality = new()
+        country.Nationality = new Nationality
         {
             Name = model.Name,
             WasDeleted = false,

@@ -118,8 +118,6 @@ public class SchoolClassStudent : IEntity, INotifyPropertyChanged
     public virtual User? UpdatedBy { get; set; }
 
 
-
-
     // ---------------------------------------------------------------------- //
     // Property Changed Event Handler
     // ---------------------------------------------------------------------- //

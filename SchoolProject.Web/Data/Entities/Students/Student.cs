@@ -173,7 +173,7 @@ public class Student : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     [DisplayName("SchoolClass")]
-    public virtual ICollection<SchoolClassStudent>? 
+    public virtual ICollection<SchoolClassStudent>?
         SchoolClassStudents { get; set; }
 
     [DisplayName("School Classes Count")]
@@ -213,15 +213,12 @@ public class Student : IEntity, INotifyPropertyChanged
         {
             if (SchoolClassStudents == null) return 0;
 
-            int count = 0;
+            var count = 0;
 
             foreach (var scs in SchoolClassStudents)
-            {
-                if (scs != null && scs.SchoolClass != null && scs.SchoolClass.Courses != null)
-                {
+                if (scs != null && scs.SchoolClass != null &&
+                    scs.SchoolClass.Courses != null)
                     count += scs.SchoolClass.Courses.Count(c => c != null);
-                }
-            }
 
             return count;
         }
@@ -246,20 +243,17 @@ public class Student : IEntity, INotifyPropertyChanged
             if (SchoolClassStudents == null)
                 return 0;
 
-            int totalWorkHours = 0;
+            var totalWorkHours = 0;
 
             foreach (var scs in SchoolClassStudents)
-            {
                 if (scs != null && scs.SchoolClass != null)
                 {
                     var courses = scs.SchoolClass.Courses;
 
                     if (courses != null)
-                    {
-                        totalWorkHours += courses.Where(c => c != null).Sum(c => c.Hours);
-                    }
+                        totalWorkHours += courses.Where(c => c != null)
+                            .Sum(c => c.Hours);
                 }
-            }
 
             return totalWorkHours;
         }

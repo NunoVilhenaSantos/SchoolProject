@@ -17,7 +17,7 @@ public static class TimeTracker
     public static void CreateTimer(string timerName)
     {
         if (!Timers.ContainsKey(timerName))
-            Timers[timerName] = new();
+            Timers[timerName] = new Stopwatch();
     }
 
 

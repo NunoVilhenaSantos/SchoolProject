@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
-
 namespace SchoolProject.Web.Helpers;
 
 /// <summary>
@@ -13,11 +12,10 @@ namespace SchoolProject.Web.Helpers;
 /// <typeparam name="T"> T will assume each class</typeparam>
 public class PaginationViewHelper<T> where T : class
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="hostingEnvironment"></param>
     /// <param name="httpContextAccessor"></param>
@@ -114,7 +112,6 @@ public class PaginationViewHelper<T> where T : class
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="sessionVarName"></param>
     /// <typeparam name="T"></typeparam>
@@ -125,10 +122,8 @@ public class PaginationViewHelper<T> where T : class
         var httpContext = _httpContextAccessor.HttpContext;
 
         if (httpContext == null)
-        {
             // Handle the case where HttpContext is null
             return new List<T>();
-        }
 
         // Check if sortProperty is valid
         var modelType = typeof(T);
@@ -164,7 +159,7 @@ public class PaginationViewHelper<T> where T : class
 
 
     /// <summary>
-    /// Get session variables to be used in the view, to avoid stressing the db
+    ///     Get session variables to be used in the view, to avoid stressing the db
     /// </summary>
     /// <param name="sessionVarName"></param>
     /// <returns></returns>
@@ -189,7 +184,7 @@ public class PaginationViewHelper<T> where T : class
 
 
     /// <summary>
-    /// Set session variables to be used in the view, to avoid stressing the db
+    ///     Set session variables to be used in the view, to avoid stressing the db
     /// </summary>
     /// <param name="sessionVarName"></param>
     /// <param name="data"></param>
@@ -209,7 +204,7 @@ public class PaginationViewHelper<T> where T : class
 
 
     /// <summary>
-    /// Stores the json list in a file
+    ///     Stores the json list in a file
     /// </summary>
     /// <param name="enumerable"></param>
     /// <returns></returns>

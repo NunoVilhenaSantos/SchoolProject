@@ -66,7 +66,7 @@ public class EmailModel : PageModel
         var email = await _userManager.GetEmailAsync(user);
         Email = email;
 
-        Input = new() {NewEmail = email};
+        Input = new InputModel {NewEmail = email};
 
         IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
     }

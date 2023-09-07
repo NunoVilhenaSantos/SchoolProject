@@ -1,64 +1,56 @@
-﻿
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace SchoolProject.Web.Helpers;
 
-
-
-namespace SchoolProject.Web.Helpers
+public class SemaphoreService
 {
-    public class SemaphoreService
+    private readonly SemaphoreSlim _semaphore = new(1);
+    private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
+
+
+    public SemaphoreService()
     {
-        private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
-        private readonly SemaphoreSlim _semaphore = new(1);
-        public SemaphoreSlim Semaphore { get; }
+        Semaphore = new SemaphoreSlim(1);
+    }
+
+    public SemaphoreSlim Semaphore { get; }
 
 
-        public SemaphoreService()
+    public async Task<T> Run<T>(Func<Task<T>> func)
+    {
+        await _semaphoreSlim.WaitAsync();
+
+        try
         {
-            Semaphore = new(1);
+            return await func();
         }
-
-
-        public async Task<T> Run<T>(Func<Task<T>> func)
+        finally
         {
-            await _semaphoreSlim.WaitAsync();
-            
-            try
-            {
-                return await func();
-            }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
-        }
-
-        
-        public async Task Run(Func<Task> func)
-        {
-            await _semaphoreSlim.WaitAsync();
-            
-            try
-            {
-                await func();
-            }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
-        }
-
-
-
-        public async Task WaitAsync()
-        {
-            await _semaphore.WaitAsync();
-        }
-
-        public void Release()
-        {
-            _semaphore.Release();
+            _semaphoreSlim.Release();
         }
     }
 
+
+    public async Task Run(Func<Task> func)
+    {
+        await _semaphoreSlim.WaitAsync();
+
+        try
+        {
+            await func();
+        }
+        finally
+        {
+            _semaphoreSlim.Release();
+        }
+    }
+
+
+    public async Task WaitAsync()
+    {
+        await _semaphore.WaitAsync();
+    }
+
+    public void Release()
+    {
+        _semaphore.Release();
+    }
 }

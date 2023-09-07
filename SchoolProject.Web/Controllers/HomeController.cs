@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text;
-using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
@@ -26,11 +24,39 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class HomeController : Controller
 {
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IWebHostEnvironment _hostingEnvironment;
 
     private readonly ILogger<HomeController> _logger;
+
+
+    private readonly Dictionary<string, Type> _sessionVariableTypes =
+        new()
+        {
+            {CitiesController.SessionVarName, typeof(City)},
+            {CountriesController.SessionVarName, typeof(Country)},
+            {CoursesController.SessionVarName, typeof(Course)},
+            {EnrollmentsController.SessionVarName, typeof(Enrollment)},
+            {GendersController.SessionVarName, typeof(Gender)},
+            {NationalitiesController.SessionVarName, typeof(Nationality)},
+            {RolesController.SessionVarName, typeof(IdentityRole)},
+            {
+                SchoolClassCoursesController.SessionVarName,
+                typeof(SchoolClassCourse)
+            },
+            {SchoolClassesController.SessionVarName, typeof(SchoolClass)},
+            {
+                SchoolClassStudentsController.SessionVarName,
+                typeof(SchoolClassStudent)
+            },
+            {StudentCoursesController.SessionVarName, typeof(StudentCourse)},
+            {StudentsController.SessionVarName, typeof(Student)},
+            {TeacherCoursesController.SessionVarName, typeof(TeacherCourse)},
+            {TeachersController.SessionVarName, typeof(Teacher)},
+            {UsersController.SessionVarName, typeof(UserWithRolesViewModel)}
+            // Adicione mais nomes de variáveis de sessão aqui com os tipos correspondentes
+        };
 
 
     private readonly SignInManager<User> _signInManager;
@@ -149,53 +175,22 @@ public class HomeController : Controller
     private List<VariableInfoViewModel> GetVariableInfoList()
     {
         return (from sessionVarName in _sessionVariableTypes.Keys
-
                 let sessionVarType = _sessionVariableTypes[sessionVarName]
                 let dataSize = GetSessionDataSize(sessionVarName)
                 let objectsCount =
                     GetSessionDataObjectsCount<object>(sessionVarName)
-
                 select new VariableInfoViewModel
                 {
                     VariableName = sessionVarName,
                     ClassName = sessionVarType.Name,
                     ObjectsCount = objectsCount,
-                    SizeInBytes = dataSize,
+                    SizeInBytes = dataSize
                 })
             .ToList();
     }
 
 
-    private readonly Dictionary<string, Type> _sessionVariableTypes =
-        new()
-        {
-            {CitiesController.SessionVarName, typeof(City)},
-            {CountriesController.SessionVarName, typeof(Country)},
-            {CoursesController.SessionVarName, typeof(Course)},
-            {EnrollmentsController.SessionVarName, typeof(Enrollment)},
-            {GendersController.SessionVarName, typeof(Gender)},
-            {NationalitiesController.SessionVarName, typeof(Nationality)},
-            {RolesController.SessionVarName, typeof(IdentityRole)},
-            {
-                SchoolClassCoursesController.SessionVarName,
-                typeof(SchoolClassCourse)
-            },
-            {SchoolClassesController.SessionVarName, typeof(SchoolClass)},
-            {
-                SchoolClassStudentsController.SessionVarName,
-                typeof(SchoolClassStudent)
-            },
-            {StudentCoursesController.SessionVarName, typeof(StudentCourse)},
-            {StudentsController.SessionVarName, typeof(Student)},
-            {TeacherCoursesController.SessionVarName, typeof(TeacherCourse)},
-            {TeachersController.SessionVarName, typeof(Teacher)},
-            {UsersController.SessionVarName, typeof(UserWithRolesViewModel)},
-            // Adicione mais nomes de variáveis de sessão aqui com os tipos correspondentes
-        };
-
-
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IActionResult VariableInfo()
@@ -209,96 +204,138 @@ public class HomeController : Controller
     ///     About action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult About() => View();
+    public IActionResult About()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Contact action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Contacts() => View();
+    public IActionResult Contacts()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     CookiesPrivacy action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Privacy() => View();
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     CookiesPrivacy action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult CookiesPrivacy() => View();
+    public IActionResult CookiesPrivacy()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Cookies action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Cookies() => View();
+    public IActionResult Cookies()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Legal action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Legal() => View();
+    public IActionResult Legal()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     TimeTracker action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult TimeTracker() => View();
+    public IActionResult TimeTracker()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Threads action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Threads() => View();
+    public IActionResult Threads()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Features action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Features() => View();
+    public IActionResult Features()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Pricing action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Pricing() => View();
+    public IActionResult Pricing()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     FaQs action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult FaQs() => View();
+    public IActionResult FaQs()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Locations action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Team() => View();
+    public IActionResult Team()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Locations action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Locations() => View();
+    public IActionResult Locations()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     Terms action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Terms() => View();
+    public IActionResult Terms()
+    {
+        return View();
+    }
 }
