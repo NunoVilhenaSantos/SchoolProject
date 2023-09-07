@@ -1,13 +1,24 @@
 ﻿@using System.Reflection
 @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.City>
 
+
 @{
+    // ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
+
     var actionName = ViewContext.RouteData.Values["action"]?.ToString();
     var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
+    // Isso obtém o nome da classe do modelo atual
+    // var modelName = Model.GetModelName(m => m);
+    var deleteClassName = Model.GetType().FullName;
+
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
+
 
 @* <h2>@pageTitle</h2> *@
 <h2>@ViewData["Title"]</h2>
@@ -48,7 +59,7 @@
                                 <div class="btn-group">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
                                 <small class="text-body-secondary">
                                     @Html.DisplayNameFor(modelItem => item.Country.Name)<br/>

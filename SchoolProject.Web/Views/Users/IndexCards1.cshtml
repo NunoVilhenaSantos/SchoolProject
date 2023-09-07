@@ -1,13 +1,20 @@
 ﻿@using System.Reflection
 @model PaginationViewModel<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
 
+
 @{
-    ViewData["Title"] = "List of Users";
-    // Layout = "_Layout";
+    // ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
     var actionName = ViewContext.RouteData.Values["action"]?.ToString();
     var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+
+    // Isso obtém o nome da classe do modelo atual
+    // var modelName = Model.GetModelName(m => m);
+    var deleteClassName = Model.GetType().FullName;
 
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
@@ -47,7 +54,8 @@
                                 <div class="btn-group">
                                     <a asp-action="Edit" asp-route-id="@item.User.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                                     <a asp-action="Details" asp-route-id="@item.User.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                                    <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                                    @* <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a> *@
+                                    <a asp-action="Delete" asp-route-id="@item.User.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.User.Id" data-del-item-name="@item.User.FullName" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
                                 @* <small class="text-body-secondary px-2"> *@
                                 @*     @Html.DisplayNameFor(modelItem => item.User.Email)<br/> *@
@@ -74,17 +82,17 @@
 <partial name="Pagination/_PageNavigationBottom" model="Model"/>
 
 
-<script>
-   $(document).ready(function () {
-
-       $('#pageSizeSelect').change(function () {
-           const selectedPageSize = $(this).val();
-           const selectedSortProperty = $('#sortProperty').val();
-           const selectedSortOrder = $('#sortOrder').val();
-
-           // Redireciona para a primeira página com os parâmetros selecionados
-           window.location.href = '@Url.Action("IndexCards1", new {pageNumber = 1, pageSize = " + selectedPageSize + ", sortOrder = " + selectedSortOrder + ", sortProperty = " + selectedSortProperty + "})';
-       });
-   });
-
-</script>
+@* <script> *@
+@*    $(document).ready(function () { *@
+@* *@
+@*        $('#pageSizeSelect').change(function () { *@
+@*            const selectedPageSize = $(this).val(); *@
+@*            const selectedSortProperty = $('#sortProperty').val(); *@
+@*            const selectedSortOrder = $('#sortOrder').val(); *@
+@* *@
+@*            // Redireciona para a primeira página com os parâmetros selecionados *@
+@*            window.location.href = '@Url.Action("IndexCards1", new {pageNumber = 1, pageSize = " + selectedPageSize + ", sortOrder = " + selectedSortOrder + ", sortProperty = " + selectedSortProperty + "})'; *@
+@*        }); *@
+@*    }); *@
+@* *@
+@* </script> *@

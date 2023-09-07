@@ -83,14 +83,6 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //
-        // Set DeleteBehavior to Restrict for all relationships
-        //
-        foreach (var relationship in
-                 modelBuilder.Model.GetEntityTypes()
-                     .SelectMany(e => e.GetForeignKeys()))
-            relationship.DeleteBehavior = DeleteBehavior.Restrict;
-
         // ------------------------------------------------------------------ //
 
         //
@@ -411,6 +403,20 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
         // ------------------------------------------------------------------ //
 
+
+        // ------------------------------------------------------------------ //
+
+
+        //
+        // Set DeleteBehavior to Restrict for all relationships
+        //
+        foreach (var relationship in
+                 modelBuilder.Model.GetEntityTypes()
+                     .SelectMany(e => e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
+
+        // ------------------------------------------------------------------ //
 
         base.OnModelCreating(modelBuilder);
     }

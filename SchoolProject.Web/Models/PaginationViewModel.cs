@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.IO;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -298,6 +299,85 @@ public class PaginationViewModel<T> where T : class
         }
 
         return json;
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="enumerable"></param>
+    /// <param name="sessionVarName"></param>
+    public static void StoreListToFileInJson1(
+        IEnumerable<T> enumerable, string sessionVarName)
+    {
+        try
+        {
+            // Specify the directory path
+            var directoryPath = Path.Combine(
+                _hostingEnvironment.ContentRootPath, "Data", "Json");
+
+            // Check if the directory exists, and create it if it doesn't
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+
+            // Obtain the name of the class T
+            var typeName = typeof(T).Name;
+
+            // Specify the file path where you want to save the JSON file
+            var filePath = Path.Combine(directoryPath, $"{typeName}-list.json");
+
+
+            // Create a StreamWriter to write to the file
+            using (StreamWriter streamWriter = new StreamWriter(filePath))
+            using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
+            {
+                // Create a JsonSerializer with settings
+                JsonSerializer jsonSerializer = new JsonSerializer
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.Indented
+                };
+
+                // Create a JsonSerializer with settings
+                // JsonSerializer jsonSerializer = new JsonSerializer
+                // {
+                //     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                //     Formatting = Formatting.Indented,
+                //
+                //     // Defina o nível máximo de profundidade desejado
+                //     MaxDepth = 1,
+                // };
+
+                // Serialize and write each item to the file
+                jsonWriter.WriteStartArray();
+                foreach (var item in enumerable)
+                {
+                    jsonSerializer.Serialize(jsonWriter, item);
+                    break;
+                }
+
+                jsonWriter.WriteEndArray();
+            }
+
+            // Store the JSON data in the session
+            var json = JsonConvert.SerializeObject(
+                enumerable, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.Indented
+                });
+
+            var sessionBytes = Encoding.UTF8.GetBytes(json);
+
+            _httpContextAccessor.HttpContext?.Session.Set(
+                sessionVarName, sessionBytes);
+
+            Console.WriteLine("JSON file saved successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
     }
 
 

@@ -556,7 +556,7 @@ CREATE INDEX [IX_Teachers_UserId] ON [Teachers] ([UserId]);
 GO
 
 INSERT INTO [_MyMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20230906163530_InitDB', N'7.0.10');
+VALUES (N'20230907170358_InitDB', N'7.0.10');
 GO
 
 COMMIT;

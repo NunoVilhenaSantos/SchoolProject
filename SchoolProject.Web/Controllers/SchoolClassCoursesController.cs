@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ public class SchoolClassCoursesController : Controller
 
     private readonly DataContextMySql _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ISchoolClassCourseRepository _schoolClassCourseRepository;
 
 
@@ -30,27 +32,54 @@ public class SchoolClassCoursesController : Controller
     /// </summary>
     /// <param name="context"></param>
     /// <param name="hostingEnvironment"></param>
+    /// <param name="httpContextAccessor"></param>
     /// <param name="schoolClassCourseRepository"></param>
     public SchoolClassCoursesController(
         DataContextMySql context,
         IWebHostEnvironment hostingEnvironment,
+        IHttpContextAccessor httpContextAccessor,
         ISchoolClassCourseRepository schoolClassCourseRepository)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
+        _httpContextAccessor = httpContextAccessor;
         _schoolClassCourseRepository = schoolClassCourseRepository;
     }
 
 
+    //private List<SchoolClassCourse> GetSchoolClassesAndCourses()
+    //{
+    //    var schoolClassesWithCourses =
+    //        _context.SchoolClassCourses
+    //            .Include(s => s.Course)
+    //            .Include(s => s.SchoolClass)
+    //            .Include(s => s.CreatedBy)
+    //            .Include(s => s.UpdatedBy)
+    //            .ToList();
+
+    //    return schoolClassesWithCourses;
+    //}
+
+
     private List<SchoolClassCourse> GetSchoolClassesAndCourses()
     {
-        var schoolClassesWithCourses =
-            _context.SchoolClassCourses
-                .Include(s => s.Course)
-                .Include(s => s.SchoolClass)
-                .Include(s => s.CreatedBy)
-                .Include(s => s.UpdatedBy)
-                .ToList();
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        var schoolClassesWithCourses = _context.SchoolClassCourses
+            .Include(scc => scc.Course)
+            .Include(scc => scc.SchoolClass)
+            .Include(scc => scc.CreatedBy)
+            .Include(scc => scc.UpdatedBy)
+            .ToList();
+
+
+        stopwatch.Stop();
+        var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+        Console.WriteLine("Tempo de execução: " +
+                          "GetSchoolClassesAndCourses " +
+                          $"{elapsedMilliseconds} ms");
+
 
         return schoolClassesWithCourses;
     }
@@ -77,14 +106,23 @@ public class SchoolClassCoursesController : Controller
             // Chame a função GetTeachersList com o tipo T
             recordsQuery = GetSchoolClassesAndCourses();
 
-            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+            // PaginationViewModel<T>.Initialize(_hostingEnvironment);
+            PaginationViewModel<T>.Initialize(_hostingEnvironment,
+                _httpContextAccessor);
 
-            var json = PaginationViewModel<SchoolClassCourse>
-                .StoreListToFileInJson(recordsQuery);
+            // TODO: verificar se assim deixa de dar o erro out of memory
+            //
+            // Esta 2 classes
+            // SchoolClassCoursesController e SchoolClassStudentsController
+            //
+            // vão usar este método StoreListToFileInJson1
+            // para armazenar os dados em ficheiro no formato json
+            PaginationViewModel<SchoolClassCourse>
+                .StoreListToFileInJson1(recordsQuery, SessionVarName);
 
             // Armazene a lista na sessão para uso futuro
-            HttpContext.Session.Set(SessionVarName,
-                Encoding.UTF8.GetBytes(json));
+            // HttpContext.Session.Set(
+            //     SessionVarName, Encoding.UTF8.GetBytes(json));
         }
 
         return recordsQuery;

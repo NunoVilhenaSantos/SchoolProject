@@ -12,7 +12,7 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 namespace SchoolProject.Web.Migrations
 {
     [DbContext(typeof(DataContextMySql))]
-    [Migration("20230906163156_InitDB")]
+    [Migration("20230907165715_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />

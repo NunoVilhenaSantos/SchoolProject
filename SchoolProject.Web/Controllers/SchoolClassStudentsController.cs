@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Repositories.SchoolClasses;
 using SchoolProject.Web.Models;
 
+
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
@@ -17,12 +19,13 @@ namespace SchoolProject.Web.Controllers;
 public class SchoolClassStudentsController : Controller
 {
     internal const string SessionVarName = "AllSchoolClassesAndStudent";
-    private const string BucketName = "teachers";
+    private const string BucketName = "schoolclassstudents";
     private const string SortProperty = "Name";
 
 
     private readonly DataContextMySql _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     private readonly ISchoolClassStudentRepository
         _schoolClassStudentRepository;
@@ -37,17 +40,22 @@ public class SchoolClassStudentsController : Controller
     public SchoolClassStudentsController(
         DataContextMySql context,
         IWebHostEnvironment hostingEnvironment,
+        IHttpContextAccessor httpContextAccessor,
         ISchoolClassStudentRepository schoolClassStudentRepository
     )
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
+        _httpContextAccessor = httpContextAccessor;
         _schoolClassStudentRepository = schoolClassStudentRepository;
     }
 
 
     private List<SchoolClassStudent> GetSchoolClassesAndStudent()
     {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         var schoolClassesStudentList =
             _context.SchoolClassStudents
                 // ------------------ SchoolClass section ------------------- //
@@ -81,6 +89,12 @@ public class SchoolClassStudentsController : Controller
                 .Include(s => s.UpdatedBy)
                 .ToList();
 
+        stopwatch.Stop();
+        var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+        Console.WriteLine("Tempo de execução: " +
+                          "GetSchoolClassesAndCourses " +
+                          $"{elapsedMilliseconds} ms");
+
         return schoolClassesStudentList;
     }
 
@@ -103,17 +117,25 @@ public class SchoolClassStudentsController : Controller
         else
         {
             // Caso contrário, obtenha a lista completa do banco de dados
-            // Chame a função GetTeachersList com o tipo T
             recordsQuery = GetSchoolClassesAndStudent();
 
-            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+            // PaginationViewModel<T>.Initialize(_hostingEnvironment);
+            PaginationViewModel<T>.Initialize(_hostingEnvironment,
+                _httpContextAccessor);
 
-            var json = PaginationViewModel<SchoolClassStudent>
-                .StoreListToFileInJson(recordsQuery);
+            // TODO: verificar se assim deixa de dar o erro out of memory
+            //
+            // Esta 2 classes
+            // SchoolClassCoursesController e SchoolClassStudentsController
+            //
+            // vão usar este método StoreListToFileInJson1
+            // para armazenar os dados em ficheiro no formato json
+            PaginationViewModel<SchoolClassStudent>
+                .StoreListToFileInJson1(recordsQuery, SessionVarName);
 
             // Armazene a lista na sessão para uso futuro
-            HttpContext.Session.Set(SessionVarName,
-                Encoding.UTF8.GetBytes(json));
+            // HttpContext.Session.Set(
+            //     SessionVarName, Encoding.UTF8.GetBytes(json));
         }
 
         return recordsQuery;

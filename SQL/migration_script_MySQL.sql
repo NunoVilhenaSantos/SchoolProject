@@ -473,7 +473,7 @@ CREATE INDEX `IX_Teachers_UpdatedById` ON `Teachers` (`UpdatedById`);
 CREATE INDEX `IX_Teachers_UserId` ON `Teachers` (`UserId`);
 
 INSERT INTO `_MyMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20230906163156_InitDB', '7.0.10');
+VALUES ('20230907165715_InitDB', '7.0.10');
 
 COMMIT;
 

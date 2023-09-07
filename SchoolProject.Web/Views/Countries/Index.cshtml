@@ -1,18 +1,45 @@
+@using System.Reflection
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+
 @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Country>
 
 @{
     ViewData["Title"] = "Index";
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+
+    // Isso obtém o nome da classe do modelo atual
+    // var modelName = Model.GetModelName(m => m);
+    var deleteClassName = Model.GetType().FullName;
+    var deleteClassName1 = Model.GetType().Name;
+    var deleteClassName2 = Model.GetType().FindMembers;
+    var deleteClassName3 = Model.GetType().GetProperties();
+    var deleteClassName4 = Model.GetType().GetProperties().ToString();
+    var deleteClassName5 = Model.GetType().GetProperties().GetType().Name;
+
+    string CurrentClass = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name.ToString();
+
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
-<h1>@ViewData["Title"]</h1>
 
+<h1>@ViewData["Title"]</h1>
+@deleteClassName
+@deleteClassName1
+@deleteClassName2
+@deleteClassName3
+@deleteClassName4
+@deleteClassName5
+
+@CurrentClass
 <p>
     <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
     @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a> *@
 </p>
 
 <table class="table table-hover" sortable="True" id="sortableTable">
-
     <thead>
     <tr>
         <th>@Html.DisplayNameFor(model => model.ProfilePhotoId)</th>
@@ -43,9 +70,12 @@
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    <!-- Button trigger modal "#deleteButton" -->
+                    @* <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a> *@
                 </div>
             </td>
+            <div></div>
         </tr>
     }
     </tbody>
