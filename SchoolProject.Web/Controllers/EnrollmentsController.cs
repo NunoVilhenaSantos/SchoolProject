@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Repositories.Enrollments;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -21,6 +22,25 @@ public class EnrollmentsController : Controller
 
     private const string BucketName = "enrollments";
     private const string SortProperty = "Name";
+
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(Enrollment);
+    private const string CurrentAction = nameof(Index);
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+
 
     private readonly DataContextMySql _context;
     private readonly IEnrollmentRepository _enrollmentRepository;
@@ -107,6 +127,9 @@ public class EnrollmentsController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Enrollment>();
         return View(recordsQuery);
     }
@@ -124,6 +147,9 @@ public class EnrollmentsController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Enrollment>();
         return View(recordsQuery);
     }
@@ -142,6 +168,9 @@ public class EnrollmentsController : Controller
         string sortOrder = "asc", string sortProperty = SortProperty)
 
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -167,7 +196,9 @@ public class EnrollmentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(EnrollmentNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var enrollment = await _context.Enrollments
             .Include(e => e.Course)
@@ -176,9 +207,10 @@ public class EnrollmentsController : Controller
             .Include(e => e.UpdatedBy)
             .FirstOrDefaultAsync(m => m.StudentId == id);
 
-        if (enrollment == null) return NotFound();
-
-        return View(enrollment);
+        return enrollment == null
+            ? new NotFoundViewResult(nameof(EnrollmentNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
+            : View(enrollment);
     }
 
 
@@ -263,11 +295,15 @@ public class EnrollmentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(EnrollmentNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var enrollment = await _context.Enrollments.FindAsync(id);
 
-        if (enrollment == null) return NotFound();
+        if (enrollment == null)
+            return new NotFoundViewResult(nameof(EnrollmentNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         ViewData["CourseId"] =
             new SelectList(_context.Courses,
@@ -307,7 +343,9 @@ public class EnrollmentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Enrollment enrollment)
     {
-        if (id != enrollment.StudentId) return NotFound();
+        if (id != enrollment.StudentId)
+            return new NotFoundViewResult(nameof(EnrollmentNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (ModelState.IsValid)
         {
@@ -320,7 +358,9 @@ public class EnrollmentsController : Controller
             catch (DbUpdateConcurrencyException)
             {
                 if (!EnrollmentExists(enrollment.StudentId))
-                    return NotFound();
+                    return new NotFoundViewResult(nameof(EnrollmentNotFound),
+                        CurrentClass, id.ToString(), CurrentController,
+                        nameof(Index));
 
                 throw;
             }
@@ -359,7 +399,9 @@ public class EnrollmentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(EnrollmentNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var enrollment = await _context.Enrollments
             .Include(e => e.Course)
@@ -368,10 +410,12 @@ public class EnrollmentsController : Controller
             .Include(e => e.UpdatedBy)
             .FirstOrDefaultAsync(m => m.StudentId == id);
 
-        if (enrollment == null) return NotFound();
-
-        return View(enrollment);
+        return enrollment == null
+            ? new NotFoundViewResult(nameof(EnrollmentNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
+            : View(enrollment);
     }
+
 
     // POST: Enrollments/Delete/5
     /// <summary>
@@ -393,8 +437,14 @@ public class EnrollmentsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool EnrollmentExists(int id)
-    {
-        return _context.Enrollments.Any(e => e.StudentId == id);
-    }
+
+    /// <summary>
+    /// EnrollmentNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult EnrollmentNotFound => View();
+
+
+    private bool EnrollmentExists(int id) =>
+        _context.Enrollments.Any(e => e.StudentId == id);
 }

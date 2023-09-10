@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -18,9 +19,27 @@ public class CitiesController : Controller
     internal const string SessionVarName = "AllCitiesWithCountries";
     private const string BucketName = "cities";
     private const string SortProperty = "Name";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(City);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+
     private readonly ICityRepository _cityRepository;
     private readonly ICountryRepository _countryRepository;
-
     private readonly IWebHostEnvironment _hostingEnvironment;
 
 
@@ -96,6 +115,9 @@ public class CitiesController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<City>();
         return View(recordsQuery);
     }
@@ -113,6 +135,9 @@ public class CitiesController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<City>();
         return View(recordsQuery);
     }
@@ -130,6 +155,9 @@ public class CitiesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -155,13 +183,18 @@ public class CitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var city = await _cityRepository.GetCityAsync(id.Value);
 
-        if (city == null) return NotFound();
-
-        return View(city);
+        return city == null
+            ? new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
+            : View(city);
     }
 
     // GET: Cities/Create
@@ -208,13 +241,17 @@ public class CitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var city = await _cityRepository.GetCityAsync(id.Value);
 
-        if (city == null) return NotFound();
-
-        return View(city);
+        return city == null
+            ? new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(city);
     }
 
 
@@ -233,7 +270,10 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, City city)
     {
-        if (id != city.Id) return NotFound();
+        if (id != city.Id)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(city);
 
@@ -246,8 +286,11 @@ public class CitiesController : Controller
         {
             var test = await _cityRepository.GetCityAsync(city.Id);
 
-            if (test == null) return NotFound();
-            throw;
+            if (test == null)
+                return new NotFoundViewResult(
+                    nameof(CityNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
+            // throw;
         }
 
         return RedirectToAction(nameof(Index));
@@ -261,13 +304,18 @@ public class CitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var city = await _cityRepository.GetCityAsync(id.Value);
 
-        if (city == null) return NotFound();
-
-        return View(city);
+        return city == null
+            ? new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
+            : View(city);
     }
 
 
@@ -292,12 +340,11 @@ public class CitiesController : Controller
                     !ex.InnerException.Message.Contains("DELETE"))
                     return View("Error");
 
+                ViewBag.ShowErrorModal = true;
 
                 TempData["DbUpdateException"] = true;
-
                 TempData["ModalErrorTitle"] =
                     "Está a ser usada como chave estrangeira!!";
-
                 TempData["ModalErrorMessage"] =
                     $"{city.Name} não pode ser apagado visto ter relações " +
                     "com outras tabelas e que se encontra em uso.</br></br>";
@@ -314,6 +361,7 @@ public class CitiesController : Controller
                 return RedirectToAction(
                     nameof(Delete),
                     new {id = city.Id, showErrorModal = true});
+
                 // return RedirectToAction(nameof(Delete));
                 // return View("Error");
             }
@@ -341,4 +389,12 @@ public class CitiesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+
+    /// <summary>
+    ///    CityNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult CityNotFound() => View();
 }

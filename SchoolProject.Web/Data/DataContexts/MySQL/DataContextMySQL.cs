@@ -22,14 +22,14 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 
 
     /// <inheritdoc />
-    protected DataContextMySql(DbContextOptions<DCMySqlOnline> options) :
+    protected DataContextMySql(DbContextOptions<DcMySqlOnline> options) :
         base(options)
     {
     }
 
 
     /// <inheritdoc />
-    protected DataContextMySql(DbContextOptions<DCMySqlLocal> options) :
+    protected DataContextMySql(DbContextOptions<DcMySqlLocal> options) :
         base(options)
     {
     }
@@ -385,15 +385,25 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
             .HasOne(c => c.Nationality)
             .WithOne(n => n.Country)
             .HasForeignKey<Nationality>(n => n.CountryId)
+            // Configura a exclusão em cascata
+            .OnDelete(DeleteBehavior.Cascade) 
             .IsRequired();
 
 
-        //// Relação entre Country e Nationality
-        //modelBuilder.Entity<Nationality>()
-        //    .HasOne(n => n.Country)
-        //    .WithOne(c => c.Nationality)
-        //    .HasForeignKey<Country>(c => c.NationalityId)
-        //    .IsRequired();
+        // Relação entre Country e Nationality
+        modelBuilder.Entity<Nationality>()
+            .HasOne(n => n.Country)
+            .WithOne(c => c.Nationality)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
+        // Relação entre Country e Nationality
+        // modelBuilder.Entity<Nationality>()
+        //     .HasOne(n => n.Country)
+        //     .WithOne(c => c.Nationality)
+        //     .HasForeignKey<Country>(c => c.NationalityId)
+        //     .OnDelete(DeleteBehavior.SetNull)
+        //     .IsRequired();
 
 
         // ... Other configurations ...

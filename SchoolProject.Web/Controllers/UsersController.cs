@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Users;
@@ -16,13 +17,32 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class UsersController : Controller
 {
-    internal const string SessionVarName = "AllUsersWithRolesList";
     private const string BucketName = "users";
     private const string SortProperty = "FirstName";
-    private readonly DataContextMySql _context;
+    internal const string SessionVarName = "AllUsersWithRolesList";
 
-    private readonly IWebHostEnvironment _hostingEnvironment;
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(UserWithRolesViewModel);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
     private readonly IUserHelper _userHelper;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+
+    private readonly DataContextMySql _context;
 
     /// <summary>
     ///     UsersController constructor.
@@ -184,14 +204,16 @@ public class UsersController : Controller
     public async Task<IActionResult> Details(string id)
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
-            return NotFound();
+            return new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index));
 
         var user = await _context.Users
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (user == null) return NotFound();
-
-        return View(user);
+        return user == null
+            ? new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
+            : View(user);
     }
 
     // GET: Users/Create
@@ -240,13 +262,16 @@ public class UsersController : Controller
     public async Task<IActionResult> Edit(string id)
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
-            return NotFound();
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var user = await _context.Users.FindAsync(id);
 
-        if (user == null) return NotFound();
-
-        return View(user);
+        return user == null
+            ? new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
+            : View(user);
     }
 
     // POST: Users/Edit/5
@@ -264,7 +289,10 @@ public class UsersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(string id, User user)
     {
-        if (id != user.Id) return NotFound();
+        if (id != user.Id)
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(user);
 
@@ -276,7 +304,9 @@ public class UsersController : Controller
         catch (DbUpdateConcurrencyException)
         {
             if (!UserExists(user.Id))
-                return NotFound();
+                return new NotFoundViewResult(
+                    nameof(UserNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
             throw;
         }
 
@@ -293,14 +323,17 @@ public class UsersController : Controller
     public async Task<IActionResult> Delete(string id)
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
-            return NotFound();
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var user = await _context.Users
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (user == null) return NotFound();
-
-        return View(user);
+        return user == null
+            ? new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
+            : View(user);
     }
 
     // POST: Users/Delete/5
@@ -323,9 +356,13 @@ public class UsersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    /// <summary>
+    /// UserNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult UserNotFound => View();
 
-    private bool UserExists(string id)
-    {
-        return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-    }
+
+    private bool UserExists(string id) =>
+        (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
 }

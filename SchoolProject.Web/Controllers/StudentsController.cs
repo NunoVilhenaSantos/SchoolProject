@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Repositories.Students;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -18,9 +19,27 @@ public class StudentsController : Controller
     internal const string SessionVarName = "AllStudentsList";
     private const string BucketName = "students";
     private const string SortProperty = "FirstName";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(Student);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+
+
     private readonly DataContextMySql _context;
-
-
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IStudentRepository _studentRepository;
 
@@ -184,14 +203,16 @@ public class StudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null) return new NotFoundViewResult(
+            nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var student = await _context.Students
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (student == null) return NotFound();
-
-        return View(student);
+        return student == null
+            ? new NotFoundViewResult(
+                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(student);
     }
 
 
@@ -200,10 +221,7 @@ public class StudentsController : Controller
     ///     students create
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
 
     // POST: Students/Create
@@ -238,16 +256,22 @@ public class StudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null) return new NotFoundViewResult(
+            nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var student = await _context.Students.FindAsync(id);
-        if (student == null) return NotFound();
-        return View(student);
+
+        return student == null
+            ? new NotFoundViewResult(
+                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(student);
     }
 
     // POST: Students/Edit/5
-    // To protect from over-posting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // To protect from over-posting attacks,
+    // enable the specific properties you want to bind to.
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
     ///     students edit
     /// </summary>
@@ -258,7 +282,9 @@ public class StudentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Student student)
     {
-        if (id != student.Id) return NotFound();
+        if (id != student.Id)
+            return new NotFoundViewResult(
+                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(student);
 
@@ -269,7 +295,9 @@ public class StudentsController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!StudentExists(student.Id)) return NotFound();
+            if (!StudentExists(student.Id))
+                return new NotFoundViewResult(
+                    nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
             throw;
         }
@@ -286,14 +314,16 @@ public class StudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null) return new NotFoundViewResult(
+            nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var student = await _context.Students
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (student == null) return NotFound();
-
-        return View(student);
+        return student == null
+            ? new NotFoundViewResult(
+                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(student);
     }
 
 
@@ -318,8 +348,13 @@ public class StudentsController : Controller
     }
 
 
-    private bool StudentExists(int id)
-    {
-        return _context.Students.Any(e => e.Id == id);
-    }
+    /// <summary>
+    /// StudentNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult StudentNotFound => View();
+
+
+    private bool StudentExists(int id) =>
+        _context.Students.Any(e => e.Id == id);
 }

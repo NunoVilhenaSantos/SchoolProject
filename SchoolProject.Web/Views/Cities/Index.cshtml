@@ -9,10 +9,10 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
 
-    // Isso obtÈm o nome da classe do modelo atual
-    // var modelName = Model.GetModelName(m => m);
-    var deleteClassName = Model.GetType().FullName;
+    // Isso obt√©m o nome da classe do modelo atual
+    var deleteClassName = ViewData["CurrentClass"]?.ToString();
 
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -61,3 +61,14 @@
     }
     </tbody>
 </table>
+
+<partial name="Modals/_DbException"/>
+
+@if (ViewBag.ShowErrorModal == true)
+{
+    <script>
+        $(document).ready(function () {
+            $('#errorModal').modal('show');
+        });
+    </script>
+}

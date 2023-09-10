@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Countries;
+using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
@@ -18,8 +20,24 @@ public class CountriesController : Controller
     internal const string SessionVarName = "AllCountriesWithCities";
     private const string BucketName = "countries";
     private const string SortProperty = "Name";
-    private readonly ICountryRepository _countryRepository;
 
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(Country);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+    private readonly ICountryRepository _countryRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
 
 
@@ -95,6 +113,9 @@ public class CountriesController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Country>();
         return View(recordsQuery);
     }
@@ -113,6 +134,9 @@ public class CountriesController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Country>();
         return View(recordsQuery);
     }
@@ -130,6 +154,9 @@ public class CountriesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -156,12 +183,19 @@ public class CountriesController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var country = await
             _countryRepository.GetCountryWithCitiesAsync(id.Value);
 
-        return View(country);
+        return country == null
+            ? new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(IndexCards))
+            : View(country);
     }
 
 
@@ -171,10 +205,7 @@ public class CountriesController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
 
     // POST: Countries/Create
@@ -209,11 +240,17 @@ public class CountriesController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var country = await _countryRepository.GetByIdAsync(id.Value);
 
-        if (country == null) return NotFound();
+        if (country == null)
+            return new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         return View(country);
     }
@@ -253,7 +290,10 @@ public class CountriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Country country)
     {
-        if (id != country.Id) return NotFound();
+        if (id != country.Id)
+            return new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(country);
 
@@ -265,7 +305,9 @@ public class CountriesController : Controller
         catch (DbUpdateConcurrencyException)
         {
             if (!await _countryRepository.ExistAsync(country.Id))
-                return NotFound();
+                return new NotFoundViewResult(
+                    nameof(CountryNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
 
             throw;
         }
@@ -283,15 +325,100 @@ public class CountriesController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var country = await _countryRepository.GetByIdAsync(id.Value);
 
-        if (country == null) return NotFound();
+        return country == null
+            ? new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
+            : View(country);
+    }
 
-        await _countryRepository.DeleteAsync(country);
 
-        return RedirectToAction(nameof(Index));
+    // POST: Countries/Delete/5
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    // [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var country = await _countryRepository.GetByIdAsync(id);
+
+        if (country == null)
+            return new NotFoundViewResult(
+                nameof(CountryNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
+
+        try
+        {
+            //throw new Exception("Excepção de Teste");
+            await _countryRepository.DeleteAsync(country);
+
+            await _countryRepository.SaveAllAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            // Handle DbUpdateException, specifically for this controller.
+            Console.WriteLine(ex.Message);
+
+            // Handle foreign key constraint violation.
+            DbErrorViewModel dbErrorViewModel;
+
+            if (ex.InnerException != null &&
+                ex.InnerException.Message.Contains("DELETE"))
+            {
+                dbErrorViewModel = new DbErrorViewModel
+                {
+                    DbUpdateException = true,
+                    ErrorTitle = "Foreign Key Constraint Violation",
+                    ErrorMessage =
+                        "This entity is being used as a foreign key elsewhere." +
+                        $"The {nameof(Country)} with the ID " +
+                        $"{country.Id} - {country.Name}." +
+                        $"{country.IdGuid} não pode ser apagado visto haverem" +
+                        " dependencies que o usam.</br></br>" +
+                        "Experimente apagar primeiro todas as encomendas " +
+                        "que o estão a usar," +
+                        "e torne novamente a apagá-lo",
+                    ItemClass = nameof(Country),
+                    ItemId = country.Id,
+                    ItemGuid = country.IdGuid,
+                    ItemName = country.Name,
+                };
+
+                // Redirecione para o DatabaseError com os dados apropriados
+                return RedirectToAction(
+                    "DatabaseError", "Errors", dbErrorViewModel);
+            }
+
+            // Handle other DbUpdateExceptions.
+            dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Database Error",
+                ErrorMessage = "An error occurred while deleting the entity.",
+                ItemClass = nameof(Country),
+                ItemId = country.Id,
+                ItemGuid = country.IdGuid,
+                ItemName = country.Name,
+            };
+
+
+            // Redirecione para o DatabaseError com os dados apropriados
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
     }
 
 
@@ -313,11 +440,17 @@ public class CountriesController : Controller
     public async Task<IActionResult> AddCity(
         int? id, int countryId, string countryName, int method)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var country = await _countryRepository.GetByIdAsync(id.Value);
 
-        if (country == null) return NotFound();
+        if (country == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
 
         CityViewModel model;
@@ -346,7 +479,9 @@ public class CountriesController : Controller
 
             default:
                 // algo deu errado
-                return NotFound();
+                return new NotFoundViewResult(
+                    nameof(CountryNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
         }
 
 
@@ -381,11 +516,17 @@ public class CountriesController : Controller
     [HttpGet]
     public async Task<IActionResult> DeleteCity(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var city = await _countryRepository.GetCityAsync(id.Value);
 
-        if (city == null) return NotFound();
+        if (city == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var countryId = await _countryRepository.DeleteCityAsync(city);
 
@@ -405,11 +546,17 @@ public class CountriesController : Controller
     public async Task<IActionResult> EditCity(
         int? id, int countryId, string countryName)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var city = await _countryRepository.GetCityAsync(id.Value);
 
-        if (city == null) return NotFound();
+        if (city == null)
+            return new NotFoundViewResult(
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         ViewData["CountryId"] = countryId;
         ViewData["CountryName"] = countryName;
@@ -437,4 +584,21 @@ public class CountriesController : Controller
 
         return View(city);
     }
+
+
+    // ------------------------------- ------ ------------------------------- //
+
+
+    /// <summary>
+    /// CountryFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult CountryNotFound => View();
+
+
+    /// <summary>
+    /// CityNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult CityNotFound => View();
 }

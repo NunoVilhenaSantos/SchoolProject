@@ -25,6 +25,26 @@ namespace SchoolProject.Web.Controllers;
 public class AccountController : Controller
 {
     private const string BucketName = "users";
+    private const string SortProperty = "FirstName";
+    internal const string SessionVarName = "AllUsersWithRolesList";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(City);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
     private readonly IConfiguration _configuration;
 
     private readonly ICountryRepository _countryRepository;

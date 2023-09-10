@@ -353,6 +353,11 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
 
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+
+
         // ... Other configurations ...
         // ... Outras configurações ...
 
@@ -366,21 +371,30 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
         // Required one-to-one with primary key to primary key relationship
 
-
         // Relação entre Country e Nationality
         modelBuilder.Entity<Country>()
             .HasOne(c => c.Nationality)
             .WithOne(n => n.Country)
             .HasForeignKey<Nationality>(n => n.CountryId)
+            .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
 
-        //// Relação entre Country e Nationality
-        //modelBuilder.Entity<Nationality>()
-        //    .HasOne(n => n.Country)
-        //    .WithOne(c => c.Nationality)
-        //    .HasForeignKey<Country>(c => c.NationalityId)
-        //    .IsRequired();
+        // Relação entre Country e Nationality
+        // modelBuilder.Entity<Nationality>()
+        //     .HasOne(n => n.Country)
+        //     .WithOne(c => c.Nationality)
+        //     .HasForeignKey<Country>(c => c.NationalityId)
+        //     .OnDelete(DeleteBehavior.SetNull)
+        //     .IsRequired();
+
+        // Relação entre Country e Nationality
+        // modelBuilder.Entity<Nationality>()
+        //     .HasOne(n => n.Country)
+        //     .WithOne(c => c.Nationality)
+        //     .HasForeignKey<Country>(c => c.NationalityId)
+        //     .OnDelete(DeleteBehavior.Restrict)
+        //     .IsRequired();
 
 
         // ... Other configurations ...
@@ -388,7 +402,22 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
 
+
+        // ------------------------------------------------------------------ //
+
+
+        //
+        // Set DeleteBehavior to Restrict for all relationships
+        //
+        foreach (var relationship in
+                 modelBuilder.Model.GetEntityTypes()
+                     .SelectMany(e => e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
+
+        // ------------------------------------------------------------------ //
 
         base.OnModelCreating(modelBuilder);
     }

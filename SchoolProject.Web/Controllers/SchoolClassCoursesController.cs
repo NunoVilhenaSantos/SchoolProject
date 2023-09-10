@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Repositories.SchoolClasses;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -20,6 +21,23 @@ public class SchoolClassCoursesController : Controller
     internal const string SessionVarName = "AllSchoolClassesAndCourses";
     private const string BucketName = "schoolclasscourses";
     private const string SortProperty = "Name";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(SchoolClassCourse);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
 
     private readonly DataContextMySql _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
@@ -107,8 +125,8 @@ public class SchoolClassCoursesController : Controller
             recordsQuery = GetSchoolClassesAndCourses();
 
             // PaginationViewModel<T>.Initialize(_hostingEnvironment);
-            PaginationViewModel<T>.Initialize(_hostingEnvironment,
-                _httpContextAccessor);
+            PaginationViewModel<T>
+                .Initialize(_hostingEnvironment, _httpContextAccessor);
 
             // TODO: verificar se assim deixa de dar o erro out of memory
             //
@@ -117,8 +135,8 @@ public class SchoolClassCoursesController : Controller
             //
             // vão usar este método StoreListToFileInJson1
             // para armazenar os dados em ficheiro no formato json
-            PaginationViewModel<SchoolClassCourse>
-                .StoreListToFileInJson1(recordsQuery, SessionVarName);
+            // PaginationViewModel<SchoolClassCourse>
+            //     .StoreListToFileInJson1(recordsQuery, SessionVarName);
 
             // Armazene a lista na sessão para uso futuro
             // HttpContext.Session.Set(
@@ -141,6 +159,9 @@ public class SchoolClassCoursesController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<SchoolClassCourse>();
         return View(recordsQuery);
     }
@@ -158,6 +179,9 @@ public class SchoolClassCoursesController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<SchoolClassCourse>();
         return View(recordsQuery);
     }
@@ -175,6 +199,9 @@ public class SchoolClassCoursesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -200,7 +227,9 @@ public class SchoolClassCoursesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(SchoolClassCourseNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var schoolClassCourse = await _context.SchoolClassCourses
             .Include(s => s.Course)
@@ -209,9 +238,10 @@ public class SchoolClassCoursesController : Controller
             .Include(s => s.UpdatedBy)
             .FirstOrDefaultAsync(m => m.SchoolClassId == id);
 
-        if (schoolClassCourse == null) return NotFound();
-
-        return View(schoolClassCourse);
+        return schoolClassCourse == null
+            ? new NotFoundViewResult(nameof(SchoolClassCourseNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(schoolClassCourse);
     }
 
 
@@ -293,11 +323,15 @@ public class SchoolClassCoursesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(SchoolClassCourseNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var schoolClassCourse = await _context.SchoolClassCourses.FindAsync(id);
 
-        if (schoolClassCourse == null) return NotFound();
+        if (schoolClassCourse == null)
+            return new NotFoundViewResult(nameof(SchoolClassCourseNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         ViewData["CourseId"] =
             new SelectList(_context.Courses,
@@ -338,7 +372,9 @@ public class SchoolClassCoursesController : Controller
     public async Task<IActionResult> Edit(
         int id, SchoolClassCourse schoolClassCourse)
     {
-        if (id != schoolClassCourse.SchoolClassId) return NotFound();
+        if (id != schoolClassCourse.SchoolClassId)
+            return new NotFoundViewResult(nameof(SchoolClassCourseNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (ModelState.IsValid)
         {
@@ -350,7 +386,9 @@ public class SchoolClassCoursesController : Controller
             catch (DbUpdateConcurrencyException)
             {
                 if (!SchoolClassCourseExists(schoolClassCourse.SchoolClassId))
-                    return NotFound();
+                    return new NotFoundViewResult(
+                        nameof(SchoolClassCourseNotFound), CurrentClass,
+                        id.ToString(), CurrentController, nameof(Index));
                 throw;
             }
 
@@ -389,7 +427,9 @@ public class SchoolClassCoursesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(SchoolClassCourseNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var schoolClassCourse = await _context.SchoolClassCourses
             .Include(s => s.Course)
@@ -398,9 +438,10 @@ public class SchoolClassCoursesController : Controller
             .Include(s => s.UpdatedBy)
             .FirstOrDefaultAsync(m => m.SchoolClassId == id);
 
-        if (schoolClassCourse == null) return NotFound();
-
-        return View(schoolClassCourse);
+        return schoolClassCourse == null
+            ? new NotFoundViewResult(nameof(SchoolClassCourseNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(schoolClassCourse);
     }
 
 
@@ -425,9 +466,15 @@ public class SchoolClassCoursesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool SchoolClassCourseExists(int id)
-    {
-        return _context.SchoolClassCourses
+
+    /// <summary>
+    /// SchoolClassCourseNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult SchoolClassCourseNotFound => View();
+
+
+    private bool SchoolClassCourseExists(int id) =>
+        _context.SchoolClassCourses
             .Any(e => e.SchoolClassId == id);
-    }
 }

@@ -11,42 +11,18 @@
     <h4>Country</h4>
     <hr/>
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfilePhotoId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProfilePhotoId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdGuid)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdGuid)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WasDeleted)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.WasDeleted)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.ProfilePhotoId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ProfilePhotoId)</dd>
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.IdGuid)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.IdGuid)</dd>
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.WasDeleted)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.WasDeleted)</dd>
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.CreatedAt)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.CreatedAt) </dd>
+        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.UpdatedAt)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.UpdatedAt)</dd>
     </dl>
 
     <form asp-action="Delete">
@@ -55,3 +31,35 @@
         <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
     </form>
 </div>
+
+
+<!-- Modal de Erro -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Erro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ViewBag.ShowErrorModal != null && ViewBag.ShowErrorModal)
+{
+    <script>
+        $(document).ready(function () {
+            // Verificar se o modal de erro deve ser exibido
+            // Exibir o modal e definir o corpo com a mensagem de erro
+            $('#errorModal').modal('show');
+            $('#errorMessage').html('@Html.Raw(ViewBag.ModalErrorMessage)');
+        });
+
+    </script>
+}

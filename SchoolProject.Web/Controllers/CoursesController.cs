@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Repositories.Courses;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -18,6 +19,24 @@ public class CoursesController : Controller
     internal const string SessionVarName = "AllCoursesList";
     private const string BucketName = "courses";
     private const string SortProperty = "Code";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(Course);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
 
 
     private readonly DataContextMySql _context;
@@ -97,6 +116,9 @@ public class CoursesController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Course>();
         return View(recordsQuery);
     }
@@ -114,6 +136,9 @@ public class CoursesController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Course>();
         return View(recordsQuery);
     }
@@ -131,6 +156,9 @@ public class CoursesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -156,14 +184,18 @@ public class CoursesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var course = await _context.Courses
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (course == null) return NotFound();
-
-        return View(course);
+        return course == null
+            ? new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(course);
     }
 
 
@@ -172,10 +204,7 @@ public class CoursesController : Controller
     ///     Create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
 
     // POST: Courses/Create
@@ -210,13 +239,17 @@ public class CoursesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var course = await _context.Courses.FindAsync(id);
 
-        if (course == null) return NotFound();
-
-        return View(course);
+        return course == null
+            ? new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(course);
     }
 
     // POST: Courses/Edit/5
@@ -234,7 +267,10 @@ public class CoursesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Course course)
     {
-        if (id != course.Id) return NotFound();
+        if (id != course.Id)
+            return new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(course);
 
@@ -245,7 +281,10 @@ public class CoursesController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!CourseExists(course.Id)) return NotFound();
+            if (!CourseExists(course.Id))
+                return new NotFoundViewResult(
+                    nameof(CourseNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
             throw;
         }
 
@@ -254,47 +293,89 @@ public class CoursesController : Controller
 
 
     // GET: Courses/Delete/5
-    /// <summary>
-    ///     Delete action
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null) return NotFound();
-
-        var course = await _context.Courses
-            .FirstOrDefaultAsync(m => m.Id == id);
-
-        if (course == null) return NotFound();
-
-        return View(course);
-    }
+    // /// <summary>
+    // ///     Delete action
+    // /// </summary>
+    // /// <param name="id"></param>
+    // /// <returns></returns>
+    // public async Task<IActionResult> Delete(int? id)
+    // {
+    //     if (id == null)  return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+    //
+    //     var course = await _context.Courses
+    //         .FirstOrDefaultAsync(m => m.Id == id);
+    //
+    //     if (course == null)  return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+    //
+    //     return View(course);
+    // }
 
 
     // POST: Courses/Delete/5
+    // /// <summary>
+    // ///     Delete action
+    // /// </summary>
+    // /// <param name="id"></param>
+    // /// <returns></returns>
+    // [HttpPost]
+    // [ActionName("Delete")]
+    // [ValidateAntiForgeryToken]
+    // public async Task<IActionResult> DeleteConfirmed(int id)
+    // {
+    //     var course = await _context.Courses.FindAsync(id);
+    //
+    //     if (course != null) _context.Courses.Remove(course);
+    //
+    //     await _context.SaveChangesAsync();
+    //
+    //     return RedirectToAction(nameof(Index));
+    // }
+
+
+    // GET: Countries/Delete/5
     /// <summary>
-    ///     Delete action
+    ///     delete action
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpPost]
-    [ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    [HttpGet]
+    public async Task<IActionResult> Delete(int? id)
     {
-        var course = await _context.Courses.FindAsync(id);
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
-        if (course != null) _context.Courses.Remove(course);
+        // var country = await _countryRepository.GetByIdAsync(id.Value);
 
-        await _context.SaveChangesAsync();
+        // if (country == null)  return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+
+        // await _countryRepository.DeleteAsync(country);
+
+        // return RedirectToAction(nameof(Index));
+
+        var course = await _context.Courses.FindAsync(id.Value);
+
+        if (course == null)
+            return new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
+
+        _context.Courses.Remove(course);
+
+        // await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
 
 
-    private bool CourseExists(int id)
-    {
-        return _context.Courses.Any(e => e.Id == id);
-    }
+    /// <summary>
+    /// CourseNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult CourseNotFound => View();
+
+
+    private bool CourseExists(int id) =>
+        _context.Courses.Any(e => e.Id == id);
 }

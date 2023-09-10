@@ -1,44 +1,44 @@
 [
   {
-    "Id": "016d18b9-955f-40e5-a256-766d66e95db3",
+    "Id": "0ee1ac35-f5a5-4792-b4f5-0f2386deaca9",
     "Name": "Parent",
     "NormalizedName": "PARENT",
-    "ConcurrencyStamp": "fff9db54-d87a-467b-958d-8f5154b7acc1"
+    "ConcurrencyStamp": "262c6c25-66e5-44ef-acb3-f4de054a2d37"
   },
   {
-    "Id": "1d82752e-be00-4e34-916d-f1bec36d800f",
-    "Name": "User",
-    "NormalizedName": "USER",
-    "ConcurrencyStamp": "acd417b2-97d3-4b89-a14e-4daceb3a027e"
-  },
-  {
-    "Id": "5175b858-8f10-454a-b58b-26891e2ceed4",
-    "Name": "Functionary",
-    "NormalizedName": "FUNCTIONARY",
-    "ConcurrencyStamp": "e8bbde9c-da55-4353-ae4e-6e6e924f65d7"
-  },
-  {
-    "Id": "5a71a4dd-75cc-4520-a11f-875ec2bf6282",
-    "Name": "Admin",
-    "NormalizedName": "ADMIN",
-    "ConcurrencyStamp": "ff7cb29a-539d-4642-893b-d5f8a71d0228"
-  },
-  {
-    "Id": "7a1e2bb6-3b6e-42f6-b63c-475183c5eb2b",
-    "Name": "SuperUser",
-    "NormalizedName": "SUPERUSER",
-    "ConcurrencyStamp": "ef80a91b-bec7-403e-b4bb-96adeb6563d6"
-  },
-  {
-    "Id": "9a3b587d-881e-4b27-9294-d0c873aa7eff",
-    "Name": "Teacher",
-    "NormalizedName": "TEACHER",
-    "ConcurrencyStamp": "a2a49c81-51dc-4d56-862d-2b18de335474"
-  },
-  {
-    "Id": "f4c0eeec-e1d7-490a-9bfd-a722155fe41e",
+    "Id": "1197b9b4-fee8-4564-86c1-7723ecdce86e",
     "Name": "Student",
     "NormalizedName": "STUDENT",
-    "ConcurrencyStamp": "d13440b6-36c2-4472-95ff-148572877dc3"
+    "ConcurrencyStamp": "e2d12e07-775b-4b97-83e8-b6ca67e722c0"
+  },
+  {
+    "Id": "1c43e4bc-cda5-4177-a289-ecd97934d69e",
+    "Name": "SuperUser",
+    "NormalizedName": "SUPERUSER",
+    "ConcurrencyStamp": "5526d1bc-a437-4a3e-a91b-d69fbb881005"
+  },
+  {
+    "Id": "3fdffb3f-25fa-48b9-b356-9ad7d5690b26",
+    "Name": "Admin",
+    "NormalizedName": "ADMIN",
+    "ConcurrencyStamp": "b6bc99e1-96f9-40a3-9d75-ac7e7c45a339"
+  },
+  {
+    "Id": "7ae0a184-e76b-44a0-915c-f062af498389",
+    "Name": "Functionary",
+    "NormalizedName": "FUNCTIONARY",
+    "ConcurrencyStamp": "18e173b0-5561-4fb4-be89-887df9e982ac"
+  },
+  {
+    "Id": "a6b0cbe7-587e-4723-aa11-008836be7034",
+    "Name": "Teacher",
+    "NormalizedName": "TEACHER",
+    "ConcurrencyStamp": "0800434e-174c-41b4-bd29-628ad286cf2e"
+  },
+  {
+    "Id": "b4b394c5-8805-467d-84f2-1bb85f481ea1",
+    "Name": "User",
+    "NormalizedName": "USER",
+    "ConcurrencyStamp": "7ee7b544-81c4-4a4f-bf16-cb06e77eb08d"
   }
 ]

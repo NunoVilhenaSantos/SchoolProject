@@ -1,5 +1,4 @@
 @using System.Reflection
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
 
 @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Country>
 
@@ -11,29 +10,29 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
     // Isso obtém o nome da classe do modelo atual
-    // var modelName = Model.GetModelName(m => m);
-    var deleteClassName = Model.GetType().FullName;
-    var deleteClassName1 = Model.GetType().Name;
-    var deleteClassName2 = Model.GetType().FindMembers;
-    var deleteClassName3 = Model.GetType().GetProperties();
-    var deleteClassName4 = Model.GetType().GetProperties().ToString();
-    var deleteClassName5 = Model.GetType().GetProperties().GetType().Name;
+    var deleteClassName = ViewData["CurrentClass"]?.ToString();
 
-    string CurrentClass = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name.ToString();
+
+    var s1 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Name;
+    var s2 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.FullName;
+    var s3 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.AssemblyQualifiedName;
+    var s4 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.FullName;
+    var s5 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Name;
+    var s6 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().FullName;
+    var s7 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Version?.ToString();
+    var s8 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Version?.Major.ToString();
+    var s9 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Version?.Minor.ToString();
+    var s10 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Version?.Build.ToString();
+    var s11 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Version?.Revision.ToString();
+    var s12 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Version?.MajorRevision.ToString();
+    var s13 = System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType?.Assembly.GetName().Version?.MinorRevision.ToString();
 
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
 
 <h1>@ViewData["Title"]</h1>
-@deleteClassName
-@deleteClassName1
-@deleteClassName2
-@deleteClassName3
-@deleteClassName4
-@deleteClassName5
-
-@CurrentClass
+<p>@ViewBag.ShowErrorModal</p>
 <p>
     <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
     @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a> *@
@@ -80,3 +79,40 @@
     }
     </tbody>
 </table>
+
+
+<partial name="Modals/_DbException"/>
+
+<!-- Modal de Erro -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Erro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* @if (ViewBag.ShowErrorModal) *@
+@if (ViewBag.ShowErrorModal != null && ViewBag.ShowErrorModal)
+{
+    <script>
+        
+        $(document).ready(function () {
+            // Verificar se o modal de erro deve ser exibido
+            // Exibir o modal e definir o corpo com a mensagem de erro
+            $('#errorModal').modal('show');
+            $('#errorMessage').html('@Html.Raw(ViewBag.ModalErrorMessage)');
+
+    });
+
+</script>
+}

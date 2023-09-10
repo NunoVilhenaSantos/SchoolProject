@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Repositories.SchoolClasses;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 
@@ -21,6 +22,24 @@ public class SchoolClassStudentsController : Controller
     internal const string SessionVarName = "AllSchoolClassesAndStudent";
     private const string BucketName = "schoolclassstudents";
     private const string SortProperty = "Name";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(SchoolClassStudent);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
 
 
     private readonly DataContextMySql _context;
@@ -130,8 +149,8 @@ public class SchoolClassStudentsController : Controller
             //
             // vão usar este método StoreListToFileInJson1
             // para armazenar os dados em ficheiro no formato json
-            PaginationViewModel<SchoolClassStudent>
-                .StoreListToFileInJson1(recordsQuery, SessionVarName);
+            // PaginationViewModel<SchoolClassStudent>
+            //     .StoreListToFileInJson1(recordsQuery, SessionVarName);
 
             // Armazene a lista na sessão para uso futuro
             // HttpContext.Session.Set(
@@ -154,6 +173,9 @@ public class SchoolClassStudentsController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<SchoolClassStudent>();
         return View(recordsQuery);
     }
@@ -171,6 +193,9 @@ public class SchoolClassStudentsController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<SchoolClassStudent>();
         return View(recordsQuery);
     }
@@ -188,6 +213,9 @@ public class SchoolClassStudentsController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -213,7 +241,9 @@ public class SchoolClassStudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var schoolClassStudent = await _context.SchoolClassStudents
             .Include(s => s.CreatedBy)
@@ -222,9 +252,10 @@ public class SchoolClassStudentsController : Controller
             .Include(s => s.UpdatedBy)
             .FirstOrDefaultAsync(m => m.SchoolClassId == id);
 
-        if (schoolClassStudent == null) return NotFound();
-
-        return View(schoolClassStudent);
+        return schoolClassStudent == null
+            ? new NotFoundViewResult(
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(schoolClassStudent);
     }
 
 
@@ -310,12 +341,16 @@ public class SchoolClassStudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var schoolClassStudent =
             await _context.SchoolClassStudents.FindAsync(id);
 
-        if (schoolClassStudent == null) return NotFound();
+        if (schoolClassStudent == null)
+            return new NotFoundViewResult(
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         ViewData["CreatedById"] =
             new SelectList(_context.Users,
@@ -356,7 +391,9 @@ public class SchoolClassStudentsController : Controller
     public async Task<IActionResult> Edit(
         int id, SchoolClassStudent schoolClassStudent)
     {
-        if (id != schoolClassStudent.SchoolClassId) return NotFound();
+        if (id != schoolClassStudent.SchoolClassId)
+            return new NotFoundViewResult(
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (ModelState.IsValid)
         {
@@ -368,8 +405,10 @@ public class SchoolClassStudentsController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SchoolClassStudentExists(schoolClassStudent.SchoolClassId))
-                    return NotFound();
+                if (!SchoolClassStudentExists(
+                        schoolClassStudent.SchoolClassId))
+                    return new NotFoundViewResult(
+                        nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
                 throw;
             }
 
@@ -408,7 +447,9 @@ public class SchoolClassStudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var schoolClassStudent = await _context.SchoolClassStudents
             .Include(s => s.SchoolClass)
@@ -417,9 +458,10 @@ public class SchoolClassStudentsController : Controller
             .Include(s => s.UpdatedBy)
             .FirstOrDefaultAsync(m => m.SchoolClassId == id);
 
-        if (schoolClassStudent == null) return NotFound();
-
-        return View(schoolClassStudent);
+        return schoolClassStudent == null
+            ? new NotFoundViewResult(
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(schoolClassStudent);
     }
 
 
@@ -446,9 +488,14 @@ public class SchoolClassStudentsController : Controller
     }
 
 
-    private bool SchoolClassStudentExists(int id)
-    {
-        return _context.SchoolClassStudents
+    /// <summary>
+    /// SchoolClassStudentNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult SchoolClassStudentNotFound => View();
+
+
+    private bool SchoolClassStudentExists(int id) =>
+        _context.SchoolClassStudents
             .Any(e => e.SchoolClassId == id);
-    }
 }

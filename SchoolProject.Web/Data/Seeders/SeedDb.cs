@@ -105,7 +105,7 @@ public class SeedDb
         // await _mySqlLocal.Database.MigrateAsync();
         // await _mySqlOnline.Database.MigrateAsync();
 
-        // await _dataContextSqLite.Database.MigrateAsync();
+        await _dataContextSqLite.Database.MigrateAsync();
 
         await _dataContextInUse.Database.MigrateAsync();
 

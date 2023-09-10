@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Web.Models.Errors;
 
@@ -10,7 +11,6 @@ namespace SchoolProject.Web.Controllers;
 public class ErrorsController : Controller
 {
     private readonly IWebHostEnvironment _hostingEnvironment;
-
     private readonly ILogger<ErrorsController> _logger;
 
 
@@ -35,6 +35,25 @@ public class ErrorsController : Controller
         Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        var exceptionHandlerPathFeature =
+            HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        var error = exceptionHandlerPathFeature?.Error;
+
+        if (error is DbUpdateException dbUpdateException)
+        {
+            // Handle DbUpdateException,
+            // perhaps by redirecting to a specific error page for database issues.
+            _logger.LogError(dbUpdateException, "Database error occurred");
+
+            return RedirectToAction("DatabaseError");
+        }
+
+        // Handle other exceptions here,
+        // or redirect to a general error page.
+        _logger.LogError(error, "An error occurred");
+
+        // return View("Error");
+
         return View(new ErrorViewModel
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
@@ -47,10 +66,7 @@ public class ErrorsController : Controller
     /// </summary>
     /// <returns></returns>
     [Route("error/403")]
-    public IActionResult Error403()
-    {
-        return View();
-    }
+    public IActionResult Error403() => View();
 
 
     /// <summary>
@@ -58,10 +74,7 @@ public class ErrorsController : Controller
     /// </summary>
     /// <returns></returns>
     [Route("error/404")]
-    public IActionResult Error404()
-    {
-        return View();
-    }
+    public IActionResult Error404() => View();
 
 
     /// <summary>
@@ -80,4 +93,14 @@ public class ErrorsController : Controller
 
         return View("Error", viewModel);
     }
+
+
+    // You can create a specific view for database-related errors if needed.
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    [Route("error/database-error")]
+    public IActionResult DatabaseError(DbErrorViewModel dbErrorViewModel) =>
+        View("DatabaseError", dbErrorViewModel);
 }

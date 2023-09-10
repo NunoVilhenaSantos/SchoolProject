@@ -14,7 +14,7 @@
 
     // Isso obtém o nome da classe do modelo atual
     // var modelName = Model.GetModelName(m => m);
-    var deleteClassName = Model.GetType().FullName;
+    var deleteClassName = ViewData["CurrentClass"]?.ToString();
 
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }

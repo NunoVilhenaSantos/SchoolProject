@@ -63,13 +63,6 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //
-        // Set DeleteBehavior to Restrict for all relationships
-        //
-        foreach (var relationship
-                 in modelBuilder.Model.GetEntityTypes()
-                     .SelectMany(e => e.GetForeignKeys()))
-            relationship.DeleteBehavior = DeleteBehavior.Restrict;
         // ------------------------------------------------------------------ //
 
 
@@ -260,8 +253,19 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-        // Countries and Nationalities (one-to-one)
         // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+
+
+        // ... Other configurations ...
+        // ... Outras configurações ...
+
+
+        // Relação entre City e Country
+        modelBuilder.Entity<City>()
+            .HasOne(c => c.Country)
+            .WithMany(country => country.Cities)
+            .HasForeignKey(c => c.CountryId);
 
 
         // Required one-to-one with primary key to primary key relationship
@@ -271,31 +275,49 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
             .HasOne(c => c.Nationality)
             .WithOne(n => n.Country)
             .HasForeignKey<Nationality>(n => n.CountryId)
+            .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
 
+        // Relação entre Country e Nationality
+        //modelBuilder.Entity<Nationality>()
+        //    .HasOne(n => n.Country)
+        //    .WithOne(c => c.Nationality)
+        //    .HasForeignKey<Nationality>(c => c.CountryId)
+        //    .OnDelete(DeleteBehavior.Restrict)
+        //    // .OnDelete(DeleteBehavior.SetNull)
+        //    .IsRequired();
+
+        // Relação entre Country e Nationality
+        // modelBuilder.Entity<Nationality>()
+        //     .HasOne(n => n.Country)
+        //     .WithOne(c => c.Nationality)
+        //     .HasForeignKey<Country>(c => c.NationalityId)
+        //     .OnDelete(DeleteBehavior.Restrict)
+        //     .IsRequired();
+
+
+        // ... Other configurations ...
+        // ... Outras configurações ...
+
+
         // ------------------------------------------------------------------ //
-        // Countries and Cities (one-to-many)
         // ------------------------------------------------------------------ //
-
-
-        // Relação entre City e Country
-
-        modelBuilder.Entity<City>()
-            .HasOne(c => c.Country)
-            .WithMany(country => country.Cities)
-            .HasForeignKey(c => c.CountryId);
-
-
-        // ------------------------------------------------------------------ //
-        // ------------------------------------------------------------------ //
-
-
-        // ... outras configurações ...
 
 
         // ------------------------------------------------------------------ //
 
+
+        //
+        // Set DeleteBehavior to Restrict for all relationships
+        //
+        foreach (var relationship in
+                 modelBuilder.Model.GetEntityTypes()
+                     .SelectMany(e => e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
+
+        // ------------------------------------------------------------------ //
 
         base.OnModelCreating(modelBuilder);
     }

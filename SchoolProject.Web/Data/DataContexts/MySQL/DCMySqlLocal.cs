@@ -1,9 +1,10 @@
 ﻿namespace SchoolProject.Web.Data.DataContexts.MySQL;
 
-public class DCMySqlLocal : DataContextMySql
+/// <inheritdoc />
+public class DcMySqlLocal : DataContextMySql
 {
     /// <inheritdoc />
-    public DCMySqlLocal(DbContextOptions<DCMySqlLocal> options) :
+    public DcMySqlLocal(DbContextOptions<DcMySqlLocal> options) :
         base(options)
     {
     }

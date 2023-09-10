@@ -25,8 +25,8 @@ namespace SchoolProject.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
 
     private readonly ILogger<HomeController> _logger;
 
@@ -204,138 +204,96 @@ public class HomeController : Controller
     ///     About action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult About()
-    {
-        return View();
-    }
+    public IActionResult About() => View();
 
 
     /// <summary>
     ///     Contact action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Contacts()
-    {
-        return View();
-    }
+    public IActionResult Contacts() => View();
 
 
     /// <summary>
     ///     CookiesPrivacy action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    public IActionResult Privacy() => View();
 
 
     /// <summary>
     ///     CookiesPrivacy action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult CookiesPrivacy()
-    {
-        return View();
-    }
+    public IActionResult CookiesPrivacy() => View();
 
 
     /// <summary>
     ///     Cookies action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Cookies()
-    {
-        return View();
-    }
+    public IActionResult Cookies() => View();
 
 
     /// <summary>
     ///     Legal action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Legal()
-    {
-        return View();
-    }
+    public IActionResult Legal() => View();
 
 
     /// <summary>
     ///     TimeTracker action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult TimeTracker()
-    {
-        return View();
-    }
+    public IActionResult TimeTracker() => View();
 
 
     /// <summary>
     ///     Threads action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Threads()
-    {
-        return View();
-    }
+    public IActionResult Threads() => View();
 
 
     /// <summary>
     ///     Features action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Features()
-    {
-        return View();
-    }
+    public IActionResult Features() => View();
 
 
     /// <summary>
     ///     Pricing action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Pricing()
-    {
-        return View();
-    }
+    public IActionResult Pricing() => View();
 
 
     /// <summary>
     ///     FaQs action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult FaQs()
-    {
-        return View();
-    }
+    public IActionResult FaQs() => View();
 
 
     /// <summary>
     ///     Locations action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Team()
-    {
-        return View();
-    }
+    public IActionResult Team() => View();
 
 
     /// <summary>
     ///     Locations action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Locations()
-    {
-        return View();
-    }
+    public IActionResult Locations() => View();
 
 
     /// <summary>
     ///     Terms action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Terms()
-    {
-        return View();
-    }
+    public IActionResult Terms() => View();
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -18,8 +19,27 @@ public class RolesController : Controller
     internal const string SessionVarName = "AllRolesList";
     private const string BucketName = "roles";
     private const string SortProperty = "Name";
-    private readonly IWebHostEnvironment _hostingEnvironment;
 
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(IdentityRole);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+
+
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly RoleManager<IdentityRole> _roleManager;
 
 
@@ -36,10 +56,7 @@ public class RolesController : Controller
     }
 
 
-    private List<IdentityRole> GetRolesList()
-    {
-        return _roleManager.Roles.ToList();
-    }
+    private List<IdentityRole> GetRolesList() => _roleManager.Roles.ToList();
 
 
     private List<IdentityRole> SessionData<T>() where T : class
@@ -85,6 +102,9 @@ public class RolesController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<IdentityRole>();
         return View(recordsQuery);
     }
@@ -98,6 +118,9 @@ public class RolesController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<IdentityRole>();
         return View(recordsQuery);
     }
@@ -111,6 +134,9 @@ public class RolesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -137,13 +163,16 @@ public class RolesController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var roles = await _roleManager.FindByIdAsync(id);
 
-        if (roles == null) return NotFound();
-
-        return View(roles);
+        return roles == null
+            ? new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(roles);
     }
 
 
@@ -153,10 +182,7 @@ public class RolesController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
 
     // POST: Roles/Create
@@ -189,10 +215,11 @@ public class RolesController : Controller
             return View(identityRole);
         }
 
-        var result = await _roleManager.CreateAsync(new IdentityRole
-        {
-            Name = identityRole.Name
-        });
+        var result = await _roleManager.CreateAsync(
+            new IdentityRole
+            {
+                Name = identityRole.Name
+            });
 
         if (result.Succeeded)
             return RedirectToAction("Index");
@@ -212,13 +239,16 @@ public class RolesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(string? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var role = await _roleManager.FindByIdAsync(id);
 
-        if (role == null) return NotFound();
-
-        return View(role);
+        return role == null
+            ? new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(role);
     }
 
 
@@ -240,7 +270,9 @@ public class RolesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(string id, IdentityRole identityRole)
     {
-        if (id != identityRole.Id) return NotFound();
+        if (id != identityRole.Id)
+            return new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(identityRole);
 
@@ -251,7 +283,8 @@ public class RolesController : Controller
         catch (DbUpdateConcurrencyException)
         {
             if (await _roleManager.FindByIdAsync(id) == null)
-                return NotFound();
+                return new NotFoundViewResult(
+                    nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
             throw;
         }
 
@@ -267,13 +300,16 @@ public class RolesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(string? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var role = await _roleManager.FindByIdAsync(id);
 
-        if (role == null) return NotFound();
-
-        return View(role);
+        return role == null
+            ? new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(role);
     }
 
 
@@ -293,9 +329,15 @@ public class RolesController : Controller
 
         if (identityRole != null) await _roleManager.DeleteAsync(identityRole);
 
-
         await _roleManager.Roles.ExecuteDeleteAsync();
 
         return RedirectToAction(nameof(Index));
     }
+
+
+    /// <summary>
+    /// RoleNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult RoleNotFound => View();
 }

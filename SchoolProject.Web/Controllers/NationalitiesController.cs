@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -17,9 +18,28 @@ public class NationalitiesController : Controller
     internal const string SessionVarName = "AllNationalitiesWithCountries";
     private const string BucketName = "nationalities";
     private const string SortProperty = "Name";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(Nationality);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+
+
     private readonly ICountryRepository _countryRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
-
     private readonly INationalityRepository _nationalityRepository;
 
 
@@ -92,6 +112,9 @@ public class NationalitiesController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Nationality>();
         return View(recordsQuery);
     }
@@ -107,6 +130,9 @@ public class NationalitiesController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Nationality>();
         return View(recordsQuery);
     }
@@ -124,6 +150,9 @@ public class NationalitiesController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -149,14 +178,15 @@ public class NationalitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var nationality =
             await _nationalityRepository.GetNationalityAsync(id.Value);
 
-        if (nationality == null) return NotFound();
-
-        return View(nationality);
+        return nationality == null
+            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(nationality);
     }
 
     // GET: Nationalities/Create
@@ -164,10 +194,7 @@ public class NationalitiesController : Controller
     ///     create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
     // POST: Nationalities/Create
     // To protect from over-posting attacks,
@@ -201,14 +228,15 @@ public class NationalitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var nationality = await
             _nationalityRepository.GetNationalityAsync(id.Value);
 
-        if (nationality == null) return NotFound();
-
-        return View(nationality);
+        return nationality == null
+            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(nationality);
     }
 
     // POST: Nationalities/Edit/5
@@ -226,7 +254,8 @@ public class NationalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Nationality nationality)
     {
-        if (id != nationality.Id) return NotFound();
+        if (id != nationality.Id)
+            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(nationality);
 
@@ -240,7 +269,8 @@ public class NationalitiesController : Controller
             var test = await _nationalityRepository
                 .GetNationalityAsync(nationality.Id);
 
-            if (test == null) return NotFound();
+            if (test == null)
+                return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
             throw;
         }
@@ -256,14 +286,15 @@ public class NationalitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var nationality = await _nationalityRepository
             .GetNationalityAsync(id.Value);
 
-        if (nationality == null) return NotFound();
-
-        return View(nationality);
+        return nationality == null
+            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(nationality);
     }
 
     // POST: Nationalities/Delete/5
@@ -287,4 +318,11 @@ public class NationalitiesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+
+    /// <summary>
+    /// NationalityNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult NationalityNotFound => View();
 }

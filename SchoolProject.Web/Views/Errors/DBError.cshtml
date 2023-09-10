@@ -1,0 +1,26 @@
+﻿@model SchoolProject.Web.Models.Errors.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+
+@if(ViewBag.ErrorTitle == null)
+{
+    <h1 class="text-danger">Error.</h1>
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
+}
+else
+{
+    <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
+    <h2 class="text-danger">@Html.Raw(ViewBag.ErrorMessage)</h2>
+}
+
+
+
+@*@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}*@

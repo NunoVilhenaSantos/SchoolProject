@@ -1,0 +1,38 @@
+﻿@* @model dynamic *@
+@* @model SchoolProject.Web.Helpers.NotFoundViewResult *@
+
+@{
+    ViewData["Title"] = ViewData["ClassName"] + " Not Found";
+    var action = ViewData["Action"]?.ToString();
+    var controller = ViewData["Controller"]?.ToString();
+    var buttonHref = "/" + controller + "/" + action;
+    var itemId = string.IsNullOrEmpty(ViewData["ItemId"]?.ToString()) ? "Nulo" : ViewData["ItemId"]?.ToString();
+}
+
+<h2>@ViewData["Title"] </h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template m-2">
+                <h1> Oops!</h1><br/>
+                <h2> @ViewData["StatusCode"] Not Found </h2><br/>
+                <h2> @ViewData["Title"] </h2><br/>
+
+                <div class="error-details">
+                    <p>Sorry, an error has occured, Requested page not found!</p><br/>
+                    <h5>The @ViewData["ClassName"] with the Id @itemId was Not Found!!!</h5><br/>
+                    @* <h5>The @ViewData["ClassName"] with the Id @ViewData["ItemId"] was Not Found!!!</h5><br/> *@
+                </div>
+
+                <div class="error-actions">
+                    <a class="btn btn-info btn-lg p-2 px-2" href="@buttonHref"><span class="glyphicon glyphicon-home"></span>Take Me Home</a>
+                    @* <a class="btn btn-info btn-lg p-2 px-2" href="/@controller/@action"><span class="glyphicon glyphicon-home"></span>Take Me Home</a> *@
+                    @* <a asp-action="@action" asp-controller="@controller" class="btn btn-info btn-lg p-2 px-2"><span class="glyphicon glyphicon-home"></span>Take Me Home</a> *@
+                    <a asp-action="@ViewData["Action"]" asp-controller="@ViewData["Controller"]" class="btn btn-info btn-lg p-2 px-2"><span class="glyphicon glyphicon-home"></span>Take Me Home </a>
+                    <a class="btn btn-secondary btn-lg p-2 px-2" href="mailto:@ViewData["EmailAddress"]"><span class="glyphicon glyphicon-envelope"></span> Contact Support </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

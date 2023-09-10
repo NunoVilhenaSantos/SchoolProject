@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.OtherEntities;
 using SchoolProject.Web.Data.Repositories.OtherEntities;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -18,6 +19,25 @@ public class GendersController : Controller
     internal const string SessionVarName = "AllGendersList";
     private const string BucketName = "genders";
     private const string SortProperty = "Name";
+
+    // Obtém o tipo da classe atual
+    private const string CurrentClass = nameof(Gender);
+    private const string CurrentAction = nameof(Index);
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+
 
     private readonly DataContextMySql _context;
     private readonly IGenderRepository _genderRepository;
@@ -96,6 +116,9 @@ public class GendersController : Controller
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Gender>();
         return View(recordsQuery);
     }
@@ -113,6 +136,9 @@ public class GendersController : Controller
     public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         var recordsQuery = SessionData<Gender>();
         return View(recordsQuery);
     }
@@ -130,6 +156,9 @@ public class GendersController : Controller
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
         // Validar parâmetros de página e tamanho da página
         if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
         if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
@@ -155,12 +184,16 @@ public class GendersController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var gender = await _context.Genders
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (gender == null) return NotFound();
+        if (gender == null)
+            return new NotFoundViewResult(
+                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         return View(gender);
     }
@@ -171,10 +204,7 @@ public class GendersController : Controller
     ///     Create action, to open the view for creating.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create()
-    {
-        return View();
-    }
+    public IActionResult Create() => View();
 
 
     // POST: Genders/Create
@@ -208,13 +238,16 @@ public class GendersController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var gender = await _context.Genders.FindAsync(id);
 
-        if (gender == null) return NotFound();
-
-        return View(gender);
+        return gender == null
+            ? new NotFoundViewResult(
+                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(gender);
     }
 
     // POST: Genders/Edit/5
@@ -232,7 +265,9 @@ public class GendersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Gender gender)
     {
-        if (id != gender.Id) return NotFound();
+        if (id != gender.Id)
+            return new NotFoundViewResult(
+                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(gender);
 
@@ -243,7 +278,9 @@ public class GendersController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!GenderExists(gender.Id)) return NotFound();
+            if (!GenderExists(gender.Id))
+                return new NotFoundViewResult(
+                    nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
             throw;
         }
@@ -259,14 +296,16 @@ public class GendersController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return NotFound();
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var gender = await _context.Genders
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (gender == null) return NotFound();
-
-        return View(gender);
+        return gender == null
+            ? new NotFoundViewResult(nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            : View(gender);
     }
 
     // POST: Genders/Delete/5
@@ -289,8 +328,14 @@ public class GendersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool GenderExists(int id)
-    {
-        return _context.Genders.Any(e => e.Id == id);
-    }
+
+    /// <summary>
+    /// EnrollmentNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult GenderNotFound => View();
+
+
+    private bool GenderExists(int id) =>
+        _context.Genders.Any(e => e.Id == id);
 }

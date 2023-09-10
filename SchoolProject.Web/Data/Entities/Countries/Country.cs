@@ -8,8 +8,14 @@ using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Countries;
 
+/// <summary>
+///
+/// </summary>
 public class Country : IEntity, INotifyPropertyChanged
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Country")]
     [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
@@ -61,13 +67,20 @@ public class Country : IEntity, INotifyPropertyChanged
 
     // Principal (parent)
 
-    //[Required]
-    //[ForeignKey(nameof(Nationality))]
-    //public int NationalityId { get; set; }
+    // [Required]
+    // [ForeignKey(nameof(Nationality))]
+    // public int NationalityId { get; set; }
 
-    [Required] public virtual required Nationality Nationality { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public virtual required Nationality Nationality { get; set; }
 
 
+    /// <summary>
+    ///     
+    /// </summary>
     public Guid NationalityGuidId => Nationality.IdGuid;
 
 

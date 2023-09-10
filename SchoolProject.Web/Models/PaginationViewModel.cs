@@ -328,25 +328,25 @@ public class PaginationViewModel<T> where T : class
 
 
             // Create a StreamWriter to write to the file
-            using (StreamWriter streamWriter = new StreamWriter(filePath))
+            using (var streamWriter = new StreamWriter(filePath))
             using (JsonWriter jsonWriter = new JsonTextWriter(streamWriter))
             {
                 // Create a JsonSerializer with settings
-                JsonSerializer jsonSerializer = new JsonSerializer
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    Formatting = Formatting.Indented
-                };
-
-                // Create a JsonSerializer with settings
-                // JsonSerializer jsonSerializer = new JsonSerializer
+                // var jsonSerializer = new JsonSerializer
                 // {
                 //     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                //     Formatting = Formatting.Indented,
-                //
-                //     // Defina o nível máximo de profundidade desejado
-                //     MaxDepth = 1,
+                //     Formatting = Formatting.Indented
                 // };
+
+                // Create a JsonSerializer with settings
+                var jsonSerializer = new JsonSerializer
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Formatting = Formatting.Indented,
+
+                    // Defina o nível máximo de profundidade desejado
+                    MaxDepth = 1,
+                };
 
                 // Serialize and write each item to the file
                 jsonWriter.WriteStartArray();
@@ -358,19 +358,6 @@ public class PaginationViewModel<T> where T : class
 
                 jsonWriter.WriteEndArray();
             }
-
-            // Store the JSON data in the session
-            var json = JsonConvert.SerializeObject(
-                enumerable, new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    Formatting = Formatting.Indented
-                });
-
-            var sessionBytes = Encoding.UTF8.GetBytes(json);
-
-            _httpContextAccessor.HttpContext?.Session.Set(
-                sessionVarName, sessionBytes);
 
             Console.WriteLine("JSON file saved successfully!");
         }

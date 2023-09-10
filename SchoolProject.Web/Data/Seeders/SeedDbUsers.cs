@@ -58,6 +58,7 @@ public class SeedDbUsers
         var city =
             await _dataContextInUse.Cities
                 .FirstOrDefaultAsync(c => c.Name == "Havana");
+
         var country =
             await _dataContextInUse.Countries
                 .FirstOrDefaultAsync(c => c.Name == "Cuba");

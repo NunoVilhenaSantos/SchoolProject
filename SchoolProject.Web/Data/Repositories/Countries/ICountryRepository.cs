@@ -77,21 +77,21 @@ public interface ICountryRepository : IGenericRepository<Country>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Country> GetCountryWithCitiesAsync(int id);
+    Task<Country?> GetCountryWithCitiesAsync(int id);
 
     /// <summary>
     ///     Get country with cities.
     /// </summary>
     /// <param name="country"></param>
     /// <returns></returns>
-    Task<Country> GetCountryWithCitiesAsync(Country country);
+    Task<Country?> GetCountryWithCitiesAsync(Country country);
 
     /// <summary>
     ///     Get country with cities.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
-    Task<Country> GetCountryWithCitiesAsync(City city);
+    Task<Country?> GetCountryWithCitiesAsync(City city);
 
 
     // -------------------------------- Cities ------------------------------ //
