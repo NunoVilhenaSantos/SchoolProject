@@ -1,6 +1,6 @@
 ﻿@using System.Reflection
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.City> *@
 @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.City>
-
 
 @{
     // ViewData["Title"] = "Index";
@@ -13,12 +13,9 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
     // Isso obtém o nome da classe do modelo atual
-    // var modelName = Model.GetModelName(m => m);
     var deleteClassName = ViewData["CurrentClass"]?.ToString();
-
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
-
 
 @* <h2>@pageTitle</h2> *@
 <h2>@ViewData["Title"]</h2>
@@ -30,7 +27,7 @@
             @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
             <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
         </div>
-        @if (ReferenceEquals(actionName, "IndexCards1"))
+        @if (string.Equals(actionName, "IndexCards1"))
         {
             @* <div class="col-md-8 justify-content-end"> *@
             <div class="col justify-content-end">
@@ -39,7 +36,6 @@
         }
     </div>
 </div>
-
 
 <div class="album py-5 bg-body-tertiary">
     <div class="container-fluid">
@@ -77,3 +73,18 @@
         </div>
     </div>
 </div>
+
+@if (string.Equals(actionName, "IndexCards1"))
+{
+    <div class="container-fluid py-3">
+        <div class="row">
+            <div class="col" id="pagination-info">
+                @* <p> Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries </p> *@
+                Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries
+            </div>
+            <div class="col justify-content-end">
+                <partial model="Model" name="Pagination/_PageNavigationBottom"/>
+            </div>
+        </div>
+    </div>
+}

@@ -173,7 +173,7 @@ CREATE TABLE `Nationalities` (
     CONSTRAINT `FK_Nationalities_Countries_CountryId` FOREIGN KEY (`CountryId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT
 );
 
-CREATE TABLE `Courses` (
+CREATE TABLE `Disciplines` (
     `Id` int NOT NULL AUTO_INCREMENT,
     `Code` varchar(7) NOT NULL,
     `Name` longtext NOT NULL,
@@ -189,9 +189,9 @@ CREATE TABLE `Courses` (
     `UpdatedById` varchar(255) NULL,
     `SchoolClassId` int NULL,
     PRIMARY KEY (`Id`),
-    CONSTRAINT `FK_Courses_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Courses_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Courses_SchoolClasses_SchoolClassId` FOREIGN KEY (`SchoolClassId`) REFERENCES `SchoolClasses` (`Id`) ON DELETE RESTRICT
+    CONSTRAINT `FK_Disciplines_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Disciplines_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Disciplines_SchoolClasses_SchoolClassId` FOREIGN KEY (`SchoolClassId`) REFERENCES `SchoolClasses` (`Id`) ON DELETE RESTRICT
 );
 
 CREATE TABLE `Students` (
@@ -277,17 +277,17 @@ CREATE TABLE `Teachers` (
 CREATE TABLE `SchoolClassCourses` (
     `SchoolClassId` int NOT NULL,
     `CourseId` int NOT NULL,
-    `CreatedById` varchar(255) NOT NULL,
-    `UpdatedById` varchar(255) NULL,
     `Id` int NOT NULL,
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
+    `UpdatedById` varchar(255) NULL,
     PRIMARY KEY (`SchoolClassId`, `CourseId`),
     CONSTRAINT `FK_SchoolClassCourses_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_SchoolClassCourses_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_SchoolClassCourses_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_SchoolClassCourses_Disciplines_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_SchoolClassCourses_SchoolClasses_SchoolClassId` FOREIGN KEY (`SchoolClassId`) REFERENCES `SchoolClasses` (`Id`) ON DELETE RESTRICT
 );
 
@@ -295,18 +295,19 @@ CREATE TABLE `Enrollments` (
     `StudentId` int NOT NULL,
     `CourseId` int NOT NULL,
     `Grade` decimal(18,2) NULL,
-    `CreatedById` varchar(255) NOT NULL,
-    `UpdatedById` varchar(255) NULL,
+    `Absences` int NOT NULL,
     `Id` int NOT NULL,
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
+    `UpdatedById` varchar(255) NULL,
     `SchoolClassId` int NULL,
     PRIMARY KEY (`StudentId`, `CourseId`),
     CONSTRAINT `FK_Enrollments_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Enrollments_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Enrollments_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Enrollments_Disciplines_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Enrollments_SchoolClasses_SchoolClassId` FOREIGN KEY (`SchoolClassId`) REFERENCES `SchoolClasses` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Enrollments_Students_StudentId` FOREIGN KEY (`StudentId`) REFERENCES `Students` (`Id`) ON DELETE RESTRICT
 );
@@ -341,7 +342,7 @@ CREATE TABLE `StudentCourses` (
     PRIMARY KEY (`StudentId`, `CourseId`),
     CONSTRAINT `FK_StudentCourses_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_StudentCourses_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_StudentCourses_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_StudentCourses_Disciplines_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_StudentCourses_Students_StudentId` FOREIGN KEY (`StudentId`) REFERENCES `Students` (`Id`) ON DELETE RESTRICT
 );
 
@@ -358,7 +359,7 @@ CREATE TABLE `TeacherCourses` (
     PRIMARY KEY (`TeacherId`, `CourseId`),
     CONSTRAINT `FK_TeacherCourses_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_TeacherCourses_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_TeacherCourses_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_TeacherCourses_Disciplines_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_TeacherCourses_Teachers_TeacherId` FOREIGN KEY (`TeacherId`) REFERENCES `Teachers` (`Id`) ON DELETE RESTRICT
 );
 
@@ -386,11 +387,11 @@ CREATE INDEX `IX_Countries_CreatedById` ON `Countries` (`CreatedById`);
 
 CREATE INDEX `IX_Countries_UpdatedById` ON `Countries` (`UpdatedById`);
 
-CREATE INDEX `IX_Courses_CreatedById` ON `Courses` (`CreatedById`);
+CREATE INDEX `IX_Disciplines_CreatedById` ON `Disciplines` (`CreatedById`);
 
-CREATE INDEX `IX_Courses_SchoolClassId` ON `Courses` (`SchoolClassId`);
+CREATE INDEX `IX_Disciplines_SchoolClassId` ON `Disciplines` (`SchoolClassId`);
 
-CREATE INDEX `IX_Courses_UpdatedById` ON `Courses` (`UpdatedById`);
+CREATE INDEX `IX_Disciplines_UpdatedById` ON `Disciplines` (`UpdatedById`);
 
 CREATE INDEX `IX_Enrollments_CourseId` ON `Enrollments` (`CourseId`);
 
@@ -473,7 +474,7 @@ CREATE INDEX `IX_Teachers_UpdatedById` ON `Teachers` (`UpdatedById`);
 CREATE INDEX `IX_Teachers_UserId` ON `Teachers` (`UserId`);
 
 INSERT INTO `_MyMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20230909155315_InitDB', '7.0.10');
+VALUES ('20230911171330_InitDB', '7.0.10');
 
 COMMIT;
 

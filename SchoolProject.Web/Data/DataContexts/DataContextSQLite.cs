@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
@@ -21,43 +21,98 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
     }
 
 
+
+
     // ---------------------------------------------------------------------- //
     // tabelas auxiliares
     // ---------------------------------------------------------------------- //
 
+
+
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de cidades.
+    /// </summary>
     public DbSet<City> Cities { get; set; }
 
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de países.
+    /// </summary>
     public DbSet<Country> Countries { get; set; }
 
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de nacionalidades.
+    /// </summary>
     public DbSet<Nationality> Nationalities { get; set; }
 
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de gêneros.
+    /// </summary>
     public DbSet<Gender> Genders { get; set; }
 
 
     // ---------------------------------------------------------------------- //
-    // um para muitos
+    // tabelas principais
     // ---------------------------------------------------------------------- //
 
+
+    /// <summary>
+    ///     Tabela principal para armazenar os dados das Disciplines.
+    /// </summary>
+    public DbSet<Discipline> Disciplines { get; set; }
+
+    /// <summary>
+    ///     Tabela principal para armazenar os dados de escolas "Turmas".
+    /// </summary>
     public DbSet<Course> Courses { get; set; }
 
-    public DbSet<SchoolClass> SchoolClasses { get; set; }
-
+    /// <summary>
+    ///     Tabela principal para armazenar os dados dos estudantes.
+    /// </summary>
     public DbSet<Student> Students { get; set; }
 
+    /// <summary>
+    ///     Tabela principal para armazenar os dados dos professores.
+    /// </summary>
     public DbSet<Teacher> Teachers { get; set; }
+
+
 
 
     // ---------------------------------------------------------------------- //
     // muitos para muitos
     // ---------------------------------------------------------------------- //
 
+
+
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
     public DbSet<Enrollment> Enrollments { get; set; }
 
-    public DbSet<SchoolClassCourse> SchoolClassCourses { get; set; }
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
+    public DbSet<CourseStudents> CoursesStudents { get; set; }
 
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
+    public DbSet<CourseDisciplines> CoursesDisciplines { get; set; }
+
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
     public DbSet<StudentCourse> StudentCourses { get; set; }
 
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
     public DbSet<TeacherCourse> TeacherCourses { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // criação do modelo
+    // ---------------------------------------------------------------------- //
 
 
     /// <inheritdoc />
@@ -106,12 +161,12 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Student and Course
+        // Configure many-to-many relationship between Student and Discipline
         // via Enrollment
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<Enrollment>()
-            .HasKey(e => new {e.StudentId, e.CourseId});
+            .HasKey(e => new {e.StudentId, e.DisciplineId});
 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
@@ -119,9 +174,9 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
             .HasForeignKey(e => e.StudentId);
 
         modelBuilder.Entity<Enrollment>()
-            .HasOne(e => e.Course)
+            .HasOne(e => e.Discipline)
             .WithMany(c => c.Enrollments)
-            .HasForeignKey(e => e.CourseId);
+            .HasForeignKey(e => e.DisciplineId);
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<Enrollment>()
@@ -136,21 +191,21 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between SchoolClass and Course
+        // Configure many-to-many relationship between Courses and Disciplines
         // ------------------------------------------------------------------ //
 
-        modelBuilder.Entity<SchoolClassCourse>()
-            .HasKey(scc => new {scc.SchoolClassId, scc.CourseId});
+        modelBuilder.Entity<CourseDisciplines>()
+            .HasKey(scc => new {scc.CourseId, scc.DisciplineId});
 
-        modelBuilder.Entity<SchoolClassCourse>()
-            .HasOne(scc => scc.SchoolClass)
-            .WithMany(sc => sc.SchoolClassCourses)
-            .HasForeignKey(scc => scc.SchoolClassId);
-
-        modelBuilder.Entity<SchoolClassCourse>()
+        modelBuilder.Entity<CourseDisciplines>()
             .HasOne(scc => scc.Course)
-            .WithMany(c => c.SchoolClassCourses)
+            .WithMany(sc => sc.CourseDisciplines)
             .HasForeignKey(scc => scc.CourseId);
+
+        modelBuilder.Entity<CourseDisciplines>()
+            .HasOne(scc => scc.Discipline)
+            .WithMany(c => c.CourseDisciplines)
+            .HasForeignKey(scc => scc.DisciplineId);
 
         // ------------------------------------------------------------------ //
 
@@ -158,18 +213,18 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
         //     .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
         //
         // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.SchoolClass)
-        //     .WithMany(sc => sc.SchoolClassCourses)
+        //     .HasOne(scc => scc.Discipline)
+        //     .WithMany(sc => sc.CourseDisciplines)
         //     .HasForeignKey(scc => scc.SchoolClassGuidId);
         //
         // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.Course)
-        //     .WithMany(c => c.SchoolClassCourses)
+        //     .HasOne(scc => scc.Discipline)
+        //     .WithMany(c => c.CourseDisciplines)
         //     .HasForeignKey(scc => scc.CourseGuidId);
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Student and Course
+        // Configure many-to-many relationship between Student and Discipline
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<StudentCourse>()
@@ -207,7 +262,7 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
         //     .HasForeignKey(tc => tc.TeacherGuidId);
         //
         // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Course)
+        //     .HasOne(tc => tc.Discipline)
         //     .WithMany(c => c.TeacherCourses)
         //     .HasForeignKey(tc => tc.CourseGuidId);
 
@@ -216,7 +271,7 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Teacher and Course
+        // Configure many-to-many relationship between Teacher and Discipline
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<TeacherCourse>()
@@ -243,7 +298,7 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
         //     .HasForeignKey(tc => tc.TeacherGuidId);
         //
         // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Course)
+        //     .HasOne(tc => tc.Discipline)
         //     .WithMany(c => c.TeacherCourses)
         //     .HasForeignKey(tc => tc.CourseGuidId);
 
@@ -275,25 +330,24 @@ public class DataContextSqLite : IdentityDbContext<User, IdentityRole, string>
             .HasOne(c => c.Nationality)
             .WithOne(n => n.Country)
             .HasForeignKey<Nationality>(n => n.CountryId)
-            .OnDelete(DeleteBehavior.Restrict)
+            // Configura a exclusão em cascata
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
 
         // Relação entre Country e Nationality
-        //modelBuilder.Entity<Nationality>()
-        //    .HasOne(n => n.Country)
-        //    .WithOne(c => c.Nationality)
-        //    .HasForeignKey<Nationality>(c => c.CountryId)
-        //    .OnDelete(DeleteBehavior.Restrict)
-        //    // .OnDelete(DeleteBehavior.SetNull)
-        //    .IsRequired();
+        modelBuilder.Entity<Nationality>()
+            .HasOne(n => n.Country)
+            .WithOne(c => c.Nationality)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
 
         // Relação entre Country e Nationality
         // modelBuilder.Entity<Nationality>()
         //     .HasOne(n => n.Country)
         //     .WithOne(c => c.Nationality)
         //     .HasForeignKey<Country>(c => c.NationalityId)
-        //     .OnDelete(DeleteBehavior.Restrict)
+        //     .OnDelete(DeleteBehavior.SetNull)
         //     .IsRequired();
 
 

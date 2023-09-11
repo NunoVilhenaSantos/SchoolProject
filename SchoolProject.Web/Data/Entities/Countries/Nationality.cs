@@ -27,6 +27,7 @@ public class Nationality : IEntity, INotifyPropertyChanged
 
     // Dependent (child)
 
+
     [Required]
     [ForeignKey(nameof(Country))]
     public int CountryId { get; set; }
@@ -46,38 +47,48 @@ public class Nationality : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+
+    /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
+    /// <inheritdoc />
     // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+    /// <inheritdoc />
+    [DisplayName("Updated By")]
+    public virtual User? UpdatedBy { get; set; }
 
 
     // --------------------------------------------------------------------- //

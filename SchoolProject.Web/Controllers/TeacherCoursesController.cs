@@ -17,13 +17,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class TeacherCoursesController : Controller
 {
-    internal const string SessionVarName = "AllTeachersAndCourses";
-    private const string BucketName = "teachercourses";
-    private const string SortProperty = "Name";
-
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(TeacherCourse);
     private const string CurrentAction = nameof(Index);
+
+    internal string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = "FirstName";
+
 
     // Obtém o controlador atual
     private string CurrentController
@@ -66,7 +67,7 @@ public class TeacherCoursesController : Controller
     {
         var teacherCoursesList =
             _context.TeacherCourses
-                // --------------------- Course section --------------------- //
+                // --------------------- Discipline section --------------------- //
                 .Include(tc => tc.Course)
 
                 // --------------------- Teacher section -------------------- //
@@ -238,8 +239,8 @@ public class TeacherCoursesController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code");
 
         ViewData["CreatedById"] =
@@ -280,8 +281,8 @@ public class TeacherCoursesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
                 teacherCourse.CourseId);
 
@@ -322,8 +323,8 @@ public class TeacherCoursesController : Controller
             return new NotFoundViewResult(
                 nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
                 teacherCourse.CourseId);
 
@@ -384,8 +385,8 @@ public class TeacherCoursesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
                 teacherCourse.CourseId);
 

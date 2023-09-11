@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
@@ -40,9 +40,13 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     }
 
 
+
+
     // ---------------------------------------------------------------------- //
     // tabelas auxiliares
     // ---------------------------------------------------------------------- //
+
+
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de cidades.
@@ -66,18 +70,19 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
 
     // ---------------------------------------------------------------------- //
-    // tabelas principais com relações de um para muitos e de muitos para um
+    // tabelas principais
     // ---------------------------------------------------------------------- //
 
+
     /// <summary>
-    ///     Tabela principal para armazenar os dados de cursos.
+    ///     Tabela principal para armazenar os dados das Disciplines.
     /// </summary>
-    public DbSet<Course> Courses { get; set; }
+    public DbSet<Discipline> Disciplines { get; set; }
 
     /// <summary>
     ///     Tabela principal para armazenar os dados de escolas "Turmas".
     /// </summary>
-    public DbSet<SchoolClass> SchoolClasses { get; set; }
+    public DbSet<Course> Courses { get; set; }
 
     /// <summary>
     ///     Tabela principal para armazenar os dados dos estudantes.
@@ -90,9 +95,13 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     public DbSet<Teacher> Teachers { get; set; }
 
 
+
+
     // ---------------------------------------------------------------------- //
     // muitos para muitos
     // ---------------------------------------------------------------------- //
+
+
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
@@ -102,7 +111,12 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public DbSet<SchoolClassCourse> SchoolClassCourses { get; set; }
+    public DbSet<CourseStudents> CoursesStudents { get; set; }
+
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
+    public DbSet<CourseDisciplines> CoursesDisciplines { get; set; }
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
@@ -118,6 +132,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
     // ---------------------------------------------------------------------- //
     // criação do modelo
     // ---------------------------------------------------------------------- //
+
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -172,12 +187,12 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Student and Course
+        // Configure many-to-many relationship between Student and Discipline
         // via Enrollment
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<Enrollment>()
-            .HasKey(e => new {e.StudentId, e.CourseId});
+            .HasKey(e => new {e.StudentId, e.DisciplineId});
 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
@@ -185,9 +200,9 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
             .HasForeignKey(e => e.StudentId);
 
         modelBuilder.Entity<Enrollment>()
-            .HasOne(e => e.Course)
+            .HasOne(e => e.Discipline)
             .WithMany(c => c.Enrollments)
-            .HasForeignKey(e => e.CourseId);
+            .HasForeignKey(e => e.DisciplineId);
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<Enrollment>()
@@ -212,31 +227,34 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         //     .HasForeignKey(tc => tc.TeacherGuidId);
         //
         // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Course)
+        //     .HasOne(tc => tc.Discipline)
         //     .WithMany(c => c.TeacherCourses)
         //     .HasForeignKey(tc => tc.CourseGuidId);
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between SchoolClass and Course
+        // Configure many-to-many relationship between Courses and Disciplines
         // ------------------------------------------------------------------ //
 
-        modelBuilder.Entity<SchoolClassCourse>()
-            .HasKey(scc => new {scc.SchoolClassId, scc.CourseId});
+        modelBuilder.Entity<CourseDisciplines>()
+            .HasKey(cd => new {cd.CourseId, cd.DisciplineId});
 
-        modelBuilder.Entity<SchoolClassCourse>()
-            .HasOne(scc => scc.SchoolClass)
-            .WithMany(sc => sc.SchoolClassCourses)
-            .HasForeignKey(scc => scc.SchoolClassId);
 
-        modelBuilder.Entity<SchoolClassCourse>()
-            .HasOne(scc => scc.Course)
-            .WithMany(c => c.SchoolClassCourses)
-            .HasForeignKey(scc => scc.CourseId);
+        modelBuilder.Entity<CourseDisciplines>()
+            .HasOne(cd => cd.Course)
+            .WithMany(c => c.CourseDisciplines)
+            .HasForeignKey(cd => cd.CourseId);
+
+
+        modelBuilder.Entity<CourseDisciplines>()
+            .HasOne(cd => cd.Discipline)
+            .WithMany(d => d.CourseDisciplines)
+            .HasForeignKey(cd => cd.DisciplineId);
+
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
-        modelBuilder.Entity<SchoolClassCourse>()
-            .Property(scc => scc.Id)
+        modelBuilder.Entity<CourseDisciplines>()
+            .Property(cd => cd.Id)
             // Usar a extensão específica para MySQL
             .UseIdentityColumn()
             // Nome da coluna no banco de dados
@@ -251,32 +269,35 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         //     .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
         //
         // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.SchoolClass)
-        //     .WithMany(sc => sc.SchoolClassCourses)
+        //     .HasOne(scc => scc.Discipline)
+        //     .WithMany(sc => sc.CourseDisciplines)
         //     .HasForeignKey(scc => scc.SchoolClassGuidId);
         //
         // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.Course)
-        //     .WithMany(c => c.SchoolClassCourses)
+        //     .HasOne(scc => scc.Discipline)
+        //     .WithMany(c => c.CourseDisciplines)
         //     .HasForeignKey(scc => scc.CourseGuidId);
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Student and Course
+        // Configure many-to-many relationship between Student and Discipline
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<StudentCourse>()
             .HasKey(sc => new {sc.StudentId, sc.CourseId});
+
 
         modelBuilder.Entity<StudentCourse>()
             .HasOne(sc => sc.Student)
             .WithMany(s => s.StudentCourses)
             .HasForeignKey(sc => sc.StudentId);
 
+
         modelBuilder.Entity<StudentCourse>()
             .HasOne(sc => sc.Course)
-            .WithMany(c => c.StudentCourses)
+            .WithMany(d => d.StudentCourses)
             .HasForeignKey(sc => sc.CourseId);
+
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<StudentCourse>()
@@ -300,26 +321,28 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         //     .HasForeignKey(tc => tc.TeacherGuidId);
         //
         // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Course)
+        //     .HasOne(tc => tc.Discipline)
         //     .WithMany(c => c.TeacherCourses)
         //     .HasForeignKey(tc => tc.CourseGuidId);
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Teacher and Course
+        // Configure many-to-many relationship between Teacher and Discipline
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<TeacherCourse>()
             .HasKey(tc => new {tc.TeacherId, tc.CourseId});
+
 
         modelBuilder.Entity<TeacherCourse>()
             .HasOne(tc => tc.Teacher)
             .WithMany(t => t.TeacherCourses)
             .HasForeignKey(tc => tc.TeacherId);
 
+
         modelBuilder.Entity<TeacherCourse>()
             .HasOne(tc => tc.Course)
-            .WithMany(c => c.TeacherCourses)
+            .WithMany(d => d.TeacherCourses)
             .HasForeignKey(tc => tc.CourseId);
 
 
@@ -345,7 +368,7 @@ public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
         //     .HasForeignKey(tc => tc.TeacherGuidId);
         //
         // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Course)
+        //     .HasOne(tc => tc.Discipline)
         //     .WithMany(c => c.TeacherCourses)
         //     .HasForeignKey(tc => tc.CourseGuidId);
 

@@ -48,7 +48,7 @@
             var userRoles = await UserManager.GetRolesAsync(user);
             foreach (var role in userRoles)
             {
-                <li>@role</li>
+                <p>@role</p>
             }
         }
     }
@@ -205,7 +205,6 @@
             </div>
         }
 
-
         @* // mostra o painel offcanvas do painel do admin (funções exclusivas dos admins) *@
         @* @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))) *@
         <div class="b-example-divider d-none">Buttons to open the off-canvas panel on the right (Admin Panel)</div>
@@ -240,7 +239,6 @@
             </div>
         }
 
-
         <div class="b-example-divider d-none">dark mode switch panel section</div>
         <span class="nav-item py-2 py-lg-1 col-12 col-lg-auto dark-mode-switch-panel-section">
             <div class="vr d-none d-lg-flex h-100 mx-lg-2 "></div>
@@ -256,7 +254,6 @@
                 </label>
             </div>
         </div>
-
 
     </div>
 </div>

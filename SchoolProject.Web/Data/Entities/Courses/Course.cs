@@ -2,20 +2,22 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
-using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
 
+/// <summary>
+///
+/// </summary>
 public class Course : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///     The code of the course.
+    ///
     /// </summary>
     [DisplayName("Code")]
     [MaxLength(7,
@@ -23,34 +25,129 @@ public class Course : IEntity, INotifyPropertyChanged
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Code { get; init; }
 
+
     /// <summary>
-    ///     The name of the course.
+    ///
     /// </summary>
-    [Required]
+    [DisplayName("Discipline Acronym")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required string Acronym { get; set; }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Discipline Name")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Name { get; set; }
 
 
     /// <summary>
-    ///     The description of the course.
+    ///
     /// </summary>
-    public string? Description { get; set; }
+    [DisplayName("QNQ Level")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required byte QnqLevel { get; init; }
 
 
     /// <summary>
-    ///     The number of hours of the course.
+    ///
+    /// </summary>
+    [DisplayName("EQF Level")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public required byte EqfLevel { get; init; }
+
+    // old version
+    // [Required]
+    // [DisplayName("Start Date")]
+    // [DataType(DataType.Date)]
+    // public DateOnly StartDate { get; set; }
+
+    // [Required]
+    // [DataType(DataType.Date)]
+    // [DisplayName("End Date")]
+    // public DateOnly EndDate { get; set; }
+
+
+    // [Required]
+    // [DisplayName("Start Hour")]
+    // [DataType(DataType.Time)]
+    // public TimeOnly StartHour { get; set; }
+
+    // [Required]
+    // [DataType(DataType.Time)]
+    // [DisplayName("End Hour")]
+    // public TimeOnly EndHour { get; set; }
+
+    // new version
+    /// <summary>
+    ///
     /// </summary>
     [Required]
-    public required int Hours { get; set; }
+    [DisplayName("Start Date")]
+    [DataType(DataType.Date)]
+    public required DateTime StartDate { get; set; }
 
 
     /// <summary>
-    ///     The number of credit points of the course.
-    ///     The number of ECTS of the course.
-    ///     The number of ECTS credits of the course.
-    ///     European Credit Transfer and Accumulation System (ECTS).
+    ///
     /// </summary>
     [Required]
-    public required double CreditPoints { get; set; }
+    [DisplayName("End Date")]
+    [DataType(DataType.Date)]
+    public required DateTime EndDate { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    [DisplayName("Start Hour")]
+    [DataType(DataType.Time)]
+    public required TimeSpan StartHour { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    [DisplayName("End Hour")]
+    [DataType(DataType.Time)]
+    public required TimeSpan EndHour { get; set; }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    public string? Location { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public string? Type { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public string? Area { get; set; }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    [Precision(10, 2)]
+    [DataType(DataType.Currency)]
+    [DisplayName("Price for Employed")]
+    public required decimal PriceForEmployed { get; set; } = 200;
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    [Precision(10, 2)]
+    [DataType(DataType.Currency)]
+    [DisplayName("Price for Unemployed")]
+    public required decimal PriceForUnemployed { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -76,181 +173,205 @@ public class Course : IEntity, INotifyPropertyChanged
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        // : StorageHelper.GcpStoragePublicUrl + "courses/" + ProfilePhotoId;
-        : StorageHelper.AzureStoragePublicUrl + "courses/" + ProfilePhotoId;
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+        // : StorageHelper.GcpStoragePublicUrl + "school-classes/" + ProfilePhotoId;
+        : StorageHelper.AzureStoragePublicUrl + "course/" +
+          ProfilePhotoId;
 
 
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
     // ---------------------------------------------------------------------- //
 
-    // ---------------------------------------------------------------------- //
-    // SchoolClassCourse relationship
-    // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///     Navigation property for the many-to-many relationship between SchoolClass and Course
+    ///     Navigation property for the many-to-many relationship between Discipline and Discipline
     /// </summary>
-    public virtual ICollection<SchoolClassCourse> SchoolClassCourses
-    {
-        get;
-        set;
-    } =
-        new List<SchoolClassCourse>();
+    public virtual HashSet<CourseDisciplines>? CourseDisciplines { get; set; }
 
-    /// <summary>
-    ///     Returns the number of the course for this school classes
-    /// </summary>
-    public int SchoolClassCoursesCount => SchoolClassCourses.Count;
+
+    ///// <summary>
+    /////
+    ///// </summary>
+    //[DisplayName("Disciplines Count")]
+    //public int? CoursesCount => CourseDisciplines?.Count ?? 0;
+
+
+    ///// <summary>
+    /////
+    ///// </summary>
+    //[DisplayName("Discipline CreditPoints")]
+    //public double? CourseCredits =>
+    //    CourseDisciplines?.Sum(c => c.Discipline.CreditPoints) ?? 0;
+
+
+    ///// <summary>
+    /////
+    ///// </summary>
+    //[DisplayName("Work Hour Load")]
+    //public int? WorkHourLoad =>
+    //    CourseDisciplines?.Sum(c => c.Discipline.Hours) ?? 0;
+
+
+    //// ---------------------------------------------------------------------- //
+    //// Navigation property for the many-to-many relationship
+    //// ---------------------------------------------------------------------- //
+
+    ///// <summary>
+    /////     Navigation property for the many-to-many relationship between Discipline and Student
+    ///// </summary>
+    public virtual HashSet<CourseStudents>? CourseStudents { get; set; }
+
+
+    ///// <summary>
+    /////
+    ///// </summary>
+    //[DisplayName("Students Count")]
+    //public int? ScsStudentsCount => Students?.Count ?? 0;
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
 
 
     // ---------------------------------------------------------------------- //
-    // Teacher Courses relationship
+    // Navigation property for the one-to-many relationship
     // ---------------------------------------------------------------------- //
 
-    /// <summary>
-    ///     Navigation property for the many-to-many relationship between Teacher and Course
-    /// </summary>
-    public virtual ICollection<TeacherCourse> TeacherCourses { get; set; } =
-        new List<TeacherCourse>();
 
     /// <summary>
-    ///     Returns the number of the course for this teachers
+    ///  List of Disciplines for this Discipline
     /// </summary>
-    public int TeacherCoursesCount => TeacherCourses.Count;
+    public virtual HashSet<Discipline>? Disciplines { get; set; }
 
-    public int TeachersCount => TeacherCourses
-        .Select(tc => tc.Teacher).Distinct().Count();
-
-
-    // ---------------------------------------------------------------------- //
-    // Student Courses relationship
-    // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///     Navigation property for the many-to-many relationship between Courses and Students
+    ///  List of Students for this Discipline
     /// </summary>
-    public virtual ICollection<StudentCourse> StudentCourses { get; set; } =
-        new List<StudentCourse>();
+    public virtual HashSet<Student>? Students { get; set; }
 
-    public int StudentCoursesCount => StudentCourses.Count;
 
-    public int StudentCount => StudentCourses
-        .Select(sc => sc.Student).Distinct().Count();
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Students Count")]
+    public int? StudentsCount => Students?.Count() ?? 0;
 
 
     // ---------------------------------------------------------------------- //
-    // Enrollments relationship
+    // Navigation property for the many-to-many relationship
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///     Navigation property for the one-to-many relationship between Course and Enrollment
+    ///
     /// </summary>
-    public virtual ICollection<Enrollment>? Enrollments { get; set; }
+    [DisplayName("Enrollment")]
+    public virtual HashSet<Enrollment>? Enrollment { get; set; }
 
 
     /// <summary>
-    ///     Returns the number of students enrolled in the course
+    ///
     /// </summary>
-    [DisplayName("Enrolled Students")]
-    public int? StudentsCount =>
-        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
+    [DisplayName("Class Average")]
+    // [Column(TypeName = "decimal(18,2)")]
+    [Precision(18, 2)]
+    public decimal? ClassAverage =>
+        Enrollment?.Where(e => e.Grade.HasValue)
+            .Average(e => e.Grade);
 
 
     /// <summary>
-    ///     Returns the highest grade of the course
+    ///
     /// </summary>
     [DisplayName("Highest Grade")]
-    public decimal? HighestGrade => Enrollments?
-        .Where(e => e.CourseId == Id)
-        .Max(e => e.Grade) ?? null;
+    // [Column(TypeName = "decimal(18,2)")]
+    [Precision(18, 2)]
+    public decimal? HighestGrade =>
+        Enrollment?.Max(e => e.Grade);
 
 
     /// <summary>
-    ///     Returns the average grade of the course
-    /// </summary>
-    [DisplayName("Average Grade")]
-    public decimal? AveregaGrade => Enrollments?
-        .Where(e => e.CourseId == Id)
-        .Average(e => e.Grade) ?? null;
-
-
-    /// <summary>
-    ///     Returns the lowest grade of the course
+    ///
     /// </summary>
     [DisplayName("Lowest Grade")]
-    public decimal? LowestGrade => Enrollments?
-        .Where(e => e.CourseId == Id)
-        .Min(e => e.Grade) ?? null;
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // [Column(TypeName = "decimal(18,2)")]
+    [Precision(18, 2)]
+    public decimal? LowestGrade =>
+        Enrollment?.Min(e => e.Grade);
 
 
     /// <summary>
-    ///     ID of the course.
+    ///
     /// </summary>
+    [DisplayName("Disciplines Count")]
+    public int ECoursesCount =>
+        Enrollment?.Select(e => e.Discipline).Distinct().Count() ?? 0;
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Work Hour Load")]
+    public int EWorkHourLoad =>
+        Enrollment?.Sum(e => e.Discipline.Hours) ?? 0;
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Students Count")]
+    public int EStudentsCount =>
+        Enrollment?.Select(e => e.Student).Distinct().Count() ?? 0;
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+    /// <inheritdoc />
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
-    /// <summary>
-    ///     Guid value of the ID of the course.
-    /// </summary>
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
-    /// <summary>
-    ///     Was Deleted?
-    ///     Determines whether the course was deleted or not.
-    /// </summary>
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
-    /// <summary>
-    ///     Date and time of the creation of the course.
-    /// </summary>
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    /// <summary>
-    ///     The user who created the course.
-    /// </summary>
+    /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
+    /// <inheritdoc />
     // [Required]
-    /// <summary>
-    ///     Date and time of the update of the course.
-    /// </summary>
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    /// <summary>
-    ///     The user who updated the course.
-    /// </summary>
+
+    /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual User? UpdatedBy { get; set; }
 
 
-    // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
@@ -277,7 +398,8 @@ public class Course : IEntity, INotifyPropertyChanged
     protected bool SetField<T>(ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
         field = value;
         OnPropertyChanged(propertyName);
         return true;

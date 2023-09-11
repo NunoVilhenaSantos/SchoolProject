@@ -16,13 +16,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class GendersController : Controller
 {
-    internal const string SessionVarName = "AllGendersList";
-    private const string BucketName = "genders";
-    private const string SortProperty = "Name";
-
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Gender);
     private const string CurrentAction = nameof(Index);
+
+    internal string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = "Name";
+
 
     // Obtém o controlador atual
     private string CurrentController

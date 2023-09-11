@@ -190,7 +190,7 @@ CREATE TABLE [Nationalities] (
 );
 GO
 
-CREATE TABLE [Courses] (
+CREATE TABLE [Disciplines] (
     [Id] int NOT NULL IDENTITY,
     [Code] nvarchar(7) NOT NULL,
     [Name] nvarchar(max) NOT NULL,
@@ -205,10 +205,10 @@ CREATE TABLE [Courses] (
     [UpdatedAt] datetime2 NULL,
     [UpdatedById] nvarchar(450) NULL,
     [SchoolClassId] int NULL,
-    CONSTRAINT [PK_Courses] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_Courses_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
-    CONSTRAINT [FK_Courses_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
-    CONSTRAINT [FK_Courses_SchoolClasses_SchoolClassId] FOREIGN KEY ([SchoolClassId]) REFERENCES [SchoolClasses] ([Id]) ON DELETE NO ACTION
+    CONSTRAINT [PK_Disciplines] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Disciplines_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Disciplines_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Disciplines_SchoolClasses_SchoolClassId] FOREIGN KEY ([SchoolClassId]) REFERENCES [SchoolClasses] ([Id]) ON DELETE NO ACTION
 );
 GO
 
@@ -297,17 +297,17 @@ GO
 CREATE TABLE [SchoolClassCourses] (
     [SchoolClassId] int NOT NULL,
     [CourseId] int NOT NULL,
-    [CreatedById] nvarchar(450) NOT NULL,
-    [UpdatedById] nvarchar(450) NULL,
     [Id] int NOT NULL,
     [IdGuid] uniqueidentifier NOT NULL DEFAULT ((NEWSEQUENTIALID())),
     [WasDeleted] bit NOT NULL,
     [CreatedAt] datetime2 NOT NULL,
+    [CreatedById] nvarchar(450) NOT NULL,
     [UpdatedAt] datetime2 NULL,
+    [UpdatedById] nvarchar(450) NULL,
     CONSTRAINT [PK_SchoolClassCourses] PRIMARY KEY ([SchoolClassId], [CourseId]),
     CONSTRAINT [FK_SchoolClassCourses_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_SchoolClassCourses_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
-    CONSTRAINT [FK_SchoolClassCourses_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_SchoolClassCourses_Disciplines_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Disciplines] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_SchoolClassCourses_SchoolClasses_SchoolClassId] FOREIGN KEY ([SchoolClassId]) REFERENCES [SchoolClasses] ([Id]) ON DELETE NO ACTION
 );
 GO
@@ -316,18 +316,19 @@ CREATE TABLE [Enrollments] (
     [StudentId] int NOT NULL,
     [CourseId] int NOT NULL,
     [Grade] decimal(18,2) NULL,
-    [CreatedById] nvarchar(450) NOT NULL,
-    [UpdatedById] nvarchar(450) NULL,
+    [Absences] int NOT NULL,
     [Id] int NOT NULL,
     [IdGuid] uniqueidentifier NOT NULL DEFAULT ((NEWSEQUENTIALID())),
     [WasDeleted] bit NOT NULL,
     [CreatedAt] datetime2 NOT NULL,
+    [CreatedById] nvarchar(450) NOT NULL,
     [UpdatedAt] datetime2 NULL,
+    [UpdatedById] nvarchar(450) NULL,
     [SchoolClassId] int NULL,
     CONSTRAINT [PK_Enrollments] PRIMARY KEY ([StudentId], [CourseId]),
     CONSTRAINT [FK_Enrollments_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_Enrollments_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
-    CONSTRAINT [FK_Enrollments_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Enrollments_Disciplines_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Disciplines] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_Enrollments_SchoolClasses_SchoolClassId] FOREIGN KEY ([SchoolClassId]) REFERENCES [SchoolClasses] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_Enrollments_Students_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [Students] ([Id]) ON DELETE NO ACTION
 );
@@ -364,7 +365,7 @@ CREATE TABLE [StudentCourses] (
     CONSTRAINT [PK_StudentCourses] PRIMARY KEY ([StudentId], [CourseId]),
     CONSTRAINT [FK_StudentCourses_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_StudentCourses_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
-    CONSTRAINT [FK_StudentCourses_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_StudentCourses_Disciplines_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Disciplines] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_StudentCourses_Students_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [Students] ([Id]) ON DELETE NO ACTION
 );
 GO
@@ -382,7 +383,7 @@ CREATE TABLE [TeacherCourses] (
     CONSTRAINT [PK_TeacherCourses] PRIMARY KEY ([TeacherId], [CourseId]),
     CONSTRAINT [FK_TeacherCourses_AspNetUsers_CreatedById] FOREIGN KEY ([CreatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_TeacherCourses_AspNetUsers_UpdatedById] FOREIGN KEY ([UpdatedById]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION,
-    CONSTRAINT [FK_TeacherCourses_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_TeacherCourses_Disciplines_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Disciplines] ([Id]) ON DELETE NO ACTION,
     CONSTRAINT [FK_TeacherCourses_Teachers_TeacherId] FOREIGN KEY ([TeacherId]) REFERENCES [Teachers] ([Id]) ON DELETE NO ACTION
 );
 GO
@@ -423,13 +424,13 @@ GO
 CREATE INDEX [IX_Countries_UpdatedById] ON [Countries] ([UpdatedById]);
 GO
 
-CREATE INDEX [IX_Courses_CreatedById] ON [Courses] ([CreatedById]);
+CREATE INDEX [IX_Disciplines_CreatedById] ON [Disciplines] ([CreatedById]);
 GO
 
-CREATE INDEX [IX_Courses_SchoolClassId] ON [Courses] ([SchoolClassId]);
+CREATE INDEX [IX_Disciplines_SchoolClassId] ON [Disciplines] ([SchoolClassId]);
 GO
 
-CREATE INDEX [IX_Courses_UpdatedById] ON [Courses] ([UpdatedById]);
+CREATE INDEX [IX_Disciplines_UpdatedById] ON [Disciplines] ([UpdatedById]);
 GO
 
 CREATE INDEX [IX_Enrollments_CourseId] ON [Enrollments] ([CourseId]);
@@ -556,7 +557,7 @@ CREATE INDEX [IX_Teachers_UserId] ON [Teachers] ([UserId]);
 GO
 
 INSERT INTO [_MyMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20230909155649_InitDB', N'7.0.10');
+VALUES (N'20230911171949_InitDB', N'7.0.10');
 GO
 
 COMMIT;

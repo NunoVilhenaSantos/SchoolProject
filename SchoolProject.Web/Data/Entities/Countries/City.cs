@@ -69,54 +69,62 @@ public class City : IEntity, INotifyPropertyChanged
     public virtual required Country Country { get; set; }
 
 
-    /// <summary>
-    ///     country GuidId
-    /// </summary>
-    [DisplayName("Country Guid")]
-    public Guid CountryGuidId => Country.IdGuid;
+    // /// <summary>
+    // ///     country GuidId
+    // /// </summary>
+    // [DisplayName("Country Guid")]
+    // public Guid CountryGuidId => Country.IdGuid;
 
 
     /// <summary>
     ///     Count of cities belonging to the country
     /// </summary>
     [DisplayName("Number of Cities")]
-    public int NumberOfCitiesInCountry => Country?.Cities?.Count ?? 0;
+    public int NumberOfCitiesInCountry => Country.Cities?.Count ?? 0;
 
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
+
+    /// <inheritdoc />
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
+    /// <inheritdoc />
     // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
+    /// <inheritdoc />
     [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
 
 

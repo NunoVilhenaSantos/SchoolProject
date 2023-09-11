@@ -1,10 +1,10 @@
-﻿using SchoolProject.Web.Data.Entities.SchoolClasses;
+﻿using SchoolProject.Web.Data.Entities.Courses;
 
 namespace SchoolProject.Web.Models.SchoolClasses;
 
 public class SchoolClassCoursesPagesViewModel
 {
-    public required IQueryable<SchoolClassCourse> Records { get; set; }
+    public required IQueryable<CourseDisciplines> Records { get; set; }
 
 
     public required int PageNumber { get; set; }

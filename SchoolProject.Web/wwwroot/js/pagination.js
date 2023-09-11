@@ -11,9 +11,7 @@ $(document).ready(() => {
 
         // Redirect to the first page with the selected parameters
         // Construct the URL
-        const url = `/${controllerName}/IndexCards1?pageNumber=1&pageSize=${selectedPageSize}&sortOrder=${selectedSortOrder}&sortProperty=${selectedSortProperty}`;
-
-        window.location.href = url;
+        window.location.href = `/${controllerName}/IndexCards1?pageNumber=1&pageSize=${selectedPageSize}&sortOrder=${selectedSortOrder}&sortProperty=${selectedSortProperty}`;
 
     });
 

@@ -2,31 +2,52 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.Teachers;
 
+/// <summary>
+///
+/// </summary>
 public class TeacherCourse : IEntity, INotifyPropertyChanged
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Required] public required int TeacherId { get; set; }
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [ForeignKey(nameof(TeacherId))]
     public virtual required Teacher Teacher { get; set; }
 
-    public Guid TeacherGuidId => Teacher.IdGuid;
+    // public Guid TeacherGuidId => Teacher.IdGuid;
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required] public required int CourseId { get; set; }
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [ForeignKey(nameof(CourseId))]
-    public virtual required Course Course { get; set; }
+    public virtual required Discipline Course { get; set; }
 
 
-    public Guid CourseGuidId => Course.IdGuid;
+    // public Guid CourseGuidId => Discipline.IdGuid;
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
 
 
     // Deve ser do mesmo tipo da propriedade Id de User
@@ -36,20 +57,30 @@ public class TeacherCourse : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
 
 
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+
+
+    /// <inheritdoc />
     // [Key]
     // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
@@ -57,6 +88,7 @@ public class TeacherCourse : IEntity, INotifyPropertyChanged
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
+    /// <inheritdoc />
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
@@ -64,6 +96,7 @@ public class TeacherCourse : IEntity, INotifyPropertyChanged
     public virtual required User CreatedBy { get; set; }
 
 
+    /// <inheritdoc />
     // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
@@ -71,6 +104,7 @@ public class TeacherCourse : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
 
+    /// <inheritdoc />
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By")]

@@ -17,16 +17,15 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class EnrollmentsController : Controller
 {
-    internal const string SessionVarName =
-        "AllEnrollmentsWithCoursesAndStudents";
-
-    private const string BucketName = "enrollments";
-    private const string SortProperty = "Name";
-
 
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Enrollment);
     private const string CurrentAction = nameof(Index);
+
+    internal string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = "Name";
+
     // Obtém o controlador atual
     private string CurrentController
     {
@@ -71,7 +70,7 @@ public class EnrollmentsController : Controller
 
         var enrollmentsWithStudent =
             _context.Enrollments
-                .Include(e => e.Course)
+                .Include(e => e.Discipline)
                 .Include(e => e.Student)
                 .Include(e => e.CreatedBy)
                 .Include(e => e.UpdatedBy).ToList();
@@ -201,7 +200,7 @@ public class EnrollmentsController : Controller
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var enrollment = await _context.Enrollments
-            .Include(e => e.Course)
+            .Include(e => e.Discipline)
             .Include(e => e.Student)
             .Include(e => e.CreatedBy)
             .Include(e => e.UpdatedBy)
@@ -221,8 +220,8 @@ public class EnrollmentsController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code");
 
         ViewData["CreatedById"] =
@@ -263,10 +262,10 @@ public class EnrollmentsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
-                enrollment.CourseId);
+                enrollment.DisciplineId);
 
         ViewData["CreatedById"] =
             new SelectList(_context.Users,
@@ -305,10 +304,10 @@ public class EnrollmentsController : Controller
             return new NotFoundViewResult(nameof(EnrollmentNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
-                enrollment.CourseId);
+                enrollment.DisciplineId);
 
         ViewData["CreatedById"] =
             new SelectList(_context.Users,
@@ -368,10 +367,10 @@ public class EnrollmentsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
-                enrollment.CourseId);
+                enrollment.DisciplineId);
 
         ViewData["CreatedById"] =
             new SelectList(_context.Users,
@@ -404,7 +403,7 @@ public class EnrollmentsController : Controller
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var enrollment = await _context.Enrollments
-            .Include(e => e.Course)
+            .Include(e => e.Discipline)
             .Include(e => e.Student)
             .Include(e => e.CreatedBy)
             .Include(e => e.UpdatedBy)

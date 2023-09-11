@@ -2,6 +2,9 @@
 
 namespace SchoolProject.Web.Models.Teachers;
 
+/// <summary>
+///
+/// </summary>
 public class TeachersPagesViewModel
 {
     public required IQueryable<Teacher> Records { get; set; }

@@ -1,11 +1,11 @@
-﻿using SchoolProject.Web.Data.Entities.SchoolClasses;
+﻿using SchoolProject.Web.Data.Entities.Courses;
 
 namespace SchoolProject.Web.Data.Repositories.Mock;
 
 /// <inheritdoc />
-public class SchoolClassMockRepository : IGenericRepository<SchoolClass>
+public class SchoolClassMockRepository : IGenericRepository<Course>
 {
-    public IQueryable<SchoolClass> GetAll()
+    public IQueryable<Course> GetAll()
     {
         throw new NotImplementedException();
     }
@@ -15,27 +15,27 @@ public class SchoolClassMockRepository : IGenericRepository<SchoolClass>
         throw new NotImplementedException();
     }
 
-    public async Task<SchoolClass?> GetByIdAsync(int id)
+    public async Task<Course?> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<SchoolClass?> GetByIdGuidAsync(Guid idGuid)
+    public async Task<Course?> GetByIdGuidAsync(Guid idGuid)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> CreateAsync(SchoolClass entity)
+    public async Task<bool> CreateAsync(Course entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> UpdateAsync(SchoolClass entity)
+    public async Task<bool> UpdateAsync(Course entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteAsync(SchoolClass entity)
+    public async Task<bool> DeleteAsync(Course entity)
     {
         throw new NotImplementedException();
     }

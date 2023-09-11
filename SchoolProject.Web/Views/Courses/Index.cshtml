@@ -1,5 +1,6 @@
 @using System.Reflection
 @model IEnumerable<SchoolProject.Web.Data.Entities.Courses.Course>
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Courses.Course> *@
 
 @{
     // ViewData["Title"] = "Index";
@@ -12,33 +13,52 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
     // Isso obtém o nome da classe do modelo atual
-    // var modelName = Model.GetModelName(m => m);
     var deleteClassName = ViewData["CurrentClass"]?.ToString();
-
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
-<h1>@ViewData["Title"]</h1>
+@* <h2>@pageTitle</h2> *@
+<h2>@ViewData["Title"]</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
-    @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a> *@
-</p>
-
+<div class="container-fluid py-3">
+    <div class="row">
+        @* <div class="col-md-4"> *@
+        <div class="col">
+            @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
+            <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
+        </div>
+        @if (string.Equals(actionName, "IndexCards1"))
+        {
+            @* <div class="col-md-8 justify-content-end"> *@
+            <div class="col justify-content-end">
+                <partial model="Model" name="Pagination/_PageNavigationTop"/>
+            </div>
+        }
+    </div>
+</div>
 
 <table class="table table-hover" sortable="True" id="sortableTable">
     <thead>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Code)</th>
+        <th>@Html.DisplayNameFor(model => model.Code) </th>
+        <th>@Html.DisplayNameFor(model => model.Acronym)</th>
         <th>@Html.DisplayNameFor(model => model.Name)</th>
-        <th>@Html.DisplayNameFor(model => model.Description)</th>
-        <th>@Html.DisplayNameFor(model => model.Hours)</th>
-        <th>@Html.DisplayNameFor(model => model.CreditPoints)</th>
+        <th>@Html.DisplayNameFor(model => model.QnqLevel)</th>
+        <th>@Html.DisplayNameFor(model => model.EqfLevel)</th>
+        <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+        <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+        <th>@Html.DisplayNameFor(model => model.StartHour)</th>
+        <th>@Html.DisplayNameFor(model => model.EndHour)</th>
+        <th>@Html.DisplayNameFor(model => model.Location)</th>
+        <th>@Html.DisplayNameFor(model => model.Type) </th>
+        <th>@Html.DisplayNameFor(model => model.Area) </th>
+        <th>@Html.DisplayNameFor(model => model.PriceForEmployed)</th>
+        <th>@Html.DisplayNameFor(model => model.PriceForUnemployed) </th>
         <th>@Html.DisplayNameFor(model => model.ProfilePhotoId)</th>
         <th>@Html.DisplayNameFor(model => model.IdGuid)</th>
         <th>@Html.DisplayNameFor(model => model.WasDeleted)</th>
         <th>@Html.DisplayNameFor(model => model.CreatedAt) </th>
-        <th>@Html.DisplayNameFor(model => model.UpdatedAt)</th>
+        <th>@Html.DisplayNameFor(model => model.UpdatedAt) </th>
         <th></th>
     </tr>
     </thead>
@@ -48,10 +68,19 @@
     {
         <tr>
             <td>@Html.DisplayFor(modelItem => item.Code)</td>
+            <td>@Html.DisplayFor(modelItem => item.Acronym)</td>
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
-            <td>@Html.DisplayFor(modelItem => item.Description)</td>
-            <td>@Html.DisplayFor(modelItem => item.Hours)</td>
-            <td>@Html.DisplayFor(modelItem => item.CreditPoints)</td>
+            <td>@Html.DisplayFor(modelItem => item.QnqLevel)</td>
+            <td>@Html.DisplayFor(modelItem => item.EqfLevel)</td>
+            <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.StartHour) </td>
+            <td>@Html.DisplayFor(modelItem => item.EndHour)</td>
+            <td>@Html.DisplayFor(modelItem => item.Location)</td>
+            <td>@Html.DisplayFor(modelItem => item.Type)</td>
+            <td>@Html.DisplayFor(modelItem => item.Area)</td>
+            <td>@Html.DisplayFor(modelItem => item.PriceForEmployed)</td>
+            <td>@Html.DisplayFor(modelItem => item.PriceForUnemployed) </td>
             <td>@Html.DisplayFor(modelItem => item.ProfilePhotoId)</td>
             <td>@Html.DisplayFor(modelItem => item.IdGuid)</td>
             <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
@@ -61,7 +90,7 @@
                 <div class="btn-group">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Code+@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
                 </div>
             </td>
         </tr>

@@ -54,9 +54,15 @@ public class Country : IEntity, INotifyPropertyChanged
 
 
     // Navigation property with lazy-loading enabled
-    public virtual ICollection<City>? Cities { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    public virtual HashSet<City>? Cities { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Number of Cities")]
     public int NumberCities => Cities?.Count ?? 0;
 
@@ -78,48 +84,58 @@ public class Country : IEntity, INotifyPropertyChanged
     public virtual required Nationality Nationality { get; set; }
 
 
-    /// <summary>
-    ///     
-    /// </summary>
-    public Guid NationalityGuidId => Nationality.IdGuid;
+    // /// <summary>
+    // ///
+    // /// </summary>
+    // public Guid NationalityGuidId => Nationality.IdGuid;
 
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+
+    /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
+    /// <inheritdoc />
     // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+
+    /// <inheritdoc />
+    [DisplayName("Updated By")]
+    public virtual User? UpdatedBy { get; set; }
 
 
     // --------------------------------------------------------------------- //

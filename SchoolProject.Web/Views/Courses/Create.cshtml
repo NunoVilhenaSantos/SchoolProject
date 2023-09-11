@@ -1,4 +1,4 @@
-@model SchoolProject.Web.Data.Entities.Courses.Course
+@model             SchoolProject.Web.Data.Entities.Courses.Course
 
 @{
     ViewData["Title"] = "Create";
@@ -6,7 +6,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>Course</h4>
+<h4>SchoolClass</h4>
 <hr/>
 <div class="row">
     <div class="col-md-4">
@@ -18,24 +18,69 @@
                 <span asp-validation-for="Code" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Acronym" class="control-label"></label>
+                <input asp-for="Acronym" class="form-control"/>
+                <span asp-validation-for="Acronym" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control"/>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="QnqLevel" class="control-label"></label>
+                <input asp-for="QnqLevel" class="form-control"/>
+                <span asp-validation-for="QnqLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Hours" class="control-label"></label>
-                <input asp-for="Hours" class="form-control"/>
-                <span asp-validation-for="Hours" class="text-danger"></span>
+                <label asp-for="EqfLevel" class="control-label"></label>
+                <input asp-for="EqfLevel" class="form-control"/>
+                <span asp-validation-for="EqfLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreditPoints" class="control-label"></label>
-                <input asp-for="CreditPoints" class="form-control"/>
-                <span asp-validation-for="CreditPoints" class="text-danger"></span>
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control"/>
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control"/>
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartHour" class="control-label"></label>
+                <input asp-for="StartHour" class="form-control"/>
+                <span asp-validation-for="StartHour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndHour" class="control-label"></label>
+                <input asp-for="EndHour" class="form-control"/>
+                <span asp-validation-for="EndHour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control"/>
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control"/>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Area" class="control-label"></label>
+                <input asp-for="Area" class="form-control"/>
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceForEmployed" class="control-label"></label>
+                <input asp-for="PriceForEmployed" class="form-control"/>
+                <span asp-validation-for="PriceForEmployed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceForUnemployed" class="control-label"></label>
+                <input asp-for="PriceForUnemployed" class="form-control"/>
+                <span asp-validation-for="PriceForUnemployed" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ProfilePhotoId" class="control-label"></label>
@@ -55,10 +100,9 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-outline-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
             </div>
+            <div>
+                <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+            </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
 </div>

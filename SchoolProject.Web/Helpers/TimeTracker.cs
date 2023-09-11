@@ -7,8 +7,8 @@ public static class TimeTracker
     internal const string SeederTimerName = "SeederTimer";
     internal const string AppBuilderTimerName = "AppBuilderTimer";
 
-    internal const string SeedDbCoursesName = "SeedDbCoursesTimer";
-    internal const string SeedDbCoursesMPInfoName = "SCMPInfoTimer";
+    internal const string SeedDbDisciplinesName = "SeedDbCoursesTimer";
+    internal const string SeedDbDisciplinesMPInfoName = "SCMPInfoTimer";
 
     private static readonly Dictionary<string, Stopwatch> Timers = new();
 

@@ -3,84 +3,141 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Students;
 
+/// <summary>
+///
+/// </summary>
 public class Student : IEntity, INotifyPropertyChanged
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("First Name")]
     public required string FirstName { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Last Name")]
     public required string LastName { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
 
-    [Required] public required string Address { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public required string Address { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Postal Code")]
     public required string PostalCode { get; set; }
 
 
-    [Required] public virtual required City City { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public virtual required City City { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     // [ForeignKey("CountryId")]
     public virtual required Country Country { get; set; }
 
+
     // public  int CountryId => Country.Id;
-    public Guid CountryGuidId => Country.IdGuid;
+    // public Guid CountryGuidId => Country.IdGuid;
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Mobile Phone")]
     public required string MobilePhone { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DataType(DataType.EmailAddress)]
     public required string Email { get; set; }
 
 
-    [Required] public required bool Active { get; set; } = true;
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public required bool Active { get; set; } = true;
 
-    [Required] public virtual required Gender Gender { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public virtual required Gender Gender { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Date Of Birth")]
     [DataType(DataType.Date)]
     public required DateTime DateOfBirth { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Identification Number")]
     public required string IdentificationNumber { get; set; }
 
+    /// <summary>
+    ///
+    /// </summary>
     public required string IdentificationType { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Expiration Date Identification Number")]
     [DataType(DataType.Date)]
     public required DateTime ExpirationDateIdentificationNumber { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Tax Identification Number")]
     public required string TaxIdentificationNumber { get; set; }
@@ -90,26 +147,40 @@ public class Student : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Country Of Nationality")]
     public virtual required Country CountryOfNationality { get; set; }
 
 
-    public virtual Nationality Nationality => CountryOfNationality?.Nationality;
+    // public virtual Nationality Nationality => CountryOfNationality?.Nationality;
 
     // [Required] public required Nationality Nationality { get; set; }
 
 
-    [Required] public virtual required Country Birthplace { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public virtual required Country Birthplace { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [DisplayName("Enroll Date")]
     [DataType(DataType.Date)]
     public required DateTime EnrollDate { get; set; }
 
 
-    [Required] public virtual required User User { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public virtual required User User { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -146,152 +217,148 @@ public class Student : IEntity, INotifyPropertyChanged
 
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
-    // between Student and Courses
+    // between Student and Disciplines
     // ---------------------------------------------------------------------- //
 
 
-    // [DisplayName("Courses")]
-    // public ICollection<SchoolClass>? SchoolClasses { get; set; }
+    // [DisplayName("Disciplines")]
+    // public virtual HashSet<Discipline>? Courses { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Courses")]
-    public virtual ICollection<StudentCourse>? StudentCourses { get; set; }
+    public virtual HashSet<StudentCourse>? StudentCourses { get; set; }
 
 
-    // [DisplayName("Courses Count")]
+    // [DisplayName("Disciplines Count")]
     // public int CoursesCount =>
-    //     SchoolClasses?.Where(s => s.CoursesCount > 0).Count() ?? 0;
+    //     Courses?.Where(s => s.CoursesCount > 0).Count() ?? 0;
     //
     //
     // [DisplayName("Total Work Hours")]
     // public int TotalWorkHours =>
-    //     SchoolClasses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
-
-    // ---------------------------------------------------------------------- //
-    // Navigation property for the many-to-many relationship
-    // between Student and SchoolClass
-    // ---------------------------------------------------------------------- //
-
-    [DisplayName("SchoolClass")]
-    public virtual ICollection<SchoolClassStudent>?
-        SchoolClassStudents { get; set; }
-
-    [DisplayName("School Classes Count")]
-    public int SchoolClassesCount =>
-        SchoolClassStudents?.Count ?? 0;
-
-    [DisplayName("SchoolClass With Courses Count")]
-    //public int SCSCoursesCount => SchoolClassStudents?
-    //    .Where(scs => scs.StudentId == Id)
-    //    // SchoolClass navigation property in SchoolClassStudent
-    //    .Select(scs => scs.SchoolClass)
-    //    .Where(sc => sc != null)
-    //    // Courses navigation property in SchoolClass
-    //    .SelectMany(sc => sc.Courses)
-    //    .Where(c => c != null)
-    //    .Count() ?? 0;
-
-    //public int SCSCoursesCount
-    //{
-    //    get
-    //    {
-    //        if (SchoolClassStudents == null)
-    //            return 0;
-
-    //        return SchoolClassStudents
-    //            .Where(scs => scs != null && scs.SchoolClass != null)
-    //            .Select(scs => scs.SchoolClass)
-    //            .SelectMany(sc => sc.Courses)
-    //            .Where(c => c != null)
-    //            .Count();
-    //    }
-    //}
-
-    public int SCSCoursesCount
-    {
-        get
-        {
-            if (SchoolClassStudents == null) return 0;
-
-            var count = 0;
-
-            foreach (var scs in SchoolClassStudents)
-                if (scs != null && scs.SchoolClass != null &&
-                    scs.SchoolClass.Courses != null)
-                    count += scs.SchoolClass.Courses.Count(c => c != null);
-
-            return count;
-        }
-    }
-
-
-    [DisplayName("Total Work Hours")]
-    //public int SCSTotalWorkHours => SchoolClassStudents?
-    //    .Where(scs => scs.StudentId == Id)
-    //    // Assuming SchoolClass navigation property in SchoolClassStudent
-    //    .Select(scs => scs.SchoolClass)
-    //    .Where(sc => sc != null)
-    //    // Assuming Courses navigation property in SchoolClass
-    //    .SelectMany(sc => sc.Courses)
-    //    .Where(c => c != null)
-    //    .Sum(c => c.Hours) ?? 0;
-
-    public int SCSTotalWorkHours
-    {
-        get
-        {
-            if (SchoolClassStudents == null)
-                return 0;
-
-            var totalWorkHours = 0;
-
-            foreach (var scs in SchoolClassStudents)
-                if (scs != null && scs.SchoolClass != null)
-                {
-                    var courses = scs.SchoolClass.Courses;
-
-                    if (courses != null)
-                        totalWorkHours += courses.Where(c => c != null)
-                            .Sum(c => c.Hours);
-                }
-
-            return totalWorkHours;
-        }
-    }
+    //     Courses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
 
 
     // ---------------------------------------------------------------------- //
     // Navigation property for the many-to-many relationship
-    // between Student and Courses
+    // between Student and Discipline
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Discipline")]
+    public virtual HashSet<CourseStudents>? CourseStudents { get; set; }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Course Count")]
+    public int CourseStudentsCount => CourseStudents?.Count ?? 0;
+
+
+    // /// <summary>
+    // ///
+    // /// </summary>
+    // [DisplayName("Discipline With Disciplines Count")]
+    // public int ScsCoursesCount
+    // {
+    //     get
+    //     {
+    //         if (CourseStudents == null) return 0;
+    //
+    //         var count = 0;
+    //
+    //         foreach (var scs in CourseStudents)
+    //             if (scs is {Course: not null})
+    //                 count += scs.Course(c => c != null);
+    //
+    //         return count;
+    //     }
+    // }
+
+
+    // /// <summary>
+    // ///
+    // /// </summary>
+    // [DisplayName("Total Work Hours")]
+    // public int ScsTotalWorkHours
+    // {
+    //     get
+    //     {
+    //         if (SchoolClassStudents == null) return 0;
+    //
+    //         var totalWorkHours = 0;
+    //
+    //         foreach (var scs in SchoolClassStudents)
+    //             if (scs is {SchoolClass: not null})
+    //             {
+    //                 var courses = scs.SchoolClass.Courses;
+    //
+    //                 if (courses != null)
+    //                     totalWorkHours += courses.Where(c => c != null)
+    //                         .Sum(c => c.Hours);
+    //             }
+    //
+    //         return totalWorkHours;
+    //     }
+    // }
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // between Student and Disciplines
     //
     // Using the Enrollment entity
     // ---------------------------------------------------------------------- //
 
-    public virtual ICollection<Enrollment>? Enrollments { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    public virtual HashSet<Enrollment>? Enrollments { get; set; }
 
 
-    [DisplayName("Courses Count")]
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Disciplines Count")]
     public int? CoursesCountEnrollments =>
-        Enrollments?.Where(e => e.Course.Id == Id).Count() ?? 0;
+        Enrollments?.Where(e => e.Discipline.Id == Id).Count() ?? 0;
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Total Work Hours")]
     public int? TotalWorkHoursEnrollments =>
-        Enrollments?.Sum(e => e.Course.Hours) ?? 0;
+        Enrollments?.Sum(e => e.Discipline.Hours) ?? 0;
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Highest Grade")]
     public decimal? HighestGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Max(e => e.Grade) ?? 0;
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Average Grade")]
     public decimal? AveregaGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Average(e => e.Grade) ?? 0;
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Lowest Grade")]
     public decimal? LowestGrade => Enrollments?
         .Where(e => e.StudentId == Id)
@@ -302,15 +369,18 @@ public class Student : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
@@ -319,12 +389,14 @@ public class Student : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
 
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
@@ -333,13 +405,16 @@ public class Student : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
 
+    /// <inheritdoc />
     // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+    /// <inheritdoc />
+    [DisplayName("Updated By")]
+    public virtual User? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //

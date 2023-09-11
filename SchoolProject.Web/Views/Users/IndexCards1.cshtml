@@ -1,6 +1,6 @@
 ﻿@using System.Reflection
+@* @model IEnumerable<SchoolProject.Web.Models.Users.UserWithRolesViewModel> *@
 @model PaginationViewModel<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
-
 
 @{
     // ViewData["Title"] = "Index";
@@ -13,9 +13,7 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
     // Isso obtém o nome da classe do modelo atual
-    // var modelName = Model.GetModelName(m => m);
     var deleteClassName = ViewData["CurrentClass"]?.ToString();
-
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
@@ -29,10 +27,13 @@
             @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
             <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
         </div>
-        @* <div class="col-md-8 justify-content-end"> *@
-        <div class="col justify-content-end">
-            <partial model="Model" name="Pagination/_PageNavigationTop"/>
-        </div>
+        @if (string.Equals(actionName, "IndexCards1"))
+        {
+            @* <div class="col-md-8 justify-content-end"> *@
+            <div class="col justify-content-end">
+                <partial model="Model" name="Pagination/_PageNavigationTop"/>
+            </div>
+        }
     </div>
 </div>
 
@@ -78,21 +79,17 @@
     </div>
 </div>
 
-
-<partial name="Pagination/_PageNavigationBottom" model="Model"/>
-
-
-@* <script> *@
-@*    $(document).ready(function () { *@
-@* *@
-@*        $('#pageSizeSelect').change(function () { *@
-@*            const selectedPageSize = $(this).val(); *@
-@*            const selectedSortProperty = $('#sortProperty').val(); *@
-@*            const selectedSortOrder = $('#sortOrder').val(); *@
-@* *@
-@*            // Redireciona para a primeira página com os parâmetros selecionados *@
-@*            window.location.href = '@Url.Action("IndexCards1", new {pageNumber = 1, pageSize = " + selectedPageSize + ", sortOrder = " + selectedSortOrder + ", sortProperty = " + selectedSortProperty + "})'; *@
-@*        }); *@
-@*    }); *@
-@* *@
-@* </script> *@
+@if (string.Equals(actionName, "IndexCards1"))
+{
+    <div class="container-fluid py-3">
+        <div class="row">
+            <div class="col" id="pagination-info">
+                @* <p> Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries </p> *@
+                Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries
+            </div>
+            <div class="col justify-content-end">
+                <partial model="Model" name="Pagination/_PageNavigationBottom"/>
+            </div>
+        </div>
+    </div>
+}

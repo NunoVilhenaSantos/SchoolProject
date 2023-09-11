@@ -1,13 +1,13 @@
 ﻿using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Courses;
 
 namespace SchoolProject.Web.Data.Repositories.SchoolClasses;
 
 /// <inheritdoc />
 public class SchoolClassCourseRepository
-    : GenericRepository<SchoolClassCourse>, ISchoolClassCourseRepository
+    : GenericRepository<CourseDisciplines>, ISchoolClassCourseRepository
 {
     private readonly DataContextMySql _dataContext;
     private readonly DataContextMsSql _dataContextMsSql;

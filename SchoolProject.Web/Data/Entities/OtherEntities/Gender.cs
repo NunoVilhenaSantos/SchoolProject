@@ -9,9 +9,13 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.OtherEntities;
 
 /// <summary>
+///
 /// </summary>
 public class Gender : IEntity, INotifyPropertyChanged
 {
+    /// <summary>
+    ///
+    /// </summary>
     [MaxLength(20,
         ErrorMessage =
             "The {0} field can not have more than {1} characters.")]
@@ -37,6 +41,7 @@ public class Gender : IEntity, INotifyPropertyChanged
     [DisplayName("Profile Photo")]
     public required Guid ProfilePhotoId { get; set; }
 
+
     /// <summary>
     ///     The profile photo of the user in URL format.
     /// </summary>
@@ -50,38 +55,47 @@ public class Gender : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
+    /// <inheritdoc />
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public required bool WasDeleted { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+
+    /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
+    /// <inheritdoc />
     // [Required]
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+    /// <inheritdoc />
+    [DisplayName("Updated By")]
+    public virtual User? UpdatedBy { get; set; }
 
 
     // --------------------------------------------------------------------- //

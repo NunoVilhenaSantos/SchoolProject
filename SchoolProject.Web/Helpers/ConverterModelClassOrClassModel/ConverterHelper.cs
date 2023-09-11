@@ -1,8 +1,8 @@
 ﻿using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Models.Courses;
+using SchoolProject.Web.Models.Disciplines;
 using SchoolProject.Web.Models.SchoolClasses;
 using SchoolProject.Web.Models.Students;
 using SchoolProject.Web.Models.Teachers;
@@ -48,11 +48,11 @@ public class ConverterHelper : IConverterHelper
     // }
 
 
-    public Course ToCourse(
-        CourseViewModel courseViewModel, string? filePath,
+    public Discipline ToCourse(
+        DisciplinesViewModel courseViewModel, string? filePath,
         Guid fileStorageId, bool isNew)
     {
-        return new Course
+        return new Discipline
         {
             Code = courseViewModel.Code,
             Name = courseViewModel.Name,
@@ -71,9 +71,9 @@ public class ConverterHelper : IConverterHelper
     }
 
 
-    public CourseViewModel ToCourseViewModel(Course course)
+    public DisciplinesViewModel ToCourseViewModel(Discipline course)
     {
-        return new CourseViewModel
+        return new DisciplinesViewModel
         {
             Code = course.Code,
             Name = course.Name,
@@ -91,14 +91,14 @@ public class ConverterHelper : IConverterHelper
     }
 
 
-    public SchoolClass ToSchoolClass(SchoolClassViewModel schoolClassViewModel,
+    public Course ToSchoolClass(SchoolClassViewModel schoolClassViewModel,
         string? filePath, Guid fileStorageId, bool isNew)
     {
         throw new NotImplementedException();
     }
 
 
-    public SchoolClassViewModel ToSchoolClassViewModel(SchoolClass schoolClass)
+    public SchoolClassViewModel ToSchoolClassViewModel(Course schoolClass)
     {
         throw new NotImplementedException();
     }

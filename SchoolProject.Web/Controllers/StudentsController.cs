@@ -16,13 +16,16 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class StudentsController : Controller
 {
-    internal const string SessionVarName = "AllStudentsList";
-    private const string BucketName = "students";
-    private const string SortProperty = "FirstName";
 
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Student);
     private const string CurrentAction = nameof(Index);
+
+    internal string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = "FirstName";
+
+
 
     // Obtém o controlador atual
     private string CurrentController
@@ -83,14 +86,14 @@ public class StudentsController : Controller
             .Include(s => s.User).ToList();
 
         // Se desejar carregar as turmas associadas
-        // .Include(s => s.SchoolClassStudents)
-        // .ThenInclude(scs => scs.SchoolClass)
-        // .ThenInclude(sc => sc.Courses)
+        // .Include(s => s.CoursesStudents)
+        // .ThenInclude(scs => scs.Discipline)
+        // .ThenInclude(sc => sc.Disciplines)
 
         // Se desejar carregar os cursos associados
         // E seus detalhes, se necessário
         // .Include(t => t.StudentCourses)
-        // .ThenInclude(tc => tc.Course)
+        // .ThenInclude(tc => tc.Discipline)
         // .ToList();
     }
 

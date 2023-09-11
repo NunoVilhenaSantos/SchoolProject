@@ -16,13 +16,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class TeachersController : Controller
 {
-    internal const string SessionVarName = "AllTeachersList";
-    private const string BucketName = "teachers";
-    private const string SortProperty = "FirstName";
-
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Teacher);
     private const string CurrentAction = nameof(Index);
+
+    internal string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = "FirstName";
+
 
     // Obtém o controlador atual
     private string CurrentController

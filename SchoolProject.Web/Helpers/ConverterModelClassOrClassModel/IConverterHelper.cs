@@ -1,8 +1,8 @@
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
-using SchoolProject.Web.Models.Courses;
+using SchoolProject.Web.Models.Disciplines;
 using SchoolProject.Web.Models.SchoolClasses;
 using SchoolProject.Web.Models.Students;
 using SchoolProject.Web.Models.Teachers;
@@ -22,19 +22,19 @@ public interface IConverterHelper
     // LesseeViewModel ToLesseeViewModel(Lessee lessee);
 
 
-    // --- Course ---- //
+    // --- Discipline ---- //
 
-    Course ToCourse(CourseViewModel courseViewModel, string? filePath,
+    Discipline ToCourse(DisciplinesViewModel courseViewModel, string? filePath,
         Guid fileStorageId, bool isNew);
 
-    CourseViewModel ToCourseViewModel(Course course);
+    DisciplinesViewModel ToCourseViewModel(Discipline course);
 
 
-    // --- SchoolClass ---- //
-    SchoolClass ToSchoolClass(SchoolClassViewModel schoolClassViewModel,
+    // --- Discipline ---- //
+    Course ToSchoolClass(SchoolClassViewModel schoolClassViewModel,
         string? filePath, Guid fileStorageId, bool isNew);
 
-    SchoolClassViewModel ToSchoolClassViewModel(SchoolClass schoolClass);
+    SchoolClassViewModel ToSchoolClassViewModel(Course schoolClass);
 
 
     // --- Student ---- //

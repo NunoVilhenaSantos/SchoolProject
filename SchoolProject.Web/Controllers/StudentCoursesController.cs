@@ -17,13 +17,15 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class StudentCoursesController : Controller
 {
-    internal const string SessionVarName = "AllStudentAndCourses";
-    private const string BucketName = "teachers";
-    private const string SortProperty = "Name";
-
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(StudentCourse);
     private const string CurrentAction = nameof(Index);
+
+    internal string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = "Name";
+
+
 
     // Obtém o controlador atual
     private string CurrentController
@@ -214,8 +216,8 @@ public class StudentCoursesController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses, "Id", "Code");
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines, "Id", "Code");
 
         ViewData["CreatedById"] =
             new SelectList(_context.Users, "Id", "Id");
@@ -251,8 +253,8 @@ public class StudentCoursesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
                 studentCourse.CourseId);
 
@@ -295,8 +297,8 @@ public class StudentCoursesController : Controller
                 nameof(StudentCourseNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
                 studentCourse.CourseId);
 
@@ -358,8 +360,8 @@ public class StudentCoursesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["CourseId"] =
-            new SelectList(_context.Courses,
+        ViewData["DisciplineId"] =
+            new SelectList(_context.Disciplines,
                 "Id", "Code",
                 studentCourse.CourseId);
 

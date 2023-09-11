@@ -147,8 +147,10 @@
 
                 <partial name="Panels/_LayoutNavBarCountriesPanel"/>
 
-                <a class="nav-link @(currentController == "Courses" ? "active" : "")"
-                   asp-area="" asp-controller="Courses" asp-action="Index">
+                <partial name="Panels/_LayoutNavBarSchoolClassesPanel"/>
+
+                <a class="nav-link @(currentController == "Disciplines" ? "active" : "")"
+                   asp-area="" asp-controller="Disciplines" asp-action="Index">
                     <i class="fas fa-person-shelter"></i>Courses
                 </a>
 
@@ -163,7 +165,6 @@
                     <span class="material-symbols-outlined">transgender</span>Genders
                 </a>
 
-                <partial name="Panels/_LayoutNavBarSchoolClassesPanel"/>
                 <partial name="Panels/_LayoutNavBarStudentsPanel"/>
                 <partial name="Panels/_LayoutNavBarTeachersPanel"/>
 

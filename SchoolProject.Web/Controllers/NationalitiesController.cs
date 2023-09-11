@@ -15,13 +15,15 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
-    internal const string SessionVarName = "AllNationalitiesWithCountries";
-    private const string BucketName = "nationalities";
-    private const string SortProperty = "Name";
-
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Nationality);
     private const string CurrentAction = nameof(Index);
+
+    internal string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = "Name";
+
+
 
     // Obtém o controlador atual
     private string CurrentController

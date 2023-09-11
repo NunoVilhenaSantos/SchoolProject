@@ -7,9 +7,9 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.OtherEntities;
-using SchoolProject.Web.Data.Entities.SchoolClasses;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
@@ -36,19 +36,19 @@ public class HomeController : Controller
         {
             {CitiesController.SessionVarName, typeof(City)},
             {CountriesController.SessionVarName, typeof(Country)},
-            {CoursesController.SessionVarName, typeof(Course)},
+            {DisciplinesController.SessionVarName, typeof(Discipline)},
             {EnrollmentsController.SessionVarName, typeof(Enrollment)},
             {GendersController.SessionVarName, typeof(Gender)},
             {NationalitiesController.SessionVarName, typeof(Nationality)},
             {RolesController.SessionVarName, typeof(IdentityRole)},
             {
-                SchoolClassCoursesController.SessionVarName,
-                typeof(SchoolClassCourse)
+                CoursesDisciplinesController.SessionVarName,
+                typeof(CourseDisciplines)
             },
-            {SchoolClassesController.SessionVarName, typeof(SchoolClass)},
+            {CoursesController.SessionVarName, typeof(Course)},
             {
-                SchoolClassStudentsController.SessionVarName,
-                typeof(SchoolClassStudent)
+                CoursesStudentsController.SessionVarName,
+                typeof(CourseStudents)
             },
             {StudentCoursesController.SessionVarName, typeof(StudentCourse)},
             {StudentsController.SessionVarName, typeof(Student)},

@@ -24,13 +24,14 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class AccountController : Controller
 {
-    private const string BucketName = "users";
-    private const string SortProperty = "FirstName";
-    internal const string SessionVarName = "AllUsersWithRolesList";
-
     // Obtém o tipo da classe atual
-    private const string CurrentClass = nameof(City);
-    private const string CurrentAction = nameof(Index);
+    internal const string CurrentClass = UsersController.CurrentClass;
+    internal const string CurrentAction = nameof(Index);
+
+    internal const string BucketName = UsersController.BucketName;
+    internal const string SessionVarName = UsersController.SessionVarName;
+    internal const string SortProperty = UsersController.SortProperty;
+
 
     // Obtém o controlador atual
     private string CurrentController

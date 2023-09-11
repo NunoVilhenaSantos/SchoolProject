@@ -1,5 +1,6 @@
 @using System.Reflection
 @model IEnumerable<SchoolProject.Web.Data.Entities.Students.Student>
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Students.Student> *@
 
 @{
     // ViewData["Title"] = "Index";
@@ -12,19 +13,29 @@
     var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
     // Isso obtém o nome da classe do modelo atual
-    // var modelName = Model.GetModelName(m => m);
     var deleteClassName = ViewData["CurrentClass"]?.ToString();
-
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
 }
 
-<h1>@ViewData["Title"]</h1>
+@* <h2>@pageTitle</h2> *@
+<h2>@ViewData["Title"]</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a>
-    @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a> *@
-</p>
-
+<div class="container-fluid py-3">
+    <div class="row">
+        @* <div class="col-md-4"> *@
+        <div class="col">
+            @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
+            <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
+        </div>
+        @if (string.Equals(actionName, "IndexCards1"))
+        {
+            @* <div class="col-md-8 justify-content-end"> *@
+            <div class="col justify-content-end">
+                <partial model="Model" name="Pagination/_PageNavigationTop"/>
+            </div>
+        }
+    </div>
+</div>
 
 <table class="table table-hover" sortable="True" id="sortableTable">
     <thead>

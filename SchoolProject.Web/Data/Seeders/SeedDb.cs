@@ -34,7 +34,9 @@ public class SeedDb
 
 
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly ILogger<SeedDbSchoolClasses> _loggerSeedDbSCs;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<SeedDb> _logger;
+    private readonly ILogger<SeedDbCourses> _loggerSeedDbCourses;
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
 
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
@@ -46,9 +48,9 @@ public class SeedDb
 
 
     public SeedDb(
-        // ILogger<SeedDb> logger,
+        ILogger<SeedDb> logger,
         ILogger<SeedDbUsers> loggerSeedDbUsers,
-        ILogger<SeedDbSchoolClasses> loggerSeedDbSCs,
+        ILogger<SeedDbCourses> loggerSeedDbSCs,
         ILogger<SeedDbStudentsAndTeachers> loggerSeedDbSTs,
         IUserHelper userHelper,
         UserManager<User> userManager,
@@ -65,7 +67,8 @@ public class SeedDb
         // DCMySqlOnline mySqlOnline
     )
     {
-        _loggerSeedDbSCs = loggerSeedDbSCs;
+        _logger = logger;
+        _loggerSeedDbCourses = loggerSeedDbSCs;
         _loggerSeedDbSTs = loggerSeedDbSTs;
         _loggerSeedDbUsers = loggerSeedDbUsers;
 
@@ -74,6 +77,7 @@ public class SeedDb
         _roleManager = roleManager;
 
         _hostingEnvironment = hostingEnvironment;
+        _configuration = configuration;
 
         _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
@@ -89,6 +93,9 @@ public class SeedDb
     }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     public async Task SeedAsync()
     {
         // ------------------------------------------------------------------ //
@@ -191,8 +198,8 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // adding students and teachers to the database and also there user
         // ------------------------------------------------------------------ //
-        SeedDbSchoolClasses.Initialize(_dataContextInUse);
-        await SeedDbSchoolClasses.AddingData(user);
+        SeedDbCourses.Initialize(_dataContextInUse);
+        await SeedDbCourses.AddingData(user);
         await _dataContextInUse.SaveChangesAsync();
 
 
@@ -200,7 +207,7 @@ public class SeedDb
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
         // SeedDbTeachersWithCourses.Initialize(_dataContextInUse);
-        await SeedDbTeachersWithCourses.AddingData(_dataContextInUse, user);
+        await SeedDbTeachersWithDisciplines.AddingData(_dataContextInUse, user);
         await _dataContextInUse.SaveChangesAsync();
 
         Console.WriteLine("Debug point.", Color.Red);
@@ -210,7 +217,7 @@ public class SeedDb
         // adding courses to teachers to the database
         // ------------------------------------------------------------------ //
         // SeedDbSchoolClassesWithCourses.Initialize(_dataContextInUse);
-        await SeedDbSchoolClassesWithCourses.AddingData(
+        await SeedDbSchoolClassesDisciplines.AddingData(
             user, _dataContextInUse);
         await _dataContextInUse.SaveChangesAsync();
 
@@ -221,7 +228,7 @@ public class SeedDb
         // adding students to school-classes into the database
         // ------------------------------------------------------------------ //
         // SeedDbStudentsWithSchoolClasses.Initialize(_dataContextInUse);
-        await SeedDbStudentsWithSchoolClasses.AddingData(
+        await SeedDbStudentsAndCourses.AddingData(
             user, _dataContextInUse);
         await _dataContextInUse.SaveChangesAsync();
 
@@ -550,7 +557,7 @@ public class SeedDb
             var country = new Country
             {
                 Name = countryName,
-                Cities = new List<City>(),
+                Cities = new HashSet<City>(),
                 WasDeleted = false,
                 Nationality = null,
                 IdGuid = Guid.NewGuid(),
@@ -575,7 +582,7 @@ public class SeedDb
     }
 
 
-    private List<City> CreateCities(
+    private HashSet<City> CreateCities(
         IEnumerable<string> cityNames, User createdBy, Country country)
     {
         return cityNames.Select(
@@ -590,7 +597,7 @@ public class SeedDb
                 Country = country ?? _dataContextSqLite.Countries
                     .FirstOrDefault(c => c.Name == "Portugal")
             }
-        ).ToList();
+        ).ToHashSet();
     }
 
 

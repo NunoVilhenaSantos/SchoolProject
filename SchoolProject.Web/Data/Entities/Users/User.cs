@@ -40,15 +40,18 @@ public class User : IdentityUser, INotifyPropertyChanged
     public string? Address { get; set; }
 
 
-    /// <summary>
-    ///     The phone number of the user.
-    /// </summary>
+    // /// <summary>
+    // ///     The phone number of the user.
+    // /// </summary>
     //[MaxLength(20,
     //    ErrorMessage =
     //        "The field {0} can only contain {1} characters in lenght.")]
     //public string? PhoneNumber { get; set; }
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Display(Name = "Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
@@ -77,6 +80,7 @@ public class User : IdentityUser, INotifyPropertyChanged
     /// </summary>
     [DisplayName("Profile Photo")]
     public required Guid ProfilePhotoId { get; set; }
+
 
     /// <summary>
     ///     The profile photo of the user in URL format.

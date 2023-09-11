@@ -17,8 +17,9 @@ using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Repositories.Countries;
-using SchoolProject.Web.Data.Repositories.Courses;
+using SchoolProject.Web.Data.Repositories.Disciplines;
 using SchoolProject.Web.Data.Repositories.Enrollments;
 using SchoolProject.Web.Data.Repositories.OtherEntities;
 using SchoolProject.Web.Data.Repositories.SchoolClasses;
@@ -123,14 +124,14 @@ static void GetServerHostNamePing(string serverHostName)
         // Aguarda 3 segundos (ajuste conforme necessário)
         // antes de tentar novamente, use 0 para tentar imediatamente
         // ou altere para o valor desejado em milissegundos
-        // na variavel timeout
+        // na variable timeout
         Thread.Sleep(timeout);
     }
 }
 
 
 // Método para executar o seeding do banco de dados
-static async Task RunSeeding(IHost host)
+static Task RunSeeding(IHost host)
 {
     // Create a new timer with the name "MyTimer"
     TimeTracker.CreateTimer(TimeTracker.SeederTimerName);
@@ -145,7 +146,7 @@ static async Task RunSeeding(IHost host)
 
     var seeder = scope?.ServiceProvider.GetService<SeedDb>();
 
-    await seeder?.SeedAsync();
+    seeder?.SeedAsync();
 
 
     // Stop the timer "MyTimer"
@@ -167,6 +168,8 @@ static async Task RunSeeding(IHost host)
     Console.WriteLine("RunTime: " + elapsedTime);
 
     TimeTracker.PrintTimerToConsole(TimeTracker.SeederTimerName);
+
+    return Task.CompletedTask;
 
     // Thread.Sleep(3000);
 }
@@ -672,7 +675,7 @@ builder.Services.AddScoped<SeedDb>();
 
 // builder.Services.AddScoped<SeedDbUsers>();
 // builder.Services.AddScoped<SeedDbStudentsAndTeachers>();
-// builder.Services.AddScoped<SeedDbSchoolClasses>();
+// builder.Services.AddScoped<SeedDbCourses>();
 
 // builder.Services.AddScoped<SeedDbTeachersWithCourses>();
 // builder.Services.AddScoped<SeedDbSchoolClassesWithCourses>();
@@ -706,7 +709,7 @@ builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<INationalityRepository, NationalityRepository>();
 
 //
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<IDisciplineRepository, DisciplineRepository>();
 
 //
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
@@ -803,6 +806,9 @@ var app = builder.Build();
 
 // ------------------- //
 await RunSeeding(app);
+
+// SaveToCsv.SaveTo(app);
+
 
 // Exception handling and HTTPS redirection for non-development environments.
 if (!app.Environment.IsDevelopment())

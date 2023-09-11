@@ -19,7 +19,7 @@ public class PaginationViewModel<T> where T : class
 
     // Lista de propriedades que são classes e devem ser tratadas como "Code"
     private readonly List<string> _codeProperties = new()
-        {"Course", "SchoolClass"};
+        {"Discipline", "Discipline"};
 
     // Lista de propriedades que são classes e devem ser tratadas como "FirstName"
     private readonly List<string> _firstNameProperties = new()
