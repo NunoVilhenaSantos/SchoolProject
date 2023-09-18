@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Repositories.SchoolClasses;
+using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
@@ -18,15 +18,39 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class CoursesDisciplinesController : Controller
 {
-
-
     // Obtém o tipo da classe atual
     internal const string CurrentClass = nameof(CourseDisciplines);
     internal const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
+
+
+    private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ICourseDisciplinesRepository _schoolClassCourseRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
+
+
+    /// <summary>
+    ///     School class with courses
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="hostingEnvironment"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="schoolClassCourseRepository"></param>
+    public CoursesDisciplinesController(
+        DataContextMySql context,
+        IWebHostEnvironment hostingEnvironment,
+        IHttpContextAccessor httpContextAccessor,
+        ICourseDisciplinesRepository schoolClassCourseRepository)
+    {
+        _context = context;
+        _hostingEnvironment = hostingEnvironment;
+        _httpContextAccessor = httpContextAccessor;
+        _schoolClassCourseRepository = schoolClassCourseRepository;
+    }
 
 
     // Obtém o controlador atual
@@ -42,30 +66,11 @@ public class CoursesDisciplinesController : Controller
     }
 
 
-    private readonly DataContextMySql _context;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ISchoolClassCourseRepository _schoolClassCourseRepository;
-
-
     /// <summary>
-    ///     School class with courses
+    ///     SchoolClassCourseNotFound action.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="hostingEnvironment"></param>
-    /// <param name="httpContextAccessor"></param>
-    /// <param name="schoolClassCourseRepository"></param>
-    public CoursesDisciplinesController(
-        DataContextMySql context,
-        IWebHostEnvironment hostingEnvironment,
-        IHttpContextAccessor httpContextAccessor,
-        ISchoolClassCourseRepository schoolClassCourseRepository)
-    {
-        _context = context;
-        _hostingEnvironment = hostingEnvironment;
-        _httpContextAccessor = httpContextAccessor;
-        _schoolClassCourseRepository = schoolClassCourseRepository;
-    }
+    /// <returns></returns>
+    public IActionResult SchoolClassCourseNotFound => View();
 
 
     //private List<SchoolClassCourse> GetSchoolClassesAndCourses()
@@ -300,20 +305,20 @@ public class CoursesDisciplinesController : Controller
                 "Id", "Code",
                 schoolClassCourse.DisciplineId);
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                schoolClassCourse.CreatedById);
-
         ViewData["DisciplineId"] =
             new SelectList(_context.Courses,
                 "Id", "Acronym",
                 schoolClassCourse.CourseId);
 
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                "Id", "FullName",
+                schoolClassCourse.CreatedBy.Id);
+
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                schoolClassCourse.UpdatedById);
+                "Id", "FullName",
+                schoolClassCourse.UpdatedBy.Id);
 
         return View(schoolClassCourse);
     }
@@ -341,20 +346,21 @@ public class CoursesDisciplinesController : Controller
                 "Id", "Code",
                 schoolClassCourse.DisciplineId);
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                schoolClassCourse.CreatedById);
 
         ViewData["DisciplineId"] =
             new SelectList(_context.Courses,
                 "Id", "Acronym",
                 schoolClassCourse.CourseId);
 
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                "Id", "FullName",
+                schoolClassCourse.CreatedBy.Id);
+
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                schoolClassCourse.UpdatedById);
+                "Id", "FullName",
+                schoolClassCourse.UpdatedBy.Id);
 
         return View(schoolClassCourse);
     }
@@ -403,20 +409,20 @@ public class CoursesDisciplinesController : Controller
                 "Id", "Code",
                 schoolClassCourse.DisciplineId);
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                schoolClassCourse.CreatedById);
-
         ViewData["DisciplineId"] =
             new SelectList(_context.Courses,
                 "Id", "Acronym",
                 schoolClassCourse.CourseId);
 
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                "Id", "FullName",
+                schoolClassCourse.CreatedBy.Id);
+
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                schoolClassCourse.UpdatedById);
+                "Id", "FullName",
+                schoolClassCourse.UpdatedBy.Id);
 
         return View(schoolClassCourse);
     }
@@ -470,14 +476,9 @@ public class CoursesDisciplinesController : Controller
     }
 
 
-    /// <summary>
-    /// SchoolClassCourseNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult SchoolClassCourseNotFound => View();
-
-
-    private bool SchoolClassCourseExists(int id) =>
-        _context.CoursesDisciplines
+    private bool SchoolClassCourseExists(int id)
+    {
+        return _context.CoursesDisciplines
             .Any(e => e.CourseId == id);
+    }
 }

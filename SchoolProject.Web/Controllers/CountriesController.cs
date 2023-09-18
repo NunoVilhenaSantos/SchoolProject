@@ -17,30 +17,16 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CountriesController : Controller
 {
-    
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Country);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
 
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
     private readonly ICountryRepository _countryRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -55,6 +41,36 @@ public class CountriesController : Controller
         _countryRepository = countryRepository;
         _hostingEnvironment = hostingEnvironment;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    // ------------------------------- ------ ------------------------------- //
+
+
+    /// <summary>
+    ///     CountryFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult CountryNotFound => View();
+
+
+    /// <summary>
+    ///     CityNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult CityNotFound => View();
 
 
     // ------------------------------ --------- ----------------------------- //
@@ -207,7 +223,10 @@ public class CountriesController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Countries/Create
@@ -344,11 +363,11 @@ public class CountriesController : Controller
 
     // POST: Countries/Delete/5
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpPost, ActionName("Delete")]
+    [HttpPost]
+    [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     // [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id)
@@ -396,7 +415,7 @@ public class CountriesController : Controller
                     ItemClass = nameof(Country),
                     ItemId = country.Id,
                     ItemGuid = country.IdGuid,
-                    ItemName = country.Name,
+                    ItemName = country.Name
                 };
 
                 // Redirecione para o DatabaseError com os dados apropriados
@@ -413,7 +432,7 @@ public class CountriesController : Controller
                 ItemClass = nameof(Country),
                 ItemId = country.Id,
                 ItemGuid = country.IdGuid,
-                ItemName = country.Name,
+                ItemName = country.Name
             };
 
 
@@ -586,21 +605,4 @@ public class CountriesController : Controller
 
         return View(city);
     }
-
-
-    // ------------------------------- ------ ------------------------------- //
-
-
-    /// <summary>
-    /// CountryFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult CountryNotFound => View();
-
-
-    /// <summary>
-    /// CityNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult CityNotFound => View();
 }

@@ -19,8 +19,6 @@ public class SeedDBDisciplinesLists
     private static DataContextMySql _dataContextInUse;
 
 
-
-
     private static readonly Dictionary<string, (string, int, double)>
         _listOfDisciplinesToAdd = new();
 
@@ -246,7 +244,8 @@ public class SeedDBDisciplinesLists
         var ts =
             TimeTracker.GetElapsedTime(TimeTracker.SeedDbDisciplinesMPInfoName);
 
-        TimeTracker.PrintTimerToConsole(TimeTracker.SeedDbDisciplinesMPInfoName);
+        TimeTracker.PrintTimerToConsole(TimeTracker
+            .SeedDbDisciplinesMPInfoName);
 
         Console.WriteLine("debug zone...");
 
@@ -416,12 +415,13 @@ public class SeedDBDisciplinesLists
 
 
     private static async Task SaveMissingDisciplines(
-    //Dictionary<string, (string, int, double)> mergedDictionary
+        //Dictionary<string, (string, int, double)> mergedDictionary
     )
     {
         // Get the list of existing discipline codes from the database
         var existingDisciplinesCodes =
-            await _dataContextInUse.Disciplines.Select(c => c.Code).ToListAsync();
+            await _dataContextInUse.Disciplines.Select(c => c.Code)
+                .ToListAsync();
 
 
         // Filter out the courses that are already in the database
@@ -459,7 +459,8 @@ public class SeedDBDisciplinesLists
         // Filter out the courses that are already in the database and also present in the dictionary
         var existingDisciplines =
             await _dataContextInUse.Disciplines.AsAsyncEnumerable()
-                .Where(discipline => mergedDictionary.ContainsKey(discipline.Code))
+                .Where(discipline =>
+                    mergedDictionary.ContainsKey(discipline.Code))
                 .ToListAsync();
 
         var finalList = existingDisciplines.ToList();

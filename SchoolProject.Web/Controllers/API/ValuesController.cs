@@ -3,7 +3,6 @@
 namespace SchoolProject.Web.Controllers.API;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]

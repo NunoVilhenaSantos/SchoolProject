@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-
-using SchoolProject.Web.Data.Repositories.SchoolClasses;
+using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Helpers.Users;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using System.Linq;
 
 
 // For more information on enabling Web API for empty projects,
@@ -18,43 +16,45 @@ using System.Linq;
 namespace SchoolProject.Web.Controllers.API;
 
 /// <summary>
-/// School Classes API Controller
+///     Courses Controller API Controller
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
 // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 // [Authorize(Policy = "Bearer")]
-// [Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class CoursesController : ControllerBase
 {
-    private readonly ISchoolClassRepository _schoolClassRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly ICourseRepository _courseRepository;
     private readonly DataContextMySql _context;
     private readonly IUserHelper _userHelper;
 
 
-    //private readonly IWebHostEnvironment _hostingEnvironment;
-
-
     /// <summary>
-    /// School Classes API Controller constructor
+    ///     Courses Controller API Controller constructor
     /// </summary>
     /// <param name="context"></param>
     /// <param name="userHelper"></param>
-    /// <param name="schoolClassRepository"></param>
+    /// <param name="courseRepository"></param>
+    /// <param name="hostingEnvironment"></param>
     public CoursesController(
-        DataContextMySql context,
         IUserHelper userHelper,
-        ISchoolClassRepository schoolClassRepository)
+        DataContextMySql context,
+        ICourseRepository courseRepository,
+        IWebHostEnvironment hostingEnvironment
+    )
     {
         _context = context;
         _userHelper = userHelper;
-        _schoolClassRepository = schoolClassRepository;
+        _courseRepository = courseRepository;
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
-    // GET: api/<SchoolClassesController>
+    // GET: api/<CoursesController>
     /// <summary>
-    /// Get all school classes
+    ///     Get all Courses 
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -62,19 +62,19 @@ public class CoursesController : ControllerBase
     public IActionResult Get()
     {
         var schoolClasses = _context.Courses
-            
+
             // School class courses include
             //.Include(c => c.CourseDisciplines)
             //.ThenInclude(scc => scc.Discipline)
 
             // school class students include
             //.Include(c => c.SchoolClassStudents)
-             //.ThenInclude(scs => scs.Student)
-             //.ThenInclude(s => s.Country)
-             //.ThenInclude(s => s.Nationality)
+            //.ThenInclude(scs => scs.Student)
+            //.ThenInclude(s => s.Country)
+            //.ThenInclude(s => s.Nationality)
 
-             // include students 
-             .Include(c => c.Students)
+            // include students 
+            .Include(c => c.Students)
             // .ThenInclude(s => s.Country)
             // .ThenInclude(s => s.Nationality)
             // .Include(c => c.Students)
@@ -102,11 +102,13 @@ public class CoursesController : ControllerBase
         // Aqui está o código corrigido:
         //
 
+
         // --------------------------------------------------------------------------- //
         // --------------------------------------------------------------------------- //
 
-        // Substitua a serialização usando Newtonsoft.Json pela serialização usando System.Text.Json
-        var options = new JsonSerializerOptions
+
+        // serialização usando System.Text.Json
+        var options = new System.Text.Json.JsonSerializerOptions
         {
             // Use ReferenceHandler.Preserve para preservar referências circulares
             ReferenceHandler = ReferenceHandler.Preserve,
@@ -117,18 +119,18 @@ public class CoursesController : ControllerBase
 
 
         // converte em json para enviar aos pedidos da API
-        var jsonMariconsoft = System.Text.Json.JsonSerializer.Serialize(schoolClasses, options);
+        var jsonMariconsoft =
+            System.Text.Json.JsonSerializer.Serialize(schoolClasses, options);
 
-        return Ok(jsonMariconsoft);
+        // return Ok(jsonMariconsoft);
 
 
         // --------------------------------------------------------------------------- //
         // --------------------------------------------------------------------------- //
 
 
-
-        // Configura as configurações para a serialização
-        var settings = new JsonSerializerSettings
+        // serialização usando Newtonsoft.Json 
+        var settings = new Newtonsoft.Json.JsonSerializerSettings
         {
             // Use PreserveReferencesHandling para preservar referências circulares
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
@@ -138,20 +140,25 @@ public class CoursesController : ControllerBase
         };
 
         // converte em json para enviar aos pedidos da API
-        var json = Newtonsoft.Json.JsonConvert.SerializeObject(schoolClasses, settings);
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(
+            schoolClasses, settings);
 
-        // return Ok(json);
+        return Ok(json);
 
 
         // --------------------------------------------------------------------------- //
         // --------------------------------------------------------------------------- //
+
 
         // https://stackoverflow.com/questions/58113329/asp-net-core-3-0-system-text-json-jsonexception-a-possible-object-cycle-was
         // este processo de serializar e deserializar é necessário para remover as referências circulares
         // mas consome muita memoria até que o sistema rebenta
         // consome 4,7 gb de memoria    
         // Armazene a lista na sessão para uso futuro
-        var json1 = JsonConvert.SerializeObject(schoolClasses,
+
+
+        // serialização usando Newtonsoft.Json 
+        var json1 = Newtonsoft.Json.JsonConvert.SerializeObject(schoolClasses,
             new JsonSerializerSettings
             {
                 // A possible object cycle was detected.
@@ -166,20 +173,20 @@ public class CoursesController : ControllerBase
 
 
         return Ok(json1);
-
     }
 
 
-    // GET: api/<SchoolClassesController>
+    // GET: api/<CoursesController>
     /// <summary>
-    /// Get all school classes with users
+    ///     Get all school classes with users
     /// </summary>
     /// <returns></returns>
     // [HttpGet]
     // public IActionResult Get() => Ok(_schoolClassRepository.GetAllWithUsers());
 
-    // GET api/<SchoolClassesController>/5
-    [Route("api/Courses/{id:int}")]
+
+    // GET api/<CoursesController>/5
+    // [Route("api/Courses/{id:int}")]
     [HttpGet("{id:int}")]
     public IActionResult Get(int id)
     {
@@ -188,7 +195,7 @@ public class CoursesController : ControllerBase
 
 
         // converte em json para enviar aos pedidos da API
-        var json = JsonConvert.SerializeObject(schoolClass,
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(schoolClass,
             new JsonSerializerSettings
             {
                 // A possible object cycle was detected.
@@ -206,7 +213,6 @@ public class CoursesController : ControllerBase
             });
 
 
-
         return Ok(schoolClass);
     }
 
@@ -216,31 +222,31 @@ public class CoursesController : ControllerBase
     // ---------------------------------------------------------------------- //
 
 
-    // GET: api/<SchoolClassesController>
+    // GET: api/<CoursesController>
     // [HttpGet]
     // public IEnumerable<string> Get() => new string[] {"value1", "value2"};
 
 
-    // GET api/<SchoolClassesController>/5
+    // GET api/<CoursesController>/5
     // [HttpGet("{id}")]
     // public string Get(int id) => "value";
 
 
-    // POST api/<SchoolClassesController>
+    // POST api/<CoursesController>
     // [HttpPost]
     // public void Post([FromBody] string value)
     // {
     // }
 
 
-    // PUT api/<SchoolClassesController>/5
+    // PUT api/<CoursesController>/5
     // [HttpPut("{id:int}")]
     // public void Put(int id, [FromBody] string value)
     // {
     // }
 
 
-    // DELETE api/<SchoolClassesController>/5
+    // DELETE api/<CoursesController>/5
     // [HttpDelete("{id:int}")]
     // public void Delete(int id)
     // {

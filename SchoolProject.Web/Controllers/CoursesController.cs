@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Repositories.SchoolClasses;
+using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
 
@@ -19,10 +19,33 @@ public class CoursesController : Controller
     // Obtém o tipo da classe atual
     internal const string CurrentClass = nameof(Course);
     internal const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Code";
+
+
+    private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly ICourseRepository _schoolClassRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
+
+
+    /// <summary>
+    ///     SchoolClassesController
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="schoolClassRepository"></param>
+    /// <param name="hostingEnvironment"></param>
+    public CoursesController(
+        DataContextMySql context,
+        IWebHostEnvironment hostingEnvironment,
+        ICourseRepository schoolClassRepository
+    )
+    {
+        _context = context;
+        _hostingEnvironment = hostingEnvironment;
+        _schoolClassRepository = schoolClassRepository;
+    }
 
 
     // Obtém o controlador atual
@@ -38,27 +61,11 @@ public class CoursesController : Controller
     }
 
 
-    private readonly DataContextMySql _context;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly ISchoolClassRepository _schoolClassRepository;
-
-
     /// <summary>
-    ///     SchoolClassesController
+    ///     SchoolClassNotFound action.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="schoolClassRepository"></param>
-    /// <param name="hostingEnvironment"></param>
-    public CoursesController(
-        DataContextMySql context,
-        IWebHostEnvironment hostingEnvironment,
-        ISchoolClassRepository schoolClassRepository
-    )
-    {
-        _context = context;
-        _hostingEnvironment = hostingEnvironment;
-        _schoolClassRepository = schoolClassRepository;
-    }
+    /// <returns></returns>
+    public IActionResult SchoolClassNotFound => View();
 
 
     private List<Course> GetSchoolClasses()
@@ -206,7 +213,10 @@ public class CoursesController : Controller
     ///     Create a new school class, view.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Courses/Create
@@ -340,13 +350,8 @@ public class CoursesController : Controller
     }
 
 
-    /// <summary>
-    /// SchoolClassNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult SchoolClassNotFound => View();
-
-
-    private bool SchoolClassExists(int id) =>
-        _context.Courses.Any(e => e.Id == id);
+    private bool SchoolClassExists(int id)
+    {
+        return _context.Courses.Any(e => e.Id == id);
+    }
 }

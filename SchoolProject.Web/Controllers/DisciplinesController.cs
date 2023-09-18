@@ -19,30 +19,15 @@ public class DisciplinesController : Controller
     // Obtém o nome da classe atual
     internal const string CurrentClass = nameof(Discipline);
     internal const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Code";
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
 
 
     private readonly DataContextMySql _context;
     private readonly IDisciplineRepository _courseRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -60,6 +45,26 @@ public class DisciplinesController : Controller
         _courseRepository = courseRepository;
         _hostingEnvironment = hostingEnvironment;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     CourseNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult CourseNotFound => View();
 
 
     private List<Discipline> GetCoursesList()
@@ -82,8 +87,9 @@ public class DisciplinesController : Controller
             // Se a lista estiver na sessão, desserializa-a
             var json = Encoding.UTF8.GetString(allData);
 
-            recordsQuery = JsonConvert.DeserializeObject<List<Discipline>>(json) ??
-                           new List<Discipline>();
+            recordsQuery =
+                JsonConvert.DeserializeObject<List<Discipline>>(json) ??
+                new List<Discipline>();
         }
         else
         {
@@ -195,7 +201,8 @@ public class DisciplinesController : Controller
 
         return course == null
             ? new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(course);
     }
 
@@ -205,7 +212,10 @@ public class DisciplinesController : Controller
     ///     Create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Disciplines/Create
@@ -249,7 +259,8 @@ public class DisciplinesController : Controller
 
         return course == null
             ? new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(course);
     }
 
@@ -370,13 +381,8 @@ public class DisciplinesController : Controller
     }
 
 
-    /// <summary>
-    /// CourseNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult CourseNotFound => View();
-
-
-    private bool CourseExists(int id) =>
-        _context.Disciplines.Any(e => e.Id == id);
+    private bool CourseExists(int id)
+    {
+        return _context.Disciplines.Any(e => e.Id == id);
+    }
 }

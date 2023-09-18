@@ -16,7 +16,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -289,173 +289,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.ToTable("Nationalities");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Disciplines.Discipline", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("CreditPoints")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Hours")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("IdGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ProfilePhotoId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("DisciplineId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("WasDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("Disciplines");
-                });
-
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollments.Enrollment", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DisciplineId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Absences")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal?>("Grade")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("Id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<Guid>("IdGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<int?>("DisciplineId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("WasDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("StudentId", "DisciplineId");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("Enrollments");
-                });
-
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.OtherEntities.Gender", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("IdGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ProfilePhotoId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("WasDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("Genders");
-                });
-
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Discipline", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -543,9 +377,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.SchoolClassCourse", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.CourseDisciplines", b =>
                 {
-                    b.Property<int>("DisciplineId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("DisciplineId")
@@ -560,7 +394,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -576,18 +412,185 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("DisciplineId", "DisciplineId");
+                    b.HasKey("CourseId", "DisciplineId");
+
+                    b.HasIndex("CreatedById");
 
                     b.HasIndex("DisciplineId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("CoursesDisciplines");
+                });
+
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.CourseStudents", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CourseId", "StudentId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("CoursesStudents");
+                });
+
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Disciplines.Discipline", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("CreditPoints")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("CourseDisciplines");
+                    b.ToTable("Disciplines");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.SchoolClassStudent", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollments.Enrollment", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DisciplineId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Absences")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("Grade")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<Guid>("IdGuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("StudentId", "DisciplineId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DisciplineId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.OtherEntities.Gender", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -606,11 +609,13 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<int>("DisciplineId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
@@ -625,13 +630,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("DisciplineId");
-
-                    b.HasIndex("StudentId");
-
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("SchoolClassStudent");
+                    b.ToTable("Genders");
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
@@ -657,6 +658,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CountryOfNationalityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CourseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -715,9 +719,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<Guid>("ProfilePhotoId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("DisciplineId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("TaxIdentificationNumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -745,11 +746,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.HasIndex("CountryOfNationalityId");
 
+                    b.HasIndex("CourseId");
+
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("GenderId");
-
-                    b.HasIndex("DisciplineId");
 
                     b.HasIndex("UpdatedById");
 
@@ -763,7 +764,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<int>("StudentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DisciplineId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -775,7 +776,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -791,9 +794,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("StudentId", "DisciplineId");
+                    b.HasKey("StudentId", "CourseId");
 
-                    b.HasIndex("DisciplineId");
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("CreatedById");
 
@@ -926,7 +929,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<int>("TeacherId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DisciplineId")
+                    b.Property<int>("CourseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -938,7 +941,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasColumnName("Id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<Guid>("IdGuid")
                         .ValueGeneratedOnAdd()
@@ -954,9 +959,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Property<bool>("WasDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("TeacherId", "DisciplineId");
+                    b.HasKey("TeacherId", "CourseId");
 
-                    b.HasIndex("DisciplineId");
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("CreatedById");
 
@@ -1170,7 +1175,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Navigation("UpdatedBy");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Disciplines.Discipline", b =>
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>
                 {
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
                         .WithMany()
@@ -1178,10 +1183,96 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Discipline", null)
-                        .WithMany("Discipline")
-                        .HasForeignKey("DisciplineId")
+                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.CourseDisciplines", b =>
+                {
+                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", "Course")
+                        .WithMany("CourseDisciplines")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Discipline")
+                        .WithMany("CourseDisciplines")
+                        .HasForeignKey("DisciplineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Course");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Discipline");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.CourseStudents", b =>
+                {
+                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", "Course")
+                        .WithMany("CourseStudents")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
+                        .WithMany("CourseStudents")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Course");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Disciplines.Discipline", b =>
+                {
+                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", null)
+                        .WithMany("Disciplines")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
                         .WithMany()
@@ -1195,11 +1286,10 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Enrollments.Enrollment", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Discipline")
-                        .WithMany("Enrollments")
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", null)
+                        .WithMany("Enrollment")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
                         .WithMany()
@@ -1207,10 +1297,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Discipline", null)
-                        .WithMany("Enrollment")
+                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Discipline")
+                        .WithMany("Enrollments")
                         .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
                         .WithMany("Enrollments")
@@ -1223,9 +1314,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Discipline");
-
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("Discipline");
 
                     b.Navigation("Student");
 
@@ -1246,92 +1337,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Discipline", b =>
-                {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.SchoolClassCourse", b =>
-                {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Discipline")
-                        .WithMany("CourseDisciplines")
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Discipline", "Discipline")
-                        .WithMany("CourseDisciplines")
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Discipline");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("Discipline");
-
-                    b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.SchoolClassStudent", b =>
-                {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Discipline", "Discipline")
-                        .WithMany("CoursesStudents")
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
-                        .WithMany("CoursesStudents")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("Discipline");
-
-                    b.Navigation("Student");
 
                     b.Navigation("UpdatedBy");
                 });
@@ -1362,6 +1367,11 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Course", null)
+                        .WithMany("Students")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
@@ -1373,11 +1383,6 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("SchoolProject.Web.Data.Entities.Courses.Discipline", null)
-                        .WithMany("Students")
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Users.User", "UpdatedBy")
                         .WithMany()
@@ -1409,9 +1414,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.StudentCourse", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Discipline")
+                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Course")
                         .WithMany("StudentCourses")
-                        .HasForeignKey("DisciplineId")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1432,7 +1437,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Discipline");
+                    b.Navigation("Course");
 
                     b.Navigation("CreatedBy");
 
@@ -1509,9 +1514,9 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.TeacherCourse", b =>
                 {
-                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Discipline")
+                    b.HasOne("SchoolProject.Web.Data.Entities.Disciplines.Discipline", "Course")
                         .WithMany("TeacherCourses")
-                        .HasForeignKey("DisciplineId")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1532,7 +1537,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Discipline");
+                    b.Navigation("Course");
 
                     b.Navigation("CreatedBy");
 
@@ -1549,35 +1554,35 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Course", b =>
+                {
+                    b.Navigation("CourseDisciplines");
+
+                    b.Navigation("CourseStudents");
+
+                    b.Navigation("Disciplines");
+
+                    b.Navigation("Enrollment");
+
+                    b.Navigation("Students");
+                });
+
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Disciplines.Discipline", b =>
                 {
-                    b.Navigation("Enrollments");
-
                     b.Navigation("CourseDisciplines");
+
+                    b.Navigation("Enrollments");
 
                     b.Navigation("StudentCourses");
 
                     b.Navigation("TeacherCourses");
                 });
 
-            modelBuilder.Entity("SchoolProject.Web.Data.Entities.Courses.Discipline", b =>
-                {
-                    b.Navigation("Discipline");
-
-                    b.Navigation("Enrollment");
-
-                    b.Navigation("CourseDisciplines");
-
-                    b.Navigation("CoursesStudents");
-
-                    b.Navigation("Students");
-                });
-
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Students.Student", b =>
                 {
-                    b.Navigation("Enrollments");
+                    b.Navigation("CourseStudents");
 
-                    b.Navigation("CoursesStudents");
+                    b.Navigation("Enrollments");
 
                     b.Navigation("StudentCourses");
                 });

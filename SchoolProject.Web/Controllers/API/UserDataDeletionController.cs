@@ -4,14 +4,12 @@ using SchoolProject.Web.Models.UsersDataDeletion;
 namespace SchoolProject.Web.Controllers.API;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class UserDataDeletionController : ControllerBase
 {
     /// <summary>
-    ///
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>

@@ -19,32 +19,15 @@ public class RolesController : Controller
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(IdentityRole);
     private const string CurrentAction = nameof(Index);
-
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
 
 
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
-
-
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly RoleManager<IdentityRole> _roleManager;
+
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -60,7 +43,30 @@ public class RolesController : Controller
     }
 
 
-    private List<IdentityRole> GetRolesList() => _roleManager.Roles.ToList();
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     RoleNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult RoleNotFound => View();
+
+
+    private List<IdentityRole> GetRolesList()
+    {
+        return _roleManager.Roles.ToList();
+    }
 
 
     private List<IdentityRole> SessionData<T>() where T : class
@@ -169,13 +175,15 @@ public class RolesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index));
 
         var roles = await _roleManager.FindByIdAsync(id);
 
         return roles == null
             ? new NotFoundViewResult(
-                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index))
             : View(roles);
     }
 
@@ -186,7 +194,10 @@ public class RolesController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Roles/Create
@@ -245,13 +256,15 @@ public class RolesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index));
 
         var role = await _roleManager.FindByIdAsync(id);
 
         return role == null
             ? new NotFoundViewResult(
-                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index))
             : View(role);
     }
 
@@ -276,7 +289,8 @@ public class RolesController : Controller
     {
         if (id != identityRole.Id)
             return new NotFoundViewResult(
-                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index));
 
         if (!ModelState.IsValid) return View(identityRole);
 
@@ -288,7 +302,8 @@ public class RolesController : Controller
         {
             if (await _roleManager.FindByIdAsync(id) == null)
                 return new NotFoundViewResult(
-                    nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                    nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                    nameof(Index));
             throw;
         }
 
@@ -306,13 +321,15 @@ public class RolesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index));
 
         var role = await _roleManager.FindByIdAsync(id);
 
         return role == null
             ? new NotFoundViewResult(
-                nameof(RoleNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index))
             : View(role);
     }
 
@@ -337,11 +354,4 @@ public class RolesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-
-
-    /// <summary>
-    /// RoleNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult RoleNotFound => View();
 }

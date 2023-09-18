@@ -66,7 +66,8 @@ public class SeedDbTeachersWithDisciplines
                      Teacher = teacher,
                      CourseId = course.Id,
                      Course = course,
-                     CreatedBy = user
+                     CreatedBy = user,
+                     CreatedById = user.Id,
                  })
             // Add the TeacherCourse association to the context
             dataContextInUse.TeacherCourses.Add(teacherCourse);

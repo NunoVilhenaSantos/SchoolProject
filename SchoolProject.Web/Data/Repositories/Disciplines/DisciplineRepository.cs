@@ -6,7 +6,8 @@ using SchoolProject.Web.Data.Entities.Disciplines;
 namespace SchoolProject.Web.Data.Repositories.Disciplines;
 
 /// <inheritdoc />
-public class DisciplineRepository : GenericRepository<Discipline>, IDisciplineRepository
+public class DisciplineRepository : GenericRepository<Discipline>,
+    IDisciplineRepository
 {
     private readonly DataContextMySql _dataContext;
     private readonly DataContextMsSql _dataContextMsSql;

@@ -13,12 +13,10 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.Students;
 
 /// <summary>
-///
 /// </summary>
 public class Student : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("First Name")]
@@ -26,7 +24,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Last Name")]
@@ -34,21 +31,18 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required string Address { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Postal Code")]
@@ -56,17 +50,14 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public virtual required City City { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
-    // [ForeignKey("CountryId")]
     public virtual required Country Country { get; set; }
 
 
@@ -75,7 +66,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Mobile Phone")]
@@ -83,7 +73,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DataType(DataType.EmailAddress)]
@@ -91,21 +80,18 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required bool Active { get; set; } = true;
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public virtual required Gender Gender { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Date Of Birth")]
@@ -114,20 +100,17 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Identification Number")]
     public required string IdentificationNumber { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     public required string IdentificationType { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Expiration Date Identification Number")]
@@ -136,7 +119,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Tax Identification Number")]
@@ -148,7 +130,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Country Of Nationality")]
@@ -161,14 +142,12 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public virtual required Country Birthplace { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Enroll Date")]
@@ -177,7 +156,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public virtual required User User { get; set; }
@@ -226,7 +204,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Courses")]
     public virtual HashSet<StudentCourse>? StudentCourses { get; set; }
@@ -248,14 +225,12 @@ public class Student : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Discipline")]
     public virtual HashSet<CourseStudents>? CourseStudents { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Course Count")]
     public int CourseStudentsCount => CourseStudents?.Count ?? 0;
@@ -317,13 +292,11 @@ public class Student : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///
     /// </summary>
     public virtual HashSet<Enrollment>? Enrollments { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Disciplines Count")]
     public int? CoursesCountEnrollments =>
@@ -331,7 +304,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Total Work Hours")]
     public int? TotalWorkHoursEnrollments =>
@@ -339,7 +311,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Highest Grade")]
     public decimal? HighestGrade => Enrollments?
@@ -348,7 +319,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Average Grade")]
     public decimal? AveregaGrade => Enrollments?
@@ -357,7 +327,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Lowest Grade")]
     public decimal? LowestGrade => Enrollments?
@@ -386,9 +355,6 @@ public class Student : IEntity, INotifyPropertyChanged
     public bool WasDeleted { get; set; }
 
 
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
     /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
@@ -401,9 +367,6 @@ public class Student : IEntity, INotifyPropertyChanged
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
 
     /// <inheritdoc />
     // [Required]

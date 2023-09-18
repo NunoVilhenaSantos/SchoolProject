@@ -3,7 +3,6 @@
 namespace SchoolProject.Web.Models.Teachers;
 
 /// <summary>
-///
 /// </summary>
 public class TeachersPagesViewModel
 {

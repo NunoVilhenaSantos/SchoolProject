@@ -16,7 +16,6 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 public class Teacher : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("First Name")]
@@ -24,7 +23,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Last Name")]
@@ -32,21 +30,18 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required string Address { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Postal Code")]
@@ -54,16 +49,13 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required City City { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
-    //[ForeignKey("CountryId")]
     public required Country Country { get; set; }
 
 
@@ -72,7 +64,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Mobile Phone")]
@@ -80,27 +71,23 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DataType(DataType.EmailAddress)]
     public required string Email { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required bool Active { get; set; } = true;
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required Gender Gender { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Date Of Birth")]
@@ -108,20 +95,17 @@ public class Teacher : IEntity, INotifyPropertyChanged
     public required DateTime DateOfBirth { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Identification Number")]
     public required string IdentificationNumber { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     public required string IdentificationType { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Expiration Date Identification Number")]
@@ -130,7 +114,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Tax Identification Number")]
@@ -138,7 +121,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Country Of Nationality")]
@@ -150,11 +132,14 @@ public class Teacher : IEntity, INotifyPropertyChanged
     // [Required] public required Nationality Nationality { get; set; }
 
 
-    [Required] public required Country Birthplace { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public required Country Birthplace { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Enroll Date")]
@@ -163,7 +148,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required User User { get; set; }
@@ -209,13 +193,11 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Disciplines Count")]
     public int CoursesCount => TeacherCourses?.Count ?? 0;
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Total Work Hours")]
     public int TotalWorkHours => TeacherCourses?
@@ -237,6 +219,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     public Guid IdGuid { get; set; }
 
 
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }

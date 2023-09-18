@@ -8,7 +8,6 @@ using SchoolProject.Web.Data.Seeders.DisciplinesLists;
 namespace SchoolProject.Web.Data.Seeders;
 
 /// <summary>
-///
 /// </summary>
 public class SeedDbCourses
 {

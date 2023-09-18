@@ -18,31 +18,15 @@ public class NationalitiesController : Controller
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Nationality);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
-
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
 
 
     private readonly ICountryRepository _countryRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly INationalityRepository _nationalityRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -60,6 +44,26 @@ public class NationalitiesController : Controller
         _nationalityRepository = nationalityRepository;
         _hostingEnvironment = hostingEnvironment;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     NationalityNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult NationalityNotFound => View();
 
 
     private List<Nationality> GetNationalitiesWithCountries()
@@ -181,13 +185,15 @@ public class NationalitiesController : Controller
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
-            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+            return new NotFoundViewResult(nameof(NationalityNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var nationality =
             await _nationalityRepository.GetNationalityAsync(id.Value);
 
         return nationality == null
-            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
             : View(nationality);
     }
 
@@ -196,7 +202,10 @@ public class NationalitiesController : Controller
     ///     create action
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
     // POST: Nationalities/Create
     // To protect from over-posting attacks,
@@ -231,13 +240,15 @@ public class NationalitiesController : Controller
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
-            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+            return new NotFoundViewResult(nameof(NationalityNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var nationality = await
             _nationalityRepository.GetNationalityAsync(id.Value);
 
         return nationality == null
-            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
             : View(nationality);
     }
 
@@ -257,7 +268,8 @@ public class NationalitiesController : Controller
     public async Task<IActionResult> Edit(int id, Nationality nationality)
     {
         if (id != nationality.Id)
-            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+            return new NotFoundViewResult(nameof(NationalityNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(nationality);
 
@@ -272,7 +284,9 @@ public class NationalitiesController : Controller
                 .GetNationalityAsync(nationality.Id);
 
             if (test == null)
-                return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                return new NotFoundViewResult(nameof(NationalityNotFound),
+                    CurrentClass, id.ToString(), CurrentController,
+                    nameof(Index));
 
             throw;
         }
@@ -289,13 +303,15 @@ public class NationalitiesController : Controller
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
-            return new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+            return new NotFoundViewResult(nameof(NationalityNotFound),
+                CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var nationality = await _nationalityRepository
             .GetNationalityAsync(id.Value);
 
         return nationality == null
-            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
             : View(nationality);
     }
 
@@ -320,11 +336,4 @@ public class NationalitiesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-
-
-    /// <summary>
-    /// NationalityNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult NationalityNotFound => View();
 }

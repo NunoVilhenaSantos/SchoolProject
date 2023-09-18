@@ -9,6 +9,7 @@ using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 
+
 namespace SchoolProject.Web.Data.DataContexts.MySQL;
 
 /// <inheritdoc />
@@ -22,14 +23,14 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 
 
     /// <inheritdoc />
-    protected DataContextMySql(DbContextOptions<DcMySqlOnline> options) :
+    public DataContextMySql(DbContextOptions<DcMySqlOnline> options) :
         base(options)
     {
     }
 
 
     /// <inheritdoc />
-    protected DataContextMySql(DbContextOptions<DcMySqlLocal> options) :
+    public DataContextMySql(DbContextOptions<DcMySqlLocal> options) :
         base(options)
     {
     }
@@ -40,26 +41,25 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
     // ---------------------------------------------------------------------- //
 
 
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados das cidades.
+    /// </summary>
+    public required DbSet<City> Cities { get; set; }
 
     /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de cidades.
+    ///     Tabela auxiliar para armazenar os dados dos países.
     /// </summary>
-    public DbSet<City> Cities { get; set; }
+    public required DbSet<Country> Countries { get; set; }
 
     /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de países.
+    ///     Tabela auxiliar para armazenar os dados das nacionalidades.
     /// </summary>
-    public DbSet<Country> Countries { get; set; }
+    public required DbSet<Nationality> Nationalities { get; set; }
 
     /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de nacionalidades.
+    ///     Tabela auxiliar para armazenar os dados dos géneros.
     /// </summary>
-    public DbSet<Nationality> Nationalities { get; set; }
-
-    /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de gêneros.
-    /// </summary>
-    public DbSet<Gender> Genders { get; set; }
+    public required DbSet<Gender> Genders { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -68,58 +68,57 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 
 
     /// <summary>
-    ///     Tabela principal para armazenar os dados das Disciplines.
-    /// </summary>
-    public DbSet<Discipline> Disciplines { get; set; }
-
-    /// <summary>
     ///     Tabela principal para armazenar os dados de escolas "Turmas".
     /// </summary>
-    public DbSet<Course> Courses { get; set; }
+    public required DbSet<Course> Courses { get; set; }
+
+
+    /// <summary>
+    ///     Tabela principal para armazenar os dados das Disciplines.
+    /// </summary>
+    public required DbSet<Discipline> Disciplines { get; set; }
 
     /// <summary>
     ///     Tabela principal para armazenar os dados dos estudantes.
     /// </summary>
-    public DbSet<Student> Students { get; set; }
+    public required DbSet<Student> Students { get; set; }
 
     /// <summary>
     ///     Tabela principal para armazenar os dados dos professores.
     /// </summary>
-    public DbSet<Teacher> Teachers { get; set; }
-
-
+    public required DbSet<Teacher> Teachers { get; set; }
 
 
     // ---------------------------------------------------------------------- //
     // muitos para muitos
     // ---------------------------------------------------------------------- //
 
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
+    public required DbSet<CourseStudents> CoursesStudents { get; set; }
+
+    /// <summary>
+    ///     Tabela auxiliar para armazenar os dados de matrículas.
+    /// </summary>
+    public required DbSet<CourseDisciplines> CoursesDisciplines { get; set; }
 
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public DbSet<Enrollment> Enrollments { get; set; }
+    public required DbSet<Enrollment> Enrollments { get; set; }
+
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public DbSet<CourseStudents> CoursesStudents { get; set; }
+    public required DbSet<StudentCourse> StudentCourses { get; set; }
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public DbSet<CourseDisciplines> CoursesDisciplines { get; set; }
-
-    /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de matrículas.
-    /// </summary>
-    public DbSet<StudentCourse> StudentCourses { get; set; }
-
-    /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de matrículas.
-    /// </summary>
-    public DbSet<TeacherCourse> TeacherCourses { get; set; }
+    public required DbSet<TeacherCourse> TeacherCourses { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -129,17 +128,50 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+
         // ------------------------------------------------------------------ //
 
+
+        // ------------------------------------------------------------------ //
+        //
+        // Set DeleteBehavior to Restrict for all relationships
+        //
+        // ------------------------------------------------------------------ //
+        foreach (var relationship in
+                 modelBuilder.Model.GetEntityTypes()
+                     .SelectMany(e => e.GetForeignKeys()))
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
+
+
+
+
+        // ------------------------------------------------------------------ //
         //
         // Set ValueGeneratedOnAdd for IdGuid properties in entities
         //
+        // FOR MSSQL
+        //          .HasDefaultValueSql("(NEWSEQUENTIALID())");
+        //
+        // FOR MYSQL
+        //         .HasDefaultValueSql("(UUID())");
+        //          OR
+        //         .HasColumnType("binary(16)")
+        //         .ValueGeneratedOnAdd()
+        //         .HasDefaultValueSql("(UUID_TO_BIN(UUID()))");
+        //
+        // FOR SQLITE
+        //         .HasDefaultValueSql("NEWID()");
+        //
+        // ------------------------------------------------------------------ //
+
+        // ------------------------------------------------------------------ //
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             // Verifica se a entidade possui a propriedade "IdGuid" do tipo Guid
             var idGuidProperty =
-                entityType.ClrType.GetProperty("IdGuid",
-                    typeof(Guid));
+                entityType.ClrType.GetProperty("IdGuid", typeof(Guid));
 
 
             // Configura a propriedade "IdGuid" para ser gerada automaticamente
@@ -165,6 +197,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 
         // ------------------------------------------------------------------ //
 
+
         // foreach (var property in modelBuilder.Model.GetEntityTypes()
         //              .SelectMany(t => t.GetProperties())
         //              .Where(p => p.ClrType == typeof(Guid)))
@@ -172,7 +205,9 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         //     property.SetDefaultValueSql("NEWID()");
         // }
 
+
         // ------------------------------------------------------------------ //
+
 
         // Modify table names for all entities (excluding "AspNet" tables)
         // foreach (var entityType in modelBuilder.Model.GetEntityTypes())
@@ -182,12 +217,20 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         //     entityType.SetTableName(table[0..^1]);
         // }
 
+
+        // ------------------------------------------------------------------ //
         // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Student and Discipline
-        // via Enrollment
+        // ------------------------------------------------------------------ //
+        // Configure many-to-many relationship tables section
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
+        // Enrollment
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<Enrollment>()
@@ -214,33 +257,17 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
             // Nome da coluna no banco de dados
             .HasColumnName("Id")
             // Tipo de dado da coluna,
-            // pode variar de acordo com suas necessidades
             .HasColumnType("int");
 
 
         // ------------------------------------------------------------------ //
 
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
-        //
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Teacher)
-        //     .WithMany(t => t.TeacherCourses)
-        //     .HasForeignKey(tc => tc.TeacherGuidId);
-        //
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Discipline)
-        //     .WithMany(c => c.TeacherCourses)
-        //     .HasForeignKey(tc => tc.CourseGuidId);
-
-
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Discipline and Discipline
+        // Courses and Disciplines
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<CourseDisciplines>()
-            .HasKey(cd =>
-                new {cd.CourseId, cd.DisciplineId});
+            .HasKey(cd => new {cd.CourseId, cd.DisciplineId});
 
 
         modelBuilder.Entity<CourseDisciplines>()
@@ -262,28 +289,14 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
             .UseIdentityColumn()
             // Nome da coluna no banco de dados
             .HasColumnName("Id")
-            // Tipo de dado da coluna, pode variar de acordo com suas necessidades
+            // Tipo de dado da coluna,
             .HasColumnType("int");
 
 
         // ------------------------------------------------------------------ //
 
-        // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
-        //
-        // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.Discipline)
-        //     .WithMany(sc => sc.CourseDisciplines)
-        //     .HasForeignKey(scc => scc.SchoolClassGuidId);
-        //
-        // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.Discipline)
-        //     .WithMany(c => c.CourseDisciplines)
-        //     .HasForeignKey(scc => scc.CourseGuidId);
-
-
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Discipline and Discipline
+        // Course and Students
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<CourseStudents>()
@@ -301,33 +314,19 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
         modelBuilder.Entity<CourseStudents>()
-            .Property(scs => scs.Id)
+            .Property(cs => cs.Id)
             // Usar a extensão específica para MySQL
             .UseIdentityColumn()
             // Nome da coluna no banco de dados
             .HasColumnName("Id")
-            // Tipo de dado da coluna, pode variar de acordo com suas necessidades
+            // Tipo de dado da coluna,
             .HasColumnType("int");
 
 
         // ------------------------------------------------------------------ //
 
-        // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasKey(scc => new {scc.SchoolClassGuidId, scc.CourseGuidId});
-        //
-        // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.Discipline)
-        //     .WithMany(sc => sc.CourseDisciplines)
-        //     .HasForeignKey(scc => scc.SchoolClassGuidId);
-        //
-        // modelBuilder.Entity<SchoolClassCourse>()
-        //     .HasOne(scc => scc.Discipline)
-        //     .WithMany(c => c.CourseDisciplines)
-        //     .HasForeignKey(scc => scc.CourseGuidId);
-
-
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Student and Discipline
+        // Student and Courses
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<StudentCourse>()
@@ -350,28 +349,15 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
             .UseIdentityColumn()
             // Nome da coluna no banco de dados
             .HasColumnName("Id")
-            // Tipo de dado da coluna, pode variar de acordo com suas necessidades
+            // Tipo de dado da coluna,
             .HasColumnType("int");
 
 
         // ------------------------------------------------------------------ //
 
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
-        //
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Teacher)
-        //     .WithMany(t => t.TeacherCourses)
-        //     .HasForeignKey(tc => tc.TeacherGuidId);
-        //
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Discipline)
-        //     .WithMany(c => c.TeacherCourses)
-        //     .HasForeignKey(tc => tc.CourseGuidId);
-
 
         // ------------------------------------------------------------------ //
-        // Configure many-to-many relationship between Teacher and Discipline
+        // Teacher and Courses
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<TeacherCourse>()
@@ -394,35 +380,17 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
             .UseIdentityColumn()
             // Nome da coluna no banco de dados
             .HasColumnName("Id")
-            // Tipo de dado da coluna, pode variar de acordo com suas necessidades
+            // Tipo de dado da coluna,
             .HasColumnType("int");
 
 
         // ------------------------------------------------------------------ //
 
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasKey(tc => new {tc.TeacherGuidId, tc.CourseGuidId});
-        //
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Teacher)
-        //     .WithMany(t => t.TeacherCourses)
-        //     .HasForeignKey(tc => tc.TeacherGuidId);
-        //
-        // modelBuilder.Entity<TeacherCourse>()
-        //     .HasOne(tc => tc.Discipline)
-        //     .WithMany(c => c.TeacherCourses)
-        //     .HasForeignKey(tc => tc.CourseGuidId);
 
         // ------------------------------------------------------------------ //
-
-
-        // ------------------------------------------------------------------ //
-        // ------------------------------------------------------------------ //
-        // ------------------------------------------------------------------ //
-
-
         // ... Other configurations ...
         // ... Outras configurações ...
+        // ------------------------------------------------------------------ //
 
 
         // Relação entre City e Country
@@ -440,7 +408,7 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
             .WithOne(n => n.Country)
             .HasForeignKey<Nationality>(n => n.CountryId)
             // Configura a exclusão em cascata
-            .OnDelete(DeleteBehavior.Cascade) 
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
 
@@ -448,8 +416,10 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         modelBuilder.Entity<Nationality>()
             .HasOne(n => n.Country)
             .WithOne(c => c.Nationality)
+            // .HasForeignKey<Country>(c => c.NationalityId)
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
+
 
         // Relação entre Country e Nationality
         // modelBuilder.Entity<Nationality>()
@@ -468,22 +438,12 @@ public class DataContextMySql : IdentityDbContext<User, IdentityRole, string>
         // ------------------------------------------------------------------ //
 
 
-        // ------------------------------------------------------------------ //
-
-
-        //
-        // Set DeleteBehavior to Restrict for all relationships
-        //
-        foreach (var relationship in
-                 modelBuilder.Model.GetEntityTypes()
-                     .SelectMany(e => e.GetForeignKeys()))
-            relationship.DeleteBehavior = DeleteBehavior.Restrict;
-
-
-        // ------------------------------------------------------------------ //
-
         base.OnModelCreating(modelBuilder);
+
+
     }
 
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
 }

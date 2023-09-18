@@ -50,7 +50,6 @@ public class User : IdentityUser, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Display(Name = "Full Name")]
     public string FullName => $"{FirstName} {LastName}";

@@ -17,33 +17,18 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class EnrollmentsController : Controller
 {
-
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Enrollment);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
 
 
     private readonly DataContextMySql _context;
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -61,6 +46,25 @@ public class EnrollmentsController : Controller
         _hostingEnvironment = hostingEnvironment;
         _enrollmentRepository = enrollmentRepository;
     }
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     EnrollmentNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult EnrollmentNotFound => View();
 
 
     private List<Enrollment> GetEnrollmentsWithCoursesAndStudents()
@@ -267,20 +271,20 @@ public class EnrollmentsController : Controller
                 "Id", "Code",
                 enrollment.DisciplineId);
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                enrollment.CreatedById);
-
         ViewData["StudentId"] =
             new SelectList(_context.Students,
                 "Id", "Address",
                 enrollment.StudentId);
 
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                "Id", "FullName",
+                enrollment.CreatedBy.Id);
+
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                enrollment.UpdatedById);
+                "Id", "FullName",
+                enrollment.UpdatedBy?.Id);
 
         return View(enrollment);
     }
@@ -309,20 +313,22 @@ public class EnrollmentsController : Controller
                 "Id", "Code",
                 enrollment.DisciplineId);
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                enrollment.CreatedById);
-
         ViewData["StudentId"] =
             new SelectList(_context.Students,
                 "Id", "Address",
                 enrollment.StudentId);
 
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                "Id", "FullName",
+                enrollment.CreatedBy.Id);
+
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                enrollment.UpdatedById);
+                "Id", "FullName",
+                enrollment is {UpdatedBy: not null}
+                    ? enrollment.UpdatedBy.Id
+                    : null);
 
         return View(enrollment);
     }
@@ -369,23 +375,27 @@ public class EnrollmentsController : Controller
 
         ViewData["DisciplineId"] =
             new SelectList(_context.Disciplines,
-                "Id", "Code",
+                nameof(enrollment.Discipline.Id),
+                nameof(enrollment.Discipline.Code),
                 enrollment.DisciplineId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                enrollment.CreatedById);
 
         ViewData["StudentId"] =
             new SelectList(_context.Students,
-                "Id", "Address",
+                nameof(enrollment.Student.Id),
+                nameof(enrollment.Student.FullName),
                 enrollment.StudentId);
+
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                nameof(enrollment.CreatedBy.Id),
+                nameof(enrollment.CreatedBy.FullName),
+                enrollment.CreatedBy.Id);
 
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                enrollment.UpdatedById);
+                nameof(enrollment.UpdatedBy.Id),
+                nameof(enrollment.UpdatedBy.FullName),
+                enrollment.UpdatedBy?.Id);
 
         return View(enrollment);
     }
@@ -437,13 +447,8 @@ public class EnrollmentsController : Controller
     }
 
 
-    /// <summary>
-    /// EnrollmentNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult EnrollmentNotFound => View();
-
-
-    private bool EnrollmentExists(int id) =>
-        _context.Enrollments.Any(e => e.StudentId == id);
+    private bool EnrollmentExists(int id)
+    {
+        return _context.Enrollments.Any(e => e.StudentId == id);
+    }
 }

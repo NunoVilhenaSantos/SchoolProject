@@ -33,19 +33,6 @@ public class AccountController : Controller
     internal const string SortProperty = UsersController.SortProperty;
 
 
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
     private readonly IConfiguration _configuration;
 
     private readonly ICountryRepository _countryRepository;
@@ -102,6 +89,19 @@ public class AccountController : Controller
         // _signInManager = signInManager;
         _hostingEnvironment = hostingEnvironment;
         //_semaphoreService = semaphoreService;
+    }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
     }
 
 
@@ -463,10 +463,7 @@ public class AccountController : Controller
     /// <returns></returns>
     [HttpGet]
     [Authorize]
-    public IActionResult ChangePassword()
-    {
-        return View();
-    }
+    public IActionResult ChangePassword() => View();
 
 
     /// <summary>

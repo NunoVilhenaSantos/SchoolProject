@@ -16,33 +16,18 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
-
     // Obtém o tipo da classe atual
     internal const string CurrentClass = nameof(City);
     internal const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
 
 
     private readonly ICityRepository _cityRepository;
     private readonly ICountryRepository _countryRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -59,6 +44,19 @@ public class CitiesController : Controller
         _cityRepository = cityRepository;
         _hostingEnvironment = hostingEnvironment;
         _countryRepository = countryRepository;
+    }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
     }
 
 
@@ -252,7 +250,8 @@ public class CitiesController : Controller
 
         return city == null
             ? new NotFoundViewResult(
-                nameof(CityNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(CityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(city);
     }
 
@@ -394,9 +393,12 @@ public class CitiesController : Controller
 
 
     /// <summary>
-    ///    CityNotFound action.
+    ///     CityNotFound action.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult CityNotFound() => View();
+    public IActionResult CityNotFound()
+    {
+        return View();
+    }
 }

@@ -9,7 +9,6 @@ using SchoolProject.Web.Data.EntitiesOthers;
 namespace SchoolProject.Web.Data.Entities.Courses;
 
 /// <summary>
-///
 /// </summary>
 public class CourseDisciplines : IEntity, INotifyPropertyChanged
 {
@@ -20,19 +19,16 @@ public class CourseDisciplines : IEntity, INotifyPropertyChanged
     ///     Foreign Key for Discipline
     /// </summary>
     [Required]
+    [ForeignKey(nameof(Course))]
     public required int CourseId { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
-    [ForeignKey(nameof(CourseId))]
     public virtual required Course Course { get; set; }
 
 
-
-
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
@@ -41,15 +37,15 @@ public class CourseDisciplines : IEntity, INotifyPropertyChanged
     ///     Foreign Key for Discipline
     /// </summary>
     [Required]
+    [ForeignKey(nameof(Discipline))]
     public required int DisciplineId { get; set; }
 
+
     /// <summary>
     ///     Foreign Key for Discipline
     /// </summary>
     [Required]
-    [ForeignKey(nameof(DisciplineId))]
     public virtual required Discipline Discipline { get; set; }
-
 
 
     // --------------------------------------------------------------------- //
@@ -80,24 +76,11 @@ public class CourseDisciplines : IEntity, INotifyPropertyChanged
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
-    // Deve ser do mesmo tipo da propriedade Id de User
-    /// <summary>
-    ///
-    /// </summary>
-    [DisplayName("Created By User Id")]
-    public string CreatedById { get; set; }
-
-
     /// <inheritdoc />
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
-    [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
 
 
     // [Required]
@@ -108,24 +91,32 @@ public class CourseDisciplines : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
 
-
-    // Deve ser do mesmo tipo da propriedade Id de User
-    /// <summary>
-    ///
-    /// </summary>
-    [DisplayName("Updated By User Id")]
-    public string? UpdatedById { get; set; }
-
-
     /// <inheritdoc />
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By")]
-    [ForeignKey(nameof(UpdatedById))]
     public virtual User? UpdatedBy { get; set; }
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Created By User Id")]
+    [ForeignKey(nameof(CreatedBy))]
+    public required string CreatedById { get; set; }
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Updated By User Id")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
 
     // ---------------------------------------------------------------------- //
     // Property Changed Event Handler

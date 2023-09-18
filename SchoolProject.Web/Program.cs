@@ -17,12 +17,11 @@ using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Users;
-using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Data.Repositories.Disciplines;
 using SchoolProject.Web.Data.Repositories.Enrollments;
 using SchoolProject.Web.Data.Repositories.OtherEntities;
-using SchoolProject.Web.Data.Repositories.SchoolClasses;
 using SchoolProject.Web.Data.Repositories.Students;
 using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Data.Seeders;
@@ -146,7 +145,67 @@ static Task RunSeeding(IHost host)
 
     var seeder = scope?.ServiceProvider.GetService<SeedDb>();
 
-    seeder?.SeedAsync();
+
+    try
+    {
+        // TODO: tem bug sem dar erro no debug
+        // var result = seeder.SeedAsync();
+        
+        //var seedTask = seeder.SeedAsync();
+        //seedTask.Wait(); // Espere até que a tarefa seja concluída.
+
+        //Console.WriteLine(seedTask.IsCompletedSuccessfully
+        //    ? "Seeding do banco de dados concluído."
+        //    : "Seeding do banco de dados falhou.");
+    }
+    catch (Exception ex)
+    {
+        // Registe a exceção ou faça o tratamento adequado aqui.
+        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
+        Console.WriteLine("Ocorreu um erro durante a execução " +
+                          "do populador do banco de dados.\n" +
+                          ex.Message);
+        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+    }
+    finally
+    {
+        // Certifique-se de que as conexões do seeder sejam fechadas, mesmo em caso de exceção.
+        // Implemente este método para fechar as conexões no seu seeder.
+        seeder.CloseConnections();
+        Console.WriteLine("Conexões do seeder fechadas.");
+    }
+
+
+    try
+    {
+        // TODO: tem bug sem dar erro no debug
+        //seeder.SeedAsync().Wait(); 
+    }
+    catch (Exception ex)
+    {
+        // Registe a exceção ou faça o tratamento adequado aqui.
+        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
+        Console.WriteLine("Ocorreu um erro durante a execução " +
+                          "do populador do banco de dados.\n" +
+                          ex.Message);
+        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+    }
+
+
+    try
+    {
+        // TODO: tem bug sem dar erro no debug
+        seeder.SeedSync();
+    }
+    catch (Exception ex)
+    {
+        // Registe a exceção ou faça o tratamento adequado aqui.
+        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
+        Console.WriteLine("Ocorreu um erro durante a execução " +
+                          "do populador do banco de dados.\n" +
+                          ex.Message);
+        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+    }
 
 
     // Stop the timer "MyTimer"
@@ -160,14 +219,16 @@ static Task RunSeeding(IHost host)
 
     // Format and display the TimeSpan value.
     Console.WriteLine(
-        "RunTime: horas, minutos, segundos, milesimos de segundos");
+        "RunTime: horas, minutos, segundos, milésimos de segundos");
     var elapsedTime =
         $"{elapsed.Hours:00}:{elapsed.Minutes:00}:" +
         $"{elapsed.Seconds:00}.{elapsed.Milliseconds:00}";
 
     Console.WriteLine("RunTime: " + elapsedTime);
 
+
     TimeTracker.PrintTimerToConsole(TimeTracker.SeederTimerName);
+
 
     return Task.CompletedTask;
 
@@ -631,8 +692,8 @@ builder.Logging.AddApplicationInsights();
 
 // --------------------------------- --------------------------------------- //
 
-// builder.Services.AddScoped<SemaphoreService>();
-builder.Services.TryAddSingleton<SemaphoreService>();
+// builder.Services.TryAddScoped<SemaphoreService>();
+builder.Services.TryAddScoped<SemaphoreService>();
 
 
 // --------------------------------- --------------------------------------- //
@@ -654,40 +715,48 @@ builder.Services.TryAddSingleton(builder.Environment);
 
 
 // Inject repositories and helpers.
-// builder.Services.AddScoped<UserManager<User>>();
-builder.Services
-    .AddScoped<UserManager<User>>();
-builder.Services
-    .AddScoped<IUserHelper,
-        UserHelper>();
-builder.Services.AddScoped<IEMailHelper, EMailHelper>();
-builder.Services.AddScoped<IImageHelper, ImageHelper>();
-builder.Services.AddScoped<IStorageHelper, StorageHelper>();
-builder.Services.AddScoped<IStorageHelper0, StorageHelper0>();
-builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
-builder.Services.AddScoped<AuthenticatedUserInApp>();
+builder.Services.TryAddScoped<UserManager<User>>();
+builder.Services.TryAddScoped<IUserHelper, UserHelper>();
+builder.Services.TryAddScoped<IEMailHelper, EMailHelper>();
+builder.Services.TryAddScoped<IImageHelper, ImageHelper>();
+builder.Services.TryAddScoped<IStorageHelper, StorageHelper>();
+builder.Services.TryAddScoped<IStorageHelper0, StorageHelper0>();
+builder.Services.TryAddScoped<IConverterHelper, ConverterHelper>();
+//
+builder.Services.TryAddScoped<AuthenticatedUserInApp>();
 
 // --------------------------------- --------------------------------------- //
 
 // Add seeding for the database.
-// builder.Services.AddTransient<SeedDb>();
-builder.Services.AddScoped<SeedDb>();
+builder.Services.TryAddScoped<SeedDb>();
+//builder.Services.TryAddTransient<SeedDb>();
 
-// builder.Services.AddScoped<SeedDbUsers>();
-// builder.Services.AddScoped<SeedDbStudentsAndTeachers>();
-// builder.Services.AddScoped<SeedDbCourses>();
+builder.Services.TryAddScoped<SeedDbUsers>();
+builder.Services.TryAddScoped<SeedDbStudentsAndTeachers>();
+builder.Services.TryAddScoped<SeedDbCourses>();
 
-// builder.Services.AddScoped<SeedDbTeachersWithCourses>();
-// builder.Services.AddScoped<SeedDbSchoolClassesWithCourses>();
-// builder.Services.AddScoped<SeedDbStudentsWithSchoolClasses>();
+//builder.Services.TryAddTransient<SeedDbUsers>();
+//builder.Services.TryAddTransient<SeedDbStudentsAndTeachers>();
+//builder.Services.TryAddTransient<SeedDbCourses>();
+
+builder.Services.TryAddScoped<SeedDbTeachersWithDisciplines>();
+builder.Services.TryAddScoped<SeedDbCoursesWithDisciplines>();
+builder.Services.TryAddScoped<SeedDbStudentsAndCourses>();
+
+//builder.Services.TryAddTransient<SeedDbTeachersWithDisciplines>();
+//builder.Services.TryAddTransient<SeedDbCoursesWithDisciplines>();
+//builder.Services.TryAddTransient<SeedDbStudentsAndCourses>();
 
 
-// builder.Services.AddScoped<SeedDbSchoolClassStudents>();
-// builder.Services.AddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();
-// builder.Services.AddTransient<SeedDb>().Configure();
-// builder.Services.AddTransient<SeedDbMsSql>();
-// builder.Services.AddTransient<SeedDbMySql>();
-// builder.Services.AddTransient<SeedDbSqLite>();
+builder.Services.TryAddScoped<SeedDbPlaceHolders>();
+//builder.Services.TryAddTransient<SeedDbPlaceHolders>();
+
+
+// builder.Services.TryAddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();
+// builder.Services.TryAddTransient<SeedDb>().Configure();
+// builder.Services.TryAddTransient<SeedDbMsSql>();
+// builder.Services.TryAddTransient<SeedDbMySql>();
+// builder.Services.TryAddTransient<SeedDbSqLite>();
 
 // --------------------------------- --------------------------------------- //
 
@@ -696,7 +765,7 @@ builder.Services.AddScoped<SeedDb>();
 //
 
 //
-// builder.Services.AddScoped<IRepository, MockRepository>();
+// builder.Services.TryAddScoped<IRepository, MockRepository>();
 
 
 //
@@ -704,46 +773,54 @@ builder.Services.AddScoped<SeedDb>();
 //
 
 //
-builder.Services.AddScoped<ICityRepository, CityRepository>();
-builder.Services.AddScoped<ICountryRepository, CountryRepository>();
-builder.Services.AddScoped<INationalityRepository, NationalityRepository>();
+builder.Services.TryAddScoped<ICityRepository, CityRepository>();
+builder.Services.TryAddScoped<ICountryRepository, CountryRepository>();
+builder.Services.TryAddScoped<INationalityRepository, NationalityRepository>();
 
 //
-builder.Services.AddScoped<IDisciplineRepository, DisciplineRepository>();
-
-//
-builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
-
-//
-builder.Services.AddScoped<IGenderRepository, GenderRepository>();
-
-//
+builder.Services.TryAddScoped<ICourseRepository, CourseRepository>();
 builder.Services
-    .AddScoped<ISchoolClassCourseRepository, SchoolClassCourseRepository>();
-builder.Services.AddScoped<ISchoolClassRepository, SchoolClassRepository>();
+    .TryAddScoped<ICourseDisciplinesRepository, CourseDisciplinesRepository>();
 builder.Services
-    .AddScoped<ISchoolClassStudentRepository, SchoolClassStudentRepository>();
+    .TryAddScoped<ICourseStudentsRepository, CourseStudentsRepository>();
 
 //
-builder.Services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.TryAddScoped<IDisciplineRepository, DisciplineRepository>();
 
 //
-builder.Services.AddScoped<ITeacherCourseRepository, TeacherCourseRepository>();
-builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.TryAddScoped<IEnrollmentRepository, EnrollmentRepository>();
+
+//
+builder.Services.TryAddScoped<IGenderRepository, GenderRepository>();
+
+
+//
+builder.Services.TryAddScoped<IStudentRepository, StudentRepository>();
+builder.Services
+    .TryAddScoped<IStudentCourseRepository, StudentCourseRepository>();
+
+//
+builder.Services.TryAddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services
+    .TryAddScoped<ITeacherCourseRepository, TeacherCourseRepository>();
 
 // --------------------------------- --------------------------------------- //
+
 
 //
 // injecting cloud repositories
-// builder.Services.AddScoped<GcpConfigOptions>();
-// builder.Services.AddScoped<AWSConfigOptions>();
-// builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
+// builder.Services.TryAddScoped<GcpConfigOptions>();
+// builder.Services.TryAddScoped<AWSConfigOptions>();
+// builder.Services.TryAddScoped<ICloudStorageService, CloudStorageService>();
+//
+
 
 // --------------------------------- --------------------------------------- //
 
+
 builder.Services.AddWebEncoders();
 builder.Services.AddAntiforgery();
+
 
 // This is for in-memory storage of session data
 builder.Services.AddDistributedMemoryCache();
@@ -806,8 +883,6 @@ var app = builder.Build();
 
 // ------------------- //
 await RunSeeding(app);
-
-// SaveToCsv.SaveTo(app);
 
 
 // Exception handling and HTTPS redirection for non-development environments.

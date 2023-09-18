@@ -1,28 +1,34 @@
 ﻿namespace SchoolProject.Web.Data.Seeders;
 
+/// <summary>
+///
+/// </summary>
 public class SeedDbPlaceHolders
 {
     //
     // Injeção de dependência do IWebHostEnvironment
-    // para obter o diretorio de execução do projeto
+    // para obter o diretório de execução do projeto
     //
-    private static IWebHostEnvironment _hostingEnvironment;
+    private static IWebHostEnvironment _webHostEnvironment;
 
 
-    // Add an initializer to receive IUserHelper through dependency injection
-    public static void Initialize(IWebHostEnvironment hostingEnvironment)
+    /// <summary>
+    /// Add an initializer to receive IWebHostEnvironment hostingEnvironment
+    /// </summary>
+    /// <param name="webHostEnvironment"></param>
+    public static void Initialize(IWebHostEnvironment webHostEnvironment)
     {
-        _hostingEnvironment = hostingEnvironment;
+        _webHostEnvironment = webHostEnvironment;
     }
 
 
     internal static void AddPlaceHolders()
     {
         var origem =
-            Path.Combine(_hostingEnvironment.ContentRootPath,
+            Path.Combine(_webHostEnvironment.ContentRootPath,
                 "Helpers", "Images");
         var destino =
-            Path.Combine(_hostingEnvironment.WebRootPath,
+            Path.Combine(_webHostEnvironment.WebRootPath,
                 "images", "PlaceHolders");
 
 

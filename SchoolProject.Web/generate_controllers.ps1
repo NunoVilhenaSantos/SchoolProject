@@ -63,5 +63,9 @@ function GenerateControllersRecursively
 
 Clear-Host
 
+# instalar dot net entity framework e o codegenertor para os controladores
+dotnet tool install --global dotnet-ef
+dotnet tool install --global dotnet-aspnet-codegenerator
+
 # Chame a função para gerar scaffolding de controladores para todas as classes em sub-pastas
 GenerateControllersRecursively $entitiesDirectory

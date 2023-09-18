@@ -9,7 +9,6 @@ using SchoolProject.Web.Data.EntitiesOthers;
 namespace SchoolProject.Web.Data.Entities.Courses;
 
 /// <summary>
-///
 /// </summary>
 public class CourseStudents : IEntity, INotifyPropertyChanged
 {
@@ -18,22 +17,22 @@ public class CourseStudents : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     Foreign Key for Discipline
+    ///     Foreign Key for Course
     /// </summary>
     [Required]
+    [ForeignKey(nameof(Course))]
     public required int CourseId { get; set; }
 
 
     /// <summary>
-    ///     The real Object for Discipline
+    ///     The real Object for Course
     /// </summary>
     [Required]
-    [ForeignKey(nameof(CourseId))]
     public virtual required Course Course { get; set; }
 
 
     ///// <summary>
-    /////     Foreign Guid Key for Discipline
+    /////     Foreign Guid Key for Course
     ///// </summary>
     //public Guid CourseGuidId => Discipline.IdGuid;
 
@@ -43,42 +42,17 @@ public class CourseStudents : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     Foreign Key for Course
+    ///     Foreign Key for Student
     /// </summary>
     [Required]
+    [ForeignKey(nameof(Student))]
     public required int StudentId { get; set; }
 
     /// <summary>
-    ///     The real Object for Discipline
+    ///     The real Object for Student
     /// </summary>
     [Required]
-    [ForeignKey(nameof(StudentId))]
     public virtual required Student Student { get; set; }
-
-
-    // public Guid StudentGuidId => Student.IdGuid;
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de User
-    /// </summary>
-    [DisplayName("Created By User Id")]
-    public string CreatedById { get; set; }
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de User
-    /// </summary>
-    [DisplayName("Updated By User Id")]
-    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -114,7 +88,6 @@ public class CourseStudents : IEntity, INotifyPropertyChanged
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
-    [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
 
 
@@ -130,8 +103,27 @@ public class CourseStudents : IEntity, INotifyPropertyChanged
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By")]
-    [ForeignKey(nameof(UpdatedById))]
     public virtual User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Created By User Id")]
+    [ForeignKey(nameof(CreatedBy))]
+    public required string CreatedById { get; set; }
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Updated By User Id")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // ---------------------------------------------------------------------- //

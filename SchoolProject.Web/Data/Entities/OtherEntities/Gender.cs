@@ -9,12 +9,10 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.OtherEntities;
 
 /// <summary>
-///
 /// </summary>
 public class Gender : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///
     /// </summary>
     [MaxLength(20,
         ErrorMessage =

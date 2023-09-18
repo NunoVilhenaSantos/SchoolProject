@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Repositories.SchoolClasses;
+using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
-
 
 namespace SchoolProject.Web.Controllers;
 
@@ -22,10 +21,38 @@ public class CoursesStudentsController : Controller
     // Obtém o tipo da classe atual
     internal const string CurrentClass = nameof(CourseStudents);
     internal const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
+
+
+    private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    private readonly ICourseStudentsRepository
+        _schoolClassStudentRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
+
+
+    /// <summary>
+    ///     SchoolClassStudentsController
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="schoolClassStudentRepository"></param>
+    /// <param name="hostingEnvironment"></param>
+    public CoursesStudentsController(
+        DataContextMySql context,
+        IWebHostEnvironment hostingEnvironment,
+        IHttpContextAccessor httpContextAccessor,
+        ICourseStudentsRepository schoolClassStudentRepository
+    )
+    {
+        _context = context;
+        _hostingEnvironment = hostingEnvironment;
+        _httpContextAccessor = httpContextAccessor;
+        _schoolClassStudentRepository = schoolClassStudentRepository;
+    }
 
     // Obtém o controlador atual
     private string CurrentController
@@ -40,34 +67,11 @@ public class CoursesStudentsController : Controller
     }
 
 
-
-
-    private readonly DataContextMySql _context;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    private readonly ISchoolClassStudentRepository
-        _schoolClassStudentRepository;
-
-
     /// <summary>
-    ///     SchoolClassStudentsController
+    ///     SchoolClassStudentNotFound action.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="schoolClassStudentRepository"></param>
-    /// <param name="hostingEnvironment"></param>
-    public CoursesStudentsController(
-        DataContextMySql context,
-        IWebHostEnvironment hostingEnvironment,
-        IHttpContextAccessor httpContextAccessor,
-        ISchoolClassStudentRepository schoolClassStudentRepository
-    )
-    {
-        _context = context;
-        _hostingEnvironment = hostingEnvironment;
-        _httpContextAccessor = httpContextAccessor;
-        _schoolClassStudentRepository = schoolClassStudentRepository;
-    }
+    /// <returns></returns>
+    public IActionResult SchoolClassStudentNotFound => View();
 
 
     private List<CourseStudents> GetSchoolClassesAndStudent()
@@ -243,7 +247,8 @@ public class CoursesStudentsController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var schoolClassStudent = await _context.CoursesStudents
             .Include(s => s.Course)
@@ -254,7 +259,8 @@ public class CoursesStudentsController : Controller
 
         return schoolClassStudent == null
             ? new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(schoolClassStudent);
     }
 
@@ -309,11 +315,6 @@ public class CoursesStudentsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.CreatedById);
-
         ViewData["DisciplineId"] =
             new SelectList(_context.Courses,
                 "Id", "Acronym",
@@ -324,10 +325,15 @@ public class CoursesStudentsController : Controller
                 "Id", "FullName",
                 schoolClassStudent.StudentId);
 
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                "Id", "FullName",
+                schoolClassStudent.CreatedBy.Id);
+
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
                 "Id", "FullName",
-                schoolClassStudent.UpdatedById);
+                schoolClassStudent.UpdatedBy.Id);
 
         return View(schoolClassStudent);
     }
@@ -343,14 +349,16 @@ public class CoursesStudentsController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var schoolClassStudent =
             await _context.CoursesStudents.FindAsync(id);
 
         if (schoolClassStudent == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         ViewData["DisciplineId"] =
             new SelectList(_context.Courses,
@@ -365,12 +373,12 @@ public class CoursesStudentsController : Controller
         ViewData["CreatedById"] =
             new SelectList(_context.Users,
                 "Id", "FullName",
-                schoolClassStudent.CreatedById);
+                schoolClassStudent.CreatedBy.Id);
 
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
                 "Id", "FullName",
-                schoolClassStudent.UpdatedById);
+                schoolClassStudent.UpdatedBy.Id);
 
         return View(schoolClassStudent);
     }
@@ -393,7 +401,8 @@ public class CoursesStudentsController : Controller
     {
         if (id != schoolClassStudent.CourseId)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (ModelState.IsValid)
         {
@@ -408,17 +417,13 @@ public class CoursesStudentsController : Controller
                 if (!SchoolClassStudentExists(
                         schoolClassStudent.CourseId))
                     return new NotFoundViewResult(
-                        nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                        nameof(SchoolClassStudentNotFound), CurrentClass,
+                        id.ToString(), CurrentController, nameof(Index));
                 throw;
             }
 
             return RedirectToAction(nameof(Index));
         }
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.CreatedById);
 
         ViewData["DisciplineId"] =
             new SelectList(_context.Courses,
@@ -430,10 +435,15 @@ public class CoursesStudentsController : Controller
                 "Id", "FullName",
                 schoolClassStudent.StudentId);
 
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                "Id", "FullName",
+                schoolClassStudent.CreatedBy.Id);
+
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
                 "Id", "FullName",
-                schoolClassStudent.UpdatedById);
+                schoolClassStudent.UpdatedBy?.Id);
 
         return View(schoolClassStudent);
     }
@@ -449,7 +459,8 @@ public class CoursesStudentsController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var schoolClassStudent = await _context.CoursesStudents
             .Include(s => s.Course)
@@ -460,7 +471,8 @@ public class CoursesStudentsController : Controller
 
         return schoolClassStudent == null
             ? new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(schoolClassStudent);
     }
 
@@ -488,14 +500,9 @@ public class CoursesStudentsController : Controller
     }
 
 
-    /// <summary>
-    /// SchoolClassStudentNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult SchoolClassStudentNotFound => View();
-
-
-    private bool SchoolClassStudentExists(int id) =>
-        _context.CoursesStudents
+    private bool SchoolClassStudentExists(int id)
+    {
+        return _context.CoursesStudents
             .Any(e => e.CourseId == id);
+    }
 }

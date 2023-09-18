@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -303,7 +302,6 @@ public class PaginationViewModel<T> where T : class
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="enumerable"></param>
     /// <param name="sessionVarName"></param>
@@ -345,7 +343,7 @@ public class PaginationViewModel<T> where T : class
                     Formatting = Formatting.Indented,
 
                     // Defina o nível máximo de profundidade desejado
-                    MaxDepth = 1,
+                    MaxDepth = 1
                 };
 
                 // Serialize and write each item to the file

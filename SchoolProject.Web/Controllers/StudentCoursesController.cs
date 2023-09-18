@@ -20,29 +20,15 @@ public class StudentCoursesController : Controller
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(StudentCourse);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
-
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
 
 
     private readonly DataContextMySql _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IStudentCourseRepository _studentCourseRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
 
     /// <summary>
     ///     StudentCoursesController
@@ -59,6 +45,26 @@ public class StudentCoursesController : Controller
         _hostingEnvironment = hostingEnvironment;
         _studentCourseRepository = studentCourseRepository;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     StudentCourseNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult StudentCourseNotFound => View();
 
 
     private List<StudentCourse> GetStudentAndCourses()
@@ -211,7 +217,6 @@ public class StudentCoursesController : Controller
 
     // GET: StudentCourses/Create
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
@@ -434,13 +439,8 @@ public class StudentCoursesController : Controller
     }
 
 
-    /// <summary>
-    /// StudentCourseNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult StudentCourseNotFound => View();
-
-
-    private bool StudentCourseExists(int id) =>
-        _context.StudentCourses.Any(e => e.StudentId == id);
+    private bool StudentCourseExists(int id)
+    {
+        return _context.StudentCourses.Any(e => e.StudentId == id);
+    }
 }

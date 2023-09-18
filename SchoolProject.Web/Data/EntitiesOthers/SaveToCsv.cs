@@ -1,24 +1,21 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
-using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Courses;
 
 namespace SchoolProject.Web.Data.EntitiesOthers;
 
 /// <summary>
-///
+/// Salvar os dados em CSV
 /// </summary>
 public static class SaveToCsv
 {
     // Set the base path here
     private const string FilePath = ".\\Data\\Csv\\";
-    private static readonly DataContextMySql? DataContext;
+    private static readonly DataContextMySql DataContext;
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="dataContext"></param>
     public static void SaveTo(DataContextMySql dataContext)
@@ -29,8 +26,22 @@ public static class SaveToCsv
         };
 
 
-        SaveEntitiesToCsv(dataContext.Cities,
-            "Cities.csv", csvConfig);
+        Directory.CreateDirectory(FilePath);
+
+
+        var filePath = Path.Combine(FilePath, "Cities.csv");
+
+
+        using (var writer = new StreamWriter(filePath))
+        using (var csv = new CsvWriter(writer, csvConfig))
+        {
+            csv.WriteRecords(dataContext.Cities.AsEnumerable().ToList());
+        }
+
+
+        SaveEntitiesToCsv(dataContext.Cities.AsEnumerable(), "Cities.csv", csvConfig);
+
+
         SaveEntitiesToCsv(dataContext.Countries,
             "Countries.csv", csvConfig);
         SaveEntitiesToCsv(dataContext.Nationalities,
@@ -80,10 +91,14 @@ public static class SaveToCsv
             "TeacherCourses.csv", csvConfig);
     }
 
+
     private static void SaveEntitiesToCsv<T>(IEnumerable<T> entities,
         string fileName, CsvConfiguration csvConfig)
     {
+        Directory.CreateDirectory(FilePath);
+
         var filePath = Path.Combine(FilePath, fileName);
+
         using (var writer = new StreamWriter(filePath))
         using (var csv = new CsvWriter(writer, csvConfig))
         {

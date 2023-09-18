@@ -20,30 +20,15 @@ public class TeacherCoursesController : Controller
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(TeacherCourse);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "FirstName";
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
 
 
     private readonly DataContextMySql _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ITeacherCourseRepository _teacherCourseRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -61,6 +46,26 @@ public class TeacherCoursesController : Controller
         _hostingEnvironment = hostingEnvironment;
         _teacherCourseRepository = teacherCourseRepository;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     TeacherCourseNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult TeacherCourseNotFound => View();
 
 
     private List<TeacherCourse> GetTeacherCoursesList()
@@ -140,6 +145,8 @@ public class TeacherCoursesController : Controller
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
+    /// <param name="sortOrder"></param>
+    /// <param name="sortProperty"></param>
     /// <returns></returns>
     [HttpGet]
     public IActionResult Index(int pageNumber = 1, int pageSize = 10,
@@ -217,7 +224,8 @@ public class TeacherCoursesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var teacherCourse = await _context.TeacherCourses
             .Include(t => t.Course)
@@ -228,7 +236,8 @@ public class TeacherCoursesController : Controller
 
         return teacherCourse == null
             ? new NotFoundViewResult(
-                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(teacherCourse);
     }
 
@@ -283,23 +292,27 @@ public class TeacherCoursesController : Controller
 
         ViewData["DisciplineId"] =
             new SelectList(_context.Disciplines,
-                "Id", "Code",
+                nameof(teacherCourse.Course.Id),
+                nameof(teacherCourse.Course.Code),
                 teacherCourse.CourseId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                teacherCourse.CreatedById);
 
         ViewData["TeacherId"] =
             new SelectList(_context.Teachers,
-                "Id", "Address",
+                nameof(teacherCourse.Teacher.Id),
+                nameof(teacherCourse.Teacher.FullName),
                 teacherCourse.TeacherId);
+
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                nameof(teacherCourse.CreatedBy.Id),
+                nameof(teacherCourse.CreatedBy.FullName),
+                teacherCourse.CreatedBy.Id);
 
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                teacherCourse.UpdatedById);
+                nameof(teacherCourse.UpdatedBy.Id),
+                nameof(teacherCourse.UpdatedBy.FullName),
+                teacherCourse.UpdatedBy?.Id);
 
         return View(teacherCourse);
     }
@@ -315,36 +328,44 @@ public class TeacherCoursesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
+
 
         var teacherCourse = await _context.TeacherCourses.FindAsync(id);
 
         if (teacherCourse == null)
             return new NotFoundViewResult(
-                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         ViewData["DisciplineId"] =
             new SelectList(_context.Disciplines,
-                "Id", "Code",
+                nameof(teacherCourse.Course.Id),
+                nameof(teacherCourse.Course.Code),
                 teacherCourse.CourseId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                teacherCourse.CreatedById);
 
         ViewData["TeacherId"] =
             new SelectList(_context.Teachers,
-                "Id", "Address",
+                nameof(teacherCourse.Teacher.Id),
+                nameof(teacherCourse.Teacher.FullName),
                 teacherCourse.TeacherId);
+
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                nameof(teacherCourse.CreatedBy.Id),
+                nameof(teacherCourse.CreatedBy.FullName),
+                teacherCourse.CreatedBy.Id);
 
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                teacherCourse.UpdatedById);
+                nameof(teacherCourse.UpdatedBy.Id),
+                nameof(teacherCourse.UpdatedBy.FullName),
+                teacherCourse.UpdatedBy?.Id);
 
         return View(teacherCourse);
     }
+
 
     // POST: TeacherCourses/Edit/5
     // To protect from over-posting attacks,
@@ -363,7 +384,8 @@ public class TeacherCoursesController : Controller
     {
         if (id != teacherCourse.TeacherId)
             return new NotFoundViewResult(
-                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (ModelState.IsValid)
         {
@@ -377,7 +399,8 @@ public class TeacherCoursesController : Controller
             {
                 if (!TeacherCourseExists(teacherCourse.TeacherId))
                     return new NotFoundViewResult(
-                        nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                        nameof(TeacherCourseNotFound), CurrentClass,
+                        id.ToString(), CurrentController, nameof(Index));
 
                 throw;
             }
@@ -385,25 +408,30 @@ public class TeacherCoursesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+
         ViewData["DisciplineId"] =
             new SelectList(_context.Disciplines,
-                "Id", "Code",
+                nameof(teacherCourse.Course.Id),
+                nameof(teacherCourse.Course.Code),
                 teacherCourse.CourseId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id",
-                teacherCourse.CreatedById);
 
         ViewData["TeacherId"] =
             new SelectList(_context.Teachers,
-                "Id", "Address",
+                nameof(teacherCourse.Teacher.Id),
+                nameof(teacherCourse.Teacher.FullName),
                 teacherCourse.TeacherId);
+
+        ViewData["CreatedById"] =
+            new SelectList(_context.Users,
+                nameof(teacherCourse.CreatedBy.Id),
+                nameof(teacherCourse.CreatedBy.FullName),
+                teacherCourse.CreatedBy.Id);
 
         ViewData["UpdatedById"] =
             new SelectList(_context.Users,
-                "Id", "Id",
-                teacherCourse.UpdatedById);
+                nameof(teacherCourse.UpdatedBy.Id),
+                nameof(teacherCourse.UpdatedBy.FullName),
+                teacherCourse.UpdatedBy?.Id);
 
         return View(teacherCourse);
     }
@@ -419,7 +447,8 @@ public class TeacherCoursesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var teacherCourse = await _context.TeacherCourses
             .Include(t => t.Course)
@@ -430,7 +459,8 @@ public class TeacherCoursesController : Controller
 
         return teacherCourse == null
             ? new NotFoundViewResult(
-                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(TeacherCourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(teacherCourse);
     }
 
@@ -457,13 +487,8 @@ public class TeacherCoursesController : Controller
     }
 
 
-    /// <summary>
-    /// TeacherCourseNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult TeacherCourseNotFound => View();
-
-
-    private bool TeacherCourseExists(int id) =>
-        _context.TeacherCourses.Any(e => e.TeacherId == id);
+    private bool TeacherCourseExists(int id)
+    {
+        return _context.TeacherCourses.Any(e => e.TeacherId == id);
+    }
 }

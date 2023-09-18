@@ -7,7 +7,6 @@ using SchoolProject.Web.Data.Entities.Countries;
 namespace SchoolProject.Web.Helpers;
 
 /// <summary>
-///
 /// </summary>
 public class NotFoundViewResult : ViewResult
 {
@@ -16,7 +15,6 @@ public class NotFoundViewResult : ViewResult
     // public string? ItemId { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="viewName"></param>
     /// <param name="className"></param>
@@ -41,7 +39,7 @@ public class NotFoundViewResult : ViewResult
             ["ClassName"] = className,
             ["ItemId"] = itemId,
             ["Controller"] = controller,
-            ["Action"] = action,
+            ["Action"] = action
         };
 
         ViewData = viewData;
@@ -57,18 +55,17 @@ public class NotFoundViewResult : ViewResult
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public ViewResult Test()
     {
         var viewData = new ViewDataDictionary<Country>(
-            new EmptyModelMetadataProvider(), 
+            new EmptyModelMetadataProvider(),
             new ModelStateDictionary());
 
         viewData = new ViewDataDictionary<Country>(viewData);
 
-        var viewResult = new ViewResult()
+        var viewResult = new ViewResult
         {
             ViewData = viewData
         };

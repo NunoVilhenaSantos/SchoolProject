@@ -66,7 +66,10 @@ public class ErrorsController : Controller
     /// </summary>
     /// <returns></returns>
     [Route("error/403")]
-    public IActionResult Error403() => View();
+    public IActionResult Error403()
+    {
+        return View();
+    }
 
 
     /// <summary>
@@ -74,7 +77,10 @@ public class ErrorsController : Controller
     /// </summary>
     /// <returns></returns>
     [Route("error/404")]
-    public IActionResult Error404() => View();
+    public IActionResult Error404()
+    {
+        return View();
+    }
 
 
     /// <summary>
@@ -97,10 +103,11 @@ public class ErrorsController : Controller
 
     // You can create a specific view for database-related errors if needed.
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [Route("error/database-error")]
-    public IActionResult DatabaseError(DbErrorViewModel dbErrorViewModel) =>
-        View("DatabaseError", dbErrorViewModel);
+    public IActionResult DatabaseError(DbErrorViewModel dbErrorViewModel)
+    {
+        return View("DatabaseError", dbErrorViewModel);
+    }
 }

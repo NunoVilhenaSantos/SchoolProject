@@ -8,8 +8,8 @@
 }
 
 <nav class="navbar navbar-expand-md sticky-top border-bottom">
-
     <div class="container">
+
         <a class="navbar-brand d-md-none" href="#">
             <svg class="bi" height="24" width="24">
                 <use xlink:href="#aperture"/>
@@ -66,12 +66,14 @@
                 </ul>
             </div>
         </div>
+
     </div>
 </nav>
 
 
 <nav aria-label="Offcanvas navbar large" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
+
         <a class="navbar-brand" href="#">Responsive offcanvas navbar</a>
         <button aria-controls="offcanvasNavbar2" aria-label="Toggle navigation" class="navbar-toggler"
                 data-bs-target="#offcanvasNavbar2"
@@ -121,6 +123,7 @@
                 </form>
             </div>
         </div>
+
     </div>
 </nav>
 
@@ -128,7 +131,6 @@
 <nav class="navbar navbar-expand-xxl bg-body-tertiary nav-tabs">
     @* <nav class="navbar navbar-expand bg-body-tertiary nav-tabs"> *@
     @* <nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs"> *@
-
     <div class="container-fluid">
 
         @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@ViewData["Title"] - </a> *@
@@ -143,11 +145,11 @@
 
             <div class="navbar-nav flex-grow-1">
 
-                @* <partial name="_LayoutNavBarHomePanel"/> *@
+                <partial name="LayoutNavBar/Panels/_LayoutNavBarHomePanel"/>
 
-                <partial name="Panels/_LayoutNavBarCountriesPanel"/>
+                <partial name="LayoutNavBar/Panels/_LayoutNavBarCountriesPanel"/>
 
-                <partial name="Panels/_LayoutNavBarSchoolClassesPanel"/>
+                <partial name="LayoutNavBar/Panels/_LayoutNavBarCoursesPanel"/>
 
                 <a class="nav-link @(currentController == "Disciplines" ? "active" : "")"
                    asp-area="" asp-controller="Disciplines" asp-action="Index">
@@ -165,19 +167,18 @@
                     <span class="material-symbols-outlined">transgender</span>Genders
                 </a>
 
-                <partial name="Panels/_LayoutNavBarStudentsPanel"/>
-                <partial name="Panels/_LayoutNavBarTeachersPanel"/>
+                <partial name="LayoutNavBar/Panels/_LayoutNavBarStudentsPanel"/>
+                <partial name="LayoutNavBar/Panels/_LayoutNavBarTeachersPanel"/>
 
             </div>
 
         </div>
 
-        @* <partial name="_LayoutNavBarLanguagePanel"/> *@
-        @* <partial name="_LayoutNavBarThemePanel"/> *@
-        <partial name="Panels/_LayoutNavBarAccountPanel"/>
-        <partial name="Panels/_LayoutNavBarAdminPanel"/>
-        <partial name="Panels/_LayoutNavBarLoginDarkModePanel"/>
+        @* <partial name="LayoutNavBar/Panels/_LayoutNavBarLanguagePanel"/> *@
+        @* <partial name="LayoutNavBar/Panels/_LayoutNavBarThemePanel"/> *@
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarAccountPanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarAdminPanel"/>
+        <partial name="LayoutNavBar/Panels/_LayoutNavBarLoginDarkModePanel"/>
 
     </div>
-
 </nav>

@@ -125,12 +125,12 @@ public class SeedDbStudentsAndTeachers
             "Pedro Silva", "Reinaldo Souza", "Ruben Correia", "Simão André",
             "Tatiane Avellar", "Tiago Silva", "Vasco Santos", "Vitor Santos",
             "Vitor Silva", "Vitorino Freitas", "Vitorino Silva",
-            "New Student 1", "New Student 2", "New Student 3", "New Student 4",
-            "New Student 5", "New Student 6", "New Student 7", "New Student 8",
-            "New Student 9", "New Student 10", "New Student 11",
-            "New Student 12", "New Student 13", "New Student 14",
-            "New Student 15", "New Student 16", "New Student 17",
-            "New Student 18", "New Student 19", "New Student 20"
+            "Student 1", "Student 2", "Student 3", "Student 4",
+            "Student 5", "Student 6", "Student 7", "Student 8",
+            "Student 9", "Student 10", "Student 11",
+            "Student 12", "Student 13", "Student 14",
+            "Student 15", "Student 16", "Student 17",
+            "Student 18", "Student 19", "Student 20"
         };
 
 
@@ -152,25 +152,22 @@ public class SeedDbStudentsAndTeachers
     {
         var teacherNames = new List<string>
         {
-            "New Teacher 1", "New Teacher 2", "New Teacher 3", "New Teacher 4",
-            "New Teacher 5", "New Teacher 6", "New Teacher 7", "New Teacher 8",
-            "New Teacher 9", "New Teacher 10", "New Teacher 11",
-            "New Teacher 12", "New Teacher 13", "New Teacher 14",
-            "New Teacher 15", "New Teacher 16", "New Teacher 17",
-            "New Teacher 18", "New Teacher 19", "New Teacher 20",
-            "New Teacher 21", "New Teacher 22", "New Teacher 23",
-            "New Teacher 24", "New Teacher 25", "New Teacher 26",
-            "New Teacher 27", "New Teacher 28", "New Teacher 29",
-            "New Teacher 30", "New Teacher 31", "New Teacher 32",
-            "New Teacher 33", "New Teacher 34", "New Teacher 35",
-            "New Teacher 36", "New Teacher 37", "New Teacher 38",
-            "New Teacher 39", "New Teacher 40", "New Teacher 41",
-            "New Teacher 42", "New Teacher 43", "New Teacher 44",
-            "New Teacher 45", "New Teacher 46", "New Teacher 47",
-            "New Teacher 48", "New Teacher 49", "New Teacher 50",
-            "New Teacher 51", "New Teacher 52", "New Teacher 53",
-            "New Teacher 54", "New Teacher 55", "New Teacher 56",
-            "New Teacher 57", "New Teacher 58", "New Teacher 59"
+            "Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4",
+            "Teacher 5", "Teacher 6", "Teacher 7", "Teacher 8",
+            "Teacher 9", "Teacher 10", "Teacher 11",
+            "Teacher 12", "Teacher 13", "Teacher 14",
+            "Teacher 15", "Teacher 16", "Teacher 17",
+            "Teacher 18", "Teacher 19", "Teacher 20",
+            "Teacher 21", "Teacher 22", "Teacher 23",
+            "Teacher 24", "Teacher 25", "Teacher 26",
+            "Teacher 27", "Teacher 28", "Teacher 29",
+            "Teacher 30", "Teacher 31", "Teacher 32",
+            "Teacher 33", "Teacher 34", "Teacher 35",
+            "Teacher 36", "Teacher 37", "Teacher 38",
+            "Teacher 39", "Teacher 40", "Teacher 41",
+            "Teacher 42", "Teacher 43", "Teacher 44",
+            "Teacher 45", "Teacher 46", "Teacher 47",
+            "Teacher 48", "Teacher 49", "Teacher 50",
         };
 
         var teachersToAdd = teacherNames

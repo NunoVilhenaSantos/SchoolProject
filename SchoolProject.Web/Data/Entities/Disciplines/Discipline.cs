@@ -12,6 +12,9 @@ using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Disciplines;
 
+/// <summary>
+///
+/// </summary>
 public class Discipline : IEntity, INotifyPropertyChanged
 {
     /// <summary>
@@ -22,7 +25,6 @@ public class Discipline : IEntity, INotifyPropertyChanged
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Code { get; init; }
-
 
 
     /// <summary>
@@ -72,7 +74,6 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// </summary>
     [DisplayName("Profile Photo")]
     public required Guid ProfilePhotoId { get; set; }
-
 
 
     /// <summary>
@@ -127,8 +128,6 @@ public class Discipline : IEntity, INotifyPropertyChanged
     //    .Select(sc => sc.Student).Distinct().Count();
 
 
-
-
     // ---------------------------------------------------------------------- //
     // Teacher Disciplines relationship
     // ---------------------------------------------------------------------- //
@@ -146,8 +145,6 @@ public class Discipline : IEntity, INotifyPropertyChanged
 
     //public int TeachersCount => TeacherCourses
     //    .Select(tc => tc.Teacher).Distinct().Count();
-
-
 
 
     // ---------------------------------------------------------------------- //
@@ -199,64 +196,43 @@ public class Discipline : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
-    /// <summary>
-    ///     ID of the course.
-    /// </summary>
+    /// <inheritdoc />
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
-    /// <summary>
-    ///     Guid value of the ID of the course.
-    /// </summary>
+    /// <inheritdoc />
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid IdGuid { get; set; }
 
 
-    /// <summary>
-    ///     Was Deleted?
-    ///     Determines whether the course was deleted or not.
-    /// </summary>
+    /// <inheritdoc />
     [Required]
     [DisplayName("Was Deleted?")]
     public bool WasDeleted { get; set; }
 
 
-    /// <summary>
-    ///     Date and time of the creation of the course.
-    /// </summary>
+    /// <inheritdoc />
     [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    /// <summary>
-    ///     The user who created the course.
-    /// </summary>
+    /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
     public virtual required User CreatedBy { get; set; }
 
 
-
     /// <inheritdoc />
-    // [Required]
-    /// <summary>
-    ///     Date and time of the update of the course.
-    /// </summary>
     [DataType(DataType.Date)]
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
 
-
-    /// <inheritdoc />
-    /// <summary>
-    ///     The user who updated the course.
-    /// </summary>
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual User? UpdatedBy { get; set; }

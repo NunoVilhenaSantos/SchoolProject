@@ -9,35 +9,32 @@ using SchoolProject.Web.Data.EntitiesOthers;
 namespace SchoolProject.Web.Data.Entities.Teachers;
 
 /// <summary>
-///
 /// </summary>
 public class TeacherCourse : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///
-    /// </summary>
-    [Required] public required int TeacherId { get; set; }
-
-    /// <summary>
-    ///
     /// </summary>
     [Required]
-    [ForeignKey(nameof(TeacherId))]
+    [ForeignKey(nameof(Teacher))]
+    public required int TeacherId { get; set; }
+
+    /// <summary>
+    /// </summary>
+    [Required]
     public virtual required Teacher Teacher { get; set; }
 
     // public Guid TeacherGuidId => Teacher.IdGuid;
 
 
     /// <summary>
-    ///
-    /// </summary>
-    [Required] public required int CourseId { get; set; }
-
-    /// <summary>
-    ///
     /// </summary>
     [Required]
-    [ForeignKey(nameof(CourseId))]
+    [ForeignKey(nameof(Course))]
+    public required int CourseId { get; set; }
+
+    /// <summary>
+    /// </summary>
+    [Required]
     public virtual required Discipline Course { get; set; }
 
 
@@ -46,21 +43,6 @@ public class TeacherCourse : IEntity, INotifyPropertyChanged
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
-
-
-
-
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Created By User Id")] public string CreatedById { get; set; }
-
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")] public string? UpdatedById { get; set; }
-
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
 
 
     /// <inheritdoc />
@@ -92,7 +74,6 @@ public class TeacherCourse : IEntity, INotifyPropertyChanged
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
-    [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
 
 
@@ -108,8 +89,26 @@ public class TeacherCourse : IEntity, INotifyPropertyChanged
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By")]
-    [ForeignKey(nameof(UpdatedById))]
     public virtual User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Created By User Id")]
+    [ForeignKey(nameof(CreatedBy))]
+    public required string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Updated By User Id")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // ---------------------------------------------------------------------- //

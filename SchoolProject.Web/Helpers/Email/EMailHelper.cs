@@ -114,27 +114,24 @@ public class EMailHelper : IEMailHelper
                     emailTo, client.Host, client.Port);
 
 
-                // TODO: Send email, verify this sh.....
                 var result = client.SendMailAsync(mailMessage);
-                if (result.IsCompleted)
-                    if (result.IsFaulted)
-                        return new AppResponse
-                        {
-                            IsSuccess = false,
-                            Message = result.Exception?.Message
-                        };
+                if (result is {IsCompleted: true, IsFaulted: true})
+                    return new AppResponse
+                    {
+                        IsSuccess = false,
+                        Message = result.Exception?.Message
+                    };
 
 
-                // TODO: Send email, verify this sh.....
-                var result1 = client.SendMailAsync(fromEmail, emailTo, subject,
-                    htmlMessage);
-                if (result.IsCompleted)
-                    if (result1.IsFaulted)
-                        return new AppResponse
-                        {
-                            IsSuccess = false,
-                            Message = result1.Exception?.Message
-                        };
+                var result1 = client.SendMailAsync(
+                    fromEmail, emailTo, subject, htmlMessage);
+
+                if (result.IsCompleted && result1.IsFaulted)
+                    return new AppResponse
+                    {
+                        IsSuccess = false,
+                        Message = result1.Exception?.Message
+                    };
 
                 return new AppResponse
                 {

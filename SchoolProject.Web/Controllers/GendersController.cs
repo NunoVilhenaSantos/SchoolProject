@@ -19,30 +19,15 @@ public class GendersController : Controller
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Gender);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
 
 
     private readonly DataContextMySql _context;
     private readonly IGenderRepository _genderRepository;
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -60,6 +45,26 @@ public class GendersController : Controller
         _genderRepository = genderRepository;
         _hostingEnvironment = hostingEnvironment;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     EnrollmentNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult GenderNotFound => View();
 
 
     private List<Gender> GendersList()
@@ -187,14 +192,16 @@ public class GendersController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(GenderNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var gender = await _context.Genders
             .FirstOrDefaultAsync(m => m.Id == id);
 
         if (gender == null)
             return new NotFoundViewResult(
-                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(GenderNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         return View(gender);
     }
@@ -205,7 +212,10 @@ public class GendersController : Controller
     ///     Create action, to open the view for creating.
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Genders/Create
@@ -241,13 +251,15 @@ public class GendersController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(GenderNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var gender = await _context.Genders.FindAsync(id);
 
         return gender == null
             ? new NotFoundViewResult(
-                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(GenderNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(gender);
     }
 
@@ -268,7 +280,8 @@ public class GendersController : Controller
     {
         if (id != gender.Id)
             return new NotFoundViewResult(
-                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(GenderNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(gender);
 
@@ -281,7 +294,8 @@ public class GendersController : Controller
         {
             if (!GenderExists(gender.Id))
                 return new NotFoundViewResult(
-                    nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                    nameof(GenderNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
 
             throw;
         }
@@ -299,13 +313,15 @@ public class GendersController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(GenderNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var gender = await _context.Genders
             .FirstOrDefaultAsync(m => m.Id == id);
 
         return gender == null
-            ? new NotFoundViewResult(nameof(GenderNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+            ? new NotFoundViewResult(nameof(GenderNotFound), CurrentClass,
+                id.ToString(), CurrentController, nameof(Index))
             : View(gender);
     }
 
@@ -330,13 +346,8 @@ public class GendersController : Controller
     }
 
 
-    /// <summary>
-    /// EnrollmentNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult GenderNotFound => View();
-
-
-    private bool GenderExists(int id) =>
-        _context.Genders.Any(e => e.Id == id);
+    private bool GenderExists(int id)
+    {
+        return _context.Genders.Any(e => e.Id == id);
+    }
 }

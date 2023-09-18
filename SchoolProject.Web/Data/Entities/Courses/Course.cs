@@ -12,12 +12,10 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.Courses;
 
 /// <summary>
-///
 /// </summary>
 public class Course : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Code")]
     [MaxLength(7,
@@ -27,7 +25,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Discipline Acronym")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -35,7 +32,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Discipline Name")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -43,7 +39,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("QNQ Level")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -51,7 +46,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("EQF Level")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -81,7 +75,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
     // new version
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Start Date")]
@@ -90,7 +83,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("End Date")]
@@ -98,7 +90,6 @@ public class Course : IEntity, INotifyPropertyChanged
     public required DateTime EndDate { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Start Hour")]
@@ -106,7 +97,6 @@ public class Course : IEntity, INotifyPropertyChanged
     public required TimeSpan StartHour { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("End Hour")]
@@ -115,23 +105,19 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     public string? Location { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     public string? Type { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     public string? Area { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [Precision(10, 2)]
@@ -141,7 +127,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [Precision(10, 2)]
@@ -176,6 +161,13 @@ public class Course : IEntity, INotifyPropertyChanged
         // : StorageHelper.GcpStoragePublicUrl + "school-classes/" + ProfilePhotoId;
         : StorageHelper.AzureStoragePublicUrl + "course/" +
           ProfilePhotoId;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
 
 
     // ---------------------------------------------------------------------- //
@@ -216,9 +208,9 @@ public class Course : IEntity, INotifyPropertyChanged
     //// Navigation property for the many-to-many relationship
     //// ---------------------------------------------------------------------- //
 
-    ///// <summary>
-    /////     Navigation property for the many-to-many relationship between Discipline and Student
-    ///// </summary>
+    /// <summary>
+    ///     Navigation property for the many-to-many relationship between Discipline and Student
+    /// </summary>
     public virtual HashSet<CourseStudents>? CourseStudents { get; set; }
 
 
@@ -240,19 +232,18 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///  List of Disciplines for this Discipline
+    ///     List of Disciplines for this Discipline
     /// </summary>
     public virtual HashSet<Discipline>? Disciplines { get; set; }
 
 
     /// <summary>
-    ///  List of Students for this Discipline
+    ///     List of Students for this Discipline
     /// </summary>
     public virtual HashSet<Student>? Students { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Students Count")]
     public int? StudentsCount => Students?.Count() ?? 0;
@@ -263,14 +254,12 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Enrollment")]
     public virtual HashSet<Enrollment>? Enrollment { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Class Average")]
     // [Column(TypeName = "decimal(18,2)")]
@@ -281,7 +270,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Highest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
@@ -291,7 +279,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Lowest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
@@ -301,7 +288,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Disciplines Count")]
     public int ECoursesCount =>
@@ -309,7 +295,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Work Hour Load")]
     public int EWorkHourLoad =>
@@ -317,7 +302,6 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Students Count")]
     public int EStudentsCount =>

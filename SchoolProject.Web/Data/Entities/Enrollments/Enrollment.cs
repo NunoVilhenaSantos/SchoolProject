@@ -7,57 +7,75 @@ using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 
-
 namespace SchoolProject.Web.Data.Entities.Enrollments;
 
 /// <summary>
-///
 /// </summary>
 public class Enrollment : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///
     /// </summary>
     [Required]
+    [ForeignKey(nameof(Student))]
     public required int StudentId { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
-    [ForeignKey("StudentId")]
     public virtual required Student Student { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
+    [ForeignKey(nameof(Discipline))]
     public required int DisciplineId { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
-    [ForeignKey("DisciplineId")]
     public virtual required Discipline Discipline { get; set; }
 
 
     // [Column(TypeName = "decimal(18,2)")]
     /// <summary>
-    ///
     /// </summary>
     [Precision(18, 2)]
     public decimal? Grade { get; set; }
 
 
     /// <summary>
-    /// 
     /// </summary>
     public required int Absences { get; set; } = 0;
 
 
-    // ---------------------------------------------------------------------- //
+    /// <summary>
+    /// </summary>
+    public decimal PercentageOfAbsences =>
+        (decimal) Absences / Discipline.Hours;
+
+
+    /// <summary>
+    /// Limite padrão de percentagem para reprovação devido a faltas.
+    /// </summary>
+    public const decimal ThresholdPercentage = 0.2m;
+
+
+    /// <summary>
+    /// Indica se houve reprovação devido às faltas com base em um limite de percentagem.
+    /// </summary>
+    public bool FailedDueToAbsences
+    {
+        get
+        {
+            // Não há reprovação se não houver faltas
+            if (Absences == 0) return false;
+            return PercentageOfAbsences > ThresholdPercentage;
+        }
+    }
+
+
+    // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 
 
@@ -87,16 +105,7 @@ public class Enrollment : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Created By User Id")]
-    public string CreatedById { get; set; }
-
-
-    /// <inheritdoc />
-    // Propriedade de navegação
-    // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
-    [ForeignKey(nameof(CreatedById))]
     public virtual required User CreatedBy { get; set; }
 
 
@@ -108,22 +117,30 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    /// <inheritdoc />
-    // Deve ser do mesmo tipo da propriedade Id de User
-    [DisplayName("Updated By User Id")]
-    public string? UpdatedById { get; set; }
-
-
     /// <inheritdoc />
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By")]
-    [ForeignKey(nameof(UpdatedById))]
     public virtual User? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Created By User Id")]
+    [ForeignKey(nameof(CreatedBy))]
+    public required string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// </summary>
+    [DisplayName("Updated By User Id")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

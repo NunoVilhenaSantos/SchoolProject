@@ -5,9 +5,8 @@ using SchoolProject.Web.Data.Entities.Users;
 namespace SchoolProject.Web.Data.Seeders;
 
 /// <summary>
-///
 /// </summary>
-public abstract class SeedDbStudentsAndCourses
+public class SeedDbStudentsAndCourses
 {
     // private static DataContextMsSql _dataContextMsSql;
     // private static DataContextMsSql _dataContextInUse;
@@ -86,6 +85,7 @@ public abstract class SeedDbStudentsAndCourses
                 StudentId = student.Id,
                 Student = student,
                 CreatedBy = user,
+                CreatedById = user.Id,
             };
 
             _dataContextInUse.CoursesStudents.Add(courseStudents);

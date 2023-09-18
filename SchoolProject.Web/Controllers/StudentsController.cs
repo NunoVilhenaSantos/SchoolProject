@@ -16,35 +16,18 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class StudentsController : Controller
 {
-
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Student);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "FirstName";
-
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
-
-
 
 
     private readonly DataContextMySql _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IStudentRepository _studentRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -62,6 +45,26 @@ public class StudentsController : Controller
         _studentRepository = studentRepository;
         _hostingEnvironment = hostingEnvironment;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+
+    /// <summary>
+    ///     StudentNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult StudentNotFound => View();
 
 
     private List<Student> GetStudentsList()
@@ -206,15 +209,18 @@ public class StudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null) return new NotFoundViewResult(
-            nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(StudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var student = await _context.Students
             .FirstOrDefaultAsync(m => m.Id == id);
 
         return student == null
             ? new NotFoundViewResult(
-                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(StudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(student);
     }
 
@@ -224,7 +230,10 @@ public class StudentsController : Controller
     ///     students create
     /// </summary>
     /// <returns></returns>
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Students/Create
@@ -259,14 +268,17 @@ public class StudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null) return new NotFoundViewResult(
-            nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(StudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var student = await _context.Students.FindAsync(id);
 
         return student == null
             ? new NotFoundViewResult(
-                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(StudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(student);
     }
 
@@ -287,7 +299,8 @@ public class StudentsController : Controller
     {
         if (id != student.Id)
             return new NotFoundViewResult(
-                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                nameof(StudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(student);
 
@@ -300,7 +313,8 @@ public class StudentsController : Controller
         {
             if (!StudentExists(student.Id))
                 return new NotFoundViewResult(
-                    nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                    nameof(StudentNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
 
             throw;
         }
@@ -317,15 +331,18 @@ public class StudentsController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null) return new NotFoundViewResult(
-            nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
+        if (id == null)
+            return new NotFoundViewResult(
+                nameof(StudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
         var student = await _context.Students
             .FirstOrDefaultAsync(m => m.Id == id);
 
         return student == null
             ? new NotFoundViewResult(
-                nameof(StudentNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                nameof(StudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
             : View(student);
     }
 
@@ -351,13 +368,8 @@ public class StudentsController : Controller
     }
 
 
-    /// <summary>
-    /// StudentNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult StudentNotFound => View();
-
-
-    private bool StudentExists(int id) =>
-        _context.Students.Any(e => e.Id == id);
+    private bool StudentExists(int id)
+    {
+        return _context.Students.Any(e => e.Id == id);
+    }
 }

@@ -125,7 +125,8 @@ public class City : IEntity, INotifyPropertyChanged
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
     /// <inheritdoc />
-    [DisplayName("Updated By")] public virtual User? UpdatedBy { get; set; }
+    [DisplayName("Updated By")]
+    public virtual User? UpdatedBy { get; set; }
 
 
     // --------------------------------------------------------------------- //

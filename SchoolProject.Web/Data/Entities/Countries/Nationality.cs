@@ -28,19 +28,29 @@ public class Nationality : IEntity, INotifyPropertyChanged
     // Dependent (child)
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [Required]
     [ForeignKey(nameof(Country))]
     public int CountryId { get; set; }
 
 
-    [Required] public virtual required Country Country { get; set; }
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public virtual required Country Country { get; set; }
 
 
-    public Guid CountryGuidId => Country.IdGuid;
+    // public Guid CountryGuidId => Country.IdGuid;
 
 
+    /// <summary>
+    ///
+    /// </summary>
     [DisplayName("Number of Cities")]
-    public int NumberOfCitiesInCountry => Country?.Cities?.Count ?? 0;
+    public int NumberOfCitiesInCountry => Country.Cities?.Count ?? 0;
 
 
     // --------------------------------------------------------------------- //

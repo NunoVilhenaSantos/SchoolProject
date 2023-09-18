@@ -19,28 +19,15 @@ public class TeachersController : Controller
     // Obtém o tipo da classe atual
     private const string CurrentClass = nameof(Teacher);
     private const string CurrentAction = nameof(Index);
-
-    internal string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "FirstName";
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
 
 
     private readonly DataContextMySql _context;
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly ITeacherRepository _teacherRepository;
+
+    internal string BucketName = CurrentClass.ToLower();
 
 
     /// <summary>
@@ -59,6 +46,25 @@ public class TeachersController : Controller
         _teacherRepository = teacherRepository;
         _hostingEnvironment = hostingEnvironment;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+    /// <summary>
+    ///     TeacherNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult TeacherNotFound => View();
 
 
     private List<Teacher> GetTeachersList()
@@ -226,7 +232,10 @@ public class TeachersController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View();
+    }
 
 
     // POST: Teachers/Create
@@ -356,13 +365,9 @@ public class TeachersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    /// <summary>
-    /// TeacherNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult TeacherNotFound => View();
 
-
-    private bool TeacherExists(int id) =>
-        _context.Teachers.Any(e => e.Id == id);
+    private bool TeacherExists(int id)
+    {
+        return _context.Teachers.Any(e => e.Id == id);
+    }
 }

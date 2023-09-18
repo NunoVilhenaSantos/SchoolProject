@@ -9,12 +9,10 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.Countries;
 
 /// <summary>
-///
 /// </summary>
 public class Country : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Country")]
@@ -55,13 +53,11 @@ public class Country : IEntity, INotifyPropertyChanged
 
     // Navigation property with lazy-loading enabled
     /// <summary>
-    ///
     /// </summary>
     public virtual HashSet<City>? Cities { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Number of Cities")]
     public int NumberCities => Cities?.Count ?? 0;
@@ -78,7 +74,6 @@ public class Country : IEntity, INotifyPropertyChanged
     // public int NationalityId { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public virtual required Nationality Nationality { get; set; }

@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SchoolProject.Web.Data.Repositories;
-using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.Users;
-
 
 namespace SchoolProject.Web.Controllers.API;
 
 /// <summary>
-///
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
@@ -23,7 +19,6 @@ public class ProductsController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="userHelper"></param>
     public ProductsController(

@@ -17,35 +17,20 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class UsersController : Controller
 {
-
     // Obtém o tipo da classe atual
     internal const string CurrentClass = nameof(UserWithRolesViewModel);
     internal const string CurrentAction = nameof(Index);
 
     // Obtém o nome do controlador atual
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string BucketName = nameof(User)+"s";
+    internal const string BucketName = nameof(User) + "s";
     internal const string SortProperty = "FirstName";
 
-
-
-    // Obtém o controlador atual
-    private string CurrentController
-    {
-        get
-        {
-            // Obtém o nome do controlador atual e remove "Controller" do nome
-            var controllerTypeInfo =
-                ControllerContext.ActionDescriptor.ControllerTypeInfo;
-            return controllerTypeInfo.Name.Replace("Controller", "");
-        }
-    }
+    private readonly DataContextMySql _context;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     private readonly IUserHelper _userHelper;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    private readonly DataContextMySql _context;
 
     /// <summary>
     ///     UsersController constructor.
@@ -62,6 +47,25 @@ public class UsersController : Controller
         _userHelper = userHelper;
         _hostingEnvironment = hostingEnvironment;
     }
+
+
+    // Obtém o controlador atual
+    private string CurrentController
+    {
+        get
+        {
+            // Obtém o nome do controlador atual e remove "Controller" do nome
+            var controllerTypeInfo =
+                ControllerContext.ActionDescriptor.ControllerTypeInfo;
+            return controllerTypeInfo.Name.Replace("Controller", "");
+        }
+    }
+
+    /// <summary>
+    ///     UserNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult UserNotFound => View();
 
 
     private List<UserWithRolesViewModel> GetUsersWithRolesList()
@@ -208,14 +212,14 @@ public class UsersController : Controller
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
             return new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
-                id.ToString(), CurrentController, nameof(Index));
+                id, CurrentController, nameof(Index));
 
         var user = await _context.Users
             .FirstOrDefaultAsync(m => m.Id == id);
 
         return user == null
             ? new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
-                id.ToString(), CurrentController, nameof(Index))
+                id, CurrentController, nameof(Index))
             : View(user);
     }
 
@@ -266,14 +270,14 @@ public class UsersController : Controller
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
             return new NotFoundViewResult(
-                nameof(UserNotFound), CurrentClass, id.ToString(),
+                nameof(UserNotFound), CurrentClass, id,
                 CurrentController, nameof(Index));
 
         var user = await _context.Users.FindAsync(id);
 
         return user == null
             ? new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
-                id.ToString(), CurrentController, nameof(Index))
+                id, CurrentController, nameof(Index))
             : View(user);
     }
 
@@ -294,7 +298,7 @@ public class UsersController : Controller
     {
         if (id != user.Id)
             return new NotFoundViewResult(
-                nameof(UserNotFound), CurrentClass, id.ToString(),
+                nameof(UserNotFound), CurrentClass, id,
                 CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(user);
@@ -308,7 +312,7 @@ public class UsersController : Controller
         {
             if (!UserExists(user.Id))
                 return new NotFoundViewResult(
-                    nameof(UserNotFound), CurrentClass, id.ToString(),
+                    nameof(UserNotFound), CurrentClass, id,
                     CurrentController, nameof(Index));
             throw;
         }
@@ -327,7 +331,7 @@ public class UsersController : Controller
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
             return new NotFoundViewResult(
-                nameof(UserNotFound), CurrentClass, id.ToString(),
+                nameof(UserNotFound), CurrentClass, id,
                 CurrentController, nameof(Index));
 
         var user = await _context.Users
@@ -335,7 +339,7 @@ public class UsersController : Controller
 
         return user == null
             ? new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
-                id.ToString(), CurrentController, nameof(Index))
+                id, CurrentController, nameof(Index))
             : View(user);
     }
 
@@ -359,13 +363,9 @@ public class UsersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    /// <summary>
-    /// UserNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult UserNotFound => View();
 
-
-    private bool UserExists(string id) =>
-        (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+    private bool UserExists(string id)
+    {
+        return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+    }
 }
