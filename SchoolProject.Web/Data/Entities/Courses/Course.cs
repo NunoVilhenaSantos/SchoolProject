@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Students;
@@ -142,6 +143,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The image of the user file from the form to be inserted in the database.
     /// </summary>
+     [Ignore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }

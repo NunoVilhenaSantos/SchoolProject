@@ -29,23 +29,19 @@ public static class SaveToCsv
         Directory.CreateDirectory(FilePath);
 
 
-        var filePath = Path.Combine(FilePath, "Cities.csv");
+            // Certifique-se de que dataContext.Cities contém dados válidos da classe City.
+            var cities = dataContext.Cities
+            .Include(c =>c.Country)
+            .Include(c => c.CreatedBy)
+            .Include(c => c.UpdatedBy)
+            .ToList();
 
 
-        using (var writer = new StreamWriter(filePath))
-        using (var csv = new CsvWriter(writer, csvConfig))
-        {
-            csv.WriteRecords(dataContext.Cities.AsEnumerable().ToList());
-        }
+        SaveEntitiesToCsv(cities, "Cities.csv", csvConfig);
 
 
-        SaveEntitiesToCsv(dataContext.Cities.AsEnumerable(), "Cities.csv", csvConfig);
-
-
-        SaveEntitiesToCsv(dataContext.Countries,
-            "Countries.csv", csvConfig);
-        SaveEntitiesToCsv(dataContext.Nationalities,
-            "Nationalities.csv", csvConfig);
+        SaveEntitiesToCsv(dataContext.Countries.ToList(),            "Countries.csv", csvConfig);
+        SaveEntitiesToCsv(dataContext.Nationalities.ToList(),            "Nationalities.csv", csvConfig);
 
 
         SaveEntitiesToCsv(dataContext.Genders, "Genders.csv", csvConfig);
@@ -102,7 +98,10 @@ public static class SaveToCsv
         using (var writer = new StreamWriter(filePath))
         using (var csv = new CsvWriter(writer, csvConfig))
         {
-            csv.WriteRecords(entities);
+            var tableTemp = entities.ToList();
+            csv.WriteRecords(tableTemp);
+
+            // csv.WriteRecords(entities);
         }
     }
 }

@@ -69,6 +69,7 @@ public class User : IdentityUser, INotifyPropertyChanged
     /// <summary>
     ///     The image of the user file from the form to be inserted in the database.
     /// </summary>
+     [CsvHelper.Configuration.Attributes.Ignore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
