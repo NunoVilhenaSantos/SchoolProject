@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Helpers.Users;
 
@@ -22,7 +23,7 @@ namespace SchoolProject.Web.Controllers.API;
 [ApiController]
 // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 // [Authorize(Policy = "Bearer")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class CoursesController : ControllerBase
 {
     private readonly IWebHostEnvironment _hostingEnvironment;
@@ -64,12 +65,12 @@ public class CoursesController : ControllerBase
         var schoolClasses = _context.Courses
 
             // School class courses include
-            //.Include(c => c.CourseDisciplines)
-            //.ThenInclude(scc => scc.Discipline)
+            .Include(c => c.CourseDisciplines)
+            .ThenInclude(scc => scc.Discipline)
 
             // school class students include
-            //.Include(c => c.SchoolClassStudents)
-            //.ThenInclude(scs => scs.Student)
+            .Include(c => c.CourseStudents)
+            .ThenInclude(scs => scs.Student)
             //.ThenInclude(s => s.Country)
             //.ThenInclude(s => s.Nationality)
 
@@ -82,6 +83,9 @@ public class CoursesController : ControllerBase
 
             // include disciplines
             .Include(c => c.Disciplines)
+
+            // include enrollments
+            .Include(c => c.Enrollment)
 
             // other includes
             .Include(c => c.CreatedBy)
@@ -114,7 +118,10 @@ public class CoursesController : ControllerBase
             ReferenceHandler = ReferenceHandler.Preserve,
 
             // Indent o JSON para melhor legibilidade
-            WriteIndented = true
+            WriteIndented = true,
+
+            // Defina um valor adequado para limitar a profundidade da serialização.
+            MaxDepth = 10,
         };
 
 
@@ -124,6 +131,25 @@ public class CoursesController : ControllerBase
 
         // return Ok(jsonMariconsoft);
 
+
+        // --------------------------------------------------------------------------- //
+        // --------------------------------------------------------------------------- //
+
+
+        var courses = _context.Courses.ToList(); // Supondo que você obteve os cursos do banco de dados
+
+        var courseDTOs = courses.Select(course => CourseDto.MapToDto(course)).ToList();
+
+        //var options = new System.Text.Json.JsonSerializerOptions
+        //{
+        //    ReferenceHandler = ReferenceHandler.Preserve,
+        //    WriteIndented = true,
+        //    MaxDepth = 10 // Defina a profundidade máxima, se necessário
+        //};
+
+        var jsonMariconsoft1 = System.Text.Json.JsonSerializer.Serialize(courseDTOs, options);
+
+        return Ok(jsonMariconsoft1);
 
         // --------------------------------------------------------------------------- //
         // --------------------------------------------------------------------------- //
@@ -143,7 +169,7 @@ public class CoursesController : ControllerBase
         var json = Newtonsoft.Json.JsonConvert.SerializeObject(
             schoolClasses, settings);
 
-        return Ok(json);
+        // return Ok(json);
 
 
         // --------------------------------------------------------------------------- //
@@ -165,7 +191,7 @@ public class CoursesController : ControllerBase
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
 
                 // Use PreserveReferencesHandling para preservar referências circulares
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                // PreserveReferencesHandling = PreserveReferencesHandling.Objects,
 
                 // Indent the JSON for readability
                 Formatting = Formatting.Indented
@@ -215,6 +241,8 @@ public class CoursesController : ControllerBase
 
         return Ok(schoolClass);
     }
+
+    
 
 
     // ---------------------------------------------------------------------- //

@@ -32,6 +32,10 @@ public class ProductsController : Controller
 
 
     // GET: api/Products
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult GetProducts()
     {
@@ -49,26 +53,49 @@ public class ProductsController : Controller
         return Ok(Empty);
     }
 
+
     // GET: api/Products/5
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("id", Name = "Get")]
     public string GetProduct(int id)
     {
         return "value";
     }
 
+
     // POST: api/Products
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="id"></param>
     [HttpPost]
     public void PostProduct([FromBody] string value, int id)
     {
     }
 
+
     // PUT: api/Products/5
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="value"></param>
     [HttpPut("id")]
     public void PutProduct(int id, [FromBody] string value)
     {
     }
 
+
     // DELETE: api/Products/5
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
     [HttpDelete("id")]
     public void DeleteProduct(int id)
     {

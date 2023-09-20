@@ -248,7 +248,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Students Count")]
-    public int? StudentsCount => Students?.Count() ?? 0;
+    public int StudentsCount => Students?.Count() ?? 0;
 
 
     // ---------------------------------------------------------------------- //

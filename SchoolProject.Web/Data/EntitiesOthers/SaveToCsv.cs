@@ -95,13 +95,12 @@ public static class SaveToCsv
 
         var filePath = Path.Combine(FilePath, fileName);
 
-        using (var writer = new StreamWriter(filePath))
-        using (var csv = new CsvWriter(writer, csvConfig))
-        {
-            var tableTemp = entities.ToList();
-            csv.WriteRecords(tableTemp);
+        using var writer = new StreamWriter(filePath);
+        using var csv = new CsvWriter(writer, csvConfig);
 
-            // csv.WriteRecords(entities);
-        }
+        var tableTemp = entities.ToList();
+        csv.WriteRecords(tableTemp);
+
+        // csv.WriteRecords(entities);
     }
 }

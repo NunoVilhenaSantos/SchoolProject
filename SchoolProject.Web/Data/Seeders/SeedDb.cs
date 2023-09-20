@@ -763,8 +763,8 @@ public class SeedDb
         {
             // TODO: tem bug sem dar erro no debug
             _dataContextMySql.Database.OpenConnection();
-            //_dataContextMySql.Database.EnsureDeleted();
-            //_dataContextMySql.Database.Migrate();
+            // _dataContextMySql.Database.EnsureDeleted();
+            // _dataContextMySql.Database.Migrate();
             _dataContextMySql.Database.EnsureCreated();
 
             // await _mySqlLocal.Database.MigrateAsync();
@@ -775,7 +775,9 @@ public class SeedDb
             // Registe a exceção ou faça o tratamento adequado aqui.
             _logger.LogError(ex,
                 "Ocorreu um erro durante a migração do banco de dados MySQL.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+
+            // Re-lança a exceção para que o programa saiba que algo deu errado.
+            throw; 
         }
 
 
@@ -1040,11 +1042,17 @@ public class SeedDb
 
     private Task<AppResponse> CommitChangesAndHandleErrors()
     {
+
+        // Commit the changes to the database and use asynchronous commit
+        if (_dataContextInUse.Database.CurrentTransaction != null)
+        {
+            // Há uma transação ativa, você pode efetuar o commit.
+            _dataContextInUse.Database.CommitTransaction();
+        }
+
+
         try
         {
-            // Commit the changes to the database and use asynchronous commit
-            _dataContextInUse.Database.CommitTransaction();
-
             // Save any changes made to the database context
             _dataContextInUse.SaveChanges();
 
