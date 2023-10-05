@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.OtherEntities;
@@ -349,5 +350,64 @@ public class GendersController : Controller
     private bool GenderExists(int id)
     {
         return _context.Genders.Any(e => e.Id == id);
+    }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Aqui o utilizador obtém a lista de países e a respetiva nacionalidade
+    ///     via JSON para o preenchimento do dropdown-list
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    // [Route("api/Genders/GetGendersJson")]
+    [Route("Genders/GetGendersJson")]
+    public Task<JsonResult> GetGendersJson()
+    {
+        var gendersList = GetGenders();
+
+
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.WriteLine(gendersList);
+        var selectListItems = gendersList.ToList();
+        Console.WriteLine(
+            Json(selectListItems.OrderBy(c => c.Text)));
+
+
+        return Task.FromResult(
+            Json(selectListItems.OrderBy(c => c.Text)));
+    }
+
+
+    /// <summary>
+    ///     Get a list of genders
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<SelectListItem> GetGenders()
+    {
+        // Retrieve countries and their corresponding nationalities
+        var gendersList = _context.Genders.ToList();
+
+        var combinedList =
+        (
+            from gender in gendersList.ToList()
+            let itemText = $"{gender.Name}"
+            let itemValue = gender.Id.ToString()
+            select new SelectListItem
+            {
+                Text = itemText, Value = itemValue
+            }
+        ).ToList();
+
+        combinedList.Insert(0, new SelectListItem
+        {
+            Text = "(Select a gender...)",
+            Value = "0"
+        });
+
+        return combinedList;
     }
 }

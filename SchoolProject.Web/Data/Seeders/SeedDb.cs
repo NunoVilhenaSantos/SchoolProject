@@ -122,82 +122,17 @@ public class SeedDb
     public async Task SeedAsync()
     {
         // ------------------------------------------------------------------ //
-        // _dataContextInUse = _dataContextMySql;
+        // initialize SeedDb Databases before been used
         // ------------------------------------------------------------------ //
-
-        // ------------------------------------------------------------------ //
-        // verify if the database exists and if not create it
-        // ------------------------------------------------------------------ //
-
-
-        try
-        {
-            // TODO: tem bug sem dar erro no debug
-            await _dataContextMySql.Database.MigrateAsync();
-            // await _mySqlLocal.Database.MigrateAsync();
-            // await _mySqlOnline.Database.MigrateAsync();
-        }
-        catch (Exception ex)
-        {
-            // Registe a exceção ou faça o tratamento adequado aqui.
-            _logger.LogError(ex,
-                "Ocorreu um erro durante a migração do banco de dados MySQL.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-        }
-
-
-        try
-        {
-            // TODO: tem bug sem dar erro no debug
-            await _dataContextSqLite.Database.MigrateAsync();
-        }
-        catch (Exception ex)
-        {
-            // Registe a exceção ou faça o tratamento adequado aqui.
-            _logger.LogError(ex,
-                "Ocorreu um erro durante a migração do banco de dados SQLite.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-        }
-
-
-        try
-        {
-            // TODO: tem bug sem dar erro no debug
-            await _dataContextMsSql.Database.MigrateAsync();
-            // await _msSqlLocal.Database.MigrateAsync();
-            // await _msSqlOnline.Database.MigrateAsync();
-        }
-        catch (Exception ex)
-        {
-            // Registe a exceção ou faça o tratamento adequado aqui.
-            _logger.LogError(ex,
-                "Ocorreu um erro durante a migração do banco de dados MsSQL.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-        }
-
-
-        try
-        {
-            // TODO: tem bug sem dar erro no debug
-            await _dataContextInUse.Database.MigrateAsync();
-        }
-        catch (Exception ex)
-        {
-            // Registe a exceção ou faça o tratamento adequado aqui.
-            _logger.LogError(ex,
-                "Ocorreu um erro durante a migração do banco de dados MySQL.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-        }
+        await SeedDbMigrateDatabasesAsync();
 
 
         // ------------------------------------------------------------------ //
-
-        await _dataContextInUse.Database.MigrateAsync();
-        await _dataContextInUse.Database.EnsureCreatedAsync();
-
-        var value = _dataContextInUse.Database.GenerateCreateScript();
-
+        // initialize SeedDb Databases before been used
         // ------------------------------------------------------------------ //
+        await SeedDbGenerateCreateScript();
+
+
 
 
         // ------------------------------------------------------------------ //
@@ -224,7 +159,7 @@ public class SeedDb
         // adding roles for all users in the system
         // ------------------------------------------------------------------ //
         await SeedingRolesForUsers();
-        await _dataContextInUse.Database.CommitTransactionAsync();
+        // await _dataContextInUse.Database.CommitTransactionAsync();
         await _dataContextInUse.SaveChangesAsync();
 
         // Chame este método em vez de repetir o código 15 vezes.
@@ -376,6 +311,122 @@ public class SeedDb
         }
     }
 
+
+    private Task SeedDbGenerateCreateScript()
+    {
+
+        string directory = ".\\data\\SQL\\";
+
+        Directory.CreateDirectory(directory);
+
+
+        // ------------------------------------------------------------------ //
+
+
+
+        // Gravar o script de criação de banco de dados 1
+        var value1 = _dataContextSqLite.Database.GenerateCreateScript();
+        File.WriteAllText(Path.Join(directory, "create_script_SQLite.sql"), value1);
+
+        // Gravar o script de criação de banco de dados 2
+        var value2 = _dataContextMySql.Database.GenerateCreateScript();
+        File.WriteAllText(Path.Join(directory, "create_script_MySQL.sql"), value2);
+
+        // Gravar o script de criação de banco de dados 3
+        var value3 = _dataContextMsSql.Database.GenerateCreateScript();
+        File.WriteAllText(Path.Join(directory, "create_script_MSSql.sql"), value3);
+
+        // Gravar o script de criação de banco de dados 4
+        //var value4 = _dataContextInUse.Database.GenerateCreateScript();
+        //File.WriteAllText(Path.Join(directory, "create_script_4.sql"), value4);
+        
+        
+        // ------------------------------------------------------------------ //
+
+        return Task.CompletedTask;
+    }
+
+    private async Task SeedDbMigrateDatabasesAsync()
+    {
+        // ------------------------------------------------------------------ //
+        // _dataContextInUse = _dataContextMySql;
+        // ------------------------------------------------------------------ //
+
+        // ------------------------------------------------------------------ //
+        // verify if the database exists and if not create it
+        // ------------------------------------------------------------------ //
+
+
+        try
+        {
+            // TODO: tem bug sem dar erro no debug
+            await _dataContextMySql.Database.MigrateAsync();
+            // await _mySqlLocal.Database.MigrateAsync();
+            // await _mySqlOnline.Database.MigrateAsync();
+        }
+        catch (Exception ex)
+        {
+            // Registe a exceção ou faça o tratamento adequado aqui.
+            _logger.LogError(ex,
+                "Ocorreu um erro durante a migração do banco de dados MySQL.");
+            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+        }
+
+
+        try
+        {
+            // TODO: tem bug sem dar erro no debug
+            await _dataContextSqLite.Database.MigrateAsync();
+        }
+        catch (Exception ex)
+        {
+            // Registe a exceção ou faça o tratamento adequado aqui.
+            _logger.LogError(ex,
+                "Ocorreu um erro durante a migração do banco de dados SQLite.");
+            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+        }
+
+
+        try
+        {
+            // TODO: tem bug sem dar erro no debug
+            await _dataContextMsSql.Database.MigrateAsync();
+            // await _msSqlLocal.Database.MigrateAsync();
+            // await _msSqlOnline.Database.MigrateAsync();
+        }
+        catch (Exception ex)
+        {
+            // Registe a exceção ou faça o tratamento adequado aqui.
+            _logger.LogError(ex,
+                "Ocorreu um erro durante a migração do banco de dados MsSQL.");
+            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+        }
+
+
+        try
+        {
+            // TODO: tem bug sem dar erro no debug
+            await _dataContextInUse.Database.MigrateAsync();
+        }
+        catch (Exception ex)
+        {
+            // Registe a exceção ou faça o tratamento adequado aqui.
+            _logger.LogError(ex,
+                "Ocorreu um erro durante a migração do banco de dados MySQL.");
+            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+        }
+
+
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+
+
+        await _dataContextInUse.Database.MigrateAsync();
+        await _dataContextInUse.Database.EnsureCreatedAsync();
+
+
+    }
 
     private async Task SeedingDataGenders(User user)
     {
@@ -1090,7 +1141,20 @@ public class SeedDb
         {
             // Commit the changes to the database and use asynchronous commit
             await _dataContextInUse.Database.CommitTransactionAsync();
+        }
+        catch (Exception ex)
+        {
+            // Handle any exceptions that might occur
+            _logger.LogError(ex,
+                "Error during database seeding and transaction commit.");
 
+            // Consider appropriate error handling and possibly rolling back the transaction
+
+            // throw; // Re-throw the exception to indicate a failure in the seeding process
+        }
+ 
+        try
+        {
             // Save any changes made to the database context
             await _dataContextInUse.SaveChangesAsync();
         }
@@ -1102,7 +1166,7 @@ public class SeedDb
 
             // Consider appropriate error handling and possibly rolling back the transaction
 
-            throw; // Re-throw the exception to indicate a failure in the seeding process
+            // throw; // Re-throw the exception to indicate a failure in the seeding process
         }
     }
 

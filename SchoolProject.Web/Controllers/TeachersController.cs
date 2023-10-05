@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SchoolProject.Web.Controllers.API;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Repositories.Teachers;
@@ -234,6 +235,13 @@ public class TeachersController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        ViewData["Countries"] =
+            SelectItensController.GetCountriesWithNationalitiesAsync();
+        ViewData["Cities"] = SelectItensController.GetCitiesAsync(0);
+        ViewData["Genders"] = SelectItensController.GetGendersAsync();
+        // ViewData["Countries"] = AccountController.GetCountriesAsync();
+
+
         return View();
     }
 
@@ -275,7 +283,19 @@ public class TeachersController : Controller
                 nameof(TeacherNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacher = await _context.Teachers.FindAsync(id);
+        var teacher = await _context.Teachers
+            .Include(t => t.Birthplace)
+            .Include(t => t.City)
+            .Include(t => t.Country)
+            .Include(t => t.CountryOfNationality)
+            .Include(t => t.Gender)
+            .Include(t => t.CreatedBy)
+            .Include(t => t.UpdatedBy)
+            .Include(t => t.User)
+            .FirstOrDefaultAsync(t => t.Id==id);
+
+        ViewData["Countries"] = SelectItensController.GetCountriesWithNationalitiesAsync();
+        ViewData["Cities"] = SelectItensController.GetCitiesAsync(teacher.Country.Id);
 
         return teacher == null
             ? new NotFoundViewResult(
@@ -296,7 +316,8 @@ public class TeachersController : Controller
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Teacher teacher)
+    public async Task<IActionResult> Edit(int id,
+        [Bind("FirstName,LastName,Birthplace,...")] Teacher teacher)
     {
         if (id != teacher.Id)
             return new NotFoundViewResult(

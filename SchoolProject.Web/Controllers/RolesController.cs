@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Models;
@@ -353,5 +354,64 @@ public class RolesController : Controller
         await _roleManager.Roles.ExecuteDeleteAsync();
 
         return RedirectToAction(nameof(Index));
+    }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Aqui o utilizador obtém a lista de países e a respetiva nacionalidade
+    ///     via JSON para o preenchimento do dropdown-list
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    // [Route("api/Roles/GetRolesJson")]
+    [Route("Roles/GetRolesJson")]
+    public Task<JsonResult> GetRolesJson()
+    {
+        var rolesList = GetRoles();
+
+
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.WriteLine(rolesList);
+        var selectListItems = rolesList.ToList();
+        Console.WriteLine(
+            Json(selectListItems.OrderBy(c => c.Text)));
+
+
+        return Task.FromResult(
+            Json(selectListItems.OrderBy(c => c.Text)));
+    }
+
+
+    /// <summary>
+    ///     Get a list of genders
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<SelectListItem> GetRoles()
+    {
+        // Retrieve countries and their corresponding nationalities
+        var rolesList = _roleManager.Roles.ToList();
+
+        var combinedList =
+        (
+            from role in rolesList.ToList()
+            let itemText = $"{role.Name}"
+            let itemValue = role.Id
+            select new SelectListItem
+            {
+                Text = itemText, Value = itemValue
+            }
+        ).ToList();
+
+        combinedList.Insert(0, new SelectListItem
+        {
+            Text = "(Select a role...)",
+            Value = "0"
+        });
+
+        return combinedList;
     }
 }

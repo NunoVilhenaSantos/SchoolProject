@@ -141,71 +141,25 @@ static Task RunSeeding(IHost host)
 
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
 
-    using var scope = scopeFactory?.CreateScope();
 
-    var seeder = scope?.ServiceProvider.GetService<SeedDb>();
+    // BUG: Microsoft estava a bulir e deixou de funcionar
+    //using var scope = scopeFactory?.CreateScope();
+
+    //var seeder = scope?.ServiceProvider.GetService<SeedDb>();
+
+    //seeder?.SeedAsync();
+    //seeder?.SeedSync();
 
 
-    try
+    //TODO MICROSOFT BUG NA MEXE!!!!!
+    using (var scope = scopeFactory?.CreateScope())
     {
-        // TODO: tem bug sem dar erro no debug
-        // var result = seeder.SeedAsync();
-        
-        //var seedTask = seeder.SeedAsync();
-        //seedTask.Wait(); // Espere até que a tarefa seja concluída.
-
-        //Console.WriteLine(seedTask.IsCompletedSuccessfully
-        //    ? "Seeding do banco de dados concluído."
-        //    : "Seeding do banco de dados falhou.");
-    }
-    catch (Exception ex)
-    {
-        // Registe a exceção ou faça o tratamento adequado aqui.
-        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
-        Console.WriteLine("Ocorreu um erro durante a execução " +
-                          "do populador do banco de dados.\n" +
-                          ex.Message);
-        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-    }
-    finally
-    {
-        // Certifique-se de que as conexões do seeder sejam fechadas, mesmo em caso de exceção.
-        // Implemente este método para fechar as conexões no seu seeder.
-        seeder.CloseConnections();
-        Console.WriteLine("Conexões do seeder fechadas.");
+        var seeder = scope?.ServiceProvider.GetService<SeedDb>();
+        seeder?.SeedAsync().Wait();
     }
 
 
-    try
-    {
-        // TODO: tem bug sem dar erro no debug
-        //seeder.SeedAsync().Wait(); 
-    }
-    catch (Exception ex)
-    {
-        // Registe a exceção ou faça o tratamento adequado aqui.
-        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
-        Console.WriteLine("Ocorreu um erro durante a execução " +
-                          "do populador do banco de dados.\n" +
-                          ex.Message);
-        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-    }
 
-
-    try
-    {
-        // TODO: tem bug sem dar erro no debug
-        seeder.SeedSync();
-    }
-    catch (Exception ex)
-    {
-        // Registe a exceção ou faça o tratamento adequado aqui.
-        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
-        Console.WriteLine("Ocorreu um erro durante a execução " +
-                          "do populador do banco de dados.\n" +
-                          ex.Message);
-        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-    }
 
 
     // Stop the timer "MyTimer"
@@ -728,29 +682,34 @@ builder.Services.TryAddScoped<AuthenticatedUserInApp>();
 // --------------------------------- --------------------------------------- //
 
 // Add seeding for the database.
-builder.Services.TryAddScoped<SeedDb>();
-//builder.Services.TryAddTransient<SeedDb>();
+// builder.Services.TryAddScoped<SeedDb>();
+builder.Services.TryAddTransient<SeedDb>();
 
 builder.Services.TryAddScoped<SeedDbUsers>();
 builder.Services.TryAddScoped<SeedDbStudentsAndTeachers>();
 builder.Services.TryAddScoped<SeedDbCourses>();
 
-//builder.Services.TryAddTransient<SeedDbUsers>();
-//builder.Services.TryAddTransient<SeedDbStudentsAndTeachers>();
-//builder.Services.TryAddTransient<SeedDbCourses>();
+// builder.Services.TryAddTransient<SeedDbUsers>();
+// builder.Services.TryAddTransient<SeedDbStudentsAndTeachers>();
+// builder.Services.TryAddTransient<SeedDbCourses>();
 
 builder.Services.TryAddScoped<SeedDbTeachersWithDisciplines>();
 builder.Services.TryAddScoped<SeedDbCoursesWithDisciplines>();
 builder.Services.TryAddScoped<SeedDbStudentsAndCourses>();
 
-//builder.Services.TryAddTransient<SeedDbTeachersWithDisciplines>();
-//builder.Services.TryAddTransient<SeedDbCoursesWithDisciplines>();
-//builder.Services.TryAddTransient<SeedDbStudentsAndCourses>();
+// builder.Services.TryAddTransient<SeedDbTeachersWithDisciplines>();
+// builder.Services.TryAddTransient<SeedDbCoursesWithDisciplines>();
+// builder.Services.TryAddTransient<SeedDbStudentsAndCourses>();
 
 
 builder.Services.TryAddScoped<SeedDbPlaceHolders>();
-//builder.Services.TryAddTransient<SeedDbPlaceHolders>();
+// builder.Services.TryAddTransient<SeedDbPlaceHolders>();
 
+
+//
+// Full filling the database with data
+// Done this way to avoid circular dependencies
+//
 
 // builder.Services.TryAddTransient<SeedDb>().BuildServiceProvider().GetService<SeedDb>();
 // builder.Services.TryAddTransient<SeedDb>().Configure();
@@ -872,9 +831,52 @@ builder.Services.Configure<WebEncoderOptions>(options =>
 
 // ... outras configurações ...
 
+
+builder.Services.AddWebEncoders();
+builder.Services.AddAntiforgery();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthenticationCore();
+
+builder.Services.AddApplicationInsightsTelemetry();
+
+builder.Services.AddMvc().AddViewLocalization().AddMicrosoftIdentityUI();
+builder.Services.AddMvcCore().AddViewLocalization().AddCors();
+builder.Services.AddRazorPages().AddViewLocalization().AddMicrosoftIdentityUI();
+builder.Services.AddControllersWithViews().AddViewLocalization()
+    .AddMicrosoftIdentityUI();
+
+// builder.Services.AddControllersWithViews();
+
+
+
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
+
+
+// Add the following line:
+builder.WebHost.UseSentry(o =>
+{
+    o.Dsn =
+    "https://76ef04ab1feaff08788bd9da2e796db0@o4505920748126208.ingest.sentry.io/4505977698975744";
+
+    // When configuring for the first time,
+    // to see what the SDK is doing:
+    o.Debug = true;
+
+    // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+    // We recommend adjusting this value in production.
+    o.TracesSampleRate = 1.0;
+});
+
+
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //
+
+// -------------- Build -------------- //
 
 // Build the application.
 // Configure the HTTP request pipeline.
@@ -926,6 +928,14 @@ app.UseStaticFiles();
 // Add the Microsoft Identity Web cookie policy
 app.UseCookiePolicy();
 app.UseRouting();
+
+// Enable automatic tracing integration.
+// If running with .NET 5 or below,
+// make sure to put this middleware
+// right after "UseRouting()".
+app.UseSentryTracing();
+
+
 app.UseSession();
 
 // Add the ASP.NET Core authentication service

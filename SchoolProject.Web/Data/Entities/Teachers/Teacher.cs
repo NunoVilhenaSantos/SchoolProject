@@ -234,6 +234,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+
     /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
@@ -246,6 +247,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DisplayName("Update At")]
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+
 
     /// <inheritdoc />
     [DisplayName("Updated By")]
