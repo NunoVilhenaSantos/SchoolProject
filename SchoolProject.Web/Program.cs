@@ -353,6 +353,14 @@ builder.Services.AddDbContext<DataContextSqLite>(
 // --------------------------------- --------------------------------------- //
 // --------------------------------- --------------------------------------- //
 
+
+// builder.Services.AddDefaultIdentity<IdentityUser>(
+//         options =>
+//             options.SignIn.RequireConfirmedAccount = true)
+//     .AddEntityFrameworkStores<DataContext>();
+
+
+
 // Configure Identity service with user settings,
 // password settings, and token settings.
 // builder.Services.AddIdentity<IdentityUser, IdentityRole>(
@@ -380,7 +388,7 @@ builder.Services
             cfg.Tokens.AuthenticatorTokenProvider =
                 TokenOptions.DefaultAuthenticatorProvider;
         })
-    .AddDefaultTokenProviders()
+    .AddDefaultTokenProviders().AddDefaultTokenProviders().AddDefaultUI()
     .AddEntityFrameworkStores<DataContextMySql>()
     .AddEntityFrameworkStores<DataContextMsSql>()
     .AddEntityFrameworkStores<DataContextSqLite>();

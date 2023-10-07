@@ -43,7 +43,7 @@ function getNationalities(countryId) {
 
         error: function (ex) {
             alert('Failed to retrieve nationalities. ' + ex);
-            debugger;
+            // debugger;
         },
 
         success: function (nationalities) {
@@ -69,7 +69,7 @@ function getCountries() {
 
         error: function (ex) {
             alert('Failed to retrieve countries. ' + ex);
-            debugger;
+            // debugger;
         },
 
         success: function (countries) {

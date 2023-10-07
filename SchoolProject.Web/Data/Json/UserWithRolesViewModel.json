@@ -1,0 +1,3817 @@
+[
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "49",
+      "Address": "Address of Teacher 49, 8882",
+      "FullName": "Teacher 49",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "07898868-4fc0-47a8-abcf-1ecb2f6c9aff",
+      "UserName": "teacher.49.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.49.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.49.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.49.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEATvzJYhkWK8ORYeuyEf2vbcFEj/YLpkAKcdQb91qJtvBzwEsNVtbz1dEByr58D9JA==",
+      "SecurityStamp": "4ZLDRFL5GBD4GC2QY7UYBCNRPNXAULHE",
+      "ConcurrencyStamp": "953051fc-241b-497f-a718-26c754d3b7ad",
+      "PhoneNumber": "900122226",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "07898868-4fc0-47a8-abcf-1ecb2f6c9aff",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Vitorino",
+      "LastName": "Freitas",
+      "Address": "Address of Vitorino Freitas, 8553",
+      "FullName": "Vitorino Freitas",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "0795cb5d-02c3-4e9e-96f9-e646475f9475",
+      "UserName": "vitorino.freitas.cinel.pt@yopmail.com",
+      "NormalizedUserName": "VITORINO.FREITAS.CINEL.PT@YOPMAIL.COM",
+      "Email": "vitorino.freitas.cinel.pt@yopmail.com",
+      "NormalizedEmail": "VITORINO.FREITAS.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEL3EH2wyUZPt4aLp37iGypbTPyV+DSLLB7mzjJLLS2SWjpWAvWUPkwZ9QBt2Fv828g==",
+      "SecurityStamp": "IP5PTQHH4E7AE7SXAOUAMH2YKUK4AFEA",
+      "ConcurrencyStamp": "8c725914-899f-44fe-b354-1c47af4dd39b",
+      "PhoneNumber": "236723556",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "0795cb5d-02c3-4e9e-96f9-e646475f9475",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "38",
+      "Address": "Address of Teacher 38, 7522",
+      "FullName": "Teacher 38",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "08abc9ce-f6d5-45a3-ada2-2bf3e2b6ae1a",
+      "UserName": "teacher.38.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.38.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.38.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.38.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBpfSOBBlUSsNpM9UdxeBWQDRmlcobGr9pdXrmJuNSbXe7UnVWaj8FA8AzG4q7l2CA==",
+      "SecurityStamp": "K55OOKNXU6KRUWXZWTHYFUVOGODJIMKI",
+      "ConcurrencyStamp": "796a0f60-1610-430f-9073-77ec3ee75a55",
+      "PhoneNumber": "150320570",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "08abc9ce-f6d5-45a3-ada2-2bf3e2b6ae1a",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "25",
+      "Address": "Address of Teacher 25, 3150",
+      "FullName": "Teacher 25",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "0a4ae74a-8d3f-41e1-82dd-3bb97601c098",
+      "UserName": "teacher.25.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.25.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.25.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.25.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEAH4fJOpO0AHe4/k4jmMuLxf+Ic0yWHfhGAmV0bMgufL9n+cwKiZClLVB0SCK6GwPA==",
+      "SecurityStamp": "KNK3GSOAY2VGHT3V4A45RHMLPMWEJ7YD",
+      "ConcurrencyStamp": "737e560d-2285-4dc9-af78-2eaf767f9ea6",
+      "PhoneNumber": "630904180",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "0a4ae74a-8d3f-41e1-82dd-3bb97601c098",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "22",
+      "Address": "Address of Teacher 22, 3285",
+      "FullName": "Teacher 22",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "0bd26eac-cc76-44d9-8021-3b55f1a74639",
+      "UserName": "teacher.22.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.22.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.22.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.22.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEPFnrI807+8nQ6Ke798zaApy+3gP0T/FVeleMInfCrev/8N3k1ZGj+VUifCUqcTxWA==",
+      "SecurityStamp": "DVG6FBLNAJ3QQXDS3S5ETNLJQNMD6NCT",
+      "ConcurrencyStamp": "0ea9d641-c9ee-4f79-9ba8-78a0bb0d2507",
+      "PhoneNumber": "800602343",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "0bd26eac-cc76-44d9-8021-3b55f1a74639",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "1",
+      "Address": "Address of Teacher 1, 2885",
+      "FullName": "Teacher 1",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "12288c37-3212-473a-802a-009cbd598a62",
+      "UserName": "teacher.1.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.1.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.1.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.1.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEOiXrP7h3tyuJJlTWrxXtDZ5yUjxuYG+G4Qh38LGs0sbwGVzvJwPa/m5JD2JlQj08A==",
+      "SecurityStamp": "LBA36KL5DA3YIUNJRK6OA5WYVVQMUUJN",
+      "ConcurrencyStamp": "2490eded-e23c-4f13-a76b-0f6fe4f6df8d",
+      "PhoneNumber": "850790204",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "12288c37-3212-473a-802a-009cbd598a62",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "5",
+      "Address": "Address of Teacher 5, 1059",
+      "FullName": "Teacher 5",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "1581aa35-67e0-4e0d-a523-23ec0394bfcd",
+      "UserName": "teacher.5.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.5.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.5.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.5.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEOzPi+U3JXVCnQbcZm1/4pYILOglqRbZ7uuwLnyy4+XsSY+sfeKOgYvsdQcSrRc7hA==",
+      "SecurityStamp": "F3TNYGXIP7B73DIDE6WU3DHHOZSO4266",
+      "ConcurrencyStamp": "bf7e2446-eb13-4eb8-b284-f45b80ed3fab",
+      "PhoneNumber": "991372221",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "1581aa35-67e0-4e0d-a523-23ec0394bfcd",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Luis",
+      "LastName": "Leopoldo",
+      "Address": "Address of Luis Leopoldo, 4286",
+      "FullName": "Luis Leopoldo",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "17ac3229-e333-41f0-a456-a970cc576b23",
+      "UserName": "luis.leopoldo.cinel.pt@yopmail.com",
+      "NormalizedUserName": "LUIS.LEOPOLDO.CINEL.PT@YOPMAIL.COM",
+      "Email": "luis.leopoldo.cinel.pt@yopmail.com",
+      "NormalizedEmail": "LUIS.LEOPOLDO.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEARlK2S7Dav71VPzL2k3rv8GxJJeglSjS48gg52Sk9q0gSGX5Blwrz6cKNxsyrnneQ==",
+      "SecurityStamp": "PGYHEBNH4AP5KWKE2T4K3AKWWVBVF7B7",
+      "ConcurrencyStamp": "41e880db-9dd6-4246-9045-9d7f99d4de1f",
+      "PhoneNumber": "178045319",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "17ac3229-e333-41f0-a456-a970cc576b23",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "20",
+      "Address": "Address of Teacher 20, 4381",
+      "FullName": "Teacher 20",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "20c83a87-2525-4ab2-a57c-7890db64618b",
+      "UserName": "teacher.20.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.20.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.20.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.20.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFkVkQfVxJYq7PeOes/LgQW+zvF7KjbKRNh13u4k3nZnnyC5ojfPTy+9VuGGEjUV7A==",
+      "SecurityStamp": "2KZDELUHHFA4VZKMEDHQ36EB5DWKOYDX",
+      "ConcurrencyStamp": "a0740752-ac54-4440-975a-7288234ffdfc",
+      "PhoneNumber": "645839944",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "20c83a87-2525-4ab2-a57c-7890db64618b",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "29",
+      "Address": "Address of Teacher 29, 4066",
+      "FullName": "Teacher 29",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "20d977c5-ac1d-4c68-8cd6-6e07ec142a28",
+      "UserName": "teacher.29.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.29.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.29.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.29.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAENl7vfmclHeR6sx7ejvO7ypv6Nby7FAyX1auFkkEnkPxvevAQlxwxFfIM50UUpYPFg==",
+      "SecurityStamp": "ZZKTWHTJ7BVKBOU5P6KOVNZOXJ5ZPVO7",
+      "ConcurrencyStamp": "e833cd7f-3989-41bd-8627-30fe0ac5e757",
+      "PhoneNumber": "591425833",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "20d977c5-ac1d-4c68-8cd6-6e07ec142a28",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Vasco",
+      "LastName": "Santos",
+      "Address": "Address of Vasco Santos, 8980",
+      "FullName": "Vasco Santos",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "240f39c1-e001-4fae-8829-fd46df86c4cb",
+      "UserName": "vasco.santos.cinel.pt@yopmail.com",
+      "NormalizedUserName": "VASCO.SANTOS.CINEL.PT@YOPMAIL.COM",
+      "Email": "vasco.santos.cinel.pt@yopmail.com",
+      "NormalizedEmail": "VASCO.SANTOS.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEKjCNnua9pf0jD784eloh6eOLQPR/tQWQETp1ADETKbRajK5QQZmSfwdelkEEnngwQ==",
+      "SecurityStamp": "LXL4SYQYQA2UYYRNUBVCQ67PQERUQLOJ",
+      "ConcurrencyStamp": "14781d08-5e1f-4a74-91f9-2853149fd6e5",
+      "PhoneNumber": "408115104",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "240f39c1-e001-4fae-8829-fd46df86c4cb",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Reinaldo",
+      "LastName": "Souza",
+      "Address": "Address of Reinaldo Souza, 9932",
+      "FullName": "Reinaldo Souza",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "269aeec0-d513-41e5-a7f4-132a6c5ca54a",
+      "UserName": "reinaldo.souza.cinel.pt@yopmail.com",
+      "NormalizedUserName": "REINALDO.SOUZA.CINEL.PT@YOPMAIL.COM",
+      "Email": "reinaldo.souza.cinel.pt@yopmail.com",
+      "NormalizedEmail": "REINALDO.SOUZA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEA+AfUWYRptQ/NIQlr/RHtwJaBFl5AGYX2GobKOeXoXG9VCUa6gL4Tjw6pMNcryGHA==",
+      "SecurityStamp": "6V6FQAUUMBL5SIYRYRUIYLOCJXYP7ZPV",
+      "ConcurrencyStamp": "3eb35c27-8912-4799-8bea-235ab4455165",
+      "PhoneNumber": "236563017",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "269aeec0-d513-41e5-a7f4-132a6c5ca54a",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "23",
+      "Address": "Address of Teacher 23, 2498",
+      "FullName": "Teacher 23",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "2a159127-8517-451b-a5f2-08ebe8afe89f",
+      "UserName": "teacher.23.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.23.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.23.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.23.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAELQc3KYU33BOyynVfYJlHVNrb79o2+iyslO8kYUqNxyhB0dgwuvgSqSWsi1ZfR5Vcw==",
+      "SecurityStamp": "WV74F5K2ZP3Q7WJVGRUWPBJZVMPCHMX5",
+      "ConcurrencyStamp": "228eb2b8-f5fa-4c69-b92d-e9db403b8f34",
+      "PhoneNumber": "799581235",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "2a159127-8517-451b-a5f2-08ebe8afe89f",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Duarte",
+      "LastName": "Marques",
+      "Address": "Address of Duarte Marques, 6287",
+      "FullName": "Duarte Marques",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "2a74ef95-18d5-4e34-8c92-572aa6ace6b1",
+      "UserName": "duarte.marques.cinel.pt@yopmail.com",
+      "NormalizedUserName": "DUARTE.MARQUES.CINEL.PT@YOPMAIL.COM",
+      "Email": "duarte.marques.cinel.pt@yopmail.com",
+      "NormalizedEmail": "DUARTE.MARQUES.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJQgj23lgqXZiNvWD2vg0Jv0ZvDbUu0UKhG5QCaFo6DpyFZQvGTTL37vTsboImb3Mg==",
+      "SecurityStamp": "5ZAYCI2MMMKKRKR43MWNQ47FYNFMK4AO",
+      "ConcurrencyStamp": "8367be9b-3ec5-4a21-821c-88305d28835a",
+      "PhoneNumber": "768245042",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "2a74ef95-18d5-4e34-8c92-572aa6ace6b1",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "50",
+      "Address": "Address of Teacher 50, 9961",
+      "FullName": "Teacher 50",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "2afc63fe-e945-43b4-a4a7-4b8a6d0856e2",
+      "UserName": "teacher.50.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.50.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.50.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.50.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEM0rFfuFiWuvXBtwY8wY8dG0ntXOtcBKVqwCCW9v1F0BibpvYXo2SLA/jagJp6c9WA==",
+      "SecurityStamp": "VMWPLV2JVNNWYQUTNFP3X4UNV7SERJ6K",
+      "ConcurrencyStamp": "e0c85f50-3ad3-469f-bc93-d81cf93d81bc",
+      "PhoneNumber": "322693108",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "2afc63fe-e945-43b4-a4a7-4b8a6d0856e2",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "11",
+      "Address": "Address of Student 11, 6668",
+      "FullName": "Student 11",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "2e4773ab-2a6d-4a7e-809e-48579d712c9c",
+      "UserName": "student.11.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.11.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.11.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.11.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJ1O4Rl9vpAo37FXJ85w8fV2nJJ7oC+7Avf1/111vGE/hnNXi4bw2Jrz8HTCUivEFA==",
+      "SecurityStamp": "QZSEEMI6SISUS6X6PATJ5ONVDANNUTLT",
+      "ConcurrencyStamp": "857d1597-f521-43c5-a92b-1b46365a3761",
+      "PhoneNumber": "634295434",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "2e4773ab-2a6d-4a7e-809e-48579d712c9c",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Dário",
+      "LastName": "Dias",
+      "Address": "Address of Dário Dias, 2608",
+      "FullName": "Dário Dias",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "31b27032-d0e1-4843-91aa-21cb10e34476",
+      "UserName": "drio.dias.cinel.pt@yopmail.com",
+      "NormalizedUserName": "DRIO.DIAS.CINEL.PT@YOPMAIL.COM",
+      "Email": "drio.dias.cinel.pt@yopmail.com",
+      "NormalizedEmail": "DRIO.DIAS.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEG5gRbVP4yflPuyGmTKvKb+9H/oA6VU514IBRCAPcwpssfkI4mEJC25mOP4h0Rq58Q==",
+      "SecurityStamp": "GFLWZSLYW7CWCWPQS5JZAV4NXYYZXR4K",
+      "ConcurrencyStamp": "d001bf99-c2e8-454d-9b99-830216f016cf",
+      "PhoneNumber": "684408433",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "31b27032-d0e1-4843-91aa-21cb10e34476",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "9",
+      "Address": "Address of Student 9, 602",
+      "FullName": "Student 9",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "32b32046-5693-4d74-8f48-d5d9dcda1ade",
+      "UserName": "student.9.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.9.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.9.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.9.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJfJjdQZWG71kAg2Lr1w7K3lm8Ql7Rc1hH+u8/KCiLkR7fZoW4Z/80dtNsxKJ3kwJg==",
+      "SecurityStamp": "SQGUN3B6B5IWCFPQZVGZWPTQHCOAZW4K",
+      "ConcurrencyStamp": "2ed0859a-2733-44a8-814a-f27ef9c1c059",
+      "PhoneNumber": "253258936",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "32b32046-5693-4d74-8f48-d5d9dcda1ade",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "18",
+      "Address": "Address of Teacher 18, 1407",
+      "FullName": "Teacher 18",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "32ed6635-9d96-42d1-8c89-54570f199de8",
+      "UserName": "teacher.18.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.18.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.18.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.18.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEHfC/5a8x3epb7Z1Lw3nxMywztQPfrk6TVyWQx0bwLf5IPKaxwrvpMvkLGZhi2XYmQ==",
+      "SecurityStamp": "D4UFQJQEOZFAIOPGVUFGMYLM4TJYW3SZ",
+      "ConcurrencyStamp": "35d1c0d1-b032-4e90-afd0-0f57594e93ef",
+      "PhoneNumber": "554958023",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "32ed6635-9d96-42d1-8c89-54570f199de8",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "12",
+      "Address": "Address of Student 12, 4910",
+      "FullName": "Student 12",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "35101871-8af2-4cee-8bd7-561118afc1b0",
+      "UserName": "student.12.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.12.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.12.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.12.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEKkSo5lWd1jizfD9dqF4daZFW8zCwxRSxQdoWPZwz+nBnwoVFndMhchCM8F4pqWDEA==",
+      "SecurityStamp": "NERS5GQD3X45XNHMBK5BB6RBZD4IIZR5",
+      "ConcurrencyStamp": "56218083-bdd2-44a0-8ed4-7e69971ccb2e",
+      "PhoneNumber": "623641951",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "35101871-8af2-4cee-8bd7-561118afc1b0",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "27",
+      "Address": "Address of Teacher 27, 4075",
+      "FullName": "Teacher 27",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "38e104ce-dd5d-4242-886b-ae468cf7cfda",
+      "UserName": "teacher.27.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.27.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.27.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.27.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFws0TarLLo29bP/MS2lh5K83J576EDBJES1MsZaWUmJ+yZJJTkZp2AEOlsIGQl9rQ==",
+      "SecurityStamp": "VB53OMTUKTCFFVYRXYR5Y745AYBGOWBW",
+      "ConcurrencyStamp": "f5ba8615-31b6-4f52-bc42-7ebf726c9af7",
+      "PhoneNumber": "422510516",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "38e104ce-dd5d-4242-886b-ae468cf7cfda",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "28",
+      "Address": "Address of Teacher 28, 5873",
+      "FullName": "Teacher 28",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "3bf6c16e-e939-4d7a-8281-3a9fa25d3ad1",
+      "UserName": "teacher.28.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.28.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.28.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.28.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJhtDeDGpHAcEAG8v6mFhA838suc9KcFKjHvnGy6WkOZbvTnsKG+d04Dx5MDng3j+Q==",
+      "SecurityStamp": "OJQ7BL7W3SVR55PS7QHH6EPS3ESQOM6K",
+      "ConcurrencyStamp": "993f34e3-ae66-40e9-809f-5921c868a90c",
+      "PhoneNumber": "403625729",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "3bf6c16e-e939-4d7a-8281-3a9fa25d3ad1",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "17",
+      "Address": "Address of Teacher 17, 4771",
+      "FullName": "Teacher 17",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "3e955f0c-d52b-4b29-a39a-c9f89cf87805",
+      "UserName": "teacher.17.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.17.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.17.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.17.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBdXL7BRkRvpAkRShkvdsm3IYU6xK12BuFzoA7mNSnhsidHhlXJJ685EpRWt5iQD5A==",
+      "SecurityStamp": "XZALBI2GNBUL7OPIJ6XMUVJ53JNSYKZZ",
+      "ConcurrencyStamp": "6560401a-0b97-433d-a01e-909dd0e0e883",
+      "PhoneNumber": "816525016",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "3e955f0c-d52b-4b29-a39a-c9f89cf87805",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Filipe",
+      "LastName": "Baptista",
+      "Address": "Address of Filipe Baptista, 7813",
+      "FullName": "Filipe Baptista",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "4421d7fc-3320-4517-97f6-461fdb7b9edc",
+      "UserName": "filipe.baptista.cinel.pt@yopmail.com",
+      "NormalizedUserName": "FILIPE.BAPTISTA.CINEL.PT@YOPMAIL.COM",
+      "Email": "filipe.baptista.cinel.pt@yopmail.com",
+      "NormalizedEmail": "FILIPE.BAPTISTA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEH9tYEW0tEga7BW9Ywj0MjdLxcMv0fSddD0y5gv1Dk369Bmpn0nDE9y6LGe7IQv/dA==",
+      "SecurityStamp": "NYAJRPRNZ2HFTTO4O2CKLHO4PIHXGUW5",
+      "ConcurrencyStamp": "f884d8ae-5def-4073-b134-d2458293d87e",
+      "PhoneNumber": "642990542",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "4421d7fc-3320-4517-97f6-461fdb7b9edc",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "14",
+      "Address": "Address of Teacher 14, 5762",
+      "FullName": "Teacher 14",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "4544663a-6548-41cb-8acb-a3cf642583f6",
+      "UserName": "teacher.14.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.14.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.14.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.14.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJMuXRdHFq8fXo1QRlzBCRMC8uWQLASrNOzErisOsMcsZrL2lwaRnWCv2/h/wKi0jg==",
+      "SecurityStamp": "ITZCZLXP2XPSTMX6WMK3CO5V3HPNKSDN",
+      "ConcurrencyStamp": "e77ab3da-93bc-4736-88ad-e8de3b48c703",
+      "PhoneNumber": "658924956",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "4544663a-6548-41cb-8acb-a3cf642583f6",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "14",
+      "Address": "Address of Student 14, 8929",
+      "FullName": "Student 14",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "4958da52-ea13-4411-a690-3f3e026d82b0",
+      "UserName": "student.14.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.14.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.14.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.14.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAELhEDiYt/O0TwQlUC91Zhg74e8xBhg7+BG53eqmWFUSchSvTXhgpUf2cKgSJlB/Mew==",
+      "SecurityStamp": "YIG7GMUE4UQXASJ7W2GHM6ZMRGY7EJ6B",
+      "ConcurrencyStamp": "bc7b457d-f880-4e30-95b0-4bd86c033881",
+      "PhoneNumber": "504095100",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "4958da52-ea13-4411-a690-3f3e026d82b0",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Nuno",
+      "LastName": "Santos",
+      "Address": "Calle Luna, 4289",
+      "FullName": "Nuno Santos",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "4a2c21fc-582c-4c8a-bea6-cc14521a0028",
+      "UserName": "nuno.santos.26288@formandos.cinel.pt",
+      "NormalizedUserName": "NUNO.SANTOS.26288@FORMANDOS.CINEL.PT",
+      "Email": "nuno.santos.26288@formandos.cinel.pt",
+      "NormalizedEmail": "NUNO.SANTOS.26288@FORMANDOS.CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJjA6LCnGeNOU1GEaezbP7lslNps2uTWaq9OQpUGbL/UEeuNoBbTtjP9+9y1mNzogw==",
+      "SecurityStamp": "AZXD6MAQW7ISQ6XQYCYL6UHQWJONXKNY",
+      "ConcurrencyStamp": "f312b45a-0d1e-4377-92c0-73b5a423eb8a",
+      "PhoneNumber": "167942219",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "4a2c21fc-582c-4c8a-bea6-cc14521a0028",
+      "RoleId": "0d51118b-5327-4aa6-87dc-c4f81bb9ac30"
+    },
+    "RoleName": "SuperUser",
+    "Roles": [
+      "SuperUser"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "11",
+      "Address": "Address of Teacher 11, 3117",
+      "FullName": "Teacher 11",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "4d7818ea-f628-47f8-8c8d-b88cb8286d9d",
+      "UserName": "teacher.11.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.11.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.11.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.11.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAED/9vyB+6MRM22tGUjaoeULxq2AkraDv9LN+2oFLUau3cNqKrKBIT46HY/9qXMawLA==",
+      "SecurityStamp": "C2TXBPKX5BCP24UZXWOSERPONU3MJPFS",
+      "ConcurrencyStamp": "c3ee383a-26ce-42ce-be84-b8dc0020aa8e",
+      "PhoneNumber": "288055876",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "4d7818ea-f628-47f8-8c8d-b88cb8286d9d",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Ana",
+      "LastName": "Ribeiro",
+      "Address": "Address of Ana Ribeiro, 677",
+      "FullName": "Ana Ribeiro",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "4efe871e-8a5e-4b37-8b47-4a1c8681ba8d",
+      "UserName": "ana.ribeiro.cinel.pt@yopmail.com",
+      "NormalizedUserName": "ANA.RIBEIRO.CINEL.PT@YOPMAIL.COM",
+      "Email": "ana.ribeiro.cinel.pt@yopmail.com",
+      "NormalizedEmail": "ANA.RIBEIRO.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAELDF+w65uyR4fPOvm6Hxq3j4yIGH/B9pgI95M0sgSkDzTDhj6NGUXKor1XT7e9k9tA==",
+      "SecurityStamp": "5VJDH6N3RPW7IKSSYZEPPMXTDGRTUH4D",
+      "ConcurrencyStamp": "bc79e197-8290-4be4-8ffb-c1c05a11384f",
+      "PhoneNumber": "438554970",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "4efe871e-8a5e-4b37-8b47-4a1c8681ba8d",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "4",
+      "Address": "Address of Teacher 4, 4012",
+      "FullName": "Teacher 4",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "509a4e2d-f912-4bf7-a649-86a6b0af5f0a",
+      "UserName": "teacher.4.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.4.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.4.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.4.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJ2eWOrFp1eRZPCZmpRtxfEF6/+8tnph0WCJ/94Go4wBpJOfhrOVO/1xX8UWmAz8zw==",
+      "SecurityStamp": "EG33KC4T4AU2H2MGBOGSP4MRJTHQRVPY",
+      "ConcurrencyStamp": "781ca8fa-0ad6-4cc0-a45f-2734cff45ffe",
+      "PhoneNumber": "381307146",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "509a4e2d-f912-4bf7-a649-86a6b0af5f0a",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "2",
+      "Address": "Address of Student 2, 8655",
+      "FullName": "Student 2",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "513204f4-d638-4d06-8956-76ea060e85d0",
+      "UserName": "student.2.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.2.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.2.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.2.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIRrCbf2D2ZngPNrKaBLPsEQDmG6AjTyzObQPASB1RwZ1tpujsNoQcFEgvA8w/R+gQ==",
+      "SecurityStamp": "NPXRCT3X6DKWUMPASHDC5OIVTA4WPRGE",
+      "ConcurrencyStamp": "b8c47080-c70d-4577-abe8-08045305f05a",
+      "PhoneNumber": "459261877",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "513204f4-d638-4d06-8956-76ea060e85d0",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Luis",
+      "LastName": "Patricio",
+      "Address": "Address of Luis Patricio, 9115",
+      "FullName": "Luis Patricio",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "51b17477-ef5b-4eb1-a428-77e164bb0cd2",
+      "UserName": "luis.patricio.cinel.pt@yopmail.com",
+      "NormalizedUserName": "LUIS.PATRICIO.CINEL.PT@YOPMAIL.COM",
+      "Email": "luis.patricio.cinel.pt@yopmail.com",
+      "NormalizedEmail": "LUIS.PATRICIO.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEL2S/v1rNaE0LJ7dM6Mt7YfW56dNlftPWJSE4/IhepipU+UAUtF4siUijxcPBsFwnQ==",
+      "SecurityStamp": "4RGEMIRKZRISV64W6CZXF3WBLZ6X5MKG",
+      "ConcurrencyStamp": "b024dca6-1c41-4fa6-9cca-25d633ee296f",
+      "PhoneNumber": "758227858",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "51b17477-ef5b-4eb1-a428-77e164bb0cd2",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "18",
+      "Address": "Address of Student 18, 3997",
+      "FullName": "Student 18",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "5668231a-ef82-421a-ac56-6abf3a02e08f",
+      "UserName": "student.18.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.18.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.18.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.18.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEMAvjF9jkn84Zp4u5mpd791Sf+iwRS1RpdypcTNu7An++IAsV9QH174RfNmwVPRCAw==",
+      "SecurityStamp": "3RIB4VCH7ON4RRCSWRKQFKMDC2Q4VVYQ",
+      "ConcurrencyStamp": "8b737214-7291-47be-9ea3-8c30e3de3bae",
+      "PhoneNumber": "655586853",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "5668231a-ef82-421a-ac56-6abf3a02e08f",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "44",
+      "Address": "Address of Teacher 44, 4793",
+      "FullName": "Teacher 44",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "58716013-f41c-4ab2-8b7b-f82ba3727ba7",
+      "UserName": "teacher.44.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.44.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.44.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.44.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBZueKUjZ+FUixO4piokTvNuwYpYgD/0QlkcfU5wEPhH+j2wgOoShH7PHIfQVXEJsA==",
+      "SecurityStamp": "U5LOQC3CFGIPZURE5ZJFVE7AZOVLQ27P",
+      "ConcurrencyStamp": "460ace2f-1bfb-4b40-97f9-36acf5e55994",
+      "PhoneNumber": "425477921",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "58716013-f41c-4ab2-8b7b-f82ba3727ba7",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Mariana",
+      "LastName": "Oliveira",
+      "Address": "Address of Mariana Oliveira, 7734",
+      "FullName": "Mariana Oliveira",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "599a4edf-b415-4695-92f2-7fa4808af03c",
+      "UserName": "mariana.oliveira.cinel.pt@yopmail.com",
+      "NormalizedUserName": "MARIANA.OLIVEIRA.CINEL.PT@YOPMAIL.COM",
+      "Email": "mariana.oliveira.cinel.pt@yopmail.com",
+      "NormalizedEmail": "MARIANA.OLIVEIRA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBkBwPy96Eo/4ckT9vglqYGXcfv+Ax/QgOYrr8s3YbgRIShZQtS1liAt5wf5QM+4WA==",
+      "SecurityStamp": "RGZKURSWFDTYGZN7DUWMRX4XTR7DMBJ7",
+      "ConcurrencyStamp": "17a245b4-3192-4ef2-99f0-4779e67155d0",
+      "PhoneNumber": "309151922",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "599a4edf-b415-4695-92f2-7fa4808af03c",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "9",
+      "Address": "Address of Teacher 9, 3646",
+      "FullName": "Teacher 9",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "5cace2d7-51dc-4515-a802-3b98cae029ca",
+      "UserName": "teacher.9.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.9.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.9.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.9.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFbvJmZdK+7MqaPdhX7uZZTGDzej3TQNyu4w9DfU7N7z5Sf7lTtr4dWQ5ZNKnwOe5g==",
+      "SecurityStamp": "O642U6GSKZQ2I5SCYX5O66HABLR3KMCG",
+      "ConcurrencyStamp": "f3138ac9-ef02-4545-bf9b-c15104a18d84",
+      "PhoneNumber": "201627652",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "5cace2d7-51dc-4515-a802-3b98cae029ca",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "36",
+      "Address": "Address of Teacher 36, 2331",
+      "FullName": "Teacher 36",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "5dd7c9ec-7dc9-4968-8b62-bc7f7b50f4b3",
+      "UserName": "teacher.36.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.36.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.36.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.36.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFF+vx1YNLti8GAmpC1uzD9KNOlvt5Qs4rgP8rJdr92qFI/w38VWZo0ZCWNXpAO8Cw==",
+      "SecurityStamp": "IHOCIDYQBM4ARFGMDY46A2IMY6WF3WBS",
+      "ConcurrencyStamp": "9522f74e-077e-4d85-8051-07a4dc4d4164",
+      "PhoneNumber": "373741995",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "5dd7c9ec-7dc9-4968-8b62-bc7f7b50f4b3",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "20",
+      "Address": "Address of Student 20, 3734",
+      "FullName": "Student 20",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "5eb58658-f439-46ae-994e-6c2691a1376c",
+      "UserName": "student.20.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.20.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.20.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.20.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBNm9BDavP4X7MERi3xhWz4agHU1rzr8xJHUZQaByYN0KBRFYED4BfjgFn9mAqNn0Q==",
+      "SecurityStamp": "S77SD6DB56IYD2PLXHHASOCEMVHNA3YC",
+      "ConcurrencyStamp": "6c258f8c-31a0-4c99-9332-93b01655cf0a",
+      "PhoneNumber": "480675911",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "5eb58658-f439-46ae-994e-6c2691a1376c",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "33",
+      "Address": "Address of Teacher 33, 8217",
+      "FullName": "Teacher 33",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "60323228-73f8-4f51-8abc-c2f85df784b4",
+      "UserName": "teacher.33.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.33.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.33.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.33.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEEhed9ScA/esfq5aJEnWx+nkdYP2F81dyr7cTRuOaetNozwaE78dwET3fl2Pz5PEYw==",
+      "SecurityStamp": "VYSRNXIZA5NZX75KI4QASCZL4FITPT55",
+      "ConcurrencyStamp": "28c1f038-5cd4-41f9-9632-8f156914349e",
+      "PhoneNumber": "414804294",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "60323228-73f8-4f51-8abc-c2f85df784b4",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Tatiane",
+      "LastName": "Avellar",
+      "Address": "Address of Tatiane Avellar, 7431",
+      "FullName": "Tatiane Avellar",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "62319b68-a3ce-4455-b54f-c42194db37f5",
+      "UserName": "tatiane.avellar.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TATIANE.AVELLAR.CINEL.PT@YOPMAIL.COM",
+      "Email": "tatiane.avellar.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TATIANE.AVELLAR.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEKtXiCZdYkS2e54sD3nGGc6fJKi410zMst7GYOMKdFfMlSs3KsW98c0DEf6nJ08tAg==",
+      "SecurityStamp": "YRLO2AXHRC644Y6R4JMS664PDV3JOZDE",
+      "ConcurrencyStamp": "ce831d53-10a1-45f9-a483-fc290685a945",
+      "PhoneNumber": "758403080",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "62319b68-a3ce-4455-b54f-c42194db37f5",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "15",
+      "Address": "Address of Student 15, 3425",
+      "FullName": "Student 15",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "682a6228-fb9f-49d1-a909-86e84fdda052",
+      "UserName": "student.15.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.15.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.15.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.15.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEDQcHJj1GIHwovv2CR4vZtEqlgPjTJPrPh5+36Mhd8pDkQwh7LFReBlIuNKv/oMF1w==",
+      "SecurityStamp": "2FHI44ULJFBBFNDL6DXKEG5MBL5OLC7G",
+      "ConcurrencyStamp": "81892f52-ce64-4170-ae90-48c8614236a3",
+      "PhoneNumber": "130398955",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "682a6228-fb9f-49d1-a909-86e84fdda052",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Nuno",
+      "LastName": "Vilhena Santos",
+      "Address": "Address of Nuno Vilhena Santos, 7877",
+      "FullName": "Nuno Vilhena Santos",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "70c768a2-93ea-419f-81b1-fc34bcd8da9e",
+      "UserName": "nuno.vilhenasantos.cinel.pt@yopmail.com",
+      "NormalizedUserName": "NUNO.VILHENASANTOS.CINEL.PT@YOPMAIL.COM",
+      "Email": "nuno.vilhenasantos.cinel.pt@yopmail.com",
+      "NormalizedEmail": "NUNO.VILHENASANTOS.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIg3wjkWYr71Q0Q4WeF20oHyfwWdC9sVVfFeDE3nLNtcdMX29UcqEMrcTqnOZ9GpEQ==",
+      "SecurityStamp": "3FXYC3ZRJNK3EUSTBE3ADVUY6QV63BRE",
+      "ConcurrencyStamp": "8a2ab352-d713-4477-a748-c844744fc6a0",
+      "PhoneNumber": "470018235",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "70c768a2-93ea-419f-81b1-fc34bcd8da9e",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Vitorino",
+      "LastName": "Silva",
+      "Address": "Address of Vitorino Silva, 3938",
+      "FullName": "Vitorino Silva",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "71324136-a9b7-45a5-a9c2-5148bdcc683a",
+      "UserName": "vitorino.silva.cinel.pt@yopmail.com",
+      "NormalizedUserName": "VITORINO.SILVA.CINEL.PT@YOPMAIL.COM",
+      "Email": "vitorino.silva.cinel.pt@yopmail.com",
+      "NormalizedEmail": "VITORINO.SILVA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAED9OpiNZ5ujDprWqgWVF7NC+q/cDka+YrJxKXdIBkjy/wQGIpa7vT3VOgh9iBUXzYQ==",
+      "SecurityStamp": "6VPA355MTGZKZGHQBZ7AT66EJ5ESMBPD",
+      "ConcurrencyStamp": "150473b2-7317-49e8-bd41-beb1a7be87a1",
+      "PhoneNumber": "376068678",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "71324136-a9b7-45a5-a9c2-5148bdcc683a",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "19",
+      "Address": "Address of Teacher 19, 8756",
+      "FullName": "Teacher 19",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "72025f62-dc0d-4562-9760-97407577b94e",
+      "UserName": "teacher.19.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.19.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.19.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.19.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEM5bu6O9CFujvQAtopAcn/wNY+CGvR1u+qP7w+mu4XiB8S0swW4Afrg+8IghRLRTqw==",
+      "SecurityStamp": "XCKNX646S5O4XNDWB3B3HF3FIUMVYYHJ",
+      "ConcurrencyStamp": "49506ca6-cae5-465c-99b5-8654601a2afb",
+      "PhoneNumber": "446739886",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "72025f62-dc0d-4562-9760-97407577b94e",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "16",
+      "Address": "Address of Student 16, 824",
+      "FullName": "Student 16",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "7503a597-2117-4042-a71c-79c3d1194652",
+      "UserName": "student.16.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.16.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.16.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.16.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEDoRyHwczLUAVfioZqDwg16vOAjgqnKbffeXjCk+quxC6XtGePmoEEcjDR+MiDtWPg==",
+      "SecurityStamp": "RONVW3ORSCDWDWN5JRYWHAXG4M4COH6A",
+      "ConcurrencyStamp": "d690e4da-c224-47c3-affe-e17253dd88af",
+      "PhoneNumber": "888276411",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "7503a597-2117-4042-a71c-79c3d1194652",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "42",
+      "Address": "Address of Teacher 42, 2675",
+      "FullName": "Teacher 42",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "77f39ca9-3c9e-4b77-8856-02bb209e3d36",
+      "UserName": "teacher.42.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.42.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.42.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.42.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJRdyh46N4g3aQJqwrD4Ac4FyRivxme6OPKR/ngO3MXXqWQANuSC81hAOu6zZJUFTA==",
+      "SecurityStamp": "ELV5MGZTF3JPUAJICQLI7FSIKFIG4PZR",
+      "ConcurrencyStamp": "308e81cf-9be4-4ce8-996f-1d9a73b68766",
+      "PhoneNumber": "145217480",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "77f39ca9-3c9e-4b77-8856-02bb209e3d36",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Diogo",
+      "LastName": "Alves",
+      "Address": "Calle Luna, 9583",
+      "FullName": "Diogo Alves",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "7bc5fc46-4d55-4ace-b5be-26f4ac10137f",
+      "UserName": "diogo.alves.28645@formandos.cinel.pt",
+      "NormalizedUserName": "DIOGO.ALVES.28645@FORMANDOS.CINEL.PT",
+      "Email": "diogo.alves.28645@formandos.cinel.pt",
+      "NormalizedEmail": "DIOGO.ALVES.28645@FORMANDOS.CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBV9mWjTT9JQ2EM8RJT9SvzDxgDkJHPTTjZgnsd6zTw2K1qHH7k++HT+Ffvt70vv1g==",
+      "SecurityStamp": "U5WAVNMJVWWWERKZEUUPAX6RN3GYFABQ",
+      "ConcurrencyStamp": "8f78717a-6f90-43c8-84c9-4194a812efb0",
+      "PhoneNumber": "396321287",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "7bc5fc46-4d55-4ace-b5be-26f4ac10137f",
+      "RoleId": "cd26d5c6-f0a3-49b0-8278-5e9332b7c792"
+    },
+    "RoleName": "Functionary",
+    "Roles": [
+      "Functionary"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "35",
+      "Address": "Address of Teacher 35, 2564",
+      "FullName": "Teacher 35",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "7c52ffa7-4dd2-4891-821e-68e8ba875da2",
+      "UserName": "teacher.35.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.35.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.35.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.35.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEEyIiRNDwwFY6QjxjwYURl4bLUUqoAdWIc29SNExZq0+XXc3qIhVU/QMsUdscWuG3A==",
+      "SecurityStamp": "ICQ4HROVDZYLQ3XSNSOMNYNUPERUGR3T",
+      "ConcurrencyStamp": "70dab7ad-d240-45cb-b941-001b64389190",
+      "PhoneNumber": "987099933",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "7c52ffa7-4dd2-4891-821e-68e8ba875da2",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "2",
+      "Address": "Address of Teacher 2, 6536",
+      "FullName": "Teacher 2",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "7cfb0b24-8ab4-4a22-967a-a451a991c4b8",
+      "UserName": "teacher.2.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.2.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.2.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.2.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIs3UdgWznxbHAsWRMha3JXVzMf6ChdlSxjJ3eQwl3p4Gdehect4zTHhSyIvfzAi+w==",
+      "SecurityStamp": "6WCXD3T4KJU6UPJRIO6GTYWESYUE5Q74",
+      "ConcurrencyStamp": "e370ddb2-3060-4c91-9809-9a42723502c3",
+      "PhoneNumber": "763569659",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "7cfb0b24-8ab4-4a22-967a-a451a991c4b8",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Mariana",
+      "LastName": "Leite",
+      "Address": "Address of Mariana Leite, 7051",
+      "FullName": "Mariana Leite",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "7dea7386-1299-44fc-98ae-93786b31d464",
+      "UserName": "mariana.leite.cinel.pt@yopmail.com",
+      "NormalizedUserName": "MARIANA.LEITE.CINEL.PT@YOPMAIL.COM",
+      "Email": "mariana.leite.cinel.pt@yopmail.com",
+      "NormalizedEmail": "MARIANA.LEITE.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEAyOm8KIYb6D9PKUL81Nh6BzDJuRN88AWesUyy8OUT+8IyUcIutxlGr+fYubZcSweA==",
+      "SecurityStamp": "CKPFG42GNOEUM6KJPD7YVUPLHTGPZTQS",
+      "ConcurrencyStamp": "85a49f2c-fd71-45e9-adf5-67a0d807e34c",
+      "PhoneNumber": "456519030",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "7dea7386-1299-44fc-98ae-93786b31d464",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Licinio",
+      "LastName": "Rosario",
+      "Address": "Calle Luna, 6830",
+      "FullName": "Licinio Rosario",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "7f517098-6e5e-4331-a00b-315a7f66b778",
+      "UserName": "licinio.do.rosario@formandos.cinel.pt",
+      "NormalizedUserName": "LICINIO.DO.ROSARIO@FORMANDOS.CINEL.PT",
+      "Email": "licinio.do.rosario@formandos.cinel.pt",
+      "NormalizedEmail": "LICINIO.DO.ROSARIO@FORMANDOS.CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEAb98hiLFd6k853O/oRUqOomLJuQRAGtQsUMlvMzkHe+z3OtWVjDBR3DlSLwpOB2YQ==",
+      "SecurityStamp": "BP4CTYDQLICEAF7AXWXSZSUCIFPMOEHC",
+      "ConcurrencyStamp": "468a2ee9-5675-43bd-8c02-746b08507b5f",
+      "PhoneNumber": "756488351",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "7f517098-6e5e-4331-a00b-315a7f66b778",
+      "RoleId": "cd26d5c6-f0a3-49b0-8278-5e9332b7c792"
+    },
+    "RoleName": "Functionary",
+    "Roles": [
+      "Functionary"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "48",
+      "Address": "Address of Teacher 48, 2922",
+      "FullName": "Teacher 48",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "8157573a-c42c-4e47-ad0e-733c246d4246",
+      "UserName": "teacher.48.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.48.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.48.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.48.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIDyxMD/lM3Pw1o8W6aMUopJq+xOAc1nFnQNSz1qFAWodckvl8+5xbbUycC87PbMUQ==",
+      "SecurityStamp": "S32JNRNBEEJBUCGILKKAYS652BKVVHPM",
+      "ConcurrencyStamp": "e6e4c34d-c726-47a0-a9a0-172deb78577d",
+      "PhoneNumber": "883397763",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "8157573a-c42c-4e47-ad0e-733c246d4246",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "13",
+      "Address": "Address of Teacher 13, 6910",
+      "FullName": "Teacher 13",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "817dcecb-7c9a-4f75-a060-caed322e23b2",
+      "UserName": "teacher.13.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.13.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.13.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.13.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEEpfuim5A2OkDoLcHw2pMB3hwxmRhIL+mB/cmSMLG0PX9v5mZ2u77UkCXbmhLbnS+w==",
+      "SecurityStamp": "VCWYLKNCL2SNMYCZN5XIY4Q3JLPJMTCD",
+      "ConcurrencyStamp": "a40b0444-18f2-4773-b858-e6b37f92bb7b",
+      "PhoneNumber": "988641824",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "817dcecb-7c9a-4f75-a060-caed322e23b2",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "34",
+      "Address": "Address of Teacher 34, 1579",
+      "FullName": "Teacher 34",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "830ea07f-aa5d-4658-b3ee-903f9075ec04",
+      "UserName": "teacher.34.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.34.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.34.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.34.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIrNm1SjEQLnXX0aFwGS4QcjX/jDAKQme8+pB05RSQ8N6a/cxw5HXi9MxgaLcPSozA==",
+      "SecurityStamp": "6O5RZBMB5NPYXOFXZSQWEFDISWQWXD3A",
+      "ConcurrencyStamp": "9347f224-167b-430a-bd3c-7dedc639a4c1",
+      "PhoneNumber": "615919487",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "830ea07f-aa5d-4658-b3ee-903f9075ec04",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "7",
+      "Address": "Address of Student 7, 2070",
+      "FullName": "Student 7",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "8ca456c9-fe5d-42aa-97a3-0dc02e0b6694",
+      "UserName": "student.7.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.7.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.7.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.7.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJNnPXBeFlkanOvlheyOvJHj77gB/3XN80ZKqyowMgKNCM8f/v07XlHWG7J8g+DeUg==",
+      "SecurityStamp": "HDJR23NSRNAYNS3L6623HRKAZ6J7JXY6",
+      "ConcurrencyStamp": "147452be-f055-454a-8baa-30e084f4afde",
+      "PhoneNumber": "679963461",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "8ca456c9-fe5d-42aa-97a3-0dc02e0b6694",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "3",
+      "Address": "Address of Teacher 3, 6177",
+      "FullName": "Teacher 3",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "9430c4bb-ace0-49dc-8022-44c59419b6be",
+      "UserName": "teacher.3.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.3.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.3.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.3.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIeCm1c4mJtlckvdejuCwoaTbFxERQiOuKM33CNQOehA9BNwkCgHMqyt3io7DNLaUg==",
+      "SecurityStamp": "3M4GOOMI4DGG7EDOU2PF4ZDELFGQID42",
+      "ConcurrencyStamp": "ac2c3181-bcac-48d4-893a-2c7c6a4c1a75",
+      "PhoneNumber": "674286562",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "9430c4bb-ace0-49dc-8022-44c59419b6be",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "16",
+      "Address": "Address of Teacher 16, 8318",
+      "FullName": "Teacher 16",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "95f12ecb-75fe-4e4c-84a7-bbb0cb203e24",
+      "UserName": "teacher.16.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.16.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.16.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.16.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIyZTHc0c1PzThsaKhvltI9U+FeoI3E6pGFTApbBArUnfOGNjK+v/oFeyQjQq9mZiQ==",
+      "SecurityStamp": "GL6TEKS3GRDF3LMMOAR7AJCXHJR26YAN",
+      "ConcurrencyStamp": "4173c78a-fe79-4e01-a158-e02b49c0443a",
+      "PhoneNumber": "842172487",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "95f12ecb-75fe-4e4c-84a7-bbb0cb203e24",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Vitor",
+      "LastName": "Silva",
+      "Address": "Address of Vitor Silva, 6849",
+      "FullName": "Vitor Silva",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "9660939f-0238-4950-bb05-87b4b045c391",
+      "UserName": "vitor.silva.cinel.pt@yopmail.com",
+      "NormalizedUserName": "VITOR.SILVA.CINEL.PT@YOPMAIL.COM",
+      "Email": "vitor.silva.cinel.pt@yopmail.com",
+      "NormalizedEmail": "VITOR.SILVA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEPv+igV+KY5zBSOgvPZHpi0aLwFgZcJI/GtE/KaGODcyYTuqbT663v2pbeT0Xmb4nA==",
+      "SecurityStamp": "GMGMBBWLRE4ZVYKNGTP25YBWKJBB5XVD",
+      "ConcurrencyStamp": "33368c69-2d54-4c77-8295-a60fe3f79c36",
+      "PhoneNumber": "294314672",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "9660939f-0238-4950-bb05-87b4b045c391",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "45",
+      "Address": "Address of Teacher 45, 8111",
+      "FullName": "Teacher 45",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "9664fd82-8939-4003-aad7-a951fbaf8ecc",
+      "UserName": "teacher.45.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.45.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.45.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.45.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEOPMZnZBs4Hovexx5yZ9aJbg2aaZiLkpJEvSOSg7CydsShPGzv/WYCmPs3LLL4euYQ==",
+      "SecurityStamp": "BJNRVM56OCYW45OEEBBTQLJPYDTMWVGN",
+      "ConcurrencyStamp": "680e7686-ce9f-448b-8552-d33ea03fb897",
+      "PhoneNumber": "299099843",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "9664fd82-8939-4003-aad7-a951fbaf8ecc",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Rafael",
+      "LastName": "Santos",
+      "Address": "Calle Luna, 6041",
+      "FullName": "Rafael Santos",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "98db7660-d218-448e-8880-7582c009a602",
+      "UserName": "rafael.santos@cinel.pt",
+      "NormalizedUserName": "RAFAEL.SANTOS@CINEL.PT",
+      "Email": "rafael.santos@cinel.pt",
+      "NormalizedEmail": "RAFAEL.SANTOS@CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJtOjd4Shji5dfIYF8l8sIWQxX+68luG4364ReABwRMD69dbSjphwdskKVIphK8YVw==",
+      "SecurityStamp": "RFUIMKS6NRXYBZYOOKGLMSI6Q3ECJLB5",
+      "ConcurrencyStamp": "53654add-2f0b-4827-80f4-6af7da5fc343",
+      "PhoneNumber": "593565807",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "98db7660-d218-448e-8880-7582c009a602",
+      "RoleId": "0d51118b-5327-4aa6-87dc-c4f81bb9ac30"
+    },
+    "RoleName": "SuperUser",
+    "Roles": [
+      "SuperUser"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "13",
+      "Address": "Address of Student 13, 188",
+      "FullName": "Student 13",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "9aa45ef4-1c3b-4f22-898b-55da2c2314e7",
+      "UserName": "student.13.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.13.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.13.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.13.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBaGZOylrPROU2I2O7rWyVgsXQ7DUN7OLB+2k8FhoaBaxSm3eusGQhLl39rOJCtP6g==",
+      "SecurityStamp": "GCEXX5H5F6RDJWJ4ZHSD6B5X4JDZXGGM",
+      "ConcurrencyStamp": "98c30a38-53fc-4145-980e-ff785456dede",
+      "PhoneNumber": "840682348",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "9aa45ef4-1c3b-4f22-898b-55da2c2314e7",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "24",
+      "Address": "Address of Teacher 24, 5842",
+      "FullName": "Teacher 24",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "9fcbf084-823c-49cf-98ab-174f8d46142e",
+      "UserName": "teacher.24.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.24.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.24.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.24.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEDjD8MbfTnMmcvKSG4eFvYJN1UaGtU3TY1b37PskqZiyGFRHqyh5YEoxRcLwqeLL6A==",
+      "SecurityStamp": "YHBY7RWN23XZ5XP3FVFK7XG2UCHC3KPR",
+      "ConcurrencyStamp": "53343ae9-aa73-4426-b932-59a99d691909",
+      "PhoneNumber": "861266682",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "9fcbf084-823c-49cf-98ab-174f8d46142e",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Claudia",
+      "LastName": "Passarinho",
+      "Address": "Address of Claudia Passarinho, 3456",
+      "FullName": "Claudia Passarinho",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "a130bada-afe8-41f7-af73-d0bbd0c9516c",
+      "UserName": "claudia.passarinho.cinel.pt@yopmail.com",
+      "NormalizedUserName": "CLAUDIA.PASSARINHO.CINEL.PT@YOPMAIL.COM",
+      "Email": "claudia.passarinho.cinel.pt@yopmail.com",
+      "NormalizedEmail": "CLAUDIA.PASSARINHO.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEPhhcqZrMEcBoJcvoMEMFmfW4mmegppGs6dNw+4xWhzt6sC3umwDO7wOmPKEwLdqFw==",
+      "SecurityStamp": "LJTBEPMSIJQP5WR7EJIHTN5LKE5P6LQW",
+      "ConcurrencyStamp": "b8894348-072b-4953-99b0-a1bd3af0fc64",
+      "PhoneNumber": "410159712",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "a130bada-afe8-41f7-af73-d0bbd0c9516c",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "5",
+      "Address": "Address of Student 5, 9565",
+      "FullName": "Student 5",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "a361d680-f55a-432b-9842-9a50126aeb28",
+      "UserName": "student.5.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.5.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.5.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.5.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAENAgW55ly1GyBoLkF1k/0AFUG/lOSDFc4mB+GDIM5mwojYb23hb3PftpPWQbJAB65A==",
+      "SecurityStamp": "I7UYQAPG75TIIQI5DNKO3RU5FGYRHNF4",
+      "ConcurrencyStamp": "299eef0a-b35f-4d1b-a047-ce9e31c3cb83",
+      "PhoneNumber": "878974803",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "a361d680-f55a-432b-9842-9a50126aeb28",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Diogo",
+      "LastName": "Santana",
+      "Address": "Address of Diogo Santana, 7211",
+      "FullName": "Diogo Santana",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "a4bdc94b-51b7-4b4e-9cf7-40889e7f50e2",
+      "UserName": "diogo.santana.cinel.pt@yopmail.com",
+      "NormalizedUserName": "DIOGO.SANTANA.CINEL.PT@YOPMAIL.COM",
+      "Email": "diogo.santana.cinel.pt@yopmail.com",
+      "NormalizedEmail": "DIOGO.SANTANA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAECcHYwEwCuJGC+HMkw6ZFd3eAizFFsP+d4KeYv8xFKie/NFX6eDaBEwLDZowwef3Fw==",
+      "SecurityStamp": "7QWOTLWM4YGAKHDC3ZOSXK35OY2BVWY5",
+      "ConcurrencyStamp": "fa75c317-1317-49de-950e-f5dc5e9e19d4",
+      "PhoneNumber": "247005689",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "a4bdc94b-51b7-4b4e-9cf7-40889e7f50e2",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Tatiane",
+      "LastName": "Avellar",
+      "Address": "Calle Luna, 1335",
+      "FullName": "Tatiane Avellar",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "a4db96b0-d43e-4c71-a43e-59b98875fd0b",
+      "UserName": "tatiane.avellar.24718@formandos.cinel.pt",
+      "NormalizedUserName": "TATIANE.AVELLAR.24718@FORMANDOS.CINEL.PT",
+      "Email": "tatiane.avellar.24718@formandos.cinel.pt",
+      "NormalizedEmail": "TATIANE.AVELLAR.24718@FORMANDOS.CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJO2z1mhdg78Q9Qvqzd/ZZRmUJj0P4aWGBl2k5KuLetvIByNV+m+x9RToPagfk1iWg==",
+      "SecurityStamp": "KTHCOOBV3KQVKH7BRXHJYABBTNXZDIEI",
+      "ConcurrencyStamp": "1e1f20eb-fb40-49aa-a217-7571c199f920",
+      "PhoneNumber": "375889952",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "a4db96b0-d43e-4c71-a43e-59b98875fd0b",
+      "RoleId": "1b9483ab-f0d8-45c9-9191-bad46bf3441c"
+    },
+    "RoleName": "Admin",
+    "Roles": [
+      "Admin"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "12",
+      "Address": "Address of Teacher 12, 9869",
+      "FullName": "Teacher 12",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "a6837b0b-a42a-406f-a8ba-6231df64031b",
+      "UserName": "teacher.12.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.12.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.12.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.12.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAENImHac3J1DBvhDFmvuQY+gJmhyauSpxSVNO+xLSlrOIe1330Hiy4t2/h9A981mLzQ==",
+      "SecurityStamp": "YBYUR3D3DENTUW2DH5QKFV2URRVID4OX",
+      "ConcurrencyStamp": "4e02f32f-ba4a-4eac-9aae-0562d0d1edc6",
+      "PhoneNumber": "453632295",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "a6837b0b-a42a-406f-a8ba-6231df64031b",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "46",
+      "Address": "Address of Teacher 46, 2573",
+      "FullName": "Teacher 46",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "a806b2ca-f788-43f0-a2d0-f34c77d34997",
+      "UserName": "teacher.46.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.46.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.46.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.46.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEL7wc2fBhNYmxdbpUD7jjOx28gsE6VwRy0lAXn2mutV5n40WPMIrA8M54mI4sRkRKg==",
+      "SecurityStamp": "QP72DW66OEEMQUU2ZIJD4X32X4MR7J6G",
+      "ConcurrencyStamp": "b8d3a55c-dbb8-4a15-8260-7c62a52968bd",
+      "PhoneNumber": "598553102",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "a806b2ca-f788-43f0-a2d0-f34c77d34997",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Diogo",
+      "LastName": "Alves",
+      "Address": "Address of Diogo Alves, 5771",
+      "FullName": "Diogo Alves",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "aa5cf374-ec05-48d0-9bb1-7b88ea6ae3d3",
+      "UserName": "diogo.alves.cinel.pt@yopmail.com",
+      "NormalizedUserName": "DIOGO.ALVES.CINEL.PT@YOPMAIL.COM",
+      "Email": "diogo.alves.cinel.pt@yopmail.com",
+      "NormalizedEmail": "DIOGO.ALVES.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEM2HwkF50GOu1ebAuKzbr/e5KG+auNmwXxSg9JjX/UGi7Kv/lODdsa1kXBeckixB2g==",
+      "SecurityStamp": "6CVSYQ42JY5NRPWKBY4NXYSILW5HMWRD",
+      "ConcurrencyStamp": "de403c0a-8228-4b0e-be8e-8372c6ef88ce",
+      "PhoneNumber": "662536303",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "aa5cf374-ec05-48d0-9bb1-7b88ea6ae3d3",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "15",
+      "Address": "Address of Teacher 15, 3245",
+      "FullName": "Teacher 15",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "afd5c525-02f0-47cc-ad89-1e6f33933866",
+      "UserName": "teacher.15.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.15.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.15.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.15.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAECltbp0pz3oNVqByf/ql93DgMefcubSKsLYvymiSweoqdwqY+WdixRe4HKbyl16DnA==",
+      "SecurityStamp": "GKGECE7RGBD2LDNLGGVJL3SS34FRHNVX",
+      "ConcurrencyStamp": "e05b20f5-712a-46b6-91e9-698cfb5af7d1",
+      "PhoneNumber": "825925465",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "afd5c525-02f0-47cc-ad89-1e6f33933866",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Tiago",
+      "LastName": "Silva",
+      "Address": "Address of Tiago Silva, 7568",
+      "FullName": "Tiago Silva",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "b0c414e0-28df-40a7-8d85-04b3b06a3fb6",
+      "UserName": "tiago.silva.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TIAGO.SILVA.CINEL.PT@YOPMAIL.COM",
+      "Email": "tiago.silva.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TIAGO.SILVA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEGBY6RrjhMMUtQYL1n7Y9KOtqMKjJ8tcng1xlOX7roUNanu0EiXM1SXEXLtjpymH/g==",
+      "SecurityStamp": "GTSAEEW4HGK75YCBCCTLX6QT2EQ2A3X2",
+      "ConcurrencyStamp": "4b0caac8-bfd0-4817-9e01-a20d37a5d98b",
+      "PhoneNumber": "359781331",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "b0c414e0-28df-40a7-8d85-04b3b06a3fb6",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "10",
+      "Address": "Address of Teacher 10, 9675",
+      "FullName": "Teacher 10",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "b35bfe31-eef1-44ee-a4f6-a781569539e4",
+      "UserName": "teacher.10.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.10.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.10.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.10.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIHYlMq82Q9WgKrL17yPTTvSvgo4OiEhN00EcL3zcXSNIxmXfD3m4qZXdlsD+jMsqw==",
+      "SecurityStamp": "CLHCOZE6KBKLNPMC42THTP3LOG4UDTVA",
+      "ConcurrencyStamp": "1bc3c341-2821-48fc-8f05-c58d60108df0",
+      "PhoneNumber": "439205465",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "b35bfe31-eef1-44ee-a4f6-a781569539e4",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Ruben",
+      "LastName": "Correia",
+      "Address": "Calle Luna, 5602",
+      "FullName": "Ruben Correia",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "b383d986-b747-4b26-9322-a95f8623510f",
+      "UserName": "ruben.corrreia.28257@formandos.cinel.pt",
+      "NormalizedUserName": "RUBEN.CORRREIA.28257@FORMANDOS.CINEL.PT",
+      "Email": "ruben.corrreia.28257@formandos.cinel.pt",
+      "NormalizedEmail": "RUBEN.CORRREIA.28257@FORMANDOS.CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEG6oNtFM8ZtkPqXMbXAmEXBifCpVUDCPd3DT+uw7Hc5FiIhaekVes2h8fYP+jT81ew==",
+      "SecurityStamp": "FAFWFKR2RVO6LQRWUZGYWHK6JHA3GMLA",
+      "ConcurrencyStamp": "ab60665f-e934-460c-980b-fe1a2e17c00b",
+      "PhoneNumber": "697468278",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "b383d986-b747-4b26-9322-a95f8623510f",
+      "RoleId": "1b9483ab-f0d8-45c9-9191-bad46bf3441c"
+    },
+    "RoleName": "Admin",
+    "Roles": [
+      "Admin"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "10",
+      "Address": "Address of Student 10, 47",
+      "FullName": "Student 10",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "b3ab42ef-e434-4c31-abc5-cccafdb1d727",
+      "UserName": "student.10.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.10.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.10.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.10.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEEdi0eQYqIoINIbn7W/9dS9cZtIIWitP0QDhX+geBRc2H5o2FaSbxIlgUAYsrWbWVw==",
+      "SecurityStamp": "SFT67OZGEUWMVYKVULVCHL5A66MCCTLW",
+      "ConcurrencyStamp": "61777980-a1f8-41bd-a883-38ca63072a9d",
+      "PhoneNumber": "513015970",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "b3ab42ef-e434-4c31-abc5-cccafdb1d727",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Maria",
+      "LastName": "Cristina",
+      "Address": "Address of Maria Cristina, 3444",
+      "FullName": "Maria Cristina",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "b750a694-c1ad-4502-a01c-d37a97e909cd",
+      "UserName": "maria.cristina.cinel.pt@yopmail.com",
+      "NormalizedUserName": "MARIA.CRISTINA.CINEL.PT@YOPMAIL.COM",
+      "Email": "maria.cristina.cinel.pt@yopmail.com",
+      "NormalizedEmail": "MARIA.CRISTINA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEE+OxTVvkPGTAszoerctEGR27OPn8nIvPkwGRDBJRKQ5Ya/sdTNS0P0IyYG4vyqNOA==",
+      "SecurityStamp": "PCSS46DPQNPHD2KXGF2LVKRNKU4RGF2R",
+      "ConcurrencyStamp": "4018bec9-5d89-4f75-925c-73cc0e0404e7",
+      "PhoneNumber": "229372459",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "b750a694-c1ad-4502-a01c-d37a97e909cd",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "39",
+      "Address": "Address of Teacher 39, 2294",
+      "FullName": "Teacher 39",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "be1164ab-ac4e-4d97-872d-957899095705",
+      "UserName": "teacher.39.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.39.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.39.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.39.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEDkE5vqEAXCaGs4JuvB1rmKZ6EpU5o3S4vihU+ItTnAr/E88QgKBEJhUcPKbVQYOug==",
+      "SecurityStamp": "3URI7F54L6K3ZM6LAIX3CWQH5OQ2FDGA",
+      "ConcurrencyStamp": "8a109d9d-64c5-4e89-ac62-2b140cbcd6b0",
+      "PhoneNumber": "469849642",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "be1164ab-ac4e-4d97-872d-957899095705",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Vitor",
+      "LastName": "Santos",
+      "Address": "Address of Vitor Santos, 7826",
+      "FullName": "Vitor Santos",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "c09761b1-7d30-49af-9035-81fa69397add",
+      "UserName": "vitor.santos.cinel.pt@yopmail.com",
+      "NormalizedUserName": "VITOR.SANTOS.CINEL.PT@YOPMAIL.COM",
+      "Email": "vitor.santos.cinel.pt@yopmail.com",
+      "NormalizedEmail": "VITOR.SANTOS.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEF84WWqQ/Xe6O7ed53GJ+HfXPsYcc5W2JnOWHrtyxD92UroXhK3augfGvfViqlVkbw==",
+      "SecurityStamp": "W3AB5PN7V6J3OIXONQS47GAJTUA5IQJ7",
+      "ConcurrencyStamp": "b5ecebf3-d081-40e0-8578-f106bd406547",
+      "PhoneNumber": "490353147",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "c09761b1-7d30-49af-9035-81fa69397add",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "37",
+      "Address": "Address of Teacher 37, 8797",
+      "FullName": "Teacher 37",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "c0cc8ac0-0f7b-4728-8734-f512daebaa82",
+      "UserName": "teacher.37.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.37.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.37.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.37.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAECd+/RKG/2U0/gJC4HrG/9luWE8ZyHf0skiVkIj4/2pA3FPxvXDlo2m/CnnKqf1arQ==",
+      "SecurityStamp": "EPCXHAHFMN3M2726YKQBMUU65YKUYGPO",
+      "ConcurrencyStamp": "1a77cf3c-09cb-4b37-a889-db51ebb28000",
+      "PhoneNumber": "892073474",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "c0cc8ac0-0f7b-4728-8734-f512daebaa82",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "19",
+      "Address": "Address of Student 19, 8353",
+      "FullName": "Student 19",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "c41463df-6fcd-49d0-a199-9f6ba3c0dfdb",
+      "UserName": "student.19.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.19.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.19.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.19.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEO4DAztYobgKe/nguHGF+HvthSkOOyiy3pmFxCuW4QFtwwdinxTirbXBFxTXeIyY3g==",
+      "SecurityStamp": "WUKC72DZBH3ZBKSP2I7BIKIHYBF5HIES",
+      "ConcurrencyStamp": "532952dc-d097-4b09-b16c-de6c3bc2c947",
+      "PhoneNumber": "165849537",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "c41463df-6fcd-49d0-a199-9f6ba3c0dfdb",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "4",
+      "Address": "Address of Student 4, 9854",
+      "FullName": "Student 4",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "c4b6823f-f7dd-4ab0-b934-d68f0bdc450a",
+      "UserName": "student.4.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.4.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.4.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.4.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEMgAVDGRxdxWVfXe0sA03h4qlQJ/Y9O3u3dG5i309+2eaSyuTf8tmYM1RTcFXsmhHw==",
+      "SecurityStamp": "7N7D3HBB2ALRETCLJ6L4BTGS3BMMN7LZ",
+      "ConcurrencyStamp": "4b79a836-9692-4ade-8d99-0c282a814c76",
+      "PhoneNumber": "847391382",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "c4b6823f-f7dd-4ab0-b934-d68f0bdc450a",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "17",
+      "Address": "Address of Student 17, 6031",
+      "FullName": "Student 17",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "c5970209-d3e8-4eee-af63-dce657571613",
+      "UserName": "student.17.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.17.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.17.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.17.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFYh5lmQhnU0s1RXGWzecFcpHzp2RL9i+uiymLCCEyADMFGbzRb2iHH0vliJ6iUYEA==",
+      "SecurityStamp": "DTLG2CURL2QYPWWOG24BPQXNHBS5C3AX",
+      "ConcurrencyStamp": "fe7c44d2-86dc-4d50-9ce1-9c579c00a213",
+      "PhoneNumber": "913120255",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "c5970209-d3e8-4eee-af63-dce657571613",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "6",
+      "Address": "Address of Student 6, 9923",
+      "FullName": "Student 6",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "cac721ca-2bfe-487f-b57f-34e6f8916ba7",
+      "UserName": "student.6.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.6.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.6.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.6.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEHjuHirceWe1bDxiW5g/2MNJ8feuB1iLI0xQO4zo9pQSEd+yd2ROORj7QqO/XC5rpw==",
+      "SecurityStamp": "VSSKLUW6X2QZCRBRX3GLS5D2IE4BLXMT",
+      "ConcurrencyStamp": "810a89e1-a1e4-4a77-b2fa-8986ab0b4628",
+      "PhoneNumber": "168714456",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "cac721ca-2bfe-487f-b57f-34e6f8916ba7",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Pedro",
+      "LastName": "Silva",
+      "Address": "Address of Pedro Silva, 1128",
+      "FullName": "Pedro Silva",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "cb0325a2-3b7e-4e11-9d17-99b78fe5eaf6",
+      "UserName": "pedro.silva.cinel.pt@yopmail.com",
+      "NormalizedUserName": "PEDRO.SILVA.CINEL.PT@YOPMAIL.COM",
+      "Email": "pedro.silva.cinel.pt@yopmail.com",
+      "NormalizedEmail": "PEDRO.SILVA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFyuIPs/Ujx62ZJdhn2jpusTtG6ChqdFX/SByPoym8X6w3DmYyjNL140Q9vCE/N5Cg==",
+      "SecurityStamp": "ZSO7PPDE64LHLCKJDF7X5BF2LZCHBSSX",
+      "ConcurrencyStamp": "18154451-1120-4a94-94af-921980a90584",
+      "PhoneNumber": "807400869",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "cb0325a2-3b7e-4e11-9d17-99b78fe5eaf6",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Nuno",
+      "LastName": "Vilhena Santos",
+      "Address": "Calle Luna, 9222",
+      "FullName": "Nuno Vilhena Santos",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "cc9bb83e-644e-4d65-981f-641576d5f51b",
+      "UserName": "nunovilhenasantos@msn.com",
+      "NormalizedUserName": "NUNOVILHENASANTOS@MSN.COM",
+      "Email": "nunovilhenasantos@msn.com",
+      "NormalizedEmail": "NUNOVILHENASANTOS@MSN.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEDaEfrndJv41tNR5zi30tiZa9+HXJIuSYUNmyv+mwmv++9U0tuqkJlcWJhDdlkJSQQ==",
+      "SecurityStamp": "XI5TKN5LN43R7OJCDV5RDKGPDFATHSRJ",
+      "ConcurrencyStamp": "ec531fce-8750-4dd4-8a3b-7848922d414d",
+      "PhoneNumber": "419628058",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "cc9bb83e-644e-4d65-981f-641576d5f51b",
+      "RoleId": "0d51118b-5327-4aa6-87dc-c4f81bb9ac30"
+    },
+    "RoleName": "SuperUser",
+    "Roles": [
+      "SuperUser"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "1",
+      "Address": "Address of Student 1, 7002",
+      "FullName": "Student 1",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "cd2a670a-60b0-45ad-8fc6-f708d7af0148",
+      "UserName": "student.1.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.1.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.1.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.1.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFGzv1gFDCVBelc/0RhpBHdWuTe/XQih7qr5dg3qD4pcvaXCjJAh2UwjLVadiUwwlg==",
+      "SecurityStamp": "KHVGSHYNXS3QSOAXRWBCEM6FK3D57UEG",
+      "ConcurrencyStamp": "b1805be9-542e-46f4-86ae-a07516b24cab",
+      "PhoneNumber": "289247617",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "cd2a670a-60b0-45ad-8fc6-f708d7af0148",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Láercio",
+      "LastName": "Rodrigues",
+      "Address": "Address of Láercio Rodrigues, 9834",
+      "FullName": "Láercio Rodrigues",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "d22f9d50-bf00-407f-9b0d-576f934faaa5",
+      "UserName": "lercio.rodrigues.cinel.pt@yopmail.com",
+      "NormalizedUserName": "LERCIO.RODRIGUES.CINEL.PT@YOPMAIL.COM",
+      "Email": "lercio.rodrigues.cinel.pt@yopmail.com",
+      "NormalizedEmail": "LERCIO.RODRIGUES.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEDYSpxcuZGYWnd3HGKDe1HLrFplQjsnIKlbSqfN5saSb/PcPTBx9M41FqcHx4y7OYw==",
+      "SecurityStamp": "UGBUSV47MMRF3LY5RRNXCJAB6YA72DIQ",
+      "ConcurrencyStamp": "6bad5c3a-aac9-418a-bc16-6e51790e3694",
+      "PhoneNumber": "913229430",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "d22f9d50-bf00-407f-9b0d-576f934faaa5",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "31",
+      "Address": "Address of Teacher 31, 4560",
+      "FullName": "Teacher 31",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "d7a52ecf-1157-4d34-966c-7bebdcb57cd2",
+      "UserName": "teacher.31.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.31.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.31.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.31.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAECSjkt98C4GNijL1bIP8txbfZ7qo660CaMz7q0DWqQ0r9B6I3jBIa19s4E7STVkcmw==",
+      "SecurityStamp": "XKLAETMPBL5PDBDT5M3372VCK2Q4MRF6",
+      "ConcurrencyStamp": "bf7366c9-9564-4338-a171-1289934581f6",
+      "PhoneNumber": "377073408",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "d7a52ecf-1157-4d34-966c-7bebdcb57cd2",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "30",
+      "Address": "Address of Teacher 30, 2989",
+      "FullName": "Teacher 30",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "d922bc4f-e501-4395-b7b7-1b1fa3d5363b",
+      "UserName": "teacher.30.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.30.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.30.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.30.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAENbIaxt9m31707NkWMyvkjXx0ALUunvXhPrvDjB2decp5tM3EM+uhc/HRo3dmBPhJg==",
+      "SecurityStamp": "AN6PURNPH47GVUWLK6AA33B66H7SOD47",
+      "ConcurrencyStamp": "73060b60-6842-495c-b0dd-35f58a381b9d",
+      "PhoneNumber": "192996116",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "d922bc4f-e501-4395-b7b7-1b1fa3d5363b",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Licínio",
+      "LastName": "Rosário",
+      "Address": "Address of Licínio Rosário, 8608",
+      "FullName": "Licínio Rosário",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "dd3189ae-9980-45ea-8866-9b4827354706",
+      "UserName": "licnio.rosrio.cinel.pt@yopmail.com",
+      "NormalizedUserName": "LICNIO.ROSRIO.CINEL.PT@YOPMAIL.COM",
+      "Email": "licnio.rosrio.cinel.pt@yopmail.com",
+      "NormalizedEmail": "LICNIO.ROSRIO.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEAyfjylX6nBY1Dm1A48TepPVWniHMLbdUDk0aayPJRBmkjzB3aJfnexbfmMcdNFweA==",
+      "SecurityStamp": "XSODAZPNJ4JV2CC7DDDGNNOMQXPRJ2FJ",
+      "ConcurrencyStamp": "c249d945-f8fe-483e-948e-9ecfe0e9aa5b",
+      "PhoneNumber": "955468049",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "dd3189ae-9980-45ea-8866-9b4827354706",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "26",
+      "Address": "Address of Teacher 26, 9421",
+      "FullName": "Teacher 26",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "df4b2001-10c6-49c1-83dc-75d4c6b2553f",
+      "UserName": "teacher.26.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.26.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.26.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.26.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFxevM5GpJb5zSMtPqrfxziw7WqJLBkXoJv+X3wb7zMTjvdyi+M6I6Zz2AsE1bz2FA==",
+      "SecurityStamp": "QCR6QRMDBAKKDQHX2U5VISFDIZ3AXU62",
+      "ConcurrencyStamp": "db589624-fed2-4ae9-bdf1-f7a1d2064503",
+      "PhoneNumber": "933137132",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "df4b2001-10c6-49c1-83dc-75d4c6b2553f",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Joel",
+      "LastName": "Santo Rangel",
+      "Address": "Address of Joel Santo Rangel, 7507",
+      "FullName": "Joel Santo Rangel",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e09ca4bc-abff-4953-adf0-9ba1a11e0794",
+      "UserName": "joel.santorangel.cinel.pt@yopmail.com",
+      "NormalizedUserName": "JOEL.SANTORANGEL.CINEL.PT@YOPMAIL.COM",
+      "Email": "joel.santorangel.cinel.pt@yopmail.com",
+      "NormalizedEmail": "JOEL.SANTORANGEL.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEKNRdwKk/yebJ+vgZz8qnhuJRRxq1krnON81WdZ/0D8bSDaV4X/4c6qkGS1XTeD/vw==",
+      "SecurityStamp": "XGPVR6TVGGEK7DF232MDSB557UP7F5KT",
+      "ConcurrencyStamp": "9c80bdcb-fc40-4a1a-9e7f-750d9347b97d",
+      "PhoneNumber": "472911812",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e09ca4bc-abff-4953-adf0-9ba1a11e0794",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Joel",
+      "LastName": "Rangel",
+      "Address": "Calle Luna, 234",
+      "FullName": "Joel Rangel",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e1a55db8-35ec-4873-bfc6-ebe77250194c",
+      "UserName": "joel.rangel.22101@formandos.cinel.pt",
+      "NormalizedUserName": "JOEL.RANGEL.22101@FORMANDOS.CINEL.PT",
+      "Email": "joel.rangel.22101@formandos.cinel.pt",
+      "NormalizedEmail": "JOEL.RANGEL.22101@FORMANDOS.CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJ8imUMT55MhzuqhvK71k8WYIgKmaMD4LojY5Tmk1LM2vccuO+TRsUcDaiBqZ/pdkQ==",
+      "SecurityStamp": "T4B6GCU2AWFNY3VQRV2Q2EOWJIH3WG6G",
+      "ConcurrencyStamp": "16af5aa0-dcad-4503-8746-bdccc85cdd33",
+      "PhoneNumber": "776390989",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e1a55db8-35ec-4873-bfc6-ebe77250194c",
+      "RoleId": "cd26d5c6-f0a3-49b0-8278-5e9332b7c792"
+    },
+    "RoleName": "Functionary",
+    "Roles": [
+      "Functionary"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "32",
+      "Address": "Address of Teacher 32, 9320",
+      "FullName": "Teacher 32",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e21e5aa7-bf5e-4606-8597-145134b7128e",
+      "UserName": "teacher.32.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.32.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.32.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.32.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAENPVJCZZ01AgSHcJ/eKnBTl56vKTdVqzUxb8hSi/35Za4NsFJ+TwJ22RpFJrp5W/vA==",
+      "SecurityStamp": "C4ZXXDUJR6TIC67ZFCIOWSSDSP27G2RX",
+      "ConcurrencyStamp": "0afa6a39-2ac8-4858-b096-a2add2022b0a",
+      "PhoneNumber": "683196071",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e21e5aa7-bf5e-4606-8597-145134b7128e",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Jorge",
+      "LastName": "Pinto",
+      "Address": "Calle Luna, 9702",
+      "FullName": "Jorge Pinto",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e4dae5fa-a2a1-4f9e-8540-6a287c6964c4",
+      "UserName": "jorge.pinto.28720@formandos.cinel.pt",
+      "NormalizedUserName": "JORGE.PINTO.28720@FORMANDOS.CINEL.PT",
+      "Email": "jorge.pinto.28720@formandos.cinel.pt",
+      "NormalizedEmail": "JORGE.PINTO.28720@FORMANDOS.CINEL.PT",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEFtuRjC16JUnTU9B32V92AK8orU2XKQ2kvbQTpSqLUZvQsPQcsdvfs5BDku3lYdkjw==",
+      "SecurityStamp": "HFS3ANRCVHJOBGGD73OST7B6KWYSQSFF",
+      "ConcurrencyStamp": "0e91299d-614c-4401-a39f-d071e017e257",
+      "PhoneNumber": "539312813",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e4dae5fa-a2a1-4f9e-8540-6a287c6964c4",
+      "RoleId": "1b9483ab-f0d8-45c9-9191-bad46bf3441c"
+    },
+    "RoleName": "Admin",
+    "Roles": [
+      "Admin"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Jorge",
+      "LastName": "Pinto",
+      "Address": "Address of Jorge Pinto, 4603",
+      "FullName": "Jorge Pinto",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e5568ea1-8395-46a5-98a6-380f9fa4befa",
+      "UserName": "jorge.pinto.cinel.pt@yopmail.com",
+      "NormalizedUserName": "JORGE.PINTO.CINEL.PT@YOPMAIL.COM",
+      "Email": "jorge.pinto.cinel.pt@yopmail.com",
+      "NormalizedEmail": "JORGE.PINTO.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEEJLyI+ub9k1zx38r9JB+ej7ox8d7lGsbUC7X1sLZzqfI7bOfJVKJU9bhgau2uHH3A==",
+      "SecurityStamp": "TSUSXYB7DZOSORSW2QWPNM2IXGEHMKJV",
+      "ConcurrencyStamp": "61dd2943-85b1-4ce7-b781-2986130a4b6e",
+      "PhoneNumber": "532151890",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e5568ea1-8395-46a5-98a6-380f9fa4befa",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Catarina",
+      "LastName": "Palma",
+      "Address": "Address of Catarina Palma, 9262",
+      "FullName": "Catarina Palma",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e5e1a45d-47b5-49e6-923f-eae25bca1aac",
+      "UserName": "catarina.palma.cinel.pt@yopmail.com",
+      "NormalizedUserName": "CATARINA.PALMA.CINEL.PT@YOPMAIL.COM",
+      "Email": "catarina.palma.cinel.pt@yopmail.com",
+      "NormalizedEmail": "CATARINA.PALMA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEK6kVHnqk1X4+Nll01hd1NHTCRad7F6e/EebXjS2bdpLHgBwN/r5CCpALU7jsekmig==",
+      "SecurityStamp": "QOHYVS7HOP3MWDGPFF6XKTY56S3QVL2S",
+      "ConcurrencyStamp": "b4a27458-9e8f-443c-a3b1-63c46decc4c3",
+      "PhoneNumber": "328467710",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e5e1a45d-47b5-49e6-923f-eae25bca1aac",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "43",
+      "Address": "Address of Teacher 43, 853",
+      "FullName": "Teacher 43",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e7c870e8-9fad-4cc5-8a42-f512daeb056e",
+      "UserName": "teacher.43.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.43.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.43.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.43.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAED3m4FgD5jmVXQZbLDDBeaSHcdLbQdmsBRTYSnt1G7uf7n01qlK9xli4NdStdGZ/fw==",
+      "SecurityStamp": "4VAKYORBGMYDP2FYXUAYHNWYAMXFVNF2",
+      "ConcurrencyStamp": "aadf3dd9-c8d5-417b-a1cb-5ea5ea1efa74",
+      "PhoneNumber": "996373128",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e7c870e8-9fad-4cc5-8a42-f512daeb056e",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "8",
+      "Address": "Address of Student 8, 176",
+      "FullName": "Student 8",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "e8e34218-6b1c-41f8-b819-ffb06d6335af",
+      "UserName": "student.8.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.8.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.8.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.8.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJAImJ1faM6hkmBPPqRgye0zKES0rVI42YY9Wrrco28z8FdfP6RKX5k2jd2AMxGfwA==",
+      "SecurityStamp": "WAZAF6LCK6MPN3MBP2WVNDOYT2TZ4AZT",
+      "ConcurrencyStamp": "a45da267-4acf-44de-8a8e-f8a9a2dc6d50",
+      "PhoneNumber": "712033813",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "e8e34218-6b1c-41f8-b819-ffb06d6335af",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "7",
+      "Address": "Address of Teacher 7, 5123",
+      "FullName": "Teacher 7",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "ec89b12a-dc96-41d8-9747-03864ae6d176",
+      "UserName": "teacher.7.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.7.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.7.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.7.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEL8HqFHCjP1w3eJpy/GCfmeo2zreDfNUcH+nqdy8eNF4s8xK/5NXcV4RDXKjTC+tqw==",
+      "SecurityStamp": "TPOX6QL72EK4A7LYI2WPWXQUHLBG6JLL",
+      "ConcurrencyStamp": "33fb7d2d-97de-488c-9740-3807ea2eb5cd",
+      "PhoneNumber": "164619882",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "ec89b12a-dc96-41d8-9747-03864ae6d176",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Simão",
+      "LastName": "André",
+      "Address": "Address of Simão André, 8163",
+      "FullName": "Simão André",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "ecaedbd9-821f-414d-9308-5d1d18127fab",
+      "UserName": "simo.andr.cinel.pt@yopmail.com",
+      "NormalizedUserName": "SIMO.ANDR.CINEL.PT@YOPMAIL.COM",
+      "Email": "simo.andr.cinel.pt@yopmail.com",
+      "NormalizedEmail": "SIMO.ANDR.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEPxPFmXOtJ+aDjowKaTrE3F4LRz+a6lAix5gOKdja9P1l5oQt7C2Aw8SpeX9hTnNeQ==",
+      "SecurityStamp": "NCOE44GXBC3ZV6MRXMOG3EDLP3C7STP6",
+      "ConcurrencyStamp": "c543016f-f663-4d23-babb-69337e39def6",
+      "PhoneNumber": "268984800",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "ecaedbd9-821f-414d-9308-5d1d18127fab",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Bruno",
+      "LastName": "Ferreira",
+      "Address": "Address of Bruno Ferreira, 8522",
+      "FullName": "Bruno Ferreira",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "ecf806d9-711c-4902-96d9-2d9cafac3867",
+      "UserName": "bruno.ferreira.cinel.pt@yopmail.com",
+      "NormalizedUserName": "BRUNO.FERREIRA.CINEL.PT@YOPMAIL.COM",
+      "Email": "bruno.ferreira.cinel.pt@yopmail.com",
+      "NormalizedEmail": "BRUNO.FERREIRA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEAjFzZJ/6Q8SItaEDpcGmK8jDrBwrpGe6b1NpDBuGaXocPUP0uJtyA7EjStCt5+QoA==",
+      "SecurityStamp": "OJTRH5ZFZMYUEEOWDCLV2X4HGF22CRI7",
+      "ConcurrencyStamp": "84d37291-6d5c-4b05-91b2-9d85277674e8",
+      "PhoneNumber": "940027815",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "ecf806d9-711c-4902-96d9-2d9cafac3867",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "21",
+      "Address": "Address of Teacher 21, 4988",
+      "FullName": "Teacher 21",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "ee69663f-dfaa-4b25-8002-1ddd25d39cf4",
+      "UserName": "teacher.21.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.21.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.21.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.21.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJf5J3NMoJJ4sMVUlqLi+X/aQj81M3vbWzv5rHDXlrtk11HSwWbZgOO4hJVdwj8wXA==",
+      "SecurityStamp": "IKNEFDITUGJYPOQVKHQASYBVTJJY5NJJ",
+      "ConcurrencyStamp": "037d1b87-deb3-406d-9219-45805847cb1b",
+      "PhoneNumber": "482605396",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "ee69663f-dfaa-4b25-8002-1ddd25d39cf4",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Ruben",
+      "LastName": "Correia",
+      "Address": "Address of Ruben Correia, 4796",
+      "FullName": "Ruben Correia",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "f14172bc-67d5-4562-876a-2924fa07b527",
+      "UserName": "ruben.correia.cinel.pt@yopmail.com",
+      "NormalizedUserName": "RUBEN.CORREIA.CINEL.PT@YOPMAIL.COM",
+      "Email": "ruben.correia.cinel.pt@yopmail.com",
+      "NormalizedEmail": "RUBEN.CORREIA.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEEd+8pXvlxt2X9UOGlkQG6l+H5rpYcDgpLQ9nxHgsyTzFfgVp5R2KTj2tDcOVlIlOw==",
+      "SecurityStamp": "VVDOHUDDHDWSZE6INPJBRT23CVEWBVK3",
+      "ConcurrencyStamp": "59fbd18d-0a66-4e34-a9d8-5c411ecdb627",
+      "PhoneNumber": "933535238",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "f14172bc-67d5-4562-876a-2924fa07b527",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "41",
+      "Address": "Address of Teacher 41, 7699",
+      "FullName": "Teacher 41",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "f1a9a744-fb2d-463b-9046-06f97c220f9d",
+      "UserName": "teacher.41.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.41.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.41.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.41.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEMX22GmrZRuUwpTy4UdVVy/UzJY+Cq6yqwQFFHmO8oNkZqUf3p8pg2eBr45X286DlQ==",
+      "SecurityStamp": "BAJ7RLI4524MRGSCM6QFWHK47NVTTLEA",
+      "ConcurrencyStamp": "fb34d7f3-79e7-4a5e-8860-08d12e7f0cf4",
+      "PhoneNumber": "838366368",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "f1a9a744-fb2d-463b-9046-06f97c220f9d",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "47",
+      "Address": "Address of Teacher 47, 4243",
+      "FullName": "Teacher 47",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "f2d023a9-9d63-4824-9f5b-a4b7354385a8",
+      "UserName": "teacher.47.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.47.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.47.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.47.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEIlH9iWcU+mRm5vpiFpN9JDqjqQZuNA4CrHFlLegg3DiolNu2VCRhjeBn/zu19CTlQ==",
+      "SecurityStamp": "SBJYVEYDZSOJKS37QSY2FW76NU5V5UWF",
+      "ConcurrencyStamp": "d07277ba-3ec5-4799-af0b-2d609c4307e4",
+      "PhoneNumber": "520543561",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "f2d023a9-9d63-4824-9f5b-a4b7354385a8",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Student",
+      "LastName": "3",
+      "Address": "Address of Student 3, 3517",
+      "FullName": "Student 3",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "f3eb635c-84f7-4ea4-9c2a-12da3c7c5aaa",
+      "UserName": "student.3.cinel.pt@yopmail.com",
+      "NormalizedUserName": "STUDENT.3.CINEL.PT@YOPMAIL.COM",
+      "Email": "student.3.cinel.pt@yopmail.com",
+      "NormalizedEmail": "STUDENT.3.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEBHKj/pBcfpT67JjH2HKya3AaFViivLcOimzgTEKtGaVXbMqlDSfC4W/0oDZRGwyDg==",
+      "SecurityStamp": "4IN5R6K35M3776M2ZDFD5NV4EG4FFP7W",
+      "ConcurrencyStamp": "2b3c024a-ebb6-4d79-bbe1-78cff9b17662",
+      "PhoneNumber": "524081423",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "f3eb635c-84f7-4ea4-9c2a-12da3c7c5aaa",
+      "RoleId": "fa44d42f-f3d8-4fb6-9848-bdd2733ed5a2"
+    },
+    "RoleName": "Student",
+    "Roles": [
+      "Student"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "8",
+      "Address": "Address of Teacher 8, 725",
+      "FullName": "Teacher 8",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "f80c5d3e-59a1-421d-b7bf-53ac3469b848",
+      "UserName": "teacher.8.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.8.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.8.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.8.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEOk9w+kyo7kuLKmeRdszqw8UtcNq/Hdm1gK9I3DdVJl5Fy7lKogvq4k++4b50wpptA==",
+      "SecurityStamp": "TOQ57U4RBK3SAXRCE5OXW54ZTXG6CNXQ",
+      "ConcurrencyStamp": "72277bcf-65c6-4731-be75-fb8d455f66d2",
+      "PhoneNumber": "670035413",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "f80c5d3e-59a1-421d-b7bf-53ac3469b848",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "6",
+      "Address": "Address of Teacher 6, 1847",
+      "FullName": "Teacher 6",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "fdb3149e-d89a-4cd9-92a2-0ba6fee46862",
+      "UserName": "teacher.6.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.6.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.6.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.6.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEJrYWrRNHuGcXuUNnBhYgfDGYaPxUufTGI2B77QQTOVi0hyQP1SGWpmmh/inQ7sukg==",
+      "SecurityStamp": "432MJMKKOIQWCI6YIZL4ENVWC533QM4B",
+      "ConcurrencyStamp": "8c963b7d-003f-463a-bc85-3b0595ad66c5",
+      "PhoneNumber": "315918598",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "fdb3149e-d89a-4cd9-92a2-0ba6fee46862",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  },
+  {
+    "User": {
+      "FirstName": "Teacher",
+      "LastName": "40",
+      "Address": "Address of Teacher 40, 2264",
+      "FullName": "Teacher 40",
+      "WasDeleted": false,
+      "ImageFile": null,
+      "ProfilePhotoId": "00000000-0000-0000-0000-000000000000",
+      "ProfilePhotoIdUrl": "https://ca001.blob.core.windows.net/images/noimage.png",
+      "Id": "fec044cf-967e-463b-9406-3eb9b021e794",
+      "UserName": "teacher.40.cinel.pt@yopmail.com",
+      "NormalizedUserName": "TEACHER.40.CINEL.PT@YOPMAIL.COM",
+      "Email": "teacher.40.cinel.pt@yopmail.com",
+      "NormalizedEmail": "TEACHER.40.CINEL.PT@YOPMAIL.COM",
+      "EmailConfirmed": false,
+      "PasswordHash": "AQAAAAIAAYagAAAAEC4H0cYgsibi138IZfIrAP+hNouQ0ler3Xuap+mJZCYR8J/LmJwTJTltQoSiRiARvQ==",
+      "SecurityStamp": "GF4AWDX6LE4F5IDWETBA5TXTU4GMIT7E",
+      "ConcurrencyStamp": "83f9bd17-3b5b-4ff8-b0ee-72e51f21ce1b",
+      "PhoneNumber": "119405110",
+      "PhoneNumberConfirmed": false,
+      "TwoFactorEnabled": false,
+      "LockoutEnd": null,
+      "LockoutEnabled": true,
+      "AccessFailedCount": 0
+    },
+    "Role": {
+      "UserId": "fec044cf-967e-463b-9406-3eb9b021e794",
+      "RoleId": "db56d29f-863d-47f6-be1c-a58e292baf4c"
+    },
+    "RoleName": "Teacher",
+    "Roles": [
+      "Teacher"
+    ]
+  }
+]
