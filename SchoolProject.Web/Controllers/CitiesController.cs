@@ -13,7 +13,7 @@ namespace SchoolProject.Web.Controllers;
 ///     cities controller, only the admins,
 ///     superusers and the functionaries can access this controller
 /// </summary>
-[Authorize(Roles = "Admin,SuperUser,Functionary")]
+//[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
     // Obtém o tipo da classe atual

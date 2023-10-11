@@ -176,7 +176,7 @@ public class AccountController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [Authorize(Roles = "Admin,SuperUser")]
+    //[Authorize(Roles = "Admin,SuperUser")]
     public IActionResult Register()
     {
         var model = new RegisterNewUserViewModel

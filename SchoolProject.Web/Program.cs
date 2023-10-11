@@ -138,75 +138,14 @@ static Task RunSeeding(IHost host)
     // Start the timer "MyTimer"
     TimeTracker.StartTimer(TimeTracker.SeederTimerName);
 
-
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
-
-    using var scope = scopeFactory?.CreateScope();
-
-    var seeder = scope?.ServiceProvider.GetService<SeedDb>();
-
-
-    try
+    using (var scope = scopeFactory.CreateScope())
     {
-        // TODO: tem bug sem dar erro no debug
-        // var result = seeder.SeedAsync();
-        
-        //var seedTask = seeder.SeedAsync();
-        //seedTask.Wait(); // Espere até que a tarefa seja concluída.
-
-        //Console.WriteLine(seedTask.IsCompletedSuccessfully
-        //    ? "Seeding do banco de dados concluído."
-        //    : "Seeding do banco de dados falhou.");
-    }
-    catch (Exception ex)
-    {
-        // Registe a exceção ou faça o tratamento adequado aqui.
-        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
-        Console.WriteLine("Ocorreu um erro durante a execução " +
-                          "do populador do banco de dados.\n" +
-                          ex.Message);
-        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-    }
-    finally
-    {
-        // Certifique-se de que as conexões do seeder sejam fechadas, mesmo em caso de exceção.
-        // Implemente este método para fechar as conexões no seu seeder.
-        seeder.CloseConnections();
-        Console.WriteLine("Conexões do seeder fechadas.");
+        var seeder = scope.ServiceProvider.GetService<SeedDb>();
+        seeder.SeedAsync().Wait();
     }
 
-
-    try
-    {
-        // TODO: tem bug sem dar erro no debug
-        //seeder.SeedAsync().Wait(); 
-    }
-    catch (Exception ex)
-    {
-        // Registe a exceção ou faça o tratamento adequado aqui.
-        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
-        Console.WriteLine("Ocorreu um erro durante a execução " +
-                          "do populador do banco de dados.\n" +
-                          ex.Message);
-        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-    }
-
-
-    try
-    {
-        // TODO: tem bug sem dar erro no debug
-        seeder.SeedSync();
-    }
-    catch (Exception ex)
-    {
-        // Registe a exceção ou faça o tratamento adequado aqui.
-        // _logger.LogError(ex, "Ocorreu um erro durante a migração do banco de dados MySQL.");
-        Console.WriteLine("Ocorreu um erro durante a execução " +
-                          "do populador do banco de dados.\n" +
-                          ex.Message);
-        throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
-    }
-
+    
 
     // Stop the timer "MyTimer"
     TimeTracker.StopTimer(TimeTracker.SeederTimerName);

@@ -13,7 +13,7 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     TeachersController class.
 /// </summary>
-[Authorize(Roles = "Admin,SuperUser,Functionary")]
+//[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class TeachersController : Controller
 {
     // Obtém o tipo da classe atual
@@ -275,7 +275,18 @@ public class TeachersController : Controller
                 nameof(TeacherNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacher = await _context.Teachers.FindAsync(id);
+        //var teacher = await _context.Teachers.FindAsync(id);
+
+        var teacher = await _context.Teachers
+            .Include(t => t.Birthplace)
+            .Include(t => t.City)
+            .Include(t => t.Country)
+            .Include(t => t.CountryOfNationality)
+            .Include(t => t.Gender)
+            .Include(t => t.CreatedBy)
+            .Include(t => t.UpdatedBy)
+            .Include(t => t.User)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
         return teacher == null
             ? new NotFoundViewResult(
@@ -304,7 +315,7 @@ public class TeachersController : Controller
                 CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(teacher);
-
+        
         try
         {
             _context.Update(teacher);

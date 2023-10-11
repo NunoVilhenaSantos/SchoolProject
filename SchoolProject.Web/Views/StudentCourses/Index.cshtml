@@ -43,7 +43,7 @@
         <th>@Html.DisplayNameFor(model => model.Student)</th>
         <th>@Html.DisplayNameFor(model => model.Course)</th>
         <th>@Html.DisplayNameFor(model => model.Id)</th>
-        <th>@Html.DisplayNameFor(model => model.IdGuid)</th>
+        @* <th>@Html.DisplayNameFor(model => model.IdGuid)</th> *@
         <th>@Html.DisplayNameFor(model => model.WasDeleted)</th>
         <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
         <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
@@ -60,17 +60,17 @@
             <td>@Html.DisplayFor(modelItem => item.Student.Address)</td>
             <td>@Html.DisplayFor(modelItem => item.Course.Code)</td>
             <td>@Html.DisplayFor(modelItem => item.Id)</td>
-            <td>@Html.DisplayFor(modelItem => item.IdGuid)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
             <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
             <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
             <td>@Html.DisplayFor(modelItem => item.CreatedBy.Id)</td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedBy.Id)</td>
-            <td>
+            @* <td>
                 @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
                 @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
                 @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
-            </td>
+            </td> *@
             <td>
                 <div class="btn-group">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>

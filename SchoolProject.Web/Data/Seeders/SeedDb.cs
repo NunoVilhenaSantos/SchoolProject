@@ -493,9 +493,9 @@ public class SeedDb
 
         foreach (var role in rolesToAdd)
         {
-            CreateRole(role).Wait();
+            //CreateRole(role).Wait();
 
-            // await CreateRoleAsync(role);
+            await CreateRoleAsync(role);
 
             // Associar a função com as reivindicações apropriadas
             switch (role)
@@ -512,13 +512,13 @@ public class SeedDb
                     break;
 
                 case "Admin":
-                    AddClaimToRole(role, "IsAdmin").Wait();
-                    // await AddClaimToRoleAsync(role, "IsAdmin");
+                    //AddClaimToRole(role, "IsAdmin").Wait();
+                    await AddClaimToRoleAsync(role, "IsAdmin");
                     break;
 
                 case "Functionary":
-                    AddClaimToRoleAsync(role, "IsFunctionary").Wait();
-                    // await AddClaimToRoleAsync(role, "IsFunctionary");
+                    //AddClaimToRoleAsync(role, "IsFunctionary").Wait();
+                    await AddClaimToRoleAsync(role, "IsFunctionary");
                     break;
 
                 case "Student":
@@ -762,7 +762,7 @@ public class SeedDb
         try
         {
             // TODO: tem bug sem dar erro no debug
-            _dataContextMySql.Database.OpenConnection();
+            //_dataContextMySql.Database.OpenConnection();
             // _dataContextMySql.Database.EnsureDeleted();
             // _dataContextMySql.Database.Migrate();
             _dataContextMySql.Database.EnsureCreated();
@@ -784,7 +784,7 @@ public class SeedDb
         try
         {
             // TODO: tem bug sem dar erro no debug
-            _dataContextSqLite.Database.OpenConnection();
+            //_dataContextSqLite.Database.OpenConnection();
             //_dataContextSqLite.Database.EnsureDeleted();
             //_dataContextSqLite.Database.Migrate();
             _dataContextSqLite.Database.EnsureCreated();
@@ -803,7 +803,7 @@ public class SeedDb
             // TODO: tem bug sem dar erro no debug
             // await _msSqlLocal.Database.MigrateAsync();
             // await _msSqlOnline.Database.MigrateAsync();
-            _dataContextMsSql.Database.OpenConnection();
+            //_dataContextMsSql.Database.OpenConnection();
             //_dataContextMsSql.Database.EnsureDeleted();
             //_dataContextMsSql.Database.Migrate();
             _dataContextMsSql.Database.EnsureCreated();
@@ -821,7 +821,7 @@ public class SeedDb
         {
             // TODO: tem bug sem dar erro no debug
             //await _dataContextInUse.Database.MigrateAsync();
-            _dataContextInUse.Database.OpenConnection();
+            //_dataContextInUse.Database.OpenConnection();
             // Isso apagará todas as tabelas e dados existentes
             //_dataContextInUse.Database.EnsureDeleted();
             //_dataContextInUse.Database.Migrate();
@@ -913,6 +913,7 @@ public class SeedDb
         Debug.Assert(user != null, nameof(user) + " != null");
 
         AddCountriesWithCitiesAndNationalities(user).Wait();
+
 
         // _dataContextInUse.SaveChanges();
         CommitChangesAndHandleErrors();

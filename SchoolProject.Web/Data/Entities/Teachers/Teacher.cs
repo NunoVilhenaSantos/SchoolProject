@@ -16,18 +16,19 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 /// </summary>
 public class Teacher : IEntity, INotifyPropertyChanged
 {
+   
     /// <summary>
     /// </summary>
     [Required]
     [DisplayName("First Name")]
-    public required string FirstName { get; set; }
+    public string FirstName { get; set; }
 
 
     /// <summary>
     /// </summary>
     [Required]
     [DisplayName("Last Name")]
-    public required string LastName { get; set; }
+    public string LastName { get; set; }
 
 
     /// <summary>
@@ -51,13 +52,13 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [Required]
-    public required City City { get; set; }
+    //[Required]
+    public City? City { get; set; }
 
     /// <summary>
     /// </summary>
-    [Required]
-    public required Country Country { get; set; }
+    //[Required]
+    public Country? Country { get; set; }
 
 
     // public int CountryId => Country.Id;
@@ -84,8 +85,8 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [Required]
-    public required Gender Gender { get; set; }
+    //[Required]
+    public Gender? Gender { get; set; }
 
 
     /// <summary>
@@ -123,9 +124,9 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [Required]
+    //[Required]
     [DisplayName("Country Of Nationality")]
-    public required Country CountryOfNationality { get; set; }
+    public Country? CountryOfNationality { get; set; }
 
     // [Required]
     // public Nationality Nationality => CountryOfNationality.Nationality;
@@ -136,22 +137,22 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// <summary>
     ///
     /// </summary>
-    [Required]
-    public required Country Birthplace { get; set; }
+    //[Required]
+    public Country? Birthplace { get; set; }
 
 
     /// <summary>
     /// </summary>
-    [Required]
+    //[Required]
     [DisplayName("Enroll Date")]
     [DataType(DataType.Date)]
-    public required DateTime EnrollDate { get; set; }
+    public DateTime? EnrollDate { get; set; }
 
 
     /// <summary>
     /// </summary>
-    [Required]
-    public required User User { get; set; }
+    //[Required]
+    public User User { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -171,7 +172,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     ///     The profile photo of the user.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
+    public Guid? ProfilePhotoId { get; set; }
 
     /// <summary>
     ///     The profile photo of the user in URL format.
@@ -211,8 +212,8 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //[Key]
+    //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
 
@@ -228,16 +229,16 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    [Required]
+    //[Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <inheritdoc />
-    [Required]
+    //[Required]
     [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
+    public virtual User? CreatedBy { get; set; }
 
 
     /// <inheritdoc />

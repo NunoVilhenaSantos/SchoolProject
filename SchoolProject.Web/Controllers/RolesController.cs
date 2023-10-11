@@ -13,7 +13,7 @@ namespace SchoolProject.Web.Controllers;
 ///     Authorisation is required to access this controller.
 ///     Roles that can access this controller are Admin and SuperUser.
 /// </summary>
-[Authorize(Roles = "Admin,SuperUser")]
+//[Authorize(Roles = "Admin,SuperUser")]
 public class RolesController : Controller
 {
     // Obtém o tipo da classe atual
