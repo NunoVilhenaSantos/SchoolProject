@@ -49,12 +49,12 @@
         <th>@Html.DisplayNameFor(model => model.Active)</th>
         <th>@Html.DisplayNameFor(model => model.DateOfBirth)</th>
         <th>@Html.DisplayNameFor(model => model.IdentificationNumber)</th>
-        <th>@Html.DisplayNameFor(model => model.IdentificationType)</th>
-        <th>@Html.DisplayNameFor(model => model.ExpirationDateIdentificationNumber)</th>
-        <th>@Html.DisplayNameFor(model => model.TaxIdentificationNumber)</th>
+        @* <th>@Html.DisplayNameFor(model => model.IdentificationType)</th> *@
+        @* <th>@Html.DisplayNameFor(model => model.ExpirationDateIdentificationNumber)</th>
+        <th>@Html.DisplayNameFor(model => model.TaxIdentificationNumber)</th> *@
         <th>@Html.DisplayNameFor(model => model.EnrollDate)</th>
         <th>@Html.DisplayNameFor(model => model.ProfilePhotoId)</th>
-        <th>@Html.DisplayNameFor(model => model.IdGuid)</th>
+        @* <th>@Html.DisplayNameFor(model => model.IdGuid)</th> *@
         <th>@Html.DisplayNameFor(model => model.WasDeleted)</th>
         @* <th>@Html.DisplayNameFor(model => model.CreatedAt)</th> *@
         @* <th>@Html.DisplayNameFor(model => model.UpdatedAt)</th> *@
@@ -75,17 +75,21 @@
             <td>@Html.DisplayFor(modelItem => item.Active)</td>
             <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
             <td>@Html.DisplayFor(modelItem => item.IdentificationNumber)</td>
-            <td>@Html.DisplayFor(modelItem => item.IdentificationType)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.IdentificationType)</td>
             <td>@Html.DisplayFor(modelItem => item.ExpirationDateIdentificationNumber)</td>
-            <td>@Html.DisplayFor(modelItem => item.TaxIdentificationNumber)</td>
+            <td>@Html.DisplayFor(modelItem => item.TaxIdentificationNumber)</td> *@
             <td>@Html.DisplayFor(modelItem => item.EnrollDate)</td>
-            <td>@Html.DisplayFor(modelItem => item.ProfilePhotoId)</td>
-            <td>@Html.DisplayFor(modelItem => item.IdGuid)</td>
+            <td>                
+                <img src="@Url.Content(item.ProfilePhotoIdUrl)" alt="Image" style="width:100px; height:150px; max-width:100%; height: auto">
+            </td>
+            @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
             <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
             @* <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td> *@
             @* <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td> *@
             <td>
                 <div class="btn-group">
+                    @* <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><i class="fa-regular fa-file"></i> Details</a> *@
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.FullName" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>

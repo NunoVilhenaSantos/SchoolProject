@@ -1,61 +1,38 @@
 @model SchoolProject.Web.Data.Entities.Enrollments.Enrollment
 
-@{
-    ViewData["Title"] = "Create";
-}
 
-<h1>@ViewData["Title"]</h1>
-
-<h4>Enrollment</h4>
-<hr/>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="StudentId" class="control-label"></label>
-                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DisciplineId" class="control-label"></label>
-                <select asp-for="DisciplineId" class="form-control" asp-items="ViewBag.CourseId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Grade" class="control-label"></label>
-                <input asp-for="Grade" class="form-control"/>
-                <span asp-validation-for="Grade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedBy.FullName" class="control-label"></label>
-                <select asp-for="CreatedBy.FullName" class="form-control" asp-items="ViewBag.CreatedById"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedBy.FullName" class="control-label"></label>
-                <select asp-for="UpdatedBy.FullName" class="form-control" asp-items="ViewBag.UpdatedById"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control"/>
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control"/>
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-outline-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
-                </div>
-                <div>
-                    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
-                </div>
-            </div>
-        </form>
-    </div>
+<div class="form-group">
+    <label asp-for="DisciplineId" class="control-label"></label>
+    <select asp-for="DisciplineId" class="form-control" asp-items="ViewBag.CourseId"></select>
 </div>
+<div class="form-group">
+    <label asp-for="Grade" class="control-label"></label>
+    <input asp-for="Grade" class="form-control"/>
+    <span asp-validation-for="Grade" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="CreatedBy.FullName" class="control-label"></label>
+    <select asp-for="CreatedBy.FullName" class="form-control" asp-items="ViewBag.CreatedById"></select>
+    <span asp-validation-for="CreatedBy.FullName" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="UpdatedBy.FullName" class="control-label"></label>
+    <select asp-for="UpdatedBy.FullName" class="form-control" asp-items="ViewBag.UpdatedById"></select>
+    <span asp-validation-for="UpdatedBy.FullName" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Id" class="control-label"></label>
+    <input asp-for="Id" class="form-control"/>
+    <span asp-validation-for="Id" class="text-danger"></span>
+</div>
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
+    </label>
+</div>
+<div class="form-group">
+    <label asp-for="UpdatedAt" class="control-label"></label>
+    <input asp-for="UpdatedAt" class="form-control"/>
+    <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+</div>
+     

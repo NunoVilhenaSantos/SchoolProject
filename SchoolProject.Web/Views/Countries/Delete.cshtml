@@ -10,20 +10,8 @@
 <div>
     <h4>Country</h4>
     <hr/>
-    <dl class="row">
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.Name)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.ProfilePhotoId)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.ProfilePhotoId)</dd>
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.IdGuid)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.IdGuid)</dd>
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.WasDeleted)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.WasDeleted)</dd>
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.CreatedAt)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.CreatedAt) </dd>
-        <dt class="col-sm-2"> @Html.DisplayNameFor(model => model.UpdatedAt)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.UpdatedAt)</dd>
-    </dl>
+    
+    <partial name="_CountriesDD" />
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id"/>

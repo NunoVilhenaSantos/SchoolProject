@@ -14,7 +14,7 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     EnrollmentsController class.
 /// </summary>
-[Authorize(Roles = "Admin,SuperUser,Functionary")]
+//[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class EnrollmentsController : Controller
 {
     // Obtém o tipo da classe atual

@@ -52,14 +52,14 @@ public class Student : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [Required]
-    public virtual required City City { get; set; }
+    //[Required]
+    public virtual City? City { get; set; }
 
 
     /// <summary>
     /// </summary>
-    [Required]
-    public virtual required Country Country { get; set; }
+    //[Required]
+    public virtual Country? Country { get; set; }
 
 
     // public  int CountryId => Country.Id;
@@ -88,8 +88,8 @@ public class Student : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [Required]
-    public virtual required Gender Gender { get; set; }
+    //[Required]
+    public virtual Gender? Gender { get; set; }
 
 
     /// <summary>
@@ -132,9 +132,9 @@ public class Student : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [Required]
+    //[Required]
     [DisplayName("Country Of Nationality")]
-    public virtual required Country CountryOfNationality { get; set; }
+    public virtual Country? CountryOfNationality { get; set; }
 
 
     // public virtual Nationality Nationality => CountryOfNationality?.Nationality;
@@ -144,16 +144,16 @@ public class Student : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [Required]
-    public virtual required Country Birthplace { get; set; }
+    //[Required]
+    public virtual Country? Birthplace { get; set; }
 
 
     /// <summary>
     /// </summary>
-    [Required]
+    //[Required]
     [DisplayName("Enroll Date")]
     [DataType(DataType.Date)]
-    public required DateTime EnrollDate { get; set; }
+    public DateTime? EnrollDate { get; set; }
 
 
     /// <summary>
@@ -179,7 +179,7 @@ public class Student : IEntity, INotifyPropertyChanged
     ///     The profile photo of the user.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
+    public Guid? ProfilePhotoId { get; set; }
 
     /// <summary>
     ///     The profile photo of the user in URL format.
@@ -358,11 +358,11 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    [Required]
+    //[Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <inheritdoc />
     [Required]
@@ -380,6 +380,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual User? UpdatedBy { get; set; }
+    DateTime IEntity.CreatedAt { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 
     // ---------------------------------------------------------------------- //

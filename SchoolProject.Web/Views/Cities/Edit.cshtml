@@ -33,25 +33,32 @@
 
 <hr/>
 <div class="container-fluid">
-    <div class="row">
-        <partial name="_DisplayImages"/>
+    <div class="row">       
 
-        <div class="col">
-            <div class="row">
-
-                <form asp-action="Edit" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id"/>
-                    <input type="hidden" asp-for="ProfilePhotoId"/>
+        <div class="col-md-4">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="ProfilePhotoId"/>
 
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-outline-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
-                        <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-outline-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
+                    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                </div>
+            </form>
+        </div>
 
-            </div>
+        <div class="col-md-8">
+            <partial name="_DisplayImages" />
+            @* <img src="@Url.Content(Model.ProfilePhotoIdUrl)" alt="Image" style="width:200px; height:350px; max-width:100%; height: auto"> *@
         </div>
     </div>
+
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

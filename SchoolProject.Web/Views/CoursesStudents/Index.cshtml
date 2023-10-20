@@ -43,7 +43,7 @@
         <th>@Html.DisplayNameFor(model => model.Course.Acronym)</th>
         <th>@Html.DisplayNameFor(model => model.Student)</th>
         <th>@Html.DisplayNameFor(model => model.Id)</th>
-        <th>@Html.DisplayNameFor(model => model.IdGuid)</th>
+        @* <th>@Html.DisplayNameFor(model => model.IdGuid)</th> *@
         <th>@Html.DisplayNameFor(model => model.WasDeleted)</th>
         <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
         <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
@@ -60,18 +60,18 @@
             <td>@Html.DisplayFor(modelItem => item.Course.Acronym)</td>
             <td>@Html.DisplayFor(modelItem => item.Student.Address)</td>
             <td>@Html.DisplayFor(modelItem => item.Id)</td>
-            <td>@Html.DisplayFor(modelItem => item.IdGuid)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
             <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
             <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
             <td>@Html.DisplayFor(modelItem => item.CreatedBy.Id)</td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedBy.Id)</td>
             <td>
-                <div class="btn-group">
+                @* <div class="btn-group">
                     @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-pen-to-square"></span>
                     @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-file"></span>
                     @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */}) <span class="fa-regular fa-trash-can"></span>
-                </div>
+                </div> *@
 
                 <div class="col-md-1 border-start"></div> <!-- Vertical separator -->
 

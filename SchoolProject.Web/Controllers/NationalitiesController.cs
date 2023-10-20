@@ -12,7 +12,7 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     Controller for the Nationalities entity.
 /// </summary>
-[Authorize(Roles = "Admin,SuperUser,Functionary")]
+//[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
     // Obtém o tipo da classe atual

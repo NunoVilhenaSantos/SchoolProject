@@ -14,7 +14,7 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     TeachersController class.
 /// </summary>
-[Authorize(Roles = "Admin,SuperUser,Functionary")]
+//[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class TeachersController : Controller
 {
     // Obtém o tipo da classe atual
@@ -325,7 +325,7 @@ public class TeachersController : Controller
                 CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(teacher);
-
+        
         try
         {
             _context.Update(teacher);

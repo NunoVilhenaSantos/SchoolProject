@@ -12,6 +12,7 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 /// </summary>
 public class TeacherCourse : IEntity, INotifyPropertyChanged
 {
+
     /// <summary>
     /// </summary>
     [Required]

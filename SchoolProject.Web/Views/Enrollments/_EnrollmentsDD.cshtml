@@ -1,82 +1,70 @@
 @model SchoolProject.Web.Data.Entities.Enrollments.Enrollment
 
-@{
-    ViewData["Title"] = "Delete";
-}
 
-<h1>@ViewData["Title"]</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Enrollment</h4>
-    <hr/>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Student)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Student.Address)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Discipline)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Discipline.Code)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Grade)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Grade)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdGuid)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdGuid)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WasDeleted)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.WasDeleted)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedBy.Id)
-        </dd>
-    </dl>
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="StudentId"/>
-        <input type="hidden" asp-for="DisciplineId"/>
-        <button type="submit" class="btn btn-outline-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
-        <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
-    </form>
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Student)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Student.Address)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Discipline)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Discipline.Code)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Grade)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Grade)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.IdGuid)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.IdGuid)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.WasDeleted)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.WasDeleted)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.CreatedAt)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.CreatedBy.Id)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.UpdatedAt)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.UpdatedBy.Id)
+            </dd>
+        </dl>
+    </div>   
+  
 </div>

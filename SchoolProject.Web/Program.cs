@@ -138,7 +138,6 @@ static Task RunSeeding(IHost host)
     // Start the timer "MyTimer"
     TimeTracker.StartTimer(TimeTracker.SeederTimerName);
 
-
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
 
 

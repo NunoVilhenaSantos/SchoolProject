@@ -13,7 +13,7 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     courses controller
 /// </summary>
-[Authorize(Roles = "Admin,SuperUser,Functionary")]
+//[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class DisciplinesController : Controller
 {
     // Obtém o nome da classe atual
