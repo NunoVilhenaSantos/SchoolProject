@@ -1,4 +1,6 @@
-﻿@model SchoolProject.Web.Models.Users.ChangeUserViewModel
+﻿@using SchoolProject.Web.Models.Account;
+
+@model   SchoolProject.Web.Models.Account.ChangeUserViewModel
 
 @{
     ViewData["Title"] = "Change User";
@@ -55,17 +57,19 @@
                         <span asp-validation-for="PhoneNumber" class="text-warning"></span>
                     </div>
 
-                    @* <div class="form-group"> *@
-                    @*     <label asp-for="Password" class="control-label">Password</label> *@
-                    @*     <input asp-for="Password" type="password" class="form-control"/> *@
-                    @*     <span asp-validation-for="Password" class="text-warning"></span> *@
-                    @* </div> *@
+                    @*
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control" disable/>
+                        <span asp-validation-for="Password" class="text-warning"></span>
+                    </div>
 
-                    @* <div class="form-group"> *@
-                    @*     <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label> *@
-                    @*     <input asp-for="ConfirmPassword" type="password" class="form-control"/> *@
-                    @*     <span asp-validation-for="ConfirmPassword" class="text-warning"></span> *@
-                    @* </div> *@
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="control-label">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" disable />
+                        <span asp-validation-for="ConfirmPassword" class="text-warning"></span>
+                    </div>
+                    *@
 
                     <div class="form-group">
                         <label asp-for="CountryId" class="control-label"></label>

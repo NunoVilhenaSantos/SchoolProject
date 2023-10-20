@@ -37,39 +37,39 @@
         <PackageReference Include="DnsClient" Version="1.7.0" />
         <PackageReference Include="EfCore.SchemaCompare" Version="7.0.0" />
         <PackageReference Include="ErikEJ.EntityFrameworkCore.DgmlBuilder" Version="6.0.0" />
-        <PackageReference Include="Google.Apis.Storage.v1" Version="1.62.1.3186" />
+        <PackageReference Include="Google.Apis.Storage.v1" Version="1.62.1.3206" />
         <PackageReference Include="Google.Cloud.Storage.V1" Version="4.6.0" />
         <PackageReference Include="MailKit" Version="4.2.0" />
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.11" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.12" />
         <PackageReference Include="Microsoft.Build.Framework" Version="17.7.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.11" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.11" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.0" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.11" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.11" />
-        <PackageReference Include="Microsoft.Identity.Web" Version="2.14.0" />
-        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.14.0" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.12" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.12" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.15.2" />
+        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.15.2" />
         <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.2.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -80,8 +80,8 @@
         <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
         <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Sentry" Version="3.39.1" />
-        <PackageReference Include="Sentry.AspNetCore" Version="3.39.1" />
+        <PackageReference Include="Sentry" Version="3.40.1" />
+        <PackageReference Include="Sentry.AspNetCore" Version="3.40.1" />
         <PackageReference Include="Serilog" Version="3.0.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.1" />

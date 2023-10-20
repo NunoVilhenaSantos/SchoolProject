@@ -1,5 +1,7 @@
 Clear-Host
 
+CHCP 65001
+
 # Defina a variável de ambiente LANG para UTF-8
 $env:LANG = "en_US.UTF-8"
 

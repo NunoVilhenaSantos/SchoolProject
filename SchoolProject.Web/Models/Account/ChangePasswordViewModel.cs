@@ -13,6 +13,7 @@ public class ChangePasswordViewModel
 
     [Required]
     [DataType(DataType.Password)]
+    [DisplayName("New Password")]
     [MinLength(6)]
     public string NewPassword { get; set; }
 
@@ -20,6 +21,7 @@ public class ChangePasswordViewModel
     [Required]
     [DataType(DataType.Password)]
     [Compare("NewPassword")]
+    [DisplayName("Confirm Password")]
     [MinLength(6)]
     public string ConfirmPassword { get; set; }
 }

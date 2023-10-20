@@ -270,13 +270,12 @@ public class PaginationViewModel<T> where T : class
         try
         {
             // Specify the directory path
-            var directoryPath =
-                Path.Combine(_hostingEnvironment.ContentRootPath, "Data",
-                    "Json");
+            var directoryPath = Path.Combine(
+                _hostingEnvironment.ContentRootPath, "JsonSessionData");
+
 
             // Check if the directory exists, and create it if it doesn't
-            if (!Directory.Exists(directoryPath))
-                Directory.CreateDirectory(directoryPath);
+            Directory.CreateDirectory(directoryPath);
 
 
             // Obtenha o nome da classe T
@@ -312,11 +311,12 @@ public class PaginationViewModel<T> where T : class
         {
             // Specify the directory path
             var directoryPath = Path.Combine(
-                _hostingEnvironment.ContentRootPath, "Data", "Json");
+                _hostingEnvironment.ContentRootPath, "JsonSessionData");
+
 
             // Check if the directory exists, and create it if it doesn't
-            if (!Directory.Exists(directoryPath))
-                Directory.CreateDirectory(directoryPath);
+            Directory.CreateDirectory(directoryPath);
+
 
             // Obtain the name of the class T
             var typeName = typeof(T).Name;

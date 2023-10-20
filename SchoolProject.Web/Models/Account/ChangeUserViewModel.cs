@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.Entities.Users;
 
-namespace SchoolProject.Web.Models.Users;
+namespace SchoolProject.Web.Models.Account;
 
 /// <summary>
 ///     view model class to change user data

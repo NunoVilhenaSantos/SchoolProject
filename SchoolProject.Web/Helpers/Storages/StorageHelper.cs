@@ -242,7 +242,7 @@ public class StorageHelper : IStorageHelper
         // and then create it
         var blobContainerClient =
             new BlobContainerClient(
-                _configuration["Storage:Azure"],
+                _configuration["Storage:ConnectionString1"],
                 bucketName);
 
 

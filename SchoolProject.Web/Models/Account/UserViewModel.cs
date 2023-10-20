@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SchoolProject.Web.Models.Users;
+namespace SchoolProject.Web.Models.Account;
 
 /// <summary>
 ///     View model for the user class to add an image to the user personnel webpage.

@@ -142,16 +142,9 @@ static Task RunSeeding(IHost host)
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
 
 
-    // BUG: Microsoft estava a bulir e deixou de funcionar
-    //using var scope = scopeFactory?.CreateScope();
 
-    //var seeder = scope?.ServiceProvider.GetService<SeedDb>();
-
-    //seeder?.SeedAsync();
-    //seeder?.SeedSync();
-
-
-    //TODO MICROSOFT BUG NA MEXE!!!!!
+    // TODO: MICROSOFT BUG NA MEXE!!!!!
+    // TODO: BUG NA MEXE!!!!!
     using (var scope = scopeFactory?.CreateScope())
     {
         var seeder = scope?.ServiceProvider.GetService<SeedDb>();

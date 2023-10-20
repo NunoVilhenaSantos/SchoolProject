@@ -15,7 +15,6 @@ using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Account;
-using SchoolProject.Web.Models.Users;
 
 namespace SchoolProject.Web.Controllers;
 

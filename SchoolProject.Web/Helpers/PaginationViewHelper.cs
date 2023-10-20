@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace SchoolProject.Web.Helpers;
 
 /// <summary>
-///     PaginationViewHelper class to help in the indexcards views using pagination view model.
+///     PaginationViewHelper class to help in the index-cards views using pagination view model.
 /// </summary>
 /// <typeparam name="T"> T will assume each class</typeparam>
 public class PaginationViewHelper<T> where T : class
@@ -228,7 +228,7 @@ public class PaginationViewHelper<T> where T : class
             // Specify the file path where you queremos salvar o JSON file
             var filePath =
                 Path.Combine(_hostingEnvironment.ContentRootPath,
-                    "Data", typeName, ".json");
+                    "JsonSessionData", typeName, ".json");
 
 
             // Save the JSON to the file

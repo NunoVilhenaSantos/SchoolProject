@@ -20,8 +20,7 @@ namespace SchoolProject.Web.Data.Seeders;
 /// </summary>
 public class SeedDb
 {
-    private readonly IConfiguration _configuration;
-
+    // data context
     //private readonly DataContextMsSql _dataContextInUse;
     private readonly DataContextMySql _dataContextInUse;
     //private readonly DataContextSqLite _dataContextInUse;
@@ -37,18 +36,32 @@ public class SeedDb
     private readonly DataContextSqLite _dataContextSqLite;
 
 
+    // configuration
+    private readonly IConfiguration _configuration;
+
+
+
+    // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
 
+
+    // loggers
     private readonly ILogger<SeedDb> _logger;
     private readonly ILogger<SeedDbCourses> _loggerSeedDbCourses;
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
 
 
-    private readonly RoleManager<IdentityRole> _roleManager;
 
 
+    // service provider
+    private readonly IServiceProvider _serviceProvider;
+
+    // user helper
     private readonly IUserHelper _userHelper;
+
+    // user manager
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<User> _userManager;
 
 
@@ -66,6 +79,7 @@ public class SeedDb
     /// <param name="configuration"></param>
     /// <param name="dataContextMsSql"></param>
     /// <param name="dataContextMySql"></param>
+    /// <param name="serviceProvider"></param>
     /// <param name="dataContextSqLite"></param>
     /// <param name="dataContextInUse"></param>
     public SeedDb(
@@ -83,24 +97,35 @@ public class SeedDb
         DataContextMsSql dataContextMsSql,
         // DcMsSqlLocal msSqlLocal,
         // DcMySqlOnline mySqlOnline,
-        DataContextMySql dataContextMySql
+        DataContextMySql dataContextMySql,
         // DcMySqlLocal mySqlLocal,
         // DcMsSqlOnline msSqlOnline
+        IServiceProvider serviceProvider
     )
     {
+        // logger
         _logger = logger;
         _loggerSeedDbCourses = loggerSeedDbSCs;
         _loggerSeedDbSTs = loggerSeedDbSTs;
         _loggerSeedDbUsers = loggerSeedDbUsers;
 
+
+        // helpers
         _userHelper = userHelper;
         _userManager = userManager;
         _roleManager = roleManager;
 
+        // host environment
         _hostingEnvironment = hostingEnvironment;
+
+        // configuration
         _configuration = configuration;
 
+        // service provider
+        _serviceProvider = serviceProvider;
 
+
+        // data context
         _dataContextInUse = dataContextInUse;
 
 
@@ -131,6 +156,62 @@ public class SeedDb
         // initialize SeedDb Databases before been used
         // ------------------------------------------------------------------ //
         await SeedDbGenerateCreateScript();
+
+        Console.WriteLine("Debug zone");
+        PrintDebugInformation();
+
+        // -------------------------------------------------------------- //
+
+        var dbContext = _serviceProvider.GetService<DataContextMySql>();
+        Debug.Assert(
+            dbContext != null, nameof(dbContext) + " != null");
+
+        // -------------------------------------------------------------- //
+        // initialize SeedDb Databases before been used
+        // -------------------------------------------------------------- //
+        await SeedDbMigrateDatabasesAsync();
+
+
+        // -------------------------------------------------------------- //
+        // initialize SeedDb Databases before been used
+        // -------------------------------------------------------------- //
+        await SeedDbGenerateCreateScript();
+
+
+        // -------------------------------------------------------------- //
+        // Determines if the app is running in development or production
+        // -------------------------------------------------------------- //
+
+        var environment =
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+        if (environment == "Development")
+        {
+            // version of development
+
+            Console.WriteLine("Development mode");
+
+            // Não cria os Migrations
+            // await _dbContextInUse.Database.EnsureCreatedAsync();
+
+            // Cria os Migrations ao correr o Seed
+            await _dataContextInUse.Database.MigrateAsync();
+        }
+        else
+        {
+            // version for production
+            Console.WriteLine("Production mode");
+
+            //
+            await _dataContextInUse.Database.EnsureDeletedAsync();
+
+            // Cria os Migrations ao correr o Seed
+            await _dataContextInUse.Database.MigrateAsync();
+
+            // Não cria os Migrations
+            await _dataContextInUse.Database.EnsureCreatedAsync();
+        }
+
 
 
 
@@ -390,7 +471,7 @@ public class SeedDb
         try
         {
             // TODO: tem bug sem dar erro no debug
-            await _dataContextMsSql.Database.MigrateAsync();
+            // await _dataContextMsSql.Database.MigrateAsync();
             // await _msSqlLocal.Database.MigrateAsync();
             // await _msSqlOnline.Database.MigrateAsync();
         }
@@ -399,7 +480,18 @@ public class SeedDb
             // Registe a exceção ou faça o tratamento adequado aqui.
             _logger.LogError(ex,
                 "Ocorreu um erro durante a migração do banco de dados MsSQL.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+            // throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+
+
+            //
+            await _dataContextMsSql.Database.EnsureDeletedAsync();
+
+            // Cria os Migrations ao correr o Seed
+            await _dataContextMsSql.Database.MigrateAsync();
+
+            // Não cria os Migrations
+            await _dataContextMsSql.Database.EnsureCreatedAsync();
+
         }
 
 
@@ -1152,7 +1244,7 @@ public class SeedDb
 
             // throw; // Re-throw the exception to indicate a failure in the seeding process
         }
- 
+
         try
         {
             // Save any changes made to the database context
@@ -1170,6 +1262,12 @@ public class SeedDb
         }
     }
 
+
+
+
+
+
+
     internal void CloseConnections()
     {
         _dataContextInUse.Database.CloseConnection();
@@ -1177,5 +1275,24 @@ public class SeedDb
         _dataContextMySql.Database.CloseConnection();
         _dataContextSqLite.Database.CloseConnection();
         // _dataContextInUse.Database.CloseConnection();
+    }
+
+
+
+    private void PrintDebugInformation(
+        [System.Runtime.CompilerServices.CallerMemberName]
+        string memberName = "",
+        [System.Runtime.CompilerServices.CallerFilePath]
+        string sourceFilePath = "",
+        [System.Runtime.CompilerServices.CallerLineNumber]
+        int sourceLineNumber = 0
+    )
+    {
+        var className = GetType().Name;
+
+        Console.WriteLine(
+            $"Debug zone: Método {memberName} na classe {className}, " +
+            $"localizado em {sourceFilePath} na linha {sourceLineNumber} " +
+            "foi executado com sucesso");
     }
 }
