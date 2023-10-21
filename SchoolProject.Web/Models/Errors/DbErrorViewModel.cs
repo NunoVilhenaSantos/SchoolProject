@@ -26,7 +26,7 @@ public class DbErrorViewModel
 
     /// <summary>
     /// </summary>
-    public required int ItemId { get; set; }
+    public required string ItemId { get; set; }
 
 
     /// <summary>

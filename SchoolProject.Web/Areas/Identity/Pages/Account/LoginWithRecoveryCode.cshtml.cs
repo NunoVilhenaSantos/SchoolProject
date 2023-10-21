@@ -14,13 +14,13 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class LoginWithRecoveryCodeModel : PageModel
 {
     private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public LoginWithRecoveryCodeModel(
         ILogger<LoginWithRecoveryCodeModel> logger,
-        SignInManager<User> signInManager,
-        UserManager<User> userManager
+        SignInManager<AppUser> signInManager,
+        UserManager<AppUser> userManager
     )
     {
         _signInManager = signInManager;
@@ -45,10 +45,10 @@ public class LoginWithRecoveryCodeModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(string returnUrl = null)
     {
-        // Ensure the user has gone through the username & password screen first
+        // Ensure the appUser has gone through the username & password screen first
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync() ??
                    throw new InvalidOperationException(
-                       "Unable to load two-factor authentication user.");
+                       "Unable to load two-factor authentication appUser.");
         ReturnUrl = returnUrl;
 
         return Page();
@@ -60,7 +60,7 @@ public class LoginWithRecoveryCodeModel : PageModel
 
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync() ??
                    throw new InvalidOperationException(
-                       "Unable to load two-factor authentication user.");
+                       "Unable to load two-factor authentication appUser.");
 
         var recoveryCode =
             Input.RecoveryCode.Replace(" ", string.Empty);
@@ -73,19 +73,19 @@ public class LoginWithRecoveryCodeModel : PageModel
         if (result.Succeeded)
         {
             _logger.LogInformation(
-                "User with ID '{UserId}' logged in with a recovery code.",
+                "AppUser with ID '{UserId}' logged in with a recovery code.",
                 user.Id);
             return LocalRedirect(returnUrl ?? Url.Content("~/"));
         }
 
         if (result.IsLockedOut)
         {
-            _logger.LogWarning("User account locked out.");
+            _logger.LogWarning("AppUser account locked out.");
             return RedirectToPage("./Lockout");
         }
 
         _logger.LogWarning(
-            "Invalid recovery code entered for user with ID '{UserId}' ",
+            "Invalid recovery code entered for appUser with ID '{UserId}' ",
             user.Id);
         ModelState.AddModelError(string.Empty,
             "Invalid recovery code entered.");

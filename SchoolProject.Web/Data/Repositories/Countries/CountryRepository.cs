@@ -52,7 +52,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
 
 
     /// <inheritdoc />
-    public IEnumerable<Country> GetCountriesWithCities()
+    public IOrderedQueryable<Country> GetCountriesWithCities()
     {
         return _dataContext.Countries
             .Include(c => c.Cities)
@@ -64,15 +64,14 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
 
 
     /// <inheritdoc />
-    public IEnumerable<Country> GetCountriesWithCitiesEnumerable()
+    public IOrderedQueryable<Country> GetCountriesWithCitiesEnumerable()
     {
         return _dataContext.Countries
             .Include(c => c.Cities)
             .Include(c => c.Nationality)
             .Include(c => c.CreatedBy)
             .Include(c => c.UpdatedBy)
-            .OrderBy(c => c.Name)
-            .AsEnumerable();
+            .OrderBy(c => c.Name);
     }
 
 
@@ -84,20 +83,26 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
         var countriesList = _dataContext.Countries
             .Select(c => new SelectListItem
             {
-                Text = c.Name,
-                Value = c.Id.ToString()
+                Text = c.Name, Value = c.Id.ToString()
             })
             .OrderBy(c => c.Text)
             .ToList();
 
         countriesList.Insert(0, new SelectListItem
-        {
-            Text = "(Select a country...)",
-            Value = "0"
-        });
+            {Text = "(Select a country...)", Value = "0"});
 
         return countriesList;
+
+        // SelectList countrySelectList = new SelectList(
+        //     _dataContext.Countries.ToList(),
+        //     nameof(Country.Id),
+        //     nameof(Country.Name),
+        //     0
+        // );
+
+        // return countrySelectList;
     }
+
 
     /// <inheritdoc />
     public IEnumerable<SelectListItem>? GetComboCities(int countryId)
@@ -107,19 +112,13 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             .FirstOrDefault(c => c.Id == countryId);
 
 
+        // Retornar uma opção vazia se o país não for encontrado
         if (country == null)
-            // Retornar uma opção vazia se o país não for encontrado
             return new List<SelectListItem>
-            {
-                new()
-                {
-                    Text = "(Select a country...)",
-                    Value = "0"
-                }
-            };
+                {new() {Text = "(Select a country...)", Value = "0"}};
 
-        var citiesList = country.Cities?
-            .Select(c => new SelectListItem
+
+        var citiesList = country.Cities?.Select(c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
@@ -144,17 +143,10 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             .Include(c => c.Nationality)
             .FirstOrDefault(c => c.Id == countryId);
 
-
+        // Retornar uma opção vazia se o país não for encontrado
         if (country == null)
-            // Retornar uma opção vazia se o país não for encontrado
             return new List<SelectListItem>
-            {
-                new()
-                {
-                    Text = "(Select a country...)",
-                    Value = "0"
-                }
-            };
+                {new() {Text = "(Select a country...)", Value = "0",}};
 
         var nationalityItem = new SelectListItem
         {
@@ -176,10 +168,9 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     public IEnumerable<SelectListItem> GetComboCountriesAndNationalities()
     {
         // Retrieve countries and their corresponding nationalities
-        var countriesWithNationalities =
-            _dataContext.Countries
-                .Include(c => c.Nationality)
-                .ToListAsync().Result.ToList();
+        var countriesWithNationalities = _dataContext.Countries
+            .Include(c => c.Nationality)
+            .ToList();
 
         var combinedList =
         (
@@ -193,75 +184,70 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
         ).ToList();
 
         combinedList.Insert(0, new SelectListItem
-        {
-            Text = "(Select a country...)",
-            Value = "0"
-        });
+            {Text = "(Select a country...)", Value = "0",});
 
         return combinedList;
     }
 
 
-    // ------------------------------ Countries ----------------------------- //
+// ------------------------------ Countries ----------------------------- //
 
     /// <inheritdoc />
-    public async Task<Country?> GetCountryAsync(int cityId)
+    public IOrderedQueryable<Country> GetCountryAsync(int cityId)
     {
-        var country = await _dataContext.Countries
+        return _dataContext.Countries
             .Include(c => c.Cities)
             .Include(c => c.Nationality)
-            .FirstOrDefaultAsync(c =>
+            .Where(c =>
                 c.Cities != null &&
-                c.Cities.Any(ci => ci.Id == cityId));
-
-        return country;
+                c.Cities.Any(ci => ci.Id == cityId)).OrderBy(c => c.Name);
     }
 
 
     /// <inheritdoc />
-    public async Task<Country?> GetCountryAsync(City city)
+    public IOrderedQueryable<Country> GetCountryAsync(City city)
     {
-        var country = await _dataContext.Countries
+        return _dataContext.Countries
             .Include(c => c.Cities)
             .Include(c => c.Nationality)
-            .FirstOrDefaultAsync(c =>
+            .Where(c =>
                 c.Cities != null &&
-                c.Cities.Any(ci => ci.Id == city.Id));
-
-        return country;
+                c.Cities.Any(ci => ci.Id != city.Id))
+            .OrderBy(c => c.Name);
     }
 
 
     /// <inheritdoc />
-    public async Task<Country?> GetCountryWithCitiesAsync(int id)
+    public IOrderedQueryable<Country> GetCountryWithCitiesAsync(int id)
     {
-        return await _dataContext.Countries
+        return _dataContext.Countries
             .Include(c => c.Cities)
             .Include(c => c.Nationality)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .Where(c => c.Id == id).OrderBy(c => c.Name);
     }
 
 
     /// <inheritdoc />
-    public async Task<Country?> GetCountryWithCitiesAsync(Country country)
+    public IOrderedQueryable<Country> GetCountryWithCitiesAsync(Country country)
     {
-        return await _dataContext.Countries
+        return _dataContext.Countries
             .Include(c => c.Cities)
-            .FirstOrDefaultAsync(c => c.Id == country.Id);
+            .Include(c => c.Nationality)
+            .Where(c => c.Id == country.Id).OrderBy(c => c.Name);
     }
 
 
     /// <inheritdoc />
-    public async Task<Country> GetCountryWithCitiesAsync(City city)
+    public IOrderedQueryable<Country> GetCountryWithCitiesAsync(City city)
     {
-        return await _dataContext.Countries
-            .Include(c => c.Cities
-                .Where(ci => ci.Id == city.Id))
-            .FirstOrDefaultAsync();
+        return _dataContext.Countries
+            .Include(c => c.Cities)
+            .Where(ci => ci.Id == city.Id)
+            .OrderBy(w => w.Name);
     }
 
 
-    // -------------------------------- Cities ------------------------------ //
+// -------------------------------- Cities ------------------------------ //
 
     /// <inheritdoc />
     public async Task<City?> GetCityAsync(int id)
@@ -277,12 +263,13 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     }
 
 
-    // ------------------- Cities Add, Update and Delete -------------------- //
+// ------------------- Cities Add, Update and Delete -------------------- //
 
     /// <inheritdoc />
     public async Task AddCityAsync(CityViewModel model)
     {
-        var country = await GetCountryWithCitiesAsync(model.CountryId);
+        var country = await GetCountryWithCitiesAsync(model.CountryId)
+            .FirstOrDefaultAsync();
 
         if (country == null) return;
 
@@ -344,7 +331,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     }
 
 
-    // ---------------------------- Nationalities --------------------------- //
+// ---------------------------- Nationalities --------------------------- //
 
     /// <inheritdoc />
     public async Task<Nationality?> GetNationalityAsync(int id)
@@ -360,12 +347,13 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
     }
 
 
-    // ----------------- Nationality Add, Update and Delete ----------------- //
+// ----------------- Nationality Add, Update and Delete ----------------- //
 
     /// <inheritdoc />
     public async Task AddNationalityAsync(NationalityViewModel model)
     {
-        var country = await GetCountryWithCitiesAsync(model.CountryId);
+        var country = await GetCountryWithCitiesAsync(model.CountryId)
+            .FirstOrDefaultAsync();
 
         if (country == null) return;
 

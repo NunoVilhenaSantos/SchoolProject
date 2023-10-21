@@ -1,4 +1,6 @@
-@model SchoolProject.Web.Data.Entities.Users.User
+@model             SchoolProject.Web.Data.Entities.Users.AppUser
+@* @model IEnumerable<SchoolProject.Web.Models.AppUsers.AppUserWithRolesViewModel> *@
+@* @model PaginationViewModel<SchoolProject.Web.Models.AppUsers.AppUserWithRolesViewModel> *@
 
 @{
     ViewData["Title"] = "Delete";
@@ -9,7 +11,7 @@
 <h3>Are you sure you want to delete this?</h3>
 
 <div>
-    <h4>User</h4>
+    <h4>AppUser</h4>
     <hr/>
 
     <div class="row">
@@ -21,8 +23,8 @@
             <form asp-action="Delete">
                 <input type="hidden" asp-for="Id"/>
 
-                <button type="submit" class="btn btn-outline-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
-                <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                <button type="submit" class="btn btn-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
+                <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
             </form>
 
         </div>

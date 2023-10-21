@@ -14,12 +14,12 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
 public class ConfirmEmailChangeModel : PageModel
 {
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public ConfirmEmailChangeModel(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager
     )
     {
         _userManager = userManager;
@@ -42,7 +42,7 @@ public class ConfirmEmailChangeModel : PageModel
 
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
-            return NotFound($"Unable to load user with ID '{userId}'.");
+            return NotFound($"Unable to load appUser with ID '{userId}'.");
 
         code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
         var result = await _userManager.ChangeEmailAsync(user, email, code);
@@ -52,13 +52,13 @@ public class ConfirmEmailChangeModel : PageModel
             return Page();
         }
 
-        // In our UI email and user name are one and the same, so when we update the email
-        // we need to update the user name.
+        // In our UI email and appUser name are one and the same, so when we update the email
+        // we need to update the appUser name.
         var setUserNameResult =
             await _userManager.SetUserNameAsync(user, email);
         if (!setUserNameResult.Succeeded)
         {
-            StatusMessage = "Error changing user name.";
+            StatusMessage = "Error changing appUser name.";
             return Page();
         }
 

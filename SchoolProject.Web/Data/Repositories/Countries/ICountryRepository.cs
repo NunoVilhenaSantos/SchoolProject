@@ -17,14 +17,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     ///     Get countries with cities.
     /// </summary>
     /// <returns></returns>
-    IEnumerable<Country> GetCountriesWithCities();
+    IOrderedQueryable<Country> GetCountriesWithCities();
 
 
     /// <summary>
     ///     Get countries with cities.
     /// </summary>
     /// <returns></returns>
-    IEnumerable<Country> GetCountriesWithCitiesEnumerable();
+    IOrderedQueryable<Country> GetCountriesWithCitiesEnumerable();
 
 
     // ------------------------- Combo boxes list  -------------------------- //
@@ -62,14 +62,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Country?> GetCountryAsync(int id);
+    IOrderedQueryable<Country> GetCountryAsync(int id);
 
     /// <summary>
     ///     Get country.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
-    Task<Country?> GetCountryAsync(City city);
+    IOrderedQueryable<Country> GetCountryAsync(City city);
 
 
     /// <summary>
@@ -77,21 +77,21 @@ public interface ICountryRepository : IGenericRepository<Country>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Country?> GetCountryWithCitiesAsync(int id);
+    IOrderedQueryable<Country> GetCountryWithCitiesAsync(int id);
 
     /// <summary>
     ///     Get country with cities.
     /// </summary>
     /// <param name="country"></param>
     /// <returns></returns>
-    Task<Country?> GetCountryWithCitiesAsync(Country country);
+    IOrderedQueryable<Country> GetCountryWithCitiesAsync(Country country);
 
     /// <summary>
     ///     Get country with cities.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
-    Task<Country?> GetCountryWithCitiesAsync(City city);
+    IOrderedQueryable<Country> GetCountryWithCitiesAsync(City city);
 
 
     // -------------------------------- Cities ------------------------------ //

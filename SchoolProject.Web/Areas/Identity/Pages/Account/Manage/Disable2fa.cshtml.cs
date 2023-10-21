@@ -13,10 +13,10 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 public class Disable2faModel : PageModel
 {
     private readonly ILogger<Disable2faModel> _logger;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public Disable2faModel(
-        UserManager<User> userManager,
+        UserManager<AppUser> userManager,
         ILogger<Disable2faModel> logger)
     {
         _userManager = userManager;
@@ -37,13 +37,13 @@ public class Disable2faModel : PageModel
 
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         if (!await _userManager.GetTwoFactorEnabledAsync(user))
             throw new InvalidOperationException(
                 "Cannot disable 2FA for " +
-                "user as it's not currently enabled.");
+                "appUser as it's not currently enabled.");
 
         return Page();
     }
@@ -54,7 +54,7 @@ public class Disable2faModel : PageModel
 
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         var disable2faResult =
@@ -65,7 +65,7 @@ public class Disable2faModel : PageModel
                 "Unexpected error occurred disabling 2FA.");
 
         _logger.LogInformation(
-            "User with ID '{UserId}' has disabled 2fa.",
+            "AppUser with ID '{UserId}' has disabled 2fa.",
             _userManager.GetUserId(User));
 
         StatusMessage =

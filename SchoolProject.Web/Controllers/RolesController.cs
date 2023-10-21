@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -31,16 +32,21 @@ public class RolesController : Controller
     internal string BucketName = CurrentClass.ToLower();
 
 
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
     /// <summary>
     ///     Constructor for the RolesController
     /// </summary>
     /// <param name="roleManager"></param>
     /// <param name="hostingEnvironment"></param>
     public RolesController(RoleManager<IdentityRole> roleManager,
-        IWebHostEnvironment hostingEnvironment)
+        IWebHostEnvironment hostingEnvironment, AuthenticatedUserInApp authenticatedUserInApp)
     {
         _roleManager = roleManager;
         _hostingEnvironment = hostingEnvironment;
+        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
 

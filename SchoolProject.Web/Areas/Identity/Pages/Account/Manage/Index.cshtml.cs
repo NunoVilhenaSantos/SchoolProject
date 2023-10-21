@@ -13,12 +13,12 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
 public class IndexModel : PageModel
 {
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public IndexModel(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager)
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -47,10 +47,10 @@ public class IndexModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; }
 
-    private async Task LoadAsync(User user)
+    private async Task LoadAsync(AppUser appUser)
     {
-        var userName = await _userManager.GetUserNameAsync(user);
-        var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+        var userName = await _userManager.GetUserNameAsync(appUser);
+        var phoneNumber = await _userManager.GetPhoneNumberAsync(appUser);
 
         Username = userName;
 
@@ -62,7 +62,7 @@ public class IndexModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         await LoadAsync(user);
@@ -74,7 +74,7 @@ public class IndexModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)

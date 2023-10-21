@@ -1,19 +1,22 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Errors;
 using SchoolProject.Web.Models.Users;
 
@@ -24,13 +27,31 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class HomeController : Controller
 {
+    // private readonly IConnectivityChecker _connectivityChecker;
+    
+    // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
+
+    // http context accessor
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    // html localizer
+    private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
+
+
+    // logger
     private readonly ILogger<HomeController> _logger;
 
+    // sign in manager
+    private readonly SignInManager<AppUser> _signInManager;
 
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+
+    // session variable names and types
     private readonly Dictionary<string, Type> _sessionVariableTypes =
         new()
         {
@@ -59,9 +80,6 @@ public class HomeController : Controller
         };
 
 
-    private readonly SignInManager<User> _signInManager;
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
-
 
     /// <summary>
     ///     HomeController constructor.
@@ -74,17 +92,17 @@ public class HomeController : Controller
     /// <param name="hostingEnvironment"></param>
     public HomeController(
         ILogger<HomeController> logger,
-        SignInManager<User> signInManager,
+        SignInManager<AppUser> signInManager,
         IWebHostEnvironment hostingEnvironment,
         IHttpContextAccessor httpContextAccessor,
         IHtmlLocalizer<HomeController> htmlLocalizer,
-        IStringLocalizer<HomeController> stringLocalizer
-    )
+        IStringLocalizer<HomeController> stringLocalizer, AuthenticatedUserInApp authenticatedUserInApp)
     {
         _logger = logger;
         _htmlLocalizer = htmlLocalizer;
         _signInManager = signInManager;
         _stringLocalizer = stringLocalizer;
+        _authenticatedUserInApp = authenticatedUserInApp;
         _hostingEnvironment = hostingEnvironment;
         _httpContextAccessor = httpContextAccessor;
     }
@@ -338,4 +356,39 @@ public class HomeController : Controller
     {
         return View();
     }
+
+
+
+
+    // -------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Splits a camelCase string into a list of words, separated by spaces.
+    /// </summary>
+    /// <param name="text">The camelCase string to split.</param>
+    /// <returns>A list of words, separated by spaces.</returns>
+    public static string SplitCamelCase(string text)
+    {
+        // Argument validation
+        if (text is null)
+            throw new ArgumentNullException(nameof(text));
+
+
+        // Split the string at every uppercase letter, except for the first letter.
+        var textSplit = Regex.Replace(text, @"([A-Z][a-z]+)", @" $1");
+
+
+        // Remove the "Controller" suffix, if it exists.
+        if (textSplit.EndsWith("Controller"))
+            textSplit =
+                textSplit.Substring(0, textSplit.Length - "Controller".Length);
+
+
+        // Remove the "Controller" suffix
+        return textSplit.Replace("Controller", "");
+    }
+
+
+    // -------------------------------------------------------------- //
 }

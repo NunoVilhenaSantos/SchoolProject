@@ -43,7 +43,7 @@ public class ProductsController : Controller
 
         // foreach (var p in products)
         // {
-        //     p.User = _userHelper.GetUserByIdAsync(p.User.Id).Result;
+        //     p.AppUser = _userHelper.GetUserByIdAsync(p.AppUser.Id).Result;
         // }
 
         // return Ok(products);

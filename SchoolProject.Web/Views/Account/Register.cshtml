@@ -1,5 +1,5 @@
 ﻿@using SchoolProject.Web.Models.Account;
-@model    SchoolProject.Web.Models.Account.RegisterNewUserViewModel
+@model    SchoolProject.Web.Models.Account.RegisterNewAppUserViewModel
 
 @{
     ViewData["Title"] = "Register";
@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="UserName" class="control-label">Username</label>
+                        <label asp-for="UserName" class="control-label">AppUsername</label>
                         <input asp-for="UserName" class="form-control"/>
                         <span asp-validation-for="UserName" class="text-warning"></span>
                     </div>
@@ -85,7 +85,7 @@
 
                     <br/>
                     <div class="form-group">
-                        <input type="submit" value="Register New User" class="btn btn-primary"/>
+                        <input type="submit" value="Register New AppUser" class="btn btn-primary"/>
                     </div>
 
                     <div class="text-success">

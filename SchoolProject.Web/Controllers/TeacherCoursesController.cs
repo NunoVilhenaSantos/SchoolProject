@@ -7,6 +7,7 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -31,6 +32,11 @@ public class TeacherCoursesController : Controller
     internal string BucketName = CurrentClass.ToLower();
 
 
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+
     /// <summary>
     ///     TeacherCoursesController constructor.
     /// </summary>
@@ -40,10 +46,11 @@ public class TeacherCoursesController : Controller
     public TeacherCoursesController(
         DataContextMySql context,
         ITeacherCourseRepository teacherCourseRepository,
-        IWebHostEnvironment hostingEnvironment)
+        IWebHostEnvironment hostingEnvironment, AuthenticatedUserInApp authenticatedUserInApp)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
+        _authenticatedUserInApp = authenticatedUserInApp;
         _teacherCourseRepository = teacherCourseRepository;
     }
 
@@ -77,8 +84,8 @@ public class TeacherCoursesController : Controller
 
                 // --------------------- Teacher section -------------------- //
                 .Include(tc => tc.Teacher)
-                .ThenInclude(t => t.Country)
-                .ThenInclude(c => c.Nationality)
+                .ThenInclude(t => t.City)
+                .ThenInclude(c => c.Country)
                 .ThenInclude(c => c.CreatedBy)
                 .Include(tc => tc.Teacher)
                 .ThenInclude(t => t.CountryOfNationality)
@@ -92,7 +99,7 @@ public class TeacherCoursesController : Controller
                 .ThenInclude(t => t.Gender)
                 .ThenInclude(g => g.CreatedBy)
                 .Include(tc => tc.Teacher)
-                .ThenInclude(t => t.User)
+                .ThenInclude(t => t.AppUser)
 
                 // --------------------- Others section --------------------- //
                 .Include(tc => tc.CreatedBy)
@@ -196,10 +203,6 @@ public class TeacherCoursesController : Controller
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
-
-        // Validar parâmetros de página e tamanho da página
-        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
-        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
         var recordsQuery = SessionData<TeacherCourse>();
 

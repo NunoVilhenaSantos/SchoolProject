@@ -33,14 +33,14 @@ public class SeedDbCourses
     }
 
 
-    public static async Task AddingData(User user)
+    public static async Task AddingData(AppUser appUser)
     {
         Console.WriteLine(
             "Seeding courses and school-classes tables with the courses...");
 
         SeedDBDisciplinesLists.Initialize(_dataContextInUse);
 
-        await SeedDBDisciplinesLists.AddingData(user);
+        await SeedDBDisciplinesLists.AddingData(appUser);
 
         // ------------------------------------------------------------------ //
 
@@ -154,7 +154,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeGrsi, user);
+            coursesListForTeGrsi, appUser);
 
         await SeedCourseIfNotExists("481228", "CET.SITE.DPO.92",
             "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Laboral) (B-Learning)",
@@ -165,7 +165,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeGrsi, user);
+            coursesListForTeGrsi, appUser);
 
         await SeedCourseIfNotExists("481228", "CET.SITE.DPO.06",
             "Técnico/a Especialista em Gestão de Redes e Sistemas Informáticos (Pós-Laboral) (B-Learning)",
@@ -174,7 +174,7 @@ public class SeedDbCourses
             DateTime.Today.AddMonths(13),
             TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
             TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
-            coursesListForTeGrsi, user);
+            coursesListForTeGrsi, appUser);
 
 
         // 481227
@@ -188,7 +188,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeAig, user);
+            coursesListForTeAig, appUser);
 
 
         // 481241
@@ -202,7 +202,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeTpsi, user);
+            coursesListForTeTpsi, appUser);
 
         await SeedCourseIfNotExists("481241", "CET.TPSI.N.L.00",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-laboral)",
@@ -211,7 +211,7 @@ public class SeedDbCourses
             DateTime.Today.AddMonths(13),
             TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
             TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
-            coursesListForTeTpsi, user);
+            coursesListForTeTpsi, appUser);
 
         await SeedCourseIfNotExists("481241", "CET.SITE.DPO.91",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Laboral) (B-Learning)",
@@ -222,7 +222,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeTpsi, user);
+            coursesListForTeTpsi, appUser);
 
         await SeedCourseIfNotExists("481241", "CET.SITE.DPO.04",
             "Técnico/a Especialista em Tecnologias e Programação de Sistemas de Informação (Pós-Laboral) (B-Learning)",
@@ -231,7 +231,7 @@ public class SeedDbCourses
             DateTime.Today.AddMonths(13),
             TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
             TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
-            coursesListForTeTpsi, user);
+            coursesListForTeTpsi, appUser);
 
 
         // 481344
@@ -245,7 +245,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeCs, user);
+            coursesListForTeCs, appUser);
         await SeedCourseIfNotExists("481241", "CET.SITE.DPO.98",
             "Técnico/a Especialista em Cibersegurança (Pós-Laboral) (B-Learning)",
             5, 5,
@@ -253,7 +253,7 @@ public class SeedDbCourses
             DateTime.Today.AddMonths(13),
             TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
             TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
-            coursesListForTeCs, user);
+            coursesListForTeCs, appUser);
 
 
         // 481390
@@ -267,7 +267,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeGicd, user);
+            coursesListForTeGicd, appUser);
 
 
         // 523229
@@ -281,7 +281,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeArci, user);
+            coursesListForTeArci, appUser);
 
 
         // 213240
@@ -293,7 +293,7 @@ public class SeedDbCourses
             DateTime.Today.AddMonths(13),
             TimeSpan.Zero.Add(TimeSpan.FromHours(19)),
             TimeSpan.Zero.Add(TimeSpan.FromHours(23)),
-            coursesListForTeDpm, user);
+            coursesListForTeDpm, appUser);
 
 
         // 523273
@@ -307,7 +307,7 @@ public class SeedDbCourses
                 TimeSpan.FromHours(8).Add(TimeSpan.FromMinutes(30))),
             TimeSpan.Zero.Add(
                 TimeSpan.FromHours(16).Add(TimeSpan.FromMinutes(30))),
-            coursesListForTeTr, user);
+            coursesListForTeTr, appUser);
 
 
         // Add other school classes and courses here...
@@ -339,7 +339,7 @@ public class SeedDbCourses
         DateTime startDate, DateTime endDate,
         TimeSpan startHour, TimeSpan endHour,
         HashSet<Course> courses,
-        User user)
+        AppUser appUser)
     {
         // Get the course from the database
         var existingCourse = _listOfCoursesFromDb.FirstOrDefault(
@@ -386,7 +386,7 @@ public class SeedDbCourses
                 PriceForEmployed = 200,
                 PriceForUnemployed = 0,
                 IdGuid = default,
-                CreatedBy = user,
+                CreatedBy = appUser,
                 Disciplines = new HashSet<Discipline>(),
                 Students = new HashSet<Student>(),
                 CourseDisciplines = new HashSet<CourseDisciplines>(),

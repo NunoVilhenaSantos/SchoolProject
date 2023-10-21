@@ -13,14 +13,14 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 
 public class ExternalLoginsModel : PageModel
 {
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
-    private readonly IUserStore<User> _userStore;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly IUserStore<AppUser> _userStore;
 
     public ExternalLoginsModel(
-        IUserStore<User> userStore,
-        UserManager<User> userManager,
-        SignInManager<User> signInManager
+        IUserStore<AppUser> userStore,
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager
     )
     {
         _userStore = userStore;
@@ -62,7 +62,7 @@ public class ExternalLoginsModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         CurrentLogins = await _userManager.GetLoginsAsync(user);
@@ -73,7 +73,7 @@ public class ExternalLoginsModel : PageModel
             .ToList();
 
         string passwordHash = null;
-        if (_userStore is IUserPasswordStore<User> userPasswordStore)
+        if (_userStore is IUserPasswordStore<AppUser> userPasswordStore)
             passwordHash =
                 await userPasswordStore.GetPasswordHashAsync(user,
                     HttpContext.RequestAborted);
@@ -88,7 +88,7 @@ public class ExternalLoginsModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         var result =
@@ -111,7 +111,7 @@ public class ExternalLoginsModel : PageModel
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
         // Request a redirect to the external
-        // login provider to link a login for the current user
+        // login provider to link a login for the current appUser
         var redirectUrl =
             Url.Page("./ExternalLogins", "LinkLoginCallback");
 
@@ -126,7 +126,7 @@ public class ExternalLoginsModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         var userId = await _userManager.GetUserIdAsync(user);

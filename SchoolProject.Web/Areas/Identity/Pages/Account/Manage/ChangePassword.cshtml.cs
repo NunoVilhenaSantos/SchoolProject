@@ -14,12 +14,12 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 public class ChangePasswordModel : PageModel
 {
     private readonly ILogger<ChangePasswordModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public ChangePasswordModel(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
         ILogger<ChangePasswordModel> logger)
     {
         _logger = logger;
@@ -48,7 +48,7 @@ public class ChangePasswordModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         var hasPassword = await _userManager.HasPasswordAsync(user);
@@ -66,7 +66,7 @@ public class ChangePasswordModel : PageModel
 
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         var changePasswordResult =
@@ -84,7 +84,7 @@ public class ChangePasswordModel : PageModel
 
         await _signInManager.RefreshSignInAsync(user);
         _logger.LogInformation(
-            "User changed their password successfully");
+            "AppUser changed their password successfully");
 
         StatusMessage = "Your password has been changed.";
 

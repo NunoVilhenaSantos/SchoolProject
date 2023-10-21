@@ -14,12 +14,12 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 public class DeletePersonalDataModel : PageModel
 {
     private readonly ILogger<DeletePersonalDataModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public DeletePersonalDataModel(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
         ILogger<DeletePersonalDataModel> logger)
     {
         _logger = logger;
@@ -47,7 +47,7 @@ public class DeletePersonalDataModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         RequirePassword = await _userManager.HasPasswordAsync(user);
@@ -59,7 +59,7 @@ public class DeletePersonalDataModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         RequirePassword = await _userManager.HasPasswordAsync(user);
@@ -75,12 +75,12 @@ public class DeletePersonalDataModel : PageModel
         var userId = await _userManager.GetUserIdAsync(user);
         if (!result.Succeeded)
             throw new InvalidOperationException(
-                "Unexpected error occurred deleting user.");
+                "Unexpected error occurred deleting appUser.");
 
         await _signInManager.SignOutAsync();
 
         _logger.LogInformation(
-            "User with ID '{UserId}' deleted themselves.", userId);
+            "AppUser with ID '{UserId}' deleted themselves.", userId);
 
         return Redirect("~/");
     }

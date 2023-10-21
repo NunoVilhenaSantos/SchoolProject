@@ -3,8 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using CsvHelper.Configuration.Attributes;
+using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
+using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
@@ -16,19 +19,18 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 /// </summary>
 public class Teacher : IEntity, INotifyPropertyChanged
 {
-   
     /// <summary>
     /// </summary>
     [Required]
     [DisplayName("First Name")]
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
 
 
     /// <summary>
     /// </summary>
     [Required]
     [DisplayName("Last Name")]
-    public string LastName { get; set; }
+    public required string LastName { get; set; }
 
 
     /// <summary>
@@ -50,19 +52,30 @@ public class Teacher : IEntity, INotifyPropertyChanged
     public required string PostalCode { get; set; }
 
 
-    /// <summary>
-    /// </summary>
-    //[Required]
-    public City? City { get; set; }
 
     /// <summary>
+    ///     The country Id.
     /// </summary>
-    //[Required]
-    public Country? Country { get; set; }
+    // [Required]
+    [NotMapped]
+    [DisplayName("Country")]
+    // [ForeignKey(nameof(City))]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
+    public required int CountryId { get; set; }
 
 
-    // public int CountryId => Country.Id;
-    // public Guid CountryGuidId => Country.IdGuid;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    // [Required]
+    [ForeignKey(nameof(City))]
+    public int CityId { get; set; }
+
+    /// <summary>
+    /// </summary>
+    [Required]
+    public required City City { get; set; }
 
 
     /// <summary>
@@ -78,15 +91,23 @@ public class Teacher : IEntity, INotifyPropertyChanged
     [DataType(DataType.EmailAddress)]
     public required string Email { get; set; }
 
+
     /// <summary>
     /// </summary>
     [Required]
     public required bool Active { get; set; } = true;
 
+
     /// <summary>
     /// </summary>
-    //[Required]
-    public Gender? Gender { get; set; }
+    // [Required]
+    [ForeignKey(nameof(Gender))]
+    public int GenderId { get; set; }
+
+    /// <summary>
+    /// </summary>
+    [Required]
+    public required Gender Gender { get; set; }
 
 
     /// <summary>
@@ -110,7 +131,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [Required]
-    [DisplayName("Expiration Date Identification Number")]
+    [DisplayName("Expiration Date of Identification Number")]
     [DataType(DataType.Date)]
     public required DateTime ExpirationDateIdentificationNumber { get; set; }
 
@@ -122,37 +143,56 @@ public class Teacher : IEntity, INotifyPropertyChanged
     public required string TaxIdentificationNumber { get; set; }
 
 
-    /// <summary>
-    /// </summary>
-    //[Required]
-    [DisplayName("Country Of Nationality")]
-    public Country? CountryOfNationality { get; set; }
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
 
     // [Required]
-    // public Nationality Nationality => CountryOfNationality.Nationality;
+    /// <summary>
+    ///
+    /// </summary>
+    [ForeignKey(nameof(CountryOfNationality))]
+    [DisplayName("Country Of Nationality")]
+    public int CountryOfNationalityId { get; set; }
 
-    // [Required] public required Nationality Nationality { get; set; }
+    /// <summary>
+    /// </summary>
+    [Required]
+    [DisplayName("Country Of Nationality")]
+    public required Country CountryOfNationality { get; set; }
 
 
     /// <summary>
     ///
     /// </summary>
-    //[Required]
-    public Country? Birthplace { get; set; }
+    [ForeignKey(nameof(Birthplace))]
+    public int BirthplaceId { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public required Country Birthplace { get; set; }
 
 
     /// <summary>
     /// </summary>
-    //[Required]
+    [Required]
     [DisplayName("Enroll Date")]
     [DataType(DataType.Date)]
-    public DateTime? EnrollDate { get; set; }
+    public required DateTime EnrollDate { get; set; } = DateTime.UtcNow;
 
+
+    /// <summary>
+    ///
+    /// </summary>
+    [ForeignKey(nameof(AppUser))]
+    public int UserId { get; set; }
 
     /// <summary>
     /// </summary>
-    //[Required]
-    public User User { get; set; }
+    [Required]
+    public required AppUser AppUser { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -160,7 +200,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     The image of the user file from the form to be inserted in the database.
+    ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
     [Ignore]
     [NotMapped]
@@ -169,18 +209,24 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     The profile photo of the user.
+    ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public Guid? ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
     /// <summary>
-    ///     The profile photo of the user in URL format.
+    ///     The profile photo of the appUser in URL format.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        // : StorageHelper.GcpStoragePublicUrl + "teachers/" + ProfilePhotoId;
-        : StorageHelper.AzureStoragePublicUrl + "teachers/" + ProfilePhotoId;
+        ? StorageHelper.NoImageUrl
+        : StorageHelper.AzureStoragePublicUrl +
+          TeachersController.BucketName +
+          "/" + ProfilePhotoId;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
 
 
     // ---------------------------------------------------------------------- //
@@ -189,22 +235,44 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
+    ///    Navigation property for the many-to-many relationship with courses
+    /// </summary>
+    public IEnumerable<Discipline>? Disciplines { get; set; }
+
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Disciplines Count")]
+    public int DisciplinesCount => Disciplines?.Count() ?? 0;
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Total Work Hours")]
+    public int TotalWorkHours => Disciplines?
+        .Sum(t => t.Hours) ?? 0;
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Total Work Hours")]
+    public int TotalStudents => Disciplines?
+        .Sum(t => t.StudentsCount) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
     ///     Navigation property for the many-to-many relationship with courses
     /// </summary>
     public virtual HashSet<TeacherCourse>? TeacherCourses { get; set; }
     // = new List<TeacherCourse>();
 
 
-    /// <summary>
-    /// </summary>
-    [DisplayName("Disciplines Count")]
-    public int CoursesCount => TeacherCourses?.Count ?? 0;
+    // [DisplayName("Disciplines Count")]
+    // public int DisciplinesCount => TeacherCourses?.Count ?? 0;
 
-    /// <summary>
-    /// </summary>
-    [DisplayName("Total Work Hours")]
-    public int TotalWorkHours => TeacherCourses?
-        .Sum(t => t.Course.Hours) ?? 0;
+    // [DisplayName("Total Work Hours")]
+    // public int TotalWorkHours => TeacherCourses?
+    //     .Sum(t => t.Course?.Hours) ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -229,7 +297,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    //[Required]
+    [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -237,9 +305,9 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    //[Required]
+    [Required]
     [DisplayName("Created By")]
-    public virtual User? CreatedBy { get; set; }
+    public virtual required AppUser CreatedBy { get; set; }
 
 
     /// <inheritdoc />
@@ -252,7 +320,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     /// <inheritdoc />
     [DisplayName("Updated By")]
-    public virtual User? UpdatedBy { get; set; }
+    public virtual AppUser? UpdatedBy { get; set; }
 
 
     // --------------------------------------------------------------------- //

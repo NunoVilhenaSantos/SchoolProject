@@ -2,8 +2,8 @@
 @using SchoolProject.Web.Helpers.Users
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @* @inject HttpContext HttpContext *@
 @inject IUserHelper UserHelper
 
@@ -16,27 +16,27 @@
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 
-    Debug.Assert(Context.User.Identity != null, "Context.User.Identity != null");
+    Debug.Assert(Context.User.Identity != null, "Context.AppUser.Identity != null");
 
-    @* @Context.User.Identity.IsAuthenticated *@
-    @* @Context.User.Identity.Name *@
-    @* @Context.User.Identity.AuthenticationType *@
+    @* @Context.AppUser.Identity.IsAuthenticated *@
+    @* @Context.AppUser.Identity.Name *@
+    @* @Context.AppUser.Identity.AuthenticationType *@
 
-    // var principal = Context.User;
+    // var principal = Context.AppUser;
     @* @foreach (Claim claim in principal.Claims) *@
     @* { *@
     @*     <p>CLAIM TYPE: @claim.Type; CLAIM VALUE: @claim.Value</p> *@
     @* } *@
 
 
-    Debug.Assert(User != null, "User != null");
-    Debug.Assert(User.Identity != null, "User.Identity != null");
-    @* @User.Identity.IsAuthenticated *@
-    @* @User.Identity.Name *@
-    @* @User.Identity.AuthenticationType *@
+    Debug.Assert(User != null, "AppUser != null");
+    Debug.Assert(User.Identity != null, "AppUser.Identity != null");
+    @* @AppUser.Identity.IsAuthenticated *@
+    @* @AppUser.Identity.Name *@
+    @* @AppUser.Identity.AuthenticationType *@
 
-    @* @(User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))) *@
-    @* @(User.Identity.IsAuthenticated && User.HasClaim("IsAdmin", "true")) *@
+    @* @(AppUser.Identity.IsAuthenticated && (AppUser.IsInRole("Admin") || AppUser.IsInRole("SuperAdmin"))) *@
+    @* @(AppUser.Identity.IsAuthenticated && AppUser.HasClaim("IsAdmin", "true")) *@
 }
 
 @{
@@ -154,14 +154,14 @@
         @* </div> *@
 
         @* // altera os botões que iram aparecer consoante o estado do utilizador *@
-        <div class="b-example-divider d-none">Buttons for login and register user / change user and logout</div>
+        <div class="b-example-divider d-none">Buttons for login and register appUser / change appUser and logout</div>
         <div class="text-end">
             @if (User.Identity.IsAuthenticated)
             {
                 <a asp-action="ChangeUser" asp-area="" asp-controller="Account"
                    class="btn btn-light text-dark me-2  @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")">
                     <span class="material-symbols-outlined">settings_account_box</span>
-                    @* @User.Identity?.Name *@
+                    @* @AppUser.Identity?.Name *@
                     Hello @await UserHelper.GetUserInitialsAsync()
                 </a>
 
@@ -208,7 +208,7 @@
         }
 
         @* // mostra o painel offcanvas do painel do admin (funções exclusivas dos admins) *@
-        @* @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))) *@
+        @* @if (AppUser.Identity.IsAuthenticated && (AppUser.IsInRole("Admin") || AppUser.IsInRole("SuperAdmin"))) *@
         <div class="b-example-divider d-none">Buttons to open the off-canvas panel on the right (Admin Panel)</div>
         @if (User.Identity.IsAuthenticated && User.HasClaim("IsAdmin", "true"))
         {

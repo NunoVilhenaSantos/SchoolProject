@@ -12,7 +12,7 @@ public class AppResponse
 
 
     /// <summary>
-    ///     AppResponse Message to inform the user about the action.
+    ///     AppResponse Message to inform the appUser about the action.
     /// </summary>
     public string? Message { get; set; }
 

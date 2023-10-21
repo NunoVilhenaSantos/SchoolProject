@@ -7,6 +7,7 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Repositories.Enrollments;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -31,6 +32,11 @@ public class EnrollmentsController : Controller
     internal string BucketName = CurrentClass.ToLower();
 
 
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+
     /// <summary>
     ///     EnrollmentsController constructor.
     /// </summary>
@@ -40,11 +46,12 @@ public class EnrollmentsController : Controller
     public EnrollmentsController(
         DataContextMySql context,
         IWebHostEnvironment hostingEnvironment,
-        IEnrollmentRepository enrollmentRepository)
+        IEnrollmentRepository enrollmentRepository, AuthenticatedUserInApp authenticatedUserInApp)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
         _enrollmentRepository = enrollmentRepository;
+        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
     // Obtém o controlador atual

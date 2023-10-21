@@ -1,20 +1,36 @@
 @model Microsoft.AspNetCore.Identity.IdentityRole
+@* @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole> *@
+@* @model PaginationViewModel<Microsoft.AspNetCore.Identity.IdentityRole> *@
 
 @{
-    ViewData["Title"] = "Details - Roles";
+    ViewData["Title"] = "Details";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Title"]</h3>
 
-<div>
-    <h4>Nationality</h4>
-    <hr/>
+<h4>Roles</h4>
 
-    <partial name="_RolesDD" />
-   
-</div>
+<hr/>
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fa-regular fa-pen-to-square"></span> Edit</a>
-    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+<div class="col-md-4">
+    <div class="row">
+        @*  <partial name="_DisplayImages" /> *@
+
+        <div class="col">
+            <div class="row">
+                <partial name="_RolesDD" for="@Model"/>
+
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>

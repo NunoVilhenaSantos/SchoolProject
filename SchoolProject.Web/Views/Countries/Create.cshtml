@@ -1,36 +1,54 @@
+@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Countries.Country
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Country> *@
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Country> *@
 
 @{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
     ViewData["Title"] = "Create";
+    // ViewData["Title"] = "Edit";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
-<h4>Country</h4>
+<h4>@controllerName</h4>
+
 <hr/>
 <div class="row">
+
+    <partial name="_DisplayImages"/>
+
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-             <partial name="_CountriesCE" />
+
+            <partial name="_CountriesCE" for="@Model"/>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-outline-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
-                <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                <button type="submit" class="btn btn-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
+                <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
             </div>
         </form>
     </div>
-
-    <div class="col-md-8">
-        <partial name="_DisplayImages" />
-        @* <img src="@Url.Content(Model.ProfilePhotoIdUrl)" alt="Image" style="width:200px; height:350px; max-width:100%; height: auto"> *@
-    </div>
-
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

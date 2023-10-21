@@ -13,12 +13,12 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 public class TwoFactorAuthenticationModel : PageModel
 {
     private readonly ILogger<TwoFactorAuthenticationModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public TwoFactorAuthenticationModel(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
         ILogger<TwoFactorAuthenticationModel> logger)
     {
         _userManager = userManager;
@@ -68,7 +68,7 @@ public class TwoFactorAuthenticationModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         HasAuthenticator =
@@ -90,7 +90,7 @@ public class TwoFactorAuthenticationModel : PageModel
 
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         await _signInManager.ForgetTwoFactorClientAsync();

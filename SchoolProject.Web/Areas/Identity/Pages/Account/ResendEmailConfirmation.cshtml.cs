@@ -20,10 +20,10 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class ResendEmailConfirmationModel : PageModel
 {
     private readonly IEmailSender _emailSender;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public ResendEmailConfirmationModel(
-        UserManager<User> userManager, IEmailSender emailSender)
+        UserManager<AppUser> userManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _emailSender = emailSender;

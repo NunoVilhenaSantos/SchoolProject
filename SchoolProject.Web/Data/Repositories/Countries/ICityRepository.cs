@@ -12,20 +12,20 @@ public interface ICityRepository : IGenericRepository<City>
     ///     Get all countries with cities.
     /// </summary>
     /// <returns>A queryable list of countries and there cities</returns>
-    IEnumerable<City> GetCitiesWithCountriesAsync();
+    IOrderedQueryable<City> GetCitiesWithCountriesAsync();
 
 
     /// <summary>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<City?> GetCityAsync(int id);
+    IOrderedQueryable<City> GetCityAsync(int id);
 
     /// <summary>
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
-    Task<City?> GetCityAsync(City city);
+    IOrderedQueryable<City> GetCityAsync(City city);
 
 
     /// <summary>

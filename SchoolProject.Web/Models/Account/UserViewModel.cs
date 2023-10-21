@@ -3,7 +3,7 @@
 namespace SchoolProject.Web.Models.Account;
 
 /// <summary>
-///     View model for the user class to add an image to the user personnel webpage.
+///     View model for the appUser class to add an image to the appUser personnel webpage.
 /// </summary>
 public class UserViewModel
 {

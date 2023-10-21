@@ -1,0 +1,63 @@
+﻿@using System.Reflection
+@model SchoolProject.Web.Data.Entities.Countries.Nationality
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
+
+@{
+    // ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+
+    // Isso obtém o nome da classe do modelo atual
+    var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+}
+
+<br/>
+<h4>Cities</h4>
+@if (Model.Country.Cities == null || Model.Country.Cities.Count == 0)
+{
+    <h5>No cities added yet</h5>
+}
+else
+{
+    <table class="table table-hover" sortable="True" id="sortableTable">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Country.Cities.FirstOrDefault().Name)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Country.Cities.OrderBy(c => c.Name))
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td></td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a asp-action="Edit" asp-controller="Cities" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                        <a asp-action="Details" asp-controller="Cities" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
+                        <a asp-action="Delete" asp-controller="Cities" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>Total Lines:</td>
+            <td>@Model.Country.Cities.Count</td>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
+}

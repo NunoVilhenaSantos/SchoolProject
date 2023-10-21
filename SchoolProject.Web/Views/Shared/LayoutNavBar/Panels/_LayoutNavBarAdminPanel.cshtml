@@ -2,8 +2,8 @@
 @using SchoolProject.Web.Helpers.Users
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @inject IUserHelper UserHelper
 
 
@@ -11,13 +11,13 @@
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 
-    Debug.Assert(User.Identity != null, "User.Identity != null");
+    Debug.Assert(User.Identity != null, "AppUser.Identity != null");
 }
 
 
 <div class="b-example-divider d-none">Admin dropdown section | If section</div>
-@* Verifica se o User está autenticado e se é o Admin!! *@
-@* cria um drop-down com as opções de Users e Roles *@
+@* Verifica se o AppUser está autenticado e se é o Admin!! *@
+@* cria um drop-down com as opções de AppUsers e Roles *@
 @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("SuperUser")))
 {
     <div class="b-example-divider d-none">Admin dropdown section | admin panel 2 </div>
@@ -38,7 +38,7 @@
                    class="dropdown-item @(currentAction == "Index" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    Users
+                    AppUsers
                 </a>
             </li>
             <li>
@@ -46,7 +46,7 @@
                    class="dropdown-item @(currentAction == "IndexCards" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    Users Cards
+                    AppUsers Cards
                 </a>
             </li>
             <li>
@@ -54,7 +54,7 @@
                    class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    Users Cards 1
+                    AppUsers Cards 1
                 </a>
             </li>
             <li>
@@ -92,8 +92,8 @@
                    class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
                    id="manage" title="Manage">
                     <span class="material-symbols-outlined">settings_account_box</span>
-                    @* Hello @UserManager.GetUserName(User)! *@
-                    @* @User.Identity?.Name *@
+                    @* Hello @AppUserManager.GetAppUserName(AppUser)! *@
+                    @* @AppUser.Identity?.Name *@
                     Hello @await UserHelper.GetUserInitialsAsync()
                 </a>
             </li>
@@ -104,7 +104,7 @@
                 <a asp-action="Register" asp-area="" asp-controller="Account"
                    class="dropdown-item @(currentAction == "Register" && currentController == "Account" ? "active" : "")">
                     <span class="material-symbols-outlined">person</span>
-                    Register New User
+                    Register New AppUser
                 </a>
             </li>
         </ul>

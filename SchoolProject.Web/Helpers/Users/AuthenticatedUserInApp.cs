@@ -20,10 +20,10 @@ public class AuthenticatedUserInApp
 
 
     /// <summary>
-    ///     Get authenticated user from HttpContext
+    ///     Get authenticated appUser from HttpContext
     /// </summary>
     /// <returns></returns>
-    public async Task<User> GetAuthenticatedUser()
+    public async Task<AppUser> GetAuthenticatedUser()
     {
         var user = _httpContextAccessor.HttpContext?.User;
 

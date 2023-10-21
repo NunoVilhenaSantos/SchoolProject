@@ -8,20 +8,20 @@ public class ChangePasswordViewModel
     [Required]
     [DisplayName("Current Password")]
     [DataType(DataType.Password)]
-    public string OldPassword { get; set; }
+    public required string OldPassword { get; set; }
 
 
     [Required]
+    [Display(Name = "New Password")]
     [DataType(DataType.Password)]
-    [DisplayName("New Password")]
     [MinLength(6)]
-    public string NewPassword { get; set; }
+    public required string NewPassword { get; set; }
 
 
     [Required]
+    [Display(Name = "Confirm Password")]
     [DataType(DataType.Password)]
     [Compare("NewPassword")]
-    [DisplayName("Confirm Password")]
     [MinLength(6)]
-    public string ConfirmPassword { get; set; }
+    public required string ConfirmPassword { get; set; }
 }

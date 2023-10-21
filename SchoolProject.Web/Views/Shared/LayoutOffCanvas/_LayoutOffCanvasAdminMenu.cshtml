@@ -8,20 +8,20 @@
 
 @* _LayoutOffCanvasAdminMenu *@
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @inject IUserHelper UserHelper
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
-    Debug.Assert(User.Identity != null, "User.Identity != null");
+    Debug.Assert(User.Identity != null, "AppUser.Identity != null");
 }
 
 
 
-@* Verifica se o User está autenticado e se é o Admin!! *@
-@* cria um drop-down com as opções de Users e Roles *@
+@* Verifica se o AppUser está autenticado e se é o Admin!! *@
+@* cria um drop-down com as opções de AppUsers e Roles *@
 <div aria-labelledby="offCanvasAdminPanelLabel" class="offcanvas offcanvas-end" id="offCanvasAdminPanel" tabindex="-1">
 
     <div class="offcanvas-header">
@@ -39,19 +39,19 @@
            class="nav-item @(currentAction == "Index" && currentController == "Users" ? "active" : "")">
             @* <span class="bi bi-person-fill"></span> *@
             <span class="material-symbols-outlined" height="32">person</span>
-            Users
+            AppUsers
         </a>
         <a asp-action="IndexCards" asp-area="" asp-controller="Users"
            class="nav-item @(currentAction == "IndexCards" && currentController == "Users" ? "active" : "")">
             @* <span class="bi bi-person-fill"></span> *@
             <span class="material-symbols-outlined" height="32">person</span>
-            Users Cards
+            AppUsers Cards
         </a>
         <a asp-action="IndexCards1" asp-area="" asp-controller="Users"
            class="nav-item @(currentAction == "IndexCards1" && currentController == "Users" ? "active" : "")">
             @* <span class="bi bi-person-fill"></span> *@
             <span class="material-symbols-outlined" height="32">person</span>
-            Users Cards 1
+            AppUsers Cards 1
         </a>
 
         <hr/>
@@ -82,8 +82,8 @@
            asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
 
             <span class="material-symbols-outlined" height="32">settings_account_box</span>
-            @* Hello @UserManager.GetUserName(User)! *@
-            @* @User.Identity?.Name *@
+            @* Hello @AppUserManager.GetAppUserName(AppUser)! *@
+            @* @AppUser.Identity?.Name *@
             Hello @await UserHelper.GetUserInitialsAsync()
         </a>
 
@@ -92,7 +92,7 @@
         <a class="nav-item @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="Register">
             <span class="material-symbols-outlined" height="32">person</span>
-            Register New User
+            Register New AppUser
         </a>
 
     </div>

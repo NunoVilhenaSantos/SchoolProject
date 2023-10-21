@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers;
@@ -57,12 +58,12 @@ public class SeedDb
     // service provider
     private readonly IServiceProvider _serviceProvider;
 
-    // user helper
+    // appUser helper
     private readonly IUserHelper _userHelper;
 
-    // user manager
+    // appUser manager
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
 
     /// <summary>
@@ -88,7 +89,7 @@ public class SeedDb
         ILogger<SeedDbCourses> loggerSeedDbSCs,
         ILogger<SeedDbStudentsAndTeachers> loggerSeedDbSTs,
         IUserHelper userHelper,
-        UserManager<User> userManager,
+        UserManager<AppUser> userManager,
         RoleManager<IdentityRole> roleManager,
         IWebHostEnvironment hostingEnvironment,
         IConfiguration configuration,
@@ -217,7 +218,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // initialize SeedDbUsers with the user helper before been used
+        // initialize SeedDbUsers with the appUser helper before been used
         // ------------------------------------------------------------------ //
         SeedDbUsers.Initialize(
             _userHelper, _loggerSeedDbUsers, _dataContextInUse);
@@ -255,21 +256,21 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding the admin user
+        // adding the admin appUser
         // ------------------------------------------------------------------ //
         await SeedingDataAdminUsers();
         await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
-        // adding the Functionary user
+        // adding the Functionary appUser
         // ------------------------------------------------------------------ //
         await SeedingDataFunctionaryUsers();
         await _dataContextInUse.SaveChangesAsync();
 
 
         // ------------------------------------------------------------------ //
-        // getting an admin to insert data that needs to have an user
+        // getting an admin to insert data that needs to have an appUser
         // ------------------------------------------------------------------ //
         var user = await _userHelper.GetUserByEmailAsync(
             "nuno.santos.26288@formandos.cinel.pt");
@@ -291,7 +292,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding students and teachers to the database and also there user
+        // adding students and teachers to the database and also there appUser
         // ------------------------------------------------------------------ //
         SeedDbStudentsAndTeachers.Initialize(_userHelper, _dataContextInUse);
         await SeedDbStudentsAndTeachers.AddingData(user);
@@ -299,7 +300,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding students and teachers to the database and also there user
+        // adding students and teachers to the database and also there appUser
         // ------------------------------------------------------------------ //
         SeedDbCourses.Initialize(_dataContextInUse);
         await SeedDbCourses.AddingData(user);
@@ -520,7 +521,7 @@ public class SeedDb
 
     }
 
-    private async Task SeedingDataGenders(User user)
+    private async Task SeedingDataGenders(AppUser appUser)
     {
         var gendersToAdd = new List<string>
         {
@@ -546,7 +547,7 @@ public class SeedDb
                 ProfilePhotoId = default,
                 WasDeleted = false,
                 CreatedAt = DateTime.Now,
-                CreatedBy = user
+                CreatedBy = appUser
             }).ToList();
 
         await _dataContextInUse.Genders.AddRangeAsync(newGender);
@@ -617,7 +618,7 @@ public class SeedDb
         {
             "SuperUser", "Admin", "Functionary",
             "Student", "Teacher", "Parent",
-            "User"
+            "AppUser"
         };
 
         //var existingRoles =
@@ -676,7 +677,7 @@ public class SeedDb
                     await AddClaimToRoleAsync(role, "IsParent");
                     break;
 
-                case "User":
+                case "AppUser":
                     await AddClaimToRoleAsync(role, "IsUser");
                     break;
             }
@@ -719,7 +720,7 @@ public class SeedDb
     }
 
 
-    private async Task AddCountriesWithCitiesAndNationalities(User createdBy)
+    private async Task AddCountriesWithCitiesAndNationalities(AppUser createdBy)
     {
         if (await _dataContextInUse.Countries.AnyAsync()) return;
 
@@ -835,7 +836,7 @@ public class SeedDb
 
 
     private HashSet<City> CreateCities(
-        IEnumerable<string> cityNames, User createdBy, Country country)
+        IEnumerable<string> cityNames, AppUser createdBy, Country country)
     {
         return cityNames.Select(
             cityName => new City
@@ -988,7 +989,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // initialize SeedDbUsers with the user helper before been used
+        // initialize SeedDbUsers with the appUser helper before been used
         // ------------------------------------------------------------------ //
         SeedDbUsers.Initialize(
             _userHelper, _loggerSeedDbUsers, _dataContextInUse);
@@ -1028,7 +1029,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding the admin user
+        // adding the admin appUser
         // ------------------------------------------------------------------ //
         SeedingDataAdminUsers().Wait();
         // _dataContextInUse.SaveChanges();
@@ -1036,7 +1037,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding the Functionary user
+        // adding the Functionary appUser
         // ------------------------------------------------------------------ //
         SeedingDataFunctionaryUsers().Wait();
         // _dataContextInUse.SaveChanges();
@@ -1044,7 +1045,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // getting an admin to insert data that needs to have an user
+        // getting an admin to insert data that needs to have an appUser
         // ------------------------------------------------------------------ //
         var user = _userHelper.GetUserByEmailAsync(
             "nuno.santos.26288@formandos.cinel.pt").Result;
@@ -1072,7 +1073,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding students and teachers to the database and also there user
+        // adding students and teachers to the database and also there appUser
         // ------------------------------------------------------------------ //
         SeedDbStudentsAndTeachers.Initialize(_userHelper, _dataContextInUse);
         SeedDbStudentsAndTeachers.AddingData(user).Wait();
@@ -1082,7 +1083,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding students and teachers to the database and also there user
+        // adding students and teachers to the database and also there appUser
         // ------------------------------------------------------------------ //
         SeedDbCourses.Initialize(_dataContextInUse);
         SeedDbCourses.AddingData(user).Wait();

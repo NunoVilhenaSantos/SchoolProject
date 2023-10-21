@@ -1,23 +1,42 @@
 @model SchoolProject.Web.Data.Entities.Countries.Nationality
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h3>@ViewData["Title"]</h3>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Nationality</h4>
-    <hr/>
+<h4>Are you sure you want to delete this Nationalities?</h4>
 
-    <partial name="_NationalitiesDD" />
+<hr/>
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
 
-    
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+<div class="col">
+    <div class="row">
+        @* <partial name="_DisplayImages"/> *@
+        <div class="col-auto">
+            <img alt="Image" class="img-thumbnail preview" height="auto" src="@Url.Content(Model.Country.ProfilePhotoIdUrl)" width="250"/>
+        </div>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id"/>
-        <button type="submit" class="btn btn-outline-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
-        <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
-    </form>
+        <div class="col-md-5">
+            <div class="row">
+                <partial name="_NationalitiesDD" for="@Model"/>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id"/>
+
+                    <button type="submit" class="btn btn-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
+                    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                </form>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<partial name="_CitiesTable" for="@Model"/>

@@ -3,10 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using CsvHelper.Configuration.Attributes;
+using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
@@ -14,6 +16,7 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.Students;
 
 /// <summary>
+///  Student class for ef
 /// </summary>
 public class Student : IEntity, INotifyPropertyChanged
 {
@@ -51,19 +54,27 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
+    ///     The country Id.
     /// </summary>
-    //[Required]
-    public virtual City? City { get; set; }
+    // [Required]
+    [NotMapped]
+    [DisplayName("Country")]
+    // [ForeignKey(nameof(City))]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
+    public required int CountryId { get; set; }
 
 
     /// <summary>
+    ///
     /// </summary>
-    //[Required]
-    public virtual Country? Country { get; set; }
+    // [Required]
+    [ForeignKey(nameof(City))]
+    public int CityId { get; set; }
 
-
-    // public  int CountryId => Country.Id;
-    // public Guid CountryGuidId => Country.IdGuid;
+    /// <summary>
+    /// </summary>
+    [Required]
+    public required City City { get; set; }
 
 
     /// <summary>
@@ -88,8 +99,14 @@ public class Student : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    //[Required]
-    public virtual Gender? Gender { get; set; }
+    // [Required]
+    [ForeignKey(nameof(Gender))]
+    public int GenderId { get; set; }
+
+    /// <summary>
+    /// </summary>
+    [Required]
+    public required Gender Gender { get; set; }
 
 
     /// <summary>
@@ -98,7 +115,6 @@ public class Student : IEntity, INotifyPropertyChanged
     [DisplayName("Date Of Birth")]
     [DataType(DataType.Date)]
     public required DateTime DateOfBirth { get; set; }
-
 
     /// <summary>
     /// </summary>
@@ -130,64 +146,83 @@ public class Student : IEntity, INotifyPropertyChanged
     // --------------------------------------------------------------------- //
 
 
+    // [Required]
     /// <summary>
+    ///
     /// </summary>
-    //[Required]
+    [ForeignKey(nameof(CountryOfNationality))]
     [DisplayName("Country Of Nationality")]
-    public virtual Country? CountryOfNationality { get; set; }
-
-
-    // public virtual Nationality Nationality => CountryOfNationality?.Nationality;
-
-    // [Required] public required Nationality Nationality { get; set; }
-
+    public int CountryOfNationalityId { get; set; }
 
     /// <summary>
     /// </summary>
-    //[Required]
-    public virtual Country? Birthplace { get; set; }
+    [Required]
+    [DisplayName("Country Of Nationality")]
+    public required Country CountryOfNationality { get; set; }
 
 
     /// <summary>
+    ///
     /// </summary>
-    //[Required]
-    [DisplayName("Enroll Date")]
-    [DataType(DataType.Date)]
-    public DateTime? EnrollDate { get; set; }
+    [ForeignKey(nameof(Birthplace))]
+    public int BirthplaceId { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [Required]
+    public required Country Birthplace { get; set; }
 
 
     /// <summary>
     /// </summary>
     [Required]
-    public virtual required User User { get; set; }
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    [DisplayName("Enroll Date")]
+    [DataType(DataType.Date)]
+    public required DateTime EnrollDate { get; set; } = DateTime.UtcNow;
 
 
     /// <summary>
-    ///     The image of the user file from the form to be inserted in the database.
+    ///
     /// </summary>
-     [Ignore]
+    [ForeignKey(nameof(AppUser))]
+    public int UserId { get; set; }
+
+    /// <summary>
+    /// </summary>
+    [Required]
+    public required AppUser AppUser { get; set; }
+
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+    /// <summary>
+    ///     The image of the appUser file from the form to be inserted in the database.
+    /// </summary>
+    [Ignore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
 
 
     /// <summary>
-    ///     The profile photo of the user.
+    ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
     public Guid? ProfilePhotoId { get; set; }
 
     /// <summary>
-    ///     The profile photo of the user in URL format.
+    ///     The profile photo of the appUser in URL format.
+    /// </summary>
+    /// <summary>
+    ///     The profile photo of the appUser in URL format.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        // : StorageHelper.GcpStoragePublicUrl + "students/" + ProfilePhotoId;
-        : StorageHelper.AzureStoragePublicUrl + "students/" + ProfilePhotoId;
+        ? StorageHelper.NoImageUrl
+        : StorageHelper.AzureStoragePublicUrl +
+          StudentsController.BucketName +
+          "/" + ProfilePhotoId;
 
 
     // ---------------------------------------------------------------------- //
@@ -200,12 +235,30 @@ public class Student : IEntity, INotifyPropertyChanged
     // between Student and Disciplines
     // ---------------------------------------------------------------------- //
 
+    /// <summary>
+    ///
+    /// </summary>
+    public IEnumerable<Discipline>? Disciplines { get; set; }
 
-    // [DisplayName("Disciplines")]
-    // public virtual HashSet<Discipline>? Courses { get; set; }
+
+    // ---------------------------------------------------------------------- //
 
 
     /// <summary>
+    ///
+    /// </summary>
+    public IEnumerable<Course>? Courses { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+
+
+    // [DisplayName("Disciplines")]
+    // public virtual HashSet<Course>? Courses { get; set; }
+
+
+    /// <summary>
+    ///
     /// </summary>
     [DisplayName("Courses")]
     public virtual HashSet<StudentCourse>? StudentCourses { get; set; }
@@ -358,7 +411,7 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    //[Required]
+    [Required]
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -367,7 +420,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
+    public virtual required AppUser CreatedBy { get; set; }
 
 
     /// <inheritdoc />
@@ -379,8 +432,13 @@ public class Student : IEntity, INotifyPropertyChanged
 
     /// <inheritdoc />
     [DisplayName("Updated By")]
-    public virtual User? UpdatedBy { get; set; }
-    DateTime IEntity.CreatedAt { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public virtual AppUser? UpdatedBy { get; set; }
+
+    DateTime IEntity.CreatedAt
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
 
 
     // ---------------------------------------------------------------------- //

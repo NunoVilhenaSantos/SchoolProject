@@ -1,7 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
@@ -24,12 +25,12 @@ public class SeedDbStudentsAndTeachers
     private static readonly HashSet<string>
         ExistingEmailsOfUsersFromDb = new();
 
-    private static List<User>? _listOfUsersFromDb;
+    private static List<AppUser>? _listOfUsersFromDb;
     private static List<Student>? _listOfStudentsFromDb;
     private static List<Teacher>? _listOfTeachersFromDb;
 
 
-    private static readonly List<User> ListOfUsersToAdd = new();
+    private static readonly List<AppUser> ListOfUsersToAdd = new();
     private static readonly List<Student> ListOfStudentsToAdd = new();
     private static readonly List<Teacher> ListOfTeachersToAdd = new();
 
@@ -50,7 +51,7 @@ public class SeedDbStudentsAndTeachers
     }
 
 
-    public static async Task AddingData(User user)
+    public static async Task AddingData(AppUser appUser)
     {
         Console.WriteLine(
             "Seeding the users table with students and teachers...");
@@ -61,13 +62,13 @@ public class SeedDbStudentsAndTeachers
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with students...");
-        await GenerateStudentsNames(user);
+        await GenerateStudentsNames(appUser);
 
 
         // ------------------------------------------------------------------ //
         Console.WriteLine(
             "Seeding the users table with teachers...");
-        await GenerateTeachersNames(user);
+        await GenerateTeachersNames(appUser);
 
 
         // ------------------------------------------------------------------ //
@@ -112,7 +113,7 @@ public class SeedDbStudentsAndTeachers
     }
 
 
-    private static async Task GenerateStudentsNames(User user)
+    private static async Task GenerateStudentsNames(AppUser appUser)
     {
         var studentNames = new List<string>
         {
@@ -141,14 +142,14 @@ public class SeedDbStudentsAndTeachers
             .ToList();
 
         if (studentsToAdd.Any())
-            await AddStudentsOrTeachers(user, studentsToAdd, "Student");
+            await AddStudentsOrTeachers(appUser, studentsToAdd, "Student");
 
         // await PopulateExistingUsersStudentsAndTeachersFromDb();
         // await StoreStudentsOrTeachersInDb();
     }
 
 
-    private static async Task GenerateTeachersNames(User user)
+    private static async Task GenerateTeachersNames(AppUser appUser)
     {
         var teacherNames = new List<string>
         {
@@ -177,7 +178,7 @@ public class SeedDbStudentsAndTeachers
             .ToList();
 
         if (teachersToAdd.Any())
-            await AddStudentsOrTeachers(user, teachersToAdd, "Teacher");
+            await AddStudentsOrTeachers(appUser, teachersToAdd, "Teacher");
 
         // await PopulateExistingUsersStudentsAndTeachersFromDb();
         // await StoreStudentsOrTeachersInDb();
@@ -186,7 +187,7 @@ public class SeedDbStudentsAndTeachers
 
     private static async Task AddStudentsOrTeachers(
         // Novo parâmetro para indicar o papel (role)
-        User user, List<string> namesToAdd, string userRole)
+        AppUser appUser, List<string> namesToAdd, string userRole)
     {
         var city =
             await _dataContextInUse.Cities
@@ -237,7 +238,7 @@ public class SeedDbStudentsAndTeachers
                 var student = await CreateUser<Student>(
                     firstName, lastName, address, email, postalCode,
                     cellPhone, dateOfBirth, idNumber, vatNumber,
-                    user, city, country, countryOfNationality, birthplace,
+                    appUser, city, country, countryOfNationality, birthplace,
                     gender, "Student");
 
                 ListOfStudentsToAdd.Add(student);
@@ -253,7 +254,7 @@ public class SeedDbStudentsAndTeachers
                 var teacher = await CreateUser<Teacher>(
                     firstName, lastName, address, email, postalCode,
                     cellPhone, dateOfBirth, idNumber, vatNumber,
-                    user, city, country, countryOfNationality, birthplace,
+                    appUser, city, country, countryOfNationality, birthplace,
                     gender, "Teacher");
 
                 ListOfTeachersToAdd.Add(teacher);
@@ -300,14 +301,14 @@ public class SeedDbStudentsAndTeachers
         string postalCode,
         string cellPhone,
         DateTime dateOfBirth, string idNumber, string vatNumber,
-        User user, City city, Country country,
+        AppUser appUser, City city, Country country,
         Country countryOfNationality, Country birthplace, Gender gender,
         // Novo parâmetro para indicar o papel (role)
         string userRole, string password = "Passw0rd"
         // Restrição genérica para permitir apenas classes
     ) where T : class
     {
-        var newUser = new User
+        var newUser = new AppUser
         {
             FirstName = firstName,
             LastName = lastName,
@@ -330,30 +331,30 @@ public class SeedDbStudentsAndTeachers
 
 
         // ------------------------------------------------------------------ //
-        // store the user in the database
+        // store the appUser in the database
         try
         {
             var result =
                 await _userHelper.GetUserByEmailAsync(newUser.Email);
             if (result != null)
                 throw new Exception(
-                    $"User {email} already exists in the database");
+                    $"AppUser {email} already exists in the database");
 
             var resultUser = await _userHelper.AddUserAsync(newUser, password);
 
             if (!resultUser.Succeeded)
                 throw new Exception(
-                    $"User {email} was not created: " +
+                    $"AppUser {email} was not created: " +
                     $"{resultUser.Errors.FirstOrDefault()?.Description}");
         }
         catch (Exception ex)
         {
-            // Log the exception or display a user-friendly error message.
+            // Log the exception or display a appUser-friendly error message.
         }
 
 
         // ------------------------------------------------------------------ //
-        // check if the user was created and stored in the database
+        // check if the appUser was created and stored in the database
         try
         {
             await _userHelper.AddUserToRoleAsync(newUser, userRole);
@@ -363,16 +364,16 @@ public class SeedDbStudentsAndTeachers
 
             if (!result)
                 throw new Exception(
-                    $"User {email} was not added to role {userRole}");
+                    $"AppUser {email} was not added to role {userRole}");
         }
         catch (Exception ex)
         {
-            // Log the exception or display a user-friendly error message.
+            // Log the exception or display a appUser-friendly error message.
         }
 
 
         // ------------------------------------------------------------------ //
-        // check if the user was created and stored in the database
+        // check if the appUser was created and stored in the database
         try
         {
             var numberOfChanges = await _dataContextInUse.SaveChangesAsync();
@@ -406,7 +407,7 @@ public class SeedDbStudentsAndTeachers
         // ------------------------------------------------------------------ //
         // Create the specific entity (Student or Teacher) based on the generic type T
         var entity = Activator.CreateInstance<T>();
-        // entity.GetType().GetProperty("User")?.SetValue(entity, newUser);
+        // entity.GetType().GetProperty("AppUser")?.SetValue(entity, newUser);
         entity.GetType().GetProperty("FirstName")?.SetValue(entity, firstName);
         entity.GetType().GetProperty("LastName")?.SetValue(entity, lastName);
         entity.GetType().GetProperty("Address")?.SetValue(entity, address);
@@ -436,7 +437,7 @@ public class SeedDbStudentsAndTeachers
         entity.GetType().GetProperty("EnrollDate")
             ?.SetValue(entity, DateTime.Now.ToUniversalTime());
         entity.GetType().GetProperty("IdGuid")?.SetValue(entity, default);
-        entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, user);
+        entity.GetType().GetProperty("CreatedBy")?.SetValue(entity, appUser);
 
 
         // ------------------------------------------------------------------ //
@@ -552,7 +553,7 @@ public class SeedDbStudentsAndTeachers
             var studentUser = _listOfUsersFromDb
                 .FirstOrDefault(u => u.Email == student.Email);
 
-            student.User = studentUser;
+            student.AppUser = studentUser;
 
             _dataContextInUse.Students.Add(student);
         }
@@ -570,7 +571,7 @@ public class SeedDbStudentsAndTeachers
             var teacherUser = _listOfUsersFromDb
                 .FirstOrDefault(u => u.Email == teacher.Email);
 
-            teacher.User = teacherUser;
+            teacher.AppUser = teacherUser;
 
             _dataContextInUse.Teachers.Add(teacher);
         }

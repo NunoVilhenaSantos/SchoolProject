@@ -21,7 +21,7 @@ using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Data.Repositories.Disciplines;
 using SchoolProject.Web.Data.Repositories.Enrollments;
-using SchoolProject.Web.Data.Repositories.OtherEntities;
+using SchoolProject.Web.Data.Repositories.Genders;
 using SchoolProject.Web.Data.Repositories.Students;
 using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Data.Seeders;
@@ -353,14 +353,14 @@ builder.Services.AddDbContext<DataContextSqLite>(
 
 
 
-// Configure Identity service with user settings,
+// Configure Identity service with appUser settings,
 // password settings, and token settings.
 // builder.Services.AddIdentity<IdentityUser, IdentityRole>(
 builder.Services
-    .AddIdentity<User, IdentityRole>(
+    .AddIdentity<AppUser, IdentityRole>(
         cfg =>
         {
-            // User settings.
+            // AppUser settings.
             cfg.User.RequireUniqueEmail = true;
 
             // Password settings.
@@ -529,7 +529,7 @@ builder.Services.AddAuthentication()
     });
 
 
-// Add authorization policies for different user roles.
+// Add authorization policies for different appUser roles.
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("IsAdmin",
@@ -669,7 +669,7 @@ builder.Services.TryAddSingleton(builder.Environment);
 
 
 // Inject repositories and helpers.
-builder.Services.TryAddScoped<UserManager<User>>();
+builder.Services.TryAddScoped<UserManager<AppUser>>();
 builder.Services.TryAddScoped<IUserHelper, UserHelper>();
 builder.Services.TryAddScoped<IEMailHelper, EMailHelper>();
 builder.Services.TryAddScoped<IImageHelper, ImageHelper>();

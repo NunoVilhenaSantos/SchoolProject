@@ -14,13 +14,13 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class LoginWith2faModel : PageModel
 {
     private readonly ILogger<LoginWith2faModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public LoginWith2faModel(
-        SignInManager<User> signInManager,
+        SignInManager<AppUser> signInManager,
         ILogger<LoginWith2faModel> logger,
-        UserManager<User> userManager
+        UserManager<AppUser> userManager
     )
     {
         _signInManager = signInManager;
@@ -53,10 +53,10 @@ public class LoginWith2faModel : PageModel
     public async Task<IActionResult> OnGetAsync(bool rememberMe,
         string returnUrl = null)
     {
-        // Ensure the user has gone through the username & password screen first
+        // Ensure the appUser has gone through the username & password screen first
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync() ??
                    throw new InvalidOperationException(
-                       "Unable to load two-factor authentication user.");
+                       "Unable to load two-factor authentication appUser.");
         ReturnUrl = returnUrl;
         RememberMe = rememberMe;
 
@@ -72,7 +72,7 @@ public class LoginWith2faModel : PageModel
 
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync() ??
                    throw new InvalidOperationException(
-                       "Unable to load two-factor authentication user.");
+                       "Unable to load two-factor authentication appUser.");
 
         var authenticatorCode =
             Input.TwoFactorCode.Replace(" ", string.Empty)
@@ -88,20 +88,20 @@ public class LoginWith2faModel : PageModel
         if (result.Succeeded)
         {
             _logger.LogInformation(
-                "User with ID '{UserId}' logged in with 2fa.", user.Id);
+                "AppUser with ID '{UserId}' logged in with 2fa.", user.Id);
             return LocalRedirect(returnUrl);
         }
 
         if (result.IsLockedOut)
         {
             _logger.LogWarning(
-                "User with ID '{UserId}' account locked out.", user.Id);
+                "AppUser with ID '{UserId}' account locked out.", user.Id);
             return RedirectToPage("./Lockout");
         }
 
         _logger.LogWarning(
             "Invalid authenticator code " +
-            "entered for user with ID '{UserId}'.",
+            "entered for appUser with ID '{UserId}'.",
             user.Id);
         ModelState.AddModelError(
             string.Empty, "Invalid authenticator code.");

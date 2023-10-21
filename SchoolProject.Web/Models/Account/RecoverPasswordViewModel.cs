@@ -4,5 +4,5 @@ namespace SchoolProject.Web.Models.Account;
 
 public class RecoverPasswordViewModel
 {
-    [Required] [EmailAddress] public string Email { get; set; }
+    [Required] [EmailAddress] public required string Email { get; set; }
 }

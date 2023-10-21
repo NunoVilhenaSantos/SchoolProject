@@ -3,30 +3,30 @@
 @using SchoolProject.Web.Helpers.Users;
 @using System.Diagnostics;
 
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@inject IUserHelper UserHelper
+
 @model SchoolProject.Web.Data.Entities.Teachers.Teacher
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-@inject IUserHelper UserHelper
 
 @{
     ViewData["Title"] = "Edit";
 
-    var countries = ViewData["Countries"] as IEnumerable<SelectListItem>;
-    System.Diagnostics.Debug.Assert(countries != null, nameof(countries) + " != null");
+    // var countries = ViewData["Countries"] as IEnumerable<SelectListItem>;
+    // System.Diagnostics.Debug.Assert(countries != null, nameof(countries) + " != null");
 
-    var cities = ViewData["Cities"] as IEnumerable<SelectListItem>;
-    var genders = ViewData["Genders"] as IEnumerable<SelectListItem>;
+    // var cities = ViewData["Cities"] as IEnumerable<SelectListItem>;
+    // var genders = ViewData["Genders"] as IEnumerable<SelectListItem>;
 
-
-    Debug.Assert(User.Identity != null, "User.Identity != null");
-
-    // Model.UpdatedBy = await UserManager.FindByEmailAsync(User);
-    // Model.UpdatedBy = User.Identity.IsAuthenticated;
+    // Model.UpdatedBy = await UserManager.FindByEmailAsync(AppUser);
+    // Model.UpdatedBy = AppUser.Identity.IsAuthenticated;
     // var user0 = await AuthenticatedUserInApp.GetAuthenticatedUser();
-    var user1 = await UserManager.FindByNameAsync(User.Identity.Name);
+    // var user1 = await UserManager.FindByNameAsync(AppUser.Identity.Name);
 
-    Model.UpdatedBy = user1;
+    // Model.UpdatedBy = user1;
+
+    Debug.Assert(User.Identity != null, "AppUser.Identity != null");
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -35,248 +35,192 @@
 <hr/>
 
 <div class="container">
+    <div class="row">
+        <div class="col">
+            <partial name="_DisplayImages"/>
 
-<form asp-action="Edit" enctype="multipart/form-data">
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        <strong>Validation Errors:</strong>
-        <ul>
-            @foreach (var error in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors))
-            {
-                <li>@error.ErrorMessage</li>
-            }
-        </ul>
-    </div>
-}
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="IdGuid"/>
 
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control"/>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control"/>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control"/>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PostalCode" class="control-label"></label>
+                        <input asp-for="PostalCode" class="form-control"/>
+                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                    </div>
 
-<input type="hidden" asp-for="Id"/>
-<input type="hidden" asp-for="IdGuid"/>
-<input type="hidden" asp-for="TeacherCourses"/>
+                    <div class="form-group">
+                        <label asp-for="MobilePhone" class="control-label"></label>
+                        <input asp-for="MobilePhone" class="form-control"/>
+                        <span asp-validation-for="MobilePhone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth" class="control-label"></label>
+                        <input asp-for="DateOfBirth" class="form-control"/>
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="IdentificationNumber" class="control-label"></label>
+                        <input asp-for="IdentificationNumber" class="form-control"/>
+                        <span asp-validation-for="IdentificationNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="IdentificationType" class="control-label"></label>
+                        <input asp-for="IdentificationType" class="form-control"/>
+                        <span asp-validation-for="IdentificationType" class="text-danger"></span>
+                    </div>
 
-
-<div class="row">
-
-<div class="col">
-    <partial name="_DisplayImages"/>
-</div>
-
-<div class="col">
-    <div class="form-group">
-        <label asp-for="FirstName" class="control-label"></label>
-        <input asp-for="FirstName" class="form-control"/>
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="LastName" class="control-label"></label>
-        <input asp-for="LastName" class="form-control"/>
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Address" class="control-label"></label>
-        <input asp-for="Address" class="form-control"/>
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PostalCode" class="control-label"></label>
-        <input asp-for="PostalCode" class="form-control"/>
-        <span asp-validation-for="PostalCode" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="MobilePhone" class="control-label"></label>
-        <input asp-for="MobilePhone" class="form-control"/>
-        <span asp-validation-for="MobilePhone" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control"/>
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="DateOfBirth" class="control-label"></label>
-        <input asp-for="DateOfBirth" class="form-control"/>
-        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="IdentificationNumber" class="control-label"></label>
-        <input asp-for="IdentificationNumber" class="form-control"/>
-        <span asp-validation-for="IdentificationNumber" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="IdentificationType" class="control-label"></label>
-        <input asp-for="IdentificationType" class="form-control"/>
-        <span asp-validation-for="IdentificationType" class="text-danger"></span>
-    </div>
-
-</div>
+                </div>
 
 
-<div class="col">
-    <div class="form-group">
-        <label asp-for="ExpirationDateIdentificationNumber" class="control-label"></label>
-        <input asp-for="ExpirationDateIdentificationNumber" class="form-control"/>
-        <span asp-validation-for="ExpirationDateIdentificationNumber" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="TaxIdentificationNumber" class="control-label"></label>
-        <input asp-for="TaxIdentificationNumber" class="form-control"/>
-        <span asp-validation-for="TaxIdentificationNumber" class="text-danger"></span>
-    </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="ExpirationDateIdentificationNumber" class="control-label"></label>
+                        <input asp-for="ExpirationDateIdentificationNumber" class="form-control"/>
+                        <span asp-validation-for="ExpirationDateIdentificationNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TaxIdentificationNumber" class="control-label"></label>
+                        <input asp-for="TaxIdentificationNumber" class="form-control"/>
+                        <span asp-validation-for="TaxIdentificationNumber" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="Gender"/>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <label asp-for="Gender" class="control-label"></label>
-        <select asp-for="Gender" asp-items="@genders" class="form-control"></select>
-        <span asp-validation-for="Gender" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" asp-items="ViewBag.Genders" class="form-control"></select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GenderId" class="control-label"></label>
+                        <select asp-for="GenderId" asp-items="ViewBag.Genders" class="form-control"></select>
+                        <span asp-validation-for="GenderId" class="text-danger"></span>
+                    </div>
 
+                    <div class="form-group">
+                        <label asp-for="CountryId" class="control-label"></label>
+                        <select asp-for="CountryId" asp-items="ViewBag.CountryId" class="form-control"></select>
+                        <span asp-validation-for="CountryId" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="Country"/>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <label asp-for="Country" class="control-label"></label>
-        <select asp-for="Country" asp-items="@countries" class="form-control"></select>
-        <span asp-validation-for="Country" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Country.Id" class="control-label"></label>
-        <select asp-for="Country.Id" asp-items="@countries" class="form-control"></select>
-        <span asp-validation-for="Country.Id" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="CityId" class="control-label"></label>
+                        <select asp-for="CityId" asp-items="ViewBag.CityId" class="form-control"></select>
+                        <span asp-validation-for="CityId" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="City"/>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <label asp-for="City" class="control-label"></label>
-        <select asp-for="City" asp-items="@cities" class="form-control"></select>
-        <span asp-validation-for="City" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="CountryOfNationalityId" class="control-label"></label>
+                        <select asp-for="CountryOfNationalityId" asp-items="ViewBag.CountryId" class="form-control"></select>
+                        <span asp-validation-for="CountryOfNationalityId" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <label asp-for="City.Id" class="control-label"></label>
-        <select asp-for="City.Id" asp-items="@countries" class="form-control"></select>
-        <span asp-validation-for="City.Id" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="BirthplaceId" class="control-label"></label>
+                        <select asp-for="BirthplaceId" asp-items="ViewBag.CountryId" class="form-control"></select>
+                        <span asp-validation-for="BirthplaceId" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="CountryOfNationality"/>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <label asp-for="CountryOfNationality" class="control-label"></label>
-        <select asp-for="CountryOfNationality" asp-items="@countries" class="form-control"></select>
-        <span asp-validation-for="CountryOfNationality" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="CountryOfNationality.Id" class="control-label"></label>
-                    <select asp-for="CountryOfNationality.Id" asp-items="countries" class="form-control"></select>
-                    <span asp-validation-for="CountryOfNationality.Id" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="EnrollDate" class="control-label"></label>
+                        <input asp-for="EnrollDate" class="form-control" disabled/>
+                        <span asp-validation-for="EnrollDate" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="Birthplace"/>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <label asp-for="Birthplace" class="control-label"></label>
-        <select asp-for="Birthplace" asp-items="@countries" class="form-control"></select>
-        <span asp-validation-for="Birthplace" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-                    <label asp-for="Birthplace.Id" class="control-label"></label>
-                    <select asp-for="Birthplace.Id" asp-items="@countries" class="form-control"></select>
-                    <span asp-validation-for="Birthplace.Id" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="AppUser" class="control-label"></label>
+                        <input asp-for="AppUser.FullName" class="form-control" disabled/>
+                        <span asp-validation-for="AppUser" class="text-danger"></span>
+                    </div>
+                </div>
 
 
-    <div class="form-group">
-        <label asp-for="EnrollDate" class="control-label"></label>
-        <input asp-for="EnrollDate" class="form-control" disabled/>
-        <span asp-validation-for="EnrollDate" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <input type="hidden" asp-for="User"/>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <label asp-for="User" class="control-label"></label>
-        <input asp-for="User.FullName" class="form-control" disabled/>
-        <span asp-validation-for="User" class="text-danger"></span>
-    </div>
-</div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="ProfilePhotoId" class="control-label"></label>
+                        <input asp-for="ProfilePhotoId" class="form-control"/>
+                        <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ImageFile" class="control-label"></label>
+                        <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
 
 
-<div class="col">
-    <div class="form-group">
-        <label asp-for="ProfilePhotoId" class="control-label"></label>
-        <input asp-for="ProfilePhotoId" class="form-control"/>
-        <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <input type="hidden" asp-for="ProfilePhotoId"/>
-    </div>
-    <div class="form-group">
-        <label asp-for="ImageFile" class="control-label"></label>
-        <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
-        <span asp-validation-for="ImageFile" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="CreatedBy" class="control-label"></label>
+                        <input asp-for="CreatedBy.FullName" class="form-control" disabled/>
+                        <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                    </div>
 
+                    <div class="form-group">
+                        <label asp-for="CreatedAt" class="control-label"></label>
+                        <input asp-for="CreatedAt" class="form-control" disabled/>
+                        <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="CreatedBy"/>
-        <!-- Adicione um campo oculto para armazenar o valor de CreatedBy -->
-        <label asp-for="CreatedBy" class="control-label"></label>
-        <input asp-for="CreatedBy.FullName" class="form-control" disabled/>
-        <span asp-validation-for="CreatedBy" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="UpdatedBy" class="control-label"></label>
+                        <input asp-for="UpdatedBy.FullName" class="form-control" disabled/>
+                        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UpdatedAt" class="control-label"></label>
+                        <input asp-for="UpdatedAt" class="form-control" disabled/>
+                        <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <label asp-for="CreatedAt" class="control-label"></label>
-        <input asp-for="CreatedAt" class="form-control" disabled/>
-        <span asp-validation-for="CreatedAt" class="text-danger"></span>
-    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Active"/>@Html.DisplayNameFor(model => model.Active)
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="WasDeleted"/>@Html.DisplayNameFor(model => model.WasDeleted)
+                        </label>
+                    </div>
 
-    <div class="form-group">
-        <input type="hidden" asp-for="UpdatedBy"/>
-        <!-- Adicione um campo oculto para armazenar o valor de UpdatedBy -->
-        <label asp-for="UpdatedBy" class="control-label"></label>
-        <input asp-for="UpdatedBy.FullName" class="form-control" disabled/>
-        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="UpdatedAt" class="control-label"></label>
-        <input asp-for="UpdatedAt" class="form-control" disabled/>
-        <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-    </div>
+                    <br/>
+                    <div class="btn-group">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
+                        </div>
+                        <div>
+                            <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                        </div>
+                    </div>
 
-    <div class="form-group form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" asp-for="Active"/>@Html.DisplayNameFor(model => model.Active)
-        </label>
-    </div>
-    <div class="form-group form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" asp-for="WasDeleted"/>@Html.DisplayNameFor(model => model.WasDeleted)
-        </label>
-    </div>
+                    <div class="text-success">
+                        <p>@ViewBag.Message</p>
+                    </div>
 
-    <br/>
-    <div class="btn-group">
-        <div class="form-group">
-            <button type="submit" class="btn btn-outline-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
-        </div>
-        <div>
-            <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                </div>
+            </form>
         </div>
     </div>
-
-    <div class="text-success">
-        <p>@ViewBag.Message</p>
-    </div>
-
-</div>
-
-
-</div>
-</form>
 </div>
 
 

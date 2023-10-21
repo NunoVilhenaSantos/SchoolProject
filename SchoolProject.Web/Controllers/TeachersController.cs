@@ -7,6 +7,7 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -21,14 +22,22 @@ public class TeachersController : Controller
     private const string CurrentClass = nameof(Teacher);
     private const string CurrentAction = nameof(Index);
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "FirstName";
+    internal const string SortProperty = nameof(Teacher.FirstName);
+    internal static string BucketName = CurrentClass.ToLower();
 
 
-    private readonly DataContextMySql _context;
+    // hosting environment
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    // teacher repository
     private readonly ITeacherRepository _teacherRepository;
 
-    internal string BucketName = CurrentClass.ToLower();
+    // data context
+    private readonly DataContextMySql _context;
+
+
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
     /// <summary>
@@ -40,12 +49,13 @@ public class TeachersController : Controller
     public TeachersController(
         DataContextMySql context,
         ITeacherRepository teacherRepository,
-        IWebHostEnvironment hostingEnvironment
-    )
+        IWebHostEnvironment hostingEnvironment,
+        AuthenticatedUserInApp authenticatedUserInApp)
     {
         _context = context;
         _teacherRepository = teacherRepository;
         _hostingEnvironment = hostingEnvironment;
+        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
 
@@ -71,23 +81,15 @@ public class TeachersController : Controller
     private List<Teacher> GetTeachersList()
     {
         return _context.Teachers
-            .Include(t => t.Country)
-            .ThenInclude(c => c.Nationality)
-            .Include(t => t.Country)
-            .ThenInclude(c => c.CreatedBy)
             .Include(t => t.City)
-            .ThenInclude(c => c.CreatedBy)
+            .ThenInclude(c => c.Country)
             .Include(t => t.CountryOfNationality)
-            .ThenInclude(c => c.Nationality)
-            .Include(t => t.CountryOfNationality)
-            .ThenInclude(c => c.CreatedBy)
+            .Include(t => t.Birthplace)
             .Include(t => t.Birthplace)
             .ThenInclude(c => c.Nationality)
-            .Include(t => t.Birthplace)
-            .ThenInclude(c => c.CreatedBy)
             .Include(t => t.Gender)
             .ThenInclude(g => g.CreatedBy)
-            .Include(t => t.User)
+            .Include(t => t.AppUser)
             // Se desejar carregar os cursos associados
             .Include(t => t.TeacherCourses)
             // E seus detalhes, se necessário
@@ -184,10 +186,6 @@ public class TeachersController : Controller
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
-
-        // Validar parâmetros de página e tamanho da página
-        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
-        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
         var recordsQuery = SessionData<Teacher>();
 
@@ -286,16 +284,18 @@ public class TeachersController : Controller
         var teacher = await _context.Teachers
             .Include(t => t.Birthplace)
             .Include(t => t.City)
-            .Include(t => t.Country)
             .Include(t => t.CountryOfNationality)
             .Include(t => t.Gender)
             .Include(t => t.CreatedBy)
             .Include(t => t.UpdatedBy)
-            .Include(t => t.User)
-            .FirstOrDefaultAsync(t => t.Id==id);
+            .Include(t => t.AppUser)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
-        ViewData["Countries"] = SelectItensController.GetCountriesWithNationalitiesAsync();
-        ViewData["Cities"] = SelectItensController.GetCitiesAsync(teacher.Country.Id);
+        ViewData["Countries"] =
+            SelectItensController.GetCountriesWithNationalitiesAsync();
+
+        ViewData["Cities"] =
+            SelectItensController.GetCitiesAsync(teacher.City.Country.Id);
 
         return teacher == null
             ? new NotFoundViewResult(
@@ -317,7 +317,8 @@ public class TeachersController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id,
-        [Bind("FirstName,LastName,Birthplace,...")] Teacher teacher)
+        [Bind("FirstName,LastName,Birthplace,...")]
+        Teacher teacher)
     {
         if (id != teacher.Id)
             return new NotFoundViewResult(
@@ -325,7 +326,7 @@ public class TeachersController : Controller
                 CurrentController, nameof(Index));
 
         if (!ModelState.IsValid) return View(teacher);
-        
+
         try
         {
             _context.Update(teacher);

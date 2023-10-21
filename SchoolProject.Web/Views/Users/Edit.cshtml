@@ -1,4 +1,7 @@
-@model SchoolProject.Web.Data.Entities.Users.User
+@using System.Reflection
+@model             SchoolProject.Web.Data.Entities.Users.AppUser
+@* @model IEnumerable<SchoolProject.Web.Models.AppUsers.AppUserWithRolesViewModel> *@
+@* @model PaginationViewModel<SchoolProject.Web.Models.AppUsers.AppUserWithRolesViewModel> *@
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +9,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>User</h4>
+<h4>AppUser</h4>
 <hr/>
 
 <div class="row">
@@ -17,15 +20,20 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id"/>
-            <input type="hidden" asp-for="ProfilePhotoId"/>
 
             <partial name="_UsersCE" for="@Model"/>
 
             <div class="form-group">
-                <button class="btn btn-outline-primary" type="submit"><span class="fa-regular fa-floppy-disk"></span> Save </button>
-                <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"> </span> Back to List </a>
+                <button class="btn btn-primary" type="submit"><span class="fa-regular fa-floppy-disk"></span> Save </button>
+                <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"> </span> Back to List </a>
             </div>
 
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -15,6 +15,8 @@ using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Account;
+using Sentry;
+
 
 namespace SchoolProject.Web.Controllers;
 
@@ -31,19 +33,54 @@ public class AccountController : Controller
     internal const string SessionVarName = UsersController.SessionVarName;
     internal const string SortProperty = UsersController.SortProperty;
 
+    internal const string ClassRole = CurrentClass;
 
+
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(AccountController));
+
+    /// <summary>
+    ///
+    /// </summary>
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // private readonly SemaphoreSlim _signInSemaphore;
     private readonly IConfiguration _configuration;
 
+
+    // repository
     private readonly ICountryRepository _countryRepository;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IImageHelper _imageHelper;
     private readonly IEMailHelper _emailHelper;
+
+    private readonly IUserHelper _userHelper;
+
+    // helpers
+    private readonly IMailHelper _mailHelper;
+
+
+    // logger
+    private readonly ILogger<AccountController> _logger;
+
+
+    // private readonly ICombosHelper _combosHelper;
+    private readonly IHub _sentryHub;
+
+
+    // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
 
+    // http context accessor
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IImageHelper _imageHelper;
 
-    private readonly SignInManager<User> _signInManager;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
+    // role manager
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    // sign in manager
+    private readonly SignInManager<AppUser> _signInManager;
 
 
     /// <summary>
@@ -58,6 +95,11 @@ public class AccountController : Controller
     /// <param name="signInManager"></param>
     /// <param name="hostingEnvironment"></param>
     /// <param name="httpContextAccessor"></param>
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="sentryHub"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="roleManager"></param>
+    /// <param name="logger"></param>
     public AccountController(
         ICountryRepository countryRepository,
         IConfiguration configuration,
@@ -65,9 +107,13 @@ public class AccountController : Controller
         IEMailHelper emailHelper,
         IImageHelper imageHelper,
         IUserHelper userHelper,
-        SignInManager<User> signInManager,
+        SignInManager<AppUser> signInManager,
         IWebHostEnvironment hostingEnvironment,
-        IHttpContextAccessor httpContextAccessor
+        IHttpContextAccessor httpContextAccessor,
+        AuthenticatedUserInApp authenticatedUserInApp,
+        RoleManager<IdentityRole> roleManager,
+        ILogger<AccountController> logger, IHub sentryHub,
+        IMailHelper mailHelper
 
         //SemaphoreSlim signInSemaphore,
         //SemaphoreService semaphoreService
@@ -75,6 +121,11 @@ public class AccountController : Controller
 
     {
         _httpContextAccessor = httpContextAccessor;
+        _authenticatedUserInApp = authenticatedUserInApp;
+        _roleManager = roleManager;
+        _logger = logger;
+        _sentryHub = sentryHub;
+        _mailHelper = mailHelper;
         _signInManager = signInManager;
 
         _userHelper = userHelper;
@@ -178,7 +229,7 @@ public class AccountController : Controller
     //[Authorize(Roles = "Admin,SuperUser")]
     public IActionResult Register()
     {
-        var model = new RegisterNewUserViewModel
+        var model = new RegisterNewAppUserViewModel
         {
             FirstName = string.Empty,
             LastName = string.Empty,
@@ -206,7 +257,7 @@ public class AccountController : Controller
     /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterNewUserViewModel model)
+    public async Task<IActionResult> Register(RegisterNewAppUserViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -222,7 +273,7 @@ public class AccountController : Controller
                     // var country = await
                     //     _countryRepository.GetCountryAsync(model.CountryId);
 
-                    user = new User
+                    user = new AppUser
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
@@ -254,7 +305,7 @@ public class AccountController : Controller
                     {
                         ModelState.AddModelError(
                             string.Empty,
-                            "The user couldn't be created.");
+                            "The appUser couldn't be created.");
                         return View(model);
                     }
 
@@ -290,7 +341,7 @@ public class AccountController : Controller
                         model.UserName,
                         "Email confirmation",
                         $"<h1>Email Confirmation</h1>" +
-                        $"To allow the user, " +
+                        $"To allow the appUser, " +
                         $"please click in this link:" +
                         $"</br></br><a href = \"{tokenLink}\">" +
                         $"Confirm Email</a></br><p>Temporary Password: " +
@@ -318,13 +369,13 @@ public class AccountController : Controller
                     }
 
                     ModelState.AddModelError(string.Empty,
-                        "The User couldn't be logged.");
+                        "The AppUser couldn't be logged.");
                     return View(model);
                 }
             }
 
             ModelState.AddModelError(
-                string.Empty, "User already exists.");
+                string.Empty, "AppUser already exists.");
 
             return View(model);
             // return RedirectToAction("Login", "Account");
@@ -354,7 +405,7 @@ public class AccountController : Controller
 
         if (user == null) return View();
 
-        var model = new ChangeUserViewModel
+        var model = new ChangeAppUserViewModel
         {
             CountryId = 0,
             Countries = _countryRepository
@@ -383,13 +434,13 @@ public class AccountController : Controller
     /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
+    public async Task<IActionResult> ChangeUser(ChangeAppUserViewModel model)
     {
         if (!ModelState.IsValid)
         {
             ModelState.AddModelError(
                 string.Empty,
-                "Failed to update user information!");
+                "Failed to update appUser information!");
 
             // Return the view with the invalid model
             return View(model);
@@ -400,7 +451,7 @@ public class AccountController : Controller
         var user =
             await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
 
-        // Return the view, as user is not found
+        // Return the view, as appUser is not found
         if (user == null) return View(model);
 
         if (model.ImageFile != null)
@@ -414,7 +465,7 @@ public class AccountController : Controller
                     model.ImageFile, BucketName);
 
             // await _storageHelper.DeleteFileAsyncFromGcp(
-            //     user.ProfilePhotoId.ToString(),
+            //     appUser.ProfilePhotoId.ToString(),
             //     BucketName);
 
             model.ProfilePhotoId = profilePhotoId;
@@ -431,17 +482,17 @@ public class AccountController : Controller
         user.WasDeleted = model.WasDeleted;
         user.ProfilePhotoId = model.ProfilePhotoId;
 
-        // user.CityId = model.CityId;
-        // user.CountryId = model.CountryId;
-        // user.NationalityId = model.NationalityId;
+        // appUser.CityId = model.CityId;
+        // appUser.CountryId = model.CountryId;
+        // appUser.NationalityId = model.NationalityId;
 
-        // user.Email = model.Username;
+        // appUser.Email = model.Username;
 
         var response = await _userHelper.UpdateUserAsync(user);
 
         if (response.Succeeded)
         {
-            ViewBag.UserMessage = "User updated!";
+            ViewBag.UserMessage = "AppUser updated!";
         }
         else
         {
@@ -495,7 +546,7 @@ public class AccountController : Controller
             ModelState.AddModelError(
                 string.Empty, errorMessage);
         ModelState.AddModelError(
-            string.Empty, "User not found.");
+            string.Empty, "AppUser not found.");
 
 
         return View(model);
@@ -685,20 +736,8 @@ public class AccountController : Controller
     {
         if (countryId == 0) return Json(new List<City>());
 
-        var country =
-            await _countryRepository.GetCountryWithCitiesAsync(countryId);
-
-
-        // Console.OutputEncoding = Encoding.UTF8;
-
-        // Console.WriteLine(country);
-        // Console.WriteLine(country?.Cities);
-        // Console.WriteLine(Json(country?.Cities.OrderBy(c => c.Name)));
-
-        // var cities = country.Cities.OrderBy(c => c.Name);
-        // Console.WriteLine(cities);
-        // Console.WriteLine(Json(cities));
-        // Console.WriteLine(Json(cities.OrderBy(c => c.Name)));
+        var country = await _countryRepository
+            .GetCountryWithCitiesAsync(countryId).FirstOrDefaultAsync();
 
 
         // Serialize the country object to JSON with ReferenceHandler.Preserve

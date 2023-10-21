@@ -8,7 +8,7 @@
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
-    Debug.Assert(User.Identity != null, "User.Identity != null");
+    Debug.Assert(User.Identity != null, "AppUser.Identity != null");
 }
 
 @* <a *@
@@ -40,44 +40,44 @@
         <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="ChangePassword">
             <span class="material-symbols-outlined">settings_account_box</span> Change Password
-            @* @User.Identity?.Name *@
-            @* Hello @await UserHelper.GetUserInitialsAsync() *@
+            @* @AppUser.Identity?.Name *@
+            @* Hello @await AppUserHelper.GetAppUserInitialsAsync() *@
         </a>
 
 
         <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="ChangeUser">
-            <span class="material-symbols-outlined">settings_account_box</span> Change User
-            @* @User.Identity?.Name *@
-            @* Hello @await UserHelper.GetUserInitialsAsync() *@
+            <span class="material-symbols-outlined">settings_account_box</span> Change AppUser
+            @* @AppUser.Identity?.Name *@
+            @* Hello @await AppUserHelper.GetAppUserInitialsAsync() *@
         </a>
 
         <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="ConfirmEmail">
             <span class="material-symbols-outlined">settings_account_box</span> Confirm Email
-            @* @User.Identity?.Name *@
-            @* Hello @await UserHelper.GetUserInitialsAsync() *@
+            @* @AppUser.Identity?.Name *@
+            @* Hello @await AppUserHelper.GetAppUserInitialsAsync() *@
         </a>
 
         <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="Login">
             <span class="material-symbols-outlined">settings_account_box</span> Login
-            @* @User.Identity?.Name *@
-            @* Hello @await UserHelper.GetUserInitialsAsync() *@
+            @* @AppUser.Identity?.Name *@
+            @* Hello @await AppUserHelper.GetAppUserInitialsAsync() *@
         </a>
 
         <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="LogOut">
             <span class="material-symbols-outlined">settings_account_box</span> Logout
-            @* @User.Identity?.Name *@
-            @* Hello @await UserHelper.GetUserInitialsAsync() *@
+            @* @AppUser.Identity?.Name *@
+            @* Hello @await AppUserHelper.GetAppUserInitialsAsync() *@
         </a>
 
         <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
            asp-area="" asp-controller="Account" asp-action="Register">
-            <span class="material-symbols-outlined">settings_account_box</span> Register New User
-            @* @User.Identity?.Name *@
-            @* Hello @await UserHelper.GetUserInitialsAsync() *@
+            <span class="material-symbols-outlined">settings_account_box</span> Register New AppUser
+            @* @AppUser.Identity?.Name *@
+            @* Hello @await AppUserHelper.GetAppUserInitialsAsync() *@
         </a>
 
         <div class="dropdown mt-3">

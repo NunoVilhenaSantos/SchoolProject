@@ -1,19 +1,22 @@
 @using System.Reflection
 @model SchoolProject.Web.Data.Entities.Countries.City
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.City> *@
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.City> *@
+
 
 @{
     ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
-    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().Name;
     ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
     ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
 
-    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
+        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
     ViewData["actionName"] = actionName;
 
-    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
     ViewData["controllerName"] = controllerName;
 
-    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
     ViewData["assemblyName"] = assemblyName;
 
     // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
@@ -24,32 +27,28 @@
     // ViewData["Title"] = "Edit";
 }
 
-<br/>
 <h2>@ViewData["Title"]</h2>
 
-<br/>
 <h4>@controllerName</h4>
-<br/>
 
 <hr/>
-<div class="container-fluid">
-    <div class="row">
+<div class="row">
+
+    <partial name="_DisplayImages" />
+
+    <div class="col">
         <div class="col-md-4">
             <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <partial name="_CitiesCE" for="@Model"/>
+                <partial name="_CitiesCE" for="@Model" />
 
+                <br />
                 <div class="form-group">
-                    <button class="btn btn-outline-primary" type="submit"><span class="fa fa-save"></span> Create </button>
-                    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List </a>
+                    <button type="submit" class="btn btn-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
+                    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                 </div>
             </form>
-        </div>
-
-        <div class="col-md-8">
-            <partial name="_DisplayImages" />
-            @* <img src="@Url.Content(Model.ProfilePhotoIdUrl)" alt="Image" style="width:200px; height:350px; max-width:100%; height: auto"> *@
         </div>
     </div>
 </div>

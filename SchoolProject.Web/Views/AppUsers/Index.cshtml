@@ -1,0 +1,128 @@
+@using System.Reflection
+
+@* @model SchoolProject.Web.Models.Users.UserWithRolesViewModel *@
+@model IEnumerable<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
+@* @model PaginationViewModel<SchoolProject.Web.Models.Users.UserWithRolesViewModel> *@
+
+@{
+    // ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
+
+        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+
+    // Isso obtém o nome da classe do modelo atual
+    var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+}
+
+@* <h2>@pageTitle</h2> *@
+<h2>@ViewData["Title"]</h2>
+
+<div class="container-fluid py-3">
+    <div class="row">
+        @* <div class="col-md-4"> *@
+        <div class="col">
+            @* <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-regular fa-square-plus fa-xl p-1 pe-1"></span> Create New </a> *@
+            <a asp-action="Create" class="btn btn-secondary p-2"><span class="fa-solid fa-circle-plus fa-xl p-1 pe-1"></span> Create New </a>
+        </div>
+        @if (string.Equals(actionName, "IndexCards1"))
+        {
+            @* <div class="col-md-8 justify-content-end"> *@
+            <div class="col justify-content-end">
+                <partial model="Model" name="Pagination/_PageNavigationTop"/>
+            </div>
+        }
+    </div>
+</div>
+
+<table class="table table-hover" sortable="True" id="sortableTable">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.AppUser.ProfilePhotoId)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.FirstName)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.LastName)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.Address)</th>
+        @* <th>@Html.DisplayNameFor(model => model.AppUser.WasDeleted)</th> *@
+        <th>@Html.DisplayNameFor(model => model.AppUser.UserName)</th>
+        @* <th>@Html.DisplayNameFor(model => model.AppUser.NormalizedAppUserName)</th> *@
+        <th>@Html.DisplayNameFor(model => model.AppUser.Email) </th>
+        @* <th>@Html.DisplayNameFor(model => model.AppUser.NormalizedEmail)</th> *@
+        <th>@Html.DisplayNameFor(model => model.AppUser.EmailConfirmed)</th>
+        @* <th>@Html.DisplayNameFor(model => model.AppUser.PasswordHash)</th> *@
+        @* <th>@Html.DisplayNameFor(model => model.AppUser.SecurityStamp)</th> *@
+        @* <th>@Html.DisplayNameFor(model => model.AppUser.ConcurrencyStamp)</th> *@
+        <th>@Html.DisplayNameFor(model => model.AppUser.PhoneNumber)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.PhoneNumberConfirmed)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.TwoFactorEnabled)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.LockoutEnd)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.LockoutEnabled)</th>
+        <th>@Html.DisplayNameFor(model => model.AppUser.AccessFailedCount)</th>
+        @* <th>@Html.DisplayNameFor(model => model.Role.RoleId)</th> *@
+        @* <th>@Html.DisplayNameFor(model => model.Role)</th> *@
+        <th>@Html.DisplayNameFor(model => model.RoleName)</th>
+        @* <th>@Html.DisplayNameFor(model => model.Roles)</th> *@
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            @* <td>@Html.DisplayFor(modelItem => item.ProfilePhotoId)</td> *@
+            <td>
+                <img alt="Image" class="img-thumbnail" height="100" src="@Url.Content(item.AppUser.ProfilePhotoIdUrl)" width="150"/>
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.FirstName)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.LastName)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.Address)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.AppUser.WasDeleted)</td> *@
+            <td>@Html.DisplayFor(modelItem => item.AppUser.UserName)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.AppUser.NormalizedAppUserName)</td> *@
+            <td>@Html.DisplayFor(modelItem => item.AppUser.Email)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.AppUser.NormalizedEmail)</td> *@
+            <td>@Html.DisplayFor(modelItem => item.AppUser.EmailConfirmed)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.AppUser.PasswordHash)</td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.AppUser.SecurityStamp)</td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.AppUser.ConcurrencyStamp)</td> *@
+            <td>@Html.DisplayFor(modelItem => item.AppUser.PhoneNumber)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.PhoneNumberConfirmed)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.TwoFactorEnabled)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.LockoutEnd)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.LockoutEnabled)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppUser.AccessFailedCount)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.Role.RoleId)</td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.Role)</td> *@
+            <td>@Html.DisplayFor(modelItem => item.RoleName)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.Roles)</td> *@
+
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a asp-action="Edit" asp-route-id="@item.AppUser.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.AppUser.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details</a>
+                    @* <a asp-action="Delete" asp-route-id="@item.AppUser.Id" class="btn btn-danger"><span class="fa-regular fa-trash-can"></span> Delete</a> *@
+                    <a asp-action="Delete" asp-route-id="@item.AppUser.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.AppUser.Id" data-del-item-name="@item.AppUser.FullName" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                </div>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="3">Total Lines:</td>
+        <td>@Model.Count()</td>
+        <td colspan="2"></td>
+        <td>@Model.Count(i => i.AppUser.EmailConfirmed))</td>
+        <td colspan="1"></td>
+        <td>@Model.Count(i => i.AppUser.PhoneNumberConfirmed))</td>
+        <td>@Model.Count(i => i.AppUser.TwoFactorEnabled))</td>
+        <td colspan="1"></td>
+        <td>@Model.Count(i => i.AppUser.LockoutEnabled))</td>
+        <td></td>
+    </tr>
+
+    </tbody>
+
+</table>

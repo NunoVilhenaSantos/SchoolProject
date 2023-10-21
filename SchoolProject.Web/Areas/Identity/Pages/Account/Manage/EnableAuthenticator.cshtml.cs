@@ -21,11 +21,11 @@ public class EnableAuthenticatorModel : PageModel
 
     private readonly ILogger<EnableAuthenticatorModel> _logger;
     private readonly UrlEncoder _urlEncoder;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public EnableAuthenticatorModel(
         UrlEncoder urlEncoder,
-        UserManager<User> userManager,
+        UserManager<AppUser> userManager,
         ILogger<EnableAuthenticatorModel> logger
     )
     {
@@ -77,7 +77,7 @@ public class EnableAuthenticatorModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         await LoadSharedKeyAndQrCodeUriAsync(user);
@@ -90,7 +90,7 @@ public class EnableAuthenticatorModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
@@ -119,7 +119,7 @@ public class EnableAuthenticatorModel : PageModel
         await _userManager.SetTwoFactorEnabledAsync(user, true);
         var userId = await _userManager.GetUserIdAsync(user);
         _logger.LogInformation(
-            "User with ID '{UserId}' " +
+            "AppUser with ID '{UserId}' " +
             "has enabled 2FA with an authenticator app.", userId);
 
         StatusMessage = "Your authenticator app has been verified.";
@@ -135,21 +135,21 @@ public class EnableAuthenticatorModel : PageModel
         return RedirectToPage("./ShowRecoveryCodes");
     }
 
-    private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
+    private async Task LoadSharedKeyAndQrCodeUriAsync(AppUser appUser)
     {
         // Load the authenticator key & QR code URI to display on the form
         var unformattedKey =
-            await _userManager.GetAuthenticatorKeyAsync(user);
+            await _userManager.GetAuthenticatorKeyAsync(appUser);
 
         if (string.IsNullOrEmpty(unformattedKey))
         {
-            await _userManager.ResetAuthenticatorKeyAsync(user);
-            unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            await _userManager.ResetAuthenticatorKeyAsync(appUser);
+            unformattedKey = await _userManager.GetAuthenticatorKeyAsync(appUser);
         }
 
         SharedKey = FormatKey(unformattedKey);
 
-        var email = await _userManager.GetEmailAsync(user);
+        var email = await _userManager.GetEmailAsync(appUser);
         AuthenticatorUri = GenerateQrCodeUri(email, unformattedKey);
     }
 

@@ -20,16 +20,24 @@ public class UsersController : Controller
     // Obtém o tipo da classe atual
     internal const string CurrentClass = nameof(UserWithRolesViewModel);
     internal const string CurrentAction = nameof(Index);
-
-    // Obtém o nome do controlador atual
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string BucketName = nameof(User) + "s";
-    internal const string SortProperty = "FirstName";
+    internal const string BucketName = nameof(User);
 
+    internal const string SortProperty =
+        nameof(UserWithRolesViewModel.AppUser.UserName);
+
+
+    // A private field to get the data context in app.
     private readonly DataContextMySql _context;
+
+    // A private field to get the hosting environment in app.
     private readonly IWebHostEnvironment _hostingEnvironment;
 
 
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+    // A private field to get the user helper in app.
     private readonly IUserHelper _userHelper;
 
     /// <summary>
@@ -41,11 +49,13 @@ public class UsersController : Controller
     public UsersController(
         IUserHelper userHelper,
         DataContextMySql context,
-        IWebHostEnvironment hostingEnvironment)
+        IWebHostEnvironment hostingEnvironment,
+        AuthenticatedUserInApp authenticatedUserInApp)
     {
         _context = context;
         _userHelper = userHelper;
         _hostingEnvironment = hostingEnvironment;
+        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
 
@@ -94,7 +104,7 @@ public class UsersController : Controller
                         roles) =>
                     new UserWithRolesViewModel
                     {
-                        User = userUserRole.User,
+                        AppUser = userUserRole.User,
                         Role = userUserRole.UserRole,
                         Roles = roles.Select(role => role.Name).ToList()
                     })
@@ -241,17 +251,17 @@ public class UsersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///     Create method, to create a new user.
+    ///     Create method, to create a new appUser.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(User user)
+    public async Task<IActionResult> Create(AppUser appUser)
     {
-        if (!ModelState.IsValid) return View(user);
+        if (!ModelState.IsValid) return View(appUser);
 
-        _context.Add(user);
+        _context.Add(appUser);
 
         await _context.SaveChangesAsync();
 
@@ -287,30 +297,31 @@ public class UsersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///     Edit method, to edit a specific user.
+    ///     Edit method, to edit a specific appUser.
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(string id, User user)
+    public async Task<IActionResult> Edit(string id, AppUser appUser)
     {
-        if (id != user.Id)
+        if (id != appUser.Id)
             return new NotFoundViewResult(
                 nameof(UserNotFound), CurrentClass, id,
                 CurrentController, nameof(Index));
 
-        if (!ModelState.IsValid) return View(user);
+        if (!ModelState.IsValid) return View(appUser);
 
         try
         {
-            _context.Update(user);
+            _context.Update(appUser);
+
             await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!UserExists(user.Id))
+            if (!UserExists(appUser.Id))
                 return new NotFoundViewResult(
                     nameof(UserNotFound), CurrentClass, id,
                     CurrentController, nameof(Index));
@@ -345,7 +356,7 @@ public class UsersController : Controller
 
     // POST: Users/Delete/5
     /// <summary>
-    ///     Delete method, to delete a specific user, confirmation.
+    ///     Delete method, to delete a specific appUser, confirmation.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

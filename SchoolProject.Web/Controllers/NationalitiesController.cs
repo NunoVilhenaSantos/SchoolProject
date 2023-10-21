@@ -5,7 +5,9 @@ using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Models;
+using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
@@ -13,6 +15,7 @@ namespace SchoolProject.Web.Controllers;
 ///     Controller for the Nationalities entity.
 /// </summary>
 //[Authorize(Roles = "Admin,SuperUser,Functionary")]
+[Authorize(Roles ="Admin")]
 public class NationalitiesController : Controller
 {
     // Obtém o tipo da classe atual
@@ -21,12 +24,20 @@ public class NationalitiesController : Controller
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = "Name";
 
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(NationalitiesController));
 
-    private readonly ICountryRepository _countryRepository;
-    private readonly IWebHostEnvironment _hostingEnvironment;
+    internal static readonly string BucketName = CurrentClass.ToLower();
+
+
+    // Repositories
     private readonly INationalityRepository _nationalityRepository;
+    private readonly ICountryRepository _countryRepository;
+    private readonly IStorageHelper _storageHelper;
 
-    internal string BucketName = CurrentClass.ToLower();
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>
@@ -38,16 +49,18 @@ public class NationalitiesController : Controller
     public NationalitiesController(
         ICountryRepository countryRepository,
         INationalityRepository nationalityRepository,
+        IStorageHelper storageHelper,
         IWebHostEnvironment hostingEnvironment)
     {
         _countryRepository = countryRepository;
         _nationalityRepository = nationalityRepository;
+        _storageHelper = storageHelper;
         _hostingEnvironment = hostingEnvironment;
     }
 
 
     // Obtém o controlador atual
-    private string CurrentController
+    internal string CurrentController
     {
         get
         {
@@ -57,13 +70,6 @@ public class NationalitiesController : Controller
             return controllerTypeInfo.Name.Replace("Controller", "");
         }
     }
-
-
-    /// <summary>
-    ///     NationalityNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult NationalityNotFound => View();
 
 
     private List<Nationality> GetNationalitiesWithCountries()
@@ -83,25 +89,22 @@ public class NationalitiesController : Controller
             // Se a lista estiver na sessão, desserializa-a
             var json = Encoding.UTF8.GetString(allData);
 
-            recordsQuery =
-                JsonConvert.DeserializeObject<List<Nationality>>(json) ??
-                new List<Nationality>();
+            return JsonConvert.DeserializeObject<List<Nationality>>(json) ??
+                   new List<Nationality>();
         }
-        else
-        {
-            // Caso contrário, obtenha a lista completa do banco de dados
-            // Chame a função GetTeachersList com o tipo T
-            recordsQuery = GetNationalitiesWithCountries();
 
-            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+        // Caso contrário, obtenha a lista completa do banco de dados
+        // Chame a função GetTeachersList com o tipo T
+        recordsQuery = GetNationalitiesWithCountries();
 
-            var json = PaginationViewModel<Nationality>
-                .StoreListToFileInJson(recordsQuery);
+        PaginationViewModel<T>.Initialize(_hostingEnvironment);
 
-            // Armazene a lista na sessão para uso futuro
-            HttpContext.Session.Set(SessionVarName,
-                Encoding.UTF8.GetBytes(json));
-        }
+        var json1 = PaginationViewModel<Nationality>
+            .StoreListToFileInJson(recordsQuery);
+
+        // Armazene a lista na sessão para uso futuro
+        HttpContext.Session.Set(SessionVarName, Encoding.UTF8.GetBytes(json1));
+
 
         return recordsQuery;
     }
@@ -115,13 +118,15 @@ public class NationalitiesController : Controller
     /// <param name="sortOrder"></param>
     /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult Index(int pageNumber = 1, int pageSize = 10,
+    public IActionResult Index(
+        int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Nationality>();
+
         return View(recordsQuery);
     }
 
@@ -133,13 +138,15 @@ public class NationalitiesController : Controller
     /// <param name="sortOrder"></param>
     /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards(int pageNumber = 1, int pageSize = 10,
+    public IActionResult IndexCards(
+        int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Nationality>();
+
         return View(recordsQuery);
     }
 
@@ -153,15 +160,12 @@ public class NationalitiesController : Controller
     /// <param name="sortOrder"></param>
     /// <param name="sortProperty"></param>
     /// <returns></returns>
-    public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
+    public IActionResult IndexCards1(
+        int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
-
-        // Validar parâmetros de página e tamanho da página
-        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
-        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
         var recordsQuery = SessionData<Nationality>();
 
@@ -188,8 +192,8 @@ public class NationalitiesController : Controller
             return new NotFoundViewResult(nameof(NationalityNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        var nationality =
-            await _nationalityRepository.GetNationalityAsync(id.Value);
+        var nationality = await _nationalityRepository
+            .GetNationalityAsync(id.Value).FirstOrDefaultAsync();
 
         return nationality == null
             ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass,
@@ -221,13 +225,67 @@ public class NationalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Nationality nationality)
     {
-        if (!ModelState.IsValid) return View(nationality);
+        // if (!ModelState.IsValid) return View(customer);
+        //
+        // var user = await _userHelper.GetUserByEmailAsync(country.Email);
+        //
+        // if (user != null)
+        // {
+        //     ViewBag.UserMessage =
+        //         "Email has already been used to register an account.";
+        //     return View(country);
+        // }
 
-        await _nationalityRepository.AddNationalityAsync(nationality);
 
-        await _nationalityRepository.SaveAllAsync();
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var profilePhotoId = nationality.Country.ProfilePhotoId;
+
+        if (nationality.Country.ImageFile is {Length: > 0})
+            profilePhotoId =
+                await _storageHelper.UploadStorageAsync(
+                    nationality.Country.ImageFile, BucketName);
+
+        nationality.Country.ProfilePhotoId = profilePhotoId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+
+
+        var nationality1 = new Nationality
+        {
+            Name = nationality.Name,
+            Country = null,
+            CreatedBy = null,
+        };
+
+
+        var country1 = new Country
+        {
+            Name = nationality.Country.Name,
+            Nationality = nationality1,
+            ProfilePhotoId = nationality.Country.ProfilePhotoId,
+            CreatedBy = null,
+        };
+
+        nationality1.Country = country1;
+
+
+        //var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+        // Confirma o email para este AppUser
+        //await _userHelper.ConfirmEmailAsync(user, token);
+
+        await _countryRepository.CreateAsync(country1);
+
+        await _countryRepository.SaveAllAsync();
+
+        HttpContext.Session.Remove(SessionVarName);
 
         return RedirectToAction(nameof(Index));
+
+
+        //**********************
     }
 
 
@@ -243,8 +301,8 @@ public class NationalitiesController : Controller
             return new NotFoundViewResult(nameof(NationalityNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        var nationality = await
-            _nationalityRepository.GetNationalityAsync(id.Value);
+        var nationality = await _nationalityRepository
+            .GetNationalityAsync(id.Value).FirstOrDefaultAsync();
 
         return nationality == null
             ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass,
@@ -268,30 +326,60 @@ public class NationalitiesController : Controller
     public async Task<IActionResult> Edit(int id, Nationality nationality)
     {
         if (id != nationality.Id)
-            return new NotFoundViewResult(nameof(NationalityNotFound),
-                CurrentClass, id.ToString(), CurrentController, nameof(Index));
+            return new NotFoundViewResult(
+                nameof(NationalityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
-        if (!ModelState.IsValid) return View(nationality);
+        // if (!ModelState.IsValid) return View(country);
+
+        var nationality1 = await _nationalityRepository
+            .GetByIdAsync(id);
+
+        if (nationality1 == null) return View(nationality);
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        // var ProfilePhotoId = nationality.ProfilePhotoId;
+        //
+        // if (nationality.ImageFile is {Length: > 0})
+        //     ProfilePhotoId =
+        //         await _storageHelper.UploadStorageAsync(
+        //             nationality.ImageFile, BucketName);
+        //
+        // nationality.ProfilePhotoId = ProfilePhotoId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+
+        nationality1.Name = nationality.Name;
+
+
+        // category1.AppUser = await _userHelper.GetUserByIdAsync(category.AppUserId);
+        // category1.AppUserId = category.AppUserId;
+        //nationality1.ProfilePhotoId = nationality.ProfilePhotoId;
 
         try
         {
-            await _nationalityRepository.UpdateNationalityAsync(nationality);
+            await _nationalityRepository.UpdateAsync(nationality1);
+
             await _nationalityRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
         }
         catch (DbUpdateConcurrencyException)
         {
-            var test = await _nationalityRepository
-                .GetNationalityAsync(nationality.Id);
-
-            if (test == null)
-                return new NotFoundViewResult(nameof(NationalityNotFound),
-                    CurrentClass, id.ToString(), CurrentController,
-                    nameof(Index));
+            if (!await _nationalityRepository.ExistAsync(nationality.Id))
+                return new NotFoundViewResult(
+                    nameof(NationalityNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
 
             throw;
         }
 
-        return RedirectToAction(nameof(Index));
+        //*****************
     }
 
     // GET: Nationalities/Delete/5
@@ -307,7 +395,7 @@ public class NationalitiesController : Controller
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
         var nationality = await _nationalityRepository
-            .GetNationalityAsync(id.Value);
+            .GetNationalityAsync(id.Value).FirstOrDefaultAsync();
 
         return nationality == null
             ? new NotFoundViewResult(nameof(NationalityNotFound), CurrentClass,
@@ -326,14 +414,90 @@ public class NationalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var nationality =
-            await _nationalityRepository.GetNationalityAsync(id);
+        var nationality = await _nationalityRepository.GetByIdAsync(id);
 
-        if (nationality != null)
-            await _nationalityRepository.DeleteNationalityAsync(nationality);
+        if (nationality == null)
+            return new NotFoundViewResult(
+                nameof(NationalityNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
-        await _nationalityRepository.SaveAllAsync();
+        try
+        {
+            await _nationalityRepository.DeleteAsync(nationality);
 
-        return RedirectToAction(nameof(Index));
+            await _nationalityRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            // Handle DbUpdateException, specifically for this controller.
+            Console.WriteLine(ex.Message);
+
+            // Handle foreign key constraint violation.
+            DbErrorViewModel dbErrorViewModel;
+
+            if (ex.InnerException != null &&
+                ex.InnerException.Message.Contains("DELETE"))
+            {
+                dbErrorViewModel = new DbErrorViewModel
+                {
+                    DbUpdateException = true,
+                    ErrorTitle = "Foreign Key Constraint Violation",
+                    ErrorMessage =
+                        "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                        $"The {nameof(Nationality)} with the ID " +
+                        $"{nationality.Id} - {nationality.Name} " +
+                        // $"{nationality.IdGuid} +" +
+                        "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                        "Try deleting possible dependencies and try again. ",
+                    ItemClass = nameof(Nationality),
+                    ItemId = nationality.Id.ToString(),
+                    ItemGuid = Guid.Empty,
+                    ItemName = nationality.Name
+                };
+
+                // Redirecione para o DatabaseError com os dados apropriados
+                return RedirectToAction(
+                    "DatabaseError", "Errors", dbErrorViewModel);
+            }
+
+            // Handle other DbUpdateExceptions.
+            dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Database Error",
+                ErrorMessage = "An error occurred while deleting the entity.",
+                ItemClass = nameof(Nationality),
+                ItemId = nationality.Id.ToString(),
+                ItemGuid = Guid.Empty,
+                ItemName = nationality.Name
+            };
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            // Redirecione para o DatabaseError com os dados apropriados
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
     }
+
+
+    /// <summary>
+    ///     NationalityNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult NationalityNotFound => View();
+
+
+    // -------------------------------------------------------------- //
+
+    private void AddModelError(string errorMessage)
+    {
+        ModelState.AddModelError(string.Empty, errorMessage);
+    }
+
+    // -------------------------------------------------------------- //
 }

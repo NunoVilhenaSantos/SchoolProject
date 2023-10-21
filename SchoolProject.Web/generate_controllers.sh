@@ -34,8 +34,12 @@ GenerateControllersRecursively() {
     modelName=$(basename "${model%.*}")
     controllerName=$(PluralizeControllerName "$modelName")
 
-    echo "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
-    dotnet aspnet-codegenerator controller --model "$modelName" --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName "$controllerName" --useAsyncActions
+    # echo "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
+    # dotnet aspnet-codegenerator controller --model "$modelName" --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName "$controllerName" --useAsyncActions
+
+    echo "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
+    dotnet aspnet-codegenerator controller --model "$modelName" --dataContext $dataContext --useDefaultLayout --relativeFolderPath Controllers --controllerName "$controllerName" --useAsyncActions
+
   done
 
   # Loop recursivamente em todas as sub-pastas
@@ -45,6 +49,14 @@ GenerateControllersRecursively() {
     fi
   done
 }
+
+
+Clear
+
+# instalar dot net entity framework e o code-generator para os controladores
+dotnet tool install --global dotnet-ef
+dotnet tool install --global dotnet-aspnet-codegenerator
+
 
 # Chame a função para gerar scaffolding de controladores para todas as classes em sub-pastas
 GenerateControllersRecursively "$entitiesDirectory"

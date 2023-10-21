@@ -10,10 +10,14 @@ namespace SchoolProject.Web.Data.Repositories.Countries;
 /// <inheritdoc cref="SchoolProject.Web.Data.Repositories.GenericRepository {City}" />
 public class CityRepository : GenericRepository<City>, ICityRepository
 {
+    /// <summary>
+    ///
+    /// </summary>
+    // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
+    // A private field to get the data context.
     private readonly DataContextMySql _dataContext;
-
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
@@ -37,7 +41,7 @@ public class CityRepository : GenericRepository<City>, ICityRepository
 
 
     /// <inheritdoc />
-    public IEnumerable<City> GetCitiesWithCountriesAsync()
+    public IOrderedQueryable<City> GetCitiesWithCountriesAsync()
     {
         return _dataContext.Cities
             .Include(c => c.Country)
@@ -52,16 +56,34 @@ public class CityRepository : GenericRepository<City>, ICityRepository
 
 
     /// <inheritdoc />
-    public async Task<City?> GetCityAsync(int id)
+    public IOrderedQueryable<City> GetCityAsync(int id)
     {
-        return await _dataContext.Cities.FindAsync(id);
+        return _dataContext.Cities
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Cities)
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Nationality)
+            .Include(c => c.CreatedBy)
+            .Include(c => c.UpdatedBy)
+            .Where(i => i.Id == id)
+            .OrderBy(c => c.Country.Name)
+            .ThenBy(c => c.Name);
     }
 
 
     /// <inheritdoc />
-    public async Task<City?> GetCityAsync(City city)
+    public IOrderedQueryable<City> GetCityAsync(City city)
     {
-        return await _dataContext.Cities.FindAsync(city.Id);
+        return _dataContext.Cities
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Cities)
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Nationality)
+            .Include(c => c.CreatedBy)
+            .Include(c => c.UpdatedBy)
+            .Where(i => i.Id == city.Id)
+            .OrderBy(c => c.Country.Name)
+            .ThenBy(c => c.Name);
     }
 
 

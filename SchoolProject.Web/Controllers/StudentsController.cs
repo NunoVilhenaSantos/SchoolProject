@@ -6,6 +6,7 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Repositories.Students;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -27,7 +28,12 @@ public class StudentsController : Controller
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IStudentRepository _studentRepository;
 
-    internal string BucketName = CurrentClass.ToLower();
+    internal static string BucketName = CurrentClass.ToLower();
+
+
+
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
     /// <summary>
@@ -39,11 +45,12 @@ public class StudentsController : Controller
     public StudentsController(
         DataContextMySql context,
         IStudentRepository studentRepository,
-        IWebHostEnvironment hostingEnvironment)
+        IWebHostEnvironment hostingEnvironment, AuthenticatedUserInApp authenticatedUserInApp)
     {
         _context = context;
         _studentRepository = studentRepository;
         _hostingEnvironment = hostingEnvironment;
+        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
 
@@ -70,9 +77,7 @@ public class StudentsController : Controller
     private List<Student> GetStudentsList()
     {
         return _context.Students
-            .Include(s => s.Country)
-            .ThenInclude(c => c.Nationality)
-            .Include(s => s.Country)
+            .Include(s => s.City)
             .ThenInclude(c => c.CreatedBy)
             .Include(s => s.City)
             .ThenInclude(c => c.CreatedBy)
@@ -86,7 +91,7 @@ public class StudentsController : Controller
             .ThenInclude(c => c.CreatedBy)
             .Include(s => s.Gender)
             .ThenInclude(g => g.CreatedBy)
-            .Include(s => s.User).ToList();
+            .Include(s => s.AppUser).ToList();
 
         // Se desejar carregar as turmas associadas
         // .Include(s => s.CoursesStudents)

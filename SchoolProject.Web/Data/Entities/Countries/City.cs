@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using CsvHelper.Configuration.Attributes;
+using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
@@ -24,36 +26,39 @@ public class City : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <summary>
-    ///     The image of the user file from the form to be inserted in the database.
+    ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
-    [Ignore]
     [NotMapped]
-    [DisplayName("Image")]
+    [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
+    [Display(Name = "Image")]
     public IFormFile? ImageFile { get; set; }
 
 
     /// <summary>
-    ///     The profile photo of the user.
+    ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
     /// <summary>
-    ///     The profile photo of the user in URL format.
+    ///     The profile photo of the appUser in URL format.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        // : StorageHelper.GcpStoragePublicUrl + "cities/" + ProfilePhotoId;
-        : StorageHelper.AzureStoragePublicUrl + "cities/" + ProfilePhotoId;
+        ? StorageHelper.NoImageUrl
+        : StorageHelper.AzureStoragePublicUrl +
+          CitiesController.BucketName +
+          "/" + ProfilePhotoId;
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <summary>
@@ -82,11 +87,13 @@ public class City : IEntity, INotifyPropertyChanged
     ///     Count of cities belonging to the country
     /// </summary>
     [DisplayName("Number of Cities")]
-    public int NumberOfCitiesInCountry => Country.Cities?.Count ?? 0;
+    public int NumberOfCitiesInCountry => Country != null
+        ? Country.Cities != null ? Country.Cities.Count : 0
+        : 0;
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <inheritdoc />
@@ -116,7 +123,7 @@ public class City : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
+    public virtual required AppUser CreatedBy { get; set; }
 
 
     /// <inheritdoc />
@@ -128,12 +135,12 @@ public class City : IEntity, INotifyPropertyChanged
 
     /// <inheritdoc />
     [DisplayName("Updated By")]
-    public virtual User? UpdatedBy { get; set; }
+    public virtual AppUser? UpdatedBy { get; set; }
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <inheritdoc />
@@ -150,7 +157,8 @@ public class City : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
-    protected bool SetField<T>(ref T field, T value,
+    protected bool SetField<T>(
+        ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;

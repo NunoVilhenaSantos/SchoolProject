@@ -15,10 +15,10 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class LoginModel : PageModel
 {
     private readonly ILogger<LoginModel> _logger;
-    private readonly SignInManager<User> _signInManager;
+    private readonly SignInManager<AppUser> _signInManager;
 
     public LoginModel(
-        SignInManager<User> signInManager,
+        SignInManager<AppUser> signInManager,
         ILogger<LoginModel> logger)
     {
         _signInManager = signInManager;
@@ -92,7 +92,7 @@ public class LoginModel : PageModel
 
         if (result.Succeeded)
         {
-            _logger.LogInformation("User logged in.");
+            _logger.LogInformation("AppUser logged in.");
             return LocalRedirect(returnUrl);
         }
 
@@ -101,7 +101,7 @@ public class LoginModel : PageModel
                 new {ReturnUrl = returnUrl, Input.RememberMe});
         if (result.IsLockedOut)
         {
-            _logger.LogWarning("User account locked out.");
+            _logger.LogWarning("AppUser account locked out.");
             return RedirectToPage("./Lockout");
         }
 

@@ -21,21 +21,21 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class ExternalLoginModel : PageModel
 {
     private readonly IEMailHelper _emailSender;
-    private readonly IUserEmailStore<User> _emailStore;
+    private readonly IUserEmailStore<AppUser> _emailStore;
 
     private readonly ILogger<ExternalLoginModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    private readonly IUserStore<User> _userStore;
+    private readonly IUserStore<AppUser> _userStore;
     // private readonly IEmailSender _emailSender;
 
 
     public ExternalLoginModel(
         ILogger<ExternalLoginModel> logger,
-        SignInManager<User> signInManager,
-        UserManager<User> userManager,
-        IUserStore<User> userStore,
+        SignInManager<AppUser> signInManager,
+        UserManager<AppUser> userManager,
+        IUserStore<AppUser> userStore,
         // IEmailSender emailSender
         IEMailHelper emailSender
     )
@@ -120,7 +120,7 @@ public class ExternalLoginModel : PageModel
                 "./Login", new {ReturnUrl = returnUrl});
         }
 
-        // Sign in the user with this external login provider if the user already has a login.
+        // Sign in the appUser with this external login provider if the appUser already has a login.
         var result = await _signInManager
             .ExternalLoginSignInAsync(
                 info.LoginProvider,
@@ -137,8 +137,8 @@ public class ExternalLoginModel : PageModel
 
         if (result.IsLockedOut) return RedirectToPage("./Lockout");
 
-        // If the user does not have an account,
-        // then ask the user to create an account.
+        // If the appUser does not have an account,
+        // then ask the appUser to create an account.
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
@@ -153,7 +153,7 @@ public class ExternalLoginModel : PageModel
         string returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
-        // Get the information about the user from the external login provider
+        // Get the information about the appUser from the external login provider
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
         {
@@ -180,7 +180,7 @@ public class ExternalLoginModel : PageModel
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(
-                        "User created an account using {Name} provider.",
+                        "AppUser created an account using {Name} provider.",
                         info.LoginProvider);
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -225,11 +225,11 @@ public class ExternalLoginModel : PageModel
         return Page();
     }
 
-    private User CreateUser()
+    private AppUser CreateUser()
     {
         try
         {
-            return Activator.CreateInstance<User>();
+            return Activator.CreateInstance<AppUser>();
         }
         catch
         {
@@ -242,13 +242,13 @@ public class ExternalLoginModel : PageModel
         }
     }
 
-    private IUserEmailStore<User> GetEmailStore()
+    private IUserEmailStore<AppUser> GetEmailStore()
     {
         if (!_userManager.SupportsUserEmail)
             throw new NotSupportedException(
                 "The default UI requires " +
-                "a user store with email support.");
-        return (IUserEmailStore<User>) _userStore;
+                "a appUser store with email support.");
+        return (IUserEmailStore<AppUser>) _userStore;
     }
 
     /// <summary>

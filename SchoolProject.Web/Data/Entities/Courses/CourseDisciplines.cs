@@ -80,7 +80,7 @@ public class CourseDisciplines : IEntity, INotifyPropertyChanged
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
+    public virtual required AppUser CreatedBy { get; set; }
 
 
     // [Required]
@@ -95,7 +95,7 @@ public class CourseDisciplines : IEntity, INotifyPropertyChanged
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By")]
-    public virtual User? UpdatedBy { get; set; }
+    public virtual AppUser? UpdatedBy { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -103,17 +103,17 @@ public class CourseDisciplines : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
     /// </summary>
-    [DisplayName("Created By User Id")]
+    [DisplayName("Created By AppUser Id")]
     [ForeignKey(nameof(CreatedBy))]
     public required string CreatedById { get; set; }
 
 
     /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de User
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
     /// </summary>
-    [DisplayName("Updated By User Id")]
+    [DisplayName("Updated By AppUser Id")]
     [ForeignKey(nameof(UpdatedBy))]
     public string? UpdatedById { get; set; }
 

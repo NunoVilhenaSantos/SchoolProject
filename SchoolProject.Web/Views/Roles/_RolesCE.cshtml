@@ -1,33 +1,29 @@
+@using System.Reflection
 @model Microsoft.AspNetCore.Identity.IdentityRole
-            
+@* @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole> *@
+@* @model PaginationViewModel<Microsoft.AspNetCore.Identity.IdentityRole> *@
+
+
 <div class="form-group">
-<label asp-for="Id" class="control-label"></label>
-<input asp-for="Id" class="form-control"/>
-<span asp-validation-for="Id" class="text-danger"></span>
+    <label asp-for="Id" class="control-label"></label>
+    <input asp-for="Id" class="form-control"/>
+    <span asp-validation-for="Id" class="text-danger"></span>
 </div>
 
 <div class="form-group">
-<label asp-for="Name" class="control-label"></label>
-<input asp-for="Name" class="form-control"/>
-<span asp-validation-for="Name" class="text-danger"></span>
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control"/>
+    <span asp-validation-for="Name" class="text-danger"></span>
 </div>
 
 <div class="form-group">
-<label asp-for="NormalizedName" class="control-label"></label>
-<input asp-for="NormalizedName" class="form-control"/>
-<span asp-validation-for="NormalizedName" class="text-danger"></span>
+    <label asp-for="NormalizedName" class="control-label"></label>
+    <input asp-for="NormalizedName" class="form-control"/>
+    <span asp-validation-for="NormalizedName" class="text-danger"></span>
 </div>
 
-<div class="form-group">
-<label asp-for="ConcurrencyStamp" class="control-label"></label>
-<input asp-for="ConcurrencyStamp" class="form-control"/>
-<span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
-</div>
-
-@* <div class="form-group"> *@
-@*     <label asp-for="ConcurrencyStamp" class="control-label"></label> *@
-@*     <input asp-for="ConcurrencyStamp" class="form-control"/> *@
-@*     <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span> *@
-@* </div> *@            
-
-       
+    <div class="form-group"> 
+        <label asp-for="ConcurrencyStamp" class="control-label"></label> 
+        <input asp-for="ConcurrencyStamp" class="form-control"/> 
+        <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span> 
+    </div> 

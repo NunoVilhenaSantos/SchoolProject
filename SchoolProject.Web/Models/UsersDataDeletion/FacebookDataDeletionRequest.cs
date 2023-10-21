@@ -2,5 +2,5 @@
 
 public class FacebookDataDeletionRequest
 {
-    public string SignedRequest { get; set; }
+    public required string SignedRequest { get; set; }
 }

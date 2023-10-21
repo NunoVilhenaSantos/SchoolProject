@@ -5,12 +5,12 @@ namespace SchoolProject.Web.Data.Repositories.Countries;
 
 public interface INationalityRepository : IGenericRepository<Nationality>
 {
-    IQueryable<Nationality> GetNationalitiesWithCountries();
+    IOrderedQueryable<Nationality> GetNationalitiesWithCountries();
 
 
-    Task<Nationality?> GetNationalityAsync(int id);
+    IOrderedQueryable<Nationality> GetNationalityAsync(int id);
 
-    Task<Nationality?> GetNationalityAsync(Nationality nationality);
+    IOrderedQueryable<Nationality> GetNationalityAsync(Nationality nationality);
 
 
     Task AddNationalityAsync(NationalityViewModel model);

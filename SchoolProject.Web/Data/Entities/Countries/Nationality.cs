@@ -21,15 +21,11 @@ public class Nationality : IEntity, INotifyPropertyChanged
     public required string Name { get; set; }
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-
-
-    // Dependent (child)
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [ForeignKey(nameof(Country))]
@@ -37,24 +33,13 @@ public class Nationality : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public virtual required Country Country { get; set; }
 
 
-    // public Guid CountryGuidId => Country.IdGuid;
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    [DisplayName("Number of Cities")]
-    public int NumberOfCitiesInCountry => Country.Cities?.Count ?? 0;
-
-
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <inheritdoc />
@@ -85,7 +70,7 @@ public class Nationality : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
+    public virtual required AppUser CreatedBy { get; set; }
 
 
     /// <inheritdoc />
@@ -98,12 +83,12 @@ public class Nationality : IEntity, INotifyPropertyChanged
 
     /// <inheritdoc />
     [DisplayName("Updated By")]
-    public virtual User? UpdatedBy { get; set; }
+    public virtual AppUser? UpdatedBy { get; set; }
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <inheritdoc />
@@ -120,7 +105,8 @@ public class Nationality : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
-    protected bool SetField<T>(ref T field, T value,
+    protected bool SetField<T>(
+        ref T field, T value,
         [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;

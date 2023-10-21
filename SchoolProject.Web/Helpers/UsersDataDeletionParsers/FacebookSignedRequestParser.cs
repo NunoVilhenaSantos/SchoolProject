@@ -46,13 +46,13 @@ public static class FacebookSignedRequestParser
 
     public class FacebookDataDeletionRequestData
     {
-        public string Algorithm { get; set; }
+        public required string Algorithm { get; set; }
 
         public long Expires { get; set; }
 
         public long IssuedAt { get; set; }
 
 
-        public string UserId { get; set; }
+        public required string UserId { get; set; }
     }
 }

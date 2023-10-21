@@ -15,9 +15,9 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
 public class ResetPasswordModel : PageModel
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    public ResetPasswordModel(UserManager<User> userManager)
+    public ResetPasswordModel(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
     }
@@ -50,7 +50,7 @@ public class ResetPasswordModel : PageModel
 
         var user = await _userManager.FindByEmailAsync(Input.Email);
         if (user == null)
-            // Don't reveal that the user does not exist
+            // Don't reveal that the appUser does not exist
             return RedirectToPage("./ResetPasswordConfirmation");
 
         var result =

@@ -18,10 +18,10 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class ForgotPasswordModel : PageModel
 {
     private readonly IEmailSender _emailSender;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public ForgotPasswordModel(
-        UserManager<User> userManager, IEmailSender emailSender)
+        UserManager<AppUser> userManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _emailSender = emailSender;
@@ -42,7 +42,7 @@ public class ForgotPasswordModel : PageModel
         var user = await _userManager.FindByEmailAsync(Input.Email);
 
         if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
-            // Don't reveal that the user does not exist or is not confirmed
+            // Don't reveal that the appUser does not exist or is not confirmed
             return RedirectToPage("./ForgotPasswordConfirmation");
 
         // For more information on how to enable account

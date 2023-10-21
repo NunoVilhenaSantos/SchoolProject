@@ -18,9 +18,9 @@ public class SeedDbCoursesWithDisciplines
     /// <summary>
     /// code for fetching existing courses and disciplines
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="dataContextInUse"></param>
-    public static async Task AddingData(User user,
+    public static async Task AddingData(AppUser appUser,
         // DataContextMsSql dataContextInUse, 
         DataContextMySql dataContextInUse
     )
@@ -63,8 +63,8 @@ public class SeedDbCoursesWithDisciplines
                                  Course = course,
                                  DisciplineId = discipline.Id,
                                  Discipline = discipline,
-                                 CreatedBy = user,
-                                 CreatedById = user.Id,
+                                 CreatedBy = appUser,
+                                 CreatedById = appUser.Id,
                              }))
                     // Add the association to Courses and Discipline's CourseDisciplines collection
                     dataContextInUse.CoursesDisciplines.Add(disciplines);

@@ -1,4 +1,6 @@
-@model SchoolProject.Web.Data.Entities.Users.User
+@model             SchoolProject.Web.Data.Entities.Users.AppUser
+@* @model IEnumerable<SchoolProject.Web.Models.AppUsers.AppUserWithRolesViewModel> *@
+@* @model PaginationViewModel<SchoolProject.Web.Models.AppUsers.AppUserWithRolesViewModel> *@
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +9,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>User</h4>
+    <h4>AppUser</h4>
     <hr/>
 
     <div class="row">
@@ -20,6 +22,6 @@
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fa-regular fa-pen-to-square"></span> Edit</a>
-    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><span class="fa-regular fa-pen-to-square"></span> Edit</a>
+    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
 </div>

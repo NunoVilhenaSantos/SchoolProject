@@ -13,5 +13,5 @@ public class ProductViewModel : Student
     ///     Gets or sets the image file.
     /// </summary>
     [DisplayName("Image")]
-    public new IFormFile ImageFile { get; set; }
+    public new required IFormFile ImageFile { get; set; }
 }

@@ -1,14 +1,28 @@
 @model SchoolProject.Web.Data.Entities.Countries.Nationality
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
 
-
+<div class="form-group">
+    <label asp-for="Country.Name" class="control-label"></label>
+    <input asp-for="Country.Name" class="form-control"/>
+    <span asp-validation-for="Country.Name" class="text-danger"></span>
+</div>
 <div class="form-group">
     <label asp-for="Name" class="control-label"></label>
     <input asp-for="Name" class="form-control"/>
     <span asp-validation-for="Name" class="text-danger"></span>
 </div>
+<div class="form-group">
+    <label asp-for="Country.ImageFile" class="control-label"></label>
+    <input asp-for="Country.ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
+    <span asp-validation-for="Country.ImageFile" class="text-danger"></span>
+</div>
+
+@*
 <div class="form-group form-check">
     <label class="form-check-label">
-        <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
+        <input asp-for="WasDeleted" class="form-check-input" />
+        @Html.DisplayNameFor(model => model.WasDeleted)
     </label>
 </div>
 <div class="form-group">
@@ -16,6 +30,4 @@
     <input asp-for="UpdatedAt" class="form-control"/>
     <span asp-validation-for="UpdatedAt" class="text-danger"></span>
 </div>
-           
-      
-
+*@

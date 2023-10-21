@@ -1,4 +1,5 @@
-﻿using SchoolProject.Web.Data.Entities.OtherEntities;
+﻿using SchoolProject.Web.Data.Entities;
+using SchoolProject.Web.Data.Entities.Genders;
 
 namespace SchoolProject.Web.Data.Repositories.Mock;
 

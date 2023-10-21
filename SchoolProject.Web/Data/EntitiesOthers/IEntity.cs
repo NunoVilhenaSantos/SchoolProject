@@ -52,7 +52,7 @@ public interface IEntity
     [Required]
     [Column(Order = 22)]
     [DisplayName("Created By")]
-    public User CreatedBy { get; set; }
+    public AppUser CreatedBy { get; set; }
 
 
     // [Required]
@@ -73,5 +73,5 @@ public interface IEntity
     [Required]
     [DisplayName("Updated By")]
     [DataType(DataType.Date)]
-    public User? UpdatedBy { get; set; }
+    public AppUser? UpdatedBy { get; set; }
 }

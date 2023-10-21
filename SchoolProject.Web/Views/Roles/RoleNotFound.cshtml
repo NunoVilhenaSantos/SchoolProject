@@ -3,10 +3,10 @@
 
 @{
     ViewData["Title"] = ViewData["ClassName"] + " Not Found";
-    var action = ViewData["Action"]?.ToString();
-    var controller = ViewData["Controller"]?.ToString();
+    var action = ViewData["Action"]?.ToString() ?? string.Empty;
+    var controller = ViewData["Controller"]?.ToString() ?? string.Empty;
     var buttonHref = "/" + controller + "/" + action;
-    var itemId = string.IsNullOrEmpty(ViewData["ItemId"]?.ToString()) ? "Nulo" : ViewData["ItemId"]?.ToString();
+    var itemId = (ViewData["ItemId"] != null ? string.IsNullOrEmpty(ViewData["ItemId"].ToString()) : true) ? "Nulo" : ViewData["ItemId"] != null ? ViewData["ItemId"].ToString() : string.Empty;
 }
 
 <h2>@ViewData["Title"] </h2>

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using CsvHelper.Configuration.Attributes;
+using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Students;
@@ -141,7 +142,7 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     The image of the user file from the form to be inserted in the database.
+    ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
      [Ignore]
     [NotMapped]
@@ -150,19 +151,21 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     The profile photo of the user.
+    ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
     public required Guid ProfilePhotoId { get; set; }
 
     /// <summary>
-    ///     The profile photo of the user in URL format.
+    ///     The profile photo of the appUser in URL format.
     /// </summary>
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://ca001.blob.core.windows.net/images/noimage.png"
-        // : StorageHelper.GcpStoragePublicUrl + "school-classes/" + ProfilePhotoId;
-        : StorageHelper.AzureStoragePublicUrl + "course/" +
-          ProfilePhotoId;
+        ? StorageHelper.NoImageUrl
+        : StorageHelper.AzureStoragePublicUrl +
+          CoursesController.BucketName +
+          "/" + ProfilePhotoId;
+
+
 
 
     // ---------------------------------------------------------------------- //
@@ -342,7 +345,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
-    public virtual required User CreatedBy { get; set; }
+    public virtual required AppUser CreatedBy { get; set; }
 
 
     /// <inheritdoc />
@@ -355,7 +358,7 @@ public class Course : IEntity, INotifyPropertyChanged
 
     /// <inheritdoc />
     [DisplayName("Updated By")]
-    public virtual User? UpdatedBy { get; set; }
+    public virtual AppUser? UpdatedBy { get; set; }
 
 
     // --------------------------------------------------------------------- //

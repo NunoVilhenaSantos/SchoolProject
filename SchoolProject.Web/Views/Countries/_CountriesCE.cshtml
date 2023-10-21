@@ -1,4 +1,8 @@
+@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Countries.Country
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Country> *@
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Country> *@
+
 
 <div class="form-group">
     <label asp-for="Name" class="control-label"></label>
@@ -6,24 +10,12 @@
     <span asp-validation-for="Name" class="text-danger"></span>
 </div>
 <div class="form-group">
-    <label asp-for="ImageFile" class="control-label"></label>
-    <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)" />
-    <span asp-validation-for="ImageFile" class="text-danger"></span>
-</div>
-@* <div class="form-group">
-    <label asp-for="ProfilePhotoId" class="control-label"></label>
-    <input asp-for="ProfilePhotoId" class="form-control"/>
-    <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
-</div> *@
-<div class="form-group form-check">
-    <label class="form-check-label">
-        <input class="form-check-input" asp-for="WasDeleted"/>
-        @Html.DisplayNameFor(model => model.WasDeleted)
-    </label>
+    <label asp-for="Nationality.Name" class="control-label"></label>
+    <input asp-for="Nationality.Name" class="form-control"/>
+    <span asp-validation-for="Nationality.Name" class="text-danger"></span>
 </div>
 <div class="form-group">
-    <label asp-for="UpdatedAt" class="control-label"></label>
-    <input asp-for="UpdatedAt" class="form-control"/>
-    <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+    <label asp-for="ImageFile" class="control-label"></label>
+    <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
+    <span asp-validation-for="ImageFile" class="text-danger"></span>
 </div>
-           

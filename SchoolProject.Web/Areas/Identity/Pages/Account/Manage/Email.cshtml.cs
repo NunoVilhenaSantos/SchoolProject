@@ -18,12 +18,12 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 public class EmailModel : PageModel
 {
     private readonly IEmailSender _emailSender;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public EmailModel(
-        SignInManager<User> signInManager,
-        UserManager<User> userManager,
+        SignInManager<AppUser> signInManager,
+        UserManager<AppUser> userManager,
         IEmailSender emailSender)
     {
         _emailSender = emailSender;
@@ -61,14 +61,14 @@ public class EmailModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; }
 
-    private async Task LoadAsync(User user)
+    private async Task LoadAsync(AppUser appUser)
     {
-        var email = await _userManager.GetEmailAsync(user);
+        var email = await _userManager.GetEmailAsync(appUser);
         Email = email;
 
         Input = new InputModel {NewEmail = email};
 
-        IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+        IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(appUser);
     }
 
     public async Task<IActionResult> OnGetAsync()
@@ -76,7 +76,7 @@ public class EmailModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         await LoadAsync(user);
@@ -88,7 +88,7 @@ public class EmailModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
@@ -140,7 +140,7 @@ public class EmailModel : PageModel
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
-            return NotFound($"Unable to load user with ID " +
+            return NotFound($"Unable to load appUser with ID " +
                             $"'{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)

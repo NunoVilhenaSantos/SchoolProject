@@ -15,7 +15,7 @@ public class AddItemViewModel
     public double Quantity { get; set; }
 
 
-    public IEnumerable<SelectListItem> Products { get; set; }
+    public required IEnumerable<SelectListItem> Products { get; set; }
 
 
     // [Display(Name = "Remarks")]

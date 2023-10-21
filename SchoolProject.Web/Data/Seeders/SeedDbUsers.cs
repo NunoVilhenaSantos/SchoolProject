@@ -64,7 +64,7 @@ public class SeedDbUsers
                 .FirstOrDefaultAsync(c => c.Name == "Cuba");
 
         Console.WriteLine(
-            $"Seeding the user {firstName} {lastName} with the email {email}");
+            $"Seeding the appUser {firstName} {lastName} with the email {email}");
 
         await VerifyUserAsync(
             firstName, lastName,
@@ -78,7 +78,7 @@ public class SeedDbUsers
     }
 
 
-    internal static async Task<User> VerifyUserAsync(
+    internal static async Task<AppUser> VerifyUserAsync(
         string firstName, string lastName,
         string userName,
         string email,
@@ -115,8 +115,8 @@ public class SeedDbUsers
 
         if (user == null)
         {
-            // Create a new user with common properties set outside the switch
-            var newUser = new User
+            // Create a new appUser with common properties set outside the switch
+            var newUser = new AppUser
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -142,14 +142,14 @@ public class SeedDbUsers
                 case "Student":
                 case "Teacher":
                 case "Parent":
-                case "User":
+                case "AppUser":
                     // Add any role-specific properties here
                     break;
 
                 default:
-                    message = $"{nameof(User)} {firstName} {lastName} " +
+                    message = $"{nameof(AppUser)} {firstName} {lastName} " +
                               $"with email {email} and role {role}, " +
-                              "could not create the user in Seeder, " +
+                              "could not create the appUser in Seeder, " +
                               $"because the role {role} is not valid.";
 
                     Console.WriteLine(message);
@@ -160,16 +160,16 @@ public class SeedDbUsers
 
             // ------------------------------------------------------------ //
 
-            // Create the user
+            // Create the appUser
             var result =
                 await _userHelper.AddUserAsync(newUser, password);
 
-            // Check if the user was created successfully
+            // Check if the appUser was created successfully
             if (result != IdentityResult.Success)
             {
-                message = $"{nameof(User)} {firstName} {lastName} " +
+                message = $"{nameof(AppUser)} {firstName} {lastName} " +
                           $"with email {email} and role {role}, " +
-                          "could not create the user in Seeder.";
+                          "could not create the appUser in Seeder.";
 
                 Console.WriteLine(message);
                 _logger.LogError(message);
@@ -179,19 +179,19 @@ public class SeedDbUsers
 
             // ------------------------------------------------------------ //
 
-            // Add the user to the role
+            // Add the appUser to the role
             await _userHelper.AddUserToRoleAsync(newUser, role);
 
-            // Check if the user was added to the role successfully
+            // Check if the appUser was added to the role successfully
             var isInRole =
                 await _userHelper.IsUserInRoleAsync(newUser, role);
 
-            // Check if the user was added to the role successfully
+            // Check if the appUser was added to the role successfully
             if (!isInRole)
             {
-                message = $"{nameof(User)} {firstName} {lastName} " +
+                message = $"{nameof(AppUser)} {firstName} {lastName} " +
                           $"with email {email} and role {role}, " +
-                          "could not create the user in Seeder.";
+                          "could not create the appUser in Seeder.";
 
                 Console.WriteLine(message);
                 _logger.LogError(message);
@@ -199,8 +199,8 @@ public class SeedDbUsers
             }
 
 
-            // Log the user creation
-            message = $"User {firstName} {lastName} " +
+            // Log the appUser creation
+            message = $"AppUser {firstName} {lastName} " +
                       $"with email {email} and role {role} has been created.";
 
 
@@ -210,7 +210,7 @@ public class SeedDbUsers
             return newUser;
         }
 
-        message = $"{nameof(User)} {firstName} {lastName} " +
+        message = $"{nameof(AppUser)} {firstName} {lastName} " +
                   $"with email {email} and role {role}, " +
                   "already exists.";
 

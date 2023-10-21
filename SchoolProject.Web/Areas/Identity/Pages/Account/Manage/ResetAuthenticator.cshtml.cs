@@ -13,12 +13,12 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 public class ResetAuthenticatorModel : PageModel
 {
     private readonly ILogger<ResetAuthenticatorModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public ResetAuthenticatorModel(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
         ILogger<ResetAuthenticatorModel> logger)
     {
         _logger = logger;
@@ -39,7 +39,7 @@ public class ResetAuthenticatorModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         return Page();
@@ -50,7 +50,7 @@ public class ResetAuthenticatorModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         await _userManager.SetTwoFactorEnabledAsync(user, false);
@@ -58,7 +58,7 @@ public class ResetAuthenticatorModel : PageModel
         var userId = await _userManager.GetUserIdAsync(user);
 
         _logger.LogInformation(
-            "User with ID '{UserId}' " +
+            "AppUser with ID '{UserId}' " +
             "has reset their authentication app key.",
             user.Id);
 

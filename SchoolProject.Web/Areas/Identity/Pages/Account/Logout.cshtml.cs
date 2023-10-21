@@ -13,10 +13,10 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class LogoutModel : PageModel
 {
     private readonly ILogger<LogoutModel> _logger;
-    private readonly SignInManager<User> _signInManager;
+    private readonly SignInManager<AppUser> _signInManager;
 
     public LogoutModel(
-        SignInManager<User> signInManager,
+        SignInManager<AppUser> signInManager,
         ILogger<LogoutModel> logger)
     {
         _signInManager = signInManager;
@@ -26,13 +26,13 @@ public class LogoutModel : PageModel
     public async Task<IActionResult> OnPost(string returnUrl = null)
     {
         await _signInManager.SignOutAsync();
-        _logger.LogInformation("User logged out.");
+        _logger.LogInformation("AppUser logged out.");
 
         if (returnUrl != null)
             return LocalRedirect(returnUrl);
 
         // This needs to be a redirect so that the browser performs a new
-        // request and the identity for the user gets updated.
+        // request and the identity for the appUser gets updated.
         return RedirectToPage();
     }
 }

@@ -10,13 +10,16 @@ namespace SchoolProject.Web.Data.Repositories.Countries;
 public class NationalityRepository
     : GenericRepository<Nationality>, INationalityRepository
 {
-    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+    // data contexts
     private readonly DataContextMySql _dataContext;
 
     // private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
-
     private readonly DataContextSqLite _dataContextSqLite;
+
+
+    // authenticated user in app
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
     /// <inheritdoc />
@@ -35,7 +38,7 @@ public class NationalityRepository
     }
 
 
-    public IQueryable<Nationality> GetNationalitiesWithCountries()
+    public IOrderedQueryable<Nationality> GetNationalitiesWithCountries()
     {
         return _dataContext.Nationalities
             .Include(c => c.Country)
@@ -45,15 +48,25 @@ public class NationalityRepository
     }
 
 
-    public async Task<Nationality?> GetNationalityAsync(int id)
+    public IOrderedQueryable<Nationality> GetNationalityAsync(int id)
     {
-        return await _dataContext.Nationalities.FindAsync(id);
+        return _dataContext.Nationalities
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Cities)
+            .Where(c => c.Id == id)
+            .OrderBy(c => c.Country.Name)
+            .ThenBy(c => c.Name);
     }
 
 
-    public async Task<Nationality?> GetNationalityAsync(Nationality nationality)
+    public IOrderedQueryable<Nationality> GetNationalityAsync(Nationality nationality)
     {
-        return await _dataContext.Nationalities.FindAsync(nationality.Id);
+        return _dataContext.Nationalities
+            .Include(c => c.Country)
+            .ThenInclude(country => country.Cities)
+            .Where(c => c.Id == nationality.Id)
+            .OrderBy(c => c.Country.Name)
+            .ThenBy(c => c.Name);
     }
 
 

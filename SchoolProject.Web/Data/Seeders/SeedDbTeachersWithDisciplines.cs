@@ -14,20 +14,20 @@ public class SeedDbTeachersWithDisciplines
     public static async Task AddingData(
         // DataContextMsSql dataContextInUse, 
         DataContextMySql dataContextInUse,
-        User user
+        AppUser appUser
     )
     {
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
 
-        await AddDataToDb(user, dataContextInUse);
+        await AddDataToDb(appUser, dataContextInUse);
 
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
     }
 
 
-    private static async Task AddDataToDb(User user,
+    private static async Task AddDataToDb(AppUser appUser,
         DataContextMySql dataContextInUse)
     {
         // ------------------------------------------------------------------ //
@@ -66,8 +66,8 @@ public class SeedDbTeachersWithDisciplines
                      Teacher = teacher,
                      CourseId = course.Id,
                      Course = course,
-                     CreatedBy = user,
-                     CreatedById = user.Id,
+                     CreatedBy = appUser,
+                     CreatedById = appUser.Id,
                  })
             // Add the TeacherCourse association to the context
             dataContextInUse.TeacherCourses.Add(teacherCourse);

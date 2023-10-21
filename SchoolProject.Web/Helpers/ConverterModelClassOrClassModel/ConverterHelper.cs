@@ -25,7 +25,7 @@ public class ConverterHelper : IConverterHelper
     //         FixedPhone = ownerViewModel.FixedPhone,
     //         CellPhone = ownerViewModel.CellPhone,
     //         Address = ownerViewModel.Address,
-    //         User = ownerViewModel.User
+    //         AppUser = ownerViewModel.AppUser
     //     };
     // }
 
@@ -43,7 +43,7 @@ public class ConverterHelper : IConverterHelper
     //         FixedPhone = owner.FixedPhone,
     //         CellPhone = owner.CellPhone,
     //         Address = owner.Address,
-    //         User = owner.User
+    //         AppUser = owner.AppUser
     //     };
     // }
 
@@ -66,7 +66,8 @@ public class ConverterHelper : IConverterHelper
             CreatedBy = courseViewModel.CreatedBy,
             IdGuid = courseViewModel.IdGuid,
             CreatedAt = courseViewModel.CreatedAt,
-            ProfilePhotoId = courseViewModel.ProfilePhotoId
+            ProfilePhotoId = courseViewModel.ProfilePhotoId,
+            Description = courseViewModel.Description,
         };
     }
 
@@ -86,7 +87,8 @@ public class ConverterHelper : IConverterHelper
             CreatedBy = course.CreatedBy,
             IdGuid = course.IdGuid,
             CreatedAt = course.CreatedAt,
-            ProfilePhotoId = course.ProfilePhotoId
+            ProfilePhotoId = course.ProfilePhotoId,
+            Description = course.Description,
         };
     }
 

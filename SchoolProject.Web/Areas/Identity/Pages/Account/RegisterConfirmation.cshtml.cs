@@ -18,9 +18,9 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 public class RegisterConfirmationModel : PageModel
 {
     private readonly IEmailSender _sender;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    public RegisterConfirmationModel(UserManager<User> userManager,
+    public RegisterConfirmationModel(UserManager<AppUser> userManager,
         IEmailSender sender)
     {
         _userManager = userManager;
@@ -56,7 +56,7 @@ public class RegisterConfirmationModel : PageModel
 
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
-            return NotFound($"Unable to load user with email '{email}'.");
+            return NotFound($"Unable to load appUser with email '{email}'.");
 
         Email = email;
         // Once you add a real email sender,

@@ -5,48 +5,48 @@ using SchoolProject.Web.Models.Account;
 namespace SchoolProject.Web.Helpers.Users;
 
 /// <summary>
-///     The user helper interface.
+///     The appUser helper interface.
 /// </summary>
 public interface IUserHelper
 {
     /// <summary>
-    ///     Gets the user by email.
+    ///     Gets the appUser by email.
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    Task<User?> GetUserByEmailAsync(string email);
+    Task<AppUser?> GetUserByEmailAsync(string email);
 
 
     /// <summary>
-    ///     Gets the user by id.
+    ///     Gets the appUser by id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<User?> GetUserByIdAsync(string id);
+    Task<AppUser?> GetUserByIdAsync(string id);
 
 
     /// <summary>
-    ///     Gets the user by user name.
+    ///     Gets the appUser by appUser name.
     /// </summary>
     /// <param name="userName"></param>
     /// <returns></returns>
-    Task<User?> GetUserByUserNameAsync(string userName);
+    Task<AppUser?> GetUserByUserNameAsync(string userName);
 
 
     /// <summary>
-    ///     Gets the user initials.
+    ///     Gets the appUser initials.
     /// </summary>
     /// <returns></returns>
     Task<string?> GetUserInitialsAsync();
 
 
     /// <summary>
-    ///     Creates a new user.
+    ///     Creates a new appUser.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    Task<IdentityResult> AddUserAsync(User user, string password);
+    Task<IdentityResult> AddUserAsync(AppUser appUser, string password);
 
 
     /// <summary>
@@ -58,7 +58,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///     logs in the user.
+    ///     logs in the appUser.
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -66,93 +66,93 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///     Logs out the user.
+    ///     Logs out the appUser.
     /// </summary>
     /// <returns></returns>
     Task LogOutAsync();
 
 
     /// <summary>
-    ///     Updates the user.
+    ///     Updates the appUser.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <returns></returns>
-    Task<IdentityResult> UpdateUserAsync(User user);
+    Task<IdentityResult> UpdateUserAsync(AppUser appUser);
 
 
     /// <summary>
-    ///     Changes the password of the user.
+    ///     Changes the password of the appUser.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="oldPassword"></param>
     /// <param name="newPassword"></param>
     /// <returns></returns>
     Task<IdentityResult> ChangePasswordAsync(
-        User user, string oldPassword, string newPassword);
+        AppUser appUser, string oldPassword, string newPassword);
 
 
     /// <summary>
-    ///     Adds the user to the specified role.
+    ///     Adds the appUser to the specified role.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="roleName"></param>
     /// <returns></returns>
-    Task AddUserToRoleAsync(User user, string roleName);
+    Task AddUserToRoleAsync(AppUser appUser, string roleName);
 
 
     /// <summary>
-    ///     Removes the user from the specified role.
+    ///     Removes the appUser from the specified role.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="roleName"></param>
     /// <returns></returns>
-    Task RemoveUserFromRoleAsync(User user, string roleName);
+    Task RemoveUserFromRoleAsync(AppUser appUser, string roleName);
 
 
     /// <summary>
-    ///     Checks if the user is in the specified role.
+    ///     Checks if the appUser is in the specified role.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="roleName"></param>
     /// <returns></returns>
-    Task<bool> IsUserInRoleAsync(User user, string roleName);
+    Task<bool> IsUserInRoleAsync(AppUser appUser, string roleName);
 
 
     /// <summary>
-    ///     Checks if the user and the password are valid.
+    ///     Checks if the appUser and the password are valid.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    Task<SignInResult> ValidatePasswordAsync(User user, string password);
+    Task<SignInResult> ValidatePasswordAsync(AppUser appUser, string password);
 
 
     /// <summary>
-    ///     Generates a token for the user to validate the email.
+    ///     Generates a token for the appUser to validate the email.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <returns></returns>
-    Task<string> GenerateEmailConfirmationTokenAsync(User user);
+    Task<string> GenerateEmailConfirmationTokenAsync(AppUser appUser);
 
 
     /// <summary>
-    ///     Confirms the email of the user.
+    ///     Confirms the email of the appUser.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="appUser"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+    Task<IdentityResult> ConfirmEmailAsync(AppUser appUser, string token);
 
 
-    Task SignInAsync(User user, bool rememberMe = true,
+    Task SignInAsync(AppUser appUser, bool rememberMe = true,
         string? authenticationMethod = null);
 
 
-    Task<bool> PasswordSignInAsync(User user, bool isPersistent = false,
+    Task<bool> PasswordSignInAsync(AppUser appUser, bool isPersistent = false,
         bool lockoutOnFailure = false);
 
 
-    bool IsUserSignInAsync(User user, bool rememberMe = true,
+    bool IsUserSignInAsync(AppUser appUser, bool rememberMe = true,
         string? authenticationMethod = null);
 
 

@@ -1,6 +1,8 @@
+@* @model SchoolProject.Web.Data.Entities.Countries.Nationality *@
 @using System.Reflection
 @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Nationality>
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
+
 
 @{
     // ViewData["Title"] = "Index";
@@ -8,13 +10,13 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
-    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
-    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
-    var deleteClassName = ViewData["CurrentClass"]?.ToString();
-    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
+    var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
 }
 
 @* <h2>@pageTitle</h2> *@
@@ -40,11 +42,12 @@
 <table class="table table-hover" sortable="True" id="sortableTable">
     <thead>
     <tr>
+        <th>@Html.DisplayNameFor(model => model.Country.ProfilePhotoIdUrl) </th>
         <th>@Html.DisplayNameFor(model => model.Name) </th>
-        @* <th>@Html.DisplayNameFor(model => model.IdGuid) </th> *@
-        <th>@Html.DisplayNameFor(model => model.WasDeleted) </th>
-        <th>@Html.DisplayNameFor(model => model.CreatedAt) </th>
-        <th>@Html.DisplayNameFor(model => model.UpdatedAt) </th>
+        <th>@Html.DisplayNameFor(model => model.Country) </th>
+        <th>@Html.DisplayNameFor(model => model.Country.NumberCities) </th>
+        @* <th>@Html.DisplayNameFor(model => model.CreatedAt) </th> *@
+        @* <th>@Html.DisplayNameFor(model => model.UpdatedAt) </th> *@
         <th></th>
     </tr>
     </thead>
@@ -52,13 +55,16 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@Html.DisplayFor(modelItem => item.Name) </td>
-            @* <td>@Html.DisplayFor(modelItem => item.IdGuid) </td> *@
-            <td>@Html.DisplayFor(modelItem => item.WasDeleted) </td>
-            <td>@Html.DisplayFor(modelItem => item.CreatedAt) </td>
-            <td>@Html.DisplayFor(modelItem => item.UpdatedAt) </td>
             <td>
-                <div class="btn-group">
+                <img alt="Image" class="img-thumbnail" height="100" src="@Url.Content(item.Country.ProfilePhotoIdUrl)" width="150"/>
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.Name) </td>
+            <td>@Html.DisplayFor(modelItem => item.Country.Name) </td>
+            <td>@Html.DisplayFor(modelItem => item.Country.NumberCities) </td>
+            @* <td>@Html.DisplayFor(modelItem => item.CreatedAt) </td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.UpdatedAt) </td> *@
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>

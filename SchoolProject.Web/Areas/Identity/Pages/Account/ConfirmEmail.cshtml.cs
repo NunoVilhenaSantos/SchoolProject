@@ -14,9 +14,9 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account;
 
 public class ConfirmEmailModel : PageModel
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    public ConfirmEmailModel(UserManager<User> userManager)
+    public ConfirmEmailModel(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
     }
@@ -36,7 +36,7 @@ public class ConfirmEmailModel : PageModel
         var user = await _userManager.FindByIdAsync(userId);
 
         if (user == null)
-            return NotFound($"Unable to load user with ID '{userId}'.");
+            return NotFound($"Unable to load appUser with ID '{userId}'.");
 
         code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
         var result = await _userManager.ConfirmEmailAsync(user, code);

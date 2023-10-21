@@ -20,19 +20,19 @@ public class RegisterModel : PageModel
 {
     private readonly IEMailHelper _emailSender;
 
-    private readonly IUserEmailStore<User> _emailStore;
+    private readonly IUserEmailStore<AppUser> _emailStore;
     private readonly ILogger<RegisterModel> _logger;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    private readonly IUserStore<User> _userStore;
+    private readonly IUserStore<AppUser> _userStore;
     // private readonly IEmailSender _emailSender;
 
     public RegisterModel(
-        SignInManager<User> signInManager,
+        SignInManager<AppUser> signInManager,
         ILogger<RegisterModel> logger,
-        UserManager<User> userManager,
-        IUserStore<User> userStore,
+        UserManager<AppUser> userManager,
+        IUserStore<AppUser> userStore,
         IEMailHelper emailSender
     )
     {
@@ -100,7 +100,7 @@ public class RegisterModel : PageModel
         if (result.Succeeded)
         {
             _logger.LogInformation(
-                "User created a new account with password.");
+                "AppUser created a new account with password.");
 
             var userId = await _userManager.GetUserIdAsync(user);
 
@@ -138,11 +138,11 @@ public class RegisterModel : PageModel
         return Page();
     }
 
-    private User CreateUser()
+    private AppUser CreateUser()
     {
         try
         {
-            return Activator.CreateInstance<User>();
+            return Activator.CreateInstance<AppUser>();
         }
         catch
         {
@@ -155,13 +155,13 @@ public class RegisterModel : PageModel
         }
     }
 
-    private IUserEmailStore<User> GetEmailStore()
+    private IUserEmailStore<AppUser> GetEmailStore()
     {
         if (!_userManager.SupportsUserEmail)
             throw new NotSupportedException(
                 "The default UI requires " +
-                "a user store with email support.");
-        return (IUserEmailStore<User>) _userStore;
+                "a appUser store with email support.");
+        return (IUserEmailStore<AppUser>) _userStore;
     }
 
     /// <summary>

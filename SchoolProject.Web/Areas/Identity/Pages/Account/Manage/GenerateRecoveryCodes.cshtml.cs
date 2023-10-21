@@ -13,10 +13,10 @@ namespace SchoolProject.Web.Areas.Identity.Pages.Account.Manage;
 public class GenerateRecoveryCodesModel : PageModel
 {
     private readonly ILogger<GenerateRecoveryCodesModel> _logger;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public GenerateRecoveryCodesModel(
-        UserManager<User> userManager,
+        UserManager<AppUser> userManager,
         ILogger<GenerateRecoveryCodesModel> logger
     )
     {
@@ -45,7 +45,7 @@ public class GenerateRecoveryCodesModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         var isTwoFactorEnabled =
@@ -53,7 +53,7 @@ public class GenerateRecoveryCodesModel : PageModel
         if (!isTwoFactorEnabled)
             throw new InvalidOperationException(
                 "Cannot generate recovery codes for " +
-                "user because they do not have 2FA enabled.");
+                "appUser because they do not have 2FA enabled.");
 
         return Page();
     }
@@ -63,7 +63,7 @@ public class GenerateRecoveryCodesModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
             return NotFound(
-                $"Unable to load user with ID " +
+                $"Unable to load appUser with ID " +
                 $"'{_userManager.GetUserId(User)}'.");
 
         var isTwoFactorEnabled =
@@ -73,7 +73,7 @@ public class GenerateRecoveryCodesModel : PageModel
         if (!isTwoFactorEnabled)
             throw new InvalidOperationException(
                 "Cannot generate recovery codes for " +
-                "user as they do not have 2FA enabled.");
+                "appUser as they do not have 2FA enabled.");
 
         var recoveryCodes =
             await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(
@@ -82,7 +82,7 @@ public class GenerateRecoveryCodesModel : PageModel
         RecoveryCodes = recoveryCodes.ToArray();
 
         _logger.LogInformation(
-            "User with ID '{UserId}' " +
+            "AppUser with ID '{UserId}' " +
             "has generated new 2FA recovery codes.", userId);
 
         StatusMessage = "You have generated new recovery codes.";

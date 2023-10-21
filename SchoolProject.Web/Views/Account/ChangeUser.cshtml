@@ -1,9 +1,9 @@
 ﻿@using SchoolProject.Web.Models.Account;
 
-@model   SchoolProject.Web.Models.Account.ChangeUserViewModel
+@model   SchoolProject.Web.Models.Account.ChangeAppUserViewModel
 
 @{
-    ViewData["Title"] = "Change User";
+    ViewData["Title"] = "Change AppUser";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -23,8 +23,8 @@
                 <form method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly"></div>
 
-                    <!-- Hidden input for Username -->
-                    @* <input type="hidden" asp-for="UserName" /> *@
+                    <!-- Hidden input for AppUsername -->
+                    @* <input type="hidden" asp-for="AppUserName" /> *@
                     <input type="hidden" asp-for="Id"/>
 
                     <div class="form-group">
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="UserName" class="control-label">Username</label>
+                        <label asp-for="UserName" class="control-label">AppUsername</label>
                         <input asp-for="UserName" class="form-control"/>
                         <span asp-validation-for="UserName" class="text-warning"></span>
                     </div>
@@ -92,7 +92,7 @@
                     <br/>
                     <div class="form-group">
                         <input type="submit" value="Update" class="btn btn-primary"/>
-                        <a asp-action="Register" class="btn btn-success">Register New User</a>
+                        <a asp-action="Register" class="btn btn-success">Register New AppUser</a>
                     </div>
 
                     <div class="text-success">@ViewBag.UserMessage</div>

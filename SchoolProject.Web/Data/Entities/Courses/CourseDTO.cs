@@ -5,6 +5,8 @@ using SchoolProject.Web.Data.Entities.Students;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SchoolProject.Web.Controllers;
+using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
 
@@ -84,9 +86,15 @@ public class CourseDto
     public required Guid ProfilePhotoId { get; set; }
 
     /// <summary>
-    ///
+    ///     The profile photo of the appUser in URL format.
     /// </summary>
-    public required string ProfilePhotoIdUrl { get; set; }
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? StorageHelper.NoImageUrl
+        : StorageHelper.AzureStoragePublicUrl +
+          CoursesController.BucketName +
+          "/" + ProfilePhotoId;
+
+
 
 
     // ---------------------------------------------------------------------- //
@@ -198,7 +206,7 @@ public class CourseDto
             PriceForEmployed = course.Id,
             PriceForUnemployed = course.Id,
             ProfilePhotoId = course.ProfilePhotoId,
-            ProfilePhotoIdUrl = course.ProfilePhotoIdUrl,
+            // ProfilePhotoIdUrl = course.ProfilePhotoIdUrl,
 
             CourseDisciplines = course.CourseDisciplines
                 .Where(e => e.CourseId == course.Id)

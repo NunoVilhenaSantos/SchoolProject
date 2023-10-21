@@ -5,8 +5,8 @@ public class ErrorViewModel
     /// <summary>
     ///     Identificador da requisição.
     /// </summary>
-    public string RequestId { get; set; }
-
+    public required string RequestId { get; set; }
+   
 
     /// <summary>
     ///     Código de status HTTP.

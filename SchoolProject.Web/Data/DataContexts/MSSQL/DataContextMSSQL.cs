@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.OtherEntities;
+using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
@@ -13,8 +14,8 @@ using SchoolProject.Web.Data.Entities.Users;
 namespace SchoolProject.Web.Data.DataContexts.MSSQL;
 
 /// <inheritdoc />
-public class DataContextMsSql : IdentityDbContext<User, IdentityRole, string>
-// public class DataContextMsSql : IdentityDbContext<User>
+public class DataContextMsSql : IdentityDbContext<AppUser, IdentityRole, string>
+// public class DataContextMsSql : IdentityDbContext<AppUser>
 {
     /// <inheritdoc />
     public DataContextMsSql(DbContextOptions<DataContextMsSql> options) :

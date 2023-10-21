@@ -23,6 +23,9 @@ public class StorageHelper : IStorageHelper
 
     private readonly GoogleCredential _googleCredentials;
 
+    internal static string NoImageUrl =
+        "https://supershop.blob.core.windows.net/placeholders/noimage.png";
+
 
     /// <summary>
     ///     StorageHelper constructor.
@@ -44,7 +47,7 @@ public class StorageHelper : IStorageHelper
 
         var uriBuilder =
             new UriBuilder("https", "storage.googleapis.com");
-        uriBuilder.Path = Path.Combine("storage-jorge", "products" + "ImageId");
+        uriBuilder.Path = Path.Combine("storage-jorge", "products" + "ProfilePhotoId");
         //
         // string url = uriBuilder.Uri.ToString();
     }

@@ -19,7 +19,7 @@ public class SeedDbStudentsAndCourses
     // }
 
     public static async Task AddingData(
-        User user, DataContextMySql dataContextInUse)
+        AppUser appUser, DataContextMySql dataContextInUse)
     {
         var _dataContextInUse = dataContextInUse;
 
@@ -84,8 +84,8 @@ public class SeedDbStudentsAndCourses
                 Course = course,
                 StudentId = student.Id,
                 Student = student,
-                CreatedBy = user,
-                CreatedById = user.Id,
+                CreatedBy = appUser,
+                CreatedById = appUser.Id,
             };
 
             _dataContextInUse.CoursesStudents.Add(courseStudents);

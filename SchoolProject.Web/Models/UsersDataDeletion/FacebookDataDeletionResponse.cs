@@ -2,8 +2,8 @@
 
 public class FacebookDataDeletionResponse
 {
-    public string Url { get; set; }
+    public required string Url { get; set; }
 
 
-    public string ConfirmationCode { get; set; }
+    public required string ConfirmationCode { get; set; }
 }

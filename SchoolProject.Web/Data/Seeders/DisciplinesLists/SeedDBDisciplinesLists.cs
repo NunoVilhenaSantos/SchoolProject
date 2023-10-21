@@ -9,7 +9,7 @@ namespace SchoolProject.Web.Data.Seeders.DisciplinesLists;
 
 public class SeedDBDisciplinesLists
 {
-    private static User _user;
+    private static AppUser _appUser;
     // private static Random _random;
 
     // private static IUserHelper _userHelper;
@@ -109,14 +109,14 @@ public class SeedDBDisciplinesLists
 
     public static void Initialize(DataContextMySql dataContextInUse)
     {
-        //_user = user;
+        //_appUser = appUser;
         _dataContextInUse = dataContextInUse;
     }
 
 
-    internal static async Task AddingData(User user)
+    internal static async Task AddingData(AppUser appUser)
     {
-        _user = user;
+        _appUser = appUser;
 
         // calcular o tempo decorrido para executar o método principal
         // Create a new timer with the name from variable "timerName" 
@@ -436,8 +436,9 @@ public class SeedDBDisciplinesLists
                         Name = discipline.Value.Item1,
                         Hours = discipline.Value.Item2,
                         CreditPoints = discipline.Value.Item3,
-                        CreatedBy = _user,
-                        ProfilePhotoId = default
+                        CreatedBy = _appUser,
+                        ProfilePhotoId = default,
+                        Description = string.Empty,
                     })
                 .ToList();
 

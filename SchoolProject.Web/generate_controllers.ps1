@@ -1,5 +1,7 @@
 Clear-Host
 
+CHCP 65001
+
 # Obtém o diretório do script atual
 $scriptDir = $PSScriptRoot
 
@@ -49,9 +51,11 @@ function GenerateControllersRecursively
         $modelName = $model.BaseName
         $controllerName = PluralizeControllerName $modelName
 
-        Write-Host "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
+        # Write-Host "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
         # dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --force --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions
+
         Write-Host "dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions"
+        dotnet aspnet-codegenerator controller --model $modelName --dataContext $dataContext --useDefaultLayout --relativeFolderPath Controllers --controllerName $controllerName --useAsyncActions
     }
 
     # Loop recursivamente em todas as sub-pastas

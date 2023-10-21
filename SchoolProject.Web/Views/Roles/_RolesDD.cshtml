@@ -1,19 +1,19 @@
 @model Microsoft.AspNetCore.Identity.IdentityRole
+@* @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole> *@
+@* @model PaginationViewModel<Microsoft.AspNetCore.Identity.IdentityRole> *@
 
-<div class="row">
-    <div class="col-md-8">
 
-        <dl class="row">
-            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Id)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Id)</dd>
-            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Name)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
-            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.NormalizedName)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.NormalizedName)</dd>
-            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.ConcurrencyStamp)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.ConcurrencyStamp)</dd>
-        @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.ConcurrencyStamp)</dt> *@
-        @* <dd class="col-sm-9">@Html.DisplayFor(model => model.ConcurrencyStamp)</dd> *@
-         </dl>
-    </div>
-</div>
+<dl class="row">
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Id)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Id)</dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Name)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.NormalizedName)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.NormalizedName)</dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.ConcurrencyStamp)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.ConcurrencyStamp)</dd>
+    @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.ConcurrencyStamp)</dt> *@
+    @* <dd class="col-sm-9">@Html.DisplayFor(model => model.ConcurrencyStamp)</dd> *@
+</dl>
+
+    

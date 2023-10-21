@@ -1,20 +1,41 @@
 @model SchoolProject.Web.Data.Entities.Countries.Nationality
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
+@* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Nationality> *@
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h3>@ViewData["Title"]</h3>
 
-<div>
-    <h4>Nationality</h4>
-    <hr/>
-    
-    <partial name="_NationalitiesDD" />
+<h4>Customers</h4>
 
+<hr/>
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
+
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+<div class="col">
+    <div class="row">
+        @* <partial name="_DisplayImages"/> *@
+        <div class="col-auto">
+            <img alt="Image" class="img-thumbnail preview" height="auto" src="@Url.Content(Model.Country.ProfilePhotoIdUrl)" width="250"/>
+        </div>
+
+        <div class="col-md-5">
+            <div class="row">
+                <partial name="_NationalitiesDD" for="@Model"/>
+
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fa-regular fa-pen-to-square"></span> Edit</a>
-    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
-</div>
+
+<partial name="_CitiesTable" for="@Model"/>

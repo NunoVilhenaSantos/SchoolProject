@@ -8,6 +8,7 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Controllers;
@@ -34,6 +35,9 @@ public class CoursesStudentsController : Controller
 
     internal string BucketName = CurrentClass.ToLower();
 
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
 
     /// <summary>
     ///     SchoolClassStudentsController
@@ -45,13 +49,13 @@ public class CoursesStudentsController : Controller
         DataContextMySql context,
         IWebHostEnvironment hostingEnvironment,
         IHttpContextAccessor httpContextAccessor,
-        ICourseStudentsRepository schoolClassStudentRepository
-    )
+        ICourseStudentsRepository schoolClassStudentRepository, AuthenticatedUserInApp authenticatedUserInApp)
     {
         _context = context;
         _hostingEnvironment = hostingEnvironment;
         _httpContextAccessor = httpContextAccessor;
         _schoolClassStudentRepository = schoolClassStudentRepository;
+        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
     // Obtém o controlador atual
@@ -101,7 +105,7 @@ public class CoursesStudentsController : Controller
                 //.ThenInclude(s => s.Gender)
                 //.ThenInclude(g => g.CreatedBy)
                 //.Include(scs => scs.Student)
-                //.ThenInclude(s => s.User)
+                //.ThenInclude(s => s.AppUser)
 
                 // ----------------- Student Others section ----------------- //
                 //.Include(scs => scs.Student)

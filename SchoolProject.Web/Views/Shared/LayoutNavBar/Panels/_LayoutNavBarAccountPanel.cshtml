@@ -2,13 +2,13 @@
 @using SchoolProject.Web.Helpers.Users
 @using System.Diagnostics
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @inject IUserHelper UserHelper
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 
-    Debug.Assert(User.Identity != null, "User.Identity != null");
+    Debug.Assert(User.Identity != null, "AppUser.Identity != null");
 }

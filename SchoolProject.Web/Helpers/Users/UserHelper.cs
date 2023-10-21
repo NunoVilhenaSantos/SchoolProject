@@ -6,18 +6,18 @@ using SchoolProject.Web.Models.Account;
 namespace SchoolProject.Web.Helpers.Users;
 
 /// <summary>
-///     The user helper.
+///     The appUser helper.
 /// </summary>
 public class UserHelper : IUserHelper
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
 
     /// <summary>
-    ///     The user helper constructor.
+    ///     The appUser helper constructor.
     /// </summary>
     /// <param name="httpContextAccessor"></param>
     /// <param name="userManager"></param>
@@ -25,8 +25,8 @@ public class UserHelper : IUserHelper
     /// <param name="roleManager"></param>
     public UserHelper(
         IHttpContextAccessor httpContextAccessor,
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
         RoleManager<IdentityRole> roleManager
     )
     {
@@ -39,21 +39,21 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
-    public async Task<User?> GetUserByEmailAsync(string email)
+    public async Task<AppUser?> GetUserByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
     }
 
 
     /// <inheritdoc />
-    public async Task<User?> GetUserByIdAsync(string id)
+    public async Task<AppUser?> GetUserByIdAsync(string id)
     {
         return await _userManager.FindByIdAsync(id);
     }
 
 
     /// <inheritdoc />
-    public async Task<User?> GetUserByUserNameAsync(string userName)
+    public async Task<AppUser?> GetUserByUserNameAsync(string userName)
     {
         return await _userManager.FindByNameAsync(userName);
     }
@@ -62,14 +62,14 @@ public class UserHelper : IUserHelper
     /// <inheritdoc />
     public async Task<string?> GetUserInitialsAsync()
     {
-        // var user = await _userManager.GetUserAsync(
-        //     _signInManager.Context.User);
+        // var appUser = await _userManager.GetUserAsync(
+        //     _signInManager.Context.AppUser);
         //
-        // if (user == null) return null;
+        // if (appUser == null) return null;
         //
         // return string.Concat(
-        //     user.FirstName.AsSpan(0, 1),
-        //     user.LastName.AsSpan(0, 1));
+        //     appUser.FirstName.AsSpan(0, 1),
+        //     appUser.LastName.AsSpan(0, 1));
 
 
         var user = await _userManager.GetUserAsync(
@@ -92,14 +92,14 @@ public class UserHelper : IUserHelper
 
     /// <inheritdoc />
     public async Task<IdentityResult> AddUserAsync(
-        User user, string password)
+        AppUser appUser, string password)
     {
-        // Check if user object is not null before proceeding
-        if (user == null)
-            throw new ArgumentNullException(nameof(user),
-                "User object cannot be null.");
+        // Check if appUser object is not null before proceeding
+        if (appUser == null)
+            throw new ArgumentNullException(nameof(appUser),
+                "AppUser object cannot be null.");
 
-        return await _userManager.CreateAsync(user, password);
+        return await _userManager.CreateAsync(appUser, password);
     }
 
 
@@ -132,84 +132,84 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
-    public async Task<IdentityResult> UpdateUserAsync(User user)
+    public async Task<IdentityResult> UpdateUserAsync(AppUser appUser)
     {
-        return await _userManager.UpdateAsync(user);
+        return await _userManager.UpdateAsync(appUser);
     }
 
 
     /// <inheritdoc />
     public async Task<IdentityResult> ChangePasswordAsync(
-        User user, string oldPassword, string newPassword)
+        AppUser appUser, string oldPassword, string newPassword)
     {
         return await _userManager.ChangePasswordAsync(
-            user, oldPassword, newPassword);
+            appUser, oldPassword, newPassword);
     }
 
 
     /// <inheritdoc />
-    public async Task AddUserToRoleAsync(User user, string roleName)
+    public async Task AddUserToRoleAsync(AppUser appUser, string roleName)
     {
-        await _userManager.AddToRoleAsync(user, roleName);
+        await _userManager.AddToRoleAsync(appUser, roleName);
     }
 
 
     /// <inheritdoc />
-    public async Task RemoveUserFromRoleAsync(User user, string roleName)
+    public async Task RemoveUserFromRoleAsync(AppUser appUser, string roleName)
     {
-        await _userManager.RemoveFromRoleAsync(user, roleName);
+        await _userManager.RemoveFromRoleAsync(appUser, roleName);
     }
 
 
     /// <inheritdoc />
-    public async Task<bool> IsUserInRoleAsync(User user, string roleName)
+    public async Task<bool> IsUserInRoleAsync(AppUser appUser, string roleName)
     {
-        return await _userManager.IsInRoleAsync(user, roleName);
+        return await _userManager.IsInRoleAsync(appUser, roleName);
     }
 
 
     /// <inheritdoc />
     public async Task<SignInResult>
-        ValidatePasswordAsync(User user, string password)
+        ValidatePasswordAsync(AppUser appUser, string password)
     {
         return await _signInManager.CheckPasswordSignInAsync(
-            user, password, false);
+            appUser, password, false);
     }
 
 
     /// <inheritdoc />
-    public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+    public async Task<string> GenerateEmailConfirmationTokenAsync(AppUser appUser)
     {
-        return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        return await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
     }
 
 
     /// <inheritdoc />
-    public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+    public async Task<IdentityResult> ConfirmEmailAsync(AppUser appUser, string token)
     {
-        return await _userManager.ConfirmEmailAsync(user, token);
+        return await _userManager.ConfirmEmailAsync(appUser, token);
     }
 
 
     /// <inheritdoc />
-    public async Task SignInAsync(User user, bool rememberMe = true,
+    public async Task SignInAsync(AppUser appUser, bool rememberMe = true,
         string? authenticationMethod = null)
     {
-        await _signInManager.SignInAsync(user, rememberMe,
+        await _signInManager.SignInAsync(appUser, rememberMe,
             authenticationMethod);
     }
 
 
     /// <inheritdoc />
-    public async Task<bool> PasswordSignInAsync(User user,
+    public async Task<bool> PasswordSignInAsync(AppUser appUser,
         bool isPersistent = false, bool lockoutOnFailure = false)
     {
         var signInResult = false;
 
 
         // Faz o signin do usuário
-        var result = await _signInManager.PasswordSignInAsync(user.UserName,
-            user.PasswordHash, isPersistent, lockoutOnFailure);
+        var result = await _signInManager.PasswordSignInAsync(appUser.UserName,
+            appUser.PasswordHash, isPersistent, lockoutOnFailure);
 
 
         // Verifica se o usuário foi autenticado com sucesso
@@ -222,7 +222,7 @@ public class UserHelper : IUserHelper
 
     /// <inheritdoc />
     public bool IsUserSignInAsync(
-        User user, bool rememberMe = true, string? authenticationMethod = null)
+        AppUser appUser, bool rememberMe = true, string? authenticationMethod = null)
     {
         return _signInManager.Context.User.Identity.IsAuthenticated;
     }
