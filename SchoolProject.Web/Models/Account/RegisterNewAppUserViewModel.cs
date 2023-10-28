@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.Entities.Users;
 
@@ -10,33 +11,35 @@ namespace SchoolProject.Web.Models.Account;
 public class RegisterNewAppUserViewModel : AppUser
 {
     /// <summary>
-    ///     The country of the appUser.
-    /// </summary>
-    [Required]
-    [Display(Name = "Country")]
-    [Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
-    public required int CountryId { get; set; }
-
-
-    /// <summary>
     ///     The list of countries for selection.
     /// </summary>
-    public IEnumerable<SelectListItem>? Countries { get; set; }
+    public required IEnumerable<SelectListItem>? CountriesList { get; set; }
 
-
-    /// <summary>
-    ///     The city of the appUser.
-    /// </summary>
-    [Required]
-    [Display(Name = "City")]
-    [Range(1, int.MaxValue, ErrorMessage = "You must select a city...")]
-    public required int CityId { get; set; }
+    public required int? CountryId { get; set; }
 
 
     /// <summary>
     ///     The list of cities for selection.
     /// </summary>
-    public IEnumerable<SelectListItem>? Cities { get; set; }
+    public required IEnumerable<SelectListItem>? CitiesList { get; set; }
+
+    public required int? CityId { get; set; }
+
+
+    /// <summary>
+    ///     The list of countries for selection.
+    /// </summary>
+    public required IEnumerable<SelectListItem>? RolesList { get; set; }
+
+    public required string? RoleId { get; set; }
+
+
+    /// <summary>
+    ///     The list of cities for selection.
+    /// </summary>
+    public required IEnumerable<SelectListItem>? GendersList { get; set; }
+
+    public required int? GenderId { get; set; }
 
 
     /// <summary>
@@ -44,7 +47,13 @@ public class RegisterNewAppUserViewModel : AppUser
     /// </summary>
     [Required]
     [DataType(DataType.Password)]
-    [MinLength(6)]
+    // [MinLength(6)]
+    [MinLength(6,
+        ErrorMessage = "The field {0} only can contain {1} characters length.")]
+    [RegularExpression(@"^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W).*$",
+        ErrorMessage =
+            "A password must contain at least one number, one uppercase letter, " +
+            "one lowercase letter, and one special character.")]
     public required string Password { get; set; }
 
 
@@ -53,7 +62,16 @@ public class RegisterNewAppUserViewModel : AppUser
     /// </summary>
     [Required]
     [DataType(DataType.Password)]
+    [Display(Name = "Confirm password")]
     [Compare("Password")]
     [MinLength(6)]
     public required string ConfirmPassword { get; set; }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [EmailAddress]
+    [Required]
+    public required string Email { get; set; }
 }

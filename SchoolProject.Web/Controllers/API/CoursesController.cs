@@ -75,17 +75,17 @@ public class CoursesController : ControllerBase
             //.ThenInclude(s => s.Nationality)
 
             // include students 
-            .Include(c => c.Students)
+            // .Include(c => c.Students)
             // .ThenInclude(s => s.Country)
             // .ThenInclude(s => s.Nationality)
             // .Include(c => c.Students)
             // .ThenInclude(s => s.AppUser)
 
             // include disciplines
-            .Include(c => c.Disciplines)
+            // .Include(c => c.Disciplines)
 
             // include enrollments
-            .Include(c => c.Enrollment)
+            .Include(c => c.Enrollments)
 
             // other includes
             .Include(c => c.CreatedBy)

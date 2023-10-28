@@ -1,0 +1,121 @@
+﻿@using System.Reflection
+@model            SchoolProject.Web.Models.Account.UpdateAppUserViewModel
+
+@{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    // ViewData["Title"] = "Informações das Variáveis";
+    // ViewData["Title"] = "Database Update Exception";
+    // ViewData["Title"] = "Change Password";
+    // ViewData["Title"] = "Change AppUser";
+    ViewData["Title"] = "Account details";
+}
+
+<h2>@actionName</h2>
+
+<p class="text-success">@TempData["Message"]</p>
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form method="POST" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <!-- First name -->
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control"/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <!-- Last name -->
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control"/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <!-- Phone number -->
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control"/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Photo -->
+            <div class="mb-3">
+                <label asp-for="ImageFile" class="form-label"></label>
+                <a href="#ImageFile" onclick="resetPhoto()" id="resetPhoto" style="display: none;">(Reset photo)</a>
+                @if (Model.HasPhoto)
+                {
+                    <a href="#ImageFile" onclick="deletePhoto()" id="deletePhoto" style="color: red;">(delete)</a>
+                    <input type="hidden" asp-for="DeletePhoto"/>
+                }
+
+                <input type="file" asp-for="ImageFile" class="form-control" onchange="uploadPhoto(event)"/>
+
+                <img src="@Model.ProfilePhotoIdUrl" alt="Image preview" id="Photo" style="max-width: 128px; max-height: 128px; margin: 16px 8px 0;"/>
+
+                <script>
+                    const anchorDeletePhoto = document.getElementById('deletePhoto');
+                    const inputDeletePhoto = document.getElementById('DeletePhoto');
+
+                    const uploadPhoto = event => {
+                        document.getElementById('Photo').src = URL.createObjectURL(event.target.files[0]);
+                        if (inputDeletePhoto != null) inputDeletePhoto.value = 'False';
+
+                        document.getElementById('resetPhoto').style.display = 'inline';
+                        if (anchorDeletePhoto != null) anchorDeletePhoto.style.display = 'inline';
+                    }
+
+                    const resetPhoto = () => {
+                        document.getElementById('PhotoFile').value = null;
+                        document.getElementById('Photo').src = '@Model.ProfilePhotoIdUrl';
+                        if (inputDeletePhoto != null) inputDeletePhoto.value = 'False';
+
+                        document.getElementById('resetPhoto').style.display = 'none';
+                        if (anchorDeletePhoto != null) anchorDeletePhoto.style.display = 'inline';
+                    }
+
+                    const deletePhoto = () => {
+                        document.getElementById('PhotoFile').value = null;
+                        document.getElementById('Photo').src = 'https://ca001.blob.core.windows.net/images/noimage.png';
+                        if (inputDeletePhoto != null) inputDeletePhoto.value = 'True';
+                        
+                        document.getElementById('resetPhoto').style.display = 'inline';
+                        if (anchorDeletePhoto != null) anchorDeletePhoto.style.display = 'none';
+                    }
+                </script>
+
+                <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
+            </div>
+
+            <!-- Update __ Change password -->
+            <div class="mb-3">
+                <input type="submit" asp-action="UpdateAppUser" value="Update" class="btn btn-primary"/>
+                <a asp-action="ChangePassword" class="btn btn-success">Change password</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

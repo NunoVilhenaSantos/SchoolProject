@@ -14,6 +14,12 @@ public class SeedDbUsers
     private static ILogger<SeedDbUsers> _logger;
     private static DataContextMySql _dataContextInUse;
 
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="userHelper"></param>
+    /// <param name="logger"></param>
     public SeedDbUsers(
         IUserHelper userHelper, ILogger<SeedDbUsers> logger
     )
@@ -24,6 +30,12 @@ public class SeedDbUsers
 
 
     // Add a constructor to receive IUserHelper through dependency injection
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="userHelper"></param>
+    /// <param name="logger"></param>
+    /// <param name="dataContextInUse"></param>
     public static void Initialize(
         IUserHelper userHelper,
         ILogger<SeedDbUsers> logger, DataContextMySql dataContextInUse)
@@ -38,7 +50,7 @@ public class SeedDbUsers
         string firstName, string lastName,
         string email,
         string address,
-        string role, string password = "Passw0rd"
+        string role, string password = SeedDb.DefaultPassword
     )
     {
         var random = new Random();
@@ -125,12 +137,11 @@ public class SeedDbUsers
                 Email = email,
                 PhoneNumber = phoneNumber,
                 WasDeleted = false,
-                ProfilePhotoId = default
+                ProfilePhotoId = default,
+
                 // City = city,
                 // CityId = city.Id,
-                // Country = country,
                 // CountryId = country.Id,
-                // NationalityId = country.Nationality.Id,
             };
 
             // Set role-specific properties inside the switch

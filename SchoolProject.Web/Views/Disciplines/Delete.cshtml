@@ -1,21 +1,72 @@
+@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Disciplines.Discipline
 
+
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h3>@actionName</h3>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Course</h4>
-    <hr/>
+<h4>@controllerName</h4>
+<hr/>
 
-    <partial name="_DisciplinesDD" />
+<h4>Are you sure you want to delete this Discipline?</h4>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id"/>
-        <button type="submit" class="btn btn-outline-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
-        <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
-    </form>
+<hr/>
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
+
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+<div class="col-md">
+    <div class="row">
+        <partial name="_DisplayImages"/>
+
+        <div class="col">
+            <div class="row">
+                <partial name="_DisciplinesDD" for="@Model"/>
+
+                <br/>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id"/>
+
+                    <button type="submit" class="btn btn-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
+                    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<hr/>
+<partial name="_CoursesTable" model="@Model"/>
+<hr/>
+<partial name="_StudentsTable" model="@Model"/>
+<hr/>
+<partial name="_TeachersTable" model="@Model"/>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

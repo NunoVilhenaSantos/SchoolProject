@@ -1,6 +1,7 @@
 @using System.Reflection
-@model IEnumerable<SchoolProject.Web.Data.Entities.Courses.CourseDisciplines>
+@* @model IEnumerable<SchoolProject.Web.Data.Entities.Courses.CourseDiscipline> *@
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Courses.CourseDisciplines> *@
+@model IEnumerable<SchoolProject.Web.Models.Courses.CourseDisciplineViewModel>
 
 @{
     // ViewData["Title"] = "Index";
@@ -8,17 +9,17 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
-    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
-    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
-    var deleteClassName = ViewData["CurrentClass"]?.ToString();
-    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName;
+    var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
 }
 
 @* <h2>@pageTitle</h2> *@
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
 <div class="container-fluid py-3">
     <div class="row">
@@ -40,15 +41,29 @@
 <table class="table table-hover" sortable="True" id="sortableTable">
     <thead>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Course) </th>
-        <th>@Html.DisplayNameFor(model => model.Discipline) </th>
         <th>@Html.DisplayNameFor(model => model.Id) </th>
-       @*  <th>@Html.DisplayNameFor(model => model.IdGuid) </th> *@
+        <th>@Html.DisplayNameFor(model => model.IdGuid) </th>
+
+        @* <th>@Html.DisplayNameFor(model => model.Course) </th> *@
+        @* <th>@Html.DisplayNameFor(model => model.Course) </th> *@
+        @* <th>@Html.DisplayNameFor(model => model.Course) </th> *@
+        <th>@Html.DisplayNameFor(model => model.CourseCode) </th>
+        <th>@Html.DisplayNameFor(model => model.CourseAcronym) </th>
+        <th>@Html.DisplayNameFor(model => model.CourseName) </th>
+
+        @* <th>@Html.DisplayNameFor(model => model.Discipline) </th> *@
+        @* <th>@Html.DisplayNameFor(model => model.Discipline) </th> *@
+        @* <th>@Html.DisplayNameFor(model => model.Discipline) </th> *@
+        <th>@Html.DisplayNameFor(model => model.DisciplineCode) </th>
+        <th>@Html.DisplayNameFor(model => model.DisciplineName) </th>
+        <th>@Html.DisplayNameFor(model => model.DisciplineDescription) </th>
+
         <th>@Html.DisplayNameFor(model => model.WasDeleted) </th>
+
         <th>@Html.DisplayNameFor(model => model.CreatedAt) </th>
-        <th>@Html.DisplayNameFor(model => model.CreatedBy) </th>
+        <th>@Html.DisplayNameFor(model => model.CreatedByFullName) </th>
         <th>@Html.DisplayNameFor(model => model.UpdatedAt) </th>
-        <th>@Html.DisplayNameFor(model => model.UpdatedBy) </th>
+        <th>@Html.DisplayNameFor(model => model.UpdatedByFullName) </th>
         <th></th>
         <th></th>
     </tr>
@@ -58,25 +73,39 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>@Html.DisplayFor(modelItem => item.Course.Acronym) </td>
-            <td>@Html.DisplayFor(modelItem => item.Discipline.Code) </td>
             <td>@Html.DisplayFor(modelItem => item.Id) </td>
-           @*  <td>@Html.DisplayFor(modelItem => item.IdGuid) </td> *@
+            <td>@Html.DisplayFor(modelItem => item.IdGuid) </td>
+
+            @* <td>@Html.DisplayFor(modelItem => item.Course.Code) </td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.Course.Acronym) </td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.Course.Name) </td> *@
+            <td>@Html.DisplayFor(modelItem => item.CourseCode) </td>
+            <td>@Html.DisplayFor(modelItem => item.CourseAcronym) </td>
+            <td>@Html.DisplayFor(modelItem => item.CourseName) </td>
+
+            @* <td>@Html.DisplayFor(modelItem => item.Discipline.Code) </td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.Discipline.Name) </td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.Discipline.Description) </td> *@
+            <td>@Html.DisplayFor(modelItem => item.DisciplineCode) </td>
+            <td>@Html.DisplayFor(modelItem => item.DisciplineName) </td>
+            <td>@Html.DisplayFor(modelItem => item.DisciplineDescription) </td>
+
             <td>@Html.DisplayFor(modelItem => item.WasDeleted) </td>
+
             <td>@Html.DisplayFor(modelItem => item.CreatedAt) </td>
-            <td>@Html.DisplayFor(modelItem => item.CreatedBy.Id) </td>
+            <td>@Html.DisplayFor(modelItem => item.CreatedByFullName) </td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedAt) </td>
-            <td>@Html.DisplayFor(modelItem => item.UpdatedBy.Id) </td>
+            <td>@Html.DisplayFor(modelItem => item.UpdatedByFullName) </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
                 @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
                 @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
             </td>
             <td>
-                <div class="btn-group">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"> <span class="fa-regular fa-file"></span> Details </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Id" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Id" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
                 </div>
             </td>
         </tr>

@@ -10,9 +10,9 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
@@ -20,7 +20,7 @@
 }
 
 @* <h2>@pageTitle</h2> *@
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
 <div class="container-fluid py-3">
     <div class="row">

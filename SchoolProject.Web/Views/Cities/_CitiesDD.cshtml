@@ -2,18 +2,22 @@
 @* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.City> *@
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.City> *@
 
+<div class="row">
+    <div class="col-md-8">
 
-<dl class="row">
+        <dl class="row">
 
-    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Name)</dt>
-    <dd class="col-sm-9">@Html.DisplayFor(model => model.Name) </dd>
-    @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Country.ProfilePhotoId) </dt>
-    <dd class="col-sm-9">@Html.DisplayFor(model => model.Country.ProfilePhotoId)</dd> *@
-    @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.WasDeleted)</dt> *@
-    @* <dd class="col-sm-9">@Html.DisplayFor(model => model.WasDeleted)</dd> *@
-    @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.CreatedAt)</dt> *@
-    @* <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd> *@
-    @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.UpdatedAt)</dt> *@
-    @* <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedAt)</dd> *@
-</dl>
-    
+            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Name)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Name) </dd>
+            @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Country.ProfilePhotoId) </dt> *@
+            @* <dd class="col-sm-9">@Html.DisplayFor(model => model.Country.ProfilePhotoId)</dd> *@
+            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.WasDeleted)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.WasDeleted)</dd>
+            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.CreatedAt)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+            <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.UpdatedAt)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedAt)</dd>
+        </dl>
+    </div>
+   
+</div>

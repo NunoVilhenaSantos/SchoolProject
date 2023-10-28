@@ -1,19 +1,40 @@
 ﻿@using SchoolProject.Web.Models.Account;
+@using System.Reflection
 
 @model   SchoolProject.Web.Models.Account.ChangeAppUserViewModel
 
 @{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    // ViewData["Title"] = "Informações das Variáveis";
+    // ViewData["Title"] = "Database Update Exception";
+    // ViewData["Title"] = "Change Password";
     ViewData["Title"] = "Change AppUser";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
 @* <div class="row"> *@
 @* <div class="col-md-4 offset-md-4"> *@
 
-<hr/>
-
 @* <div class="container-fluid"> *@
+<hr/>
 <div class="container-md">
     <div class="row">
         <partial name="_DisplayImages"/>
@@ -24,8 +45,8 @@
                     <div asp-validation-summary="ModelOnly"></div>
 
                     <!-- Hidden input for AppUsername -->
-                    @* <input type="hidden" asp-for="AppUserName" /> *@
                     <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="UserName" />
 
                     <div class="form-group">
                         <label asp-for="FirstName" class="control-label">First Name</label>
@@ -69,19 +90,19 @@
                         <input asp-for="ConfirmPassword" type="password" class="form-control" disable />
                         <span asp-validation-for="ConfirmPassword" class="text-warning"></span>
                     </div>
-                    *@
 
                     <div class="form-group">
                         <label asp-for="CountryId" class="control-label"></label>
-                        <select asp-for="CountryId" asp-items="Model.Countries" class="form-control"></select>
+                        <select asp-for="CountryId" asp-items="Model.CountriesListItems" class="form-control"></select>
                         <span asp-validation-for="CountryId" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="CityId" class="control-label"></label>
-                        <select asp-for="CityId" asp-items="Model.Cities" class="form-control"></select>
+                        <select asp-for="CityId" asp-items="Model.CitiesListItems" class="form-control"></select>
                         <span asp-validation-for="CityId" class="text-danger"></span>
                     </div>
+                    *@
 
                     <div class="form-group">
                         <label asp-for="ImageFile" class="control-label"></label>

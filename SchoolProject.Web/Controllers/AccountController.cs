@@ -1,15 +1,17 @@
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Data.Repositories.Genders;
+using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
@@ -21,124 +23,92 @@ using Sentry;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///     Account Controller for adding, editing, deleting, change password
+///
 /// </summary>
 public class AccountController : Controller
 {
     // Obtém o tipo da classe atual
-    internal const string CurrentClass = UsersController.CurrentClass;
-    internal const string CurrentAction = nameof(Index);
-
-    internal const string BucketName = UsersController.BucketName;
-    internal const string SessionVarName = UsersController.SessionVarName;
-    internal const string SortProperty = UsersController.SortProperty;
-
     internal const string ClassRole = CurrentClass;
 
+    // Obtém o tipo da classe atual
+    internal const string CurrentClass = UsersController.CurrentClass;
+    internal const string CurrentAction = UsersController.CurrentAction;
+    internal const string SessionVarName = UsersController.SessionVarName;
+    internal const string SortProperty = UsersController.SortProperty;
+    internal static readonly string BucketName = UsersController.BucketName;
 
     internal static string ControllerName =>
         HomeController.SplitCamelCase(nameof(AccountController));
 
-    /// <summary>
-    ///
-    /// </summary>
-    // A private field to get the authenticated user in app.
-    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
-
-    // private readonly SemaphoreSlim _signInSemaphore;
-    private readonly IConfiguration _configuration;
-
-
-    // repository
+    // repositories
     private readonly ICountryRepository _countryRepository;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IImageHelper _imageHelper;
-    private readonly IEMailHelper _emailHelper;
-
-    private readonly IUserHelper _userHelper;
-
-    // helpers
-    private readonly IMailHelper _mailHelper;
+    private readonly ICityRepository _cityRepository;
+    private readonly IGenderRepository _genderRepository;
 
 
-    // logger
+    // auxiliaries
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly SignInManager<AppUser> _signInManager;
     private readonly ILogger<AccountController> _logger;
 
+    private readonly IConfiguration _configuration;
 
     // private readonly ICombosHelper _combosHelper;
     private readonly IHub _sentryHub;
 
 
-    // host environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    // http context accessor
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    // role manager
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-    // sign in manager
-    private readonly SignInManager<AppUser> _signInManager;
+    // helpers
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+    private readonly IImageHelper _imageHelper;
 
 
     /// <summary>
-    ///     Constructor for the Account controller
+    /// 
     /// </summary>
-    /// <param name="countryRepository"></param>
-    /// <param name="configuration"></param>
-    /// <param name="storageHelper"></param>
-    /// <param name="emailHelper"></param>
-    /// <param name="imageHelper"></param>
     /// <param name="userHelper"></param>
-    /// <param name="signInManager"></param>
-    /// <param name="hostingEnvironment"></param>
-    /// <param name="httpContextAccessor"></param>
-    /// <param name="authenticatedUserInApp"></param>
-    /// <param name="sentryHub"></param>
     /// <param name="mailHelper"></param>
-    /// <param name="roleManager"></param>
+    /// <param name="configuration"></param>
+    /// <param name="hostingEnvironment"></param>
+    /// <param name="sentryHub"></param>
+    /// <param name="storageHelper"></param>
     /// <param name="logger"></param>
+    /// <param name="imageHelper"></param>
+    /// <param name="countryRepository"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="signInManager"></param>
+    /// <param name="roleManager"></param>
+    /// <param name="cityRepository"></param>
+    /// <param name="genderRepository"></param>
     public AccountController(
+        IUserHelper userHelper, IMailHelper mailHelper,
+        IConfiguration configuration, IWebHostEnvironment hostingEnvironment,
+        IHub sentryHub, IStorageHelper storageHelper,
+        ILogger<AccountController> logger, IImageHelper imageHelper,
         ICountryRepository countryRepository,
-        IConfiguration configuration,
-        IStorageHelper storageHelper,
-        IEMailHelper emailHelper,
-        IImageHelper imageHelper,
-        IUserHelper userHelper,
-        SignInManager<AppUser> signInManager,
-        IWebHostEnvironment hostingEnvironment,
         IHttpContextAccessor httpContextAccessor,
-        AuthenticatedUserInApp authenticatedUserInApp,
+        SignInManager<AppUser> signInManager,
         RoleManager<IdentityRole> roleManager,
-        ILogger<AccountController> logger, IHub sentryHub,
-        IMailHelper mailHelper
-
-        //SemaphoreSlim signInSemaphore,
-        //SemaphoreService semaphoreService
-    )
-
+        ICityRepository cityRepository, IGenderRepository genderRepository)
     {
-        _httpContextAccessor = httpContextAccessor;
-        _authenticatedUserInApp = authenticatedUserInApp;
-        _roleManager = roleManager;
-        _logger = logger;
-        _sentryHub = sentryHub;
-        _mailHelper = mailHelper;
-        _signInManager = signInManager;
-
         _userHelper = userHelper;
-        _imageHelper = imageHelper;
-        _emailHelper = emailHelper;
-        _storageHelper = storageHelper;
+        _mailHelper = mailHelper;
         _configuration = configuration;
-        _countryRepository = countryRepository;
-
-        // _signInSemaphore = signInSemaphore;
-        // _signInManager = signInManager;
         _hostingEnvironment = hostingEnvironment;
-        //_semaphoreService = semaphoreService;
+        _sentryHub = sentryHub;
+        _storageHelper = storageHelper;
+        _logger = logger;
+        _imageHelper = imageHelper;
+        _countryRepository = countryRepository;
+        _httpContextAccessor = httpContextAccessor;
+        _signInManager = signInManager;
+        _roleManager = roleManager;
+        _cityRepository = cityRepository;
+        _genderRepository = genderRepository;
     }
 
 
@@ -154,370 +124,380 @@ public class AccountController : Controller
         }
     }
 
+    // ------------------------------- ------ ------------------------------- //
 
     /// <summary>
-    ///     Aqui o utilizador é reencaminhado para a view de Login caso não esteja autenticado
+    /// 
     /// </summary>
     /// <returns></returns>
-    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Index()
+    {
+        // Envia o tipo da classe para a vista
+        ViewData["CurrentClass"] = CurrentClass;
+
+        var user = await _userHelper.GetUserByEmailAsync(GetCurrentUserName());
+
+        if (user == null)
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, user?.Id,
+                CurrentController, nameof(Index));
+
+        var model = new UpdateAppUserViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            PhoneNumber = user.PhoneNumber,
+            HasPhoto = user.ProfilePhotoId != Guid.Empty,
+            ProfilePhotoId = user.ProfilePhotoId,
+            Role = await _userHelper.GetUserRoleAsync(user),
+            WasDeleted = false,
+            // CityId = user.CityId,
+            // City = user.City,
+        };
+
+        return View(model);
+    }
+
+
+    /// <summary>
+    ///   Aqui o utilizador faz o login no sistema e é direcionado para a página inicial
+    /// </summary>
+    /// <returns></returns>
     public IActionResult Login()
     {
         if (User.Identity is {IsAuthenticated: true})
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Index), "Home");
 
         return View();
     }
 
 
+    // Aqui é que de fato valida as informações
     /// <summary>
-    ///     Aqui é que se valida as informações do utilizador
+    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            var result = await _userHelper.LoginAsync(model);
-
-            if (result.Succeeded)
-                //
-                // Caso tente acessar outra view diferente do
-                // Login sou direcionado para a view Login,
-                //
-                // mas após sou direcionado para a view
-                // que tentei acessar em primeiro lugar.
-                //
-                // Exemplo: ProductsController [Authorize]
-                //
-                return Request.Query.Keys.Contains("ReturnUrl")
-                    ? Redirect(Request.Query["ReturnUrl"].First() ??
-                               string.Empty)
-                    : RedirectToAction("Index", "Home");
-
             ModelState.AddModelError(
                 string.Empty, "Failed to login!");
             return View(model);
         }
 
-        ModelState.AddModelError(
-            string.Empty, "Failed to login!");
-        return View(model);
+        var result = await _userHelper.LoginAsync(model);
+
+        if (!result.Succeeded)
+        {
+            ModelState.AddModelError(
+                string.Empty, "Failed to login!");
+            return View(model);
+        }
+
+        if (Request.Query.Keys.Contains("ReturnUrl"))
+            return Redirect(Request.Query["ReturnUrl"].First());
+
+        // Caso tente acessar outra view diferente do Login,
+        // sou direcionado para a view Login, mas após sou direcionado
+        // para a view que tentei acessar em primeiro lugar.
+        //
+        // Exemplo: ProductsController [Authorize]
+        //
+
+        return RedirectToAction(nameof(Index), "Home");
     }
 
 
     /// <summary>
-    ///     Aqui o utilizador faz o logout da sua conta
-    ///     Aqui o utilizador é reencaminhado para a view Index do controlador Home
+    ///
     /// </summary>
     /// <returns></returns>
-    [HttpGet]
-    [Authorize]
-    public async Task<IActionResult> LogOut()
+    public async Task<IActionResult> Logout()
     {
-        await _userHelper.LogOutAsync();
-        return RedirectToAction("Index", "Home");
+        await _userHelper.LogoutAsync();
+
+        return RedirectToAction(nameof(Index), "Home");
     }
 
 
     /// <summary>
-    ///     Aqui o utilizador é reencaminhado para a view Register para criar uma nova conta
+    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    //[Authorize(Roles = "Admin,SuperUser")]
+    [Authorize(Roles = "Admin,SuperUser,Functionary")]
     public IActionResult Register()
     {
         var model = new RegisterNewAppUserViewModel
         {
-            FirstName = string.Empty,
-            LastName = string.Empty,
-            UserName = string.Empty,
-            Password = string.Empty,
-            ConfirmPassword = string.Empty,
+            FirstName = null,
+            LastName = null,
+            UserName = null,
+            Email = null,
+            Address = null,
+            PhoneNumber = null,
+
+            Password = null,
+            ConfirmPassword = null,
+
             WasDeleted = false,
             ProfilePhotoId = default,
 
-            CountryId = 0,
-            Countries = _countryRepository
-                .GetComboCountriesAndNationalities(),
-            CityId = 0,
-            Cities = _countryRepository.GetComboCities(0)
+            CountriesList =
+                _countryRepository.GetComboCountriesAndNationalities(),
+            CountryId = null,
+
+            CitiesList = new List<SelectListItem>(),
+            CityId = null,
+
+            RolesList = new SelectList(_roleManager.Roles,
+                nameof(IdentityRole.Id),
+                nameof(IdentityRole.Name), 0),
+
+            RoleId = null,
+
+            GendersList = _genderRepository.GetAll()
+                .Select(g => new SelectListItem
+                {
+                    Text = g.Name,
+                    Value = g.Id.ToString()
+                })
+                .OrderBy(g => g.Text),
+            GenderId = null,
         };
 
+        FillViewLists();
 
         return View(model);
     }
 
 
+    // Aqui é que de fato valida as informações
     /// <summary>
-    ///     Aqui é que se valida as informações do utilizador para a criação de uma nova conta
+    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> Register(RegisterNewAppUserViewModel model)
     {
-        if (ModelState.IsValid)
-        {
-            if (model.UserName != null)
-            {
-                var user =
-                    await _userHelper.GetUserByEmailAsync(model.UserName);
+        if (!ModelState.IsValid) return View(model);
 
-                if (user == null)
-                {
-                    // var city = await
-                    //     _countryRepository.GetCityAsync(model.CityId);
-                    // var country = await
-                    //     _countryRepository.GetCountryAsync(model.CountryId);
-
-                    user = new AppUser
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Email = model.UserName,
-                        UserName = model.UserName,
-                        Address = model.Address,
-                        PhoneNumber = model.PhoneNumber,
-                        WasDeleted = false,
-                        // ProfilePhotoId = model.ImageFile is null
-                        //     ? default
-                        //     : _storageHelper.UploadFileAsyncToGcp(
-                        //         model.ImageFile, BucketName).Result,
-                        ProfilePhotoId = model.ImageFile is null
-                            ? default
-                            : _storageHelper.UploadStorageAsync(
-                                model.ImageFile, BucketName).Result
-                        // City = city,
-                        // CityId = city.Id,
-                        // Country = country,
-                        // CountryId = country.Id,
-                        // NationalityId = country.Nationality.Id,
-                    };
-
-
-                    var result =
-                        await _userHelper.AddUserAsync(user, model.Password);
-
-                    if (result != IdentityResult.Success)
-                    {
-                        ModelState.AddModelError(
-                            string.Empty,
-                            "The appUser couldn't be created.");
-                        return View(model);
-                    }
-
-
-                    // var loginViewModel = new LoginViewModel
-                    // {
-                    //     Password = model.Password,
-                    //     RememberMe = false,
-                    //     Username = model.Username
-                    // };
-
-                    // var result2 = await _userHelper.LoginAsync(loginViewModel);
-                    // if (result2.Succeeded)
-                    //     return RedirectToAction("Index", "Home");
-
-
-                    var myToken =
-                        await _userHelper.GenerateEmailConfirmationTokenAsync(
-                            user);
-
-                    var tokenLink = Url.Action("ConfirmEmail",
-                        "Account",
-                        new
-                        {
-                            userid = user.Id,
-                            token = myToken
-                        },
-                        HttpContext.Request.Scheme
-                    );
-
-
-                    var response = await _emailHelper.SendEmailAsync(
-                        model.UserName,
-                        "Email confirmation",
-                        $"<h1>Email Confirmation</h1>" +
-                        $"To allow the appUser, " +
-                        $"please click in this link:" +
-                        $"</br></br><a href = \"{tokenLink}\">" +
-                        $"Confirm Email</a></br><p>Temporary Password: " +
-                        $"{model.Password}</p>");
-
-                    var response1 = await _emailHelper.SendEmailAsync(
-                        model.UserName,
-                        "Confirmação de Email",
-                        $"<h1>Confirmação de Email</h1>" +
-                        $"Para permitir o acesso do usuário, " +
-                        $"por favor clique no seguinte link:" +
-                        $"</br></br><a href = \"{tokenLink}\">" +
-                        $"Confirmar Email</a></br><p>Senha Temporária: " +
-                        $"{model.Password}</p>" +
-                        $"<p>Obrigado por se juntar a nós!</p>"
-                    );
-
-
-                    // Todo:
-                    if (response.IsSuccess)
-                    {
-                        ViewBag.Message = "The instructions to verify the " +
-                                          "account have been sent to email";
-                        return View(model);
-                    }
-
-                    ModelState.AddModelError(string.Empty,
-                        "The AppUser couldn't be logged.");
-                    return View(model);
-                }
-            }
-
+        if (model.UserName == null)
             ModelState.AddModelError(
-                string.Empty, "AppUser already exists.");
+                string.Empty, "The AppUser has no username.");
 
+        model.UserName = model.Email;
+
+        var user = await _userHelper.GetUserByEmailAsync(model.UserName);
+
+        if (user != null)
+            ModelState.AddModelError(
+                string.Empty, "The user is already register.");
+
+
+        var profilePhotoId = model.ProfilePhotoId;
+
+        if (model.ImageFile is {Length: > 0})
+            profilePhotoId =
+                await _storageHelper.UploadStorageAsync(
+                    model.ImageFile, BucketName);
+
+        model.ProfilePhotoId = profilePhotoId;
+
+
+        user = new AppUser
+        {
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Address = model.Address,
+            PhoneNumber = model.PhoneNumber,
+            Email = model.UserName,
+            UserName = model.UserName,
+            ProfilePhotoId = model.ProfilePhotoId,
+            WasDeleted = false,
+            // Country = model.Country,
+            // CityId = model.CityId,
+            // City = model.City,
+        };
+
+
+        // AQUI QUE DEVE SER COLOCADO OS OUTROS ROLES (VIDEO 19 - 29')
+
+        var result =
+            await _userHelper.AddUserAsync(user, model.Password);
+
+        if (result != IdentityResult.Success)
+        {
+            ModelState.AddModelError(string.Empty,
+                "The AppUser couldn't be created");
             return View(model);
-            // return RedirectToAction("Login", "Account");
         }
 
-        ModelState.AddModelError(
-            string.Empty,
-            "Tem de preencher os campos, obrigatórios!");
+        var roleName = await _roleManager.FindByIdAsync(model.RoleId);
+        
+        await _userHelper.AddUserToRoleAsync(user, roleName.Name);
+        
+        // ***** Incluído por causa do Email de Confirmação *******
+        var myToken =
+            await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
+        var tokenLink = Url.Action(
+            "ConfirmEmail", "Account",
+            new
+            {
+                userId = user.Id, token = myToken
+            },
+            HttpContext.Request.Scheme);
+
+        var response = _mailHelper.SendEmail(model.UserName,
+            "Email confirmation",
+            "<h2>Email Confirmation<h2>" +
+            "To allow the appUser, " +
+            "please click in this link:" +
+            "</br></br>" +
+            $"<a href = \"{tokenLink}\">Confirm Email</a>" +
+            "</br></br>" +
+            $"<p>Password temporária: {model.Password}</a>");
+
+
+        if (response.IsSuccess)
+        {
+            ViewBag.Message =
+                "The instructions to allow you appUser has been sent to email";
+
+            return View(model);
+        }
+
+
+        ModelState.AddModelError(
+            string.Empty, "The AppUser couldn't be logged");
+
+
+        //*****Retirado por causa do Email de Confirmação*********
+        //var loginViewModel = new LoginViewModel
+        //{
+        //    UserName = model.UserName,
+        //    Password = model.Password,
+        //    RememberMe = false,
+        //};
+
+        //var result2 = await _userHelper.LoginAsync(loginViewModel);
+
+        return View(model);
+    }
+
+
+    // Aqui só aparece a View
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IActionResult> ChangeUser()
+    {
+        var user = await _userHelper.GetUserByEmailWithCity(User.Identity.Name)
+            .Result.FirstOrDefaultAsync();
+
+        if (user == null)
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, user.Id, CurrentController,
+                nameof(Index));
+
+        var model = new ChangeAppUserViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            UserName = user.UserName,
+            Email = user.Email,
+            Address = user.Address,
+            PhoneNumber = user.PhoneNumber,
+            WasDeleted = user.WasDeleted,
+            ProfilePhotoId = user.ProfilePhotoId,
+
+            // CountryId = user.City.Country.Id,
+            // CountriesList =
+            //     _countryRepository.GetComboCountriesAndNationalities(),
+            // City = user.City,
+            // CityId = user.City.Id,
+            // CitiesList =
+            //     _countryRepository.GetComboCities(user.City.Country.Id),
+        };
 
         return View(model);
     }
 
 
     /// <summary>
-    ///     Aqui o utilizador faz as alterações aos seus dados da sua conta
+    ///
     /// </summary>
+    /// <param name="model"></param>
     /// <returns></returns>
-    [HttpGet]
-    [Authorize]
-    public async Task<IActionResult> ChangeUser()
+    [HttpPost] // Aqui é que de fato valida as informações
+    public async Task<IActionResult> ChangeUser(ChangeAppUserViewModel model)
     {
-        if (User.Identity?.Name is null) return View();
+        if (!ModelState.IsValid) return View(model);
 
         var user =
             await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
-        if (user == null) return View();
-
-        var model = new ChangeAppUserViewModel
-        {
-            CountryId = 0,
-            Countries = _countryRepository
-                .GetComboCountriesAndNationalities(),
-            CityId = 0,
-            Cities = _countryRepository.GetComboCities(0),
-
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            UserName = user.UserName,
-            Address = user.Address,
-            PhoneNumber = user.PhoneNumber,
-
-            WasDeleted = user.WasDeleted,
-            ProfilePhotoId = user.ProfilePhotoId
-        };
-
-
-        return View(model);
-    }
-
-
-    /// <summary>
-    ///     Aqui é que se alteram as informações do utilizador
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> ChangeUser(ChangeAppUserViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            ModelState.AddModelError(
-                string.Empty,
-                "Failed to update appUser information!");
-
-            // Return the view with the invalid model
-            return View(model);
-        }
-
-        if (User.Identity?.Name == null) return View(model);
-
-        var user =
-            await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
-
-        // Return the view, as appUser is not found
         if (user == null) return View(model);
 
-        if (model.ImageFile != null)
-        {
-            var profilePhotoId =
-                await _storageHelper.UploadFileAsyncToGcp(
-                    model.ImageFile, BucketName);
 
-            var profilePhotoIdAzure =
+        var profilePhotoId = model.ProfilePhotoId;
+
+        if (model.ImageFile is {Length: > 0})
+            profilePhotoId =
                 await _storageHelper.UploadStorageAsync(
                     model.ImageFile, BucketName);
 
-            // await _storageHelper.DeleteFileAsyncFromGcp(
-            //     appUser.ProfilePhotoId.ToString(),
-            //     BucketName);
+        model.ProfilePhotoId = profilePhotoId;
 
-            model.ProfilePhotoId = profilePhotoId;
-            user.ProfilePhotoId = profilePhotoId;
-
-            model.ProfilePhotoId = profilePhotoIdAzure;
-            user.ProfilePhotoId = profilePhotoIdAzure;
-        }
 
         user.FirstName = model.FirstName;
         user.LastName = model.LastName;
+        // user.UserName = model.UserName;
+        // user.Email = model.Email;
         user.Address = model.Address;
         user.PhoneNumber = model.PhoneNumber;
-        user.WasDeleted = model.WasDeleted;
         user.ProfilePhotoId = model.ProfilePhotoId;
 
-        // appUser.CityId = model.CityId;
-        // appUser.CountryId = model.CountryId;
-        // appUser.NationalityId = model.NationalityId;
+        // user.CountryId = model.City.Country.Id;
+        // user.Country = model.City.Country;
+        // user.CityId = model.CityId;
+        // user.City = _cityRepository.GetByIdAsync(model.CityId).Result;
 
-        // appUser.Email = model.Username;
 
         var response = await _userHelper.UpdateUserAsync(user);
 
         if (response.Succeeded)
-        {
-            ViewBag.UserMessage = "AppUser updated!";
-        }
+            ViewBag.UserMessage = "AppUser Updated!";
         else
-        {
-            var errorMessage =
-                response.Errors.FirstOrDefault()?.Description;
-
-            if (errorMessage != null)
-                ModelState.AddModelError(string.Empty, errorMessage);
-        }
+            ModelState.AddModelError(string.Empty,
+                response.Errors.FirstOrDefault()?.Description);
 
         return View(model);
     }
 
 
+    // Aqui só aparece a View
+    //"Botão Direito" -> AddView
     /// <summary>
-    ///     Aqui o utilizador faz as alterações da sua password
+    ///
     /// </summary>
     /// <returns></returns>
-    [HttpGet]
-    [Authorize]
-    public IActionResult ChangePassword() => View();
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
 
 
+    // Aqui é que de fato valida as informações
     /// <summary>
-    ///     Aqui é que se altera a password do utilizador
+    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -527,36 +507,37 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid) return View(model);
 
-        var user = await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
+        var user =
+            await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
-        if (user == null) return View();
-
-        var response = await _userHelper.ChangePasswordAsync(
-            user, model.OldPassword, model.NewPassword);
-
-        if (response.Succeeded)
+        switch (user)
         {
-            ViewBag.UserMessage = "Password changed!";
-            return RedirectToAction("ChangeUser");
+            case null:
+                ModelState.AddModelError(
+                    string.Empty, "AppUser not found.");
+                return View(model);
+
+            default:
+            {
+                var result = await _userHelper.ChangePasswordAsync(
+                    user, model.OldPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                    return RedirectToAction(nameof(ChangeUser));
+
+                // Aparece msg caso a senha antiga esteja incorreta
+                ModelState.AddModelError(string.Empty,
+                    result.Errors.FirstOrDefault().Description);
+                break;
+            }
         }
-
-        var errorMessage =
-            response.Errors.FirstOrDefault()?.Description;
-        if (errorMessage != null)
-            ModelState.AddModelError(
-                string.Empty, errorMessage);
-        ModelState.AddModelError(
-            string.Empty, "AppUser not found.");
-
 
         return View(model);
     }
 
 
-    // https://localhost:5001/Account/CreateToken
-    // [Route("Account/CreateToken")]
     /// <summary>
-    ///     Aqui é que se cria o token para o utilizador validar a sua conta
+    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -567,16 +548,18 @@ public class AccountController : Controller
         if (!ModelState.IsValid) return BadRequest();
 
         var user = await _userHelper.GetUserByEmailAsync(model.Username);
+
         if (user == null) return BadRequest();
 
-        var result = await _userHelper.ValidatePasswordAsync(
-            user, model.Password);
+        var result =
+            await _userHelper.ValidatePasswordAsync(user, model.Password);
+
         if (!result.Succeeded) return BadRequest();
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti,
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email), new Claim(
+                JwtRegisteredClaimNames.Jti,
                 Guid.NewGuid().ToString())
         };
 
@@ -590,7 +573,8 @@ public class AccountController : Controller
             _configuration["Tokens:Issuer"],
             _configuration["Tokens:Audience"],
             claims,
-            expires: DateTime.UtcNow.AddDays(15),
+            expires: DateTime.UtcNow
+                .AddDays(15), // Tempo validade Token
             signingCredentials: credentials);
 
         var results = new
@@ -604,7 +588,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///     Aqui é que se confirma o email do utilizador
+    ///
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="token"></param>
@@ -612,95 +596,85 @@ public class AccountController : Controller
     public async Task<IActionResult> ConfirmEmail(string userId, string token)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
-            return NotFound();
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, userId,
+                CurrentController, nameof(Index));
+
 
         var user = await _userHelper.GetUserByIdAsync(userId);
 
-        if (user == null) return NotFound();
+        if (user == null)
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, userId,
+                CurrentController, nameof(Index));
+
 
         var result = await _userHelper.ConfirmEmailAsync(user, token);
 
-
         if (!result.Succeeded)
-        {
-            ViewBag.ErrorTitle = "Email cannot be confirmed";
+            return new NotFoundViewResult(
+                nameof(UserNotFound), CurrentClass, userId,
+                CurrentController, nameof(Index));
 
-            return View("Error");
+
+        return View();
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult RecoverPassword()
+    {
+        return View();
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> RecoverPassword(
+        RecoverPasswordViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
+
+        var user = await _userHelper.GetUserByEmailAsync(model.Email);
+
+        if (user == null)
+        {
+            ModelState.AddModelError(string.Empty,
+                "The email doesn't correspond to a registered appUser.");
+            return View(model);
         }
 
+        var myToken =
+            await _userHelper.GeneratePasswordResetTokenAsync(user);
 
-        Task.Delay(1000).Wait();
+        var link = Url.Action(
+            "ResetPassword",
+            "Account",
+            new {token = myToken}, HttpContext.Request.Scheme);
 
-        var result1 = await _userHelper.LoginAsync(new LoginViewModel
-        {
-            Password = "123456",
-            Username = user.Email,
-            RememberMe = false
-        });
+        var response = _mailHelper.SendEmail(model.Email,
+            "Account Password Reset",
+            "<h2>Account Password Reset</h2>" +
+            "To reset the password click in this link:</br></br>" +
+            $"<a href = \"{link}\">Reset Password</a>");
 
-        if (result1.Succeeded) return RedirectToAction(nameof(ChangePassword));
+        if (response.IsSuccess)
+            ViewBag.Message =
+                "The instructions to recover your password has been sent to email.";
 
-
-        await _userHelper.SignInAsync(user);
-
-
-        // Faça o signin do usuário
-        var result2 = await _userHelper.PasswordSignInAsync(user);
-
-        if (result2) return RedirectToAction(nameof(ChangePassword));
-
-
-        // return RedirectToAction("Index", "Home");
-        return RedirectToAction("Index", "Home");
-
-        // return View();
-    }
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    // https://localhost:5001/Account/NotAuthorized
-    /// <summary>
-    ///     Aqui é que se mostra a view de NotAuthorized
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult NotAuthorized()
-    {
-        return View();
-    }
-
-
-    // https://localhost:5001/Account/AccessDenied
-    /// <summary>
-    ///     Aqui é que se mostra a view de AccessDenied
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult AccessDenied()
-    {
-        return View();
-    }
-
-
-    // https://localhost:5001/Account/Error
-    /// <summary>
-    ///     Aqui é que se mostra a view de Error
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    public IActionResult Error()
-    {
         return View();
     }
 
 
     /// <summary>
-    ///     Aqui é que se mostra a vista para fazer a recuperação da password
+    ///
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
@@ -711,10 +685,135 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///     Aqui é que se mostra a vista para fazer a recuperação da password
+    ///
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+    {
+        var user = await _userHelper.GetUserByEmailAsync(model.UserName);
+
+        if (user == null)
+        {
+            ViewBag.Message = "AppUser not found...";
+            return View(model);
+        }
+
+        // Aqui que fazemos o reset
+        var result = await _userHelper.ResetPasswordAsync(
+            user, model.Token, model.Password);
+
+        if (result.Succeeded)
+        {
+            ViewBag.Message = "Password reset successfully.";
+            return View();
+        }
+
+        ViewBag.Message = "Error while resetting the password";
+
+        return View(model);
+    }
+
+
+    /// <summary>
+    ///
     /// </summary>
     /// <returns></returns>
-    public IActionResult RecoverPassword()
+    public IActionResult ForgotPassword()
+    {
+        return IsUserAuthenticated() ? RedirectToHomePage() : View();
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(
+        ForgotPasswordViewModel model)
+    {
+        if (IsUserAuthenticated()) return RedirectToHomePage();
+
+        if (!ModelState.IsValid) return View(model);
+
+
+        var user = await _userHelper.GetUserByEmailAsync(model.Email);
+
+        if (user == null)
+        {
+            ModelState.AddModelError(string.Empty,
+                "The email doesn't correspond to a registered appUser.");
+            return View(model);
+        }
+
+        var token =
+            await _userHelper.GeneratePasswordResetTokenAsync(user);
+
+        var tokenUrl = Url.Action(
+            nameof(ResetPassword),
+            "Account",
+            new {token},
+            HttpContext.Request.Scheme);
+
+        if (!string.IsNullOrEmpty(tokenUrl))
+        {
+            var sendPasswordResetEmail =
+                _mailHelper.SendPasswordResetEmail(user, tokenUrl);
+            if (sendPasswordResetEmail)
+            {
+                // Success.
+
+                TempData["Message"] =
+                    $"An email has been sent to <i>{model.Email}</i> " +
+                    $"with a link to reset password.";
+
+                return RedirectToHomePage();
+            }
+        }
+
+        ModelState.AddModelError(
+            string.Empty, "Could not send password reset email.");
+
+        return View(nameof(ForgotPassword), model);
+    }
+
+
+    private IActionResult RedirectToHomePage()
+    {
+        return Redirect("/Home");
+    }
+
+
+    private string GetCurrentUserName()
+    {
+        return User.Identity?.Name ?? "";
+    }
+
+
+    private bool IsUserAuthenticated()
+    {
+        return User.Identity?.IsAuthenticated ?? false;
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult NotAuthorized()
+    {
+        return View();
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult UserNotFound()
     {
         return View();
     }
@@ -730,22 +829,23 @@ public class AccountController : Controller
     /// <param name="countryId"></param>
     /// <returns></returns>
     [HttpPost]
-    //  [Route("api/Account/GetCitiesAsync")]
-    [Route("Account/GetCitiesAsync")]
-    public async Task<JsonResult> GetCitiesAsync(int countryId)
+    //  [Route("api/Account/GetCitiesByCountryJson")]
+    [Route("Account/GetCitiesByCountryJson")]
+    public async Task<JsonResult> GetCitiesByCountryJson(int countryId)
     {
         if (countryId == 0) return Json(new List<City>());
 
         var country = await _countryRepository
-            .GetCountryWithCitiesAsync(countryId).FirstOrDefaultAsync();
-
+            .GetCountryWithCitiesAsync(countryId)
+            .FirstOrDefaultAsync();
 
         // Serialize the country object to JSON with ReferenceHandler.Preserve
-        var countryJson = JsonSerializer.Serialize(country,
-            new JsonSerializerOptions
+        var countryJson = System.Text.Json.JsonSerializer.Serialize(country,
+            new System.Text.Json.JsonSerializerOptions
             {
                 WriteIndented = true,
-                ReferenceHandler = ReferenceHandler.Preserve
+                ReferenceHandler =
+                    System.Text.Json.Serialization.ReferenceHandler.Preserve,
             });
 
         // Print the JSON representation to the console
@@ -763,17 +863,13 @@ public class AccountController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    //  [Route("api/Account/GetCountriesAsync")]
-    [Route("Account/GetCountriesAsync")]
-    public Task<JsonResult> GetCountriesAsync()
+    //  [Route("api/Account/GetCountriesJson")]
+    [Route("Account/GetCountriesJson")]
+    public Task<JsonResult> GetCountriesJson()
     {
         var country =
             _countryRepository.GetCountriesWithCitiesEnumerable();
 
-        // Console.OutputEncoding = Encoding.UTF8;
-        // Console.WriteLine(country);
-        // Console.WriteLine(
-        //     Json(country.OrderBy(c => c.Name)));
 
         return Task.FromResult(Json(country.OrderBy(c => c.Name)));
     }
@@ -785,9 +881,9 @@ public class AccountController : Controller
     /// <param name="countryId"></param>
     /// <returns></returns>
     [HttpPost]
-    //  [Route("api/Account/GetNationalitiesAsync")]
-    [Route("Account/GetNationalitiesAsync")]
-    public Task<JsonResult> GetNationalitiesAsync(int countryId)
+    //  [Route("api/Account/GetNationalitiesJson")]
+    [Route("Account/GetNationalitiesJson")]
+    public Task<JsonResult> GetNationalitiesJson(int countryId)
     {
         var nationalities =
             _countryRepository.GetComboNationalities(countryId);
@@ -805,20 +901,12 @@ public class AccountController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    // [Route("api/Account/GetCountriesWithNationalitiesAsync")]
-    [Route("Account/GetCountriesWithNationalitiesAsync")]
-    public Task<JsonResult> GetCountriesWithNationalitiesAsync()
+    // [Route("api/Account/GetCountriesWithNationalitiesJson")]
+    [Route("Account/GetCountriesWithNationalitiesJson")]
+    public Task<JsonResult> GetCountriesWithNationalitiesJson()
     {
         var countriesWithNationalities =
             _countryRepository.GetComboCountriesAndNationalities();
-
-
-        // Console.OutputEncoding = Encoding.UTF8;
-        // Console.WriteLine(countriesWithNationalities);
-        // Console.WriteLine(
-        //     Json(countriesWithNationalities
-        //         .OrderBy(c => c.Text)));
-
 
         return Task.FromResult(
             Json(countriesWithNationalities
@@ -827,8 +915,46 @@ public class AccountController : Controller
 
 
     // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
 
+
+    private void FillViewLists(int countryId = 0, int cityId = 0,
+        int genderId = 0, string? roleId = null
+    )
+    {
+        ViewData[nameof(Student.CountryId)] =
+            new SelectList(_countryRepository.GetAll()
+            .Include(w => w.Nationality)
+            .OrderBy(e => e.Name).ToList(),
+                nameof(Country.Id),
+                $"{nameof(Country.Name)} ({nameof(Country.Nationality.Name)})",
+                countryId);
+
+        ViewData[nameof(Student.CityId)] =
+            new SelectList(
+                _cityRepository.GetAll()
+                .Include(e => e.Country)
+                .OrderBy(e => e.Name).ToList(),
+                $"{nameof(City.Id)} ({nameof(City.Country.Name)})",
+                nameof(City.Name),
+                cityId);
+
+        ViewData[nameof(Student.GenderId)] =
+            new SelectList(_genderRepository.GetAll(),
+                nameof(AppUser.Id),
+                nameof(AppUser.FirstName),
+                genderId);
+
+        ViewData["RoleId"] =
+            new SelectList(_roleManager.Roles,
+                nameof(IdentityRole.Id),
+                nameof(IdentityRole.Name),
+                roleId);
+
+        Console.WriteLine("Debug zone!!!");
+    }
+
+
+    // ---------------------------------------------------------------------- //
 
     // Adicione um método para calcular o tempo restante para o token expirar.
     private TimeSpan GetTimeRemaining(DateTime expirationDate)
@@ -838,5 +964,12 @@ public class AccountController : Controller
 
 
     // ---------------------------------------------------------------------- //
+
+    private void AddModelError(string errorMessage)
+    {
+        ModelState.AddModelError(string.Empty, errorMessage);
+    }
+
+
     // ---------------------------------------------------------------------- //
 }

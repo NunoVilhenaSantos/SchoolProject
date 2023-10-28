@@ -1,15 +1,35 @@
+@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Countries.Country
 @* @model IEnumerable<SchoolProject.Web.Data.Entities.Countries.Country> *@
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Countries.Country> *@
 
+
 @{
-    ViewData["Title"] = "Details";
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3>@actionName</h3>
 
-<h4>Countries</h4>
-
+<h4>@controllerName</h4>
 <hr/>
 @* <div class="row"> *@
 @* <div class="col-md-4 offset-md-4"> *@
@@ -20,14 +40,16 @@
     <div class="row">
         <partial name="_DisplayImages"/>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="row">
                 <partial name="_CountriesDD" for="@Model"/>
 
                 <div aria-label="Basic example" class="btn-group" role="group">
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit</a>
-                    <a asp-action="AddCity" asp-route-id="@Model.Id" class="btn btn-outline-info">Add City</a>
-                    <a asp-action="Index" class="btn btn-outline-success"><i class="fa-solid fa-rotate-left"></i> Back To list</a>
+                    <div class="form-group">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit</a>
+                        <a asp-action="AddCity" asp-route-id="@Model.Id" asp-route-method="1" class="btn btn-info">Add City</a>
+                        <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back To list</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -31,11 +31,16 @@ public class Nationality : IEntity, INotifyPropertyChanged
     [ForeignKey(nameof(Country))]
     public int CountryId { get; set; }
 
-
     /// <summary>
     /// </summary>
     [Required]
     public virtual required Country Country { get; set; }
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Number of Cities")]
+    public int NumberOfCities => Country?.Cities?.Count ?? 0;
+
 
 
     // -------------------------------------------------------------- //
@@ -84,6 +89,27 @@ public class Nationality : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
+
 
 
     // -------------------------------------------------------------- //

@@ -4,6 +4,19 @@ namespace SchoolProject.Web.Data.Repositories.Courses;
 
 /// <inheritdoc />
 public interface ICourseStudentsRepository
-    : IGenericRepository<CourseStudents>
+    : IGenericRepository<CourseStudent>
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    IOrderedQueryable<CourseStudent> GetCourseStudents();
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    IOrderedQueryable<CourseStudent> GetCourseStudentById(int id);
 }

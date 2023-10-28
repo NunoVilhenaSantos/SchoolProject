@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
@@ -18,26 +19,30 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///
 /// </summary>
+[Authorize(Roles = "Admin,SuperUser")]
 public class AppUsersController : Controller
 {
     // Obtém o tipo da classe atual
-    internal const string CurrentClass = nameof(UserWithRolesViewModel);
+    internal const string SessionVarName = UsersController.SessionVarName;
+    internal const string SortProperty = UsersController.SortProperty;
+    internal const string CurrentClass = UsersController.CurrentClass;
+    internal static readonly string BucketName = UsersController.BucketName;
     internal const string CurrentAction = nameof(Index);
-    internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal static readonly string BucketName = CurrentClass.ToLower();
-
-    internal const string SortProperty =
-        nameof(UserWithRolesViewModel.AppUser.FullName);
+    internal const string ClassRole = CurrentClass;
 
     internal static string ControllerName =>
         HomeController.SplitCamelCase(nameof(AppUsersController));
+
+
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
     // repositories
 
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly StorageHelper _storageHelper;
+    private readonly IStorageHelper _storageHelper;
     private readonly IUserHelper _userHelper;
     private readonly IMailHelper _mailHelper;
 
@@ -50,23 +55,30 @@ public class AppUsersController : Controller
     private readonly DataContextMySql _context;
     // private readonly DataContextMySql _contextMySql;
 
-    // A private field to get the authenticated user in app.
-    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
-
+    /// <summary>
+    ///    AppUsersController constructor.
+    /// </summary>
+    /// <param name="hostingEnvironment"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="storageHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="context"></param>
+    /// <param name="authenticatedUserInApp"></param>
     public AppUsersController(
         IWebHostEnvironment hostingEnvironment,
-        IConverterHelper converterHelper, StorageHelper storageHelper,
+        IConverterHelper converterHelper, IStorageHelper storageHelper,
         IUserHelper userHelper, IMailHelper mailHelper,
         DataContextMySql context, AuthenticatedUserInApp authenticatedUserInApp)
     {
+        _authenticatedUserInApp = authenticatedUserInApp;
         _hostingEnvironment = hostingEnvironment;
         _converterHelper = converterHelper;
         _storageHelper = storageHelper;
         _userHelper = userHelper;
         _mailHelper = mailHelper;
         _context = context;
-        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
 
@@ -85,10 +97,13 @@ public class AppUsersController : Controller
 
 
     /// <summary>
-    ///     UserNotFound action.
+    ///     User Not Found action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult UserNotFound => View();
+    public IActionResult UserNotFound()
+    {
+        return View();
+    }
 
 
     /// <summary>
@@ -252,6 +267,10 @@ public class AppUsersController : Controller
 
 
     // GET: AppUsers/Create
+    /// <summary>
+    ///  Create action.
+    /// </summary>
+    /// <returns></returns>
     public IActionResult Create()
     {
         // ViewData["SubscriptionId"] = new SelectList(
@@ -270,6 +289,11 @@ public class AppUsersController : Controller
     //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    ///   Create action.
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
@@ -277,28 +301,24 @@ public class AppUsersController : Controller
         //     "FirstName,LastName,Address,SubscriptionId,ImageId,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
         AppUser appUser)
     {
-        if (ModelState.IsValid)
-        {
-            _context.Add(appUser);
+        if (!ModelState.IsValid) return View(appUser);
 
-            await _context.SaveChangesAsync();
+        _context.Add(appUser);
 
-            return RedirectToAction(nameof(Index));
-        }
-
-        // ViewData["SubscriptionId"] = new SelectList(
-        //     _context.Subscriptions,
-        //     nameof(Subscription.Id),
-        //     nameof(Subscription.Details),
-        //     appUser.SubscriptionId
-        // );
+        await _context.SaveChangesAsync();
 
         HttpContext.Session.Remove(SessionVarName);
 
-        return View(appUser);
+        return RedirectToAction(nameof(Index));
     }
 
+
     // GET: AppUsers/Edit/5
+    /// <summary>
+    ///   Edit action.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Edit(string id)
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
@@ -321,6 +341,7 @@ public class AppUsersController : Controller
         return View(appUser);
     }
 
+
     // POST: AppUsers/Edit/5
     //
     // To protect from over-posting attacks,
@@ -328,6 +349,12 @@ public class AppUsersController : Controller
     //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="appUser"></param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(string id,
@@ -339,26 +366,8 @@ public class AppUsersController : Controller
             return new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
                 id, CurrentController, nameof(Index));
 
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(appUser);
-
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Users.Any(e => e.Id == id))
-                    return new NotFoundViewResult(nameof(UserNotFound),
-                        CurrentClass,
-                        id, CurrentController, nameof(Index));
-
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
+        if (!ModelState.IsValid)
+            return View(appUser);
 
         // ViewData["SubscriptionId"] = new SelectList(
         //     _context.Subscriptions,
@@ -367,11 +376,34 @@ public class AppUsersController : Controller
         //     appUser.SubscriptionId
         // );
 
+        try
+        {
+            _context.Update(appUser);
+
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.Users.Any(e => e.Id == id))
+                return new NotFoundViewResult(nameof(UserNotFound),
+                    CurrentClass,
+                    id, CurrentController, nameof(Index));
+
+            throw;
+        }
+
         HttpContext.Session.Remove(SessionVarName);
-        return View(appUser);
+
+        return RedirectToAction(nameof(Index));
     }
 
+
     // GET: AppUsers/Delete/5
+    /// <summary>
+    ///    Delete action.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<IActionResult> Delete(string id)
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
@@ -388,14 +420,18 @@ public class AppUsersController : Controller
         return View(appUser);
     }
 
+
     // POST: AppUsers/Delete/5
+    /// <summary>
+    ///   DeleteConfirmed action.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(string id)
     {
         var appUser = await _context.Users.FindAsync(id);
-
-        //if (appUser != null) _context.Users.Remove(appUser);
 
         if (appUser == null)
             return new NotFoundViewResult(nameof(UserNotFound), CurrentClass,

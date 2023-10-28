@@ -1,4 +1,8 @@
 ﻿@using System.Diagnostics
+
+@using SchoolProject.Web.Controllers
+@using SchoolProject.Web.Data.Repositories.Teachers
+
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -8,13 +12,13 @@
 <div class="dropdown">
 
     <a aria-expanded="false"
-       class="nav-link dropdown-toggle @(currentController is "TeacherCourses" or "Teachers" ? "active" : "") p-1"
+       class="nav-link dropdown-toggle @(currentController is "TeacherDisciplines" or "Teachers" ? "active" : "") p-1"
        data-bs-toggle="dropdown" role="button">
         <svg class="bi d-block mx-auto mb-1" fill="currentColor" height="2em" viewBox="0 0 640 512"
              xmlns="http://www.w3.org/2000/svg">
             <path d="M192 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-8 384V352h16V480c0 17.7 14.3 32 32 32s32-14.3 32-32V192h56 64 16c17.7 0 32-14.3 32-32s-14.3-32-32-32H384V64H576V256H384V224H320v48c0 26.5 21.5 48 48 48H592c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H368c-26.5 0-48 21.5-48 48v80H243.1 177.1c-33.7 0-64.9 17.7-82.3 46.6l-58.3 97c-9.1 15.1-4.2 34.8 10.9 43.9s34.8 4.2 43.9-10.9L120 256.9V480c0 17.7 14.3 32 32 32s32-14.3 32-32z"/>
         </svg>
-        Teachers
+        @TeachersController.ControllerName
     </a>
 
     <ul class="dropdown-menu">
@@ -22,7 +26,7 @@
             <a asp-action="Index" asp-area="" asp-controller="Teachers"
                class="dropdown-item  @(currentAction == "Index" && currentController == "Teachers" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                Teachers
+                @TeachersController.ControllerName List
             </a>
         </li>
         @* <li> *@
@@ -32,7 +36,7 @@
             <a asp-action="IndexCards" asp-area="" asp-controller="Teachers"
                class="dropdown-item  @(currentAction == "IndexCards" && currentController == "Teachers" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                Teachers Cards
+                @TeachersController.ControllerName Cards
             </a>
         </li>
         @* <li> *@
@@ -42,37 +46,37 @@
             <a asp-action="IndexCards1" asp-area="" asp-controller="Teachers"
                class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "Teachers" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                Teachers Cards 1
+                @TeachersController.ControllerName Cards 1
             </a>
         </li>
         <li>
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a asp-action="Index" asp-area="" asp-controller="TeacherCourses"
-               class="dropdown-item  @(currentAction == "Index" && currentController == "TeacherCourses" ? "active" : "")">
+            <a asp-action="Index" asp-area="" asp-controller="TeacherDisciplines"
+               class="dropdown-item  @(currentAction == "Index" && currentController == "TeacherDisciplines" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                TeacherCourses
+                @TeacherDisciplinesController.ControllerName List
             </a>
         </li>
         @* <li> *@
         @*     <hr class="dropdown-divider"> *@
         @* </li> *@
         <li>
-            <a asp-action="IndexCards" asp-area="" asp-controller="TeacherCourses"
-               class="dropdown-item  @(currentAction == "IndexCards" && currentController == "TeacherCourses" ? "active" : "")">
+            <a asp-action="IndexCards" asp-area="" asp-controller="TeacherDisciplines"
+               class="dropdown-item  @(currentAction == "IndexCards" && currentController == "TeacherDisciplines" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                TeacherCourses Cards
+                @TeacherDisciplinesController.ControllerName Cards
             </a>
         </li>
         @* <li> *@
         @*     <hr class="dropdown-divider"> *@
         @* </li> *@
         <li>
-            <a asp-action="IndexCards1" asp-area="" asp-controller="TeacherCourses"
-               class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "TeacherCourses" ? "active" : "")">
+            <a asp-action="IndexCards1" asp-area="" asp-controller="TeacherDisciplines"
+               class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "TeacherDisciplines" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                TeacherCourses Cards 1
+                @TeacherDisciplinesController.ControllerName Cards 1
             </a>
         </li>
     </ul>

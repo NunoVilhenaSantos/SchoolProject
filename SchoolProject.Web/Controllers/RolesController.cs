@@ -4,7 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 
@@ -15,38 +19,73 @@ namespace SchoolProject.Web.Controllers;
 ///     Authorisation is required to access this controller.
 ///     Roles that can access this controller are Admin and SuperUser.
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser")]
+[Authorize(Roles = "Admin,SuperUser")]
 public class RolesController : Controller
 {
     // Obtém o tipo da classe atual
-    private const string CurrentClass = nameof(IdentityRole);
-    private const string CurrentAction = nameof(Index);
+    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "Name";
+    internal const string SortProperty = nameof(IdentityRole.Name);
+    internal const string CurrentClass = nameof(IdentityRole);
+    internal const string CurrentAction = nameof(Index);
 
 
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-
-    internal string BucketName = CurrentClass.ToLower();
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(IdentityRole));
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+    //  repositories
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<AppUser> _userManager;
+
+
     /// <summary>
     ///     Constructor for the RolesController
     /// </summary>
     /// <param name="roleManager"></param>
+    /// <param name="userManager"></param>
     /// <param name="hostingEnvironment"></param>
-    public RolesController(RoleManager<IdentityRole> roleManager,
-        IWebHostEnvironment hostingEnvironment, AuthenticatedUserInApp authenticatedUserInApp)
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="storageHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="converterHelper"></param>
+    public RolesController(AuthenticatedUserInApp authenticatedUserInApp,
+        IHttpContextAccessor httpContextAccessor,
+        IWebHostEnvironment hostingEnvironment,
+        IConverterHelper converterHelper,IStorageHelper storageHelper,
+        IUserHelper userHelper, IMailHelper mailHelper,
+        RoleManager<IdentityRole> roleManager,
+        UserManager<AppUser> userManager)
     {
-        _roleManager = roleManager;
+
+    _authenticatedUserInApp = authenticatedUserInApp;
+        _httpContextAccessor = httpContextAccessor;
         _hostingEnvironment = hostingEnvironment;
-        _authenticatedUserInApp = authenticatedUserInApp;
+        _converterHelper = converterHelper;
+        _storageHelper = storageHelper;
+        _roleManager = roleManager;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
+        _userManager = userManager;
     }
 
 
@@ -63,11 +102,6 @@ public class RolesController : Controller
     }
 
 
-    /// <summary>
-    ///     RoleNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult RoleNotFound => View();
 
 
     private List<IdentityRole> GetRolesList()
@@ -87,25 +121,21 @@ public class RolesController : Controller
             // Se a lista estiver na sessão, desserializa-a
             var json = Encoding.UTF8.GetString(allData);
 
-            recordsQuery =
-                JsonConvert.DeserializeObject<List<IdentityRole>>(json) ??
+            return JsonConvert.DeserializeObject<List<IdentityRole>>(json) ??
                 new List<IdentityRole>();
         }
-        else
-        {
+
             // Caso contrário, obtenha a lista completa do banco de dados
             // Chame a função GetTeachersList com o tipo T
             recordsQuery = GetRolesList();
 
             PaginationViewModel<T>.Initialize(_hostingEnvironment);
 
-            var json = PaginationViewModel<IdentityRole>
+        var json1 = PaginationViewModel<IdentityRole>
                 .StoreListToFileInJson(recordsQuery);
 
             // Armazene a lista na sessão para uso futuro
-            HttpContext.Session.Set(SessionVarName,
-                Encoding.UTF8.GetBytes(json));
-        }
+        HttpContext.Session.Set(SessionVarName, Encoding.UTF8.GetBytes(json1));
 
         return recordsQuery;
     }
@@ -139,6 +169,7 @@ public class RolesController : Controller
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<IdentityRole>();
+
         return View(recordsQuery);
     }
 
@@ -153,10 +184,6 @@ public class RolesController : Controller
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
-
-        // Validar parâmetros de página e tamanho da página
-        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
-        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
         var recordsQuery = SessionData<IdentityRole>();
 
@@ -244,7 +271,11 @@ public class RolesController : Controller
             });
 
         if (result.Succeeded)
+        {
+            HttpContext.Session.Remove(SessionVarName);
+        
             return RedirectToAction("Index");
+        }
 
         foreach (var error in result.Errors)
             ModelState.AddModelError("Roles", error.Description);
@@ -314,6 +345,8 @@ public class RolesController : Controller
             throw;
         }
 
+        HttpContext.Session.Remove(SessionVarName);
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -355,9 +388,37 @@ public class RolesController : Controller
         var identityRole =
             await _roleManager.FindByIdAsync(id);
 
-        if (identityRole != null) await _roleManager.DeleteAsync(identityRole);
+        if (identityRole == null)
+            return new NotFoundViewResult(
+                nameof(RoleNotFound), CurrentClass, id, CurrentController,
+                nameof(Index));
 
-        await _roleManager.Roles.ExecuteDeleteAsync();
+
+
+        var appUserList = await _userManager.GetUsersInRoleAsync(identityRole.Name);
+
+        if (appUserList.Count > 0)
+        {
+            ModelState.AddModelError("Roles",
+                "Este papel não pode ser excluído, " +
+                "pois está associado a um ou mais AppUsers.\n" +
+                "Portanto, o sistema não permitirá a exclusão.\n\n");
+
+            ModelState.AddModelError("Roles", 
+                "This role cannot be deleted because it is associated with one or more AppUsers.\n" +
+                "Therefore, the system will not allow its deletion.");
+
+            return View(identityRole);
+        }
+
+        await _roleManager.DeleteAsync(identityRole);
+
+        // Remove all roles from the system
+        // await _roleManager.Roles.ExecuteDeleteAsync();
+
+        HttpContext.Session.Remove(SessionVarName);
+
+        HttpContext.Session.Remove(SessionVarName);
 
         return RedirectToAction(nameof(Index));
     }
@@ -367,57 +428,46 @@ public class RolesController : Controller
     // ---------------------------------------------------------------------- //
 
 
+
     /// <summary>
-    ///     Aqui o utilizador obtém a lista de países e a respetiva nacionalidade
-    ///     via JSON para o preenchimento do dropdown-list
+    ///     RoleNotFound action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult RoleNotFound()
+    {
+        return View();
+    }
+
+    // -------------------------------------------------------------- //
+
+    /// <summary>
+    ///    GetRolesListJson action.
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    // [Route("api/Roles/GetRolesJson")]
-    [Route("Roles/GetRolesJson")]
-    public Task<JsonResult> GetRolesJson()
+    // [Route("api/Roles/GetRolesListJson")]
+    [Route("Roles/GetRolesListJson")]
+    public Task<JsonResult> GetRolesListJson()
     {
-        var rolesList = GetRoles();
+        var rolesList = _roleManager.Roles
+            .Select(p => new SelectListItem
+            { Text = p.Name, Value = p.Id.ToString(), })
+            .OrderBy(c => c.Text).ToList();
+
+        rolesList.Insert(0, new SelectListItem
+        { Text = "(Select a Subscription....)", Value = "0", });
 
 
-        Console.OutputEncoding = Encoding.UTF8;
-        Console.WriteLine(rolesList);
-        var selectListItems = rolesList.ToList();
-        Console.WriteLine(
-            Json(selectListItems.OrderBy(c => c.Text)));
-
-
-        return Task.FromResult(
-            Json(selectListItems.OrderBy(c => c.Text)));
+        return Task.FromResult(Json(rolesList));
     }
 
 
-    /// <summary>
-    ///     Get a list of genders
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerable<SelectListItem> GetRoles()
+    // -------------------------------------------------------------- //
+
+    private void AddModelError(string errorMessage)
     {
-        // Retrieve countries and their corresponding nationalities
-        var rolesList = _roleManager.Roles.ToList();
-
-        var combinedList =
-        (
-            from role in rolesList.ToList()
-            let itemText = $"{role.Name}"
-            let itemValue = role.Id
-            select new SelectListItem
-            {
-                Text = itemText, Value = itemValue
-            }
-        ).ToList();
-
-        combinedList.Insert(0, new SelectListItem
-        {
-            Text = "(Select a role...)",
-            Value = "0"
-        });
-
-        return combinedList;
+        ModelState.AddModelError(string.Empty, errorMessage);
     }
+
+    // -------------------------------------------------------------- //
 }

@@ -1,0 +1,94 @@
+﻿@using System.Reflection
+
+@model SchoolProject.Web.Data.Entities.Courses.Course
+
+@{
+    // ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+
+    // Isso obtém o nome da classe do modelo atual
+    var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    var disciplinesList = Model.CourseDisciplines.Where(e => e.CourseId == Model.Id).OrderBy(c => c.Discipline.Name).ToList();
+    System.Diagnostics.Debug.Assert(disciplinesList != null, nameof(disciplinesList) + " != null");
+}
+
+<br/>
+<h4>@nameof(Model.CourseDisciplines)</h4>
+<h4>Disciplines</h4>
+@if (Model.CourseDisciplines == null || !Model.CourseDisciplines.Any())
+{
+    <h5>No Disciplines added yet to this course</h5>
+}
+else
+{
+    <table class="table table-hover" sortable="True" id="sortableTable">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.ProfilePhotoId)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Code)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Hours)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.CreditPoints)</th>
+            @* <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.IdGuid)</th> *@
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.WasDeleted)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.CreatedAt) </th>
+            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.UpdatedAt)</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var item in disciplinesList)
+        {
+            <tr>
+                <td>
+                    <img alt="Image" class="img-thumbnail" height="100" src="@Url.Content(item.Discipline.ProfilePhotoIdUrl)" width="100"/>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Discipline.Code)</td>
+                <td>@Html.DisplayFor(modelItem => item.Discipline.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Discipline.Description)</td>
+                @* <td>@Html.DisplayFor(modelItem => item.Discipline.Hours)</td> *@
+                <td>@item.Discipline.Hours.ToString("N0")</td>
+                @* <td>@Html.DisplayFor(modelItem => item.Discipline.CreditPoints)</td> *@
+                <td>@item.Discipline.CreditPoints.ToString("N")</td>
+                @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
+                <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
+                <td id="@item.Id">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a asp-controller="Disciplines" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                        <a asp-controller="Disciplines" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
+                        <a asp-controller="Disciplines" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Discipline.Code+@item.Discipline.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+
+        <tfoot>
+        <tr>
+            <td></td>
+            <td>Total Lines:</td>
+            <td>@disciplinesList.Count</td>
+            <td></td>
+            <td>@disciplinesList.Sum(e => e.Discipline.Hours).ToString("N")</td>
+                <td>@disciplinesList.Sum(e => e.Discipline.CreditPoints).ToString("N")</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tfoot>
+
+    </table>
+}

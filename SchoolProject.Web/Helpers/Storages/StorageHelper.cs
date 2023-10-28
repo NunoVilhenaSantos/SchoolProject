@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Serilog;
@@ -14,7 +15,7 @@ public class StorageHelper : IStorageHelper
         "https://storage.googleapis.com/storage-nuno/";
 
     internal const string AzureStoragePublicUrl =
-        "https://armazenamentoshell.blob.core.windows.net/";
+        "https://supershop.blob.core.windows.net/";
 
 
     private readonly IConfiguration _configuration;
@@ -47,12 +48,41 @@ public class StorageHelper : IStorageHelper
 
         var uriBuilder =
             new UriBuilder("https", "storage.googleapis.com");
-        uriBuilder.Path = Path.Combine("storage-jorge", "products" + "ProfilePhotoId");
+        uriBuilder.Path =
+            Path.Combine("storage-jorge", "products" + "ProfilePhotoId");
         //
         // string url = uriBuilder.Uri.ToString();
     }
 
 
+    /// <inheritdoc />
+    public async Task DeleteStorageAsync(string blobName, string bucketName)
+    {
+        // Get a reference to a container named "sample-container"
+        // and then create it
+        var blobContainerClient =
+            new BlobContainerClient(
+                _configuration["Storage:Azure"],
+                bucketName);
+
+
+        // Get a reference to a blob named "sample-file"
+        // in a container named "sample-container"
+        var blobClient =
+            blobContainerClient.GetBlobClient(blobName.ToString());
+
+
+        // Check if the container already exists
+        bool containerExists = await blobContainerClient.ExistsAsync();
+
+
+        // Create the container if it doesn't exist
+        if (!containerExists)
+            await blobContainerClient.DeleteBlobAsync(blobName);
+    }
+
+
+    /// <inheritdoc />
     public async Task<Guid> UploadStorageAsync(
         IFormFile file, string bucketName)
     {
@@ -62,6 +92,7 @@ public class StorageHelper : IStorageHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<Guid> UploadStorageAsync(
         byte[] file, string bucketName)
     {
@@ -71,6 +102,7 @@ public class StorageHelper : IStorageHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<Guid> UploadStorageAsync(
         string file, string bucketName)
     {
@@ -80,6 +112,7 @@ public class StorageHelper : IStorageHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<Guid> UploadFileAsyncToGcp(
         IFormFile fileToUpload, string fileNameInBucket)
     {
@@ -143,6 +176,7 @@ public class StorageHelper : IStorageHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<Guid> UploadFileAsyncToGcp(
         string fileToUpload, string fileNameInBucket
     )
@@ -204,6 +238,7 @@ public class StorageHelper : IStorageHelper
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> DeleteFileAsyncFromGcp(
         string fileNameInBucket,
         string gcpStorageBucketName)
@@ -235,38 +270,95 @@ public class StorageHelper : IStorageHelper
         }
     }
 
+
     private async Task<Guid> UploadStreamAsync(
         Stream stream, string bucketName)
     {
         var name = Guid.NewGuid();
+        // var connectionString = _configuration["Blob:ConnectionString1"];
+        var connectionString = _configuration["Storage:ConnectionString1"];
+        var containerName = bucketName;
 
+        // Create a BlobServiceClient using the connection string
+        var serviceClient = new BlobServiceClient(connectionString);
 
-        // Get a reference to a container named "sample-container"
-        // and then create it
-        var blobContainerClient =
-            new BlobContainerClient(
-                _configuration["Storage:ConnectionString1"],
-                bucketName);
-
-
-        // Get a reference to a blob named "sample-file"
-        // in a container named "sample-container"
-        var blobClient =
-            blobContainerClient.GetBlobClient(name.ToString());
-
-
-        // Check if the container already exists
-        bool containerExists = await blobContainerClient.ExistsAsync();
-
+        // Get a reference to the container
+        var containerClient =
+            serviceClient.GetBlobContainerClient(containerName);
 
         // Create the container if it doesn't exist
-        if (!containerExists) await blobContainerClient.CreateAsync();
+        await containerClient.CreateIfNotExistsAsync(
+            PublicAccessType.BlobContainer);
 
-        // Perform any additional setup or
-        // configuration for the container if needed
-        // Upload local file
+        // Get a reference to the blob
+        var blobClient = containerClient.GetBlobClient(name.ToString());
+
+        // Delete the blob if it already exists
+        await blobClient.DeleteIfExistsAsync();
+
+        // Upload the stream
         await blobClient.UploadAsync(stream);
 
-        return name; // "Uploaded file to blob storage.";
+        // Generate the URL
+        var blobUri = blobClient.Uri;
+
+        return name;
     }
+
+
+    /// <summary>
+    ///  UploadResult class.
+    /// </summary>
+    public class UploadResult
+    {
+        /// <summary>
+        ///  UploadResult generated Guid.
+        /// </summary>
+        public required Guid Guid { get; set; }
+
+        /// <summary>
+        ///  UploadResult generated Uri.
+        /// </summary>
+        public required Uri Uri { get; set; }
+    }
+
+
+    // private async Task<UploadResult> UploadStreamAsync(
+    //     Stream stream, string bucketName)
+    // {
+    //     var name = Guid.NewGuid();
+    //     var connectionString = _configuration["Blob:ConnectionString1"];
+    //     var containerName = bucketName;
+    //
+    //     // Create a BlobServiceClient using the connection string
+    //     var serviceClient = new BlobServiceClient(connectionString);
+    //
+    //     // Get a reference to the container
+    //     var containerClient =
+    //         serviceClient.GetBlobContainerClient(containerName);
+    //
+    //     // Create the container if it doesn't exist
+    //     await containerClient.CreateIfNotExistsAsync(
+    //         PublicAccessType.BlobContainer);
+    //
+    //     // Get a reference to the blob
+    //     var blobClient = containerClient.GetBlobClient(name.ToString());
+    //
+    //     // Delete the blob if it already exists
+    //     await blobClient.DeleteIfExistsAsync();
+    //
+    //     // Upload the stream
+    //     await blobClient.UploadAsync(stream);
+    //
+    //     // Generate the URL
+    //     var blobUri = blobClient.Uri;
+    //
+    //     var uploadResult = new UploadResult
+    //     {
+    //         Guid = name,
+    //         Uri = blobUri
+    //     };
+    //
+    //     return uploadResult;
+    // }
 }

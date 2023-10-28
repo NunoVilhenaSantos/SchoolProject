@@ -83,18 +83,17 @@ public class CourseDto
     /// <summary>
     ///
     /// </summary>
-    public required Guid ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
         ? StorageHelper.NoImageUrl
         : StorageHelper.AzureStoragePublicUrl +
           CoursesController.BucketName +
           "/" + ProfilePhotoId;
-
-
 
 
     // ---------------------------------------------------------------------- //
@@ -104,7 +103,7 @@ public class CourseDto
 
     /// <summary>
     /// </summary>
-    public required List<KeyValuePair<string, string>>
+    public required List<KeyValuePair<string, string>>?
         CourseDisciplines { get; set; }
 
 
@@ -114,7 +113,7 @@ public class CourseDto
 
     /// <summary>
     /// </summary>
-    public required List<KeyValuePair<string, string>>
+    public required List<KeyValuePair<string, string>>?
         CourseStudents { get; set; }
 
     // --------------------------------------------------------------------- //
@@ -130,13 +129,17 @@ public class CourseDto
     /// <summary>
     ///     List of Disciplines for this Discipline
     /// </summary>
-    public required List<KeyValuePair<string, string>> Disciplines { get; set; }
+    public required List<KeyValuePair<string, string>>? Disciplines
+    {
+        get;
+        set;
+    }
 
 
     /// <summary>
     ///     List of Students for this Discipline
     /// </summary>
-    public required List<KeyValuePair<string, string>> Students { get; set; }
+    public required List<KeyValuePair<string, string>>? Students { get; set; }
 
 
     /// <summary>
@@ -152,7 +155,7 @@ public class CourseDto
     /// <summary>
     ///
     /// </summary>
-    public required List<KeyValuePair<string, string>> Enrollment { get; set; }
+    public required List<KeyValuePair<string, string>>? Enrollment { get; set; }
 
     public required decimal? ClassAverage { get; set; }
 
@@ -208,36 +211,36 @@ public class CourseDto
             ProfilePhotoId = course.ProfilePhotoId,
             // ProfilePhotoIdUrl = course.ProfilePhotoIdUrl,
 
-            CourseDisciplines = course.CourseDisciplines
+            CourseDisciplines = course.CourseDisciplines?
                 .Where(e => e.CourseId == course.Id)
                 .Select(e =>
-                    new KeyValuePair<string, string>(e.Discipline.Code,
-                        e.Discipline.Name))
+                    new KeyValuePair<string, string>
+                        (e.Discipline.Code, e.Discipline.Name))
                 .ToList(),
 
-            CourseStudents = course.CourseStudents
+            CourseStudents = course.CourseStudents?
                 .Where(e => e.CourseId == course.Id)
                 .Select(e =>
-                    new KeyValuePair<string, string>(e.Student.FirstName,
-                        e.Student.LastName))
+                    new KeyValuePair<string, string>
+                        (e.Student.FirstName, e.Student.LastName))
                 .ToList(),
 
-            Disciplines = course.Disciplines
+            Disciplines = course.CourseDisciplines?
                 .Select(e =>
-                    new KeyValuePair<string, string>(e.Code,
-                        e.Name))
+                    new KeyValuePair<string, string>
+                        (e.Discipline.Code, e.Discipline.Name))
                 .ToList(),
 
-            Students = course.Students
+            Students = course.CourseStudents?
                 .Select(e =>
-                    new KeyValuePair<string, string>(e.FirstName,
-                        e.LastName))
+                    new KeyValuePair<string, string>
+                        (e.Student.FirstName, e.Student.LastName))
                 .ToList(),
 
-            Enrollment = course.Enrollment
+            Enrollment = course.Enrollments?
                 .Select(e =>
-                    new KeyValuePair<string, string>(e.Discipline.Code,
-                        e.Discipline.Name))
+                    new KeyValuePair<string, string>
+                        (e.Discipline.Code, e.Discipline.Name))
                 .ToList(),
 
             StudentsCount = course.StudentsCount,

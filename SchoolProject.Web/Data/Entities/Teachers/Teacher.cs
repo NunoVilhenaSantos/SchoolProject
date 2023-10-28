@@ -52,7 +52,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
     public required string PostalCode { get; set; }
 
 
-
     /// <summary>
     ///     The country Id.
     /// </summary>
@@ -62,7 +61,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
     // [ForeignKey(nameof(City))]
     [Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
     public required int CountryId { get; set; }
-
 
 
     /// <summary>
@@ -187,7 +185,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     ///
     /// </summary>
     [ForeignKey(nameof(AppUser))]
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     /// <summary>
     /// </summary>
@@ -217,11 +215,13 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          TeachersController.BucketName +
-          "/" + ProfilePhotoId;
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              TeachersController.BucketName +
+              "/" + ProfilePhotoId;
 
 
     // ---------------------------------------------------------------------- //
@@ -234,28 +234,28 @@ public class Teacher : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
-    /// <summary>
-    ///    Navigation property for the many-to-many relationship with courses
-    /// </summary>
-    public IEnumerable<Discipline>? Disciplines { get; set; }
+    ///// <summary>
+    /////    Navigation property for the many-to-many relationship with courses
+    ///// </summary>
+    //public IEnumerable<Discipline>? Disciplines { get; set; }
 
 
-    /// <summary>
-    /// </summary>
-    [DisplayName("Disciplines Count")]
-    public int DisciplinesCount => Disciplines?.Count() ?? 0;
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Disciplines Count")]
+    //public int DisciplinesCount => Disciplines?.Count() ?? 0;
 
-    /// <summary>
-    /// </summary>
-    [DisplayName("Total Work Hours")]
-    public int TotalWorkHours => Disciplines?
-        .Sum(t => t.Hours) ?? 0;
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Total Work Hours")]
+    //public int TotalWorkHours => Disciplines?
+    //    .Sum(t => t.Hours) ?? 0;
 
-    /// <summary>
-    /// </summary>
-    [DisplayName("Total Work Hours")]
-    public int TotalStudents => Disciplines?
-        .Sum(t => t.StudentsCount) ?? 0;
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Total Students")]
+    //public int TotalStudents => Disciplines?
+    //    .Sum(t => t.StudentsCount) ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -263,16 +263,34 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship with courses
     /// </summary>
-    public virtual HashSet<TeacherCourse>? TeacherCourses { get; set; }
-    // = new List<TeacherCourse>();
+    public virtual HashSet<TeacherDiscipline>? TeacherDisciplines { get; set; }
+    // = new List<TeacherDiscipline>();
 
 
-    // [DisplayName("Disciplines Count")]
-    // public int DisciplinesCount => TeacherCourses?.Count ?? 0;
+    /// <summary>
+    ///    Returns the disciplines associated with this teacher
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Discipline>? Disciplines =>
+        TeacherDisciplines?.Select(sc => sc.Discipline).Distinct();
 
-    // [DisplayName("Total Work Hours")]
-    // public int TotalWorkHours => TeacherCourses?
-    //     .Sum(t => t.Course?.Hours) ?? 0;
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Disciplines Count")]
+    public int DisciplinesCount => TeacherDisciplines?.Count() ?? 0;
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Total Work Hours")]
+    public int TotalWorkHours => TeacherDisciplines?
+        .Sum(t => t.Discipline?.Hours) ?? 0;
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Total Students")]
+    public int TotalStudents => TeacherDisciplines?
+        .Sum(t => t.Discipline?.StudentsCount) ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -323,6 +341,27 @@ public class Teacher : IEntity, INotifyPropertyChanged
     public virtual AppUser? UpdatedBy { get; set; }
 
 
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
+
+    // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 

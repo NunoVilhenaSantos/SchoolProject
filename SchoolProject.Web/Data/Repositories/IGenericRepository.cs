@@ -15,6 +15,10 @@ public interface IGenericRepository<T> where T : class, IEntity
     IQueryable<T> GetAll();
 
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     Task<int> GetCount();
 
 
@@ -23,7 +27,7 @@ public interface IGenericRepository<T> where T : class, IEntity
     /// </summary>
     /// <param name="id"></param>
     /// <returns> returns an entity or null. </returns>
-    Task<T?> GetByIdAsync(int id);
+    IQueryable<T> GetByIdAsync(int id);
 
 
     /// <summary>
@@ -31,7 +35,7 @@ public interface IGenericRepository<T> where T : class, IEntity
     /// </summary>
     /// <param name="idGuid"></param>
     /// <returns> returns an entity or null.</returns>
-    Task<T?> GetByIdGuidAsync(Guid idGuid);
+    IQueryable<T>  GetByIdGuidAsync(Guid idGuid);
 
 
     /// <summary>

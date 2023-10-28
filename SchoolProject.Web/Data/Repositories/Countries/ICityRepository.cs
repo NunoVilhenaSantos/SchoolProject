@@ -1,4 +1,5 @@
-﻿using SchoolProject.Web.Data.Entities.Countries;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Models.Countries;
 
 namespace SchoolProject.Web.Data.Repositories.Countries;
@@ -52,4 +53,11 @@ public interface ICityRepository : IGenericRepository<City>
     /// <param name="city"></param>
     /// <returns></returns>
     Task<int> DeleteCityAsync(City city);
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    IEnumerable<SelectListItem> GetComboCities();
 }

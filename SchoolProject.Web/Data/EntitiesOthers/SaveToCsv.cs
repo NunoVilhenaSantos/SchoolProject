@@ -61,10 +61,10 @@ public static class SaveToCsv
 
         SaveEntitiesToCsv(dataContext.Courses,
             "Courses.csv", csvConfig);
-        SaveEntitiesToCsv(dataContext.CoursesDisciplines,
+        SaveEntitiesToCsv(dataContext.CourseDisciplines,
             "CourseDisciplines.csv", csvConfig);
-        SaveEntitiesToCsv(dataContext.CoursesStudents,
-            "CoursesStudents.csv", csvConfig);
+        SaveEntitiesToCsv(dataContext.CourseStudents,
+            "CourseStudents.csv", csvConfig);
 
 
         SaveEntitiesToCsv(dataContext.Disciplines,
@@ -77,15 +77,18 @@ public static class SaveToCsv
 
         SaveEntitiesToCsv(dataContext.Students,
             "Students.csv", csvConfig);
-        SaveEntitiesToCsv(dataContext.StudentCourses,
-            "StudentCourses.csv", csvConfig);
+        SaveEntitiesToCsv(dataContext.StudentDisciplines,
+            "StudentDisciplines.csv", csvConfig);
 
 
         SaveEntitiesToCsv(dataContext.Teachers,
             "Teachers.csv", csvConfig);
-        SaveEntitiesToCsv(dataContext.TeacherCourses,
-            "TeacherCourses.csv", csvConfig);
+        SaveEntitiesToCsv(dataContext.TeacherDisciplines,
+            "TeacherDisciplines.csv", csvConfig);
     }
+
+
+    private static readonly object fileLock = new object();
 
 
     private static void SaveEntitiesToCsv<T>(IEnumerable<T> entities,
@@ -95,12 +98,16 @@ public static class SaveToCsv
 
         var filePath = Path.Combine(FilePath, fileName);
 
-        using var writer = new StreamWriter(filePath);
-        using var csv = new CsvWriter(writer, csvConfig);
-
-        var tableTemp = entities.ToList();
-        csv.WriteRecords(tableTemp);
-
-        // csv.WriteRecords(entities);
+        lock (fileLock)
+        {
+            using (var writer = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
+            {
+                using (var csv = new CsvWriter(writer, csvConfig))
+                {
+                    var tableTemp = entities.ToList();
+                    csv.WriteRecords(tableTemp);
+                }
+            }
+        }
     }
 }

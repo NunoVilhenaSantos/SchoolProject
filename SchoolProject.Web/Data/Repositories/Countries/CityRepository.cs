@@ -1,4 +1,6 @@
-﻿using SchoolProject.Web.Data.DataContexts;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
@@ -7,16 +9,11 @@ using SchoolProject.Web.Models.Countries;
 
 namespace SchoolProject.Web.Data.Repositories.Countries;
 
-/// <inheritdoc cref="SchoolProject.Web.Data.Repositories.GenericRepository {City}" />
+/// <inheritdoc cref="SchoolProject.Web.Data.Repositories.Countries.ICityRepository" />
 public class CityRepository : GenericRepository<City>, ICityRepository
 {
-    /// <summary>
-    ///
-    /// </summary>
-    // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
-    // A private field to get the data context.
     private readonly DataContextMySql _dataContext;
     private readonly DataContextMsSql _dataContextMsSql;
     private readonly DataContextMySql _dataContextMySql;
@@ -28,15 +25,16 @@ public class CityRepository : GenericRepository<City>, ICityRepository
         AuthenticatedUserInApp authenticatedUserInApp,
         DataContextMySql dataContext, DataContextMySql dataContextMySql,
         DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
-    ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
+    ) :
+        base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite
+        )
     {
-        _dataContext = dataContext;
+        _authenticatedUserInApp = authenticatedUserInApp;
 
+        _dataContext = dataContext;
         _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
         _dataContextSqLite = dataContextSqLite;
-
-        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
 
@@ -48,8 +46,8 @@ public class CityRepository : GenericRepository<City>, ICityRepository
             .ThenInclude(country => country.Cities)
             .Include(c => c.Country)
             .ThenInclude(country => country.Nationality)
-            .Include(c => c.CreatedBy)
-            .Include(c => c.UpdatedBy)
+            // .Include(c => c.CreatedBy)
+            // .Include(c => c.UpdatedBy)
             .OrderBy(c => c.Country.Name)
             .ThenBy(c => c.Name);
     }
@@ -58,14 +56,16 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     /// <inheritdoc />
     public IOrderedQueryable<City> GetCityAsync(int id)
     {
+        // return await _dataContext.Cities.FindAsync(id);
+
         return _dataContext.Cities
             .Include(c => c.Country)
             .ThenInclude(country => country.Cities)
             .Include(c => c.Country)
             .ThenInclude(country => country.Nationality)
-            .Include(c => c.CreatedBy)
-            .Include(c => c.UpdatedBy)
-            .Where(i => i.Id == id)
+            // .Include(c => c.CreatedBy)
+            // .Include(c => c.UpdatedBy)
+            .Where(c => c.Id == id)
             .OrderBy(c => c.Country.Name)
             .ThenBy(c => c.Name);
     }
@@ -74,14 +74,16 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     /// <inheritdoc />
     public IOrderedQueryable<City> GetCityAsync(City city)
     {
+        // return await _dataContext.Cities.FindAsync(city.Id);
+
         return _dataContext.Cities
             .Include(c => c.Country)
             .ThenInclude(country => country.Cities)
             .Include(c => c.Country)
             .ThenInclude(country => country.Nationality)
-            .Include(c => c.CreatedBy)
-            .Include(c => c.UpdatedBy)
-            .Where(i => i.Id == city.Id)
+            // .Include(c => c.CreatedBy)
+            // .Include(c => c.UpdatedBy)
+            .Where(c => c == city)
             .OrderBy(c => c.Country.Name)
             .ThenBy(c => c.Name);
     }
@@ -90,13 +92,13 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     /// <inheritdoc />
     public async Task AddCityAsync(CityViewModel model)
     {
-        var country = await GetCountryWithCitiesAsync(model.CountryId);
-
+        var country = GetCountryWithCitiesAsync(model.CountryId)
+            .FirstOrDefault();
         if (country == null) return;
 
         country.Cities?.Add(new City
         {
-            Name = model.Name,
+            Name = model.CityName,
             ProfilePhotoId = default,
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
@@ -113,7 +115,7 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     /// <inheritdoc />
     public async Task AddCityAsync(City city)
     {
-        var country = await GetCountryWithCitiesAsync(city.Id);
+        var country = GetCountryWithCitiesAsync(city.Id).FirstOrDefault();
 
         if (country == null) return;
 
@@ -171,25 +173,47 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     }
 
 
-    private async Task<Country?> GetCountryWithCitiesAsync(int countryId)
+    // ------------------------ Countries ------------------------------ //
+
+
+    private IOrderedQueryable<Country> GetCountryWithCitiesAsync(int countryId)
     {
-        return await _dataContext.Countries
+        return _dataContext.Countries
             .Include(c => c.Cities)
-            .FirstOrDefaultAsync(c => c.Id == countryId);
+            .Where(c => c.Id == countryId)
+            .OrderBy(c => c.Name);
     }
 
 
-    private async Task<Country?> GetCountryWithCitiesAsync(City city)
+    private IOrderedQueryable<Country> GetCountryWithCitiesAsync(City city)
     {
-        //var country = await _dataContext.Countries
-        //    .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
-        //    .FirstOrDefaultAsync();
-
-        return await _dataContext.Countries
+        return _dataContext.Countries
             .Include(c => c.Cities)
-            .Where(c =>
-                c.Cities != null &&
-                c.Cities.Any(ci => ci.Id == city.Id))
-            .FirstOrDefaultAsync();
+            .Where(c => c.Cities != null && c.Cities.Any().Equals(city))
+            .OrderBy(c => c.Name);
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<SelectListItem> GetComboCities()
+    {
+        var list = _dataContext.Cities
+            .OrderBy(a => a.Name)
+            .Select(a => new SelectListItem
+            {
+                Text = $"{a.Name} - {a.Country.Name}",
+                Value = a.Id.ToString(),
+            }).ToList();
+
+        list.Insert(0, new SelectListItem
+        {
+            Text = "(Select a City...)",
+            Value = "0"
+        });
+
+        return list;
     }
 }

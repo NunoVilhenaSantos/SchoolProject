@@ -5,39 +5,49 @@ using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Data.Seeders;
 
+/// <summary>
+///
+/// </summary>
 public class SeedDbTeachersWithDisciplines
 {
-    private static List<Discipline> _listOfCoursesFromDb;
+    private static List<Discipline> _listOfDisciplinesFromDb;
     private static List<Teacher> _listOfTeachersFromDb;
 
 
+    /// <summary>
+    /// code for fetching existing courses and disciplines
+    /// </summary>
+    /// <param name="dataContextInUse"></param>
+    /// <param name="appUser"></param>
     public static async Task AddingData(
         // DataContextMsSql dataContextInUse, 
-        DataContextMySql dataContextInUse,
-        AppUser appUser
+        DataContextMySql dataContextInUse, AppUser appUser
     )
     {
-        // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
+
+        // ------------------------------------------------------------------ //
 
         await AddDataToDb(appUser, dataContextInUse);
 
         // ------------------------------------------------------------------ //
+
         Console.WriteLine("debug zone...");
     }
 
 
-    private static async Task AddDataToDb(AppUser appUser,
-        DataContextMySql dataContextInUse)
+    private static async Task AddDataToDb(
+        AppUser appUser, DataContextMySql dataContextInUse)
     {
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
+        // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //
-        var existingCourses =
+        var existingDisciplines =
             await dataContextInUse.Disciplines.ToListAsync();
-        _listOfCoursesFromDb = existingCourses.ToList();
+        _listOfDisciplinesFromDb = existingDisciplines.ToList();
 
 
         // ------------------------------------------------------------------ //
@@ -48,29 +58,34 @@ public class SeedDbTeachersWithDisciplines
 
         // ------------------------------------------------------------------ //
         Console.WriteLine("debug zone...");
+        // ------------------------------------------------------------------ //
+
 
         // ------------------------------------------------------------------ //
-        Console.WriteLine("debug zone...");
-        if (await dataContextInUse.TeacherCourses.AnyAsync()) return;
+        if (await dataContextInUse.TeacherDisciplines.AnyAsync()) return;
 
 
         // ------------------------------------------------------------------ //
         var random = new Random();
 
-        foreach (var teacherCourse in from course in _listOfCoursesFromDb
+
+        foreach (var teacherDiscipline in
+                 from discipline in _listOfDisciplinesFromDb
                  let teacher = _listOfTeachersFromDb[
                      random.Next(_listOfTeachersFromDb.Count)]
-                 select new TeacherCourse
+                 select new TeacherDiscipline
                  {
                      TeacherId = teacher.Id,
                      Teacher = teacher,
-                     CourseId = course.Id,
-                     Course = course,
-                     CreatedBy = appUser,
+                     DisciplineId = discipline.Id,
+                     Discipline = discipline,
                      CreatedById = appUser.Id,
+                     CreatedBy = appUser,
                  })
+
             // Add the TeacherCourse association to the context
-            dataContextInUse.TeacherCourses.Add(teacherCourse);
+            dataContextInUse.TeacherDisciplines.Add(teacherDiscipline);
+
 
         // -------------------------------------------------------------- //
         Console.WriteLine("debug zone...");

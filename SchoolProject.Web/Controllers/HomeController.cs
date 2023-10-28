@@ -28,7 +28,7 @@ namespace SchoolProject.Web.Controllers;
 public class HomeController : Controller
 {
     // private readonly IConnectivityChecker _connectivityChecker;
-    
+
     // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
 
@@ -50,35 +50,39 @@ public class HomeController : Controller
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
-
     // session variable names and types
     private readonly Dictionary<string, Type> _sessionVariableTypes =
         new()
         {
+            // ---------- A ---------- //
+            // {AccountController.SessionVarName, typeof(AppUser)},
+            // {AppUsersController.SessionVarName, typeof(AppUser)},
+            // ---------- C ---------- //
             {CitiesController.SessionVarName, typeof(City)},
             {CountriesController.SessionVarName, typeof(Country)},
-            {DisciplinesController.SessionVarName, typeof(Discipline)},
-            {EnrollmentsController.SessionVarName, typeof(Enrollment)},
-            {GendersController.SessionVarName, typeof(Gender)},
-            {NationalitiesController.SessionVarName, typeof(Nationality)},
-            {RolesController.SessionVarName, typeof(IdentityRole)},
-            {
-                CoursesDisciplinesController.SessionVarName,
-                typeof(CourseDisciplines)
-            },
             {CoursesController.SessionVarName, typeof(Course)},
-            {
-                CoursesStudentsController.SessionVarName,
-                typeof(CourseStudents)
-            },
-            {StudentCoursesController.SessionVarName, typeof(StudentCourse)},
+            {CoursesDisciplinesController.SessionVarName, typeof(CourseDiscipline)},
+            {CoursesStudentsController.SessionVarName, typeof(CourseStudent)},
+            // ---------- D ---------- //
+            {DisciplinesController.SessionVarName, typeof(Discipline)},
+            // ---------- E ---------- //
+            {EnrollmentsController.SessionVarName, typeof(Enrollment)},
+            // ---------- G ---------- //
+            {GendersController.SessionVarName, typeof(Gender)},
+            // ---------- N ---------- //
+            {NationalitiesController.SessionVarName, typeof(Nationality)},
+            // ---------- R ---------- //
+            {RolesController.SessionVarName, typeof(IdentityRole)},
+            // ---------- S ---------- //
+            {StudentDisciplinesController.SessionVarName, typeof(StudentDiscipline)},
             {StudentsController.SessionVarName, typeof(Student)},
-            {TeacherCoursesController.SessionVarName, typeof(TeacherCourse)},
+            // ---------- T ---------- //
+            {TeacherDisciplinesController.SessionVarName, typeof(TeacherDiscipline)},
             {TeachersController.SessionVarName, typeof(Teacher)},
+            // ---------- U ---------- //
             {UsersController.SessionVarName, typeof(UserWithRolesViewModel)}
             // Adicione mais nomes de variáveis de sessão aqui com os tipos correspondentes
         };
-
 
 
     /// <summary>
@@ -90,13 +94,15 @@ public class HomeController : Controller
     /// <param name="htmlLocalizer"></param>
     /// <param name="stringLocalizer"></param>
     /// <param name="hostingEnvironment"></param>
+    /// <param name="authenticatedUserInApp"></param>
     public HomeController(
         ILogger<HomeController> logger,
         SignInManager<AppUser> signInManager,
         IWebHostEnvironment hostingEnvironment,
         IHttpContextAccessor httpContextAccessor,
         IHtmlLocalizer<HomeController> htmlLocalizer,
-        IStringLocalizer<HomeController> stringLocalizer, AuthenticatedUserInApp authenticatedUserInApp)
+        IStringLocalizer<HomeController> stringLocalizer,
+        AuthenticatedUserInApp authenticatedUserInApp)
     {
         _logger = logger;
         _htmlLocalizer = htmlLocalizer;
@@ -165,7 +171,8 @@ public class HomeController : Controller
 
     private int GetSessionDataSize(string sessionVarName)
     {
-        return HttpContext.Session.TryGetValue(sessionVarName, out var allData)
+        return HttpContext.Session
+            .TryGetValue(sessionVarName, out var allData)
             ? allData.Length
             : 0;
     }
@@ -214,6 +221,7 @@ public class HomeController : Controller
     public IActionResult VariableInfo()
     {
         var viewModel = GetVariableInfoList();
+
         return View(viewModel);
     }
 
@@ -358,8 +366,6 @@ public class HomeController : Controller
     }
 
 
-
-
     // -------------------------------------------------------------- //
 
 
@@ -376,13 +382,14 @@ public class HomeController : Controller
 
 
         // Split the string at every uppercase letter, except for the first letter.
-        var textSplit = Regex.Replace(text, @"([A-Z][a-z]+)", @" $1");
+        var textSplit =
+            Regex.Replace(text, @"([A-Z][a-z]+)", @" $1");
 
 
         // Remove the "Controller" suffix, if it exists.
         if (textSplit.EndsWith("Controller"))
-            textSplit =
-                textSplit.Substring(0, textSplit.Length - "Controller".Length);
+            textSplit = textSplit
+                .Substring(0, textSplit.Length - "Controller".Length);
 
 
         // Remove the "Controller" suffix

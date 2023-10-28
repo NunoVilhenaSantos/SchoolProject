@@ -21,6 +21,10 @@ namespace SchoolProject.Web.Data.Seeders;
 /// </summary>
 public class SeedDb
 {
+    // Default password for all users
+    internal const string DefaultPassword = "Passw0rd=";
+
+
     // data context
     //private readonly DataContextMsSql _dataContextInUse;
     private readonly DataContextMySql _dataContextInUse;
@@ -41,7 +45,6 @@ public class SeedDb
     private readonly IConfiguration _configuration;
 
 
-
     // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
 
@@ -51,8 +54,6 @@ public class SeedDb
     private readonly ILogger<SeedDbCourses> _loggerSeedDbCourses;
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
-
-
 
 
     // service provider
@@ -214,9 +215,6 @@ public class SeedDb
         }
 
 
-
-
-
         // ------------------------------------------------------------------ //
         // initialize SeedDbUsers with the appUser helper before been used
         // ------------------------------------------------------------------ //
@@ -245,7 +243,7 @@ public class SeedDb
         await _dataContextInUse.SaveChangesAsync();
 
         // Chame este método em vez de repetir o código 15 vezes.
-        await CommitChangesAndHandleErrorsAsync();
+        // await CommitChangesAndHandleErrorsAsync();
 
 
         // ------------------------------------------------------------------ //
@@ -328,10 +326,12 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        // adding students to school-classes into the database
+        // adding students to courses into the database
         // ------------------------------------------------------------------ //
-        // SeedDbStudentsAndCourses.Initialize(_dataContextInUse);
-        await SeedDbStudentsAndCourses.AddingData(user, _dataContextInUse);
+        // SeedDbCoursesAndStudents.Initialize(_dataContextInUse);
+        // await SeedDbCoursesAndStudents.AddingData(user, _dataContextInUse);
+        // await SeedDbCoursesAndStudents.AddingDataNew(user, _dataContextInUse);
+        await SeedDbCoursesAndStudents.AddingData(user, _dataContextInUse);
         await _dataContextInUse.SaveChangesAsync();
 
         Console.WriteLine("Debug point.", Color.Red);
@@ -360,7 +360,6 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         SaveToCsv.SaveTo(_dataContextInUse);
         // ------------------------------------------------------------------ //
-
 
 
         // ------------------------------------------------------------------ //
@@ -396,7 +395,6 @@ public class SeedDb
 
     private Task SeedDbGenerateCreateScript()
     {
-
         string directory = ".\\data\\SQL\\";
 
         Directory.CreateDirectory(directory);
@@ -405,24 +403,26 @@ public class SeedDb
         // ------------------------------------------------------------------ //
 
 
-
         // Gravar o script de criação de banco de dados 1
         var value1 = _dataContextSqLite.Database.GenerateCreateScript();
-        File.WriteAllText(Path.Join(directory, "create_script_SQLite.sql"), value1);
+        File.WriteAllText(Path.Join(directory, "create_script_SQLite.sql"),
+            value1);
 
         // Gravar o script de criação de banco de dados 2
         var value2 = _dataContextMySql.Database.GenerateCreateScript();
-        File.WriteAllText(Path.Join(directory, "create_script_MySQL.sql"), value2);
+        File.WriteAllText(Path.Join(directory, "create_script_MySQL.sql"),
+            value2);
 
         // Gravar o script de criação de banco de dados 3
         var value3 = _dataContextMsSql.Database.GenerateCreateScript();
-        File.WriteAllText(Path.Join(directory, "create_script_MSSql.sql"), value3);
+        File.WriteAllText(Path.Join(directory, "create_script_MSSql.sql"),
+            value3);
 
         // Gravar o script de criação de banco de dados 4
         //var value4 = _dataContextInUse.Database.GenerateCreateScript();
         //File.WriteAllText(Path.Join(directory, "create_script_4.sql"), value4);
-        
-        
+
+
         // ------------------------------------------------------------------ //
 
         return Task.CompletedTask;
@@ -451,7 +451,17 @@ public class SeedDb
             // Registe a exceção ou faça o tratamento adequado aqui.
             _logger.LogError(ex,
                 "Ocorreu um erro durante a migração do banco de dados MySQL.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+            // throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+
+
+            //
+            await _dataContextMySql.Database.EnsureDeletedAsync();
+
+            // Cria os Migrations ao correr o Seed
+            await _dataContextMySql.Database.MigrateAsync();
+
+            // Não cria os Migrations
+            await _dataContextMySql.Database.EnsureCreatedAsync();
         }
 
 
@@ -492,7 +502,6 @@ public class SeedDb
 
             // Não cria os Migrations
             await _dataContextMsSql.Database.EnsureCreatedAsync();
-
         }
 
 
@@ -517,8 +526,6 @@ public class SeedDb
 
         await _dataContextInUse.Database.MigrateAsync();
         await _dataContextInUse.Database.EnsureCreatedAsync();
-
-
     }
 
     private async Task SeedingDataGenders(AppUser appUser)
@@ -921,7 +928,7 @@ public class SeedDb
                 "Ocorreu um erro durante a migração do banco de dados MySQL.");
 
             // Re-lança a exceção para que o programa saiba que algo deu errado.
-            throw; 
+            throw;
         }
 
 
@@ -1118,8 +1125,8 @@ public class SeedDb
         // ------------------------------------------------------------------ //
         // adding students to school-classes into the database
         // ------------------------------------------------------------------ //
-        // SeedDbStudentsAndCourses.Initialize(_dataContextInUse);
-        SeedDbStudentsAndCourses.AddingData(user, _dataContextInUse).Wait();
+        // SeedDbCoursesAndStudents.Initialize(_dataContextInUse);
+        SeedDbCoursesAndStudents.AddingData(user, _dataContextInUse).Wait();
 
         // _dataContextInUse.SaveChanges();
         CommitChangesAndHandleErrors();
@@ -1145,10 +1152,8 @@ public class SeedDb
         _dataContextInUse.SaveChanges();
 
 
-
         // ------------------------------------------------------------------ //
         SaveToCsv.SaveTo(_dataContextInUse);
-
 
 
         // ------------------------------------------------------------------ //
@@ -1187,7 +1192,6 @@ public class SeedDb
 
     private Task<AppResponse> CommitChangesAndHandleErrors()
     {
-
         // Commit the changes to the database and use asynchronous commit
         if (_dataContextInUse.Database.CurrentTransaction != null)
         {
@@ -1265,11 +1269,6 @@ public class SeedDb
     }
 
 
-
-
-
-
-
     internal void CloseConnections()
     {
         _dataContextInUse.Database.CloseConnection();
@@ -1278,7 +1277,6 @@ public class SeedDb
         _dataContextSqLite.Database.CloseConnection();
         // _dataContextInUse.Database.CloseConnection();
     }
-
 
 
     private void PrintDebugInformation(

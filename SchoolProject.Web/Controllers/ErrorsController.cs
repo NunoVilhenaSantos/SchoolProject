@@ -10,7 +10,10 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class ErrorsController : Controller
 {
+    // hostingEnvironment is used to check if the application is running in development mode.
     private readonly IWebHostEnvironment _hostingEnvironment;
+
+    // logger is used to log errors.
     private readonly ILogger<ErrorsController> _logger;
 
 

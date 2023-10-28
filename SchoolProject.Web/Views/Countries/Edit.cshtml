@@ -27,7 +27,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3>@actionName</h3>
 
 <h4>@controllerName</h4>
 
@@ -41,7 +41,7 @@
     <div class="row">
         <partial name="_DisplayImages"/>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="row">
                 <form asp-action="Edit" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -53,8 +53,8 @@
                     <div aria-label="Basic example" class="btn-group" role="group"></div>
                     <div aria-label="Basic example" class="btn-group" role="group">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-outline-primary"><i class="fa-regular fa-floppy-disk"></i> Save</button>
-                            <a asp-action="Index" class="btn btn-outline-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
+                            <button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Save</button>
+                            <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
                         </div>
                     </div>
                 </form>

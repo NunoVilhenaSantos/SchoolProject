@@ -19,12 +19,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     /// <returns></returns>
     IOrderedQueryable<Country> GetCountriesWithCities();
 
+    IOrderedQueryable<Country> GetCitiesAndNationalitiesByIdAsync(int id);
+
 
     /// <summary>
     ///     Get countries with cities.
     /// </summary>
     /// <returns></returns>
-    IOrderedQueryable<Country> GetCountriesWithCitiesEnumerable();
+    IEnumerable<Country> GetCountriesWithCitiesEnumerable();
 
 
     // ------------------------- Combo boxes list  -------------------------- //
@@ -96,19 +98,21 @@ public interface ICountryRepository : IGenericRepository<Country>
 
     // -------------------------------- Cities ------------------------------ //
 
+    IOrderedQueryable<City> GetCitiesByCountryIdAsync(int id);
+
     /// <summary>
     ///     Get city.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<City?> GetCityAsync(int id);
+    IOrderedQueryable<City> GetCityAsync(int id);
 
     /// <summary>
     ///     Get city.
     /// </summary>
     /// <param name="city"></param>
     /// <returns></returns>
-    Task<City?> GetCityAsync(City city);
+    IOrderedQueryable<City> GetCityAsync(City city);
 
 
     // ------------------- Cities Add, Update and Delete -------------------- //
@@ -143,14 +147,14 @@ public interface ICountryRepository : IGenericRepository<Country>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Nationality?> GetNationalityAsync(int id);
+    IOrderedQueryable<Nationality> GetNationalityAsync(int id);
 
     /// <summary>
     ///     get nationality.
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>
-    Task<Nationality?> GetNationalityAsync(Nationality nationality);
+    IOrderedQueryable<Nationality> GetNationalityAsync(Nationality nationality);
 
 
     // ----------------- Nationality Add, Update and Delete ----------------- //

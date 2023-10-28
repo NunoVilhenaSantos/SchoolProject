@@ -1,43 +1,76 @@
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Controllers.API;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
+using SchoolProject.Web.Data.Entities.Genders;
+using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
+using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.Repositories.Countries;
+using SchoolProject.Web.Data.Repositories.Genders;
 using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
+using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
 ///     TeachersController class.
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class TeachersController : Controller
 {
     // Obtém o tipo da classe atual
-    private const string CurrentClass = nameof(Teacher);
-    private const string CurrentAction = nameof(Index);
+    internal static string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(Teacher.FirstName);
-    internal static string BucketName = CurrentClass.ToLower();
+    internal const string CurrentClass = nameof(Teacher);
+    internal const string CurrentAction = nameof(Index);
 
 
-    // hosting environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    // teacher repository
-    private readonly ITeacherRepository _teacherRepository;
-
-    // data context
-    private readonly DataContextMySql _context;
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(TeachersController));
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+    private readonly SelectItensController _selectItensController;
+
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+    //  repositories
+    private readonly ITeacherRepository _teacherRepository;
+    private readonly ICountryRepository _countryRepository;
+    private readonly IGenderRepository _genderRepository;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly ICityRepository _cityRepository;
+
+    // data context
+    // private readonly DataContextMySql _context;
 
 
     /// <summary>
@@ -46,16 +79,43 @@ public class TeachersController : Controller
     /// <param name="context"></param>
     /// <param name="teacherRepository"></param>
     /// <param name="hostingEnvironment"></param>
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="selectItensController"></param>
+    /// <param name="storageHelper"></param>
+    /// <param name="genderRepository"></param>
+    /// <param name="cityRepository"></param>
+    /// <param name="countryRepository"></param>
+    /// <param name="userManager"></param>
     public TeachersController(
         DataContextMySql context,
         ITeacherRepository teacherRepository,
         IWebHostEnvironment hostingEnvironment,
-        AuthenticatedUserInApp authenticatedUserInApp)
+        AuthenticatedUserInApp authenticatedUserInApp,
+        IConverterHelper converterHelper, IStorageHelper storageHelper,
+        IUserHelper userHelper, IMailHelper mailHelper,
+        IHttpContextAccessor httpContextAccessor,
+        SelectItensController selectItensController,
+        ICountryRepository countryRepository,   IGenderRepository genderRepository,
+        ICityRepository cityRepository, UserManager<AppUser> userManager)
     {
-        _context = context;
-        _teacherRepository = teacherRepository;
-        _hostingEnvironment = hostingEnvironment;
         _authenticatedUserInApp = authenticatedUserInApp;
+        _httpContextAccessor = httpContextAccessor;
+        _hostingEnvironment = hostingEnvironment;
+        _teacherRepository = teacherRepository;
+        _converterHelper = converterHelper;
+        _storageHelper = storageHelper;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
+        // _context = context;
+        _selectItensController = selectItensController;
+        _countryRepository = countryRepository;
+        _genderRepository = genderRepository;
+        _cityRepository = cityRepository;
+        _userManager = userManager;
     }
 
 
@@ -75,25 +135,28 @@ public class TeachersController : Controller
     ///     TeacherNotFound action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult TeacherNotFound => View();
+    public IActionResult TeacherNotFound()
+    {
+        return View();
+    }
 
 
     private List<Teacher> GetTeachersList()
     {
-        return _context.Teachers
-            .Include(t => t.City)
-            .ThenInclude(c => c.Country)
-            .Include(t => t.CountryOfNationality)
-            .Include(t => t.Birthplace)
-            .Include(t => t.Birthplace)
-            .ThenInclude(c => c.Nationality)
-            .Include(t => t.Gender)
-            .ThenInclude(g => g.CreatedBy)
-            .Include(t => t.AppUser)
+        return _teacherRepository.GetTeachers()
+            // .Include(t => t.City)
+            // .ThenInclude(c => c.Country)
+            // .Include(t => t.CountryOfNationality)
+            // .Include(t => t.Birthplace)
+            // .ThenInclude(c => c.Nationality)
+            // .Include(t => t.Gender)
+            // .ThenInclude(g => g.CreatedBy)
+            // .Include(t => t.AppUser)
             // Se desejar carregar os cursos associados
-            .Include(t => t.TeacherCourses)
+            // .Include(t => t.TeacherDisciplines)
             // E seus detalhes, se necessário
-            .ThenInclude(tc => tc.Course).ToList();
+            // .ThenInclude(tc => tc.Discipline)
+            .ToList();
     }
 
 
@@ -146,6 +209,7 @@ public class TeachersController : Controller
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Teacher>();
+
         return View(recordsQuery);
     }
 
@@ -167,6 +231,7 @@ public class TeachersController : Controller
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Teacher>();
+
         return View(recordsQuery);
     }
 
@@ -214,7 +279,7 @@ public class TeachersController : Controller
                 nameof(TeacherNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacher = await _context.Teachers
+        var teacher = await _teacherRepository.GetTeacherById(id.Value)
             .FirstOrDefaultAsync(m => m.Id == id);
 
         return teacher == null
@@ -233,13 +298,7 @@ public class TeachersController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        ViewData["Countries"] =
-            SelectItensController.GetCountriesWithNationalitiesAsync();
-        ViewData["Cities"] = SelectItensController.GetCitiesAsync(0);
-        ViewData["Genders"] = SelectItensController.GetGendersAsync();
-        // ViewData["Countries"] = AccountController.GetCountriesAsync();
-
-
+        FillViewLists();
         return View();
     }
 
@@ -260,9 +319,11 @@ public class TeachersController : Controller
     {
         if (!ModelState.IsValid) return View(teacher);
 
-        _context.Add(teacher);
+        await _teacherRepository.CreateAsync(teacher);
 
-        await _context.SaveChangesAsync();
+        await _teacherRepository.SaveAllAsync();
+
+        HttpContext.Session.Remove(SessionVarName);
 
         return RedirectToAction(nameof(Index));
     }
@@ -281,21 +342,14 @@ public class TeachersController : Controller
                 nameof(TeacherNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacher = await _context.Teachers
-            .Include(t => t.Birthplace)
-            .Include(t => t.City)
-            .Include(t => t.CountryOfNationality)
-            .Include(t => t.Gender)
-            .Include(t => t.CreatedBy)
-            .Include(t => t.UpdatedBy)
-            .Include(t => t.AppUser)
+        var teacher = await _teacherRepository.GetTeacherById(id.Value)
             .FirstOrDefaultAsync(t => t.Id == id);
 
         ViewData["Countries"] =
-            SelectItensController.GetCountriesWithNationalitiesAsync();
+            _selectItensController.GetCountriesWithNationalitiesJson();
 
         ViewData["Cities"] =
-            SelectItensController.GetCitiesAsync(teacher.City.Country.Id);
+            _selectItensController.GetCitiesJson(teacher.City.CountryId);
 
         return teacher == null
             ? new NotFoundViewResult(
@@ -329,8 +383,8 @@ public class TeachersController : Controller
 
         try
         {
-            _context.Update(teacher);
-            await _context.SaveChangesAsync();
+            await _teacherRepository.UpdateAsync(teacher);
+            await _teacherRepository.SaveAllAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -338,11 +392,15 @@ public class TeachersController : Controller
                 return new NotFoundViewResult(
                     nameof(TeacherNotFound), CurrentClass, id.ToString(),
                     CurrentController, nameof(Index));
+
             throw;
         }
 
+        HttpContext.Session.Remove(SessionVarName);
+
         return RedirectToAction(nameof(Index));
     }
+
 
     // GET: Teachers/Delete/5
     /// <summary>
@@ -357,7 +415,7 @@ public class TeachersController : Controller
                 nameof(TeacherNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacher = await _context.Teachers
+        var teacher = await _teacherRepository.GetTeacherById(id.Value)
             .FirstOrDefaultAsync(m => m.Id == id);
 
         return teacher == null
@@ -366,6 +424,7 @@ public class TeachersController : Controller
                 CurrentController, nameof(Index))
             : View(teacher);
     }
+
 
     // POST: Teachers/Delete/5
     /// <summary>
@@ -378,18 +437,130 @@ public class TeachersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var teacher = await _context.Teachers.FindAsync(id);
+        var teacher = await _teacherRepository.GetByIdAsync(id)
+            .FirstOrDefaultAsync();
 
-        if (teacher != null) _context.Teachers.Remove(teacher);
+        if (teacher == null)
+            return new NotFoundViewResult(
+                nameof(TeacherNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
-        await _context.SaveChangesAsync();
 
-        return RedirectToAction(nameof(Index));
+
+        try
+        {
+            await _teacherRepository.DeleteAsync(teacher);
+
+            await _teacherRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            // Handle DbUpdateException, specifically for this controller.
+            Console.WriteLine(ex.Message);
+
+            // Handle foreign key constraint violation.
+            DbErrorViewModel dbErrorViewModel;
+
+            if (ex.InnerException != null &&
+                ex.InnerException.Message.Contains("DELETE"))
+            {
+                dbErrorViewModel = new DbErrorViewModel
+                {
+                    DbUpdateException = true,
+                    ErrorTitle = "Foreign Key Constraint Violation",
+                    ErrorMessage =
+                        "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                        $"The {nameof(Student)} with the ID " +
+                        $"{teacher.Id} - {teacher.FullName} {teacher.IdGuid} +" +
+                        "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                        "Try deleting possible dependencies and try again. ",
+                    ItemClass = nameof(Student),
+                    ItemId = teacher.Id.ToString(),
+                    ItemGuid = teacher.IdGuid,
+                    ItemName = teacher.FullName
+                };
+
+                // Redirecione para o DatabaseError com os dados apropriados
+                return RedirectToAction(
+                    "DatabaseError", "Errors", dbErrorViewModel);
+            }
+
+            // Handle other DbUpdateExceptions.
+            dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Database Error",
+                ErrorMessage = "An error occurred while deleting the entity.",
+                ItemClass = nameof(Student),
+                ItemId = teacher.Id.ToString(),
+                ItemGuid = teacher.IdGuid,
+                ItemName = teacher.FullName
+            };
+
+            // Redirecione para o DatabaseError com os dados apropriados
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+
     }
 
 
     private bool TeacherExists(int id)
     {
-        return _context.Teachers.Any(e => e.Id == id);
+        return _teacherRepository.ExistAsync(id).Result;
+    }
+
+
+    private void FillViewLists(
+        int courseId = 0, int disciplineId = 0,
+        int countryOfNationalityId = 0, int birthplaceId = 0,
+        string? createdById = null, string? updatedById = null
+    )
+    {
+        ViewData[nameof(Teacher.CountryId)] =
+            _countryRepository.GetComboCountries();
+
+        ViewData[nameof(Teacher.CityId)] = _countryRepository.GetComboCities(0);
+
+        // ViewData[nameof(CourseDiscipline.DisciplineId)] =
+        //     new SelectList(test,
+        //         nameof(Discipline.Id),
+        //         $"{nameof(Discipline.Code)}",
+        //         disciplineId);
+
+        ViewData[nameof(Teacher.CountryOfNationalityId)] =
+            new SelectList(_countryRepository.GetAll().ToList(),
+                nameof(Country.Id),
+                $"{nameof(Country.Name)} ({nameof(Country.Nationality.Name)})",
+                countryOfNationalityId);
+
+        ViewData[nameof(Teacher.BirthplaceId)] =
+            new SelectList(_countryRepository.GetAll().ToList(),
+                nameof(Country.Id),
+                $"{nameof(Country.Name)} ({nameof(Country.Nationality.Name)})",
+                birthplaceId);
+
+        ViewData[nameof(Teacher.GenderId)] =
+            new SelectList(_genderRepository.GetAll().ToList(),
+                nameof(Gender.Id),
+                nameof(Gender.Name),
+                updatedById);
+
+
+        ViewData[nameof(Teacher.CreatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FirstName),
+                createdById);
+
+        ViewData[nameof(Teacher.UpdatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FirstName),
+                updatedById);
     }
 }

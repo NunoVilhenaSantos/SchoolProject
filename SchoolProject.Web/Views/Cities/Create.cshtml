@@ -10,13 +10,13 @@
     ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
     ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
     ViewData["actionName"] = actionName;
 
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
     ViewData["controllerName"] = controllerName;
 
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
     ViewData["assemblyName"] = assemblyName;
 
     // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
@@ -27,23 +27,22 @@
     // ViewData["Title"] = "Edit";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
 <h4>@controllerName</h4>
 
 <hr/>
 <div class="row">
-
-    <partial name="_DisplayImages" />
+    <partial name="_DisplayImages"/>
 
     <div class="col">
         <div class="col-md-4">
             <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <partial name="_CitiesCE" for="@Model" />
+                <partial name="_CitiesCE" for="@Model"/>
 
-                <br />
+                <br/>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
                     <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
@@ -53,8 +52,4 @@
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+@section Scripts {    @{        await Html.RenderPartialAsync("_ValidationScriptsPartial");    }}

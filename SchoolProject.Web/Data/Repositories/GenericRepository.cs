@@ -52,6 +52,7 @@ public class GenericRepository<T> : IGenericRepository<T>
     }
 
 
+    /// <inheritdoc />
     public async Task<int> GetCount()
     {
         return await _dataContext.Set<T>().CountAsync();
@@ -59,21 +60,24 @@ public class GenericRepository<T> : IGenericRepository<T>
     }
 
 
-    public async Task<T?> GetByIdAsync(int id)
+    /// <inheritdoc />
+    public IQueryable<T> GetByIdAsync(int id)
     {
         // return await _dataContext.Set<T>().FindAsync(id).AsTask();
-        return await _dataContext.Set<T>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.Id == id);
+        return _dataContext.Set<T>().AsQueryable()
+            .Where(e => e.Id == id).AsNoTracking();
     }
 
 
-    public async Task<T?> GetByIdGuidAsync(Guid idGuid)
+    /// <inheritdoc />
+    public IQueryable<T> GetByIdGuidAsync(Guid idGuid)
     {
-        return await _dataContext.Set<T>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.IdGuid == idGuid);
+        return _dataContext.Set<T>().AsQueryable()
+            .Where(e => e.IdGuid == idGuid).AsNoTracking();
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> CreateAsync(T entity)
     {
         await _dataContext.Set<T>().AddAsync(entity);
@@ -81,6 +85,7 @@ public class GenericRepository<T> : IGenericRepository<T>
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> UpdateAsync(T entity)
     {
         _dataContext.Set<T>().Update(entity);
@@ -88,6 +93,7 @@ public class GenericRepository<T> : IGenericRepository<T>
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> DeleteAsync(T entity)
     {
         _dataContext.Set<T>().Remove(entity);
@@ -95,18 +101,21 @@ public class GenericRepository<T> : IGenericRepository<T>
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> ExistAsync(int id)
     {
         return await _dataContext.Set<T>().AnyAsync(e => e.Id == id);
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> ExistAsync(Guid idGuid)
     {
         return await _dataContext.Set<T>().AnyAsync(e => e.IdGuid == idGuid);
     }
 
 
+    /// <inheritdoc />
     public async Task<bool> SaveAllAsync()
     {
         return await _dataContext.SaveChangesAsync() > 0;

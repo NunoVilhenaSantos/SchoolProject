@@ -1,19 +1,66 @@
+@using System.Reflection
+
 @model SchoolProject.Web.Data.Entities.Disciplines.Discipline
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h3>@actionName</h3>
 
-<div>
-    <h4>Course</h4>
-    <hr/>
-    
-    <partial name="_DisciplinesDD" />
+<h4>@controllerName</h4>
+<hr/>
 
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
+
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+<div class="col">
+    <div class="row">
+        <partial name="_DisplayImages"/>
+
+        <div class="col-md-8">
+            <div class="row">
+                <partial name="_DisciplinesDD" for="@Model"/>
+
+                <br/>
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><span class="fa-regular fa-pen-to-square"></span> Edit</a>
-    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
-</div>
+
+<hr/>
+<partial name="_CoursesTable" model="@Model"/>
+<hr/>
+<partial name="_StudentsTable" model="@Model"/>
+<hr/>
+<partial name="_TeachersTable" model="@Model"/>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

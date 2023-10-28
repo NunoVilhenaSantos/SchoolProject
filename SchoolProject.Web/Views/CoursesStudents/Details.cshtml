@@ -1,20 +1,58 @@
-@model             SchoolProject.Web.Data.Entities.Courses.CourseStudents
+@using System.Reflection
+
+@model             SchoolProject.Web.Data.Entities.Courses.CourseStudent
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h3>@actionName</h3>
 
-<div>
-    <h4>SchoolClassStudent</h4>
-    <hr/>
+<h4>@controllerName</h4>
+<hr/>
 
-    <partial name="_SchoolClassStudentsDD" />
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
 
-    
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new {/* id = Model.PrimaryKey */}) |
-    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+<div class="col">
+    <div class="row">
+        @* <partial name="_DisplayImages"/> *@
+
+        <div class="col-md-8">
+            <div class="row">
+
+                <partial name="_CourseStudentsDD" for="@Model"/>
+
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a asp-action="Index" class="btn btn-outline-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
+                </div>
+                <div>
+                    @Html.ActionLink("Edit", "Edit", new {/* id = Model.PrimaryKey */}) |
+                    <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

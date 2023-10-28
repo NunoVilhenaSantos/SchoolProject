@@ -11,13 +11,13 @@
     ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
     ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
     ViewData["actionName"] = actionName;
 
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
     ViewData["controllerName"] = controllerName;
 
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
     ViewData["assemblyName"] = assemblyName;
 
     // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
@@ -28,11 +28,11 @@
     ViewData["Title"] = "Edit";
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3>@actionName</h3>
 
 <h4>@controllerName</h4>
 
-<hr />
+<hr/>
 <div class="row">
 
     <partial name="_DisplayImages"/>
@@ -57,7 +57,6 @@
     </div>
 
 </div>
-
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

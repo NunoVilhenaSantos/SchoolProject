@@ -5,39 +5,42 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Countries;
 
+
 namespace SchoolProject.Web.Data.Repositories.Countries;
 
+/// <inheritdoc cref="SchoolProject.Web.Data.Repositories.Countries.INationalityRepository" />
 public class NationalityRepository
     : GenericRepository<Nationality>, INationalityRepository
 {
-    // data contexts
-    private readonly DataContextMySql _dataContext;
-
-    // private readonly DataContextMsSql _dataContextMsSql;
-    private readonly DataContextMySql _dataContextMySql;
-    private readonly DataContextSqLite _dataContextSqLite;
-
-
-    // authenticated user in app
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+    private readonly DataContextMySql _dataContext;
+    private readonly DataContextMySql _dataContextMySql;
+    private readonly DataContextMsSql _dataContextMsSql;
+    private readonly DataContextSqLite _dataContextSqLite;
 
 
     /// <inheritdoc />
     public NationalityRepository(
         AuthenticatedUserInApp authenticatedUserInApp,
-        DataContextMySql dataContext, DataContextMySql dataContextMySql,
-        DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite
-    ) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
+        DataContextMySql dataContext, DataContextMsSql dataContextMsSql,
+        DataContextMySql dataContextMySql,
+        DataContextSqLite dataContextSqLite) : base(dataContext,
+        dataContextMySql, dataContextMsSql, dataContextSqLite)
     {
+        _authenticatedUserInApp = authenticatedUserInApp;
+
         _dataContext = dataContext;
-        // _dataContextMsSql = dataContextMsSql;
+        _dataContextMsSql = dataContextMsSql;
         _dataContextMySql = dataContextMySql;
         _dataContextSqLite = dataContextSqLite;
-
-        _authenticatedUserInApp = authenticatedUserInApp;
     }
 
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
     public IOrderedQueryable<Nationality> GetNationalitiesWithCountries()
     {
         return _dataContext.Nationalities
@@ -48,28 +51,41 @@ public class NationalityRepository
     }
 
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public IOrderedQueryable<Nationality> GetNationalityAsync(int id)
     {
         return _dataContext.Nationalities
-            .Include(c => c.Country)
+            .Include(n => n.Country)
             .ThenInclude(country => country.Cities)
-            .Where(c => c.Id == id)
-            .OrderBy(c => c.Country.Name)
-            .ThenBy(c => c.Name);
+            .Where(e => e.Id == id)
+            .OrderBy(n => n.Country.Name);
     }
 
 
-    public IOrderedQueryable<Nationality> GetNationalityAsync(Nationality nationality)
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
+    public IOrderedQueryable<Nationality> GetNationalityAsync(
+        Nationality nationality)
     {
         return _dataContext.Nationalities
-            .Include(c => c.Country)
+            .Include(n => n.Country)
             .ThenInclude(country => country.Cities)
-            .Where(c => c.Id == nationality.Id)
-            .OrderBy(c => c.Country.Name)
-            .ThenBy(c => c.Name);
+            .Where(e => e.Id == nationality.Id)
+            .OrderBy(n => n.Country.Name);
     }
 
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="model"></param>
     public async Task AddNationalityAsync(NationalityViewModel model)
     {
         var country = await GetCountryWithCitiesAsync(model.CountryId);
@@ -78,7 +94,7 @@ public class NationalityRepository
 
         country.Nationality = new Nationality
         {
-            Name = model.Name,
+            Name = model.NationalityName,
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             Country = country
@@ -90,6 +106,11 @@ public class NationalityRepository
         await _dataContext.SaveChangesAsync();
     }
 
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="nationality"></param>
     public async Task AddNationalityAsync(Nationality nationality)
     {
         var country = await GetCountryWithCitiesAsync(nationality);
@@ -111,6 +132,11 @@ public class NationalityRepository
     }
 
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
     public async Task<int> UpdateNationalityAsync(Nationality nationality)
     {
         var country = await _dataContext.Nationalities
@@ -126,6 +152,12 @@ public class NationalityRepository
         return country.Id;
     }
 
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
     public async Task<int> DeleteNationalityAsync(Nationality nationality)
     {
         var country = await _dataContext.Nationalities
@@ -142,7 +174,7 @@ public class NationalityRepository
     }
 
 
-    internal async Task<Country?> GetCountryWithCitiesAsync(int countryId)
+    private async Task<Country?> GetCountryWithCitiesAsync(int countryId)
     {
         return await _dataContext.Countries
             .Include(c => c.Cities)
@@ -151,7 +183,12 @@ public class NationalityRepository
     }
 
 
-    public async Task<Country?> GetCountryWithCitiesAsync(
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="nationality"></param>
+    /// <returns></returns>
+    private async Task<Country?> GetCountryWithCitiesAsync(
         Nationality nationality)
     {
         return await _dataContext.Countries

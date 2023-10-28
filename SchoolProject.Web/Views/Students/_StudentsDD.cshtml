@@ -1,7 +1,5 @@
 @model SchoolProject.Web.Data.Entities.Students.Student
 
-<div class="row">
-    <div class="col-md-8">
 
         <dl class="row">
             <dt class="col-sm-3">
@@ -113,11 +111,4 @@
                 @Html.DisplayFor(model => model.UpdatedAt)
             </dd>
         </dl>
-    </div>
-    <div class="col-md-4">
-
-        <img src="@Url.Content(Model.ProfilePhotoIdUrl)" alt="Image" style="width:200px; height:350px; max-width:100%; height:auto">
-
-    </div>
     
-</div>

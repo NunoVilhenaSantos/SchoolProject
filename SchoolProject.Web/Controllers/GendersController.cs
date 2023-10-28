@@ -1,9 +1,14 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Repositories.Genders;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Errors;
@@ -13,34 +18,44 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     GendersController class.
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class GendersController : Controller
 {
     // Obtém o tipo da classe atual
-    private const string CurrentClass = nameof(Gender);
-    private const string CurrentAction = nameof(Index);
+    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "Name";
+    internal const string SortProperty = nameof(Gender.Name);
+    internal const string CurrentClass = nameof(Gender);
+    internal const string CurrentAction = nameof(Index);
 
+
+    // Obtém o nome do controlador atual
     internal static string ControllerName =>
         HomeController.SplitCamelCase(nameof(GendersController));
 
-    internal static readonly string BucketName = CurrentClass.ToLower();
 
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+    //  repositories
+    private readonly IGenderRepository _genderRepository;
 
     // data-contexts
     // private readonly DataContext _context;
     // private readonly DataContextMySql _contextMySql;
-
-
-    // repositories
-    private readonly IGenderRepository _genderRepository;
-
-    //  host environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    // A private field to get the authenticated user in app.
-    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
     /// <summary>
@@ -49,16 +64,29 @@ public class GendersController : Controller
     /// <param name="genderRepository"></param>
     /// <param name="hostingEnvironment"></param>
     /// <param name="authenticatedUserInApp"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="storageHelper"></param>
     public GendersController(
         IGenderRepository genderRepository,
         IWebHostEnvironment hostingEnvironment,
-        AuthenticatedUserInApp authenticatedUserInApp)
+        AuthenticatedUserInApp authenticatedUserInApp,
+        IConverterHelper converterHelper, IStorageHelper storageHelper,
+        IUserHelper userHelper, IMailHelper mailHelper,
+        IHttpContextAccessor httpContextAccessor)
     {
         // _context = context;
         // _contextMySql = contextMySql;
         _genderRepository = genderRepository;
         _hostingEnvironment = hostingEnvironment;
         _authenticatedUserInApp = authenticatedUserInApp;
+        _converterHelper = converterHelper;
+        _storageHelper = storageHelper;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -77,9 +105,6 @@ public class GendersController : Controller
 
     private List<Gender> GendersList()
     {
-        //var citiesWithCountries =
-        //    _cityRepository?.GetCitiesWithCountriesAsync();
-
         return _genderRepository.GetAll().ToList();
     }
 
@@ -201,7 +226,8 @@ public class GendersController : Controller
                 nameof(GenderNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var gender = await _genderRepository.GetByIdAsync(id.Value);
+        var gender = await _genderRepository.GetByIdAsync(id.Value)
+            .FirstOrDefaultAsync();
 
         if (gender == null)
             return new NotFoundViewResult(
@@ -244,6 +270,7 @@ public class GendersController : Controller
         await _genderRepository.SaveAllAsync();
 
         HttpContext.Session.Remove(SessionVarName);
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -260,7 +287,8 @@ public class GendersController : Controller
                 nameof(GenderNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var gender = await _genderRepository.GetByIdAsync(id.Value);
+        var gender = await _genderRepository.GetByIdAsync(id.Value)
+            .FirstOrDefaultAsync();
 
         return gender == null
             ? new NotFoundViewResult(
@@ -268,6 +296,7 @@ public class GendersController : Controller
                 CurrentController, nameof(Index))
             : View(gender);
     }
+
 
     // POST: Genders/Edit/5
     // To protect from over-posting attacks,
@@ -307,8 +336,10 @@ public class GendersController : Controller
         }
 
         HttpContext.Session.Remove(SessionVarName);
+
         return RedirectToAction(nameof(Index));
     }
+
 
     // GET: Genders/Delete/5
     /// <summary>
@@ -323,13 +354,15 @@ public class GendersController : Controller
                 nameof(GenderNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var gender = await _genderRepository.GetByIdAsync(id.Value);
+        var gender = await _genderRepository.GetByIdAsync(id.Value)
+            .FirstOrDefaultAsync();
 
         return gender == null
             ? new NotFoundViewResult(nameof(GenderNotFound), CurrentClass,
                 id.ToString(), CurrentController, nameof(Index))
             : View(gender);
     }
+
 
     // POST: Genders/Delete/5
     /// <summary>
@@ -342,7 +375,8 @@ public class GendersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var gender = await _genderRepository.GetByIdAsync(id);
+        var gender =
+            await _genderRepository.GetByIdAsync(id).FirstOrDefaultAsync();
 
         if (gender == null)
             return new NotFoundViewResult(
@@ -377,13 +411,12 @@ public class GendersController : Controller
                     ErrorMessage =
                         "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                         $"The {nameof(Gender)} with the ID " +
-                        $"{gender} - {gender.Name} " +
-                        // $"{gender.IdGuid} +" +
+                        $"{gender.Id} - {gender.Name} - {gender.IdGuid} +" +
                         "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                         "Try deleting possible dependencies and try again. ",
                     ItemClass = nameof(Gender),
                     ItemId = gender.Id.ToString(),
-                    ItemGuid = Guid.Empty,
+                    ItemGuid = gender.IdGuid,
                     ItemName = gender.Name
                 };
 
@@ -391,6 +424,7 @@ public class GendersController : Controller
                 return RedirectToAction(
                     "DatabaseError", "Errors", dbErrorViewModel);
             }
+
 
             // Handle other DbUpdateExceptions.
             dbErrorViewModel = new DbErrorViewModel
@@ -400,11 +434,10 @@ public class GendersController : Controller
                 ErrorMessage = "An error occurred while deleting the entity.",
                 ItemClass = nameof(Gender),
                 ItemId = gender.Id.ToString(),
-                ItemGuid = Guid.Empty,
+                ItemGuid = gender.IdGuid,
                 ItemName = gender.Name
             };
 
-            HttpContext.Session.Remove(SessionVarName);
 
             // Redirecione para o DatabaseError com os dados apropriados
             return RedirectToAction(
@@ -417,7 +450,10 @@ public class GendersController : Controller
     ///     Gender Not Found action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult GenderNotFound => View();
+    public IActionResult GenderNotFound()
+    {
+        return View();
+    }
 
 
     // -------------------------------------------------------------- //

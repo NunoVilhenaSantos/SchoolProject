@@ -1,4 +1,13 @@
+@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Disciplines.Discipline
+
+@* <!-- Outro conteúdo da página --> *@
+<div>
+    <h3>Errors:</h3>
+    <ul>
+        <li>@Html.ValidationSummary(false, "", new { @class = "text-danger" })</li>
+    </ul>
+</div>
 
 
 <div class="form-group">
@@ -28,7 +37,7 @@
 </div>
 <div class="form-group">
     <label asp-for="ImageFile" class="control-label"></label>
-    <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)" />
+    <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
     <span asp-validation-for="ImageFile" class="text-danger"></span>
 </div>
 <div class="form-group form-check">
@@ -36,11 +45,15 @@
         <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
     </label>
 </div>
+
+<div class="form-group">
+    <label asp-for="CreatedAt" class="control-label"></label>
+    <input asp-for="CreatedAt" class="form-control"/>
+    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+</div>
+
 <div class="form-group">
     <label asp-for="UpdatedAt" class="control-label"></label>
     <input asp-for="UpdatedAt" class="form-control"/>
     <span asp-validation-for="UpdatedAt" class="text-danger"></span>
 </div>
-            
-     
-

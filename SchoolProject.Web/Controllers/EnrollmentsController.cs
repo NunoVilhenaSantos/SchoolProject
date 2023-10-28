@@ -1,40 +1,71 @@
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Users;
+using SchoolProject.Web.Data.Repositories.Disciplines;
 using SchoolProject.Web.Data.Repositories.Enrollments;
+using SchoolProject.Web.Data.Repositories.Students;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
+using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
 ///     EnrollmentsController class.
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
+// [Authorize(Roles = "Admin,SuperUser,Functionary")]
+[Authorize(Roles = "SuperUser,Functionary,Student")]
 public class EnrollmentsController : Controller
 {
     // Obtém o tipo da classe atual
-    private const string CurrentClass = nameof(Enrollment);
-    private const string CurrentAction = nameof(Index);
+    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "Name";
+    internal const string SortProperty = nameof(Enrollment.DisciplineId);
+    internal const string CurrentClass = nameof(Enrollment);
+    internal const string CurrentAction = nameof(Index);
 
-
-    private readonly DataContextMySql _context;
-    private readonly IEnrollmentRepository _enrollmentRepository;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    internal string BucketName = CurrentClass.ToLower();
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(EnrollmentsController));
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+    //  repositories
+    private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IDisciplineRepository _disciplineRepository;
+    private readonly IStudentRepository _studentRepository;
+    private readonly UserManager<AppUser> _userManager;
+
+    // data context
+    // private readonly DataContextMySql _context;
 
 
     /// <summary>
@@ -43,16 +74,41 @@ public class EnrollmentsController : Controller
     /// <param name="context"></param>
     /// <param name="enrollmentRepository"></param>
     /// <param name="hostingEnvironment"></param>
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="storageHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="userManager"></param>
+    /// <param name="disciplineRepository"></param>
+    /// <param name="studentRepository"></param>
     public EnrollmentsController(
         DataContextMySql context,
         IWebHostEnvironment hostingEnvironment,
-        IEnrollmentRepository enrollmentRepository, AuthenticatedUserInApp authenticatedUserInApp)
+        IEnrollmentRepository enrollmentRepository,
+        AuthenticatedUserInApp authenticatedUserInApp,
+        IConverterHelper converterHelper, IStorageHelper storageHelper,
+        IUserHelper userHelper, IMailHelper mailHelper,
+        IHttpContextAccessor httpContextAccessor,
+        UserManager<AppUser> userManager,
+        IDisciplineRepository disciplineRepository,
+        IStudentRepository studentRepository)
     {
-        _context = context;
+        // _context = context;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
+        _userManager = userManager;
+        _disciplineRepository = disciplineRepository;
+        _studentRepository = studentRepository;
+        _storageHelper = storageHelper;
+        _converterHelper = converterHelper;
         _hostingEnvironment = hostingEnvironment;
+        _httpContextAccessor = httpContextAccessor;
         _enrollmentRepository = enrollmentRepository;
         _authenticatedUserInApp = authenticatedUserInApp;
     }
+
 
     // Obtém o controlador atual
     private string CurrentController
@@ -68,25 +124,31 @@ public class EnrollmentsController : Controller
 
 
     /// <summary>
-    ///     EnrollmentNotFound action.
+    ///     Enrollment Not Found action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult EnrollmentNotFound => View();
+    public IActionResult EnrollmentNotFound()
+    {
+        return View();
+    }
 
 
     private List<Enrollment> GetEnrollmentsWithCoursesAndStudents()
     {
-        //var citiesWithCountries =
-        //    _cityRepository?.GetCitiesWithCountriesAsync();
+        // var enrollmentsWithStudent =
+        //     _context.Enrollments
+        //         .Include(e => e.Discipline)
+        //         .Include(e => e.Student)
+        //         // .Include(e => e.CreatedBy)
+        //         // .Include(e => e.UpdatedBy)
+        //         .ToList();
 
-        var enrollmentsWithStudent =
-            _context.Enrollments
-                .Include(e => e.Discipline)
-                .Include(e => e.Student)
-                .Include(e => e.CreatedBy)
-                .Include(e => e.UpdatedBy).ToList();
-
-        return enrollmentsWithStudent;
+        return _enrollmentRepository.GetAll()
+            .Include(e => e.Discipline)
+            .Include(e => e.Student)
+            // .Include(e => e.CreatedBy)
+            // .Include(e => e.UpdatedBy)
+            .ToList();
     }
 
 
@@ -141,6 +203,7 @@ public class EnrollmentsController : Controller
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Enrollment>();
+
         return View(recordsQuery);
     }
 
@@ -161,6 +224,7 @@ public class EnrollmentsController : Controller
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Enrollment>();
+
         return View(recordsQuery);
     }
 
@@ -180,10 +244,6 @@ public class EnrollmentsController : Controller
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
-
-        // Validar parâmetros de página e tamanho da página
-        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
-        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
         var recordsQuery = SessionData<Enrollment>();
 
@@ -210,11 +270,11 @@ public class EnrollmentsController : Controller
             return new NotFoundViewResult(nameof(EnrollmentNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        var enrollment = await _context.Enrollments
-            .Include(e => e.Discipline)
-            .Include(e => e.Student)
-            .Include(e => e.CreatedBy)
-            .Include(e => e.UpdatedBy)
+        var enrollment = await _enrollmentRepository.GetEnrollmentById(id.Value)
+            // .Include(e => e.Discipline)
+            // .Include(e => e.Student)
+            // .Include(e => e.CreatedBy)
+            // .Include(e => e.UpdatedBy)
             .FirstOrDefaultAsync(m => m.StudentId == id);
 
         return enrollment == null
@@ -231,21 +291,7 @@ public class EnrollmentsController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Disciplines,
-                "Id", "Code");
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id");
-
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                "Id", "Address");
-
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                "Id", "Id");
+        FillViewLists();
 
         return View();
     }
@@ -266,32 +312,18 @@ public class EnrollmentsController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(enrollment);
+            await _enrollmentRepository.CreateAsync(enrollment);
 
-            await _context.SaveChangesAsync();
+            await _enrollmentRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
 
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Disciplines,
-                "Id", "Code",
-                enrollment.DisciplineId);
-
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                "Id", "Address",
-                enrollment.StudentId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                enrollment.CreatedBy.Id);
-
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                enrollment.UpdatedBy?.Id);
+        FillViewLists(
+            enrollment.DisciplineId, enrollment.StudentId,
+            enrollment.CreatedBy.Id, enrollment.UpdatedBy?.Id);
 
         return View(enrollment);
     }
@@ -309,33 +341,20 @@ public class EnrollmentsController : Controller
             return new NotFoundViewResult(nameof(EnrollmentNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        var enrollment = await _context.Enrollments.FindAsync(id);
+        var enrollment = await _enrollmentRepository.GetEnrollmentById(id.Value)
+            // .Include(e => e.Discipline)
+            // .Include(e => e.Student)
+            // .Include(e => e.CreatedBy)
+            // .Include(e => e.UpdatedBy)
+            .FirstOrDefaultAsync(m => m.StudentId == id);
 
         if (enrollment == null)
             return new NotFoundViewResult(nameof(EnrollmentNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Disciplines,
-                "Id", "Code",
-                enrollment.DisciplineId);
-
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                "Id", "Address",
-                enrollment.StudentId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                enrollment.CreatedBy.Id);
-
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                enrollment is {UpdatedBy: not null}
-                    ? enrollment.UpdatedBy.Id
-                    : null);
+        FillViewLists(
+            enrollment.DisciplineId, enrollment.StudentId,
+            enrollment.CreatedBy.Id, enrollment.UpdatedBy?.Id);
 
         return View(enrollment);
     }
@@ -359,52 +378,34 @@ public class EnrollmentsController : Controller
             return new NotFoundViewResult(nameof(EnrollmentNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(enrollment);
+            FillViewLists(
+                enrollment.DisciplineId, enrollment.StudentId,
+                enrollment.CreatedBy.Id, enrollment.UpdatedBy?.Id);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EnrollmentExists(enrollment.StudentId))
-                    return new NotFoundViewResult(nameof(EnrollmentNotFound),
-                        CurrentClass, id.ToString(), CurrentController,
-                        nameof(Index));
-
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
+            return View(enrollment);
         }
 
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Disciplines,
-                nameof(enrollment.Discipline.Id),
-                nameof(enrollment.Discipline.Code),
-                enrollment.DisciplineId);
+        try
+        {
+            await _enrollmentRepository.UpdateAsync(enrollment);
 
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                nameof(enrollment.Student.Id),
-                nameof(enrollment.Student.FullName),
-                enrollment.StudentId);
+            await _enrollmentRepository.SaveAllAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!EnrollmentExists(enrollment.StudentId))
+                return new NotFoundViewResult(nameof(EnrollmentNotFound),
+                    CurrentClass, id.ToString(), CurrentController,
+                    nameof(Index));
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                nameof(enrollment.CreatedBy.Id),
-                nameof(enrollment.CreatedBy.FullName),
-                enrollment.CreatedBy.Id);
+            throw;
+        }
 
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                nameof(enrollment.UpdatedBy.Id),
-                nameof(enrollment.UpdatedBy.FullName),
-                enrollment.UpdatedBy?.Id);
+        HttpContext.Session.Remove(SessionVarName);
 
-        return View(enrollment);
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: Enrollments/Delete/5
@@ -419,11 +420,11 @@ public class EnrollmentsController : Controller
             return new NotFoundViewResult(nameof(EnrollmentNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        var enrollment = await _context.Enrollments
-            .Include(e => e.Discipline)
-            .Include(e => e.Student)
-            .Include(e => e.CreatedBy)
-            .Include(e => e.UpdatedBy)
+        var enrollment = await _enrollmentRepository.GetEnrollmentById(id.Value)
+            // .Include(e => e.Discipline)
+            // .Include(e => e.Student)
+            // .Include(e => e.CreatedBy)
+            // .Include(e => e.UpdatedBy)
             .FirstOrDefaultAsync(m => m.StudentId == id);
 
         return enrollment == null
@@ -444,18 +445,165 @@ public class EnrollmentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var enrollment = await _context.Enrollments.FindAsync(id);
+        var enrollment = await _enrollmentRepository.GetByIdAsync(id)
+            .FirstOrDefaultAsync();
 
-        if (enrollment != null) _context.Enrollments.Remove(enrollment);
+        if (enrollment == null)
+            return new NotFoundViewResult(
+                nameof(EnrollmentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _enrollmentRepository.DeleteAsync(enrollment);
 
-        return RedirectToAction(nameof(Index));
+            await _enrollmentRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            // Handle DbUpdateException, specifically for this controller.
+            Console.WriteLine(ex.Message);
+
+            // Handle foreign key constraint violation.
+            DbErrorViewModel dbErrorViewModel;
+
+            if (ex.InnerException != null &&
+                ex.InnerException.Message.Contains("DELETE"))
+            {
+                dbErrorViewModel = new DbErrorViewModel
+                {
+                    DbUpdateException = true,
+                    ErrorTitle = "Foreign Key Constraint Violation",
+                    ErrorMessage =
+                        "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                        $"The {nameof(Enrollment)} with the ID " +
+                        $"{enrollment.Id} - {enrollment.Student.FullName} " +
+                        $"{enrollment.IdGuid} +" +
+                        "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                        "Try deleting possible dependencies and try again. ",
+                    ItemClass = nameof(Enrollment),
+                    ItemId = enrollment.Id.ToString(),
+                    ItemGuid = enrollment.IdGuid,
+                    ItemName = enrollment.Student.FullName
+                };
+
+                // Redirecione para o DatabaseError com os dados apropriados
+                return RedirectToAction(
+                    "DatabaseError", "Errors", dbErrorViewModel);
+            }
+
+            // Handle other DbUpdateExceptions.
+            dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Database Error",
+                ErrorMessage = "An error occurred while deleting the entity.",
+                ItemClass = nameof(Enrollment),
+                ItemId = enrollment.Id.ToString(),
+                ItemGuid = enrollment.IdGuid,
+                ItemName = enrollment.Student.FullName
+            };
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            // Redirecione para o DatabaseError com os dados apropriados
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Handle the exception
+            Console.WriteLine("An InvalidOperationException occurred: " +
+                              ex.Message);
+
+            var dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Foreign Key Constraint Violation",
+                ErrorMessage =
+                    "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                    $"The {nameof(Enrollment)} with the ID " +
+                    $"{enrollment.Id} - {enrollment.Student.FullName} " +
+                    // $"{reservation.IdGuid} +" +
+                    "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                    "Try deleting possible dependencies and try again. ",
+                ItemClass = nameof(Enrollment),
+                ItemId = enrollment.Id.ToString(),
+                ItemGuid = enrollment.IdGuid,
+                ItemName = enrollment.Student.FullName
+            };
+
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+        catch (Exception ex)
+        {
+            // Catch any other exceptions that might occur
+            Console.WriteLine("An error occurred: " + ex.Message);
+
+            var dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Foreign Key Constraint Violation",
+                ErrorMessage =
+                    "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                    $"The {nameof(Enrollment)} with the ID " +
+                    $"{enrollment.Id} - {enrollment.Student.FullName} " +
+                    $"{enrollment.IdGuid} +" +
+                    "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                    "Try deleting possible dependencies and try again. ",
+                ItemClass = nameof(Enrollment),
+                ItemId = enrollment.Id.ToString(),
+                ItemGuid = enrollment.IdGuid,
+                ItemName = enrollment.Student.FullName
+            };
+
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
     }
 
 
     private bool EnrollmentExists(int id)
     {
-        return _context.Enrollments.Any(e => e.StudentId == id);
+        return _enrollmentRepository.ExistAsync(id).Result;
+    }
+
+
+    private void FillViewLists(
+        int disciplineId = 0, int studentId = 0,
+        string? createdById = null, string? updatedById = null
+    )
+    {
+        var test1 = _disciplineRepository.GetDisciplines().AsEnumerable();
+        ViewData[nameof(Enrollment.DisciplineId)] =
+            new SelectList(test1,
+                nameof(Discipline.Id),
+                $"{nameof(Discipline.Code)}",
+                disciplineId);
+
+
+        var test2 = _studentRepository.GetAll().AsEnumerable();
+        ViewData[nameof(Enrollment.StudentId)] =
+            new SelectList(_studentRepository.GetAll().AsEnumerable(),
+                nameof(Student.Id),
+                nameof(Student.FullName),
+                studentId);
+
+        ViewData[nameof(Enrollment.CreatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FirstName),
+                createdById);
+
+        ViewData[nameof(Enrollment.UpdatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FirstName),
+                updatedById);
     }
 }

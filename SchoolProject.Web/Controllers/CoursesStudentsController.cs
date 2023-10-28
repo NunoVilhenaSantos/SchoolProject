@@ -1,62 +1,114 @@
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Courses;
+using SchoolProject.Web.Data.Repositories.Students;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
+using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///     SchoolClassStudentsController
+///     Courses and Students Controller
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesStudentsController : Controller
 {
     // Obtém o tipo da classe atual
-    internal const string CurrentClass = nameof(CourseStudents);
-    internal const string CurrentAction = nameof(Index);
+    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "Name";
+    internal const string SortProperty = nameof(CourseStudent.CourseId);
+    internal const string CurrentClass = nameof(CourseStudent);
+    internal const string CurrentAction = nameof(Index);
 
 
-    private readonly DataContextMySql _context;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(CoursesStudentsController));
 
-    private readonly ICourseStudentsRepository
-        _schoolClassStudentRepository;
-
-    internal string BucketName = CurrentClass.ToLower();
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+    //  repositories
+    private readonly ICourseStudentsRepository _courseStudentsRepository;
+    private readonly IStudentRepository _studentRepository;
+    private readonly ICourseRepository _courseRepository;
+    private readonly UserManager<AppUser> _userManager;
+
+
+    // database context
+    // private readonly DataContextMySql _context;
 
 
     /// <summary>
     ///     SchoolClassStudentsController
     /// </summary>
     /// <param name="context"></param>
-    /// <param name="schoolClassStudentRepository"></param>
+    /// <param name="httpContextAccessor"></param>
     /// <param name="hostingEnvironment"></param>
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="courseStudentsRepository"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="storageHelper"></param>
+    /// <param name="courseRepository"></param>
+    /// <param name="studentRepository"></param>
+    /// <param name="userManager"></param>
     public CoursesStudentsController(
         DataContextMySql context,
         IWebHostEnvironment hostingEnvironment,
         IHttpContextAccessor httpContextAccessor,
-        ICourseStudentsRepository schoolClassStudentRepository, AuthenticatedUserInApp authenticatedUserInApp)
+        AuthenticatedUserInApp authenticatedUserInApp,
+        ICourseStudentsRepository courseStudentsRepository,
+        IConverterHelper converterHelper, IStorageHelper storageHelper,
+        IUserHelper userHelper, IMailHelper mailHelper,
+        ICourseRepository courseRepository,
+        IStudentRepository studentRepository, UserManager<AppUser> userManager)
     {
-        _context = context;
-        _hostingEnvironment = hostingEnvironment;
-        _httpContextAccessor = httpContextAccessor;
-        _schoolClassStudentRepository = schoolClassStudentRepository;
+        _courseStudentsRepository = courseStudentsRepository;
         _authenticatedUserInApp = authenticatedUserInApp;
+        _httpContextAccessor = httpContextAccessor;
+        _hostingEnvironment = hostingEnvironment;
+        _studentRepository = studentRepository;
+        _userManager = userManager;
+        _courseRepository = courseRepository;
+        _converterHelper = converterHelper;
+        _storageHelper = storageHelper;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
+        // _context = context;
     }
+
 
     // Obtém o controlador atual
     private string CurrentController
@@ -72,49 +124,22 @@ public class CoursesStudentsController : Controller
 
 
     /// <summary>
-    ///     SchoolClassStudentNotFound action.
+    ///     Course Student Not Found action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult SchoolClassStudentNotFound => View();
+    public IActionResult CourseStudentNotFound()
+    {
+        return View();
+    }
 
 
-    private List<CourseStudents> GetSchoolClassesAndStudent()
+    private List<CourseStudent> GetCoursesAndStudentsList()
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        var schoolClassesStudentList =
-            _context.CoursesStudents
-                // ------------------ Discipline section ------------------- //
-                .Include(scs => scs.Student)
-
-                // -------------------- Student section --------------------- //
-                .Include(scs => scs.Student)
-                //.ThenInclude(s => s.Country)
-                //.ThenInclude(c => c.Nationality)
-                //.ThenInclude(n => n.CreatedBy)
-                //.Include(scs => scs.Student)
-                //.ThenInclude(s => s.CountryOfNationality)
-                //.ThenInclude(c => c.Nationality)
-                //.ThenInclude(n => n.CreatedBy)
-                //.Include(scs => scs.Student)
-                //.ThenInclude(s => s.Birthplace)
-                //.ThenInclude(c => c.Nationality)
-                //.ThenInclude(n => n.CreatedBy)
-                //.Include(scs => scs.Student)
-                //.ThenInclude(s => s.Gender)
-                //.ThenInclude(g => g.CreatedBy)
-                //.Include(scs => scs.Student)
-                //.ThenInclude(s => s.AppUser)
-
-                // ----------------- Student Others section ----------------- //
-                //.Include(scs => scs.Student)
-                //.ThenInclude(s => s.SchoolClassStudents)
-
-                // --------------------- Others section --------------------- //
-                .Include(s => s.CreatedBy)
-                .Include(s => s.UpdatedBy)
-                .ToList();
+        var courseStudentList =
+            _courseStudentsRepository.GetCourseStudents().ToList();
 
         stopwatch.Stop();
         var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
@@ -122,14 +147,14 @@ public class CoursesStudentsController : Controller
                           "GetSchoolClassesAndCourses " +
                           $"{elapsedMilliseconds} ms");
 
-        return schoolClassesStudentList;
+        return courseStudentList;
     }
 
 
-    private List<CourseStudents> SessionData<T>() where T : class
+    private List<CourseStudent> SessionData<T>() where T : class
     {
         // Obtém todos os registos
-        List<CourseStudents> recordsQuery;
+        List<CourseStudent> recordsQuery;
 
         // Tente obter a lista de professores da sessão
         if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
@@ -138,38 +163,30 @@ public class CoursesStudentsController : Controller
             var json = Encoding.UTF8.GetString(allData);
 
             recordsQuery =
-                JsonConvert.DeserializeObject<List<CourseStudents>>(json) ??
-                new List<CourseStudents>();
+                JsonConvert.DeserializeObject<List<CourseStudent>>(json) ??
+                new List<CourseStudent>();
         }
         else
         {
             // Caso contrário, obtenha a lista completa do banco de dados
-            recordsQuery = GetSchoolClassesAndStudent();
+            recordsQuery = GetCoursesAndStudentsList();
 
-            // PaginationViewModel<T>.Initialize(_hostingEnvironment);
-            PaginationViewModel<T>.Initialize(_hostingEnvironment,
-                _httpContextAccessor);
+            // Inicialize a classe de paginação
+            PaginationViewModel<T>.Initialize(_hostingEnvironment);
 
-            // TODO: verificar se assim deixa de dar o erro out of memory
-            //
-            // Esta 2 classes
-            // SchoolClassCoursesController e SchoolClassStudentsController
-            //
-            // vão usar este método StoreListToFileInJson1
-            // para armazenar os dados em ficheiro no formato json
-            // PaginationViewModel<SchoolClassStudent>
-            //     .StoreListToFileInJson1(recordsQuery, SessionVarName);
+            var json = PaginationViewModel<CourseStudent>
+                .StoreListToFileInJson(recordsQuery);
 
             // Armazene a lista na sessão para uso futuro
-            // HttpContext.Session.Set(
-            //     SessionVarName, Encoding.UTF8.GetBytes(json));
+            HttpContext.Session.Set(SessionVarName,
+                Encoding.UTF8.GetBytes(json));
         }
 
         return recordsQuery;
     }
 
 
-    // GET: CoursesStudents
+    // GET: CourseStudents
     /// <summary>
     ///     Index, list all SchoolClassStudents
     /// </summary>
@@ -184,12 +201,13 @@ public class CoursesStudentsController : Controller
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
-        var recordsQuery = SessionData<CourseStudents>();
+        var recordsQuery = SessionData<CourseStudent>();
+
         return View(recordsQuery);
     }
 
 
-    // GET: CoursesStudents
+    // GET: CourseStudents
     /// <summary>
     ///     IndexCards, list all SchoolClassStudents
     /// </summary>
@@ -204,12 +222,13 @@ public class CoursesStudentsController : Controller
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
-        var recordsQuery = SessionData<CourseStudents>();
+        var recordsQuery = SessionData<CourseStudent>();
+
         return View(recordsQuery);
     }
 
 
-    // GET: CoursesStudents
+    // GET: CourseStudents
     /// <summary>
     ///     IndexCards1, list all SchoolClassStudents
     /// </summary>
@@ -224,13 +243,9 @@ public class CoursesStudentsController : Controller
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
-        // Validar parâmetros de página e tamanho da página
-        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
-        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
+        var recordsQuery = SessionData<CourseStudent>();
 
-        var recordsQuery = SessionData<CourseStudents>();
-
-        var model = new PaginationViewModel<CourseStudents>(
+        var model = new PaginationViewModel<CourseStudent>(
             recordsQuery,
             pageNumber, pageSize,
             recordsQuery.Count,
@@ -241,9 +256,9 @@ public class CoursesStudentsController : Controller
     }
 
 
-    // GET: CoursesStudents/Details/5
+    // GET: CourseStudents/Details/5
     /// <summary>
-    ///     Details, details of a SchoolClassStudent
+    ///     Details, details of a courseStudent
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -251,101 +266,69 @@ public class CoursesStudentsController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var schoolClassStudent = await _context.CoursesStudents
-            .Include(s => s.Course)
-            .Include(s => s.Student)
-            .Include(s => s.CreatedBy)
-            .Include(s => s.UpdatedBy)
-            .FirstOrDefaultAsync(m => m.CourseId == id);
+        var courseStudent = await _courseStudentsRepository
+            .GetCourseStudentById(id.Value).FirstOrDefaultAsync();
 
-        return schoolClassStudent == null
+        return courseStudent == null
             ? new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index))
-            : View(schoolClassStudent);
+            : View(courseStudent);
     }
 
 
-    // GET: CoursesStudents/Create
+    // GET: CourseStudents/Create
     /// <summary>
-    ///     Create, create a new SchoolClassStudent
+    ///     Create, create a new courseStudent
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
     {
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Courses,
-                "Id", "Acronym");
-
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                "Id", "FullName");
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName");
-
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName");
+        FillViewLists();
 
         return View();
     }
 
-    // POST: CoursesStudents/Create
+    // POST: CourseStudents/Create
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///     Create, create a new SchoolClassStudent
+    ///     Create, create a new courseStudent
     /// </summary>
-    /// <param name="schoolClassStudent"></param>
+    /// <param name="courseStudent"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        CourseStudents schoolClassStudent)
+        CourseStudent courseStudent)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(schoolClassStudent);
+            await _courseStudentsRepository.CreateAsync(courseStudent);
 
-            await _context.SaveChangesAsync();
+            await _courseStudentsRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            HttpContext.Session.Remove(SessionVarName);
 
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Courses,
-                "Id", "Acronym",
-                schoolClassStudent.CourseId);
+        FillViewLists();
 
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                "Id", "FullName",
-                schoolClassStudent.StudentId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.CreatedBy.Id);
-
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.UpdatedBy.Id);
-
-        return View(schoolClassStudent);
+        return View(courseStudent);
     }
 
 
-    // GET: CoursesStudents/Edit/5
+    // GET: CourseStudents/Edit/5
     /// <summary>
-    ///     Edit, edit a SchoolClassStudent
+    ///     Edit, edit a courseStudent
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -353,109 +336,76 @@ public class CoursesStudentsController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var schoolClassStudent =
-            await _context.CoursesStudents.FindAsync(id);
+        var courseStudent = await _courseStudentsRepository
+            .GetCourseStudentById(id.Value).FirstOrDefaultAsync();
 
-        if (schoolClassStudent == null)
+        if (courseStudent == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Courses,
-                "Id", "Acronym",
-                schoolClassStudent.CourseId);
+        FillViewLists();
 
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                "Id", "FullName",
-                schoolClassStudent.StudentId);
-
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.CreatedBy.Id);
-
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.UpdatedBy.Id);
-
-        return View(schoolClassStudent);
+        return View(courseStudent);
     }
 
-    // POST: CoursesStudents/Edit/5
+    // POST: CourseStudents/Edit/5
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///     Edit, edit a SchoolClassStudent
+    ///     Edit, edit a courseStudent
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="schoolClassStudent"></param>
+    /// <param name="courseStudent"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
-        int id, CourseStudents schoolClassStudent)
+        int id, CourseStudent courseStudent)
     {
-        if (id != schoolClassStudent.CourseId)
+        if (id != courseStudent.CourseId)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        if (ModelState.IsValid)
+
+        if (!ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(schoolClassStudent);
+            FillViewLists();
 
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SchoolClassStudentExists(
-                        schoolClassStudent.CourseId))
-                    return new NotFoundViewResult(
-                        nameof(SchoolClassStudentNotFound), CurrentClass,
-                        id.ToString(), CurrentController, nameof(Index));
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
+            return View(courseStudent);
         }
 
-        ViewData["DisciplineId"] =
-            new SelectList(_context.Courses,
-                "Id", "Acronym",
-                schoolClassStudent.CourseId);
+        try
+        {
+            await _courseStudentsRepository.UpdateAsync(courseStudent);
 
-        ViewData["StudentId"] =
-            new SelectList(_context.Students,
-                "Id", "FullName",
-                schoolClassStudent.StudentId);
+            await _courseStudentsRepository.SaveAllAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!SchoolClassStudentExists(courseStudent.CourseId))
+                return new NotFoundViewResult(
+                    nameof(CourseStudentNotFound), CurrentClass,
+                    id.ToString(), CurrentController, nameof(Index));
 
-        ViewData["CreatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.CreatedBy.Id);
+            throw;
+        }
 
-        ViewData["UpdatedById"] =
-            new SelectList(_context.Users,
-                "Id", "FullName",
-                schoolClassStudent.UpdatedBy?.Id);
+        HttpContext.Session.Remove(SessionVarName);
 
-        return View(schoolClassStudent);
+        return RedirectToAction(nameof(Index));
     }
 
 
-    // GET: CoursesStudents/Delete/5
+    // GET: CourseStudents/Delete/5
     /// <summary>
-    ///     Delete, delete a SchoolClassStudent
+    ///     Delete, delete a courseStudent
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -463,27 +413,23 @@ public class CoursesStudentsController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var schoolClassStudent = await _context.CoursesStudents
-            .Include(s => s.Course)
-            .Include(s => s.Student)
-            .Include(s => s.CreatedBy)
-            .Include(s => s.UpdatedBy)
-            .FirstOrDefaultAsync(m => m.CourseId == id);
+        var courseStudent = await _courseStudentsRepository
+            .GetCourseStudentById(id.Value).FirstOrDefaultAsync();
 
-        return schoolClassStudent == null
+        return courseStudent == null
             ? new NotFoundViewResult(
-                nameof(SchoolClassStudentNotFound), CurrentClass, id.ToString(),
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index))
-            : View(schoolClassStudent);
+            : View(courseStudent);
     }
 
 
-    // POST: CoursesStudents/Delete/5
+    // POST: CourseStudents/Delete/5
     /// <summary>
-    ///     DeleteConfirmed, delete a SchoolClassStudent
+    ///     DeleteConfirmed, delete a courseStudent
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -492,21 +438,170 @@ public class CoursesStudentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var schoolClassStudent =
-            await _context.CoursesStudents.FindAsync(id);
+        var courseStudent = await _courseStudentsRepository
+            .GetCourseStudentById(id).FirstOrDefaultAsync();
 
-        if (schoolClassStudent != null)
-            _context.CoursesStudents.Remove(schoolClassStudent);
+        if (courseStudent == null)
+            return new NotFoundViewResult(
+                nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
-        await _context.SaveChangesAsync();
 
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            await _courseStudentsRepository.DeleteAsync(courseStudent);
+
+            await _courseStudentsRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            // Handle DbUpdateException, specifically for this controller.
+            Console.WriteLine(ex.Message);
+
+            // Handle foreign key constraint violation.
+            DbErrorViewModel dbErrorViewModel;
+
+            if (ex.InnerException != null &&
+                ex.InnerException.Message.Contains("DELETE"))
+            {
+                dbErrorViewModel = new DbErrorViewModel
+                {
+                    DbUpdateException = true,
+                    ErrorTitle = "Foreign Key Constraint Violation",
+                    ErrorMessage =
+                        "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                        $"The {nameof(CourseStudent)} with the ID " + //******* SERIA STUDENT OU COURSE???
+                        $"{courseStudent.Id} - " +
+                        $"{courseStudent.Course.Name} " +
+                        $"{courseStudent.IdGuid} " +
+                        "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                        "Try deleting possible dependencies and try again. ",
+                    ItemClass = nameof(CourseStudent),
+                    ItemId = courseStudent.Id.ToString(),
+                    ItemGuid = courseStudent.IdGuid,
+                    ItemName = courseStudent.Course.Name
+                };
+
+                // Redirecione para o DatabaseError com os dados apropriados
+                return RedirectToAction(
+                    "DatabaseError", "Errors", dbErrorViewModel);
+            }
+
+            // Handle other DbUpdateExceptions.
+            dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Database Error",
+                ErrorMessage = "An error occurred while deleting the entity.",
+                ItemClass = nameof(CourseStudent),
+                ItemId = courseStudent.Id.ToString(),
+                ItemGuid = courseStudent.IdGuid,
+                ItemName = courseStudent.Course.Name
+            };
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            // Redirecione para o DatabaseError com os dados apropriados
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Handle the exception
+            Console.WriteLine("An InvalidOperationException occurred: " +
+                              ex.Message);
+
+            var dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Foreign Key Constraint Violation",
+                ErrorMessage =
+                    "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                    $"The {nameof(CourseStudent)} with the ID " +
+                    $"{courseStudent.Id} - {courseStudent.Student.FullName} " +
+                    $"{courseStudent.IdGuid} " +
+                    "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                    "Try deleting possible dependencies and try again. ",
+                ItemClass = nameof(CourseStudent),
+                ItemId = courseStudent.Id.ToString(),
+                ItemGuid = courseStudent.IdGuid,
+                ItemName = courseStudent.Student.FullName
+            };
+
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+        catch (Exception ex)
+        {
+            // Catch any other exceptions that might occur
+            Console.WriteLine("An error occurred: " + ex.Message);
+
+            var dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Foreign Key Constraint Violation",
+                ErrorMessage =
+                    "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                    $"The {nameof(CourseStudent)} with the ID " +
+                    $"{courseStudent.Id} - {courseStudent.Student.FullName} " +
+                     $"{courseStudent.IdGuid}" +
+                    "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                    "Try deleting possible dependencies and try again. ",
+                ItemClass = nameof(CourseStudent),
+                ItemId = courseStudent.Id.ToString(),
+                ItemGuid = Guid.Empty,
+                ItemName = courseStudent.Student.FullName
+            };
+
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+
     }
 
 
     private bool SchoolClassStudentExists(int id)
     {
-        return _context.CoursesStudents
-            .Any(e => e.CourseId == id);
+        return _courseStudentsRepository.ExistAsync(id).Result;
+    }
+
+
+    private void FillViewLists(
+        int courseId = 0, int studentId = 0,
+        string? createdById = null, string? updatedById = null
+    )
+    {
+        ViewData[nameof(CourseDiscipline.CourseId)] =
+            new SelectList(_courseRepository.GetCourses(),
+                nameof(Course.Id),
+                // nameof(Course.Name),
+                $"{nameof(Course.Code)} ({nameof(Course.Acronym)})",
+                courseId);
+
+
+        var test = _studentRepository.GetAll().ToList();
+        ViewData[nameof(CourseStudent.StudentId)] =
+            new SelectList(test,
+                nameof(Student.Id),
+                // $"{nameof(Student.FirstName)} {nameof(Student.LastName)}",
+                nameof(Student.FullName),
+                studentId);
+
+
+        ViewData[nameof(CourseDiscipline.CreatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FullName),
+                createdById);
+
+        ViewData[nameof(CourseDiscipline.UpdatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FullName),
+                updatedById);
     }
 }

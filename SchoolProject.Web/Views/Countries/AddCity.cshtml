@@ -8,7 +8,6 @@
 <hr/>
 
 <div class="row">
-
     <div class="col-md-4">
 
         <form asp-action="AddCity">
@@ -16,9 +15,9 @@
             <input type="hidden" asp-for="CountryId"/>
 
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="CityName" class="control-label"></label>
+                <input asp-for="CityName" class="form-control"/>
+                <span asp-validation-for="CityName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -28,9 +27,7 @@
         </form>
 
     </div>
-
 </div>
-
 
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

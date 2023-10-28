@@ -61,13 +61,13 @@ dotnet ef dbcontext  optimize     --context DataContextSqLite
 Start-Sleep 3
 
 
-dotnet ef migrations add InitDB   --context DataContextMsSql
-dotnet ef migrations script       --context DataContextMsSql   --output $outputPath\script_MsSql_$timestamp.sql
+# dotnet ef migrations add InitDB   --context DataContextMsSql
+# dotnet ef migrations script       --context DataContextMsSql   --output $outputPath\script_MsSql_$timestamp.sql
 # dotnet ef database   drop         --context DataContextMsSql   --force
-dotnet ef database   update       --context DataContextMsSql
-dotnet ef dbcontext  info         --context DataContextMsSql
-dotnet ef dbcontext  optimize     --context DataContextMsSql
-Start-Sleep 3
+# dotnet ef database   update       --context DataContextMsSql
+# dotnet ef dbcontext  info         --context DataContextMsSql
+# dotnet ef dbcontext  optimize     --context DataContextMsSql
+# Start-Sleep 3
 
 
 dotnet ef dbcontext  list

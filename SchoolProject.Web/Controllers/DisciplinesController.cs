@@ -1,38 +1,65 @@
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
+using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Disciplines;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
+using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
+using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///     courses controller
+///     disciplines controller
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class DisciplinesController : Controller
 {
-    // Obtém o nome da classe atual
+    // Obtém o tipo da classe atual
+    internal static string BucketName = CurrentClass.ToLower();
+    internal const string SessionVarName = "ListOfAll" + CurrentClass;
+    internal const string SortProperty = nameof(Discipline.Name);
     internal const string CurrentClass = nameof(Discipline);
     internal const string CurrentAction = nameof(Index);
-    internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "Code";
 
 
-    private readonly DataContextMySql _context;
-    private readonly IDisciplineRepository _courseRepository;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    internal static string BucketName = CurrentClass.ToLower();
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(DisciplinesController));
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+    //  repositories
+    private readonly IDisciplineRepository _disciplineRepository;
+    private readonly UserManager<AppUser> _userManager;
+
+    // data context
+    // private readonly DataContextMySql _context;
 
 
     /// <summary>
@@ -41,15 +68,33 @@ public class DisciplinesController : Controller
     /// <param name="context"></param>
     /// <param name="courseRepository"></param>
     /// <param name="hostingEnvironment"></param>
+    /// <param name="storageHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="userManager"></param>
     public DisciplinesController(
         DataContextMySql context,
         IDisciplineRepository courseRepository,
-        IWebHostEnvironment hostingEnvironment, AuthenticatedUserInApp authenticatedUserInApp)
+        IWebHostEnvironment hostingEnvironment,
+        AuthenticatedUserInApp authenticatedUserInApp,
+        IHttpContextAccessor httpContextAccessor,
+        IConverterHelper converterHelper, IStorageHelper storageHelper,
+        IUserHelper userHelper, IMailHelper mailHelper,
+        UserManager<AppUser> userManager)
     {
-        _context = context;
-        _courseRepository = courseRepository;
-        _hostingEnvironment = hostingEnvironment;
         _authenticatedUserInApp = authenticatedUserInApp;
+        _httpContextAccessor = httpContextAccessor;
+        _disciplineRepository = courseRepository;
+        _hostingEnvironment = hostingEnvironment;
+        _converterHelper = converterHelper;
+        _storageHelper = storageHelper;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
+        _userManager = userManager;
+        // _context = context;
     }
 
 
@@ -66,19 +111,9 @@ public class DisciplinesController : Controller
     }
 
 
-    /// <summary>
-    ///     CourseNotFound action.
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult CourseNotFound => View();
-
-
-    private List<Discipline> GetCoursesList()
+    private List<Discipline> GetDisciplinesList()
     {
-        //var coursesList =
-        //    _cityRepository?.GetCitiesWithCountriesAsync();
-
-        return _context.Disciplines.ToList();
+        return _disciplineRepository.GetDisciplines().ToList();
     }
 
 
@@ -101,7 +136,7 @@ public class DisciplinesController : Controller
         {
             // Caso contrário, obtenha a lista completa do banco de dados
             // Chame a função GetTeachersList com o tipo T
-            recordsQuery = GetCoursesList();
+            recordsQuery = GetDisciplinesList();
 
             PaginationViewModel<T>.Initialize(_hostingEnvironment);
 
@@ -133,6 +168,7 @@ public class DisciplinesController : Controller
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Discipline>();
+
         return View(recordsQuery);
     }
 
@@ -153,6 +189,7 @@ public class DisciplinesController : Controller
         ViewData["CurrentClass"] = CurrentClass;
 
         var recordsQuery = SessionData<Discipline>();
+
         return View(recordsQuery);
     }
 
@@ -171,10 +208,6 @@ public class DisciplinesController : Controller
     {
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
-
-        // Validar parâmetros de página e tamanho da página
-        if (pageNumber < 1) pageNumber = 1; // Página mínima é 1
-        if (pageSize < 1) pageSize = 10; // Tamanho da página mínimo é 10
 
         var recordsQuery = SessionData<Discipline>();
 
@@ -199,17 +232,17 @@ public class DisciplinesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var course = await _context.Disciplines
+        var discipline = await _disciplineRepository.GetByIdAsync(id.Value)
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        return course == null
+        return discipline == null
             ? new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index))
-            : View(course);
+            : View(discipline);
     }
 
 
@@ -232,17 +265,19 @@ public class DisciplinesController : Controller
     /// <summary>
     ///     Create action
     /// </summary>
-    /// <param name="course"></param>
+    /// <param name="discipline"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Discipline course)
+    public async Task<IActionResult> Create(Discipline discipline)
     {
-        if (!ModelState.IsValid) return View(course);
+        if (!ModelState.IsValid) return View(discipline);
 
-        _context.Add(course);
+        await _disciplineRepository.CreateAsync(discipline);
 
-        await _context.SaveChangesAsync();
+        await _disciplineRepository.SaveAllAsync();
+
+        HttpContext.Session.Remove(SessionVarName);
 
         return RedirectToAction(nameof(Index));
     }
@@ -258,16 +293,17 @@ public class DisciplinesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var course = await _context.Disciplines.FindAsync(id);
+        var discipline = await _disciplineRepository.GetByIdAsync(id.Value)
+            .FirstOrDefaultAsync(m => m.Id == id);
 
-        return course == null
+        return discipline == null
             ? new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index))
-            : View(course);
+            : View(discipline);
     }
 
     // POST: Disciplines/Edit/5
@@ -279,75 +315,38 @@ public class DisciplinesController : Controller
     ///     Edit action
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="course"></param>
+    /// <param name="discipline"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Discipline course)
+    public async Task<IActionResult> Edit(int id, Discipline discipline)
     {
-        if (id != course.Id)
+        if (id != discipline.Id)
             return new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        if (!ModelState.IsValid) return View(course);
+        if (!ModelState.IsValid) return View(discipline);
 
         try
         {
-            _context.Update(course);
-            await _context.SaveChangesAsync();
+            await _disciplineRepository.UpdateAsync(discipline);
+
+            await _disciplineRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!CourseExists(course.Id))
+            if (!CourseExists(discipline.Id))
                 return new NotFoundViewResult(
-                    nameof(CourseNotFound), CurrentClass, id.ToString(),
+                    nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                     CurrentController, nameof(Index));
             throw;
         }
 
         return RedirectToAction(nameof(Index));
     }
-
-
-    // GET: Disciplines/Delete/5
-    // /// <summary>
-    // ///     Delete action
-    // /// </summary>
-    // /// <param name="id"></param>
-    // /// <returns></returns>
-    // public async Task<IActionResult> Delete(int? id)
-    // {
-    //     if (id == null)  return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
-    //
-    //     var course = await _context.Disciplines
-    //         .FirstOrDefaultAsync(m => m.Id == id);
-    //
-    //     if (course == null)  return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
-    //
-    //     return View(course);
-    // }
-
-
-    // POST: Disciplines/Delete/5
-    // /// <summary>
-    // ///     Delete action
-    // /// </summary>
-    // /// <param name="id"></param>
-    // /// <returns></returns>
-    // [HttpPost]
-    // [ActionName("Delete")]
-    // [ValidateAntiForgeryToken]
-    // public async Task<IActionResult> DeleteConfirmed(int id)
-    // {
-    //     var course = await _context.Disciplines.FindAsync(id);
-    //
-    //     if (course != null) _context.Disciplines.Remove(course);
-    //
-    //     await _context.SaveChangesAsync();
-    //
-    //     return RedirectToAction(nameof(Index));
-    // }
 
 
     // GET: Countries/Delete/5
@@ -361,34 +360,147 @@ public class DisciplinesController : Controller
     {
         if (id == null)
             return new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        // var country = await _countryRepository.GetByIdAsync(id.Value);
+        var discipline = await _disciplineRepository.GetByIdAsync(id.Value)
+            .FirstOrDefaultAsync();
 
-        // if (country == null)  return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass, id.ToString(), CurrentController, nameof(Index));
-
-        // await _countryRepository.DeleteAsync(country);
-
-        // return RedirectToAction(nameof(Index));
-
-        var course = await _context.Disciplines.FindAsync(id.Value);
-
-        if (course == null)
-            return new NotFoundViewResult(
-                nameof(CourseNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
-
-        _context.Disciplines.Remove(course);
-
-        // await _context.SaveChangesAsync();
-
-        return RedirectToAction(nameof(Index));
+        return discipline == null
+            ? new NotFoundViewResult(
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index))
+            : View(discipline);
     }
 
 
+    // POST: Discipline/Delete/5
+    /// <summary>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    // [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var discipline = await _disciplineRepository.GetByIdAsync(id)
+            .FirstOrDefaultAsync();
+
+        if (discipline == null)
+            return new NotFoundViewResult(
+                nameof(DisciplineNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
+
+        try
+        {
+            await _disciplineRepository.DeleteAsync(discipline);
+
+            await _disciplineRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            // Handle DbUpdateException, specifically for this controller.
+            Console.WriteLine(ex.Message);
+
+            // Handle foreign key constraint violation.
+            DbErrorViewModel dbErrorViewModel;
+
+            if (ex.InnerException != null &&
+                ex.InnerException.Message.Contains("DELETE"))
+            {
+                dbErrorViewModel = new DbErrorViewModel
+                {
+                    DbUpdateException = true,
+                    ErrorTitle = "Foreign Key Constraint Violation",
+                    ErrorMessage =
+                        "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                        $"The {nameof(Discipline)} with the ID " +
+                        $"{discipline.Id} - {discipline.Name} " +
+                        $"{discipline.IdGuid} +" +
+                        "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                        "Try deleting possible dependencies and try again. ",
+                    ItemClass = nameof(Discipline),
+                    ItemId = discipline.Id.ToString(),
+                    ItemGuid = discipline.IdGuid,
+                    ItemName = discipline.Name
+                };
+
+                // Redirecione para o DatabaseError com os dados apropriados
+                return RedirectToAction(
+                    "DatabaseError", "Errors", dbErrorViewModel);
+            }
+
+            // Handle other DbUpdateExceptions.
+            dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Database Error",
+                ErrorMessage = "An error occurred while deleting the entity.",
+                ItemClass = nameof(Discipline),
+                ItemId = discipline.Id.ToString(),
+                ItemGuid = discipline.IdGuid,
+                ItemName = discipline.Name
+            };
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            // Redirecione para o DatabaseError com os dados apropriados
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+    }
+
     private bool CourseExists(int id)
     {
-        return _context.Disciplines.Any(e => e.Id == id);
+        return _disciplineRepository.ExistAsync(id).Result;
+    }
+
+
+    /// <summary>
+    ///     Discipline Not Found action.
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult DisciplineNotFound()
+    {
+        return View();
+    }
+
+
+    private void FillViewLists(
+        int courseId = 0, int disciplineId = 0,
+        string? createdById = null, string? updatedById = null
+    )
+    {
+        var test = _disciplineRepository.GetDisciplines().ToList();
+
+        // ViewData[nameof(Discipline.DisciplineId)] =
+        //     new SelectList(test,
+        //         nameof(Discipline.Id),
+        //         $"{nameof(Discipline.Code)}",
+        //         disciplineId);
+
+        // ViewData[nameof(Discipline.CourseId)] =
+        //     new SelectList(_courseRepository.GetCourses(),
+        //         nameof(discipline.Id),
+        //         nameof(discipline.Name),
+        //         courseId);
+
+        ViewData[nameof(Discipline.CreatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FirstName),
+                createdById);
+
+        ViewData[nameof(Discipline.UpdatedById)] =
+            new SelectList(_userManager.Users,
+                nameof(AppUser.Id),
+                nameof(AppUser.FirstName),
+                updatedById);
     }
 }

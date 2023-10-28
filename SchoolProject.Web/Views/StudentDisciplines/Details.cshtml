@@ -1,0 +1,52 @@
+@using System.Reflection
+@model SchoolProject.Web.Data.Entities.Students.StudentDiscipline
+
+
+@{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+}
+
+<h3>Details</h3>
+
+<h4>StudentCourse</h4>
+
+<hr/>
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
+
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+<div class="col-md-4">
+    <div class="row">
+        <partial name="_DisplayImages"/>
+
+        <div class="col">
+            <div class="row">
+                <partial name="_StudentCoursesDD" for="@Model"/>
+
+                <div>
+                    @Html.ActionLink("Edit", "Edit", new {/* id = Model.PrimaryKey */}) |
+                    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

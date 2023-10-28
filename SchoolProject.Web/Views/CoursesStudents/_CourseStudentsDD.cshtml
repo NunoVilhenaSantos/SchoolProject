@@ -1,0 +1,34 @@
+@model SchoolProject.Web.Data.Entities.Courses.CourseStudent
+
+<dl class="row">
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Id) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.Id) </dd>
+    @* <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.IdGuid) </dt> *@
+    @* <dd class="col-sm-9"> @Html.DisplayFor(model => model.IdGuid) </dd> *@
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Course.Code) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.Course.Code) </dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Course.Acronym) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.Course.Acronym) </dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Course.Name) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.Course.Name) </dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Student.FullName) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.Student.FullName) </dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Student.MobilePhone) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.Student.MobilePhone) </dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.Student.Address) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.Student.Address) </dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.WasDeleted) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.WasDeleted) </dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.CreatedAt) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.CreatedAt) </dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.CreatedBy) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.CreatedBy.Id) </dd>
+
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.UpdatedAt) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.UpdatedAt) </dd>
+    <dt class="col-sm-3"> @Html.DisplayNameFor(model => model.UpdatedBy) </dt>
+    <dd class="col-sm-9"> @Html.DisplayFor(model => model.UpdatedBy.Id) </dd>
+</dl>

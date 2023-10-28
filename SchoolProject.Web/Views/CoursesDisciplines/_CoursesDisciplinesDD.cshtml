@@ -1,0 +1,46 @@
+@model             SchoolProject.Web.Data.Entities.Courses.CourseDiscipline
+
+
+<div class="row">
+    <div class="col-md-8">
+
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Id)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Id)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IdGuid)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.IdGuid)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Course.Code)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Code)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Course.Acronym)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Acronym)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Course.Name)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Course.Name)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Discipline.Code)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Discipline.Code)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Discipline.Name)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Discipline.Name)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Discipline.Description)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Discipline.Description)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.WasDeleted)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.WasDeleted)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedBy)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedBy.FullName)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UpdatedAt)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedAt)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UpdatedBy)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedBy.FullName)</dd>
+        </dl>
+    </div>
+
+    <div class="col-md-4">
+        @* <img alt="Image" src="@Url.Content(Model.ProfilePhotoIdUrl)" width="200px"> *@
+    </div>
+
+</div>

@@ -28,14 +28,14 @@ public class Course : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
-    [DisplayName("Discipline Acronym")]
+    [DisplayName("Course Acronym")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Acronym { get; set; }
 
 
     /// <summary>
     /// </summary>
-    [DisplayName("Discipline Name")]
+    [DisplayName("Course Name")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public required string Name { get; set; }
 
@@ -144,7 +144,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
-     [Ignore]
+    [Ignore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -154,18 +154,18 @@ public class Course : IEntity, INotifyPropertyChanged
     ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          CoursesController.BucketName +
-          "/" + ProfilePhotoId;
-
-
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              CoursesController.BucketName +
+              "/" + ProfilePhotoId;
 
 
     // ---------------------------------------------------------------------- //
@@ -181,32 +181,38 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     Navigation property for the many-to-many relationship between Discipline and Discipline
+    ///     Navigation property for the many-to-many relationship between Course and Discipline
     /// </summary>
-    public virtual HashSet<CourseDisciplines>? CourseDisciplines { get; set; }
+    public virtual HashSet<CourseDiscipline>? CourseDisciplines { get; set; }
 
 
-    ///// <summary>
-    /////
-    ///// </summary>
-    //[DisplayName("Disciplines Count")]
-    //public int? CoursesCount => CourseDisciplines?.Count ?? 0;
+    /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Discipline>? Disciplines =>
+        CourseDisciplines?.Select(cd => cd.Discipline).Distinct();
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Disciplines Count")]
+    public int CoursesCount => Disciplines?.Count() ?? 0;
 
 
-    ///// <summary>
-    /////
-    ///// </summary>
-    //[DisplayName("Discipline CreditPoints")]
-    //public double? CourseCredits =>
-    //    CourseDisciplines?.Sum(c => c.Discipline.CreditPoints) ?? 0;
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Course Total Credit Points")]
+    public double CourseCredits => Disciplines?.Sum(c => c.CreditPoints) ?? 0;
 
 
-    ///// <summary>
-    /////
-    ///// </summary>
-    //[DisplayName("Work Hour Load")]
-    //public int? WorkHourLoad =>
-    //    CourseDisciplines?.Sum(c => c.Discipline.Hours) ?? 0;
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Work Hour Load")]
+    public int WorkHourLoad =>
+        CourseDisciplines?.Sum(c => c.Discipline?.Hours) ?? 0;
 
 
     //// ---------------------------------------------------------------------- //
@@ -214,16 +220,31 @@ public class Course : IEntity, INotifyPropertyChanged
     //// ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///     Navigation property for the many-to-many relationship between Discipline and Student
+    ///     Navigation property for the many-to-many relationship between Courses and Student
     /// </summary>
-    public virtual HashSet<CourseStudents>? CourseStudents { get; set; }
+    public virtual HashSet<CourseStudent>? CourseStudents { get; set; }
 
 
-    ///// <summary>
-    /////
-    ///// </summary>
-    //[DisplayName("Students Count")]
-    //public int? ScsStudentsCount => Students?.Count ?? 0;
+    /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Student>? Students =>
+        CourseStudents?.Select(cd => cd.Student).Distinct();
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Course CreditPoints")]
+    public int StudentsCount0 => Students?.Count() ?? 0;
+
+
+    /// <summary>
+    /// This property calculates the number of distinct students associated with the course
+    /// </summary>
+    [DisplayName("Students Count")]
+    public int StudentsCount =>
+        CourseStudents?.Select(e => e.CourseId).Distinct().Count() ?? 0;
 
 
     // --------------------------------------------------------------------- //
@@ -236,22 +257,27 @@ public class Course : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
-    /// <summary>
-    ///     List of Disciplines for this Discipline
-    /// </summary>
-    public virtual HashSet<Discipline>? Disciplines { get; set; }
+    ///// <summary>
+    /////     List of Disciplines
+    ///// </summary>
+    //public virtual HashSet<Discipline>? Disciplines { get; set; }
+
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Disciplines Count")]
+    //public int  DisciplinesCount => Disciplines?.Count() ?? 0;
 
 
-    /// <summary>
-    ///     List of Students for this Discipline
-    /// </summary>
-    public virtual HashSet<Student>? Students { get; set; }
+    ///// <summary>
+    /////     List of Students
+    ///// </summary>
+    //public virtual HashSet<Student>? Students { get; set; }
 
 
-    /// <summary>
-    /// </summary>
-    [DisplayName("Students Count")]
-    public int StudentsCount => Students?.Count() ?? 0;
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Students Count")]
+    //public int StudentsCount => Students?.Count() ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -261,7 +287,21 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Enrollment")]
-    public virtual HashSet<Enrollment>? Enrollment { get; set; }
+    public virtual HashSet<Enrollment>? Enrollments { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Student>? EStudentsList =>
+        Enrollments?.Select(e => e.Student).Distinct();
+
+    /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Discipline>? EDisciplinesList =>
+        Enrollments?.Select(e => e.Discipline).Distinct();
 
 
     /// <summary>
@@ -270,7 +310,7 @@ public class Course : IEntity, INotifyPropertyChanged
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
     public decimal? ClassAverage =>
-        Enrollment?.Where(e => e.Grade.HasValue)
+        Enrollments?.Where(e => e.Grade.HasValue)
             .Average(e => e.Grade);
 
 
@@ -280,7 +320,8 @@ public class Course : IEntity, INotifyPropertyChanged
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
     public decimal? HighestGrade =>
-        Enrollment?.Max(e => e.Grade);
+        Enrollments?.Where(e => e.Grade.HasValue)
+            .Max(e => e.Grade);
 
 
     /// <summary>
@@ -289,28 +330,29 @@ public class Course : IEntity, INotifyPropertyChanged
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
     public decimal? LowestGrade =>
-        Enrollment?.Min(e => e.Grade);
+        Enrollments?.Where(e => e.Grade.HasValue)
+            .Min(e => e.Grade);
 
 
     /// <summary>
     /// </summary>
     [DisplayName("Disciplines Count")]
     public int ECoursesCount =>
-        Enrollment?.Select(e => e.Discipline).Distinct().Count() ?? 0;
+        Enrollments?.Select(e => e.Discipline).Distinct().Count() ?? 0;
 
 
     /// <summary>
     /// </summary>
     [DisplayName("Work Hour Load")]
     public int EWorkHourLoad =>
-        Enrollment?.Sum(e => e.Discipline.Hours) ?? 0;
+        Enrollments?.Sum(e => e.Discipline?.Hours) ?? 0;
 
 
     /// <summary>
     /// </summary>
     [DisplayName("Students Count")]
     public int EStudentsCount =>
-        Enrollment?.Select(e => e.Student).Distinct().Count() ?? 0;
+        Enrollments?.Select(e => e.Student).Distinct().Count() ?? 0;
 
 
     // --------------------------------------------------------------------- //
@@ -361,6 +403,26 @@ public class Course : IEntity, INotifyPropertyChanged
     public virtual AppUser? UpdatedBy { get; set; }
 
 
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
+
+    // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
 

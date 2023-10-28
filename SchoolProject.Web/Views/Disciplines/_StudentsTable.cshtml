@@ -1,0 +1,109 @@
+﻿@using System.Reflection
+@using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Courses
+@using SchoolProject.Web.Data.Entities.Disciplines
+@using SchoolProject.Web.Data.Entities.Students
+@using SchoolProject.Web.Data.Entities.Users
+
+@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<AppUser> UserManager
+
+@model SchoolProject.Web.Data.Entities.Disciplines.Discipline
+
+@{
+    // ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+
+    // Isso obtém o nome da classe do modelo atual
+    var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+}
+
+<br/>
+<h4>Courses</h4>
+@if (Model.Students == null && !Model.Students.Any())
+{
+    <h5>No @nameof(Student) added yet to this @nameof(Discipline) | @Model.Code - @Model.Name</h5>
+}
+else
+{
+    <table class="table table-hover" sortable="True" id="sortableTable">
+        <thead>
+        <tr>
+            @* <th>@Html.DisplayNameFor(model => model.Id)</th> *@
+            @* <th>@Html.DisplayNameFor(model => model.IdGuid)</th> *@
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().ProfilePhotoId)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().Address)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().PostalCode)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().MobilePhone)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().Active)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().DateOfBirth)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().IdentificationNumber)</th>
+            @* <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().IdentificationType)</th> *@
+            @* <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().ExpirationDateIdentificationNumber)</th> *@
+            @* <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().TaxIdentificationNumber)</th> *@
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().EnrollDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().WasDeleted)</th>
+            @* <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().CreatedAt)</th> *@
+            @* <th>@Html.DisplayNameFor(model => model.Students.FirstOrDefault().UpdatedAt)</th> *@
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Students.OrderBy(c => c.FullName))
+        {
+            <tr>
+                @* <td>@Html.DisplayFor(modelItem => item.Id)</td> *@
+                @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
+                <td>
+                    <img alt="Image" class="img-thumbnail" height="100" src="@Url.Content(item.ProfilePhotoIdUrl)" width="100"/>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                <td>@Html.DisplayFor(modelItem => item.PostalCode)</td>
+                <td>@Html.DisplayFor(modelItem => item.MobilePhone)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Active)</td>
+                <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
+                <td>@Html.DisplayFor(modelItem => item.IdentificationNumber)</td>
+                @* <td>@Html.DisplayFor(modelItem => item.IdentificationType)</td> *@
+                @* <td>@Html.DisplayFor(modelItem => item.ExpirationDateIdentificationNumber)</td> *@
+                @* <td>@Html.DisplayFor(modelItem => item.TaxIdentificationNumber)</td> *@
+                <td>@Html.DisplayFor(modelItem => item.EnrollDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
+                @* <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td> *@
+                @* <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td> *@
+
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a asp-controller="Students" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                        <a asp-controller="Students" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
+                        <a asp-controller="Students" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.FullName" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td></td>
+            <td>Total Lines:</td>
+            <td>@Model.Students.Count().ToString("N")</td>
+            <td>@Model.Students.FirstOrDefault().LowestGrade.ToString("N")</td>
+            <td>@Model.Students.FirstOrDefault().AverageGrade.ToString("N")</td>
+            <td>@Model.Students.FirstOrDefault().HighestGrade.ToString("N")</td>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
+}

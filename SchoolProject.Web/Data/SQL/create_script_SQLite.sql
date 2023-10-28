@@ -6,30 +6,6 @@ CREATE TABLE "AspNetRoles" (
 );
 
 
-CREATE TABLE "AspNetUsers" (
-    "Id" TEXT NOT NULL CONSTRAINT "PK_AspNetUsers" PRIMARY KEY,
-    "FirstName" TEXT NOT NULL,
-    "LastName" TEXT NOT NULL,
-    "Address" TEXT NULL,
-    "WasDeleted" INTEGER NOT NULL,
-    "ProfilePhotoId" TEXT NOT NULL,
-    "UserName" TEXT NULL,
-    "NormalizedUserName" TEXT NULL,
-    "Email" TEXT NULL,
-    "NormalizedEmail" TEXT NULL,
-    "EmailConfirmed" INTEGER NOT NULL,
-    "PasswordHash" TEXT NULL,
-    "SecurityStamp" TEXT NULL,
-    "ConcurrencyStamp" TEXT NULL,
-    "PhoneNumber" TEXT NULL,
-    "PhoneNumberConfirmed" INTEGER NOT NULL,
-    "TwoFactorEnabled" INTEGER NOT NULL,
-    "LockoutEnd" TEXT NULL,
-    "LockoutEnabled" INTEGER NOT NULL,
-    "AccessFailedCount" INTEGER NOT NULL
-);
-
-
 CREATE TABLE "AspNetRoleClaims" (
     "Id" INTEGER NOT NULL CONSTRAINT "PK_AspNetRoleClaims" PRIMARY KEY AUTOINCREMENT,
     "RoleId" TEXT NOT NULL,
@@ -67,6 +43,32 @@ CREATE TABLE "AspNetUserRoles" (
 );
 
 
+CREATE TABLE "AspNetUsers" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_AspNetUsers" PRIMARY KEY,
+    "FirstName" TEXT NOT NULL,
+    "LastName" TEXT NOT NULL,
+    "Address" TEXT NULL,
+    "WasDeleted" INTEGER NOT NULL,
+    "ProfilePhotoId" TEXT NOT NULL,
+    "GenderId" INTEGER NULL,
+    "UserName" TEXT NULL,
+    "NormalizedUserName" TEXT NULL,
+    "Email" TEXT NULL,
+    "NormalizedEmail" TEXT NULL,
+    "EmailConfirmed" INTEGER NOT NULL,
+    "PasswordHash" TEXT NULL,
+    "SecurityStamp" TEXT NULL,
+    "ConcurrencyStamp" TEXT NULL,
+    "PhoneNumber" TEXT NULL,
+    "PhoneNumberConfirmed" INTEGER NOT NULL,
+    "TwoFactorEnabled" INTEGER NOT NULL,
+    "LockoutEnd" TEXT NULL,
+    "LockoutEnabled" INTEGER NOT NULL,
+    "AccessFailedCount" INTEGER NOT NULL,
+    CONSTRAINT "FK_AspNetUsers_Genders_GenderId" FOREIGN KEY ("GenderId") REFERENCES "Genders" ("Id") ON DELETE RESTRICT
+);
+
+
 CREATE TABLE "AspNetUserTokens" (
     "UserId" TEXT NOT NULL,
     "LoginProvider" TEXT NOT NULL,
@@ -84,8 +86,8 @@ CREATE TABLE "Countries" (
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
-    "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
     CONSTRAINT "FK_Countries_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Countries_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT
@@ -112,11 +114,30 @@ CREATE TABLE "Courses" (
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
-    "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
     CONSTRAINT "FK_Courses_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Courses_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT
+);
+
+
+CREATE TABLE "Disciplines" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Disciplines" PRIMARY KEY AUTOINCREMENT,
+    "Code" TEXT NOT NULL,
+    "Name" TEXT NOT NULL,
+    "Description" TEXT NOT NULL,
+    "Hours" INTEGER NOT NULL,
+    "CreditPoints" REAL NOT NULL,
+    "ProfilePhotoId" TEXT NOT NULL,
+    "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
+    "WasDeleted" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
+    "UpdatedById" TEXT NULL,
+    CONSTRAINT "FK_Disciplines_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Disciplines_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT
 );
 
 
@@ -127,8 +148,8 @@ CREATE TABLE "Genders" (
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
-    "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
     CONSTRAINT "FK_Genders_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Genders_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT
@@ -143,8 +164,8 @@ CREATE TABLE "Cities" (
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
-    "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
     CONSTRAINT "FK_Cities_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Cities_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
@@ -159,8 +180,8 @@ CREATE TABLE "Nationalities" (
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
-    "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
     CONSTRAINT "FK_Nationalities_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Nationalities_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
@@ -168,24 +189,21 @@ CREATE TABLE "Nationalities" (
 );
 
 
-CREATE TABLE "Disciplines" (
-    "Id" INTEGER NOT NULL CONSTRAINT "PK_Disciplines" PRIMARY KEY AUTOINCREMENT,
-    "Code" TEXT NOT NULL,
-    "Name" TEXT NOT NULL,
-    "Description" TEXT NULL,
-    "Hours" INTEGER NOT NULL,
-    "CreditPoints" REAL NOT NULL,
-    "ProfilePhotoId" TEXT NOT NULL,
+CREATE TABLE "CourseDisciplines" (
+    "CourseId" INTEGER NOT NULL,
+    "DisciplineId" INTEGER NOT NULL,
+    "Id" int NOT NULL,
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
-    "CreatedById" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
-    "CourseId" INTEGER NULL,
-    CONSTRAINT "FK_Disciplines_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Disciplines_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Disciplines_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "PK_CourseDisciplines" PRIMARY KEY ("CourseId", "DisciplineId"),
+    CONSTRAINT "FK_CourseDisciplines_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_CourseDisciplines_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_CourseDisciplines_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_CourseDisciplines_Disciplines_DisciplineId" FOREIGN KEY ("DisciplineId") REFERENCES "Disciplines" ("Id") ON DELETE RESTRICT
 );
 
 
@@ -195,37 +213,33 @@ CREATE TABLE "Students" (
     "LastName" TEXT NOT NULL,
     "Address" TEXT NOT NULL,
     "PostalCode" TEXT NOT NULL,
-    "CityId" INTEGER NULL,
-    "CountryId" INTEGER NULL,
+    "CityId" INTEGER NOT NULL,
     "MobilePhone" TEXT NOT NULL,
     "Email" TEXT NOT NULL,
     "Active" INTEGER NOT NULL,
-    "GenderId" INTEGER NULL,
+    "GenderId" INTEGER NOT NULL,
     "DateOfBirth" TEXT NOT NULL,
     "IdentificationNumber" TEXT NOT NULL,
     "IdentificationType" TEXT NOT NULL,
     "ExpirationDateIdentificationNumber" TEXT NOT NULL,
     "TaxIdentificationNumber" TEXT NOT NULL,
-    "CountryOfNationalityId" INTEGER NULL,
-    "BirthplaceId" INTEGER NULL,
-    "EnrollDate" TEXT NULL,
+    "CountryOfNationalityId" INTEGER NOT NULL,
+    "BirthplaceId" INTEGER NOT NULL,
+    "EnrollDate" TEXT NOT NULL,
     "UserId" TEXT NOT NULL,
-    "ProfilePhotoId" TEXT NULL,
+    "ProfilePhotoId" TEXT NOT NULL,
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
-    "CreatedAt" TEXT NULL,
-    "CreatedById" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
+    "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
-    "CourseId" INTEGER NULL,
     CONSTRAINT "FK_Students_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Students_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Students_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Students_Cities_CityId" FOREIGN KEY ("CityId") REFERENCES "Cities" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Students_Countries_BirthplaceId" FOREIGN KEY ("BirthplaceId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Students_Countries_CountryId" FOREIGN KEY ("CountryId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Students_Countries_CountryOfNationalityId" FOREIGN KEY ("CountryOfNationalityId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Students_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Students_Genders_GenderId" FOREIGN KEY ("GenderId") REFERENCES "Genders" ("Id") ON DELETE RESTRICT
 );
 
@@ -236,58 +250,38 @@ CREATE TABLE "Teachers" (
     "LastName" TEXT NOT NULL,
     "Address" TEXT NOT NULL,
     "PostalCode" TEXT NOT NULL,
-    "CityId" INTEGER NULL,
-    "CountryId" INTEGER NULL,
+    "CityId" INTEGER NOT NULL,
     "MobilePhone" TEXT NOT NULL,
     "Email" TEXT NOT NULL,
     "Active" INTEGER NOT NULL,
-    "GenderId" INTEGER NULL,
+    "GenderId" INTEGER NOT NULL,
     "DateOfBirth" TEXT NOT NULL,
     "IdentificationNumber" TEXT NOT NULL,
     "IdentificationType" TEXT NOT NULL,
     "ExpirationDateIdentificationNumber" TEXT NOT NULL,
     "TaxIdentificationNumber" TEXT NOT NULL,
-    "CountryOfNationalityId" INTEGER NULL,
-    "BirthplaceId" INTEGER NULL,
-    "EnrollDate" TEXT NULL,
-    "UserId" TEXT NULL,
-    "ProfilePhotoId" TEXT NULL,
-    "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
-    "WasDeleted" INTEGER NOT NULL,
-    "CreatedAt" TEXT NOT NULL,
-    "CreatedById" TEXT NULL,
-    "UpdatedAt" TEXT NULL,
-    "UpdatedById" TEXT NULL,
-    CONSTRAINT "FK_Teachers_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Teachers_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Teachers_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Teachers_Cities_CityId" FOREIGN KEY ("CityId") REFERENCES "Cities" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Teachers_Countries_BirthplaceId" FOREIGN KEY ("BirthplaceId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Teachers_Countries_CountryId" FOREIGN KEY ("CountryId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Teachers_Countries_CountryOfNationalityId" FOREIGN KEY ("CountryOfNationalityId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Teachers_Genders_GenderId" FOREIGN KEY ("GenderId") REFERENCES "Genders" ("Id") ON DELETE RESTRICT
-);
-
-
-CREATE TABLE "CoursesDisciplines" (
-    "CourseId" INTEGER NOT NULL,
-    "DisciplineId" INTEGER NOT NULL,
-    "Id" int NOT NULL,
+    "CountryOfNationalityId" INTEGER NOT NULL,
+    "BirthplaceId" INTEGER NOT NULL,
+    "EnrollDate" TEXT NOT NULL,
+    "UserId" TEXT NOT NULL,
+    "ProfilePhotoId" TEXT NOT NULL,
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
     "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
-    CONSTRAINT "PK_CoursesDisciplines" PRIMARY KEY ("CourseId", "DisciplineId"),
-    CONSTRAINT "FK_CoursesDisciplines_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_CoursesDisciplines_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_CoursesDisciplines_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_CoursesDisciplines_Disciplines_DisciplineId" FOREIGN KEY ("DisciplineId") REFERENCES "Disciplines" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "FK_Teachers_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Teachers_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Teachers_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Teachers_Cities_CityId" FOREIGN KEY ("CityId") REFERENCES "Cities" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Teachers_Countries_BirthplaceId" FOREIGN KEY ("BirthplaceId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Teachers_Countries_CountryOfNationalityId" FOREIGN KEY ("CountryOfNationalityId") REFERENCES "Countries" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Teachers_Genders_GenderId" FOREIGN KEY ("GenderId") REFERENCES "Genders" ("Id") ON DELETE RESTRICT
 );
 
 
-CREATE TABLE "CoursesStudents" (
+CREATE TABLE "CourseStudents" (
     "CourseId" INTEGER NOT NULL,
     "StudentId" INTEGER NOT NULL,
     "Id" int NOT NULL,
@@ -297,11 +291,11 @@ CREATE TABLE "CoursesStudents" (
     "UpdatedAt" TEXT NULL,
     "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
-    CONSTRAINT "PK_CoursesStudents" PRIMARY KEY ("CourseId", "StudentId"),
-    CONSTRAINT "FK_CoursesStudents_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_CoursesStudents_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_CoursesStudents_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_CoursesStudents_Students_StudentId" FOREIGN KEY ("StudentId") REFERENCES "Students" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "PK_CourseStudents" PRIMARY KEY ("CourseId", "StudentId"),
+    CONSTRAINT "FK_CourseStudents_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_CourseStudents_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_CourseStudents_Courses_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Courses" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_CourseStudents_Students_StudentId" FOREIGN KEY ("StudentId") REFERENCES "Students" ("Id") ON DELETE RESTRICT
 );
 
 
@@ -327,27 +321,26 @@ CREATE TABLE "Enrollments" (
 );
 
 
-CREATE TABLE "StudentCourses" (
+CREATE TABLE "StudentDisciplines" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_StudentDisciplines" PRIMARY KEY AUTOINCREMENT,
     "StudentId" INTEGER NOT NULL,
-    "CourseId" INTEGER NOT NULL,
-    "Id" int NOT NULL,
+    "DisciplineId" INTEGER NOT NULL,
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
     "CreatedAt" TEXT NOT NULL,
     "UpdatedAt" TEXT NULL,
     "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
-    CONSTRAINT "PK_StudentCourses" PRIMARY KEY ("StudentId", "CourseId"),
-    CONSTRAINT "FK_StudentCourses_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_StudentCourses_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_StudentCourses_Disciplines_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Disciplines" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_StudentCourses_Students_StudentId" FOREIGN KEY ("StudentId") REFERENCES "Students" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "FK_StudentDisciplines_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_StudentDisciplines_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_StudentDisciplines_Disciplines_DisciplineId" FOREIGN KEY ("DisciplineId") REFERENCES "Disciplines" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_StudentDisciplines_Students_StudentId" FOREIGN KEY ("StudentId") REFERENCES "Students" ("Id") ON DELETE RESTRICT
 );
 
 
-CREATE TABLE "TeacherCourses" (
+CREATE TABLE "TeacherDisciplines" (
     "TeacherId" INTEGER NOT NULL,
-    "CourseId" INTEGER NOT NULL,
+    "DisciplineId" INTEGER NOT NULL,
     "Id" int NOT NULL,
     "IdGuid" TEXT NOT NULL DEFAULT (NEWID()),
     "WasDeleted" INTEGER NOT NULL,
@@ -355,11 +348,11 @@ CREATE TABLE "TeacherCourses" (
     "UpdatedAt" TEXT NULL,
     "CreatedById" TEXT NOT NULL,
     "UpdatedById" TEXT NULL,
-    CONSTRAINT "PK_TeacherCourses" PRIMARY KEY ("TeacherId", "CourseId"),
-    CONSTRAINT "FK_TeacherCourses_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_TeacherCourses_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_TeacherCourses_Disciplines_CourseId" FOREIGN KEY ("CourseId") REFERENCES "Disciplines" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_TeacherCourses_Teachers_TeacherId" FOREIGN KEY ("TeacherId") REFERENCES "Teachers" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "PK_TeacherDisciplines" PRIMARY KEY ("TeacherId", "DisciplineId"),
+    CONSTRAINT "FK_TeacherDisciplines_AspNetUsers_CreatedById" FOREIGN KEY ("CreatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_TeacherDisciplines_AspNetUsers_UpdatedById" FOREIGN KEY ("UpdatedById") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_TeacherDisciplines_Disciplines_DisciplineId" FOREIGN KEY ("DisciplineId") REFERENCES "Disciplines" ("Id") ON DELETE RESTRICT,
+    CONSTRAINT "FK_TeacherDisciplines_Teachers_TeacherId" FOREIGN KEY ("TeacherId") REFERENCES "Teachers" ("Id") ON DELETE RESTRICT
 );
 
 
@@ -381,6 +374,9 @@ CREATE INDEX "IX_AspNetUserRoles_RoleId" ON "AspNetUserRoles" ("RoleId");
 CREATE INDEX "EmailIndex" ON "AspNetUsers" ("NormalizedEmail");
 
 
+CREATE INDEX "IX_AspNetUsers_GenderId" ON "AspNetUsers" ("GenderId");
+
+
 CREATE UNIQUE INDEX "UserNameIndex" ON "AspNetUsers" ("NormalizedUserName");
 
 
@@ -399,31 +395,28 @@ CREATE INDEX "IX_Countries_CreatedById" ON "Countries" ("CreatedById");
 CREATE INDEX "IX_Countries_UpdatedById" ON "Countries" ("UpdatedById");
 
 
+CREATE INDEX "IX_CourseDisciplines_CreatedById" ON "CourseDisciplines" ("CreatedById");
+
+
+CREATE INDEX "IX_CourseDisciplines_DisciplineId" ON "CourseDisciplines" ("DisciplineId");
+
+
+CREATE INDEX "IX_CourseDisciplines_UpdatedById" ON "CourseDisciplines" ("UpdatedById");
+
+
 CREATE INDEX "IX_Courses_CreatedById" ON "Courses" ("CreatedById");
 
 
 CREATE INDEX "IX_Courses_UpdatedById" ON "Courses" ("UpdatedById");
 
 
-CREATE INDEX "IX_CoursesDisciplines_CreatedById" ON "CoursesDisciplines" ("CreatedById");
+CREATE INDEX "IX_CourseStudents_CreatedById" ON "CourseStudents" ("CreatedById");
 
 
-CREATE INDEX "IX_CoursesDisciplines_DisciplineId" ON "CoursesDisciplines" ("DisciplineId");
+CREATE INDEX "IX_CourseStudents_StudentId" ON "CourseStudents" ("StudentId");
 
 
-CREATE INDEX "IX_CoursesDisciplines_UpdatedById" ON "CoursesDisciplines" ("UpdatedById");
-
-
-CREATE INDEX "IX_CoursesStudents_CreatedById" ON "CoursesStudents" ("CreatedById");
-
-
-CREATE INDEX "IX_CoursesStudents_StudentId" ON "CoursesStudents" ("StudentId");
-
-
-CREATE INDEX "IX_CoursesStudents_UpdatedById" ON "CoursesStudents" ("UpdatedById");
-
-
-CREATE INDEX "IX_Disciplines_CourseId" ON "Disciplines" ("CourseId");
+CREATE INDEX "IX_CourseStudents_UpdatedById" ON "CourseStudents" ("UpdatedById");
 
 
 CREATE INDEX "IX_Disciplines_CreatedById" ON "Disciplines" ("CreatedById");
@@ -459,13 +452,16 @@ CREATE INDEX "IX_Nationalities_CreatedById" ON "Nationalities" ("CreatedById");
 CREATE INDEX "IX_Nationalities_UpdatedById" ON "Nationalities" ("UpdatedById");
 
 
-CREATE INDEX "IX_StudentCourses_CourseId" ON "StudentCourses" ("CourseId");
+CREATE INDEX "IX_StudentDisciplines_CreatedById" ON "StudentDisciplines" ("CreatedById");
 
 
-CREATE INDEX "IX_StudentCourses_CreatedById" ON "StudentCourses" ("CreatedById");
+CREATE INDEX "IX_StudentDisciplines_DisciplineId" ON "StudentDisciplines" ("DisciplineId");
 
 
-CREATE INDEX "IX_StudentCourses_UpdatedById" ON "StudentCourses" ("UpdatedById");
+CREATE INDEX "IX_StudentDisciplines_StudentId" ON "StudentDisciplines" ("StudentId");
+
+
+CREATE INDEX "IX_StudentDisciplines_UpdatedById" ON "StudentDisciplines" ("UpdatedById");
 
 
 CREATE INDEX "IX_Students_BirthplaceId" ON "Students" ("BirthplaceId");
@@ -474,13 +470,7 @@ CREATE INDEX "IX_Students_BirthplaceId" ON "Students" ("BirthplaceId");
 CREATE INDEX "IX_Students_CityId" ON "Students" ("CityId");
 
 
-CREATE INDEX "IX_Students_CountryId" ON "Students" ("CountryId");
-
-
 CREATE INDEX "IX_Students_CountryOfNationalityId" ON "Students" ("CountryOfNationalityId");
-
-
-CREATE INDEX "IX_Students_CourseId" ON "Students" ("CourseId");
 
 
 CREATE INDEX "IX_Students_CreatedById" ON "Students" ("CreatedById");
@@ -495,22 +485,19 @@ CREATE INDEX "IX_Students_UpdatedById" ON "Students" ("UpdatedById");
 CREATE INDEX "IX_Students_UserId" ON "Students" ("UserId");
 
 
-CREATE INDEX "IX_TeacherCourses_CourseId" ON "TeacherCourses" ("CourseId");
+CREATE INDEX "IX_TeacherDisciplines_CreatedById" ON "TeacherDisciplines" ("CreatedById");
 
 
-CREATE INDEX "IX_TeacherCourses_CreatedById" ON "TeacherCourses" ("CreatedById");
+CREATE INDEX "IX_TeacherDisciplines_DisciplineId" ON "TeacherDisciplines" ("DisciplineId");
 
 
-CREATE INDEX "IX_TeacherCourses_UpdatedById" ON "TeacherCourses" ("UpdatedById");
+CREATE INDEX "IX_TeacherDisciplines_UpdatedById" ON "TeacherDisciplines" ("UpdatedById");
 
 
 CREATE INDEX "IX_Teachers_BirthplaceId" ON "Teachers" ("BirthplaceId");
 
 
 CREATE INDEX "IX_Teachers_CityId" ON "Teachers" ("CityId");
-
-
-CREATE INDEX "IX_Teachers_CountryId" ON "Teachers" ("CountryId");
 
 
 CREATE INDEX "IX_Teachers_CountryOfNationalityId" ON "Teachers" ("CountryOfNationalityId");

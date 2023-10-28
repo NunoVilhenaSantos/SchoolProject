@@ -1,5 +1,13 @@
+@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Students.Student
 
+@* <!-- Outro conteúdo da página --> *@
+<div>
+    <h3>Errors:</h3>
+    <ul>
+        <li>@Html.ValidationSummary(false, "", new {@class = "text-danger"})</li>
+    </ul>
+</div>
 
 <div class="form-group">
     <label asp-for="FirstName" class="control-label"></label>
@@ -21,16 +29,6 @@
     <input asp-for="PostalCode" class="form-control"/>
     <span asp-validation-for="PostalCode" class="text-danger"></span>
 </div>
-@* <div class="form-group">
-    <label asp-for="Country" class="control-label"></label>
-    <input asp-for="Country" class="form-control" />
-    <span asp-validation-for="Country" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="City" class="control-label"></label>
-    <input asp-for="City" class="form-control" />
-    <span asp-validation-for="City" class="text-danger"></span>
-</div> *@
 <div class="form-group">
     <label asp-for="MobilePhone" class="control-label"></label>
     <input asp-for="MobilePhone" class="form-control"/>
@@ -78,14 +76,10 @@
 </div>
 <div class="form-group">
     <label asp-for="ImageFile" class="control-label"></label>
-    <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)" />
+    <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
     <span asp-validation-for="ImageFile" class="text-danger"></span>
 </div>
-@* <div class="form-group">
-    <label asp-for="ProfilePhotoId" class="control-label"></label>
-    <input asp-for="ProfilePhotoId" class="form-control"/>
-    <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
-</div> *@
+
 <div class="form-group form-check">
     <label class="form-check-label">
         <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)

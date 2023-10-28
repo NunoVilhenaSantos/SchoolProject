@@ -1,16 +1,37 @@
+@using System.Reflection
 @model Microsoft.AspNetCore.Identity.IdentityRole
 @* @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole> *@
 @* @model PaginationViewModel<Microsoft.AspNetCore.Identity.IdentityRole> *@
 
+
 @{
-    ViewData["Title"] = "Details";
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    // ViewData["Title"] = "Edit";
 }
 
-<h3>@ViewData["Title"]</h3>
+<h2>@actionName</h2>
 
-<h4>Roles</h4>
+<h4>@controllerName</h4>
 
-<hr/>
+<hr />
 @* <div class="row"> *@
 @* <div class="col-md-4 offset-md-4"> *@
 
@@ -24,6 +45,7 @@
             <div class="row">
                 <partial name="_RolesDD" for="@Model"/>
 
+                <br />
                 <div class="form-group">
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
                     <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
@@ -34,3 +56,6 @@
 
     </div>
 </div>
+
+<hr/>
+<partial name="_UserTable" model="@Model" view-data="ViewData"/>

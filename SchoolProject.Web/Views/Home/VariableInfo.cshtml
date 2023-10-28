@@ -1,11 +1,30 @@
-﻿@model IEnumerable<SchoolProject.Web.Helpers.VariableInfoViewModel>
+﻿@using System.Reflection
+@model IEnumerable<SchoolProject.Web.Helpers.VariableInfoViewModel>
 
 @{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
     ViewData["Title"] = "Informações das Variáveis";
 }
 
-@* <h1>@ViewData["Title"]</h1> *@
 <h2>@ViewData["Title"]</h2>
+@* <h2>@actionName</h2> *@
 
 <table class="table table-hover" sortable="True" id="sortableTable">
     <thead>

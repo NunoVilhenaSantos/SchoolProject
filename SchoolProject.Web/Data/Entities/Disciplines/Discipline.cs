@@ -20,7 +20,7 @@ namespace SchoolProject.Web.Data.Entities.Disciplines;
 public class Discipline : IEntity, INotifyPropertyChanged
 {
     /// <summary>
-    ///     The code of the course.
+    ///     The code of the discipline.
     /// </summary>
     [DisplayName("Code")]
     [MaxLength(7,
@@ -30,32 +30,33 @@ public class Discipline : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///     The name of the course.
+    ///     The name of the discipline.
     /// </summary>
     [Required]
     public required string Name { get; set; }
 
 
     /// <summary>
-    ///     The description of the course.
+    ///     The description of the discipline.
     /// </summary>
     public required string Description { get; set; }
 
 
     /// <summary>
-    ///     The number of hours of the course.
+    ///     The number of hours of the discipline.
     /// </summary>
     [Required]
     public required int Hours { get; set; }
 
 
     /// <summary>
-    ///     The number of credit points of the course.
-    ///     The number of ECTS of the course.
-    ///     The number of ECTS credits of the course.
+    ///     The number of credit points of the discipline.
+    ///     The number of ECTS of the discipline.
+    ///     The number of ECTS credits of the discipline.
     ///     European Credit Transfer and Accumulation System (ECTS).
     /// </summary>
     [Required]
+    [DisplayName("Credit Points")]
     public required double CreditPoints { get; set; }
 
 
@@ -66,7 +67,7 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
-     [Ignore]
+    [Ignore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -76,26 +77,25 @@ public class Discipline : IEntity, INotifyPropertyChanged
     ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
 
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
-    /// <summary>
-    ///     The profile photo of the appUser in URL format.
-    /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          DisciplinesController.BucketName +
-          "/" + ProfilePhotoId;
-
-
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              DisciplinesController.BucketName +
+              "/" + ProfilePhotoId;
 
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
+
+
     // --------------------------------------------------------------------- //
 
 
@@ -111,13 +111,20 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship between Discipline and Discipline
     /// </summary>
-    public virtual HashSet<CourseDisciplines>? CourseDisciplines { get; set; }
+    public virtual HashSet<CourseDiscipline>? CourseDisciplines { get; set; }
 
+    /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Course>? Courses =>
+        CourseDisciplines?.Select(cd => cd.Course).Distinct();
 
-    ///// <summary>
-    /////     Returns the number of the course for this school classes
-    ///// </summary>
-    //public int SchoolClassCoursesCount => CourseDisciplines.Count;
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Courses Count")]
+    public int CoursesCount => Courses?.Count() ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -127,14 +134,28 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship between Disciplines and Students
     /// </summary>
-    public virtual HashSet<StudentCourse>? StudentCourses { get; set; }
+    public virtual HashSet<StudentDiscipline>? StudentDisciplines { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Student>? Students =>
+        StudentDisciplines?.Select(sc => sc.Student).Distinct();
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Students Count")]
+    public int StudentCount0 => Students?.Count() ?? 0;
 
 
-    //public int StudentCoursesCount => StudentCourses.Count;
-
-
-    //public int StudentCount => StudentCourses
-    //    .Select(sc => sc.Student).Distinct().Count();
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Students Count")]
+    public int StudentCount1 =>
+        StudentDisciplines?.Select(sc => sc.Student).Distinct().Count() ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -144,16 +165,28 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship between Teacher and Discipline
     /// </summary>
-    public virtual HashSet<TeacherCourse>? TeacherCourses { get; set; }
+    public virtual HashSet<TeacherDiscipline>? TeacherDisciplines { get; set; }
 
-    ///// <summary>
-    /////     Returns the number of the course for this teachers
-    ///// </summary>
-    //public int TeacherCoursesCount => TeacherCourses.Count;
+    /// <summary>
+    ///    Returns the teachers of the course
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Teacher>? Teachers =>
+        TeacherDisciplines?.Select(sc => sc.Teacher).Distinct();
+
+    /// <summary>
+    ///    Returns the number of the teachers for this discipline
+    /// </summary>
+    [DisplayName("Teachers Count")]
+    public int TeachersCount0 => TeacherDisciplines?.Count ?? 0;
 
 
-    //public int TeachersCount => TeacherCourses
-    //    .Select(tc => tc.Teacher).Distinct().Count();
+    /// <summary>
+    ///    Returns the number of the teachers for this discipline
+    /// </summary>
+    [DisplayName("Teachers Count")]
+    public int TeachersCount1 =>
+        TeacherDisciplines?.Select(tc => tc.Teacher).Distinct().Count() ?? 0;
 
 
     // ---------------------------------------------------------------------- //
@@ -167,10 +200,18 @@ public class Discipline : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Student>? EStudents =>
+        StudentDisciplines?.Select(sc => sc.Student).Distinct();
+
+
+    /// <summary>
     ///     Returns the number of students enrolled in the course
     /// </summary>
     [DisplayName("Enrolled Students")]
-    public int? StudentsCount =>
+    public int StudentsCount =>
         Enrollments?.Where(e => e.Discipline.Id == Id).Count() ?? 0;
 
 
@@ -245,6 +286,25 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

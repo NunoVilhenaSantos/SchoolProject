@@ -10,9 +10,9 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
@@ -20,7 +20,7 @@
 }
 
 @* <h2>@pageTitle</h2> *@
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
 <div class="container-fluid py-3">
     <div class="row">
@@ -53,11 +53,11 @@
 
                         <div class="card-body pe-1">
                             <p class="card-text">@Html.DisplayFor(modelItem => item.AppUser.FullName)</p>
-                            <small class="text-body-secondary" >
-                                @Html.DisplayFor(modelItem => item.AppUser.Email) <br />
+                            <small class="text-body-secondary">
+                                @Html.DisplayFor(modelItem => item.AppUser.Email) <br/>
                                 @Html.DisplayFor(modelItem => item.AppUser.Address)
                             </small>
-                            <br /><br />
+                            <br/><br/>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a asp-action="Edit" asp-route-id="@item.AppUser.Id" class="btn btn-outline-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
@@ -73,7 +73,7 @@
                                 @*     @Html.DisplayNameFor(modelItem => item.AppUser.Address)<br/> *@
                                 @*     @Html.DisplayFor(modelItem => item.AppUser.Address) *@
                                 @* </small> *@
-                               @*  <small class="text-body-secondary px-2">
+                                @*  <small class="text-body-secondary px-2">
                                     @Html.DisplayFor(modelItem => item.AppUser.Email)<br/><br/>
                                     @Html.DisplayFor(modelItem => item.AppUser.Address)
                                 </small> *@

@@ -3,7 +3,6 @@
 @* @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole> *@
 @* @model PaginationViewModel<Microsoft.AspNetCore.Identity.IdentityRole> *@
 
-
 @{
     ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
     ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
@@ -16,7 +15,7 @@
     var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
     ViewData["controllerName"] = controllerName;
 
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
     ViewData["assemblyName"] = assemblyName;
 
     // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
@@ -27,7 +26,7 @@
     // ViewData["Title"] = "Edit";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
 <h4>@controllerName</h4>
 
@@ -56,7 +55,13 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
+
+<!-- Outro conteúdo da página -->
+<div>
+    <h3>Errors:</h3>
+    <ul>
+        <li>@Html.ValidationSummary(false, "", new {@class = "text-danger"})</li>
+    </ul>
+</div>

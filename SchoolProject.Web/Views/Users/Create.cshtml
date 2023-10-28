@@ -11,13 +11,13 @@
     ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
     ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
     ViewData["actionName"] = actionName;
 
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
     ViewData["controllerName"] = controllerName;
 
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
     ViewData["assemblyName"] = assemblyName;
 
     // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
@@ -27,10 +27,11 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
 <h4>@controllerName</h4>
 <hr/>
+
 @* <div class="row"> *@
 @* <div class="col-md-4 offset-md-4"> *@
 

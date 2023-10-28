@@ -2,6 +2,7 @@
 @using SchoolProject.Web.Data.Entities.Users;
 @using SchoolProject.Web.Helpers.Users;
 @using System.Diagnostics;
+@using System.Reflection
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
@@ -9,220 +10,73 @@
 
 @model SchoolProject.Web.Data.Entities.Teachers.Teacher
 
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
 
-    // var countries = ViewData["Countries"] as IEnumerable<SelectListItem>;
-    // System.Diagnostics.Debug.Assert(countries != null, nameof(countries) + " != null");
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
 
-    // var cities = ViewData["Cities"] as IEnumerable<SelectListItem>;
-    // var genders = ViewData["Genders"] as IEnumerable<SelectListItem>;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
 
-    // Model.UpdatedBy = await UserManager.FindByEmailAsync(AppUser);
-    // Model.UpdatedBy = AppUser.Identity.IsAuthenticated;
-    // var user0 = await AuthenticatedUserInApp.GetAuthenticatedUser();
-    // var user1 = await UserManager.FindByNameAsync(AppUser.Identity.Name);
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["assemblyName"] = assemblyName;
 
-    // Model.UpdatedBy = user1;
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
 
-    Debug.Assert(User.Identity != null, "AppUser.Identity != null");
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    // ViewData["Title"] = "Edit";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@actionName</h2>
 
-<h4>Teacher</h4>
+<h4>@controllerName</h4>
 <hr/>
 
 <div class="container">
-    <div class="row">
-        <div class="col">
+    <div class="col-md">
+        <div class="row">
             <partial name="_DisplayImages"/>
 
-            <form asp-action="Edit" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id"/>
-                <input type="hidden" asp-for="IdGuid"/>
+            <div class="col">
+                <div class="row">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id"/>
+                        <input type="hidden" asp-for="IdGuid"/>
 
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control"/>
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control"/>
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Address" class="control-label"></label>
-                        <input asp-for="Address" class="form-control"/>
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PostalCode" class="control-label"></label>
-                        <input asp-for="PostalCode" class="form-control"/>
-                        <span asp-validation-for="PostalCode" class="text-danger"></span>
-                    </div>
+                        <partial name="_TeachersCE" for="@Model"/>
 
-                    <div class="form-group">
-                        <label asp-for="MobilePhone" class="control-label"></label>
-                        <input asp-for="MobilePhone" class="form-control"/>
-                        <span asp-validation-for="MobilePhone" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control"/>
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input asp-for="DateOfBirth" class="form-control"/>
-                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="IdentificationNumber" class="control-label"></label>
-                        <input asp-for="IdentificationNumber" class="form-control"/>
-                        <span asp-validation-for="IdentificationNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="IdentificationType" class="control-label"></label>
-                        <input asp-for="IdentificationType" class="form-control"/>
-                        <span asp-validation-for="IdentificationType" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="ExpirationDateIdentificationNumber" class="control-label"></label>
-                        <input asp-for="ExpirationDateIdentificationNumber" class="form-control"/>
-                        <span asp-validation-for="ExpirationDateIdentificationNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="TaxIdentificationNumber" class="control-label"></label>
-                        <input asp-for="TaxIdentificationNumber" class="form-control"/>
-                        <span asp-validation-for="TaxIdentificationNumber" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Gender" class="control-label"></label>
-                        <select asp-for="Gender" asp-items="ViewBag.Genders" class="form-control"></select>
-                        <span asp-validation-for="Gender" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="GenderId" class="control-label"></label>
-                        <select asp-for="GenderId" asp-items="ViewBag.Genders" class="form-control"></select>
-                        <span asp-validation-for="GenderId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="CountryId" class="control-label"></label>
-                        <select asp-for="CountryId" asp-items="ViewBag.CountryId" class="form-control"></select>
-                        <span asp-validation-for="CountryId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="CityId" class="control-label"></label>
-                        <select asp-for="CityId" asp-items="ViewBag.CityId" class="form-control"></select>
-                        <span asp-validation-for="CityId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="CountryOfNationalityId" class="control-label"></label>
-                        <select asp-for="CountryOfNationalityId" asp-items="ViewBag.CountryId" class="form-control"></select>
-                        <span asp-validation-for="CountryOfNationalityId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="BirthplaceId" class="control-label"></label>
-                        <select asp-for="BirthplaceId" asp-items="ViewBag.CountryId" class="form-control"></select>
-                        <span asp-validation-for="BirthplaceId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="EnrollDate" class="control-label"></label>
-                        <input asp-for="EnrollDate" class="form-control" disabled/>
-                        <span asp-validation-for="EnrollDate" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="AppUser" class="control-label"></label>
-                        <input asp-for="AppUser.FullName" class="form-control" disabled/>
-                        <span asp-validation-for="AppUser" class="text-danger"></span>
-                    </div>
-                </div>
-
-
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="ProfilePhotoId" class="control-label"></label>
-                        <input asp-for="ProfilePhotoId" class="form-control"/>
-                        <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ImageFile" class="control-label"></label>
-                        <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
-                        <span asp-validation-for="ImageFile" class="text-danger"></span>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label asp-for="CreatedBy" class="control-label"></label>
-                        <input asp-for="CreatedBy.FullName" class="form-control" disabled/>
-                        <span asp-validation-for="CreatedBy" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="CreatedAt" class="control-label"></label>
-                        <input asp-for="CreatedAt" class="form-control" disabled/>
-                        <span asp-validation-for="CreatedAt" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="UpdatedBy" class="control-label"></label>
-                        <input asp-for="UpdatedBy.FullName" class="form-control" disabled/>
-                        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UpdatedAt" class="control-label"></label>
-                        <input asp-for="UpdatedAt" class="form-control" disabled/>
-                        <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Active"/>@Html.DisplayNameFor(model => model.Active)
-                        </label>
-                    </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="WasDeleted"/>@Html.DisplayNameFor(model => model.WasDeleted)
-                        </label>
-                    </div>
-
-                    <br/>
-                    <div class="btn-group">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-outline-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
+                        <br/>
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
+                                <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                            </div>
                         </div>
-                        <div>
-                            <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+
+                        <br/>
+                        <div class="text-success">
+                            <p>@ViewBag.Message</p>
                         </div>
-                    </div>
-
-                    <div class="text-success">
-                        <p>@ViewBag.Message</p>
-                    </div>
-
+                    </form>
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
 </div>
 
+<hr/>
+<partial name="_DisciplinesTable" model="@Model"/>
+
+<hr/>
+<partial name="_DisciplinesTable1" model="@Model"/>
 
 <script src="~/js/citiesAndCountriesList.js"></script>
 <script src="~/js/gendersList.js"></script>
@@ -232,7 +86,5 @@
 
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

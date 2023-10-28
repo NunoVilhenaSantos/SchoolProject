@@ -1,123 +1,44 @@
 @model SchoolProject.Web.Data.Entities.Teachers.Teacher
 
 
-<div class="row">
-    <div class="col-md-8">
-    
-        <dl class="row">
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.FirstName)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.LastName)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.LastName)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Address)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Address)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.PostalCode)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.PostalCode)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.MobilePhone)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.MobilePhone)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Active)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Active)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.DateOfBirth)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.IdentificationNumber)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.IdentificationNumber)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.IdentificationType)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.IdentificationType)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.ExpirationDateIdentificationNumber)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.ExpirationDateIdentificationNumber)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.TaxIdentificationNumber)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.TaxIdentificationNumber)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.EnrollDate)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.EnrollDate)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.ProfilePhotoId)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.ProfilePhotoId)
-            </dd>
-           @*  <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.IdGuid)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.IdGuid)
-            </dd> *@
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.WasDeleted)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.WasDeleted)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.CreatedAt)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.UpdatedAt)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.UpdatedAt)
-            </dd>
-        </dl>
-    </div>
-    
-     <div class="col-md-4">
-        <img src="@Url.Content(Model.ProfilePhotoIdUrl)" alt="Image" style="width:200px; height:350px; max-width:100%; height:auto">
-    </div>
 
-</div>
+
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastName)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Address)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Address)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PostalCode)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.PostalCode)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.MobilePhone)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.MobilePhone)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Active)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Active)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DateOfBirth)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.DateOfBirth)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IdentificationNumber)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.IdentificationNumber)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IdentificationType)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.IdentificationType)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ExpirationDateIdentificationNumber)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ExpirationDateIdentificationNumber)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.TaxIdentificationNumber)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TaxIdentificationNumber)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EnrollDate)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.EnrollDate)</dd>
+            @* <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ProfilePhotoId)</dt> *@
+            @* <dd class="col-sm-9">@Html.DisplayFor(model => model.ProfilePhotoId)</dd> *@
+            @* <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IdGuid)</dt> *@
+            @* <dd class="col-sm-9">@Html.DisplayFor(model => model.IdGuid)</dd> *@
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.WasDeleted)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.WasDeleted)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedAt)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UpdatedAt)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedAt)</dd>
+        </dl>
+   

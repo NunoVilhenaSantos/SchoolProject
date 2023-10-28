@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Controllers;
+using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Users;
@@ -34,6 +35,12 @@ public class AppUser : IdentityUser, INotifyPropertyChanged
 
 
     /// <summary>
+    /// </summary>
+    [Display(Name = "Full Name")]
+    public string FullName => $"{FirstName} {LastName}";
+
+
+    /// <summary>
     ///     The address of the appUser.
     /// </summary>
     [MaxLength(100,
@@ -50,10 +57,52 @@ public class AppUser : IdentityUser, INotifyPropertyChanged
     //public string? PhoneNumber { get; set; }
 
 
+    // /// <summary>
+    // ///    The country of the appUser.
+    // /// </summary>
+    // [NotMapped]
+    // [DisplayName("Country")]
+    // [Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
+    // public required int CountryId { get; set; }
+
+
+    // /// <summary>
+    // ///     The city of the appUser.
+    // /// </summary>
+    // [Required]
+    // [Display(Name = "City")]
+    // [ForeignKey(nameof(City))]
+    // [Range(1, int.MaxValue, ErrorMessage = "You must select a city...")]
+    // public  int CityId { get; set; }
+
+
+    // /// <summary>
+    // ///
+    // /// </summary>
+    // [Required]
+    // [Display(Name = "City")]
+    // public virtual required City City { get; set; }
+
+
     /// <summary>
+    ///    The name abbreviation of the appUser.
     /// </summary>
-    [Display(Name = "Full Name")]
-    public string FullName => $"{FirstName} {LastName}";
+    public string NameAbbreviation
+    {
+        get
+        {
+            var firstLetters = FullName.Split(' ')
+                .Where(word => !string.IsNullOrEmpty(word))
+                .ToArray();
+
+            var nameAbbr = string.Concat(firstLetters[0][0],
+                firstLetters[^1][0]);
+
+            return nameAbbr;
+        }
+    }
+
+    // -------------------------------------------------------------- //
 
 
     /// <summary>
@@ -63,8 +112,8 @@ public class AppUser : IdentityUser, INotifyPropertyChanged
     public required bool WasDeleted { get; set; }
 
 
-    // --------------------------------------------------------------------- //
-    // --------------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
+    // -------------------------------------------------------------- //
 
 
     /// <summary>
@@ -80,29 +129,18 @@ public class AppUser : IdentityUser, INotifyPropertyChanged
     ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
 
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
-    /// <summary>
-    ///     The profile photo of the appUser in URL format.
-    /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
         ? StorageHelper.NoImageUrl
         : StorageHelper.AzureStoragePublicUrl +
           UsersController.BucketName +
           "/" + ProfilePhotoId;
-
-
-    // [Display(Name = "Thumbnail")]
-    // public string ImageThumbnailUrl { get; set; }
-    //
-    // public string ImageThumbnailFullUrl =>
-    //     string.IsNullOrEmpty(ImageThumbnailUrl)
-    //         ? null
-    //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
 
 
     // --------------------------------------------------------------------- //

@@ -4,7 +4,6 @@
 //
 // ---------------------------------------------------------------------------------------------------------------- --->
 
-
 function getRoles() {
     // debugger;
 
@@ -13,7 +12,7 @@ function getRoles() {
 
         error: function (ex) {
             alert('Failed to retrieve roles. ' + ex);
-            debugger;
+            // debugger;
         },
 
         success: function (roles) {
@@ -27,7 +26,7 @@ function getRoles() {
 
         type: 'POST',
         // url: '/Account/GetCountriesAsync'
-        url: '/Roles/GetRolesJson'
+        url: '/Roles/GetRolesListJson'
     });
 
     // debugger;

@@ -47,7 +47,8 @@ public class Country : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
         ? StorageHelper.NoImageUrl
         : StorageHelper.AzureStoragePublicUrl +
           CountriesController.BucketName +
@@ -67,16 +68,17 @@ public class Country : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Number of Cities")]
-    public int NumberCities => Cities != null ? Cities.Count : 0;
+    public int NumberOfCities => Cities?.Count ?? 0;
 
 
     // -------------------------------------------------------------- //
     // -------------------------------------------------------------- //
 
-
-    // Principal (parent)
 
     // [Required]
+    // /// <summary>
+    // ///
+    // /// </summary>
     // [ForeignKey(nameof(Nationality))]
     // public int NationalityId { get; set; }
 
@@ -84,12 +86,6 @@ public class Country : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     public virtual required Nationality Nationality { get; set; }
-
-
-    // /// <summary>
-    // ///
-    // /// </summary>
-    // public Guid NationalityGuidId => Nationality.IdGuid;
 
 
     // -------------------------------------------------------------- //
@@ -138,6 +134,27 @@ public class Country : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
+
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
 
 
     // -------------------------------------------------------------- //

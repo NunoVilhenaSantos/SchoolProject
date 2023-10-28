@@ -126,4 +126,13 @@ public interface IStorageHelper
     /// <param name="bucketName"></param>
     /// <returns></returns>
     Task<Guid> UploadStorageAsync(string file, string bucketName);
+
+
+    /// <summary>
+    ///    Delete file from storage in Azure.
+    /// </summary>
+    /// <param name="blobName"></param>
+    /// <param name="bucketName"></param>
+    /// <returns></returns>
+    Task DeleteStorageAsync(string blobName, string bucketName);
 }

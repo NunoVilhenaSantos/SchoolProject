@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "secrets1": {
-      "secretStore": null,
-      "resourceId": null,
-      "type": "secrets.user",
-      "connectionId": null
-    },
     "appInsights1": {
       "secretStore": null,
       "resourceId": null,
@@ -38,6 +32,12 @@
       "type": "storage.azure",
       "connectionId": "Storage:Azure",
       "dynamicId": null
+    },
+    "secrets1": {
+      "secretStore": null,
+      "resourceId": null,
+      "type": "secrets.user",
+      "connectionId": null
     }
   }
 }

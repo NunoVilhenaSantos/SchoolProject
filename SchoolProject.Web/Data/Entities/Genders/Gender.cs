@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Controllers;
+using SchoolProject.Web.Data.Entities.Students;
+using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
@@ -40,18 +42,55 @@ public class Gender : IEntity, INotifyPropertyChanged
     ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public required Guid ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
 
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
         ? StorageHelper.NoImageUrl
         : StorageHelper.AzureStoragePublicUrl +
           GendersController.BucketName +
           "/" + ProfilePhotoId;
 
+
+    // --------------------------------------------------------------------- //
+    // --------------------------------------------------------------------- //
+
+    /// <summary>
+    ///
+    /// </summary>
+    public IEnumerable<AppUser>? AppUsers { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public int AppUsersCount => AppUsers?.Count() ?? 0;
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    public IEnumerable<Teacher>? Teachers { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public int TeachersCount => Teachers?.Count() ?? 0;
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    public IEnumerable<Student>? Students { get; set; }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    public int StudentsCount => Students?.Count() ?? 0;
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
@@ -98,6 +137,26 @@ public class Gender : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
+
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

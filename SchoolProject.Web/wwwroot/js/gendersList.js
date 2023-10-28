@@ -13,7 +13,7 @@ function getGenders() {
 
         error: function (ex) {
             alert('Failed to retrieve genders. ' + ex);
-            debugger;
+            // debugger;
         },
 
         success: function (genders) {
@@ -27,7 +27,7 @@ function getGenders() {
 
         type: 'POST',
         // url: '/Account/GetCountriesAsync'
-        url: '/Genders/GetGendersJson'
+        url: '/Genders/GetGendersListJson'
     });
 
     // debugger;

@@ -21,8 +21,7 @@ public class SeedDbCoursesWithDisciplines
     /// <param name="appUser"></param>
     /// <param name="dataContextInUse"></param>
     public static async Task AddingData(AppUser appUser,
-        // DataContextMsSql dataContextInUse, 
-        DataContextMySql dataContextInUse
+        DataContextMySql dataContextInUse // DataContextMsSql dataContextInUse,
     )
     {
         Console.WriteLine("debug zone...");
@@ -33,50 +32,51 @@ public class SeedDbCoursesWithDisciplines
             await dataContextInUse.Disciplines.ToListAsync();
 
         // ------------------------------------------------------------------ //
-        var existingCourses =
-            await dataContextInUse.Courses
-                // To Ensure Disciplines are loaded for each Discipline
-                .Include(c => c.Disciplines)
-                .ToListAsync();
+        // To Ensure Disciplines are loaded for each Course
+        var existingCourses = await dataContextInUse.Courses
+            .Include(c => c.CourseDisciplines)
+            .ToListAsync();
+
 
         // ------------------------------------------------------------------ //
         _listOfDisciplinesToAdd = existingDisciplines.ToList();
         _listOfCoursesToAdd = existingCourses.ToList();
 
 
-        // ------------------------------------------------------------------ //
+        // ---------------------------------------------------------------- //
         Console.WriteLine("debug zone...");
-        if (await dataContextInUse.CoursesDisciplines.AnyAsync()) return;
+        if (await dataContextInUse.CourseDisciplines.AnyAsync()) return;
 
 
-        // Loop through each school class
+        // Loop through Courses
         foreach (var course in _listOfCoursesToAdd)
         {
             // Check if Disciplines is null or empty before iterating
-            if (course.Disciplines != null &&
-                course.Disciplines.Any())
+            if (course.CourseDisciplines != null &&
+                course.CourseDisciplines.Any())
                 // Loop through each course associated with the school class
-                foreach (var disciplines in course.Disciplines.Select(
-                             discipline => new CourseDisciplines
+                foreach (var disciplines in
+                         course.CourseDisciplines.Select(
+                             discipline => new CourseDiscipline
                              {
                                  CourseId = course.Id,
                                  Course = course,
-                                 DisciplineId = discipline.Id,
-                                 Discipline = discipline,
+                                 DisciplineId = discipline.Discipline.Id,
+                                 Discipline = discipline.Discipline,
                                  CreatedBy = appUser,
                                  CreatedById = appUser.Id,
                              }))
                     // Add the association to Courses and Discipline's CourseDisciplines collection
-                    dataContextInUse.CoursesDisciplines.Add(disciplines);
+                    dataContextInUse.CourseDisciplines.Add(disciplines);
 
-            // ------------------------------------------------------------------ //
+            // ------------------------------------------------------------ //
             Console.WriteLine("debug zone...", Color.Red);
 
             // Save the changes to the database
             await dataContextInUse.SaveChangesAsync();
         }
 
-        // ------------------------------------------------------------------ //
+        // ---------------------------------------------------------------- //
         Console.WriteLine("debug zone...", Color.Red);
     }
 }

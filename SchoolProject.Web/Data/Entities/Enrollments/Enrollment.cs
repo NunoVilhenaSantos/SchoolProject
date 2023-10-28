@@ -17,7 +17,7 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [ForeignKey(nameof(Student))]
-    public required int StudentId { get; set; }
+    public int StudentId { get; set; }
 
     /// <summary>
     /// </summary>
@@ -29,7 +29,7 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [ForeignKey(nameof(Discipline))]
-    public required int DisciplineId { get; set; }
+    public int DisciplineId { get; set; }
 
     /// <summary>
     /// </summary>
@@ -105,7 +105,7 @@ public class Enrollment : IEntity, INotifyPropertyChanged
 
 
     /// <inheritdoc />
-    [DisplayName("Created By")]
+    [DisplayName("Created By AppUser")]
     public virtual required AppUser CreatedBy { get; set; }
 
 
@@ -120,7 +120,7 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     // Propriedade de navegação
     // Especifique o nome da coluna da chave estrangeira
-    [DisplayName("Updated By")]
+    [DisplayName("Updated By AppUser")]
     public virtual AppUser? UpdatedBy { get; set; }
 
 
@@ -131,14 +131,14 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     /// <summary>
     /// Deve ser do mesmo tipo da propriedade Id de AppUser
     /// </summary>
-    [DisplayName("Created By AppUser Id")]
+    [DisplayName("Created By AppUser")]
     [ForeignKey(nameof(CreatedBy))]
-    public required string CreatedById { get; set; }
+    public string CreatedById { get; set; }
 
     /// <summary>
     /// Deve ser do mesmo tipo da propriedade Id de AppUser
     /// </summary>
-    [DisplayName("Updated By AppUser Id")]
+    [DisplayName("Updated By AppUser")]
     [ForeignKey(nameof(UpdatedBy))]
     public string? UpdatedById { get; set; }
 

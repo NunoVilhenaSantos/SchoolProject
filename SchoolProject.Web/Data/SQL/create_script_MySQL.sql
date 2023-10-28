@@ -7,31 +7,6 @@ CREATE TABLE `AspNetRoles` (
 );
 
 
-CREATE TABLE `AspNetUsers` (
-    `Id` varchar(255) NOT NULL,
-    `FirstName` varchar(50) NOT NULL,
-    `LastName` varchar(50) NOT NULL,
-    `Address` varchar(100) NULL,
-    `WasDeleted` tinyint(1) NOT NULL,
-    `ProfilePhotoId` char(36) NOT NULL,
-    `UserName` varchar(256) NULL,
-    `NormalizedUserName` varchar(256) NULL,
-    `Email` varchar(256) NULL,
-    `NormalizedEmail` varchar(256) NULL,
-    `EmailConfirmed` tinyint(1) NOT NULL,
-    `PasswordHash` longtext NULL,
-    `SecurityStamp` longtext NULL,
-    `ConcurrencyStamp` longtext NULL,
-    `PhoneNumber` longtext NULL,
-    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
-    `TwoFactorEnabled` tinyint(1) NOT NULL,
-    `LockoutEnd` datetime(6) NULL,
-    `LockoutEnabled` tinyint(1) NOT NULL,
-    `AccessFailedCount` int NOT NULL,
-    PRIMARY KEY (`Id`)
-);
-
-
 CREATE TABLE `AspNetRoleClaims` (
     `Id` int NOT NULL AUTO_INCREMENT,
     `RoleId` varchar(255) NOT NULL,
@@ -47,8 +22,7 @@ CREATE TABLE `AspNetUserClaims` (
     `UserId` varchar(255) NOT NULL,
     `ClaimType` longtext NULL,
     `ClaimValue` longtext NULL,
-    PRIMARY KEY (`Id`),
-    CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+    PRIMARY KEY (`Id`)
 );
 
 
@@ -57,8 +31,7 @@ CREATE TABLE `AspNetUserLogins` (
     `ProviderKey` varchar(255) NOT NULL,
     `ProviderDisplayName` longtext NULL,
     `UserId` varchar(255) NOT NULL,
-    PRIMARY KEY (`LoginProvider`, `ProviderKey`),
-    CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+    PRIMARY KEY (`LoginProvider`, `ProviderKey`)
 );
 
 
@@ -66,8 +39,33 @@ CREATE TABLE `AspNetUserRoles` (
     `UserId` varchar(255) NOT NULL,
     `RoleId` varchar(255) NOT NULL,
     PRIMARY KEY (`UserId`, `RoleId`),
-    CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE,
-    CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
+    CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE
+);
+
+
+CREATE TABLE `AspNetUsers` (
+    `Id` varchar(255) NOT NULL,
+    `FirstName` varchar(50) NOT NULL,
+    `LastName` varchar(50) NOT NULL,
+    `Address` varchar(100) NULL,
+    `WasDeleted` tinyint(1) NOT NULL,
+    `ProfilePhotoId` char(36) NOT NULL,
+    `GenderId` int NULL,
+    `UserName` varchar(256) NULL,
+    `NormalizedUserName` varchar(256) NULL,
+    `Email` varchar(256) NULL,
+    `NormalizedEmail` varchar(256) NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL,
+    `PasswordHash` longtext NULL,
+    `SecurityStamp` longtext NULL,
+    `ConcurrencyStamp` longtext NULL,
+    `PhoneNumber` longtext NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL,
+    `AccessFailedCount` int NOT NULL,
+    PRIMARY KEY (`Id`)
 );
 
 
@@ -88,8 +86,8 @@ CREATE TABLE `Countries` (
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
     PRIMARY KEY (`Id`),
     CONSTRAINT `FK_Countries_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
@@ -117,12 +115,32 @@ CREATE TABLE `Courses` (
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
     PRIMARY KEY (`Id`),
     CONSTRAINT `FK_Courses_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
     CONSTRAINT `FK_Courses_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `Disciplines` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Code` varchar(7) NOT NULL,
+    `Name` longtext NOT NULL,
+    `Description` longtext NOT NULL,
+    `Hours` int NOT NULL,
+    `CreditPoints` double NOT NULL,
+    `ProfilePhotoId` char(36) NOT NULL,
+    `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
+    `WasDeleted` tinyint(1) NOT NULL,
+    `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
+    `UpdatedById` varchar(255) NULL,
+    PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Disciplines_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Disciplines_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT
 );
 
 
@@ -133,8 +151,8 @@ CREATE TABLE `Genders` (
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
     PRIMARY KEY (`Id`),
     CONSTRAINT `FK_Genders_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
@@ -150,8 +168,8 @@ CREATE TABLE `Cities` (
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
     PRIMARY KEY (`Id`),
     CONSTRAINT `FK_Cities_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
@@ -167,8 +185,8 @@ CREATE TABLE `Nationalities` (
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NOT NULL,
     `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
     PRIMARY KEY (`Id`),
     CONSTRAINT `FK_Nationalities_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
@@ -177,111 +195,7 @@ CREATE TABLE `Nationalities` (
 );
 
 
-CREATE TABLE `Disciplines` (
-    `Id` int NOT NULL AUTO_INCREMENT,
-    `Code` varchar(7) NOT NULL,
-    `Name` longtext NOT NULL,
-    `Description` longtext NULL,
-    `Hours` int NOT NULL,
-    `CreditPoints` double NOT NULL,
-    `ProfilePhotoId` char(36) NOT NULL,
-    `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
-    `WasDeleted` tinyint(1) NOT NULL,
-    `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NOT NULL,
-    `UpdatedAt` datetime(6) NULL,
-    `UpdatedById` varchar(255) NULL,
-    `CourseId` int NULL,
-    PRIMARY KEY (`Id`),
-    CONSTRAINT `FK_Disciplines_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Disciplines_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Disciplines_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT
-);
-
-
-CREATE TABLE `Students` (
-    `Id` int NOT NULL AUTO_INCREMENT,
-    `FirstName` longtext NOT NULL,
-    `LastName` longtext NOT NULL,
-    `Address` longtext NOT NULL,
-    `PostalCode` longtext NOT NULL,
-    `CityId` int NULL,
-    `CountryId` int NULL,
-    `MobilePhone` longtext NOT NULL,
-    `Email` longtext NOT NULL,
-    `Active` tinyint(1) NOT NULL,
-    `GenderId` int NULL,
-    `DateOfBirth` datetime(6) NOT NULL,
-    `IdentificationNumber` longtext NOT NULL,
-    `IdentificationType` longtext NOT NULL,
-    `ExpirationDateIdentificationNumber` datetime(6) NOT NULL,
-    `TaxIdentificationNumber` longtext NOT NULL,
-    `CountryOfNationalityId` int NULL,
-    `BirthplaceId` int NULL,
-    `EnrollDate` datetime(6) NULL,
-    `UserId` varchar(255) NOT NULL,
-    `ProfilePhotoId` char(36) NULL,
-    `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
-    `WasDeleted` tinyint(1) NOT NULL,
-    `CreatedAt` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NOT NULL,
-    `UpdatedAt` datetime(6) NULL,
-    `UpdatedById` varchar(255) NULL,
-    `CourseId` int NULL,
-    PRIMARY KEY (`Id`),
-    CONSTRAINT `FK_Students_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_Cities_CityId` FOREIGN KEY (`CityId`) REFERENCES `Cities` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_Countries_BirthplaceId` FOREIGN KEY (`BirthplaceId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_Countries_CountryId` FOREIGN KEY (`CountryId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_Countries_CountryOfNationalityId` FOREIGN KEY (`CountryOfNationalityId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Students_Genders_GenderId` FOREIGN KEY (`GenderId`) REFERENCES `Genders` (`Id`) ON DELETE RESTRICT
-);
-
-
-CREATE TABLE `Teachers` (
-    `Id` int NOT NULL AUTO_INCREMENT,
-    `FirstName` longtext NOT NULL,
-    `LastName` longtext NOT NULL,
-    `Address` longtext NOT NULL,
-    `PostalCode` longtext NOT NULL,
-    `CityId` int NULL,
-    `CountryId` int NULL,
-    `MobilePhone` longtext NOT NULL,
-    `Email` longtext NOT NULL,
-    `Active` tinyint(1) NOT NULL,
-    `GenderId` int NULL,
-    `DateOfBirth` datetime(6) NOT NULL,
-    `IdentificationNumber` longtext NOT NULL,
-    `IdentificationType` longtext NOT NULL,
-    `ExpirationDateIdentificationNumber` datetime(6) NOT NULL,
-    `TaxIdentificationNumber` longtext NOT NULL,
-    `CountryOfNationalityId` int NULL,
-    `BirthplaceId` int NULL,
-    `EnrollDate` datetime(6) NULL,
-    `UserId` varchar(255) NULL,
-    `ProfilePhotoId` char(36) NULL,
-    `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
-    `WasDeleted` tinyint(1) NOT NULL,
-    `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `CreatedById` varchar(255) NULL,
-    `UpdatedAt` datetime(6) NULL,
-    `UpdatedById` varchar(255) NULL,
-    PRIMARY KEY (`Id`),
-    CONSTRAINT `FK_Teachers_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Teachers_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Teachers_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Teachers_Cities_CityId` FOREIGN KEY (`CityId`) REFERENCES `Cities` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Teachers_Countries_BirthplaceId` FOREIGN KEY (`BirthplaceId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Teachers_Countries_CountryId` FOREIGN KEY (`CountryId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Teachers_Countries_CountryOfNationalityId` FOREIGN KEY (`CountryOfNationalityId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_Teachers_Genders_GenderId` FOREIGN KEY (`GenderId`) REFERENCES `Genders` (`Id`) ON DELETE RESTRICT
-);
-
-
-CREATE TABLE `CoursesDisciplines` (
+CREATE TABLE `CourseDisciplines` (
     `CourseId` int NOT NULL,
     `DisciplineId` int NOT NULL,
     `Id` int NOT NULL,
@@ -292,28 +206,104 @@ CREATE TABLE `CoursesDisciplines` (
     `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
     PRIMARY KEY (`CourseId`, `DisciplineId`),
-    CONSTRAINT `FK_CoursesDisciplines_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_CoursesDisciplines_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_CoursesDisciplines_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_CoursesDisciplines_Disciplines_DisciplineId` FOREIGN KEY (`DisciplineId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT
+    CONSTRAINT `FK_CourseDisciplines_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_CourseDisciplines_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_CourseDisciplines_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_CourseDisciplines_Disciplines_DisciplineId` FOREIGN KEY (`DisciplineId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT
 );
 
 
-CREATE TABLE `CoursesStudents` (
-    `CourseId` int NOT NULL,
-    `StudentId` int NOT NULL,
-    `Id` int NOT NULL,
+CREATE TABLE `Students` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `FirstName` longtext NOT NULL,
+    `LastName` longtext NOT NULL,
+    `Address` longtext NOT NULL,
+    `PostalCode` longtext NOT NULL,
+    `CityId` int NOT NULL,
+    `MobilePhone` longtext NOT NULL,
+    `Email` longtext NOT NULL,
+    `Active` tinyint(1) NOT NULL,
+    `GenderId` int NOT NULL,
+    `DateOfBirth` datetime(6) NOT NULL,
+    `IdentificationNumber` longtext NOT NULL,
+    `IdentificationType` longtext NOT NULL,
+    `ExpirationDateIdentificationNumber` datetime(6) NOT NULL,
+    `TaxIdentificationNumber` longtext NOT NULL,
+    `CountryOfNationalityId` int NOT NULL,
+    `BirthplaceId` int NOT NULL,
+    `EnrollDate` datetime(6) NOT NULL,
+    `UserId` varchar(255) NOT NULL,
+    `ProfilePhotoId` char(36) NOT NULL,
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `UpdatedAt` datetime(6) NULL,
     `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
-    PRIMARY KEY (`CourseId`, `StudentId`),
-    CONSTRAINT `FK_CoursesStudents_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_CoursesStudents_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_CoursesStudents_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_CoursesStudents_Students_StudentId` FOREIGN KEY (`StudentId`) REFERENCES `Students` (`Id`) ON DELETE RESTRICT
+    PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Students_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Students_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Students_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Students_Cities_CityId` FOREIGN KEY (`CityId`) REFERENCES `Cities` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Students_Countries_BirthplaceId` FOREIGN KEY (`BirthplaceId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Students_Countries_CountryOfNationalityId` FOREIGN KEY (`CountryOfNationalityId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Students_Genders_GenderId` FOREIGN KEY (`GenderId`) REFERENCES `Genders` (`Id`) ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `Teachers` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `FirstName` longtext NOT NULL,
+    `LastName` longtext NOT NULL,
+    `Address` longtext NOT NULL,
+    `PostalCode` longtext NOT NULL,
+    `CityId` int NOT NULL,
+    `MobilePhone` longtext NOT NULL,
+    `Email` longtext NOT NULL,
+    `Active` tinyint(1) NOT NULL,
+    `GenderId` int NOT NULL,
+    `DateOfBirth` datetime(6) NOT NULL,
+    `IdentificationNumber` longtext NOT NULL,
+    `IdentificationType` longtext NOT NULL,
+    `ExpirationDateIdentificationNumber` datetime(6) NOT NULL,
+    `TaxIdentificationNumber` longtext NOT NULL,
+    `CountryOfNationalityId` int NOT NULL,
+    `BirthplaceId` int NOT NULL,
+    `EnrollDate` datetime(6) NOT NULL,
+    `UserId` varchar(255) NOT NULL,
+    `ProfilePhotoId` char(36) NOT NULL,
+    `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
+    `WasDeleted` tinyint(1) NOT NULL,
+    `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
+    `UpdatedById` varchar(255) NULL,
+    PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Teachers_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Teachers_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Teachers_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Teachers_Cities_CityId` FOREIGN KEY (`CityId`) REFERENCES `Cities` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Teachers_Countries_BirthplaceId` FOREIGN KEY (`BirthplaceId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Teachers_Countries_CountryOfNationalityId` FOREIGN KEY (`CountryOfNationalityId`) REFERENCES `Countries` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_Teachers_Genders_GenderId` FOREIGN KEY (`GenderId`) REFERENCES `Genders` (`Id`) ON DELETE RESTRICT
+);
+
+
+CREATE TABLE `CourseStudents` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `CourseId` int NOT NULL,
+    `StudentId` int NOT NULL,
+    `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
+    `WasDeleted` tinyint(1) NOT NULL,
+    `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `UpdatedAt` datetime(6) NULL,
+    `CreatedById` varchar(255) NOT NULL,
+    `UpdatedById` varchar(255) NULL,
+    PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_CourseStudents_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_CourseStudents_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_CourseStudents_Courses_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Courses` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_CourseStudents_Students_StudentId` FOREIGN KEY (`StudentId`) REFERENCES `Students` (`Id`) ON DELETE RESTRICT
 );
 
 
@@ -339,27 +329,27 @@ CREATE TABLE `Enrollments` (
 );
 
 
-CREATE TABLE `StudentCourses` (
+CREATE TABLE `StudentDisciplines` (
+    `Id` int NOT NULL AUTO_INCREMENT,
     `StudentId` int NOT NULL,
-    `CourseId` int NOT NULL,
-    `Id` int NOT NULL,
+    `DisciplineId` int NOT NULL,
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
     `CreatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `UpdatedAt` datetime(6) NULL,
     `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
-    PRIMARY KEY (`StudentId`, `CourseId`),
-    CONSTRAINT `FK_StudentCourses_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_StudentCourses_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_StudentCourses_Disciplines_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_StudentCourses_Students_StudentId` FOREIGN KEY (`StudentId`) REFERENCES `Students` (`Id`) ON DELETE RESTRICT
+    PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_StudentDisciplines_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_StudentDisciplines_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_StudentDisciplines_Disciplines_DisciplineId` FOREIGN KEY (`DisciplineId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_StudentDisciplines_Students_StudentId` FOREIGN KEY (`StudentId`) REFERENCES `Students` (`Id`) ON DELETE RESTRICT
 );
 
 
-CREATE TABLE `TeacherCourses` (
+CREATE TABLE `TeacherDisciplines` (
     `TeacherId` int NOT NULL,
-    `CourseId` int NOT NULL,
+    `DisciplineId` int NOT NULL,
     `Id` int NOT NULL,
     `IdGuid` char(36) NOT NULL DEFAULT (UUID()),
     `WasDeleted` tinyint(1) NOT NULL,
@@ -367,11 +357,11 @@ CREATE TABLE `TeacherCourses` (
     `UpdatedAt` datetime(6) NULL,
     `CreatedById` varchar(255) NOT NULL,
     `UpdatedById` varchar(255) NULL,
-    PRIMARY KEY (`TeacherId`, `CourseId`),
-    CONSTRAINT `FK_TeacherCourses_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_TeacherCourses_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_TeacherCourses_Disciplines_CourseId` FOREIGN KEY (`CourseId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
-    CONSTRAINT `FK_TeacherCourses_Teachers_TeacherId` FOREIGN KEY (`TeacherId`) REFERENCES `Teachers` (`Id`) ON DELETE RESTRICT
+    PRIMARY KEY (`TeacherId`, `DisciplineId`),
+    CONSTRAINT `FK_TeacherDisciplines_AspNetUsers_CreatedById` FOREIGN KEY (`CreatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_TeacherDisciplines_AspNetUsers_UpdatedById` FOREIGN KEY (`UpdatedById`) REFERENCES `AspNetUsers` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_TeacherDisciplines_Disciplines_DisciplineId` FOREIGN KEY (`DisciplineId`) REFERENCES `Disciplines` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_TeacherDisciplines_Teachers_TeacherId` FOREIGN KEY (`TeacherId`) REFERENCES `Teachers` (`Id`) ON DELETE RESTRICT
 );
 
 
@@ -393,6 +383,9 @@ CREATE INDEX `IX_AspNetUserRoles_RoleId` ON `AspNetUserRoles` (`RoleId`);
 CREATE INDEX `EmailIndex` ON `AspNetUsers` (`NormalizedEmail`);
 
 
+CREATE INDEX `IX_AspNetUsers_GenderId` ON `AspNetUsers` (`GenderId`);
+
+
 CREATE UNIQUE INDEX `UserNameIndex` ON `AspNetUsers` (`NormalizedUserName`);
 
 
@@ -411,31 +404,31 @@ CREATE INDEX `IX_Countries_CreatedById` ON `Countries` (`CreatedById`);
 CREATE INDEX `IX_Countries_UpdatedById` ON `Countries` (`UpdatedById`);
 
 
+CREATE INDEX `IX_CourseDisciplines_CreatedById` ON `CourseDisciplines` (`CreatedById`);
+
+
+CREATE INDEX `IX_CourseDisciplines_DisciplineId` ON `CourseDisciplines` (`DisciplineId`);
+
+
+CREATE INDEX `IX_CourseDisciplines_UpdatedById` ON `CourseDisciplines` (`UpdatedById`);
+
+
 CREATE INDEX `IX_Courses_CreatedById` ON `Courses` (`CreatedById`);
 
 
 CREATE INDEX `IX_Courses_UpdatedById` ON `Courses` (`UpdatedById`);
 
 
-CREATE INDEX `IX_CoursesDisciplines_CreatedById` ON `CoursesDisciplines` (`CreatedById`);
+CREATE INDEX `IX_CourseStudents_CourseId` ON `CourseStudents` (`CourseId`);
 
 
-CREATE INDEX `IX_CoursesDisciplines_DisciplineId` ON `CoursesDisciplines` (`DisciplineId`);
+CREATE INDEX `IX_CourseStudents_CreatedById` ON `CourseStudents` (`CreatedById`);
 
 
-CREATE INDEX `IX_CoursesDisciplines_UpdatedById` ON `CoursesDisciplines` (`UpdatedById`);
+CREATE INDEX `IX_CourseStudents_StudentId` ON `CourseStudents` (`StudentId`);
 
 
-CREATE INDEX `IX_CoursesStudents_CreatedById` ON `CoursesStudents` (`CreatedById`);
-
-
-CREATE INDEX `IX_CoursesStudents_StudentId` ON `CoursesStudents` (`StudentId`);
-
-
-CREATE INDEX `IX_CoursesStudents_UpdatedById` ON `CoursesStudents` (`UpdatedById`);
-
-
-CREATE INDEX `IX_Disciplines_CourseId` ON `Disciplines` (`CourseId`);
+CREATE INDEX `IX_CourseStudents_UpdatedById` ON `CourseStudents` (`UpdatedById`);
 
 
 CREATE INDEX `IX_Disciplines_CreatedById` ON `Disciplines` (`CreatedById`);
@@ -471,13 +464,16 @@ CREATE INDEX `IX_Nationalities_CreatedById` ON `Nationalities` (`CreatedById`);
 CREATE INDEX `IX_Nationalities_UpdatedById` ON `Nationalities` (`UpdatedById`);
 
 
-CREATE INDEX `IX_StudentCourses_CourseId` ON `StudentCourses` (`CourseId`);
+CREATE INDEX `IX_StudentDisciplines_CreatedById` ON `StudentDisciplines` (`CreatedById`);
 
 
-CREATE INDEX `IX_StudentCourses_CreatedById` ON `StudentCourses` (`CreatedById`);
+CREATE INDEX `IX_StudentDisciplines_DisciplineId` ON `StudentDisciplines` (`DisciplineId`);
 
 
-CREATE INDEX `IX_StudentCourses_UpdatedById` ON `StudentCourses` (`UpdatedById`);
+CREATE INDEX `IX_StudentDisciplines_StudentId` ON `StudentDisciplines` (`StudentId`);
+
+
+CREATE INDEX `IX_StudentDisciplines_UpdatedById` ON `StudentDisciplines` (`UpdatedById`);
 
 
 CREATE INDEX `IX_Students_BirthplaceId` ON `Students` (`BirthplaceId`);
@@ -486,13 +482,7 @@ CREATE INDEX `IX_Students_BirthplaceId` ON `Students` (`BirthplaceId`);
 CREATE INDEX `IX_Students_CityId` ON `Students` (`CityId`);
 
 
-CREATE INDEX `IX_Students_CountryId` ON `Students` (`CountryId`);
-
-
 CREATE INDEX `IX_Students_CountryOfNationalityId` ON `Students` (`CountryOfNationalityId`);
-
-
-CREATE INDEX `IX_Students_CourseId` ON `Students` (`CourseId`);
 
 
 CREATE INDEX `IX_Students_CreatedById` ON `Students` (`CreatedById`);
@@ -507,22 +497,19 @@ CREATE INDEX `IX_Students_UpdatedById` ON `Students` (`UpdatedById`);
 CREATE INDEX `IX_Students_UserId` ON `Students` (`UserId`);
 
 
-CREATE INDEX `IX_TeacherCourses_CourseId` ON `TeacherCourses` (`CourseId`);
+CREATE INDEX `IX_TeacherDisciplines_CreatedById` ON `TeacherDisciplines` (`CreatedById`);
 
 
-CREATE INDEX `IX_TeacherCourses_CreatedById` ON `TeacherCourses` (`CreatedById`);
+CREATE INDEX `IX_TeacherDisciplines_DisciplineId` ON `TeacherDisciplines` (`DisciplineId`);
 
 
-CREATE INDEX `IX_TeacherCourses_UpdatedById` ON `TeacherCourses` (`UpdatedById`);
+CREATE INDEX `IX_TeacherDisciplines_UpdatedById` ON `TeacherDisciplines` (`UpdatedById`);
 
 
 CREATE INDEX `IX_Teachers_BirthplaceId` ON `Teachers` (`BirthplaceId`);
 
 
 CREATE INDEX `IX_Teachers_CityId` ON `Teachers` (`CityId`);
-
-
-CREATE INDEX `IX_Teachers_CountryId` ON `Teachers` (`CountryId`);
 
 
 CREATE INDEX `IX_Teachers_CountryOfNationalityId` ON `Teachers` (`CountryOfNationalityId`);
@@ -538,5 +525,17 @@ CREATE INDEX `IX_Teachers_UpdatedById` ON `Teachers` (`UpdatedById`);
 
 
 CREATE INDEX `IX_Teachers_UserId` ON `Teachers` (`UserId`);
+
+
+ALTER TABLE `AspNetUserClaims` ADD CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE;
+
+
+ALTER TABLE `AspNetUserLogins` ADD CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE;
+
+
+ALTER TABLE `AspNetUserRoles` ADD CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE;
+
+
+ALTER TABLE `AspNetUsers` ADD CONSTRAINT `FK_AspNetUsers_Genders_GenderId` FOREIGN KEY (`GenderId`) REFERENCES `Genders` (`Id`) ON DELETE RESTRICT;
 
 

@@ -13,7 +13,8 @@ using SchoolProject.Web.Data.Entities.Users;
 namespace SchoolProject.Web.Data.DataContexts;
 
 /// <inheritdoc />
-public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string>
+public class
+    DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string>
 {
     /// <inheritdoc />
     public DataContextSqLite(DbContextOptions<DataContextSqLite> options) :
@@ -28,22 +29,22 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
 
 
     /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de cidades.
+    ///     Tabela auxiliar para armazenar os dados das cidades.
     /// </summary>
     public required DbSet<City> Cities { get; set; }
 
     /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de países.
+    ///     Tabela auxiliar para armazenar os dados dos países.
     /// </summary>
     public required DbSet<Country> Countries { get; set; }
 
     /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de nacionalidades.
+    ///     Tabela auxiliar para armazenar os dados das nacionalidades.
     /// </summary>
     public required DbSet<Nationality> Nationalities { get; set; }
 
     /// <summary>
-    ///     Tabela auxiliar para armazenar os dados de géneros.
+    ///     Tabela auxiliar para armazenar os dados dos géneros.
     /// </summary>
     public required DbSet<Gender> Genders { get; set; }
 
@@ -82,12 +83,12 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public required DbSet<CourseStudents> CoursesStudents { get; set; }
+    public required DbSet<CourseStudent> CourseStudents { get; set; }
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public required DbSet<CourseDisciplines> CoursesDisciplines { get; set; }
+    public required DbSet<CourseDiscipline> CourseDisciplines { get; set; }
 
 
     /// <summary>
@@ -99,12 +100,12 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public required DbSet<StudentCourse> StudentCourses { get; set; }
+    public required DbSet<StudentDiscipline> StudentDisciplines { get; set; }
 
     /// <summary>
     ///     Tabela auxiliar para armazenar os dados de matrículas.
     /// </summary>
-    public required DbSet<TeacherCourse> TeacherCourses { get; set; }
+    public required DbSet<TeacherDiscipline> TeacherDisciplines { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -115,7 +116,6 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         // ------------------------------------------------------------------ //
 
 
@@ -129,7 +129,6 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
 
 
         // ------------------------------------------------------------------ //
-
 
 
         // ------------------------------------------------------------------ //
@@ -201,7 +200,7 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<Enrollment>()
-            .HasKey(e => new { e.StudentId, e.DisciplineId });
+            .HasKey(e => new {e.StudentId, e.DisciplineId});
 
 
         modelBuilder.Entity<Enrollment>()
@@ -233,24 +232,24 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
         // Courses and Disciplines
         // ------------------------------------------------------------------ //
 
-        modelBuilder.Entity<CourseDisciplines>()
-            .HasKey(cd => new { cd.CourseId, cd.DisciplineId });
+        modelBuilder.Entity<CourseDiscipline>()
+            .HasKey(cd => new {cd.CourseId, cd.DisciplineId});
 
 
-        modelBuilder.Entity<CourseDisciplines>()
+        modelBuilder.Entity<CourseDiscipline>()
             .HasOne(cd => cd.Course)
             .WithMany(c => c.CourseDisciplines)
             .HasForeignKey(cd => cd.CourseId);
 
 
-        modelBuilder.Entity<CourseDisciplines>()
+        modelBuilder.Entity<CourseDiscipline>()
             .HasOne(cd => cd.Discipline)
             .WithMany(d => d.CourseDisciplines)
             .HasForeignKey(cd => cd.DisciplineId);
 
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
-        modelBuilder.Entity<CourseDisciplines>()
+        modelBuilder.Entity<CourseDiscipline>()
             .Property(cd => cd.Id)
             // Usar a extensão específica para MySQL
             .UseIdentityColumn()
@@ -266,21 +265,21 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
         // Course and Students
         // ------------------------------------------------------------------ //
 
-        modelBuilder.Entity<CourseStudents>()
-            .HasKey(cs => new { cs.CourseId, cs.StudentId });
+        modelBuilder.Entity<CourseStudent>()
+            .HasKey(cs => new {cs.CourseId, cs.StudentId});
 
-        modelBuilder.Entity<CourseStudents>()
+        modelBuilder.Entity<CourseStudent>()
             .HasOne(cs => cs.Course)
             .WithMany(c => c.CourseStudents)
             .HasForeignKey(cs => cs.CourseId);
 
-        modelBuilder.Entity<CourseStudents>()
+        modelBuilder.Entity<CourseStudent>()
             .HasOne(cs => cs.Student)
             .WithMany(s => s.CourseStudents)
             .HasForeignKey(cs => cs.StudentId);
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
-        modelBuilder.Entity<CourseStudents>()
+        modelBuilder.Entity<CourseStudent>()
             .Property(cs => cs.Id)
             // Usar a extensão específica para MySQL
             .UseIdentityColumn()
@@ -296,28 +295,28 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
         // Student and Courses
         // ------------------------------------------------------------------ //
 
-        modelBuilder.Entity<StudentCourse>()
-            .HasKey(sc => new { sc.StudentId, sc.CourseId });
+        //modelBuilder.Entity<StudentDiscipline>()
+        //    .HasKey(sc => new {sc.StudentId, sc.DisciplineId});
 
-        modelBuilder.Entity<StudentCourse>()
-            .HasOne(sc => sc.Student)
-            .WithMany(s => s.StudentCourses)
-            .HasForeignKey(sc => sc.StudentId);
+        //modelBuilder.Entity<StudentDiscipline>()
+        //    .HasOne(sc => sc.Student)
+        //    .WithMany(s => s.StudentCourses)
+        //    .HasForeignKey(sc => sc.StudentId);
 
-        modelBuilder.Entity<StudentCourse>()
-            .HasOne(sc => sc.Course)
-            .WithMany(c => c.StudentCourses)
-            .HasForeignKey(sc => sc.CourseId);
+        //modelBuilder.Entity<StudentDiscipline>()
+        //    .HasOne(sc => sc.Discipline)
+        //    .WithMany(c => c.StudentDisciplines)
+        //    .HasForeignKey(sc => sc.DisciplineId);
 
-        // Configurar coluna Id como auto-incrementada sem ser chave principal
-        modelBuilder.Entity<StudentCourse>()
-            .Property(sc => sc.Id)
-            // Usar a extensão específica para MySQL
-            .UseIdentityColumn()
-            // Nome da coluna no banco de dados
-            .HasColumnName("Id")
-            // Tipo de dado da coluna,
-            .HasColumnType("int");
+        //// Configurar coluna Id como auto-incrementada sem ser chave principal
+        //modelBuilder.Entity<StudentDiscipline>()
+        //    .Property(sc => sc.Id)
+        //    // Usar a extensão específica para MySQL
+        //    .UseIdentityColumn()
+        //    // Nome da coluna no banco de dados
+        //    .HasColumnName("Id")
+        //    // Tipo de dado da coluna,
+        //    .HasColumnType("int");
 
 
         // ------------------------------------------------------------------ //
@@ -327,21 +326,21 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
         // Teacher and Courses
         // ------------------------------------------------------------------ //
 
-        modelBuilder.Entity<TeacherCourse>()
-            .HasKey(tc => new { tc.TeacherId, tc.CourseId });
+        modelBuilder.Entity<TeacherDiscipline>()
+            .HasKey(tc => new {tc.TeacherId, tc.DisciplineId});
 
-        modelBuilder.Entity<TeacherCourse>()
+        modelBuilder.Entity<TeacherDiscipline>()
             .HasOne(tc => tc.Teacher)
-            .WithMany(t => t.TeacherCourses)
+            .WithMany(t => t.TeacherDisciplines)
             .HasForeignKey(tc => tc.TeacherId);
 
-        modelBuilder.Entity<TeacherCourse>()
-            .HasOne(tc => tc.Course)
-            .WithMany(c => c.TeacherCourses)
-            .HasForeignKey(tc => tc.CourseId);
+        modelBuilder.Entity<TeacherDiscipline>()
+            .HasOne(tc => tc.Discipline)
+            .WithMany(c => c.TeacherDisciplines)
+            .HasForeignKey(tc => tc.DisciplineId);
 
         // Configurar coluna Id como auto-incrementada sem ser chave principal
-        modelBuilder.Entity<TeacherCourse>()
+        modelBuilder.Entity<TeacherDiscipline>()
             .Property(tc => tc.Id)
             // Usar a extensão específica para MySQL
             .UseIdentityColumn()
@@ -405,10 +404,7 @@ public class DataContextSqLite : IdentityDbContext<AppUser, IdentityRole, string
         // ------------------------------------------------------------------ //
 
 
-
         base.OnModelCreating(modelBuilder);
-
-
     }
 
 

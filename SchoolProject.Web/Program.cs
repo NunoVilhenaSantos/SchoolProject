@@ -11,8 +11,10 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.WebEncoders;
 using Microsoft.Identity.Web.UI;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
+using SchoolProject.Web.Controllers.API;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -149,8 +151,6 @@ static Task RunSeeding(IHost host)
         var seeder = scope?.ServiceProvider.GetService<SeedDb>();
         seeder?.SeedAsync().Wait();
     }
-
-
 
 
 
@@ -298,7 +298,8 @@ builder.Services.AddDbContext<DataContextMsSql>(
                 options.EnableRetryOnFailure();
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
-            }).EnableSensitiveDataLogging();
+            });
+        // .EnableSensitiveDataLogging();
     });
 
 
@@ -318,7 +319,8 @@ builder.Services.AddDbContext<DataContextMySql>(
             {
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
-            }).EnableSensitiveDataLogging();
+            });
+        // .EnableSensitiveDataLogging();
     });
 
 // -------------------------------------------------------------------------- //
@@ -337,7 +339,8 @@ builder.Services.AddDbContext<DataContextSqLite>(
             {
                 options.MigrationsAssembly("SchoolProject.Web");
                 options.MigrationsHistoryTable("_MyMigrationsHistory");
-            }).EnableSensitiveDataLogging();
+            });
+        // .EnableSensitiveDataLogging();
     });
 
 
@@ -619,17 +622,17 @@ builder.Services.AddRazorPages().AddMicrosoftIdentityUI().AddViewLocalization();
 // --------------------------------- --------------------------------------- //
 // Configuration type 2
 // --------------------------------- --------------------------------------- //
-var serilogConfig =
-    builder.Configuration.GetSection("Serilog");
+//var serilogConfig =
+//    builder.Configuration.GetSection("Serilog");
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(serilogConfig)
-    .CreateLogger();
+//Log.Logger = new LoggerConfiguration()
+//    .ReadFrom.Configuration(serilogConfig)
+//    .CreateLogger();
 
-builder.Services.AddLogging(cfg =>
-{
-    cfg.AddSerilog(dispose: true); // Integrates Serilog as the logging provider
-});
+//builder.Services.AddLogging(cfg =>
+//{
+//    cfg.AddSerilog(dispose: true); // Integrates Serilog as the logging provider
+//});
 
 
 // --------------------------------- --------------------------------------- //
@@ -669,15 +672,42 @@ builder.Services.TryAddSingleton(builder.Environment);
 
 
 // Inject repositories and helpers.
+
+// Inject helpers.
 builder.Services.TryAddScoped<UserManager<AppUser>>();
-builder.Services.TryAddScoped<IUserHelper, UserHelper>();
-builder.Services.TryAddScoped<IEMailHelper, EMailHelper>();
-builder.Services.TryAddScoped<IImageHelper, ImageHelper>();
-builder.Services.TryAddScoped<IStorageHelper, StorageHelper>();
-builder.Services.TryAddScoped<IStorageHelper0, StorageHelper0>();
-builder.Services.TryAddScoped<IConverterHelper, ConverterHelper>();
-//
-builder.Services.TryAddScoped<AuthenticatedUserInApp>();
+builder.Services.TryAddScoped<SignInManager<AppUser>>();
+builder.Services.TryAddScoped<RoleManager<IdentityRole>>();
+
+
+// helpers for users
+builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<AuthenticatedUserInApp>();
+builder.Services.AddScoped<SelectItensController>();
+
+// helpers for models
+builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
+
+// helpers for storages
+builder.Services.AddScoped<IStorageHelper, StorageHelper>();
+
+// helpers for email
+builder.Services.AddScoped<IEMailHelper, EMailHelper>();
+builder.Services.AddScoped<IMailHelper, MailHelper>();
+
+// helpers for images
+builder.Services.AddScoped<IImageHelper, ImageHelper>();
+
+
+// --------------------------------- --------------------------------------- //
+
+// injecting services
+//builder.Services.AddScoped<ApiService>();
+//builder.Services.AddScoped<DownloadService>();
+//builder.Services.AddScoped<NetworkService>();
+
+
+// --------------------------------- --------------------------------------- //
+
 
 // --------------------------------- --------------------------------------- //
 
@@ -695,11 +725,11 @@ builder.Services.TryAddScoped<SeedDbCourses>();
 
 builder.Services.TryAddScoped<SeedDbTeachersWithDisciplines>();
 builder.Services.TryAddScoped<SeedDbCoursesWithDisciplines>();
-builder.Services.TryAddScoped<SeedDbStudentsAndCourses>();
+builder.Services.TryAddScoped<SeedDbCoursesAndStudents>();
 
 // builder.Services.TryAddTransient<SeedDbTeachersWithDisciplines>();
 // builder.Services.TryAddTransient<SeedDbCoursesWithDisciplines>();
-// builder.Services.TryAddTransient<SeedDbStudentsAndCourses>();
+// builder.Services.TryAddTransient<SeedDbCoursesAndStudents>();
 
 
 builder.Services.TryAddScoped<SeedDbPlaceHolders>();
@@ -756,12 +786,12 @@ builder.Services.TryAddScoped<IGenderRepository, GenderRepository>();
 //
 builder.Services.TryAddScoped<IStudentRepository, StudentRepository>();
 builder.Services
-    .TryAddScoped<IStudentCourseRepository, StudentCourseRepository>();
+    .TryAddScoped<IStudentDisciplineRepository, StudentDisciplineRepository>();
 
 //
 builder.Services.TryAddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services
-    .TryAddScoped<ITeacherCourseRepository, TeacherCourseRepository>();
+    .TryAddScoped<ITeacherDisciplineRepository, TeacherDisciplineRepository>();
 
 // --------------------------------- --------------------------------------- //
 
@@ -789,7 +819,7 @@ builder.Services.AddSession(options =>
 {
     // Set the session timeout (adjust as needed)
     // This example sets a 30-minute timeout
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(5);
 
     // make the session cookie Essential
     options.Cookie.IsEssential = true;
@@ -799,11 +829,15 @@ builder.Services.AddSession(options =>
 builder.Services.AddHttpContextAccessor();
 
 
+
 // Extrai o nome do servidor da Connection String
 var serverHostName =
     GetServerHostNameFromConnectionString(
-        builder.Configuration.GetConnectionString(
-            "SP-MSSql-Somee") ?? string.Empty);
+        string.IsNullOrEmpty(
+            builder.Configuration.GetConnectionString("SP-MSSql-Somee"))
+            ? builder.Configuration.GetConnectionString("SP-MSSql-Somee") 
+            : string.Empty);
+
 
 
 // Verifica se o servidor está disponível
@@ -814,7 +848,7 @@ GetServerHostNamePing(serverHostName);
 builder.Services.Configure<WebEncoderOptions>(options =>
 {
     options.TextEncoderSettings =
-        new TextEncoderSettings(UnicodeRanges.All);
+    new TextEncoderSettings(UnicodeRanges.All);
 });
 
 

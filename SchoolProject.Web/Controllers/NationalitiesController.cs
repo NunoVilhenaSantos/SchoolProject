@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
+using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Storages;
+using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Errors;
 
@@ -14,30 +18,41 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     Controller for the Nationalities entity.
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
-[Authorize(Roles ="Admin")]
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
     // Obtém o tipo da classe atual
-    private const string CurrentClass = nameof(Nationality);
-    private const string CurrentAction = nameof(Index);
+    internal static readonly string BucketName = CountriesController.BucketName;
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "Name";
+    internal const string SortProperty = nameof(Nationality.Name);
+    internal const string CurrentClass = nameof(Nationality);
+    internal const string CurrentAction = nameof(Index);
 
+
+    // Obtém o nome do controlador atual
     internal static string ControllerName =>
         HomeController.SplitCamelCase(nameof(NationalitiesController));
 
-    internal static readonly string BucketName = CurrentClass.ToLower();
+
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
 
     // Repositories
     private readonly INationalityRepository _nationalityRepository;
     private readonly ICountryRepository _countryRepository;
-    private readonly IStorageHelper _storageHelper;
-
-
-    // Host Environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     /// <summary>
@@ -45,17 +60,31 @@ public class NationalitiesController : Controller
     /// </summary>
     /// <param name="countryRepository"></param>
     /// <param name="nationalityRepository"></param>
+    /// <param name="storageHelper"></param>
     /// <param name="hostingEnvironment"></param>
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
+    /// <param name="httpContextAccessor"></param>
     public NationalitiesController(
         ICountryRepository countryRepository,
         INationalityRepository nationalityRepository,
         IStorageHelper storageHelper,
-        IWebHostEnvironment hostingEnvironment)
+        IWebHostEnvironment hostingEnvironment,
+        AuthenticatedUserInApp authenticatedUserInApp,
+        IConverterHelper converterHelper, IUserHelper userHelper,
+        IMailHelper mailHelper, IHttpContextAccessor httpContextAccessor)
     {
         _countryRepository = countryRepository;
         _nationalityRepository = nationalityRepository;
         _storageHelper = storageHelper;
         _hostingEnvironment = hostingEnvironment;
+        _authenticatedUserInApp = authenticatedUserInApp;
+        _converterHelper = converterHelper;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -104,7 +133,6 @@ public class NationalitiesController : Controller
 
         // Armazene a lista na sessão para uso futuro
         HttpContext.Session.Set(SessionVarName, Encoding.UTF8.GetBytes(json1));
-
 
         return recordsQuery;
     }
@@ -201,6 +229,7 @@ public class NationalitiesController : Controller
             : View(nationality);
     }
 
+
     // GET: Nationalities/Create
     /// <summary>
     ///     create action
@@ -210,6 +239,7 @@ public class NationalitiesController : Controller
     {
         return View();
     }
+
 
     // POST: Nationalities/Create
     // To protect from over-posting attacks,
@@ -225,18 +255,6 @@ public class NationalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Nationality nationality)
     {
-        // if (!ModelState.IsValid) return View(customer);
-        //
-        // var user = await _userHelper.GetUserByEmailAsync(country.Email);
-        //
-        // if (user != null)
-        // {
-        //     ViewBag.UserMessage =
-        //         "Email has already been used to register an account.";
-        //     return View(country);
-        // }
-
-
         // *** INICIO PARA GRAVAR A IMAGEM ***
 
         var profilePhotoId = nationality.Country.ProfilePhotoId;
@@ -251,30 +269,25 @@ public class NationalitiesController : Controller
         // *** FIM PARA GRAVAR A IMAGEM ***
 
 
+        var createdBy = await _authenticatedUserInApp.GetAuthenticatedUser();
 
         var nationality1 = new Nationality
         {
             Name = nationality.Name,
             Country = null,
-            CreatedBy = null,
+            CreatedBy = createdBy,
         };
-
 
         var country1 = new Country
         {
             Name = nationality.Country.Name,
             Nationality = nationality1,
             ProfilePhotoId = nationality.Country.ProfilePhotoId,
-            CreatedBy = null,
+            CreatedBy = createdBy,
         };
 
         nationality1.Country = country1;
 
-
-        //var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-
-        // Confirma o email para este AppUser
-        //await _userHelper.ConfirmEmailAsync(user, token);
 
         await _countryRepository.CreateAsync(country1);
 
@@ -310,6 +323,7 @@ public class NationalitiesController : Controller
             : View(nationality);
     }
 
+
     // POST: Nationalities/Edit/5
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
@@ -330,34 +344,36 @@ public class NationalitiesController : Controller
                 nameof(NationalityNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        // if (!ModelState.IsValid) return View(country);
 
         var nationality1 = await _nationalityRepository
-            .GetByIdAsync(id);
+            .GetNationalityAsync(id).FirstOrDefaultAsync();
+
 
         if (nationality1 == null) return View(nationality);
 
 
         // *** INICIO PARA GRAVAR A IMAGEM ***
 
-        // var ProfilePhotoId = nationality.ProfilePhotoId;
-        //
-        // if (nationality.ImageFile is {Length: > 0})
-        //     ProfilePhotoId =
-        //         await _storageHelper.UploadStorageAsync(
-        //             nationality.ImageFile, BucketName);
-        //
-        // nationality.ProfilePhotoId = ProfilePhotoId;
+        var profilePhotoId = nationality.Country.ProfilePhotoId;
+
+        if (nationality.Country.ImageFile is {Length: > 0})
+            profilePhotoId =
+                await _storageHelper.UploadStorageAsync(
+                    nationality.Country.ImageFile, BucketName);
+
+        nationality.Country.ProfilePhotoId = profilePhotoId;
 
         // *** FIM PARA GRAVAR A IMAGEM ***
 
 
+        var updatedBy = await _authenticatedUserInApp.GetAuthenticatedUser();
+
+
         nationality1.Name = nationality.Name;
+        nationality1.Country.Name = nationality.Country.Name;
+        nationality1.Country.ProfilePhotoId = profilePhotoId;
+        nationality1.UpdatedBy = updatedBy;
 
-
-        // category1.AppUser = await _userHelper.GetUserByIdAsync(category.AppUserId);
-        // category1.AppUserId = category.AppUserId;
-        //nationality1.ProfilePhotoId = nationality.ProfilePhotoId;
 
         try
         {
@@ -382,6 +398,7 @@ public class NationalitiesController : Controller
         //*****************
     }
 
+
     // GET: Nationalities/Delete/5
     /// <summary>
     ///     delete action
@@ -403,6 +420,7 @@ public class NationalitiesController : Controller
             : View(nationality);
     }
 
+
     // POST: Nationalities/Delete/5
     /// <summary>
     ///     delete action confirmation
@@ -414,7 +432,8 @@ public class NationalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var nationality = await _nationalityRepository.GetByIdAsync(id);
+        var nationality = await _nationalityRepository.GetByIdAsync(id)
+            .FirstOrDefaultAsync();
 
         if (nationality == null)
             return new NotFoundViewResult(
@@ -449,13 +468,12 @@ public class NationalitiesController : Controller
                     ErrorMessage =
                         "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                         $"The {nameof(Nationality)} with the ID " +
-                        $"{nationality.Id} - {nationality.Name} " +
-                        // $"{nationality.IdGuid} +" +
+                        $"{nationality.Id} - {nationality.Name} {nationality.IdGuid} +" +
                         "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                         "Try deleting possible dependencies and try again. ",
                     ItemClass = nameof(Nationality),
                     ItemId = nationality.Id.ToString(),
-                    ItemGuid = Guid.Empty,
+                    ItemGuid = nationality.IdGuid,
                     ItemName = nationality.Name
                 };
 
@@ -472,7 +490,7 @@ public class NationalitiesController : Controller
                 ErrorMessage = "An error occurred while deleting the entity.",
                 ItemClass = nameof(Nationality),
                 ItemId = nationality.Id.ToString(),
-                ItemGuid = Guid.Empty,
+                ItemGuid = nationality.IdGuid,
                 ItemName = nationality.Name
             };
 
@@ -489,7 +507,10 @@ public class NationalitiesController : Controller
     ///     NationalityNotFound action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult NationalityNotFound => View();
+    public IActionResult NationalityNotFound()
+    {
+        return View();
+    }
 
 
     // -------------------------------------------------------------- //

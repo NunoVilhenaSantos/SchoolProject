@@ -1,0 +1,103 @@
+@model  SchoolProject.Web.Data.Entities.Courses.Course
+
+@* <!-- Outro conteúdo da página --> *@
+<div>
+    <h3>Errors:</h3>
+    <ul>
+        <li>@Html.ValidationSummary(false, "", new { @class = "text-danger" })</li>
+    </ul>
+</div>
+
+<div class="form-group">
+    <label asp-for="Code" class="control-label"></label>
+    <input asp-for="Code" class="form-control"/>
+    <span asp-validation-for="Code" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Acronym" class="control-label"></label>
+    <input asp-for="Acronym" class="form-control"/>
+    <span asp-validation-for="Acronym" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control"/>
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="QnqLevel" class="control-label"></label>
+    <input asp-for="QnqLevel" class="form-control"/>
+    <span asp-validation-for="QnqLevel" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EqfLevel" class="control-label"></label>
+    <input asp-for="EqfLevel" class="form-control"/>
+    <span asp-validation-for="EqfLevel" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="StartDate" class="control-label"></label>
+    <input asp-for="StartDate" class="form-control"/>
+    <span asp-validation-for="StartDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EndDate" class="control-label"></label>
+    <input asp-for="EndDate" class="form-control"/>
+    <span asp-validation-for="EndDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="StartHour" class="control-label"></label>
+    <input asp-for="StartHour" class="form-control"/>
+    <span asp-validation-for="StartHour" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EndHour" class="control-label"></label>
+    <input asp-for="EndHour" class="form-control"/>
+    <span asp-validation-for="EndHour" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Location" class="control-label"></label>
+    <input asp-for="Location" class="form-control"/>
+    <span asp-validation-for="Location" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Type" class="control-label"></label>
+    <input asp-for="Type" class="form-control"/>
+    <span asp-validation-for="Type" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Area" class="control-label"></label>
+    <input asp-for="Area" class="form-control"/>
+    <span asp-validation-for="Area" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="PriceForEmployed" class="control-label"></label>
+    <input asp-for="PriceForEmployed" class="form-control"/>
+    <span asp-validation-for="PriceForEmployed" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="PriceForUnemployed" class="control-label"></label>
+    <input asp-for="PriceForUnemployed" class="form-control"/>
+    <span asp-validation-for="PriceForUnemployed" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="ImageFile" class="control-label"></label>
+    <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
+    <span asp-validation-for="ImageFile" class="text-danger"></span>
+</div>
+
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
+    </label>
+</div>
+
+<div class="form-group">
+    <label asp-for="UpdatedAt" class="control-label"></label>
+    <input asp-for="UpdatedAt" class="form-control"/>
+    <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="CreatedAt" class="control-label"></label>
+    <input asp-for="CreatedAt" class="form-control"/>
+    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+</div>

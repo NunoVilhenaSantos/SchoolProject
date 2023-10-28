@@ -4,7 +4,6 @@
 //
 // ---------------------------------------------------------------------------------------------------------------- --->
 
-
 function getCities(countryId) {
     // debugger;
 
@@ -30,7 +29,7 @@ function getCities(countryId) {
         },
 
         type: 'POST',
-        url: '/Account/GetCitiesAsync'
+        url: '/Account/GetCitiesByCountryJson'
     });
 
 }
@@ -57,7 +56,7 @@ function getNationalities(countryId) {
 
         // Coloque o URL correto para a função que busca as nacionalidades
         type: 'POST',
-        url: '/Account/GetNationalitiesAsync'
+        url: '/Account/GetNationalitiesJson'
     });
 }
 
@@ -83,7 +82,7 @@ function getCountries() {
 
         type: 'POST',
         // url: '/Account/GetCountriesAsync'
-        url: '/Account/GetCountriesWithNationalitiesAsync'
+        url: '/Account/GetCountriesWithNationalitiesJson'
     });
 
     // debugger;

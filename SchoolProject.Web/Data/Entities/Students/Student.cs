@@ -9,6 +9,7 @@ using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Genders;
+using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
@@ -59,7 +60,6 @@ public class Student : IEntity, INotifyPropertyChanged
     // [Required]
     [NotMapped]
     [DisplayName("Country")]
-    // [ForeignKey(nameof(City))]
     [Range(1, int.MaxValue, ErrorMessage = "You must select a country...")]
     public required int CountryId { get; set; }
 
@@ -130,7 +130,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [Required]
-    [DisplayName("Expiration Date Identification Number")]
+    [DisplayName("Expiration Date of Identification Number")]
     [DataType(DataType.Date)]
     public required DateTime ExpirationDateIdentificationNumber { get; set; }
 
@@ -186,7 +186,7 @@ public class Student : IEntity, INotifyPropertyChanged
     ///
     /// </summary>
     [ForeignKey(nameof(AppUser))]
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     /// <summary>
     /// </summary>
@@ -210,24 +210,68 @@ public class Student : IEntity, INotifyPropertyChanged
     ///     The profile photo of the appUser.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public Guid? ProfilePhotoId { get; set; }
+    public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
+
 
     /// <summary>
     ///     The profile photo of the appUser in URL format.
     /// </summary>
+    [DisplayName("Profile Photo")]
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              StudentsController.BucketName +
+              "/" + ProfilePhotoId;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // between Student and Courses
+    // ---------------------------------------------------------------------- //
+
+
     /// <summary>
-    ///     The profile photo of the appUser in URL format.
+    ///
     /// </summary>
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          StudentsController.BucketName +
-          "/" + ProfilePhotoId;
+    public virtual HashSet<CourseStudent>? CourseStudents { get; set; }
 
 
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Course>? Courses =>
+        CourseStudents?.Select(cd => cd.Course).Distinct();
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Courses Count")]
+    public int CoursesCount => Courses?.Count() ?? 0;
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Courses Work Load")]
+    public int CoursesWorkLoad => Courses?.Sum(e => e.WorkHourLoad) ?? 0;
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    [DisplayName("Courses Credits")]
+    public double CoursesCredits => Courses?.Sum(r => r.CourseCredits) ?? 0;
+
+
+
 
 
     // ---------------------------------------------------------------------- //
@@ -235,140 +279,40 @@ public class Student : IEntity, INotifyPropertyChanged
     // between Student and Disciplines
     // ---------------------------------------------------------------------- //
 
-    /// <summary>
-    ///
-    /// </summary>
-    public IEnumerable<Discipline>? Disciplines { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    public IEnumerable<Course>? Courses { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-
-
-    // [DisplayName("Disciplines")]
-    // public virtual HashSet<Course>? Courses { get; set; }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    [DisplayName("Courses")]
-    public virtual HashSet<StudentCourse>? StudentCourses { get; set; }
-
-
-    // [DisplayName("Disciplines Count")]
-    // public int CoursesCount =>
-    //     Courses?.Where(s => s.CoursesCount > 0).Count() ?? 0;
-    //
-    //
-    // [DisplayName("Total Work Hours")]
-    // public int TotalWorkHours =>
-    //     Courses?.Sum(t => t.WorkHourLoad ?? 0) ?? 0;
-
-
-    // ---------------------------------------------------------------------- //
-    // Navigation property for the many-to-many relationship
-    // between Student and Discipline
-    // ---------------------------------------------------------------------- //
-
-    /// <summary>
-    /// </summary>
-    [DisplayName("Discipline")]
-    public virtual HashSet<CourseStudents>? CourseStudents { get; set; }
-
-
-    /// <summary>
-    /// </summary>
-    [DisplayName("Course Count")]
-    public int CourseStudentsCount => CourseStudents?.Count ?? 0;
-
-
-    // /// <summary>
-    // ///
-    // /// </summary>
-    // [DisplayName("Discipline With Disciplines Count")]
-    // public int ScsCoursesCount
-    // {
-    //     get
-    //     {
-    //         if (CourseStudents == null) return 0;
-    //
-    //         var count = 0;
-    //
-    //         foreach (var scs in CourseStudents)
-    //             if (scs is {Course: not null})
-    //                 count += scs.Course(c => c != null);
-    //
-    //         return count;
-    //     }
-    // }
-
-
-    // /// <summary>
-    // ///
-    // /// </summary>
-    // [DisplayName("Total Work Hours")]
-    // public int ScsTotalWorkHours
-    // {
-    //     get
-    //     {
-    //         if (SchoolClassStudents == null) return 0;
-    //
-    //         var totalWorkHours = 0;
-    //
-    //         foreach (var scs in SchoolClassStudents)
-    //             if (scs is {SchoolClass: not null})
-    //             {
-    //                 var courses = scs.SchoolClass.Courses;
-    //
-    //                 if (courses != null)
-    //                     totalWorkHours += courses.Where(c => c != null)
-    //                         .Sum(c => c.Hours);
-    //             }
-    //
-    //         return totalWorkHours;
-    //     }
-    // }
-
-
-    // ---------------------------------------------------------------------- //
-    // Navigation property for the many-to-many relationship
-    // between Student and Disciplines
-    //
-    // Using the Enrollment entity
-    // ---------------------------------------------------------------------- //
 
     /// <summary>
     /// </summary>
     public virtual HashSet<Enrollment>? Enrollments { get; set; }
 
 
+
+    /// <summary>
+    ///    Returns the disciplines associated with this teacher
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Discipline> Disciplines =>
+        Enrollments?.Select(sc => sc.Discipline).Distinct() ??
+        Array.Empty<Discipline>();
+
+
     /// <summary>
     /// </summary>
     [DisplayName("Disciplines Count")]
-    public int? CoursesCountEnrollments =>
+    public int CoursesCountEnrollments =>
         Enrollments?.Where(e => e.Discipline.Id == Id).Count() ?? 0;
 
 
     /// <summary>
     /// </summary>
     [DisplayName("Total Work Hours")]
-    public int? TotalWorkHoursEnrollments =>
+    public int TotalWorkHoursEnrollments =>
         Enrollments?.Sum(e => e.Discipline.Hours) ?? 0;
 
 
     /// <summary>
     /// </summary>
     [DisplayName("Highest Grade")]
-    public decimal? HighestGrade => Enrollments?
+    public decimal HighestGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Max(e => e.Grade) ?? 0;
 
@@ -376,7 +320,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Average Grade")]
-    public decimal? AveregaGrade => Enrollments?
+    public decimal AverageGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Average(e => e.Grade) ?? 0;
 
@@ -384,7 +328,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Lowest Grade")]
-    public decimal? LowestGrade => Enrollments?
+    public decimal LowestGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Min(e => e.Grade) ?? 0;
 
@@ -415,7 +359,7 @@ public class Student : IEntity, INotifyPropertyChanged
     [DataType(DataType.Date)]
     [DisplayName("Created At")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <inheritdoc />
     [Required]
@@ -434,11 +378,25 @@ public class Student : IEntity, INotifyPropertyChanged
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
 
-    DateTime IEntity.CreatedAt
-    {
-        get => throw new NotImplementedException();
-        set => throw new NotImplementedException();
-    }
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    /// Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
 
 
     // ---------------------------------------------------------------------- //

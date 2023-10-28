@@ -1,0 +1,65 @@
+@using System.Reflection
+@model SchoolProject.Web.Data.Entities.Teachers.TeacherDiscipline
+
+@{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    // ViewData["Title"] = "Edit";
+}
+
+<h2>@actionName</h2>
+
+<h4>@controllerName</h4>
+
+<hr/>
+@* <div class="row"> *@
+@* <div class="col-md-4 offset-md-4"> *@
+
+@* <div class="container-fluid"> *@
+@* <div class="container-md"> *@
+
+<div class="col-md-4">
+    <div class="row">
+        <partial name="_DisplayImages"/>
+
+        <div class="col">
+            <div class="row">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <partial name="_TeacherDisciplinesCE" for="@Model"/>
+
+                    <br/>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
+                        <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,5 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Account;
 
@@ -10,10 +12,21 @@ namespace SchoolProject.Web.Helpers.Users;
 /// </summary>
 public class UserHelper : IUserHelper
 {
+    // Data contexts
+    private readonly DataContextMySql _dataContextMySql;
+
+    // HttpContext
     private readonly IHttpContextAccessor _httpContextAccessor;
+
+    // Identity
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
+
+
+    // Data contexts and user manager in use
+    private UserManager<AppUser> _userManagerInUse;
+    private DataContextMySql _dataContextInUse;
 
 
     /// <summary>
@@ -23,25 +36,70 @@ public class UserHelper : IUserHelper
     /// <param name="userManager"></param>
     /// <param name="signInManager"></param>
     /// <param name="roleManager"></param>
+    /// <param name="dataContextMySql"></param>
     public UserHelper(
         IHttpContextAccessor httpContextAccessor,
-        UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager,
-        RoleManager<IdentityRole> roleManager
-    )
+        RoleManager<IdentityRole> roleManager,
+        SignInManager<AppUser> signInManager, UserManager<AppUser> userManager,
+        DataContextMySql dataContextMySql)
     {
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _signInManager = signInManager;
-
         _httpContextAccessor = httpContextAccessor;
+        _dataContextMySql = dataContextMySql;
+        _signInManager = signInManager;
+        _roleManager = roleManager;
+        _userManager = userManager;
     }
 
+
+    /// <summary>
+    ///    The appUser helper constructor.
+    /// </summary>
+    /// <param name="dataContextInUse"></param>
+    /// <param name="userManagerInUse"></param>
+    public void Initialize(
+        DataContextMySql dataContextInUse,
+        UserManager<AppUser> userManagerInUse)
+    {
+        _dataContextInUse = dataContextInUse;
+        _userManagerInUse = userManagerInUse;
+    }
+
+
+    /// <inheritdoc />
+    public IOrderedQueryable<AppUser> GetUsersWithFullName()
+    {
+        // return await _userManager.Users.AsNoTracking().Select(o =>
+        //         new UserWithFullNameViewModel
+        //         {
+        //             Id = o.Id,
+        //             FullName = o.FullName
+        //         }
+        //     ).OrderBy(o => o.FullName).ToListAsync();
+
+        return _userManager.Users.OrderBy(e => e.FirstName);
+    }
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<AppUser>> GetAllUsersAsync()
+    {
+        return await _userManager.Users.AsNoTracking().ToListAsync();
+    }
 
     /// <inheritdoc />
     public async Task<AppUser?> GetUserByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
+    }
+
+    /// <inheritdoc />
+    public async Task<IQueryable<AppUser>> GetUserByEmailWithCity(string email)
+    {
+        await _userManager.FindByEmailAsync(email);
+
+        return _dataContextMySql.Users
+            // .Include(o => o.City)
+            // .ThenInclude(o => o.Country)
+            .Where(o => o.Email == email);
     }
 
 
@@ -75,7 +133,7 @@ public class UserHelper : IUserHelper
         var user = await _userManager.GetUserAsync(
             _signInManager.Context.User);
 
-        if (user == null || string.IsNullOrEmpty(user.FullName)) return null;
+        if (user == null || string.IsNullOrEmpty(user.FirstName)) return null;
 
         var nameParts = user.FullName.Split(' ',
             StringSplitOptions.RemoveEmptyEntries);
@@ -104,12 +162,44 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
+    public async Task<IdentityResult> AddUserAsync(AppUser appUser)
+    {
+        return await _userManager.CreateAsync(appUser);
+    }
+
+
+    /// <inheritdoc />
+    public async Task DeleteUserAsync(AppUser appUser)
+    {
+        await _userManager.DeleteAsync(appUser);
+    }
+
+
+    /// <inheritdoc />
     public async Task CheckRoleAsync(string roleName)
     {
         var result = await _roleManager.RoleExistsAsync(roleName);
 
         if (!result)
             await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
+    }
+
+
+    /// <inheritdoc />
+    public IdentityRole? GetUserRole(string userId)
+    {
+        // Get the appUser from the database.
+        var user = _dataContextMySql.Users.Find(userId);
+
+        // If the appUser is not found, return null.
+        if (user == null) return null;
+
+        var userRoleId = _dataContextMySql.UserRoles
+            .Where(e => e.UserId == userId)
+            .ToList()[0].RoleId;
+
+        // If the appUser is found, get their role.
+        return _dataContextMySql.Roles.Find(userRoleId);
     }
 
 
@@ -126,6 +216,13 @@ public class UserHelper : IUserHelper
 
     /// <inheritdoc />
     public async Task LogOutAsync()
+    {
+        await _signInManager.SignOutAsync();
+    }
+
+
+    /// <inheritdoc />
+    public async Task LogoutAsync()
     {
         await _signInManager.SignOutAsync();
     }
@@ -178,21 +275,24 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
-    public async Task<string> GenerateEmailConfirmationTokenAsync(AppUser appUser)
+    public async Task<string> GenerateEmailConfirmationTokenAsync(
+        AppUser appUser)
     {
         return await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
     }
 
 
     /// <inheritdoc />
-    public async Task<IdentityResult> ConfirmEmailAsync(AppUser appUser, string token)
+    public async Task<IdentityResult> ConfirmEmailAsync(AppUser appUser,
+        string token)
     {
         return await _userManager.ConfirmEmailAsync(appUser, token);
     }
 
 
     /// <inheritdoc />
-    public async Task SignInAsync(AppUser appUser, bool rememberMe = true,
+    public async Task SignInAsync(
+        AppUser appUser, bool rememberMe = true,
         string? authenticationMethod = null)
     {
         await _signInManager.SignInAsync(appUser, rememberMe,
@@ -201,15 +301,17 @@ public class UserHelper : IUserHelper
 
 
     /// <inheritdoc />
-    public async Task<bool> PasswordSignInAsync(AppUser appUser,
+    public async Task<bool> PasswordSignInAsync(
+        AppUser appUser,
         bool isPersistent = false, bool lockoutOnFailure = false)
     {
         var signInResult = false;
 
 
         // Faz o signin do usuário
-        var result = await _signInManager.PasswordSignInAsync(appUser.UserName,
-            appUser.PasswordHash, isPersistent, lockoutOnFailure);
+        var result = await _signInManager.PasswordSignInAsync(
+            appUser.UserName, appUser.PasswordHash, isPersistent,
+            lockoutOnFailure);
 
 
         // Verifica se o usuário foi autenticado com sucesso
@@ -222,7 +324,8 @@ public class UserHelper : IUserHelper
 
     /// <inheritdoc />
     public bool IsUserSignInAsync(
-        AppUser appUser, bool rememberMe = true, string? authenticationMethod = null)
+        AppUser appUser, bool rememberMe = true,
+        string? authenticationMethod = null)
     {
         return _signInManager.Context.User.Identity.IsAuthenticated;
     }
@@ -232,5 +335,62 @@ public class UserHelper : IUserHelper
     public bool IsUserAuthenticated()
     {
         return _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+    }
+
+
+    /// <inheritdoc />
+    public async Task<IdentityResult> ResetPasswordAsync(
+        AppUser appUser, string token, string password)
+    {
+        return await _userManager.ResetPasswordAsync(appUser, token, password);
+    }
+
+
+    /// <inheritdoc />
+    public async Task<string> GeneratePasswordResetTokenAsync(AppUser appUser)
+    {
+        return await _userManager.GeneratePasswordResetTokenAsync(appUser);
+    }
+
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<SelectListItem>> GetComboRolesAsync()
+    {
+        return await _roleManager.Roles
+            .Select(r => new SelectListItem
+                {Text = r.Name, Value = r.Name}).ToListAsync();
+    }
+
+
+    /// <inheritdoc />
+    public async Task SetUserRoleAsync(AppUser appUser, string newRole)
+    {
+        var userRoles = await _userManager.GetRolesAsync(appUser);
+
+        await _userManager.RemoveFromRolesAsync(appUser, userRoles);
+
+        await _userManager.AddToRoleAsync(appUser, newRole);
+    }
+
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<AppUser>> GetUsersInRoleAsync(string roleName)
+    {
+        return await _userManager.GetUsersInRoleAsync(roleName);
+    }
+
+
+    /// <inheritdoc />
+    public async Task<string> GetUserRoleAsync(AppUser appUser)
+    {
+        return (await _userManager.GetRolesAsync(appUser))[0];
+    }
+
+
+    /// <inheritdoc />
+    public async Task<bool> UserExistsAsync(string id)
+    {
+        return await _userManager.Users.AsNoTracking()
+            .AnyAsync(user => user.Id == id);
     }
 }

@@ -6,6 +6,7 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
@@ -17,39 +18,39 @@ namespace SchoolProject.Web.Controllers;
 /// <summary>
 ///     countries controller, only the admins, superusers and the functionaries
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CountriesController : Controller
 {
     // Obtém o tipo da classe atual
-    private const string CurrentClass = nameof(Country);
-    private const string CurrentAction = nameof(Index);
+    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
-    internal const string SortProperty = "Name";
+    internal const string SortProperty = nameof(Country.Name);
+    internal const string CurrentClass = nameof(Country);
+    internal const string CurrentAction = nameof(Index);
 
     internal static string ControllerName =>
         HomeController.SplitCamelCase(nameof(CountriesController));
 
-    internal static readonly string BucketName = CurrentClass.ToLower();
+
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     //  repositories
     private readonly INationalityRepository _nationalityRepository;
     private readonly ICountryRepository _countryRepository;
     private readonly ICityRepository _cityRepository;
-
-    // helpers
-    private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-
-
-    // host environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-
-    // A private field to get the authenticated user in app.
-    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
     /// <summary>
@@ -62,18 +63,21 @@ public class CountriesController : Controller
     /// <param name="userHelper"></param>
     /// <param name="storageHelper"></param>
     /// <param name="converterHelper"></param>
+    /// <param name="authenticatedUserInApp"></param>
+    /// <param name="mailHelper"></param>
     public CountriesController(
         ICountryRepository countryRepository,
         IWebHostEnvironment hostingEnvironment,
         INationalityRepository nationalityRepository,
         ICityRepository cityRepository, IUserHelper userHelper,
         IStorageHelper storageHelper, IConverterHelper converterHelper,
-        AuthenticatedUserInApp authenticatedUserInApp)
+        AuthenticatedUserInApp authenticatedUserInApp, IMailHelper mailHelper)
     {
         _countryRepository = countryRepository;
         _hostingEnvironment = hostingEnvironment;
         _converterHelper = converterHelper;
         _authenticatedUserInApp = authenticatedUserInApp;
+        _mailHelper = mailHelper;
         _nationalityRepository = nationalityRepository;
         _cityRepository = cityRepository;
         _userHelper = userHelper;
@@ -101,14 +105,20 @@ public class CountriesController : Controller
     ///     Country Not Found action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult CountryNotFound => View();
+    public IActionResult CountryNotFound()
+    {
+        return View();
+    }
 
 
     /// <summary>
     ///     City Not Found action.
     /// </summary>
     /// <returns></returns>
-    public IActionResult CityNotFound => View();
+    public IActionResult CityNotFound()
+    {
+        return View();
+    }
 
 
     // ------------------------------ --------- ----------------------------- //
@@ -468,7 +478,7 @@ public class CountriesController : Controller
     // [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var country = await _countryRepository.GetByIdAsync(id);
+        var country = await _countryRepository.GetByIdAsync(id).FirstOrDefaultAsync();
 
         if (country == null)
             return new NotFoundViewResult(
@@ -557,7 +567,8 @@ public class CountriesController : Controller
                 nameof(CityNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var country = await _countryRepository.GetByIdAsync(id.Value);
+        var country = await _countryRepository.GetByIdAsync(id.Value)
+            .FirstOrDefaultAsync();
 
         if (country == null)
             return new NotFoundViewResult(
@@ -568,12 +579,14 @@ public class CountriesController : Controller
         CityViewModel model;
         switch (method)
         {
-            case 1:
+            case 0 or 1:
                 // Passe as informações do país para a vista
                 model = new CityViewModel
                 {
                     CountryId = country.Id,
-                    CityId = 0, Name = string.Empty
+                    CountryName = country.Name,
+                    CityId = 0,
+                    CityName = string.Empty
                 };
                 break;
 
@@ -582,7 +595,9 @@ public class CountriesController : Controller
                 model = new CityViewModel
                 {
                     CountryId = country.Id,
-                    CityId = 0, Name = string.Empty
+                    CountryName = country.Name,
+                    CityId = 0,
+                    CityName = string.Empty
                 };
                 break;
 
@@ -692,8 +707,8 @@ public class CountriesController : Controller
 
         // if (!ModelState.IsValid) return View(country);
 
-        var city1 = await _cityRepository
-            .GetByIdAsync(id);
+        var city1 =
+            await _cityRepository.GetByIdAsync(id).FirstOrDefaultAsync();
 
         if (city1 == null) return View(city);
 
@@ -713,10 +728,6 @@ public class CountriesController : Controller
 
 
         city1.Name = city.Name;
-
-
-        // category1.AppUser = await _userHelper.GetUserByIdAsync(category.AppUserId);
-        // category1.AppUserId = category.AppUserId;
         city1.ProfilePhotoId = city.ProfilePhotoId;
 
         try
@@ -738,16 +749,6 @@ public class CountriesController : Controller
 
             throw;
         }
-
-        //if (!ModelState.IsValid) return View(city);
-
-        //var countryId = await _countryRepository.UpdateCityAsync(city);
-
-        //if (countryId != 0)
-        //    return RedirectToAction(
-        //        nameof(Details), new {id = countryId});
-
-        //return View(city);
     }
 
 

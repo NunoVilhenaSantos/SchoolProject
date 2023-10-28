@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Models.Account;
 
@@ -10,11 +12,35 @@ namespace SchoolProject.Web.Helpers.Users;
 public interface IUserHelper
 {
     /// <summary>
+    ///
+    /// </summary>
+    /// <param name="dataContextInUse"></param>
+    /// <param name="userManager"></param>
+    void Initialize(DataContextMySql dataContextInUse,
+        UserManager<AppUser> userManager);
+
+
+    /// <summary>
+    ///    Gets all appUser.
+    /// </summary>
+    /// <returns></returns>
+    public Task<IEnumerable<AppUser>> GetAllUsersAsync();
+
+
+    /// <summary>
     ///     Gets the appUser by email.
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
     Task<AppUser?> GetUserByEmailAsync(string email);
+
+
+    /// <summary>
+    ///     Gets the appUser by email.
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    public Task<IQueryable<AppUser>> GetUserByEmailWithCity(string email);
 
 
     /// <summary>
@@ -48,6 +74,20 @@ public interface IUserHelper
     /// <returns></returns>
     Task<IdentityResult> AddUserAsync(AppUser appUser, string password);
 
+    /// <summary>
+    /// Creates a new appUser.
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <returns></returns>
+    Task<IdentityResult> AddUserAsync(AppUser appUser);
+
+
+    /// <summary>
+    /// deletes the appUser.
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <returns></returns>
+    Task DeleteUserAsync(AppUser appUser);
 
     /// <summary>
     ///     Check if role exists, if not create it.
@@ -70,6 +110,13 @@ public interface IUserHelper
     /// </summary>
     /// <returns></returns>
     Task LogOutAsync();
+
+
+    /// <summary>
+    ///     Logs out the appUser.
+    /// </summary>
+    /// <returns></returns>
+    Task LogoutAsync();
 
 
     /// <summary>
@@ -144,17 +191,104 @@ public interface IUserHelper
     Task<IdentityResult> ConfirmEmailAsync(AppUser appUser, string token);
 
 
-    Task SignInAsync(AppUser appUser, bool rememberMe = true,
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <param name="rememberMe"></param>
+    /// <param name="authenticationMethod"></param>
+    /// <returns></returns>
+    Task SignInAsync(
+        AppUser appUser, bool rememberMe = true,
         string? authenticationMethod = null);
 
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <param name="rememberMe"></param>
+    /// <param name="authenticationMethod"></param>
+    /// <returns></returns>
+    bool IsUserSignInAsync(
+        AppUser appUser, bool rememberMe = true,
+        string? authenticationMethod = null);
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    bool IsUserAuthenticated();
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <param name="isPersistent"></param>
+    /// <param name="lockoutOnFailure"></param>
+    /// <returns></returns>
     Task<bool> PasswordSignInAsync(AppUser appUser, bool isPersistent = false,
         bool lockoutOnFailure = false);
 
 
-    bool IsUserSignInAsync(AppUser appUser, bool rememberMe = true,
-        string? authenticationMethod = null);
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <returns></returns>
+    Task<string> GeneratePasswordResetTokenAsync(AppUser appUser);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <param name="token"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    Task<IdentityResult> ResetPasswordAsync(
+        AppUser appUser, string token, string password);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    Task<IEnumerable<SelectListItem>> GetComboRolesAsync();
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <param name="newRole"></param>
+    /// <returns></returns>
+    Task SetUserRoleAsync(AppUser appUser, string newRole);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="roleName"></param>
+    /// <returns></returns>
+    Task<IEnumerable<AppUser>> GetUsersInRoleAsync(string roleName);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <returns></returns>
+    Task<string> GetUserRoleAsync(AppUser appUser);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<bool> UserExistsAsync(string id);
 
 
-    bool IsUserAuthenticated();
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    IOrderedQueryable<AppUser> GetUsersWithFullName();
 }

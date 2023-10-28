@@ -6,6 +6,8 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
+using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
@@ -17,33 +19,38 @@ namespace SchoolProject.Web.Controllers;
 ///     cities controller, only the admins,
 ///     superusers and the functionaries can access this controller
 /// </summary>
-//[Authorize(Roles = "Admin,SuperUser,Functionary")]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
     // Obtém o tipo da classe atual
-    internal const string CurrentClass = nameof(City);
-    internal const string CurrentAction = nameof(Index);
+    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(City.Name);
+    internal const string CurrentClass = nameof(City);
+    internal const string CurrentAction = nameof(Index);
 
     internal static string ControllerName =>
         HomeController.SplitCamelCase(nameof(CitiesController));
 
-    internal static readonly string BucketName = CurrentClass.ToLower();
-
-
-    // Repositories.
-    private readonly ICityRepository _cityRepository;
-    private readonly ICountryRepository _countryRepository;
-
-    // Host Environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly IStorageHelper _storageHelper;
-
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // Helpers
+    private readonly IConverterHelper _converterHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
+    private readonly IMailHelper _mailHelper;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+
+
+    // Repositories.
+    private readonly ICountryRepository _countryRepository;
+    private readonly ICityRepository _cityRepository;
 
 
     /// <summary>
@@ -54,19 +61,26 @@ public class CitiesController : Controller
     /// <param name="hostingEnvironment"></param>
     /// <param name="storageHelper"></param>
     /// <param name="authenticatedUserInApp"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="userHelper"></param>
+    /// <param name="mailHelper"></param>
     public CitiesController(
         ICountryRepository countryRepository,
         ICityRepository cityRepository,
         IWebHostEnvironment hostingEnvironment,
         IStorageHelper storageHelper,
-        AuthenticatedUserInApp authenticatedUserInApp
-    )
+        AuthenticatedUserInApp authenticatedUserInApp,
+        IConverterHelper converterHelper, IUserHelper userHelper,
+        IMailHelper mailHelper)
     {
         _storageHelper = storageHelper;
         _cityRepository = cityRepository;
         _countryRepository = countryRepository;
         _hostingEnvironment = hostingEnvironment;
         _authenticatedUserInApp = authenticatedUserInApp;
+        _converterHelper = converterHelper;
+        _userHelper = userHelper;
+        _mailHelper = mailHelper;
     }
 
 
@@ -280,10 +294,6 @@ public class CitiesController : Controller
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
         };
 
-        //var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-
-        // Confirma o email para este AppUser
-        //await _userHelper.ConfirmEmailAsync(user, token);
 
         await _cityRepository.CreateAsync(city1);
 
@@ -309,7 +319,7 @@ public class CitiesController : Controller
                 CurrentController, nameof(Index));
 
         var city = await _cityRepository
-            .GetByIdAsync(id.Value);
+            .GetByIdAsync(id.Value).FirstOrDefaultAsync();
 
         if (city == null)
             return new NotFoundViewResult(
@@ -343,7 +353,7 @@ public class CitiesController : Controller
         // if (!ModelState.IsValid) return View(country);
 
         var city1 = await _cityRepository
-            .GetByIdAsync(id);
+            .GetByIdAsync(id).FirstOrDefaultAsync();
 
         if (city1 == null) return View(city);
 
@@ -363,9 +373,6 @@ public class CitiesController : Controller
 
 
         city1.Name = city.Name;
-
-        // category1.AppUser = await _userHelper.GetUserByIdAsync(category.AppUserId);
-        // category1.AppUserId = category.AppUserId;
         city1.ProfilePhotoId = city.ProfilePhotoId;
 
         try
@@ -414,12 +421,18 @@ public class CitiesController : Controller
 
 
     // POST: Cities/Delete/5
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var city = await _cityRepository.GetByIdAsync(id);
+        var city = await _cityRepository
+            .GetByIdAsync(id).FirstOrDefaultAsync();
 
         if (city == null)
             return new NotFoundViewResult(
@@ -454,13 +467,12 @@ public class CitiesController : Controller
                     ErrorMessage =
                         "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                         $"The {nameof(City)} with the ID " +
-                        $"{city.Id} - {city.Name} " +
-                        // $"{city.IdGuid} +" +
+                        $"{city.Id} - {city.Name} {city.IdGuid} +" +
                         "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                         "Try deleting possible dependencies and try again. ",
                     ItemClass = nameof(City),
                     ItemId = city.Id.ToString(),
-                    ItemGuid = Guid.Empty,
+                    ItemGuid = city.IdGuid,
                     ItemName = city.Name
                 };
 
@@ -477,7 +489,7 @@ public class CitiesController : Controller
                 ErrorMessage = "An error occurred while deleting the entity.",
                 ItemClass = nameof(City),
                 ItemId = city.Id.ToString(),
-                ItemGuid = Guid.Empty,
+                ItemGuid = city.IdGuid,
                 ItemName = city.Name
             };
 
@@ -491,7 +503,7 @@ public class CitiesController : Controller
 
 
     /// <summary>
-    ///     CityNotFound action.
+    ///     City Not Found action.
     /// </summary>
     /// <returns></returns>
     [HttpGet]

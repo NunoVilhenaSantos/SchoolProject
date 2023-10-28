@@ -21,7 +21,5 @@ public class AppResponse
     ///     AppResponse results to store the object data.
     /// </summary>
     public object? Results { get; set; }
-
-
-
+    
 }

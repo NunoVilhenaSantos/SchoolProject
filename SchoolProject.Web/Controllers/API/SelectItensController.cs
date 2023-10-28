@@ -17,8 +17,8 @@ namespace SchoolProject.Web.Controllers.API;
 [ApiController]
 public class SelectItensController : ControllerBase
 {
-    private static ICountryRepository _countryRepository;
-    private static DataContextMySql _dataContext;
+    private readonly ICountryRepository _countryRepository;
+    private readonly DataContextMySql _dataContext;
 
 
     /// <summary>
@@ -44,15 +44,22 @@ public class SelectItensController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    // [Route("api/Account/GetCountriesWithNationalitiesAsync")]
-    [Route("Account/GetCountriesWithNationalitiesAsync")]
-    public static Task<JsonResult> GetCountriesWithNationalitiesAsync()
+    // [Route("api/Helpers/GetCountriesWithNationalitiesJson")]
+    [Route("Helpers/GetCountriesWithNationalitiesJson")]
+    public  Task<JsonResult> GetCountriesWithNationalitiesJson()
     {
+        //var countriesWithNationalities =
+        //    _countryRepository.GetComboCountriesAndNationalities();
+
+        //return Task.FromResult(new JsonResult(countriesWithNationalities
+        //    .OrderBy(c => c.Text).ToJson()));
+
         var countriesWithNationalities =
             _countryRepository.GetComboCountriesAndNationalities();
 
         return Task.FromResult(new JsonResult(countriesWithNationalities
             .OrderBy(c => c.Text).ToJson()));
+
     }
 
 
@@ -66,9 +73,9 @@ public class SelectItensController : ControllerBase
     /// <param name="countryId"></param>
     /// <returns></returns>
     [HttpPost]
-    //  [Route("api/Helpers/GetCitiesAsync")]
-    [Route("GetCitiesAsync")]
-    public static Task<JsonResult> GetCitiesAsync(int countryId)
+    //  [Route("api/Helpers/GetCitiesJson")]
+    [Route("GetCitiesJson")]
+    public Task<JsonResult> GetCitiesJson(int countryId)
     {
         if (countryId == 0)
             return Task.FromResult(new JsonResult(new List<City>()));
@@ -80,7 +87,14 @@ public class SelectItensController : ControllerBase
             .OrderBy(c => c.Text).ToJson()));
     }
 
-    public static Task<JsonResult> GetGendersAsync()
+
+    // ---------------------------------------------------------------------- //
+
+
+    [HttpPost]
+    //  [Route("api/Helpers/GetGendersJson")]
+    [Route("GetGendersJson")]
+    public Task<JsonResult> GetGendersJson()
     {
         var gendersList = _dataContext.Genders
             .Select(c => new SelectListItem
@@ -93,7 +107,7 @@ public class SelectItensController : ControllerBase
 
         gendersList.Insert(0, new SelectListItem
         {
-            Text = "(Select a country...)",
+            Text = "(Select a gender...)",
             Value = "0"
         });
 
