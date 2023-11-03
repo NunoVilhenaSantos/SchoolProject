@@ -28,7 +28,7 @@
 
 <h4>@controllerName</h4>
 
-<hr />
+<hr/>
 @* <div class="row"> *@
 @* <div class="col-md-4 offset-md-4"> *@
 
@@ -39,21 +39,20 @@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id"/>
+            <input type="hidden" asp-for="IdGuid"/>
             <input type="hidden" asp-for="StudentId"/>
             <input type="hidden" asp-for="DisciplineId"/>
 
-            <partial name="_StudentCoursesCE"/>
+            <partial name="_StudentDisciplinesCE"/>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
-                <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                <a asp-action="IndexCards1" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

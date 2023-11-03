@@ -8,21 +8,19 @@ using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Countries;
 
-
 namespace SchoolProject.Web.Data.Repositories.Countries;
 
 /// <inheritdoc cref="ICountryRepository" />
 public class CountryRepository : GenericRepository<Country>, ICountryRepository
 {
-    // datacontext
-    private readonly DataContextMySql _dataContext;
-    private readonly DataContextMySql _dataContextMySql;
-    private readonly DataContextMsSql _dataContextMsSql;
-    private readonly DataContextSqLite _dataContextSqLite;
-
-
     // helpers
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+    // datacontext
+    private readonly DataContextMySql _dataContext;
+    private readonly DataContextMsSql _dataContextMsSql;
+    private readonly DataContextMySql _dataContextMySql;
+    private readonly DataContextSqLite _dataContextSqLite;
     private readonly IStorageHelper _storageHelper;
     private readonly IUserHelper _userHelper;
 
@@ -179,8 +177,8 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
                 Value = p.Id.ToString()
             }).ToList();
 
-         list.Insert(0,
-             new SelectListItem {Text = "(Select a Country....)", Value = "0"});
+        list.Insert(0,
+            new SelectListItem {Text = "(Select a Country....)", Value = "0"});
 
         return list;
     }
@@ -305,7 +303,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             // CountryId = country.Id,
 
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
-            UpdatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            UpdatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
         });
 
         _dataContext.Countries.Update(country);
@@ -392,7 +390,7 @@ public class CountryRepository : GenericRepository<Country>, ICountryRepository
             WasDeleted = false,
             CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
             UpdatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
-            Country = country,
+            Country = country
             // CountryId = country.Id,
         };
 

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Courses;
@@ -15,7 +16,6 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.Disciplines;
 
 /// <summary>
-///
 /// </summary>
 public class Discipline : IEntity, INotifyPropertyChanged
 {
@@ -33,12 +33,14 @@ public class Discipline : IEntity, INotifyPropertyChanged
     ///     The name of the discipline.
     /// </summary>
     [Required]
+    [MaxLength(100, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Name { get; set; }
 
 
     /// <summary>
     ///     The description of the discipline.
     /// </summary>
+    [MaxLength(500, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Description { get; set; }
 
 
@@ -46,6 +48,7 @@ public class Discipline : IEntity, INotifyPropertyChanged
     ///     The number of hours of the discipline.
     /// </summary>
     [Required]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public required int Hours { get; set; }
 
 
@@ -57,6 +60,7 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Credit Points")]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public required double CreditPoints { get; set; }
 
 
@@ -68,6 +72,8 @@ public class Discipline : IEntity, INotifyPropertyChanged
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
     [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -114,16 +120,16 @@ public class Discipline : IEntity, INotifyPropertyChanged
     public virtual HashSet<CourseDiscipline>? CourseDisciplines { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public IEnumerable<Course>? Courses =>
         CourseDisciplines?.Select(cd => cd.Course).Distinct();
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Courses Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int CoursesCount => Courses?.Count() ?? 0;
 
 
@@ -137,23 +143,22 @@ public class Discipline : IEntity, INotifyPropertyChanged
     public virtual HashSet<StudentDiscipline>? StudentDisciplines { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
     public IEnumerable<Student>? Students =>
         StudentDisciplines?.Select(sc => sc.Student).Distinct();
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Students Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int StudentCount0 => Students?.Count() ?? 0;
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Students Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int StudentCount1 =>
         StudentDisciplines?.Select(sc => sc.Student).Distinct().Count() ?? 0;
 
@@ -168,23 +173,25 @@ public class Discipline : IEntity, INotifyPropertyChanged
     public virtual HashSet<TeacherDiscipline>? TeacherDisciplines { get; set; }
 
     /// <summary>
-    ///    Returns the teachers of the course
+    ///     Returns the teachers of the course
     /// </summary>
     [NotMapped]
     public IEnumerable<Teacher>? Teachers =>
         TeacherDisciplines?.Select(sc => sc.Teacher).Distinct();
 
     /// <summary>
-    ///    Returns the number of the teachers for this discipline
+    ///     Returns the number of the teachers for this discipline
     /// </summary>
     [DisplayName("Teachers Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int TeachersCount0 => TeacherDisciplines?.Count ?? 0;
 
 
     /// <summary>
-    ///    Returns the number of the teachers for this discipline
+    ///     Returns the number of the teachers for this discipline
     /// </summary>
     [DisplayName("Teachers Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int TeachersCount1 =>
         TeacherDisciplines?.Select(tc => tc.Teacher).Distinct().Count() ?? 0;
 
@@ -200,7 +207,6 @@ public class Discipline : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
     public IEnumerable<Student>? EStudents =>
@@ -211,6 +217,7 @@ public class Discipline : IEntity, INotifyPropertyChanged
     ///     Returns the number of students enrolled in the course
     /// </summary>
     [DisplayName("Enrolled Students")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int StudentsCount =>
         Enrollments?.Where(e => e.Discipline.Id == Id).Count() ?? 0;
 
@@ -219,27 +226,49 @@ public class Discipline : IEntity, INotifyPropertyChanged
     ///     Returns the highest grade of the course
     /// </summary>
     [DisplayName("Highest Grade")]
-    public decimal? HighestGrade => Enrollments?
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
+    public decimal HighestGrade => Enrollments?
         .Where(e => e.DisciplineId == Id)
-        .Max(e => e.Grade) ?? null;
+        .Max(e => e.Grade) ?? 0;
 
 
     /// <summary>
     ///     Returns the average grade of the course
     /// </summary>
     [DisplayName("Average Grade")]
-    public decimal? AveregaGrade => Enrollments?
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
+    public decimal AveregaGrade => Enrollments?
         .Where(e => e.DisciplineId == Id)
-        .Average(e => e.Grade) ?? null;
+        .Average(e => e.Grade) ?? 0;
 
 
     /// <summary>
     ///     Returns the lowest grade of the course
     /// </summary>
     [DisplayName("Lowest Grade")]
-    public decimal? LowestGrade => Enrollments?
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
+    public decimal LowestGrade => Enrollments?
         .Where(e => e.DisciplineId == Id)
-        .Min(e => e.Grade) ?? null;
+        .Min(e => e.Grade) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -286,25 +315,6 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

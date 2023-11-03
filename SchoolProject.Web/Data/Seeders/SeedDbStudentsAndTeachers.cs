@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Students;
@@ -125,7 +124,7 @@ public class SeedDbStudentsAndTeachers
             "Mariana Oliveira", "Mariana Leite", "Nuno Vilhena Santos",
             "Pedro Silva", "Reinaldo Souza", "Ruben Correia", "Simão André",
             "Tatiane Avellar", "Tiago Silva", "Vasco Santos", "Vitor Santos",
-            "Vitor Silva", "Vitorino Freitas", "Vitorino Silva",
+            "Vitor Silva", "Vitorino Freitas", "Vitorino Silva"
         };
 
 
@@ -153,7 +152,7 @@ public class SeedDbStudentsAndTeachers
             "Teacher 15", "Teacher 16", "Teacher 17", "Teacher 18",
             "Teacher 19", "Teacher 20", "Teacher 21", "Teacher 22",
             "Teacher 23", "Teacher 24", "Teacher 25", "Teacher 26",
-            "Teacher 27", "Teacher 28", "Teacher 29", "Teacher 30",
+            "Teacher 27", "Teacher 28", "Teacher 29", "Teacher 30"
         };
 
         var teachersToAdd = teacherNames
@@ -302,7 +301,7 @@ public class SeedDbStudentsAndTeachers
             Email = email,
             PhoneNumber = cellPhone,
             WasDeleted = false,
-            ProfilePhotoId = default,
+            ProfilePhotoId = default
 
             // City = city,
             // CityId = city.Id,

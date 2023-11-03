@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -173,6 +172,29 @@ public class CityRepository : GenericRepository<City>, ICityRepository
     }
 
 
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<SelectListItem> GetComboCities()
+    {
+        var list = _dataContext.Cities
+            .OrderBy(a => a.Name)
+            .Select(a => new SelectListItem
+            {
+                Text = $"{a.Name} - {a.Country.Name}",
+                Value = a.Id.ToString()
+            }).ToList();
+
+        list.Insert(0, new SelectListItem
+        {
+            Text = "(Select a City...)",
+            Value = "0"
+        });
+
+        return list;
+    }
+
+
     // ------------------------ Countries ------------------------------ //
 
 
@@ -191,29 +213,5 @@ public class CityRepository : GenericRepository<City>, ICityRepository
             .Include(c => c.Cities)
             .Where(c => c.Cities != null && c.Cities.Any().Equals(city))
             .OrderBy(c => c.Name);
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerable<SelectListItem> GetComboCities()
-    {
-        var list = _dataContext.Cities
-            .OrderBy(a => a.Name)
-            .Select(a => new SelectListItem
-            {
-                Text = $"{a.Name} - {a.Country.Name}",
-                Value = a.Id.ToString(),
-            }).ToList();
-
-        list.Insert(0, new SelectListItem
-        {
-            Text = "(Select a City...)",
-            Value = "0"
-        });
-
-        return list;
     }
 }

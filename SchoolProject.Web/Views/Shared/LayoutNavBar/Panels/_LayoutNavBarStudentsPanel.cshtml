@@ -1,6 +1,5 @@
 ﻿@using System.Diagnostics
 @using SchoolProject.Web.Controllers
-
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -24,7 +23,7 @@
             <a asp-action="Index" asp-area="" asp-controller="Students"
                class="dropdown-item  @(currentAction == "Index" && currentController == "Students" ? "active" : "")">
                 <span class="fas fa-person-shelter"></span>
-                @StudentsController.ControllerName
+                @StudentsController.ControllerName List
             </a>
         </li>
         @* <li> *@
@@ -34,7 +33,7 @@
             <a asp-action="IndexCards" asp-area="" asp-controller="Students"
                class="dropdown-item  @(currentAction == "IndexCards" && currentController == "Students" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @StudentsController.ControllerName Cards
+                @StudentsController.ControllerName Cards Search
             </a>
         </li>
         @* <li> *@
@@ -44,7 +43,7 @@
             <a asp-action="IndexCards1" asp-area="" asp-controller="Students"
                class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "Students" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @StudentsController.ControllerName Cards 1
+                @StudentsController.ControllerName Cards Sorting
             </a>
         </li>
         <li>
@@ -64,7 +63,7 @@
             <a asp-action="IndexCards" asp-area="" asp-controller="StudentDisciplines"
                class="dropdown-item  @(currentAction == "IndexCards" && currentController == "StudentDisciplines" ? "active" : "")">
                 <span class="fas fa-person-shelter"></span>
-                @StudentDisciplinesController.ControllerName Cards
+                @StudentDisciplinesController.ControllerName Cards Search
             </a>
         </li>
         @* <li> *@
@@ -74,7 +73,7 @@
             <a asp-action="IndexCards1" asp-area="" asp-controller="StudentDisciplines"
                class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "StudentDisciplines" ? "active" : "")">
                 <span class="fas fa-person-shelter"></span>
-                @StudentDisciplinesController.ControllerName Cards 1
+                @StudentDisciplinesController.ControllerName Cards Sorting
             </a>
         </li>
     </ul>

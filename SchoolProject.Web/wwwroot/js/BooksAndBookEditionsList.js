@@ -75,8 +75,8 @@ $(document).ready(function () {
         let bookId = $(this).val();
 
         getBookEditions(bookId);
-        
-       debugger;
+
+        debugger;
         /*getNationalities(countryId);*/
     });
 

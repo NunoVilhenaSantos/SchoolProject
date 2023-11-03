@@ -29,24 +29,24 @@
 
 <h4>@controllerName</h4>
 
-<hr />
+<hr/>
 
 <div class="row">
-    <partial name="_DisplayImages" />
+    <partial name="_DisplayImages"/>
 
     <div class="col">
         <div class="col-md-4">
             <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <partial name="_DisciplinesCE" for="@Model" />
+                <partial name="_DisciplinesCE" for="@Model"/>
 
-                <br />
+                <br/>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
                     <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                 </div>
-                <br />
+                <br/>
                 <div class="text-danger">@ViewBag.UserMessage</div>
             </form>
 

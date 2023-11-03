@@ -30,10 +30,10 @@ public class Country : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
-    [NotMapped]
     [Ignore]
     [JsonIgnore]
     [Newtonsoft.Json.JsonIgnore]
+    [NotMapped]
     [Display(Name = "Image")]
     public IFormFile? ImageFile { get; set; }
 
@@ -48,11 +48,12 @@ public class Country : IEntity, INotifyPropertyChanged
     ///     The profile photo of the appUser in URL format.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          CountriesController.BucketName +
-          "/" + ProfilePhotoId;
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              CountriesController.BucketName +
+              "/" + ProfilePhotoId;
 
 
     // -------------------------------------------------------------- //
@@ -68,6 +69,7 @@ public class Country : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Number of Cities")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int NumberOfCities => Cities?.Count ?? 0;
 
 
@@ -86,6 +88,25 @@ public class Country : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     public virtual required Nationality Nationality { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // -------------------------------------------------------------- //
@@ -134,27 +155,6 @@ public class Country : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
-
 
 
     // -------------------------------------------------------------- //

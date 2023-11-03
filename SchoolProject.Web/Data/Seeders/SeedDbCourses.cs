@@ -2,7 +2,6 @@
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Seeders.DisciplinesLists;
 
@@ -391,13 +390,12 @@ public class SeedDbCourses
 
                 CourseDisciplines = new HashSet<CourseDiscipline>(),
                 CourseStudents = new HashSet<CourseStudent>(),
-                Enrollments = new HashSet<Enrollment>(),
+                Enrollments = new HashSet<Enrollment>()
             };
 
 
             var courseDisciplines = new HashSet<CourseDiscipline>();
             foreach (var discipline in disciplines)
-            {
                 courseDisciplines.Add(new CourseDiscipline
                     {
                         CourseId = course.Id,
@@ -405,10 +403,9 @@ public class SeedDbCourses
                         DisciplineId = discipline.Id,
                         Discipline = discipline,
                         CreatedById = appUser.Id,
-                        CreatedBy = appUser,
+                        CreatedBy = appUser
                     }
                 );
-            }
 
             course.CourseDisciplines = courseDisciplines;
 

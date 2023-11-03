@@ -36,21 +36,23 @@
 
 @* <div class="container-fluid"> *@
 @* <div class="container-md"> *@
-<div class="col-md-4">
+<div class="col-md">
     <div class="row">
         @* <partial name="_DisplayImages"/> *@
 
-        <div class="col">
+        <div class="col-md-8">
             <div class="row">
                 <partial name="_CoursesDisciplinesDD" for="@Model"/>
 
                 <div class="col-row">
                     <form asp-action="Delete">
-                        <input type="hidden" asp-for="CourseId"/>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="IdGuid" />
+                        <input type="hidden" asp-for="CourseId" />
                         <input type="hidden" asp-for="DisciplineId"/>
 
                         <button type="submit" class="btn btn-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
-                        <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                        <a asp-action="IndexCards1" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                     </form>
                 </div>
 

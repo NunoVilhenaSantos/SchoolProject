@@ -5,7 +5,7 @@ namespace SchoolProject.Web.Models.Enrollments;
 
 public class DeliveryViewModel
 {
-    [Required][Key] public int Id { get; set; }
+    [Required] [Key] public int Id { get; set; }
 
 
     [DisplayName("Delivery Date")]

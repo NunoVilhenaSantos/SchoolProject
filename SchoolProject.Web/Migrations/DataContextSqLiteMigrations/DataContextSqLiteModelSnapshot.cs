@@ -297,6 +297,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Acronym")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Area")
@@ -334,6 +335,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("PriceForEmployed")
@@ -493,6 +495,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Hours")
@@ -505,6 +508,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ProfilePhotoId")
@@ -607,7 +611,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ProfilePhotoId")
@@ -642,6 +646,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Address")
                         .IsRequired()
+                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("BirthplaceId")
@@ -666,6 +671,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EnrollDate")
@@ -676,6 +682,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GenderId")
@@ -688,22 +695,27 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("IdentificationNumber")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IdentificationType")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MobilePhone")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
+                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ProfilePhotoId")
@@ -711,6 +723,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("TaxIdentificationNumber")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -803,6 +816,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Address")
                         .IsRequired()
+                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("BirthplaceId")
@@ -827,6 +841,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EnrollDate")
@@ -837,6 +852,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GenderId")
@@ -849,22 +865,27 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("IdentificationNumber")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IdentificationType")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MobilePhone")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
+                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ProfilePhotoId")
@@ -872,6 +893,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
 
                     b.Property<string>("TaxIdentificationNumber")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -1396,7 +1418,7 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                         .IsRequired();
 
                     b.HasOne("SchoolProject.Web.Data.Entities.Students.Student", "Student")
-                        .WithMany()
+                        .WithMany("StudentDisciplines")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1557,6 +1579,8 @@ namespace SchoolProject.Web.Migrations.DataContextSqLiteMigrations
                     b.Navigation("CourseStudents");
 
                     b.Navigation("Enrollments");
+
+                    b.Navigation("StudentDisciplines");
                 });
 
             modelBuilder.Entity("SchoolProject.Web.Data.Entities.Teachers.Teacher", b =>

@@ -1,87 +1,73 @@
-﻿using CsvHelper.Configuration.Attributes;
-using SchoolProject.Web.Data.Entities.Disciplines;
-using SchoolProject.Web.Data.Entities.Enrollments;
-using SchoolProject.Web.Data.Entities.Students;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Courses;
 
 /// <summary>
-///
 /// </summary>
 public class CourseDto
 {
     /// <summary>
-    ///
     /// </summary>
     public required int Id { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
+    [MaxLength(7, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Code { get; init; }
 
     /// <summary>
-    ///
     /// </summary>
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Acronym { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
+    [MaxLength(100, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Name { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     public required byte QnqLevel { get; init; }
 
     /// <summary>
-    ///
     /// </summary>
     public required byte EqfLevel { get; init; }
 
 
     /// <summary>
-    ///
     /// </summary>
     public required DateTime StartDate { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     public required DateTime EndDate { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     public required TimeSpan StartHour { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     public required TimeSpan EndHour { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
+    [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
     public required decimal PriceForEmployed { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
+    [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
     public required decimal PriceForUnemployed { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
     public required Guid ProfilePhotoId { get; set; } = Guid.Empty;
 
@@ -89,11 +75,12 @@ public class CourseDto
     ///     The profile photo of the appUser in URL format.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          CoursesController.BucketName +
-          "/" + ProfilePhotoId;
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              CoursesController.BucketName +
+              "/" + ProfilePhotoId;
 
 
     // ---------------------------------------------------------------------- //
@@ -143,8 +130,8 @@ public class CourseDto
 
 
     /// <summary>
-    ///
     /// </summary>
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public required int StudentsCount { get; set; }
 
 
@@ -153,20 +140,25 @@ public class CourseDto
     // ---------------------------------------------------------------------- //
 
     /// <summary>
-    ///
     /// </summary>
     public required List<KeyValuePair<string, string>>? Enrollment { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public required decimal? ClassAverage { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public required decimal? HighestGrade { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public required decimal? LowestGrade { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public required int ECoursesCount { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public required int EWorkHourLoad { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public required int EStudentsCount { get; set; }
 
     // ---------------------------------------------------------------------- //
@@ -188,7 +180,6 @@ public class CourseDto
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="course"></param>
     /// <returns></returns>
@@ -249,7 +240,7 @@ public class CourseDto
             LowestGrade = course.LowestGrade,
             ECoursesCount = course.ECoursesCount,
             EWorkHourLoad = course.EWorkHourLoad,
-            EStudentsCount = course.EStudentsCount,
+            EStudentsCount = course.EStudentsCount
         };
     }
 }

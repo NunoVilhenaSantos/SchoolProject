@@ -1,8 +1,5 @@
 ﻿@using System.Diagnostics
-
 @using SchoolProject.Web.Controllers
-@using SchoolProject.Web.Data.Repositories.Teachers
-
 @{
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
@@ -36,7 +33,7 @@
             <a asp-action="IndexCards" asp-area="" asp-controller="Teachers"
                class="dropdown-item  @(currentAction == "IndexCards" && currentController == "Teachers" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @TeachersController.ControllerName Cards
+                @TeachersController.ControllerName Cards Search
             </a>
         </li>
         @* <li> *@
@@ -46,7 +43,7 @@
             <a asp-action="IndexCards1" asp-area="" asp-controller="Teachers"
                class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "Teachers" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @TeachersController.ControllerName Cards 1
+                @TeachersController.ControllerName Cards Sorting
             </a>
         </li>
         <li>
@@ -66,7 +63,7 @@
             <a asp-action="IndexCards" asp-area="" asp-controller="TeacherDisciplines"
                class="dropdown-item  @(currentAction == "IndexCards" && currentController == "TeacherDisciplines" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @TeacherDisciplinesController.ControllerName Cards
+                @TeacherDisciplinesController.ControllerName Cards Search
             </a>
         </li>
         @* <li> *@
@@ -76,7 +73,7 @@
             <a asp-action="IndexCards1" asp-area="" asp-controller="TeacherDisciplines"
                class="dropdown-item  @(currentAction == "IndexCards1" && currentController == "TeacherDisciplines" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @TeacherDisciplinesController.ControllerName Cards 1
+                @TeacherDisciplinesController.ControllerName Cards Sorting
             </a>
         </li>
     </ul>

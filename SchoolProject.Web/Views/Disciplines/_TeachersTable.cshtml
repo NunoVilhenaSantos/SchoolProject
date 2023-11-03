@@ -1,14 +1,12 @@
-﻿@using System.Reflection
-@using Microsoft.AspNetCore.Identity
-@using SchoolProject.Web.Data.Entities.Courses
-@using SchoolProject.Web.Data.Entities.Disciplines
-@using SchoolProject.Web.Data.Entities.Students
-@using SchoolProject.Web.Data.Entities.Teachers
-@using SchoolProject.Web.Data.Entities.Users
-
-@inject RoleManager<IdentityRole> RoleManager
+﻿@inject RoleManager<IdentityRole> RoleManager
 @inject UserManager<AppUser> UserManager
 
+@using System.Reflection
+@using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Controllers
+@using SchoolProject.Web.Data.Entities.Teachers
+@using SchoolProject.Web.Data.Entities.Disciplines
 @model SchoolProject.Web.Data.Entities.Disciplines.Discipline
 
 @{
@@ -27,7 +25,7 @@
 }
 
 <br/>
-<h4>Courses</h4>
+<h4>@TeachersController.ControllerName</h4>
 @if (Model.Teachers == null && !Model.Teachers.Any())
 {
     <h5>No @nameof(Teacher) added yet to this @nameof(Discipline) | @Model.Code - @Model.Name</h5>
@@ -105,6 +103,15 @@ else
             @* <td>@Model.Teachers.FirstOrDefault().LowestGrade.ToString("N")</td> *@
             @* <td>@Model.Teachers.FirstOrDefault().AverageGrade.ToString("N")</td> *@
             @* <td>@Model.Teachers.FirstOrDefault().HighestGrade.ToString("N")</td> *@
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td></td>
         </tr>
         </tfoot>

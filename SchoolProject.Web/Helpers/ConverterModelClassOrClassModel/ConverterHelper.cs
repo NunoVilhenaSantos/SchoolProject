@@ -26,25 +26,24 @@ public class ConverterHelper : IConverterHelper
 {
     // authenticatedUserInApp
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+    private readonly ICityRepository _cityRepository;
+
+    // dataContext
+    private readonly DataContextMySql _context;
 
     // repository
     private readonly ICountryRepository _countryRepository;
-    private readonly ICityRepository _cityRepository;
 
     private readonly IGenderRepository _genderRepository;
 
     private readonly IStudentRepository _studentRepository;
     private readonly ITeacherRepository _teacherRepository;
 
-    // dataContext
-    private readonly DataContextMySql _context;
-
     // userHelper
     private readonly IUserHelper _userHelper;
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="authenticatedUserInApp"></param>
     /// <param name="context"></param>
@@ -110,7 +109,6 @@ public class ConverterHelper : IConverterHelper
 
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="model"></param>
     /// <param name="filePath"></param>
@@ -149,7 +147,7 @@ public class ConverterHelper : IConverterHelper
                 : _authenticatedUserInApp.GetAuthenticatedUser().Result,
             UpdatedAt = isNew
                 ? null
-                : DateTime.UtcNow,
+                : DateTime.UtcNow
         };
     }
 
@@ -177,7 +175,7 @@ public class ConverterHelper : IConverterHelper
             CreatedAt = course.CreatedAt,
             WasDeleted = course.WasDeleted,
             UpdatedBy = course.UpdatedBy,
-            UpdatedAt = course.UpdatedAt,
+            UpdatedAt = course.UpdatedAt
         };
     }
 
@@ -210,7 +208,7 @@ public class ConverterHelper : IConverterHelper
                 : _authenticatedUserInApp.GetAuthenticatedUser().Result,
             UpdatedAt = isNew
                 ? null
-                : DateTime.UtcNow,
+                : DateTime.UtcNow
         };
     }
 
@@ -233,13 +231,12 @@ public class ConverterHelper : IConverterHelper
             CreatedBy = discipline.CreatedBy,
             CreatedAt = discipline.CreatedAt,
             UpdatedBy = discipline.UpdatedBy,
-            UpdatedAt = discipline.UpdatedAt,
+            UpdatedAt = discipline.UpdatedAt
         };
     }
 
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="model"></param>
     /// <param name="filePath"></param>
@@ -335,13 +332,12 @@ public class ConverterHelper : IConverterHelper
                 : _authenticatedUserInApp.GetAuthenticatedUser().Result,
             UpdatedAt = isNew
                 ? null
-                : DateTime.UtcNow,
+                : DateTime.UtcNow
         };
     }
 
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="student"></param>
     /// <returns></returns>
@@ -353,7 +349,6 @@ public class ConverterHelper : IConverterHelper
 
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="model"></param>
     /// <param name="filePath"></param>
@@ -369,7 +364,6 @@ public class ConverterHelper : IConverterHelper
 
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="teacher"></param>
     /// <returns></returns>
@@ -404,7 +398,7 @@ public class ConverterHelper : IConverterHelper
             PhoneNumber = cellPhone,
             UserName = email,
             WasDeleted = false,
-            ProfilePhotoId = default,
+            ProfilePhotoId = default
             // Country = country,
             // City = city,
             // CityId = city.Id,
@@ -433,8 +427,97 @@ public class ConverterHelper : IConverterHelper
     }
 
 
+    /// <inheritdoc />
+    public Teacher ToTeacherFromUser(AppUser user)
+    {
+        var random = new Random();
+        var city = _cityRepository.GetCityAsync(1).FirstOrDefault();
+        var gender = _genderRepository.GetByIdAsync(1).FirstOrDefault();
+
+        var countryOfNationality = _countryRepository
+            .GetCountryWithCitiesAsync(5).FirstOrDefault();
+
+        var birthplace = _countryRepository
+            .GetCountryWithCitiesAsync(4).FirstOrDefault();
+
+        return new Teacher
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Address = user.Address ?? string.Empty,
+            PostalCode = random.Next(1000, 9999) + "-" + random.Next(000, 999),
+            MobilePhone = user.PhoneNumber ?? string.Empty,
+            Email = user.Email ?? string.Empty,
+            Active = true,
+            DateOfBirth = DateTime.Today.AddYears(-18),
+            IdentificationNumber =
+                random.Next(100_000_000, 999_999_999).ToString(),
+            IdentificationType = "C/C",
+            ExpirationDateIdentificationNumber = DateTime.Today.AddYears(10),
+            TaxIdentificationNumber =
+                random.Next(100_000_000, 999_999_999).ToString(),
+
+            EnrollDate = DateTime.Now,
+            ProfilePhotoId = default,
+
+            CountryId = city.CountryId,
+            City = city,
+            CityId = city.Id,
+            Gender = gender,
+            CountryOfNationality = countryOfNationality,
+            Birthplace = birthplace,
+            AppUser = user,
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result
+        };
+    }
+
+
+    /// <inheritdoc />
+    public Student ToStudentFromUser(AppUser user)
+    {
+        var random = new Random();
+        var city = _cityRepository.GetCityAsync(1).FirstOrDefault();
+        var gender = _genderRepository.GetByIdAsync(1).FirstOrDefault();
+
+        var countryOfNationality = _countryRepository
+            .GetCountryWithCitiesAsync(5).FirstOrDefault();
+
+        var birthplace = _countryRepository
+            .GetCountryWithCitiesAsync(4).FirstOrDefault();
+
+        return new Student
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Address = user.Address ?? string.Empty,
+            PostalCode = random.Next(1000, 9999) + "-" + random.Next(000, 999),
+            MobilePhone = user.PhoneNumber ?? string.Empty,
+            Email = user.Email ?? string.Empty,
+            Active = true,
+            DateOfBirth = DateTime.Today.AddYears(-18),
+            IdentificationNumber =
+                random.Next(100_000_000, 999_999_999).ToString(),
+            IdentificationType = "C/C",
+            ExpirationDateIdentificationNumber = DateTime.Today.AddYears(10),
+            TaxIdentificationNumber =
+                random.Next(100_000_000, 999_999_999).ToString(),
+
+            EnrollDate = DateTime.Now,
+            ProfilePhotoId = default,
+
+            CountryId = city.CountryId,
+            City = city,
+            CityId = city.Id,
+            Gender = gender,
+            CountryOfNationality = countryOfNationality,
+            Birthplace = birthplace,
+            AppUser = user,
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result
+        };
+    }
+
+
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="isNew"></param>
@@ -456,13 +539,12 @@ public class ConverterHelper : IConverterHelper
             // Subscription = model.Subscription,
             // SubscriptionId = model.SubscriptionId,
             WasDeleted = false,
-            ProfilePhotoId = default,
+            ProfilePhotoId = default
         };
     }
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="appUser"></param>
@@ -486,13 +568,12 @@ public class ConverterHelper : IConverterHelper
             // Subscription = model.Subscription,
             // SubscriptionId = model.SubscriptionId,
             WasDeleted = false,
-            ProfilePhotoId = default,
+            ProfilePhotoId = default
         };
     }
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="role"></param>
@@ -510,7 +591,7 @@ public class ConverterHelper : IConverterHelper
             HasPhoto = appUser.ProfilePhotoId != Guid.Empty,
             ProfilePhotoId = appUser.ProfilePhotoId,
             Role = role,
-            WasDeleted = false,
+            WasDeleted = false
             // SubscriptionId = appUser.SubscriptionId,
             // Subscription = appUser.Subscription,
             // City = appUser.City,
@@ -520,7 +601,6 @@ public class ConverterHelper : IConverterHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="profilePhotoId"></param>
@@ -548,12 +628,11 @@ public class ConverterHelper : IConverterHelper
                 : _authenticatedUserInApp.GetAuthenticatedUser().Result,
             UpdatedAt = isNew
                 ? null
-                : DateTime.UtcNow,
+                : DateTime.UtcNow
         };
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="country"></param>
     /// <returns></returns>
@@ -577,7 +656,7 @@ public class ConverterHelper : IConverterHelper
             CreatedBy = country.CreatedBy,
             CreatedAt = country.CreatedAt,
             UpdatedBy = country.UpdatedBy,
-            UpdatedAt = country.UpdatedAt,
+            UpdatedAt = country.UpdatedAt
         };
     }
 }

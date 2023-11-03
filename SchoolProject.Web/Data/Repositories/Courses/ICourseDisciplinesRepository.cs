@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.Users;
+﻿using SchoolProject.Web.Data.Entities.Courses;
 
 namespace SchoolProject.Web.Data.Repositories.Courses;
 
@@ -9,14 +7,12 @@ public interface
     ICourseDisciplinesRepository : IGenericRepository<CourseDiscipline>
 {
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     IOrderedQueryable<CourseDiscipline> GetCourseDisciplines();
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -24,9 +20,9 @@ public interface
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="idGuid"></param>
     /// <returns></returns>
-    IOrderedQueryable<CourseDiscipline> GetCourseDisciplineByGuid(Guid idGuid);
+    IOrderedQueryable<CourseDiscipline>
+        GetCourseDisciplineByIdGuid(Guid idGuid);
 }

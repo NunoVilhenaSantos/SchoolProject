@@ -2,9 +2,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
+using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Controllers;
-using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Helpers.Storages;
 
 namespace SchoolProject.Web.Data.Entities.Users;
@@ -85,7 +86,7 @@ public class AppUser : IdentityUser, INotifyPropertyChanged
 
 
     /// <summary>
-    ///    The name abbreviation of the appUser.
+    ///     The name abbreviation of the appUser.
     /// </summary>
     public string NameAbbreviation
     {
@@ -119,7 +120,9 @@ public class AppUser : IdentityUser, INotifyPropertyChanged
     /// <summary>
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
-    [CsvHelper.Configuration.Attributes.Ignore]
+    [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -136,11 +139,12 @@ public class AppUser : IdentityUser, INotifyPropertyChanged
     ///     The profile photo of the appUser in URL format.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          UsersController.BucketName +
-          "/" + ProfilePhotoId;
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              UsersController.BucketName +
+              "/" + ProfilePhotoId;
 
 
     // --------------------------------------------------------------------- //

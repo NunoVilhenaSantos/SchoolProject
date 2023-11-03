@@ -44,8 +44,8 @@
                 <partial name="_CoursesDisciplinesDD" for="@Model"/>
 
                 <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                    <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-idGuid="@Model.IdGuid" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a asp-action="IndexCards1" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
                 </div>
             </div>
         </div>

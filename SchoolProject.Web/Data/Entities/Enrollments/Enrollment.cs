@@ -9,15 +9,55 @@ using SchoolProject.Web.Data.EntitiesOthers;
 
 namespace SchoolProject.Web.Data.Entities.Enrollments;
 
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field |
+                AttributeTargets.Parameter)]
+public class ValidateAbsencesAttribute : ValidationAttribute
+{
+    private readonly string _otherProperty;
+
+    public ValidateAbsencesAttribute(string otherProperty)
+    {
+        _otherProperty = otherProperty;
+    }
+
+    protected override ValidationResult IsValid(object value,
+        ValidationContext validationContext)
+    {
+        var otherPropertyValue = validationContext.ObjectType
+            .GetProperty(_otherProperty)
+            .GetValue(validationContext.ObjectInstance, null);
+
+        if (value is int absences &&
+            otherPropertyValue is int disciplineWorkLoadHours)
+            if (absences < 0 || absences > disciplineWorkLoadHours)
+                return new ValidationResult(ErrorMessage);
+
+        return ValidationResult.Success;
+    }
+}
+
+
+
 /// <summary>
 /// </summary>
 public class Enrollment : IEntity, INotifyPropertyChanged
 {
+    // This constant represents the default threshold percentage for failure due to absences.
+    // It is set to 20% (0.2 as a decimal).
+    // This value can be adjusted as needed.
+    [DisplayFormat(DataFormatString = "{0:P}", ApplyFormatInEditMode = false)]
+    [Display(Name = "Threshold Percentage")]
+    public const decimal ThresholdPercentage = 0.20m;
+
     /// <summary>
     /// </summary>
     [Required]
     [ForeignKey(nameof(Student))]
     public int StudentId { get; set; }
+
+    /// <summary>
+    /// </summary>
+    public Guid StudentIdGuid => Student?.IdGuid ?? Guid.Empty;
 
     /// <summary>
     /// </summary>
@@ -33,37 +73,48 @@ public class Enrollment : IEntity, INotifyPropertyChanged
 
     /// <summary>
     /// </summary>
+    public Guid DisciplineIdGuid => Discipline?.IdGuid ?? Guid.Empty;
+
+    /// <summary>
+    /// </summary>
     [Required]
     public virtual required Discipline Discipline { get; set; }
 
 
-    // [Column(TypeName = "decimal(18,2)")]
-    /// <summary>
-    /// </summary>
+    // This property represents the student's grade.
+    // It is formatted as a decimal with precision 18,2 and a range between 0 and 20.
     [Precision(18, 2)]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
+    [Range(0, 20, ErrorMessage = "Grade must be between 0 and 20.")]
     public decimal? Grade { get; set; }
 
 
-    /// <summary>
-    /// </summary>
-    public required int Absences { get; set; } = 0;
+    // This property represents the number of absences for the student.
+    // It is formatted as an integer with custom validation to ensure it's between 0 and DisciplineWorkLoadHours.
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    [ValidateAbsences(nameof(DisciplineWorkLoadHours),
+        ErrorMessage =
+            $"Absences must be between 0 and {nameof(DisciplineWorkLoadHours)}.")]
+    public int Absences { get; set; } = 0;
+
+
+    // This is a read-only property representing the workload hours for the discipline.
+    [DisplayName("Discipline Work Load Hours")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    public int DisciplineWorkLoadHours => Discipline?.Hours ?? 0;
+
+
+    // This is a calculated property representing the percentage of absences relative to the workload hours.
+    [DisplayFormat(DataFormatString = "{0:P}", ApplyFormatInEditMode = false)]
+    public decimal PercentageOfAbsences => DisciplineWorkLoadHours == 0
+        ? 0
+        : (decimal) Absences / DisciplineWorkLoadHours;
 
 
     /// <summary>
+    ///     Indica se houve reprovação devido às faltas com base em um limite de percentagem.
     /// </summary>
-    public decimal PercentageOfAbsences =>
-        (decimal) Absences / Discipline.Hours;
-
-
-    /// <summary>
-    /// Limite padrão de percentagem para reprovação devido a faltas.
-    /// </summary>
-    public const decimal ThresholdPercentage = 0.2m;
-
-
-    /// <summary>
-    /// Indica se houve reprovação devido às faltas com base em um limite de percentagem.
-    /// </summary>
+    [DisplayName("Failed Due To Absences")]
     public bool FailedDueToAbsences
     {
         get
@@ -73,6 +124,25 @@ public class Enrollment : IEntity, INotifyPropertyChanged
             return PercentageOfAbsences > ThresholdPercentage;
         }
     }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -122,25 +192,6 @@ public class Enrollment : IEntity, INotifyPropertyChanged
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By AppUser")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

@@ -1,13 +1,12 @@
-﻿@using System.Reflection
+﻿@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<AppUser> UserManager
+
+@using System.Reflection
 @using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users
 @using SchoolProject.Web.Controllers
 @using SchoolProject.Web.Data.Entities.Disciplines
 @using SchoolProject.Web.Data.Entities.Teachers
-@using SchoolProject.Web.Data.Entities.Users
-
-@inject RoleManager<IdentityRole> RoleManager
-@inject UserManager<AppUser> UserManager
-
 @model SchoolProject.Web.Data.Entities.Teachers.Teacher
 
 @{

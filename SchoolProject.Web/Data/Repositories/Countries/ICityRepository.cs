@@ -56,7 +56,6 @@ public interface ICityRepository : IGenericRepository<City>
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     IEnumerable<SelectListItem> GetComboCities();

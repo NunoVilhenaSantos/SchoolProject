@@ -49,10 +49,10 @@ public class GenderRepository : GenericRepository<Gender>, IGenderRepository
     {
         var list = _dataContext.Genders
             .Select(p => new SelectListItem
-                {Text = p.Name, Value = p.Id.ToString(),}).ToList();
+                {Text = p.Name, Value = p.Id.ToString()}).ToList();
 
         list.Insert(0, new SelectListItem
-            {Text = "(Select a Gender...)", Value = "0",});
+            {Text = "(Select a Gender...)", Value = "0"});
 
         return list;
     }

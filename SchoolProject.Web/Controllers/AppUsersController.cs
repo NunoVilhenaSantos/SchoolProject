@@ -17,7 +17,6 @@ using SchoolProject.Web.Models.Users;
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser")]
 public class AppUsersController : Controller
@@ -26,38 +25,36 @@ public class AppUsersController : Controller
     internal const string SessionVarName = UsersController.SessionVarName;
     internal const string SortProperty = UsersController.SortProperty;
     internal const string CurrentClass = UsersController.CurrentClass;
-    internal static readonly string BucketName = UsersController.BucketName;
     internal const string CurrentAction = nameof(Index);
     internal const string ClassRole = CurrentClass;
-
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(AppUsersController));
+    internal static readonly string BucketName = UsersController.BucketName;
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+
+
+    // datacontexts
+    private readonly DataContextMySql _context;
 
     // repositories
 
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
 
 
     // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
 
-
-    // datacontexts
-    private readonly DataContextMySql _context;
+    private readonly IUserHelper _userHelper;
     // private readonly DataContextMySql _contextMySql;
 
 
     /// <summary>
-    ///    AppUsersController constructor.
+    ///     AppUsersController constructor.
     /// </summary>
     /// <param name="hostingEnvironment"></param>
     /// <param name="converterHelper"></param>
@@ -80,6 +77,9 @@ public class AppUsersController : Controller
         _mailHelper = mailHelper;
         _context = context;
     }
+
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(AppUsersController));
 
 
     // Obtém o controlador atual
@@ -138,6 +138,7 @@ public class AppUsersController : Controller
                         Role = userUserRole.UserRole,
                         Roles = roles.Select(role => role.Name).ToList()
                     })
+            .AsNoTracking()
             .ToList();
 
         return usersWithRoles;
@@ -268,7 +269,7 @@ public class AppUsersController : Controller
 
     // GET: AppUsers/Create
     /// <summary>
-    ///  Create action.
+    ///     Create action.
     /// </summary>
     /// <returns></returns>
     public IActionResult Create()
@@ -290,7 +291,7 @@ public class AppUsersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///   Create action.
+    ///     Create action.
     /// </summary>
     /// <param name="appUser"></param>
     /// <returns></returns>
@@ -315,7 +316,7 @@ public class AppUsersController : Controller
 
     // GET: AppUsers/Edit/5
     /// <summary>
-    ///   Edit action.
+    ///     Edit action.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -350,7 +351,6 @@ public class AppUsersController : Controller
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <param name="appUser"></param>
@@ -400,7 +400,7 @@ public class AppUsersController : Controller
 
     // GET: AppUsers/Delete/5
     /// <summary>
-    ///    Delete action.
+    ///     Delete action.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -423,11 +423,12 @@ public class AppUsersController : Controller
 
     // POST: AppUsers/Delete/5
     /// <summary>
-    ///   DeleteConfirmed action.
+    ///     DeleteConfirmed action.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpPost, ActionName("Delete")]
+    [HttpPost]
+    [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(string id)
     {
@@ -435,7 +436,7 @@ public class AppUsersController : Controller
 
         if (appUser == null)
             return new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
-                id.ToString(), CurrentController, nameof(Index));
+                id, CurrentController, nameof(Index));
 
         try
         {

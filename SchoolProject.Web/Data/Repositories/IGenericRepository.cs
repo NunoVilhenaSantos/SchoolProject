@@ -16,7 +16,6 @@ public interface IGenericRepository<T> where T : class, IEntity
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     Task<int> GetCount();
@@ -35,7 +34,7 @@ public interface IGenericRepository<T> where T : class, IEntity
     /// </summary>
     /// <param name="idGuid"></param>
     /// <returns> returns an entity or null.</returns>
-    IQueryable<T>  GetByIdGuidAsync(Guid idGuid);
+    IQueryable<T> GetByIdGuidAsync(Guid idGuid);
 
 
     /// <summary>

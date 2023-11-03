@@ -1,0 +1,119 @@
+﻿@using System.Reflection
+
+@model    SchoolProject.Web.Models.Enrollments.GradesAssignmentViewModel
+
+@{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Notas do Aluno";
+}
+
+<h3>@actionName</h3>
+
+<h4>@controllerName</h4>
+
+<hr/>
+
+<h4>@ViewData["StudentFullName"]</h4>
+<hr/>
+
+<h1>@ViewData["Title"]</h1>
+
+
+@* <!-- Outro conteúdo da página --> *@
+<div>
+    <h3>Errors:</h3>
+    <ul>
+        <li>@Html.ValidationSummary(false, "", new {@class = "text-danger"})</li>
+    </ul>
+</div>
+
+
+@* <form asp-action="GradesAssignment" method="post"> *@
+<form asp-action="GradesAssignment" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    @* <input type="hidden" name="studentId" value="@ViewData["StudentId"]"/> *@
+    @* <input type="hidden" name="studentIdGuid" value="@ViewData["StudentIdGuid"]"/> *@
+    <input type="hidden" name="studentId"/>
+    <input type="hidden" name="studentIdGuid"/>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Enrollments.First().DisciplineCode) - @Html.DisplayNameFor(model => model.Enrollments.First().DisciplineName)</th>
+            <th>@Html.DisplayNameFor(model => model.Enrollments.First().Grade)</th>
+            <th>@Html.DisplayNameFor(model => model.Enrollments.First().Absences)</th>
+            <th>@Html.DisplayNameFor(model => model.Enrollments.First().PercentageOfAbsences)</th>
+            <th>@Html.DisplayNameFor(model => model.Enrollments.First().FailedDueToAbsences)</th>
+            <th>@Html.DisplayNameFor(model => model.Enrollments.First().ThresholdPercentage)</th>
+            <th>@Html.DisplayNameFor(model => model.Enrollments.First().DisciplineWorkLoadHours)</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Enrollments.OrderBy(x => x.DisciplineCode))
+        {
+            <tr>
+                <td>@item.DisciplineCode - @item.DisciplineName</td>
+                <td>
+                    <!-- Para enviar o ID da matrícula -->
+                    @* <input asp-for="@item.DisciplineCode" type="hidden"/> *@
+                    @* <input asp-for="@item.DisciplineName" type="hidden"/> *@
+
+                    <input asp-for="@item.EnrollmentId" type="hidden"/>
+                    <input asp-for="@item.EnrollmentIdGuid" type="hidden"/>
+
+                    @* <input asp-for="@item.PercentageOfAbsences" type="hidden"/> *@
+                    @* <input asp-for="@item.DisciplineWorkLoadHours" type="hidden"/> *@
+
+                    <div class="form-group">
+                        <input asp-for="@item.Grade" class="form-control" type="number"/>
+                        <span asp-validation-for="@item.Grade" class="text-danger"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input asp-for="@item.Absences" class="form-control"/>
+                        <span asp-validation-for="@item.Absences" class="text-danger"></span>
+                    </div>
+                </td>
+                <td>@item.PercentageOfAbsences</td>
+                <td>@item.FailedDueToAbsences</td>
+                <td>@item.ThresholdPercentage</td>
+                <td>@item.DisciplineWorkLoadHours</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+
+@section Scripts {
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/js/gradesAssignment.js"></script>
+
+}

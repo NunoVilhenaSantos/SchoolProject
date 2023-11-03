@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
@@ -9,7 +8,6 @@ using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
-
 
 namespace SchoolProject.Web.Data.DataContexts.MySQL;
 
@@ -226,39 +224,6 @@ public class DataContextMySql : IdentityDbContext<AppUser, IdentityRole, string>
 
 
         // ------------------------------------------------------------------ //
-        // Enrollment
-        // ------------------------------------------------------------------ //
-
-        modelBuilder.Entity<Enrollment>()
-            .HasKey(e => new {e.StudentId, e.DisciplineId});
-
-
-        modelBuilder.Entity<Enrollment>()
-            .HasOne(e => e.Student)
-            .WithMany(s => s.Enrollments)
-            .HasForeignKey(e => e.StudentId);
-
-
-        modelBuilder.Entity<Enrollment>()
-            .HasOne(e => e.Discipline)
-            .WithMany(d => d.Enrollments)
-            .HasForeignKey(e => e.DisciplineId);
-
-
-        // Configurar coluna Id como auto-incrementada sem ser chave principal
-        modelBuilder.Entity<Enrollment>()
-            .Property(e => e.Id)
-            // Usar a extensão específica para MySQL
-            .UseIdentityColumn()
-            // Nome da coluna no banco de dados
-            .HasColumnName("Id")
-            // Tipo de dado da coluna,
-            .HasColumnType("int");
-
-
-        // ------------------------------------------------------------------ //
-
-        // ------------------------------------------------------------------ //
         // Courses and Disciplines
         // ------------------------------------------------------------------ //
 
@@ -295,66 +260,120 @@ public class DataContextMySql : IdentityDbContext<AppUser, IdentityRole, string>
         // Course and Students
         // ------------------------------------------------------------------ //
 
-        //modelBuilder.Entity<CourseStudent>()
-        //    .HasKey(cs => new {cs.CourseId, cs.StudentId});
+        modelBuilder.Entity<CourseStudent>()
+            .HasKey(cs => new {cs.CourseId, cs.StudentId});
 
-        //modelBuilder.Entity<CourseStudent>()
-        //    .HasOne(cs => cs.Course)
-        //    .WithMany(c => c.CourseStudents)
-        //    .HasForeignKey(cs => cs.CourseId);
+        modelBuilder.Entity<CourseStudent>()
+            .HasOne(cs => cs.Course)
+            .WithMany(c => c.CourseStudents)
+            .HasForeignKey(cs => cs.CourseId);
 
-        //modelBuilder.Entity<CourseStudent>()
-        //    .HasOne(cs => cs.Student)
-        //    .WithMany(s => s.CourseStudents)
-        //    .HasForeignKey(cs => cs.StudentId);
+        modelBuilder.Entity<CourseStudent>()
+            .HasOne(cs => cs.Student)
+            .WithMany(s => s.CourseStudents)
+            .HasForeignKey(cs => cs.StudentId);
 
-        //// Configurar coluna Id como auto-incrementada sem ser chave principal
-        //modelBuilder.Entity<CourseStudent>()
-        //    .Property(cs => cs.Id)
-        //    // Usar a extensão específica para MySQL
-        //    .UseIdentityColumn()
-        //    // Nome da coluna no banco de dados
-        //    .HasColumnName("Id")
-        //    // Tipo de dado da coluna,
-        //    .HasColumnType("int");
-
-
-        // ------------------------------------------------------------------ //
-
-        // ------------------------------------------------------------------ //
-        // Student and Courses
-        // ------------------------------------------------------------------ //
-
-        //modelBuilder.Entity<StudentDiscipline>()
-        //    .HasKey(sc => new {sc.StudentId, sc.DisciplineId});
-
-        //modelBuilder.Entity<StudentDiscipline>()
-        //    .HasOne(sc => sc.Student)
-        //    .WithMany(s => s.StudentCourses)
-        //    .HasForeignKey(sc => sc.StudentId);
-
-        //modelBuilder.Entity<StudentDiscipline>()
-        //    .HasOne(sc => sc.Discipline)
-        //    .WithMany(c => c.StudentDisciplines)
-        //    .HasForeignKey(sc => sc.DisciplineId);
-
-
-        //// Configurar coluna Id como auto-incrementada sem ser chave principal
-        //modelBuilder.Entity<StudentDiscipline>()
-        //    .Property(sc => sc.Id)
-        //    // Usar a extensão específica para MySQL
-        //    .UseIdentityColumn()
-        //    // Nome da coluna no banco de dados
-        //    .HasColumnName("Id")
-        //    // Tipo de dado da coluna,
-        //    .HasColumnType("int");
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
+        modelBuilder.Entity<CourseStudent>()
+            .Property(cs => cs.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna,
+            .HasColumnType("int");
 
 
         // ------------------------------------------------------------------ //
 
 
         // ------------------------------------------------------------------ //
-        // Teacher and Courses
+        // Enrollments
+        // ------------------------------------------------------------------ //
+
+        modelBuilder.Entity<Enrollment>()
+            .HasKey(e => new {e.StudentId, e.DisciplineId});
+
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Student)
+            .WithMany(s => s.Enrollments)
+            .HasForeignKey(e => e.StudentId);
+
+
+        modelBuilder.Entity<Enrollment>()
+            .HasOne(e => e.Discipline)
+            .WithMany(d => d.Enrollments)
+            .HasForeignKey(e => e.DisciplineId);
+
+
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
+        modelBuilder.Entity<Enrollment>()
+            .Property(e => e.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna,
+            .HasColumnType("int");
+
+
+        // ------------------------------------------------------------------ //
+
+        // its a duplicaçao de codigo
+        //modelBuilder.Entity<Discipline>()
+        //    .HasMany(d => d.Students)
+        //    .WithMany(s => s.Disciplines)
+        //    .UsingEntity<Enrollment>(
+        //    j => j
+        //    .HasOne(e => e.Student)
+        //    .WithMany()
+        //    .HasForeignKey(e => e.StudentId),
+        //j => j
+        //    .HasOne(e => e.Discipline)
+        //    .WithMany()
+        //    .HasForeignKey(e => e.DisciplineId)
+        //    );
+
+
+        // ------------------------------------------------------------------ //
+        // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
+        // Student and Disciplines
+        // ------------------------------------------------------------------ //
+
+        modelBuilder.Entity<StudentDiscipline>()
+            .HasKey(sc => new {sc.StudentId, sc.DisciplineId});
+
+        modelBuilder.Entity<StudentDiscipline>()
+            .HasOne(sc => sc.Student)
+            .WithMany(s => s.StudentDisciplines)
+            .HasForeignKey(sc => sc.StudentId);
+
+        modelBuilder.Entity<StudentDiscipline>()
+            .HasOne(sc => sc.Discipline)
+            .WithMany(c => c.StudentDisciplines)
+            .HasForeignKey(sc => sc.DisciplineId);
+
+
+        // Configurar coluna Id como auto-incrementada sem ser chave principal
+        modelBuilder.Entity<StudentDiscipline>()
+            .Property(sc => sc.Id)
+            // Usar a extensão específica para MySQL
+            .UseIdentityColumn()
+            // Nome da coluna no banco de dados
+            .HasColumnName("Id")
+            // Tipo de dado da coluna,
+            .HasColumnType("int");
+
+
+        // ------------------------------------------------------------------ //
+
+
+        // ------------------------------------------------------------------ //
+        // Teacher and Disciplines
         // ------------------------------------------------------------------ //
 
         modelBuilder.Entity<TeacherDiscipline>()
@@ -391,8 +410,6 @@ public class DataContextMySql : IdentityDbContext<AppUser, IdentityRole, string>
 
         // ------------------------------------------------------------------ //
 
-       
-
 
         // ------------------------------------------------------------------ //
 
@@ -412,7 +429,7 @@ public class DataContextMySql : IdentityDbContext<AppUser, IdentityRole, string>
             .WithOne(n => n.Country)
             .HasForeignKey<Nationality>(n => n.CountryId)
             // Configura a exclusão em cascata
-            .OnDelete(DeleteBehavior.Cascade)
+            .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
 

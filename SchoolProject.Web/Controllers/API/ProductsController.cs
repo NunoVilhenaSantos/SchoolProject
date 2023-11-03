@@ -33,7 +33,6 @@ public class ProductsController : Controller
 
     // GET: api/Products
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -56,7 +55,6 @@ public class ProductsController : Controller
 
     // GET: api/Products/5
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -69,7 +67,6 @@ public class ProductsController : Controller
 
     // POST: api/Products
     /// <summary>
-    ///
     /// </summary>
     /// <param name="value"></param>
     /// <param name="id"></param>
@@ -81,7 +78,6 @@ public class ProductsController : Controller
 
     // PUT: api/Products/5
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <param name="value"></param>
@@ -93,7 +89,6 @@ public class ProductsController : Controller
 
     // DELETE: api/Products/5
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     [HttpDelete("id")]

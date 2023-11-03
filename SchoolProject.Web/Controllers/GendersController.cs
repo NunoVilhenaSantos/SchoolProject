@@ -2,7 +2,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Repositories.Genders;
 using SchoolProject.Web.Helpers;
@@ -21,17 +20,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class GendersController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(Gender.Name);
     internal const string CurrentClass = nameof(Gender);
+
     internal const string CurrentAction = nameof(Index);
 
-
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(GendersController));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -40,18 +36,18 @@ public class GendersController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+
+
+    //  repositories
+    private readonly IGenderRepository _genderRepository;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-
-    //  repositories
-    private readonly IGenderRepository _genderRepository;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
 
     // data-contexts
     // private readonly DataContext _context;
@@ -90,6 +86,11 @@ public class GendersController : Controller
     }
 
 
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(GendersController));
+
+
     // Obtém o controlador atual
     internal string CurrentController
     {
@@ -105,7 +106,7 @@ public class GendersController : Controller
 
     private List<Gender> GendersList()
     {
-        return _genderRepository.GetAll().ToList();
+        return _genderRepository.GetAll().AsNoTracking().ToList();
     }
 
 
@@ -219,7 +220,7 @@ public class GendersController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -280,7 +281,7 @@ public class GendersController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -347,7 +348,7 @@ public class GendersController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -462,7 +463,7 @@ public class GendersController : Controller
     // -------------------------------------------------------------- //
 
     /// <summary>
-    ///    GetGendersListJson action.
+    ///     GetGendersListJson action.
     /// </summary>
     /// <returns></returns>
     [HttpPost]

@@ -47,7 +47,7 @@
                 <div aria-label="Basic example" class="btn-group" role="group">
                     <div class="form-group">
                         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit</a>
-                        <a asp-action="AddCity" asp-route-id="@Model.Id" asp-route-method="1" class="btn btn-info">Add City</a>
+                        @* <a asp-action="AddCity" asp-route-id="@Model.Id" asp-route-method="1" class="btn btn-info">Add City</a> *@
                         <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back To list</a>
                     </div>
                 </div>
@@ -57,4 +57,5 @@
     </div>
 </div>
 
+<hr/>
 <partial name="_CitiesTable" for="@Model"/>

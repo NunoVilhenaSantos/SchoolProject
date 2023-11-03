@@ -1,6 +1,5 @@
-﻿@using System.Reflection
-
-@* @model SchoolProject.Web.Models.Users.UserWithRolesViewModel *@
+﻿@* @model SchoolProject.Web.Models.Users.UserWithRolesViewModel *@
+@using System.Reflection
 @model IEnumerable<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
 @* @model PaginationViewModel<SchoolProject.Web.Models.Users.UserWithRolesViewModel> *@
 
@@ -10,9 +9,9 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;

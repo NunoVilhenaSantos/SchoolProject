@@ -93,7 +93,10 @@
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.FullName" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
-                </div>
+                    <a asp-action="GradesAssignment" asp-controller="Enrollments" asp-route-studentId="@item.Id" asp-route-studentIdGuid="@item.IdGuid" class="btn btn-info"><i class="fa-regular fa-pen-to-square"></i> Grades Assignment </a>
+                    <a asp-action="SaveEnrollments" asp-controller="Enrollments" asp-route-studentId="@item.Id" asp-route-studentIdGuid="@item.IdGuid" class="btn btn-info"><i class="fa-regular fa-pen-to-square"></i> Save Grades </a>
+                        <a asp-action="StudentEnrollments" asp-controller="Enrollments" asp-route-studentId="@item.Id" asp-route-studentIdGuid="@item.IdGuid" class="btn btn-info"><i class="fa-regular fa-pen-to-square"></i> Student Enrollments </a>
+                    </div>
             </td>
         </tr>
     }

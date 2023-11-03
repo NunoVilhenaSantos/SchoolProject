@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -10,8 +9,6 @@ using SchoolProject.Web.Helpers.Users;
 
 namespace SchoolProject.Web.Data.Repositories.Enrollments;
 
-
-
 public class ReservationRepository : GenericRepository<Enrollment>,
     IReservationRepository
 {
@@ -19,16 +16,17 @@ public class ReservationRepository : GenericRepository<Enrollment>,
     private readonly IUserHelper _userHelper;
 
 
-
-
-    public ReservationRepository(DataContextMySql dataContext, DataContextMySql dataContextMySql, DataContextMsSql dataContextMsSql, DataContextSqLite dataContextSqLite, IUserHelper userHelper) : base(dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
+    public ReservationRepository(DataContextMySql dataContext,
+        DataContextMySql dataContextMySql, DataContextMsSql dataContextMsSql,
+        DataContextSqLite dataContextSqLite, IUserHelper userHelper) : base(
+        dataContext, dataContextMySql, dataContextMsSql, dataContextSqLite)
     {
     }
 
 
     // -------------------------------------------------------------- //
 
-    public IOrderedQueryable<Enrollment>GetEnrollments()
+    public IOrderedQueryable<Enrollment> GetEnrollments()
     {
         return _dataContext.Enrollments
             .Include(r => r.Student)
@@ -47,7 +45,6 @@ public class ReservationRepository : GenericRepository<Enrollment>,
             // .Include(r => r.Items)
             .OrderBy(e => e.Student.FirstName);
     }
-
 
 
     public IOrderedQueryable<Enrollment> GetEnrollmentById(int id)
@@ -123,8 +120,8 @@ public class ReservationRepository : GenericRepository<Enrollment>,
     }
 
 
-
-    public async Task<IOrderedQueryable<Enrollment>> GetEnrollment(string userName)
+    public async Task<IOrderedQueryable<Enrollment>> GetEnrollment(
+        string userName)
     {
         var user = await _userHelper.GetUserByEmailAsync(userName);
 
@@ -421,7 +418,4 @@ public class ReservationRepository : GenericRepository<Enrollment>,
 
     //    return bookEditionsList;
     //}
-
-
-
 }

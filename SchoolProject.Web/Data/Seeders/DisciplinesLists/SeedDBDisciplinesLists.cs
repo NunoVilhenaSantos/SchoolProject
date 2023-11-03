@@ -438,7 +438,7 @@ public class SeedDBDisciplinesLists
                         CreditPoints = discipline.Value.Item3,
                         CreatedBy = _appUser,
                         ProfilePhotoId = default,
-                        Description = string.Empty,
+                        Description = string.Empty
                     })
                 .ToList();
 

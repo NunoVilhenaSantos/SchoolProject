@@ -11,7 +11,6 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.WebEncoders;
 using Microsoft.Identity.Web.UI;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Web;
 using SchoolProject.Web.Controllers.API;
@@ -34,7 +33,6 @@ using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Services;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
-using Serilog;
 
 
 // Create a new web application using the WebApplicationBuilder.
@@ -105,6 +103,7 @@ static void GetServerHostNamePing(string serverHostName)
     // Tempo limite para o ping em milissegundos (3 segundo neste exemplo)
     var timeout = 3000;
 
+    var count = 0;
     while (true)
     {
         var pingSender = new Ping();
@@ -118,6 +117,16 @@ static void GetServerHostNamePing(string serverHostName)
             break;
         }
 
+
+        if (count > 15)
+        {
+            Console.WriteLine(
+                "Servidor online não responde. Conexão não foi estabelecida.");
+
+            // Sai do loop quando faz mais de 15 conexão é não é bem-sucedida.
+            break;
+        }
+
         Console.WriteLine(
             "Falha na conexão com o servidor. Tentar novamente...");
 
@@ -127,6 +136,8 @@ static void GetServerHostNamePing(string serverHostName)
         // ou altere para o valor desejado em milissegundos
         // na variable timeout
         Thread.Sleep(timeout);
+
+        count += 1;
     }
 }
 
@@ -143,7 +154,6 @@ static Task RunSeeding(IHost host)
     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
 
 
-
     // TODO: MICROSOFT BUG NA MEXE!!!!!
     // TODO: BUG NA MEXE!!!!!
     using (var scope = scopeFactory?.CreateScope())
@@ -151,7 +161,6 @@ static Task RunSeeding(IHost host)
         var seeder = scope?.ServiceProvider.GetService<SeedDb>();
         seeder?.SeedAsync().Wait();
     }
-
 
 
     // Stop the timer "MyTimer"
@@ -353,7 +362,6 @@ builder.Services.AddDbContext<DataContextSqLite>(
 //         options =>
 //             options.SignIn.RequireConfirmedAccount = true)
 //     .AddEntityFrameworkStores<DataContext>();
-
 
 
 // Configure Identity service with appUser settings,
@@ -712,28 +720,28 @@ builder.Services.AddScoped<IImageHelper, ImageHelper>();
 // --------------------------------- --------------------------------------- //
 
 // Add seeding for the database.
-// builder.Services.TryAddScoped<SeedDb>();
+//builder.Services.TryAddScoped<SeedDb>();
 builder.Services.TryAddTransient<SeedDb>();
 
-builder.Services.TryAddScoped<SeedDbUsers>();
-builder.Services.TryAddScoped<SeedDbStudentsAndTeachers>();
-builder.Services.TryAddScoped<SeedDbCourses>();
+// builder.Services.TryAddScoped<SeedDbUsers>();
+// builder.Services.TryAddScoped<SeedDbStudentsAndTeachers>();
+// builder.Services.TryAddScoped<SeedDbCourses>();
 
-// builder.Services.TryAddTransient<SeedDbUsers>();
-// builder.Services.TryAddTransient<SeedDbStudentsAndTeachers>();
-// builder.Services.TryAddTransient<SeedDbCourses>();
+builder.Services.TryAddTransient<SeedDbUsers>();
+builder.Services.TryAddTransient<SeedDbStudentsAndTeachers>();
+builder.Services.TryAddTransient<SeedDbCourses>();
 
-builder.Services.TryAddScoped<SeedDbTeachersWithDisciplines>();
-builder.Services.TryAddScoped<SeedDbCoursesWithDisciplines>();
-builder.Services.TryAddScoped<SeedDbCoursesAndStudents>();
+// builder.Services.TryAddScoped<SeedDbTeachersWithDisciplines>();
+// builder.Services.TryAddScoped<SeedDbCoursesWithDisciplines>();
+// builder.Services.TryAddScoped<SeedDbCoursesAndStudents>();
 
-// builder.Services.TryAddTransient<SeedDbTeachersWithDisciplines>();
-// builder.Services.TryAddTransient<SeedDbCoursesWithDisciplines>();
-// builder.Services.TryAddTransient<SeedDbCoursesAndStudents>();
+builder.Services.TryAddTransient<SeedDbTeachersWithDisciplines>();
+builder.Services.TryAddTransient<SeedDbCoursesWithDisciplines>();
+builder.Services.TryAddTransient<SeedDbCoursesAndStudents>();
 
 
-builder.Services.TryAddScoped<SeedDbPlaceHolders>();
-// builder.Services.TryAddTransient<SeedDbPlaceHolders>();
+// builder.Services.TryAddScoped<SeedDbPlaceHolders>();
+builder.Services.TryAddTransient<SeedDbPlaceHolders>();
 
 
 //
@@ -829,15 +837,13 @@ builder.Services.AddSession(options =>
 builder.Services.AddHttpContextAccessor();
 
 
-
 // Extrai o nome do servidor da Connection String
 var serverHostName =
     GetServerHostNameFromConnectionString(
         string.IsNullOrEmpty(
             builder.Configuration.GetConnectionString("SP-MSSql-Somee"))
-            ? builder.Configuration.GetConnectionString("SP-MSSql-Somee") 
+            ? builder.Configuration.GetConnectionString("SP-MSSql-Somee")
             : string.Empty);
-
 
 
 // Verifica se o servidor está disponível
@@ -848,7 +854,7 @@ GetServerHostNamePing(serverHostName);
 builder.Services.Configure<WebEncoderOptions>(options =>
 {
     options.TextEncoderSettings =
-    new TextEncoderSettings(UnicodeRanges.All);
+        new TextEncoderSettings(UnicodeRanges.All);
 });
 
 
@@ -884,7 +890,6 @@ builder.Services.AddControllersWithViews().AddViewLocalization()
 // builder.Services.AddControllersWithViews();
 
 
-
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
@@ -894,7 +899,7 @@ builder.Services.AddControllersWithViews().AddViewLocalization()
 builder.WebHost.UseSentry(o =>
 {
     o.Dsn =
-    "https://76ef04ab1feaff08788bd9da2e796db0@o4505920748126208.ingest.sentry.io/4505977698975744";
+        "https://76ef04ab1feaff08788bd9da2e796db0@o4505920748126208.ingest.sentry.io/4505977698975744";
 
     // When configuring for the first time,
     // to see what the SDK is doing:

@@ -1,12 +1,9 @@
-﻿using SchoolProject.Web.Data.Entities.Users;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
 namespace SchoolProject.Web.Models.Courses;
 
 /// <summary>
-/// 
 /// </summary>
 public class CourseDisciplineViewModel
 {
@@ -16,15 +13,24 @@ public class CourseDisciplineViewModel
     public required Guid IdGuid { get; set; }
 
 
-    [DisplayName("Course Code")] public required string CourseCode { get; set; }
+    [DisplayName("Course Id")] public required int CourseId { get; set; }
 
+    [DisplayName("Course IdGuid")]
+    public required Guid CourseIdGuid { get; set; }
+
+    [DisplayName("Course Code")] public required string CourseCode { get; set; }
 
     [DisplayName("Course Acronym")]
     public required string CourseAcronym { get; set; }
 
-
     [DisplayName("Course Name")] public required string CourseName { get; set; }
 
+
+    [DisplayName("Discipline Id")]
+    public required int DisciplineId { get; set; }
+
+    [DisplayName("Discipline IdGuid")]
+    public required Guid DisciplineIdGuid { get; set; }
 
     [DisplayName("Discipline Code")]
     public required string DisciplineCode { get; set; }
@@ -56,5 +62,5 @@ public class CourseDisciplineViewModel
 
 
     [DisplayName("Updated By")]
-    public virtual required string? UpdatedByFullName { get; set; }
+    public virtual required string UpdatedByFullName { get; set; }
 }

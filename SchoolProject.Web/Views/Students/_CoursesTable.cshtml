@@ -1,13 +1,12 @@
-﻿@using System.Reflection
+﻿@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<AppUser> UserManager
+
+@using System.Reflection
 @using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users
 @using SchoolProject.Web.Controllers
 @using SchoolProject.Web.Data.Entities.Courses
 @using SchoolProject.Web.Data.Entities.Students
-@using SchoolProject.Web.Data.Entities.Users
-
-@inject RoleManager<IdentityRole> RoleManager
-@inject UserManager<AppUser> UserManager
-
 @model SchoolProject.Web.Data.Entities.Students.Student
 
 @{
@@ -102,9 +101,11 @@ else
         </tbody>
         <tfoot>
         <tr>
-            @* <td></td> *@
+            <td></td>
             <td>Total Lines:</td>
             <td>@Model.Courses.Count()</td>
+            <td></td>
+            <td></td>
             <td>@Model.Courses.Sum(e => e.WorkHourLoad).ToString("N0")</td>
             <td>@Model.Courses.Sum(e => e.CourseCredits).ToString("N0")</td>
             <td></td>

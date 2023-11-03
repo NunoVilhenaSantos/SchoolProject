@@ -3,7 +3,6 @@
 namespace SchoolProject.Web.Helpers.Email;
 
 /// <summary>
-///
 /// </summary>
 public interface IMailHelper
 {

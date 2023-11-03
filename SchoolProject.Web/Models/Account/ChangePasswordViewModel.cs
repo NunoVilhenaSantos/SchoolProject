@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace SchoolProject.Web.Models.Account;
 
 /// <summary>
-///
 /// </summary>
 public class ChangePasswordViewModel
 {
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [DisplayName("Current Password")]
@@ -18,7 +16,6 @@ public class ChangePasswordViewModel
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [Display(Name = "New Password")]
@@ -28,7 +25,6 @@ public class ChangePasswordViewModel
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [Display(Name = "Confirm Password")]

@@ -6,14 +6,12 @@ namespace SchoolProject.Web.Data.Repositories.Teachers;
 public interface ITeacherRepository : IGenericRepository<Teacher>
 {
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IOrderedQueryable<Teacher> GetTeachers();
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

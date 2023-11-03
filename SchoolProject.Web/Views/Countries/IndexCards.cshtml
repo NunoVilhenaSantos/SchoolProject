@@ -10,9 +10,9 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
@@ -54,12 +54,12 @@
                         <div class="card-body pe-1">
                             <p class="card-text">@Html.DisplayFor(modelItem => item.Name)</p>
                             <small class="text-body-secondary">
-                                @Html.DisplayNameFor(modelItem => item.Nationality.Name)<br />
-                                @Html.DisplayFor(modelItem => item.Nationality.Name)<br />
-                                @Html.DisplayNameFor(modelItem => item.NumberOfCities)<br />
+                                @Html.DisplayNameFor(modelItem => item.Nationality.Name)<br/>
+                                @Html.DisplayFor(modelItem => item.Nationality.Name)<br/>
+                                @Html.DisplayNameFor(modelItem => item.NumberOfCities)<br/>
                                 @Html.DisplayFor(modelItem => item.NumberOfCities)
                             </small>
-                            <br /><br />
+                            <br/><br/>
                             <div class="d-flex justify-content-between align-items-center">
 
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">

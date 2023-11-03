@@ -16,23 +16,20 @@ namespace SchoolProject.Web.Controllers;
 
 /// <summary>
 ///     RolesController class, inherits from Controller.
-///     Authorisation is required to access this controller.
+///     Authorization is required to access this controller.
 ///     Roles that can access this controller are Admin and SuperUser.
 /// </summary>
 [Authorize(Roles = "Admin,SuperUser")]
 public class RolesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(IdentityRole.Name);
     internal const string CurrentClass = nameof(IdentityRole);
+
     internal const string CurrentAction = nameof(Index);
 
-
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(IdentityRole));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -41,18 +38,18 @@ public class RolesController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMailHelper _mailHelper;
 
 
     //  repositories
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
     private readonly UserManager<AppUser> _userManager;
 
 
@@ -71,13 +68,12 @@ public class RolesController : Controller
     public RolesController(AuthenticatedUserInApp authenticatedUserInApp,
         IHttpContextAccessor httpContextAccessor,
         IWebHostEnvironment hostingEnvironment,
-        IConverterHelper converterHelper,IStorageHelper storageHelper,
+        IConverterHelper converterHelper, IStorageHelper storageHelper,
         IUserHelper userHelper, IMailHelper mailHelper,
         RoleManager<IdentityRole> roleManager,
         UserManager<AppUser> userManager)
     {
-
-    _authenticatedUserInApp = authenticatedUserInApp;
+        _authenticatedUserInApp = authenticatedUserInApp;
         _httpContextAccessor = httpContextAccessor;
         _hostingEnvironment = hostingEnvironment;
         _converterHelper = converterHelper;
@@ -87,6 +83,11 @@ public class RolesController : Controller
         _mailHelper = mailHelper;
         _userManager = userManager;
     }
+
+
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(IdentityRole));
 
 
     // Obtém o controlador atual
@@ -102,11 +103,9 @@ public class RolesController : Controller
     }
 
 
-
-
     private List<IdentityRole> GetRolesList()
     {
-        return _roleManager.Roles.ToList();
+        return _roleManager.Roles.AsNoTracking().ToList();
     }
 
 
@@ -122,19 +121,19 @@ public class RolesController : Controller
             var json = Encoding.UTF8.GetString(allData);
 
             return JsonConvert.DeserializeObject<List<IdentityRole>>(json) ??
-                new List<IdentityRole>();
+                   new List<IdentityRole>();
         }
 
-            // Caso contrário, obtenha a lista completa do banco de dados
-            // Chame a função GetTeachersList com o tipo T
-            recordsQuery = GetRolesList();
+        // Caso contrário, obtenha a lista completa do banco de dados
+        // Chame a função GetTeachersList com o tipo T
+        recordsQuery = GetRolesList();
 
-            PaginationViewModel<T>.Initialize(_hostingEnvironment);
+        PaginationViewModel<T>.Initialize(_hostingEnvironment);
 
         var json1 = PaginationViewModel<IdentityRole>
-                .StoreListToFileInJson(recordsQuery);
+            .StoreListToFileInJson(recordsQuery);
 
-            // Armazene a lista na sessão para uso futuro
+        // Armazene a lista na sessão para uso futuro
         HttpContext.Session.Set(SessionVarName, Encoding.UTF8.GetBytes(json1));
 
         return recordsQuery;
@@ -273,7 +272,7 @@ public class RolesController : Controller
         if (result.Succeeded)
         {
             HttpContext.Session.Remove(SessionVarName);
-        
+
             return RedirectToAction("Index");
         }
 
@@ -394,8 +393,8 @@ public class RolesController : Controller
                 nameof(Index));
 
 
-
-        var appUserList = await _userManager.GetUsersInRoleAsync(identityRole.Name);
+        var appUserList =
+            await _userManager.GetUsersInRoleAsync(identityRole.Name);
 
         if (appUserList.Count > 0)
         {
@@ -404,7 +403,7 @@ public class RolesController : Controller
                 "pois está associado a um ou mais AppUsers.\n" +
                 "Portanto, o sistema não permitirá a exclusão.\n\n");
 
-            ModelState.AddModelError("Roles", 
+            ModelState.AddModelError("Roles",
                 "This role cannot be deleted because it is associated with one or more AppUsers.\n" +
                 "Therefore, the system will not allow its deletion.");
 
@@ -416,7 +415,6 @@ public class RolesController : Controller
         // Remove all roles from the system
         // await _roleManager.Roles.ExecuteDeleteAsync();
 
-        HttpContext.Session.Remove(SessionVarName);
 
         HttpContext.Session.Remove(SessionVarName);
 
@@ -426,7 +424,6 @@ public class RolesController : Controller
 
     // ---------------------------------------------------------------------- //
     // ---------------------------------------------------------------------- //
-
 
 
     /// <summary>
@@ -441,7 +438,7 @@ public class RolesController : Controller
     // -------------------------------------------------------------- //
 
     /// <summary>
-    ///    GetRolesListJson action.
+    ///     GetRolesListJson action.
     /// </summary>
     /// <returns></returns>
     [HttpPost]
@@ -451,11 +448,11 @@ public class RolesController : Controller
     {
         var rolesList = _roleManager.Roles
             .Select(p => new SelectListItem
-            { Text = p.Name, Value = p.Id.ToString(), })
+                {Text = p.Name, Value = p.Id.ToString()})
             .OrderBy(c => c.Text).ToList();
 
         rolesList.Insert(0, new SelectListItem
-        { Text = "(Select a Subscription....)", Value = "0", });
+            {Text = "(Select a Subscription....)", Value = "0"});
 
 
         return Task.FromResult(Json(rolesList));

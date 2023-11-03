@@ -94,4 +94,44 @@ public class CourseStudentsRepository
             .Where(i => i.Id == id)
             .OrderByDescending(o => o.Id);
     }
+
+
+    /// <inheritdoc />
+    public IOrderedQueryable<CourseStudent> GetCourseStudentByIdGuid(
+        Guid idGuid)
+    {
+        return _dataContext.CourseStudents
+
+            // --------------- Course section ---------------------- //
+            .Include(cs => cs.Course)
+
+            // --------------- Student section --------------------- //
+            .Include(cs => cs.Student)
+            //.ThenInclude(s => s.Country)
+            //.ThenInclude(c => c.Nationality)
+            //.ThenInclude(n => n.CreatedBy)
+            //.Include(scs => cs.Student)
+            //.ThenInclude(s => s.CountryOfNationality)
+            //.ThenInclude(c => c.Nationality)
+            //.ThenInclude(n => n.CreatedBy)
+            //.Include(scs => cs.Student)
+            //.ThenInclude(s => s.Birthplace)
+            //.ThenInclude(c => c.Nationality)
+            //.ThenInclude(n => n.CreatedBy)
+            //.Include(scs => cs.Student)
+            //.ThenInclude(s => s.Gender)
+            //.ThenInclude(g => g.CreatedBy)
+            //.Include(scs => cs.Student)
+            //.ThenInclude(s => s.AppUser)
+
+            // --------------- Student Others section -------------- //
+            //.Include(scs => cs.Student)
+            //.ThenInclude(s => s.SchoolClassStudents)
+
+            // --------------- Others section ---------------------- //
+            .Include(s => s.CreatedBy)
+            .Include(s => s.UpdatedBy)
+            .Where(i => i.IdGuid == idGuid)
+            .OrderByDescending(o => o.StudentId);
+    }
 }

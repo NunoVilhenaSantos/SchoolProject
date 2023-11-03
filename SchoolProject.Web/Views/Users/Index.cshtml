@@ -1,7 +1,6 @@
-@using System.Reflection
-@using System.Text.RegularExpressions;
-
 @* @model SchoolProject.Web.Models.Users.UserWithRolesViewModel *@
+@using System.Reflection
+@using System.Text.RegularExpressions
 @model IEnumerable<SchoolProject.Web.Models.Users.UserWithRolesViewModel>
 @* @model PaginationViewModel<SchoolProject.Web.Models.Users.UserWithRolesViewModel> *@
 
@@ -20,14 +19,14 @@
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
 
 
-    Func<string, string> splitLongColumnNames = (input) =>
+    Func<string, string> splitLongColumnNames = input =>
     {
         var words = Regex.Split(input, @"(?<!^)(?=[A-Z])|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])");
 
         return words.Length > 1 ? string.Join(" ", words) : input;
     };
 
-    Func<string, string> splitLongColumnNames1 = (input) =>
+    Func<string, string> splitLongColumnNames1 = input =>
     {
         // Verifica se já contém espaços
         return input.Contains(" ") ? input : string.Join(" ", input.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries));

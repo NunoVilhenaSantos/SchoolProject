@@ -12,7 +12,6 @@ namespace SchoolProject.Web.Data.Entities.Teachers;
 /// </summary>
 public class TeacherDiscipline : IEntity, INotifyPropertyChanged
 {
-
     /// <summary>
     /// </summary>
     [Required]
@@ -24,7 +23,7 @@ public class TeacherDiscipline : IEntity, INotifyPropertyChanged
     [Required]
     public virtual required Teacher Teacher { get; set; }
 
-    // public Guid TeacherGuidId => Teacher.IdGuid;
+    public Guid TeacherGuidId => Teacher?.IdGuid ?? Guid.Empty;
 
 
     /// <summary>
@@ -39,7 +38,26 @@ public class TeacherDiscipline : IEntity, INotifyPropertyChanged
     public virtual required Discipline Discipline { get; set; }
 
 
-    // public Guid CourseGuidId => Discipline.IdGuid;
+    public Guid CourseGuidId => Discipline?.IdGuid ?? Guid.Empty;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser Id")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser Id")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -91,25 +109,6 @@ public class TeacherDiscipline : IEntity, INotifyPropertyChanged
     // Especifique o nome da coluna da chave estrangeira
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser Id")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser Id")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
 
 
     // ---------------------------------------------------------------------- //

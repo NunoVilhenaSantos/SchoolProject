@@ -1,19 +1,19 @@
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
-using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Data.Repositories.Disciplines;
+using SchoolProject.Web.Data.Repositories.Enrollments;
 using SchoolProject.Web.Data.Repositories.Students;
+using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
@@ -31,16 +31,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesDisciplinesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(CourseDiscipline.CourseId);
     internal const string CurrentClass = nameof(CourseDiscipline);
-    internal const string CurrentAction = nameof(Index);
 
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(CoursesDisciplinesController));
+    internal const string CurrentAction = nameof(IndexCards1);
+
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -50,21 +48,29 @@ public class CoursesDisciplinesController : Controller
     // Helpers
     private readonly IConverterHelper _converterHelper;
     private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
     private readonly IMailHelper _mailHelper;
+    private readonly IUserHelper _userHelper;
+
+    private readonly UserManager<AppUser> _userManager;
+
+
+
+
+    //  repositories
+    private readonly ICourseDisciplinesRepository _courseDisciplinesRepository;
+    private readonly IStudentDisciplineRepository _studentDisciplineRepository;
+    private readonly ITeacherDisciplineRepository _teacherDisciplineRepository;
+
+
+    private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IDisciplineRepository _disciplineRepository;
+    private readonly ICourseRepository _courseRepository;
+
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-    private readonly UserManager<AppUser> _userManager;
-
-
-    //  repositories
-    private readonly ICourseDisciplinesRepository _courseDisciplinesRepository;
-    private readonly IDisciplineRepository _disciplineRepository;
-    private readonly ICourseRepository _courseRepository;
 
     // data context
     // private readonly DataContextMySql _context;
@@ -81,7 +87,10 @@ public class CoursesDisciplinesController : Controller
     /// <param name="userHelper"></param>
     /// <param name="mailHelper"></param>
     /// <param name="userManager"></param>
+    /// <param name="studentDisciplineRepository"></param>
+    /// <param name="teacherDisciplineRepository"></param>
     /// <param name="courseDisciplinesRepository"></param>
+    /// <param name="enrollmentRepository"></param>
     /// <param name="disciplineRepository"></param>
     /// <param name="courseRepository"></param>
     public CoursesDisciplinesController(
@@ -91,11 +100,17 @@ public class CoursesDisciplinesController : Controller
         IWebHostEnvironment hostingEnvironment,
         IHttpContextAccessor httpContextAccessor,
         UserManager<AppUser> userManager,
+        IStudentDisciplineRepository studentDisciplineRepository,
+        ITeacherDisciplineRepository teacherDisciplineRepository,
         ICourseDisciplinesRepository courseDisciplinesRepository,
+        IEnrollmentRepository enrollmentRepository,
         IDisciplineRepository disciplineRepository,
         ICourseRepository courseRepository)
     {
         _courseDisciplinesRepository = courseDisciplinesRepository;
+        _studentDisciplineRepository = studentDisciplineRepository;
+        _teacherDisciplineRepository = teacherDisciplineRepository;
+        _enrollmentRepository = enrollmentRepository;
         _authenticatedUserInApp = authenticatedUserInApp;
         _disciplineRepository = disciplineRepository;
         _httpContextAccessor = httpContextAccessor;
@@ -107,6 +122,10 @@ public class CoursesDisciplinesController : Controller
         _userHelper = userHelper;
         _mailHelper = mailHelper;
     }
+
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(CoursesDisciplinesController));
 
 
     // Obtém o controlador atual
@@ -141,6 +160,7 @@ public class CoursesDisciplinesController : Controller
             _courseDisciplinesRepository.GetCourseDisciplines()
                 .Include(e => e.CreatedBy)
                 .Include(e => e.UpdatedBy)
+                .AsNoTracking()
                 .ToList();
 
         var viewModelList = coursesDisciplines.Select(item =>
@@ -148,9 +168,13 @@ public class CoursesDisciplinesController : Controller
             {
                 Id = item.Id,
                 IdGuid = item.IdGuid,
+                CourseId = item.CourseId,
+                CourseIdGuid = item.Course.IdGuid,
                 CourseCode = item.Course.Code,
                 CourseAcronym = item.Course.Acronym,
                 CourseName = item.Course.Name,
+                DisciplineId = item.Discipline.Id,
+                DisciplineIdGuid = item.Discipline.IdGuid,
                 DisciplineCode = item.Discipline.Code,
                 DisciplineName = item.Discipline.Name,
                 DisciplineDescription = item.Discipline.Description,
@@ -158,7 +182,7 @@ public class CoursesDisciplinesController : Controller
                 CreatedAt = item.CreatedAt,
                 CreatedByFullName = item.CreatedBy.FullName,
                 UpdatedAt = item.UpdatedAt,
-                UpdatedByFullName = item.UpdatedBy?.FullName,
+                UpdatedByFullName = item.UpdatedBy?.FullName ?? string.Empty
             }).ToList();
 
 
@@ -246,7 +270,7 @@ public class CoursesDisciplinesController : Controller
 
     // GET: courseDiscipline
     /// <summary>
-    ///     Index, list of school class with courses
+    ///     IndexCards1, list of school class with courses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -268,7 +292,7 @@ public class CoursesDisciplinesController : Controller
 
     // GET: courseDiscipline
     /// <summary>
-    ///     Index with cards, list of school class with courses
+    ///     IndexCards1 with cards, list of school class with courses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -290,7 +314,7 @@ public class CoursesDisciplinesController : Controller
 
     // GET: courseDiscipline
     /// <summary>
-    ///     Index with cards, list of school class with courses
+    ///     IndexCards1 with cards, list of school class with courses
     /// </summary>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
@@ -326,7 +350,7 @@ public class CoursesDisciplinesController : Controller
 
     // GET: courseDiscipline/Details/5
     /// <summary>
-    ///     Details, school class with courses
+    ///     Details, courses and disciplines
     /// </summary>
     /// <param name="id"></param>
     /// <param name="idGuid"></param>
@@ -335,16 +359,23 @@ public class CoursesDisciplinesController : Controller
     {
         if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(nameof(CourseDisciplineNotFound),
-                CurrentClass, id.ToString(), CurrentController, nameof(Index));
+                CurrentClass, id.ToString(), CurrentController,
+                nameof(IndexCards1));
 
-        // var courseDiscipline = await _courseDisciplinesRepository
-        //     .GetCourseDisciplineById(id.Value).FirstOrDefaultAsync();
-        var courseDiscipline = await _courseDisciplinesRepository
-            .GetCourseDisciplineByGuid(idGuid.Value).FirstOrDefaultAsync();
+
+        var courseDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _courseDisciplinesRepository
+                .GetCourseDisciplineById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _courseDisciplinesRepository
+                .GetCourseDisciplineByIdGuid(idGuid.Value)
+                .FirstOrDefaultAsync();
+
 
         return courseDiscipline == null
             ? new NotFoundViewResult(nameof(CourseDisciplineNotFound),
-                CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                CurrentClass, id.ToString(), CurrentController,
+                nameof(IndexCards1))
             : View(courseDiscipline);
     }
 
@@ -375,7 +406,7 @@ public class CoursesDisciplinesController : Controller
         var courseDiscipline = new CourseDiscipline
         {
             CourseId = 0, Course = null, DisciplineId = 0, Discipline = null,
-            CreatedBy = null, CreatedById = null, CreatedAt = DateTime.Now,
+            CreatedBy = null, CreatedById = null, CreatedAt = DateTime.Now
         };
 
         FillViewLists();
@@ -398,22 +429,48 @@ public class CoursesDisciplinesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CourseDiscipline courseDiscipline)
     {
-        if (ModelState.IsValid)
+        var course = await _courseRepository
+            .GetByIdAsync(courseDiscipline.CourseId)
+            .FirstOrDefaultAsync();
+
+        var discipline = await _disciplineRepository
+            .GetByIdAsync(courseDiscipline.DisciplineId)
+            .FirstOrDefaultAsync();
+
+        var createdBy = await _authenticatedUserInApp.GetAuthenticatedUser();
+
+        var courseDiscipline1 = new CourseDiscipline
         {
-            await _courseDisciplinesRepository.CreateAsync(courseDiscipline);
+            Course = course,
+            Discipline = discipline,
+            CreatedBy = createdBy
+        };
+
+
+        try
+        {
+            await _courseDisciplinesRepository.CreateAsync(courseDiscipline1);
 
             HttpContext.Session.Remove(SessionVarName);
 
-            HttpContext.Session.Remove(SessionVarName);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexCards1));
         }
+        catch (DbUpdateException ex)
+        {
+            FillViewLists(
+                courseDiscipline1.CourseId,
+                courseDiscipline1.DisciplineId,
+                courseDiscipline1.CreatedBy?.Id,
+                courseDiscipline1.UpdatedBy?.Id);
 
-        FillViewLists(
-            courseDiscipline.CourseId, courseDiscipline.DisciplineId,
-            courseDiscipline.CreatedBy.Id, courseDiscipline.UpdatedBy.Id);
+            // ModelState.AddModelError(string.Empty,
+            //     $"A disciplina {discipline.Name} já existe neste curso {course.Name}.");
+            ModelState.AddModelError(string.Empty,
+                $"The discipline {discipline.Name} " +
+                $"already exists in the course {course.Name}.");
 
-        return View(courseDiscipline);
+            return View(courseDiscipline1);
+        }
     }
 
 
@@ -429,25 +486,31 @@ public class CoursesDisciplinesController : Controller
         if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(CourseDisciplineNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
-        // var courseDiscipline = await _courseDisciplinesRepository
-        //     .GetCourseDisciplineById(id.Value).FirstOrDefaultAsync();
-        var courseDiscipline = await _courseDisciplinesRepository
-            .GetCourseDisciplineByGuid(idGuid.Value).FirstOrDefaultAsync();
+
+        var courseDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _courseDisciplinesRepository
+                .GetCourseDisciplineById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _courseDisciplinesRepository
+                .GetCourseDisciplineByIdGuid(idGuid.Value)
+                .FirstOrDefaultAsync();
+
 
         if (courseDiscipline == null)
             return new NotFoundViewResult(
                 nameof(CourseDisciplineNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
 
         FillViewLists(
             courseDiscipline.CourseId, courseDiscipline.DisciplineId,
-            courseDiscipline.CreatedBy.Id, courseDiscipline.UpdatedBy.Id);
+            courseDiscipline.CreatedBy?.Id, courseDiscipline.UpdatedBy?.Id);
 
         return View(courseDiscipline);
     }
+
 
     // POST: courseDiscipline/Edit/5
     // To protect from over-posting attacks,
@@ -466,38 +529,52 @@ public class CoursesDisciplinesController : Controller
     public async Task<IActionResult> Edit(
         int id, Guid idGuid, CourseDiscipline courseDiscipline)
     {
-        if (id != courseDiscipline.CourseId ||
-            idGuid != courseDiscipline.IdGuid)
+        if (id != courseDiscipline.Id || idGuid != courseDiscipline.IdGuid)
             return new NotFoundViewResult(
                 nameof(CourseDisciplineNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
-        if (ModelState.IsValid)
+
+        var courseDiscipline1 = new CourseDiscipline
         {
-            try
-            {
-                await _courseDisciplinesRepository
-                    .UpdateAsync(courseDiscipline);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_courseDisciplinesRepository.ExistAsync(idGuid).Result)
-                    return new NotFoundViewResult(
-                        nameof(CourseDisciplineNotFound), CurrentClass,
-                        id.ToString(), CurrentController, nameof(Index));
+            Course = await _courseRepository
+                .GetByIdAsync(courseDiscipline.CourseId).FirstOrDefaultAsync(),
+            Discipline = await _disciplineRepository
+                .GetByIdAsync(courseDiscipline.DisciplineId)
+                .FirstOrDefaultAsync(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
+        };
 
-                throw;
-            }
+
+        try
+        {
+            await _courseDisciplinesRepository
+                .UpdateAsync(courseDiscipline1);
 
             HttpContext.Session.Remove(SessionVarName);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexCards1));
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            if (!_courseDisciplinesRepository.ExistAsync(idGuid).Result)
+                return new NotFoundViewResult(
+                    nameof(CourseDisciplineNotFound), CurrentClass,
+                    id.ToString(), CurrentController, nameof(IndexCards1));
+
+            AddModelError(ex.Message + "\n" + ex.InnerException);
+
+            // throw;
+        }
+        catch (Exception ex)
+        {
+            AddModelError(ex.Message + "\n" + ex.InnerException);
         }
 
 
         FillViewLists(
             courseDiscipline.CourseId, courseDiscipline.DisciplineId,
-            courseDiscipline.CreatedBy.Id, courseDiscipline.UpdatedBy.Id);
+            courseDiscipline.CreatedById, courseDiscipline.UpdatedById);
 
         return View(courseDiscipline);
     }
@@ -515,16 +592,22 @@ public class CoursesDisciplinesController : Controller
         if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(CourseDisciplineNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
-        // var courseDiscipline = await _courseDisciplinesRepository
-        //     .GetCourseDisciplineById(id.Value).FirstOrDefaultAsync();
-        var courseDiscipline = await _courseDisciplinesRepository
-            .GetCourseDisciplineByGuid(idGuid.Value).FirstOrDefaultAsync();
+
+        var courseDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _courseDisciplinesRepository
+                .GetCourseDisciplineById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _courseDisciplinesRepository
+                .GetCourseDisciplineByIdGuid(idGuid.Value)
+                .FirstOrDefaultAsync();
+
 
         return courseDiscipline == null
             ? new NotFoundViewResult(nameof(CourseDisciplineNotFound),
-                CurrentClass, id.ToString(), CurrentController, nameof(Index))
+                CurrentClass, id.ToString(), CurrentController,
+                nameof(IndexCards1))
             : View(courseDiscipline);
     }
 
@@ -541,25 +624,66 @@ public class CoursesDisciplinesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id, Guid idGuid)
     {
-        // var courseDiscipline = await _courseDisciplinesRepository
-        //     .GetCourseDisciplineById(id.Value).FirstOrDefaultAsync();
-        var courseDiscipline = await _courseDisciplinesRepository
-            .GetCourseDisciplineByGuid(idGuid).FirstOrDefaultAsync();
+        var courseDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _courseDisciplinesRepository
+                .GetCourseDisciplineById(id)
+                .FirstOrDefaultAsync()
+            : await _courseDisciplinesRepository
+                .GetCourseDisciplineByIdGuid(idGuid)
+                .FirstOrDefaultAsync();
+
 
         if (courseDiscipline == null)
             return new NotFoundViewResult(
                 nameof(CourseDisciplineNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
+
+        var courseDisciplineToRemove = await _courseDisciplinesRepository
+            .GetCourseDisciplineById(id)
+            .FirstOrDefaultAsync();
+
+        if (courseDisciplineToRemove == null)
+        {
+            // Lógica para lidar com o caso em que a disciplina a ser removida não existe.
+            // Por exemplo, retornar uma resposta de erro ou redirecionar para uma página apropriada.
+        }
+
+        // Obter as disciplinas dos estudantes relacionadas à disciplina que será removida.
+        var studentDisciplines = 
+            await _studentDisciplineRepository.GetAll()
+            .Where(sd => sd.Discipline == courseDisciplineToRemove.Discipline)
+            .ToListAsync();
+
+        // Obter as disciplinas dos professores relacionadas à disciplina que será removida.
+        var teacherDisciplines = 
+            await _teacherDisciplineRepository.GetAll()
+            .Where(td => td.Discipline == courseDisciplineToRemove.Discipline)
+            .ToListAsync();
+
+        // Obter as matrículas (enrollments) relacionadas à disciplina que será removida.
+        var enrollments = 
+            await _enrollmentRepository.GetAll()
+            .Where(e => e.Discipline == courseDisciplineToRemove.Discipline)
+            .ToListAsync();
 
         try
         {
             await _courseDisciplinesRepository.DeleteAsync(courseDiscipline);
-
             await _courseDisciplinesRepository.SaveAllAsync();
+
+            await _studentDisciplineRepository.DeleteRangeAsync(studentDisciplines);
+            await _studentDisciplineRepository.SaveAllAsync();
+
+            await _teacherDisciplineRepository.DeleteRangeAsync(teacherDisciplines);
+            await _teacherDisciplineRepository.SaveAllAsync();
+
+            await _enrollmentRepository.DeleteRangeAsync(enrollments);
+            await _enrollmentRepository.SaveAllAsync();
+
 
             HttpContext.Session.Remove(SessionVarName);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexCards1));
         }
         catch (DbUpdateException ex)
         {
@@ -580,13 +704,13 @@ public class CoursesDisciplinesController : Controller
                         "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                         $"The {nameof(Course)} with the ID " +
                         $"{courseDiscipline.Id} - {courseDiscipline.Course.Name} " +
-                        $"{courseDiscipline.IdGuid} +" +
+                        $"{courseDiscipline.IdGuid} " +
                         "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                         "Try deleting possible dependencies and try again. ",
                     ItemClass = nameof(Course),
                     ItemId = courseDiscipline.Id.ToString(),
                     ItemGuid = courseDiscipline.IdGuid,
-                    ItemName = courseDiscipline.Course.Name,
+                    ItemName = courseDiscipline.Course.Name
                 };
 
                 // Redirecione para o DatabaseError com os dados apropriados
@@ -626,7 +750,7 @@ public class CoursesDisciplinesController : Controller
                     "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                     $"The {nameof(CourseDiscipline)} with the ID " +
                     $"{courseDiscipline.Id} - {courseDiscipline.Course.Name} " +
-                    $"{courseDiscipline.IdGuid} +" +
+                    $"{courseDiscipline.IdGuid} " +
                     "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                     "Try deleting possible dependencies and try again. ",
                 ItemClass = nameof(CourseDiscipline),
@@ -651,7 +775,7 @@ public class CoursesDisciplinesController : Controller
                     "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                     $"The {nameof(CourseDiscipline)} with the ID " +
                     $"{courseDiscipline.Id} - {courseDiscipline.Course.Name} " +
-                    $"{courseDiscipline.IdGuid} +" +
+                    $"{courseDiscipline.IdGuid} " +
                     "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                     "Try deleting possible dependencies and try again. ",
                 ItemClass = nameof(CourseDiscipline),
@@ -666,7 +790,13 @@ public class CoursesDisciplinesController : Controller
     }
 
 
-    private async Task<bool> SchoolClassCourseExists(int id)
+    private void AddModelError(string errorMessage)
+    {
+        ModelState.AddModelError(string.Empty, errorMessage);
+    }
+
+
+    private async Task<bool> CoursesDisciplineExists(int id)
     {
         return await _courseDisciplinesRepository.ExistAsync(id);
     }
@@ -678,29 +808,37 @@ public class CoursesDisciplinesController : Controller
     )
     {
         var test = _disciplineRepository.GetDisciplines().ToList();
+        var loggedUser = _authenticatedUserInApp.GetAuthenticatedUser().Result;
 
         ViewData[nameof(CourseDiscipline.DisciplineId)] =
-            new SelectList(test,
+            new SelectList(
+                _disciplineRepository.GetDisciplines().Select(d =>
+                        new {d.Id, Description = $"{d.Code} - {d.Name}"})
+                    .ToList(),
                 nameof(Discipline.Id),
-                $"{nameof(Discipline.Code)}",
+                "Description",
                 disciplineId);
 
         ViewData[nameof(CourseDiscipline.CourseId)] =
-            new SelectList(_courseRepository.GetCourses(),
+            new SelectList(
+                _courseRepository.GetCourses().Select(c =>
+                        new {c.Id, Description = $"{c.Code} - {c.Name}"})
+                    .ToList(),
                 nameof(Course.Id),
-                nameof(Course.Name),
-                courseId);
+                "Description",
+                courseId
+            );
 
         ViewData[nameof(CourseDiscipline.CreatedById)] =
-            new SelectList(_userManager.Users,
+            new SelectList(_userManager.Users.ToList(),
                 nameof(AppUser.Id),
-                nameof(AppUser.FirstName),
-                createdById);
+                nameof(AppUser.FullName),
+                createdById != null ? createdById : loggedUser.Id);
 
         ViewData[nameof(CourseDiscipline.UpdatedById)] =
             new SelectList(_userManager.Users,
                 nameof(AppUser.Id),
-                nameof(AppUser.FirstName),
-                updatedById);
+                nameof(AppUser.FullName),
+                updatedById != null ? updatedById : loggedUser.Id);
     }
 }

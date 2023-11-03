@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Countries;
@@ -9,7 +10,6 @@ using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Genders;
-using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
 using SchoolProject.Web.Helpers.Storages;
@@ -17,7 +17,7 @@ using SchoolProject.Web.Helpers.Storages;
 namespace SchoolProject.Web.Data.Entities.Students;
 
 /// <summary>
-///  Student class for ef
+///     Student class for ef
 /// </summary>
 public class Student : IEntity, INotifyPropertyChanged
 {
@@ -25,6 +25,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("First Name")]
+    [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string FirstName { get; set; }
 
 
@@ -32,6 +33,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Last Name")]
+    [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string LastName { get; set; }
 
 
@@ -44,6 +46,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [Required]
+    [MaxLength(150, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Address { get; set; }
 
 
@@ -51,6 +54,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Postal Code")]
+    [MaxLength(10, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string PostalCode { get; set; }
 
 
@@ -65,7 +69,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     // [Required]
     [ForeignKey(nameof(City))]
@@ -81,6 +84,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Mobile Phone")]
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string MobilePhone { get; set; }
 
 
@@ -88,6 +92,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DataType(DataType.EmailAddress)]
+    [MaxLength(200, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Email { get; set; }
 
 
@@ -120,10 +125,12 @@ public class Student : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Identification Number")]
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string IdentificationNumber { get; set; }
 
     /// <summary>
     /// </summary>
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string IdentificationType { get; set; }
 
 
@@ -139,6 +146,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Tax Identification Number")]
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string TaxIdentificationNumber { get; set; }
 
 
@@ -148,7 +156,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
     // [Required]
     /// <summary>
-    ///
     /// </summary>
     [ForeignKey(nameof(CountryOfNationality))]
     [DisplayName("Country Of Nationality")]
@@ -162,13 +169,11 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [ForeignKey(nameof(Birthplace))]
     public int BirthplaceId { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required Country Birthplace { get; set; }
@@ -183,7 +188,6 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [ForeignKey(nameof(AppUser))]
     public string UserId { get; set; }
@@ -201,6 +205,8 @@ public class Student : IEntity, INotifyPropertyChanged
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
     [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -237,41 +243,35 @@ public class Student : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     public virtual HashSet<CourseStudent>? CourseStudents { get; set; }
 
 
-
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
     public IEnumerable<Course>? Courses =>
         CourseStudents?.Select(cd => cd.Course).Distinct();
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Courses Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int CoursesCount => Courses?.Count() ?? 0;
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Courses Work Load")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int CoursesWorkLoad => Courses?.Sum(e => e.WorkHourLoad) ?? 0;
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Courses Credits")]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public double CoursesCredits => Courses?.Sum(r => r.CourseCredits) ?? 0;
-
-
-
 
 
     // ---------------------------------------------------------------------- //
@@ -285,9 +285,8 @@ public class Student : IEntity, INotifyPropertyChanged
     public virtual HashSet<Enrollment>? Enrollments { get; set; }
 
 
-
     /// <summary>
-    ///    Returns the disciplines associated with this teacher
+    ///     Returns the disciplines associated with this teacher
     /// </summary>
     [NotMapped]
     public IEnumerable<Discipline> Disciplines =>
@@ -298,6 +297,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Disciplines Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int CoursesCountEnrollments =>
         Enrollments?.Where(e => e.Discipline.Id == Id).Count() ?? 0;
 
@@ -305,6 +305,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Total Work Hours")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int TotalWorkHoursEnrollments =>
         Enrollments?.Sum(e => e.Discipline.Hours) ?? 0;
 
@@ -312,6 +313,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Highest Grade")]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public decimal HighestGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Max(e => e.Grade) ?? 0;
@@ -320,6 +322,7 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Average Grade")]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public decimal AverageGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Average(e => e.Grade) ?? 0;
@@ -328,9 +331,101 @@ public class Student : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Lowest Grade")]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public decimal LowestGrade => Enrollments?
         .Where(e => e.StudentId == Id)
         .Min(e => e.Grade) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    // ---------------------------------------------------------------------- //
+    // Navigation property for the many-to-many relationship
+    // ---------------------------------------------------------------------- //
+
+
+    ///// <summary>
+    /////    Navigation property for the many-to-many relationship with courses
+    ///// </summary>
+    //public IEnumerable<Discipline>? Disciplines { get; set; }
+
+
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Disciplines Count")]
+    //public int DisciplinesCount => Disciplines?.Count() ?? 0;
+
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Total Work Hours")]
+    //public int TotalWorkHours => Disciplines?
+    //    .Sum(t => t.Hours) ?? 0;
+
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Total Students")]
+    //public int TotalStudents => Disciplines?
+    //    .Sum(t => t.StudentsCount) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+
+    /// <summary>
+    ///     Navigation property for the many-to-many relationship with courses
+    /// </summary>
+    public virtual HashSet<StudentDiscipline>? StudentDisciplines { get; set; }
+    //= new HashSet<StudentDiscipline>();
+
+
+    /// <summary>
+    ///     Returns the disciplines associated with this teacher
+    /// </summary>
+    [NotMapped]
+    public IEnumerable<Discipline>? SDDisciplines =>
+        StudentDisciplines?.Select(sc => sc.Discipline).Distinct();
+
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Disciplines Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    public int DisciplinesCount => SDDisciplines?.Count() ?? 0;
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Total Work Hours")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    public int TotalWorkHours => SDDisciplines?
+        .Sum(t => t.Hours) ?? 0;
+
+    /// <summary>
+    /// </summary>
+    [DisplayName("Total Students")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    public int TotalStudents => SDDisciplines?
+        .Sum(t => t.StudentsCount) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -361,6 +456,7 @@ public class Student : IEntity, INotifyPropertyChanged
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+
     /// <inheritdoc />
     [Required]
     [DisplayName("Created By")]
@@ -374,29 +470,10 @@ public class Student : IEntity, INotifyPropertyChanged
     // [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
+
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
-
 
 
     // ---------------------------------------------------------------------- //

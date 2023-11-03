@@ -1,7 +1,8 @@
-﻿@using System.Reflection
-@* @model IEnumerable<SchoolProject.Web.Data.Entities.Courses.CourseDiscipline> *@
+﻿@* @model IEnumerable<SchoolProject.Web.Data.Entities.Courses.CourseDiscipline> *@
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Courses.CourseDisciplines> *@
+
 @* @model IEnumerable<SchoolProject.Web.Models.Courses.CourseDisciplineViewModel> *@
+@using System.Reflection
 @model PaginationViewModel<SchoolProject.Web.Models.Courses.CourseDisciplineViewModel>
 
 @{
@@ -65,7 +66,7 @@
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                                     <a asp-action="Edit" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                                     <a asp-action="Details" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Id" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
                                 </div>
                                 @* <small class="text-body-secondary"> *@
                                 @*     @Html.DisplayNameFor(modelItem => item.CourseName)<br/> *@

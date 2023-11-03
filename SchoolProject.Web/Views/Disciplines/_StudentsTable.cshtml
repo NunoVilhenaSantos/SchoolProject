@@ -1,13 +1,12 @@
-﻿@using System.Reflection
-@using Microsoft.AspNetCore.Identity
-@using SchoolProject.Web.Data.Entities.Courses
-@using SchoolProject.Web.Data.Entities.Disciplines
-@using SchoolProject.Web.Data.Entities.Students
-@using SchoolProject.Web.Data.Entities.Users
-
-@inject RoleManager<IdentityRole> RoleManager
+﻿@inject RoleManager<IdentityRole> RoleManager
 @inject UserManager<AppUser> UserManager
 
+@using System.Reflection
+@using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Controllers
+@using SchoolProject.Web.Data.Entities.Students
+@using SchoolProject.Web.Data.Entities.Disciplines
 @model SchoolProject.Web.Data.Entities.Disciplines.Discipline
 
 @{
@@ -26,7 +25,7 @@
 }
 
 <br/>
-<h4>Courses</h4>
+<h4>@StudentsController.ControllerName</h4>
 @if (Model.Students == null && !Model.Students.Any())
 {
     <h5>No @nameof(Student) added yet to this @nameof(Discipline) | @Model.Code - @Model.Name</h5>
@@ -99,9 +98,14 @@ else
             <td></td>
             <td>Total Lines:</td>
             <td>@Model.Students.Count().ToString("N")</td>
-            <td>@Model.Students.FirstOrDefault().LowestGrade.ToString("N")</td>
-            <td>@Model.Students.FirstOrDefault().AverageGrade.ToString("N")</td>
-            <td>@Model.Students.FirstOrDefault().HighestGrade.ToString("N")</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>@Model.Students.Sum(e => e.LowestGrade).ToString("N")</td>
+            <td>@Model.Students.Sum(e => e.AverageGrade).ToString("N")</td>
+            <td>@Model.Students.Sum(e => e.HighestGrade).ToString("N")</td>
             <td></td>
         </tr>
         </tfoot>

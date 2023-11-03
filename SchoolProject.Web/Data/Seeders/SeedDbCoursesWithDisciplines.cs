@@ -16,7 +16,7 @@ public class SeedDbCoursesWithDisciplines
 
 
     /// <summary>
-    /// code for fetching existing courses and disciplines
+    ///     code for fetching existing courses and disciplines
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="dataContextInUse"></param>
@@ -64,7 +64,7 @@ public class SeedDbCoursesWithDisciplines
                                  DisciplineId = discipline.Discipline.Id,
                                  Discipline = discipline.Discipline,
                                  CreatedBy = appUser,
-                                 CreatedById = appUser.Id,
+                                 CreatedById = appUser.Id
                              }))
                     // Add the association to Courses and Discipline's CourseDisciplines collection
                     dataContextInUse.CourseDisciplines.Add(disciplines);

@@ -21,7 +21,7 @@
         <li>
             <a asp-action="Index" asp-area="" asp-controller="Genders"
                class="dropdown-item @(currentAction == "Index" && currentController == "Genders" ? "active" : "")">
-                @GendersController.ControllerName
+                @GendersController.ControllerName List
             </a>
         </li>
         <li>
@@ -31,7 +31,7 @@
             <a asp-action="IndexCards" asp-area="" asp-controller="Genders"
                class="dropdown-item @(currentAction == "IndexCards" && currentController == "Genders" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @GendersController.ControllerName Cards
+                @GendersController.ControllerName Cards Search
             </a>
         </li>
         <li>
@@ -41,7 +41,7 @@
             <a asp-action="IndexCards1" asp-area="" asp-controller="Genders"
                class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Genders" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @GendersController.ControllerName Cards 1
+                @GendersController.ControllerName Cards Sorting
             </a>
         </li>
     </ul>

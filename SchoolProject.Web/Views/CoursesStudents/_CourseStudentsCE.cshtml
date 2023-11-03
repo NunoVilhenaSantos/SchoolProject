@@ -1,16 +1,16 @@
 @model SchoolProject.Web.Data.Entities.Courses.CourseStudent
 
-@* <!-- Outro conteúdo da página --> *@
+@* <!-- Outro conteÃºdo da pÃ¡gina --> *@
 <div>
-    <h3>Errors:</h3>
+    @* <h3>Errors:</h3> *@
     <ul>
-        <li>@Html.ValidationSummary(false, "", new { @class = "text-danger" })</li>
+        <li>@Html.ValidationSummary(false, "", new {@class = "text-danger"})</li>
     </ul>
 </div>
 
 <div class="form-group">
     <label asp-for="CourseId" class="control-label"></label>
-    <select asp-for="CourseId" class="form-control" asp-items="ViewBag.SchoolClassId"></select>
+    <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
     <span asp-validation-for="CourseId" class="text-danger"></span>
 </div>
 <div class="form-group">
@@ -26,7 +26,7 @@
 </div>
 <div class="form-group">
     <label asp-for="CreatedById" class="control-label"></label>
-    <select asp-for="CreatedById" class="form-control" asp-items="ViewBag.CreatedById"></select>
+    <select asp-for="CreatedById" class="form-control" asp-items="ViewBag.CreatedById" disabled></select>
     <span asp-validation-for="CreatedById" class="text-danger"></span>
 </div>
 
@@ -37,7 +37,7 @@
 </div>
 <div class="form-group">
     <label asp-for="UpdatedById" class="control-label"></label>
-    <select asp-for="UpdatedById" class="form-control" asp-items="ViewBag.UpdatedById"></select>
+    <select asp-for="UpdatedById" class="form-control" asp-items="ViewBag.UpdatedById" disabled></select>
     <span asp-validation-for="UpdatedById" class="text-danger"></span>
 </div>
 

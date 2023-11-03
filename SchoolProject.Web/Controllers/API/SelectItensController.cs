@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
 using NuGet.Protocol;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
@@ -22,7 +18,6 @@ public class SelectItensController : ControllerBase
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="countryRepository"></param>
     /// <param name="dataContext"></param>
@@ -46,7 +41,7 @@ public class SelectItensController : ControllerBase
     [HttpPost]
     // [Route("api/Helpers/GetCountriesWithNationalitiesJson")]
     [Route("Helpers/GetCountriesWithNationalitiesJson")]
-    public  Task<JsonResult> GetCountriesWithNationalitiesJson()
+    public Task<JsonResult> GetCountriesWithNationalitiesJson()
     {
         //var countriesWithNationalities =
         //    _countryRepository.GetComboCountriesAndNationalities();
@@ -59,7 +54,6 @@ public class SelectItensController : ControllerBase
 
         return Task.FromResult(new JsonResult(countriesWithNationalities
             .OrderBy(c => c.Text).ToJson()));
-
     }
 
 

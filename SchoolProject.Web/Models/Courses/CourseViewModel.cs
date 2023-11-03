@@ -4,5 +4,4 @@ namespace SchoolProject.Web.Models.Courses;
 
 public class CourseViewModel : Course
 {
-
 }

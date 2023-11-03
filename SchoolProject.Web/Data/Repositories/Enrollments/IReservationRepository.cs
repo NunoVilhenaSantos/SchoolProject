@@ -5,7 +5,6 @@ using SchoolProject.Web.Data.Entities.Students;
 
 namespace SchoolProject.Web.Data.Repositories.Enrollments;
 
-
 public interface IReservationRepository : IGenericRepository<Enrollment>
 {
     IOrderedQueryable<Enrollment> GetEnrollments();

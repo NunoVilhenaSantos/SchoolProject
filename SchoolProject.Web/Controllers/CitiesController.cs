@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
@@ -22,35 +21,34 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CitiesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(City.Name);
     internal const string CurrentClass = nameof(City);
+
     internal const string CurrentAction = nameof(Index);
 
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(CitiesController));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+    private readonly ICityRepository _cityRepository;
 
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
-
-
-    // Host Environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     // Repositories.
     private readonly ICountryRepository _countryRepository;
-    private readonly ICityRepository _cityRepository;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
 
 
     /// <summary>
@@ -83,6 +81,9 @@ public class CitiesController : Controller
         _mailHelper = mailHelper;
     }
 
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(CitiesController));
+
 
     // Obtém o controlador atual
     internal string CurrentController
@@ -99,10 +100,14 @@ public class CitiesController : Controller
 
     private List<City> CitiesWithCountries()
     {
-        var citiesWithCountries =
-            _cityRepository.GetCitiesWithCountriesAsync();
+        // return _cityRepository.GetCitiesWithCountriesAsync().ToList();
 
-        return citiesWithCountries.ToList();
+        // return _cityRepository.GetCitiesWithCountriesAsync().AsNoTracking().ToList();
+
+        return _cityRepository.GetCitiesWithCountriesAsync()
+            .AsNoTrackingWithIdentityResolution().ToList();
+
+        // return _cityRepository.GetAll().AsNoTracking().ToList();
     }
 
 
@@ -216,7 +221,7 @@ public class CitiesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -291,7 +296,7 @@ public class CitiesController : Controller
             Name = city.Name,
             ProfilePhotoId = city.ProfilePhotoId,
             Country = country1,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
         };
 
 
@@ -311,7 +316,7 @@ public class CitiesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -402,7 +407,7 @@ public class CitiesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -422,7 +427,6 @@ public class CitiesController : Controller
 
     // POST: Cities/Delete/5
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

@@ -22,11 +22,11 @@ public class UserHelper : IUserHelper
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
+    private DataContextMySql _dataContextInUse;
 
 
     // Data contexts and user manager in use
     private UserManager<AppUser> _userManagerInUse;
-    private DataContextMySql _dataContextInUse;
 
 
     /// <summary>
@@ -52,7 +52,7 @@ public class UserHelper : IUserHelper
 
 
     /// <summary>
-    ///    The appUser helper constructor.
+    ///     The appUser helper constructor.
     /// </summary>
     /// <param name="dataContextInUse"></param>
     /// <param name="userManagerInUse"></param>
@@ -182,24 +182,6 @@ public class UserHelper : IUserHelper
 
         if (!result)
             await _roleManager.CreateAsync(new IdentityRole {Name = roleName});
-    }
-
-
-    /// <inheritdoc />
-    public IdentityRole? GetUserRole(string userId)
-    {
-        // Get the appUser from the database.
-        var user = _dataContextMySql.Users.Find(userId);
-
-        // If the appUser is not found, return null.
-        if (user == null) return null;
-
-        var userRoleId = _dataContextMySql.UserRoles
-            .Where(e => e.UserId == userId)
-            .ToList()[0].RoleId;
-
-        // If the appUser is found, get their role.
-        return _dataContextMySql.Roles.Find(userRoleId);
     }
 
 
@@ -392,5 +374,23 @@ public class UserHelper : IUserHelper
     {
         return await _userManager.Users.AsNoTracking()
             .AnyAsync(user => user.Id == id);
+    }
+
+
+    /// <inheritdoc />
+    public IdentityRole? GetUserRole(string userId)
+    {
+        // Get the appUser from the database.
+        var user = _dataContextMySql.Users.Find(userId);
+
+        // If the appUser is not found, return null.
+        if (user == null) return null;
+
+        var userRoleId = _dataContextMySql.UserRoles
+            .Where(e => e.UserId == userId)
+            .ToList()[0].RoleId;
+
+        // If the appUser is found, get their role.
+        return _dataContextMySql.Roles.Find(userRoleId);
     }
 }

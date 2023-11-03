@@ -38,7 +38,7 @@
                    class="dropdown-item @(currentAction == "Index" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    AppUsers
+                    AppUsers List
                 </a>
             </li>
             <li>
@@ -46,7 +46,7 @@
                    class="dropdown-item @(currentAction == "IndexCards" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    AppUsers Cards
+                    AppUsers Cards Search
                 </a>
             </li>
             <li>
@@ -54,7 +54,7 @@
                    class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Users" ? "active" : "")">
                     <span class="bi bi-person-fill"></span>
                     <span class="material-symbols-outlined">person</span>
-                    AppUsers Cards 1
+                    AppUsers Cards Sorting
                 </a>
             </li>
             <li>
@@ -65,7 +65,7 @@
                    class="dropdown-item @(currentAction == "Index" && currentController == "Roles" ? "active" : "")">
                     <span class="bi bi-people-fill"></span>
                     <span class="material-symbols-outlined">group</span>
-                    Roles
+                    Roles List
                 </a>
             </li>
             <li>
@@ -73,7 +73,7 @@
                    class="dropdown-item @(currentAction == "IndexCards" && currentController == "Roles" ? "active" : "")">
                     <span class="bi bi-people-fill"></span>
                     <span class="material-symbols-outlined">group</span>
-                    Roles Cards
+                    Roles Cards Search
                 </a>
             </li>
             <li>
@@ -81,16 +81,14 @@
                    class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Roles" ? "active" : "")">
                     <span class="bi bi-people-fill"></span>
                     <span class="material-symbols-outlined">group</span>
-                    Roles Cards 1
+                    Roles Cards Sorting
                 </a>
             </li>
             <li>
                 <hr class="dropdown-divider">
             </li>
             <li class="nav-item">
-                <a asp-area="Identity" asp-page="/Account/Manage/Index"
-                   class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")"
-                   id="manage" title="Manage">
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="dropdown-item @(currentAction == "" && currentController == "Account" ? "active" : "")" id="manage" title="Manage">
                     <span class="material-symbols-outlined">settings_account_box</span>
                     @* Hello @AppUserManager.GetAppUserName(AppUser)! *@
                     @* @AppUser.Identity?.Name *@

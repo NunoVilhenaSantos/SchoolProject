@@ -1,0 +1,108 @@
+﻿@using System.Reflection
+
+@model   IEnumerable<SchoolProject.Web.Models.Enrollments.EnrollmentViewModel>
+
+@{
+    ViewData["AssemblyName"] = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["AssemblyFullName"] = Assembly.GetExecutingAssembly().GetName().FullName;
+    ViewData["AssemblyVersion"] = Assembly.GetExecutingAssembly().GetName().Version;
+    ViewData["vAssemblyVersion"] = "v" + Assembly.GetExecutingAssembly().GetName().Version;
+
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    ViewData["actionName"] = actionName;
+
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    ViewData["controllerName"] = controllerName;
+
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+    ViewData["assemblyName"] = assemblyName;
+
+    // var pageTitle = actionName + " - " + controllerName + " - " + assemblyName ;
+    var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
+
+    ViewData["pageTitle"] = pageTitle;
+    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Notas do Aluno";
+}
+
+<h3>@actionName</h3>
+
+<h4>@controllerName</h4>
+
+<hr/>
+
+<h4>@ViewData["StudentFullName"]</h4>
+<hr/>
+
+<h1>@ViewData["Title"]</h1>
+
+
+@* <!-- Outro conteúdo da página --> *@
+<div>
+    <h3>Errors:</h3>
+    <ul>
+        <li>@Html.ValidationSummary(false, "", new {@class = "text-danger"})</li>
+    </ul>
+</div>
+
+
+@* <form asp-action="SaveEnrollment" method="post"> *@
+<form asp-action="SaveEnrollments" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" name="studentId" value="@ViewData["StudentId"]"/>
+    <input type="hidden" name="studentIdGuid" value="@ViewData["StudentIdGuid"]"/>
+
+    <button type="submit" class="btn btn-primary"> <i class="fas fa-save"></i> Edit </button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.DisciplineCode) - @Html.DisplayNameFor(model => model.DisciplineName)</th>
+            <th>@Html.DisplayNameFor(model => model.Grade)</th>
+            <th>@Html.DisplayNameFor(model => model.Absences)</th>
+            <th>@Html.DisplayNameFor(model => model.PercentageOfAbsences)</th>
+            <th>@Html.DisplayNameFor(model => model.DisciplineWorkLoadHours)</th>
+            <th>Save</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.OrderBy(x => x.DisciplineCode))
+        {
+            <tr>
+
+                <input asp-for="@item.DisciplineCode" type="hidden"/>
+                <input asp-for="@item.DisciplineName" type="hidden"/>
+                <input asp-for="@item.EnrollmentId" type="hidden"/>
+                <input asp-for="@item.EnrollmentIdGuid" type="hidden"/>
+                <input asp-for="@item.PercentageOfAbsences" type="hidden"/>
+                <input asp-for="@item.DisciplineWorkLoadHours" type="hidden"/>
+
+                <td>@item.DisciplineCode - @item.DisciplineName</td>
+                <td>
+                    <input asp-for="@item.Grade" class="form-control"/><span asp-validation-for="@item.Grade" class="text-danger"></span>
+                </td>
+                <td>
+                    <input asp-for="@item.Absences" class="form-control"/><span asp-validation-for="@item.Absences" class="text-danger"></span>
+                </td>
+                <td>@item.PercentageOfAbsences</td>
+                <td>@item.DisciplineWorkLoadHours</td>
+                <td>
+                    <button type="button" class="btn btn-primary" id="saveButton" onclick="saveEnrollment(this)">Save</button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary"> <i class="fas fa-save"></i> Edit </button>
+</form>
+
+@section Scripts {
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    @* <script src="~/js/gradesAssignment.js"></script> *@
+    <script src="~/js/saveEnrollments.js"></script>
+
+}

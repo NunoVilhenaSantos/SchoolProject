@@ -1,13 +1,12 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Repositories.Courses;
 using SchoolProject.Web.Helpers.Users;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
 // For more information on enabling Web API for empty projects,
@@ -26,9 +25,9 @@ namespace SchoolProject.Web.Controllers.API;
 //[Authorize(Roles = "Admin")]
 public class CoursesController : ControllerBase
 {
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly ICourseRepository _courseRepository;
     private readonly DataContextMySql _context;
+    private readonly ICourseRepository _courseRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IUserHelper _userHelper;
 
 
@@ -55,7 +54,7 @@ public class CoursesController : ControllerBase
 
     // GET: api/<CoursesController>
     /// <summary>
-    ///     Get all Courses 
+    ///     Get all Courses
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -112,7 +111,7 @@ public class CoursesController : ControllerBase
 
 
         // serialização usando System.Text.Json
-        var options = new System.Text.Json.JsonSerializerOptions
+        var options = new JsonSerializerOptions
         {
             // Use ReferenceHandler.Preserve para preservar referências circulares
             ReferenceHandler = ReferenceHandler.Preserve,
@@ -121,13 +120,13 @@ public class CoursesController : ControllerBase
             WriteIndented = true,
 
             // Defina um valor adequado para limitar a profundidade da serialização.
-            MaxDepth = 10,
+            MaxDepth = 10
         };
 
 
         // converte em json para enviar aos pedidos da API
         var jsonMariconsoft =
-            System.Text.Json.JsonSerializer.Serialize(schoolClasses, options);
+            JsonSerializer.Serialize(schoolClasses, options);
 
         // return Ok(jsonMariconsoft);
 
@@ -136,9 +135,12 @@ public class CoursesController : ControllerBase
         // --------------------------------------------------------------------------- //
 
 
-        var courses = _context.Courses.ToList(); // Supondo que você obteve os cursos do banco de dados
+        var courses =
+            _context.Courses
+                .ToList(); // Supondo que você obteve os cursos do banco de dados
 
-        var courseDTOs = courses.Select(course => CourseDto.MapToDto(course)).ToList();
+        var courseDTOs = courses.Select(course => CourseDto.MapToDto(course))
+            .ToList();
 
         //var options = new System.Text.Json.JsonSerializerOptions
         //{
@@ -147,7 +149,7 @@ public class CoursesController : ControllerBase
         //    MaxDepth = 10 // Defina a profundidade máxima, se necessário
         //};
 
-        var jsonMariconsoft1 = System.Text.Json.JsonSerializer.Serialize(courseDTOs, options);
+        var jsonMariconsoft1 = JsonSerializer.Serialize(courseDTOs, options);
 
         return Ok(jsonMariconsoft1);
 
@@ -156,7 +158,7 @@ public class CoursesController : ControllerBase
 
 
         // serialização usando Newtonsoft.Json 
-        var settings = new Newtonsoft.Json.JsonSerializerSettings
+        var settings = new JsonSerializerSettings
         {
             // Use PreserveReferencesHandling para preservar referências circulares
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
@@ -166,7 +168,7 @@ public class CoursesController : ControllerBase
         };
 
         // converte em json para enviar aos pedidos da API
-        var json = Newtonsoft.Json.JsonConvert.SerializeObject(
+        var json = JsonConvert.SerializeObject(
             schoolClasses, settings);
 
         // return Ok(json);
@@ -184,7 +186,7 @@ public class CoursesController : ControllerBase
 
 
         // serialização usando Newtonsoft.Json 
-        var json1 = Newtonsoft.Json.JsonConvert.SerializeObject(schoolClasses,
+        var json1 = JsonConvert.SerializeObject(schoolClasses,
             new JsonSerializerSettings
             {
                 // A possible object cycle was detected.
@@ -210,18 +212,17 @@ public class CoursesController : ControllerBase
     // [HttpGet]
     // public IActionResult Get() => Ok(_schoolClassRepository.GetAllWithUsers());
 
-
     // GET api/<CoursesController>/5
     // [Route("api/Courses/{id:int}")]
     [HttpGet("{id:int}")]
     public IActionResult Get(int id)
     {
-        var schoolClass = _context.Courses
+        var course = _context.Courses
             .FirstOrDefaultAsync(m => m.Id == id);
 
 
         // converte em json para enviar aos pedidos da API
-        var json = Newtonsoft.Json.JsonConvert.SerializeObject(schoolClass,
+        var json = JsonConvert.SerializeObject(course,
             new JsonSerializerSettings
             {
                 // A possible object cycle was detected.
@@ -239,10 +240,8 @@ public class CoursesController : ControllerBase
             });
 
 
-        return Ok(schoolClass);
+        return Ok(course);
     }
-
-    
 
 
     // ---------------------------------------------------------------------- //

@@ -27,17 +27,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "SuperUser,Functionary")]
 public class StudentDisciplinesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(StudentDiscipline.Id);
     internal const string CurrentClass = nameof(StudentDiscipline);
+
     internal const string CurrentAction = nameof(Index);
 
-
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(StudentDisciplinesController));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -46,23 +43,23 @@ public class StudentDisciplinesController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+    private readonly IDisciplineRepository _disciplineRepository;
 
 
     // Host Environment
     // Obtém o ambiente de hospedagem
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly UserManager<AppUser> _userManager;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
 
 
     //  repositories
     // Obtém o repositório de studentDiscipline
     private readonly IStudentDisciplineRepository _studentDisciplineRepository;
-    private readonly IDisciplineRepository _disciplineRepository;
     private readonly IStudentRepository _studentRepository;
+    private readonly IUserHelper _userHelper;
+    private readonly UserManager<AppUser> _userManager;
 
     // Obtém o contexto do banco de dados
     // private readonly DataContextMySql _context;
@@ -109,6 +106,11 @@ public class StudentDisciplinesController : Controller
     }
 
 
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(StudentDisciplinesController));
+
+
     // Obtém o controlador atual
     private string CurrentController
     {
@@ -139,6 +141,7 @@ public class StudentDisciplinesController : Controller
         //     .Include(s => s.Discipline)
         //     .Include(s => s.CreatedBy)
         //     .Include(s => s.UpdatedBy)
+        //     .AsNoTracking()
         //     .ToList();
 
         return _studentDisciplineRepository.GetAll()
@@ -146,6 +149,7 @@ public class StudentDisciplinesController : Controller
             .Include(s => s.Discipline)
             // .Include(s => s.CreatedBy)
             // .Include(s => s.UpdatedBy)
+            .AsNoTracking()
             .ToList();
     }
 
@@ -262,21 +266,26 @@ public class StudentDisciplinesController : Controller
     /// <param name="id"></param>
     /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id, string? idGuid)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(StudentDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var studentDiscipline =
-            await _studentDisciplineRepository
+
+        var studentDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _studentDisciplineRepository
                 .GetStudentDisciplineById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _studentDisciplineRepository
+                .GetStudentDisciplineByIdGuid(idGuid.Value)
                 // .Include(s => s.Discipline)
                 // .Include(s => s.Student)
                 // .Include(s => s.CreatedBy)
                 // .Include(s => s.UpdatedBy)
-                .FirstOrDefaultAsync(m => m.StudentId == id);
+                .FirstOrDefaultAsync();
+
 
         return studentDiscipline == null
             ? new NotFoundViewResult(
@@ -294,7 +303,14 @@ public class StudentDisciplinesController : Controller
     {
         FillViewDatas();
 
-        return View();
+        var temp = new StudentDiscipline
+        {
+            Student = null, Discipline = null,
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result,
+            CreatedAt = DateTime.Now
+        };
+
+        return View(temp);
     }
 
 
@@ -312,14 +328,23 @@ public class StudentDisciplinesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(StudentDiscipline studentDiscipline)
     {
-        if (ModelState.IsValid)
+        var courseDiscipline1 = new StudentDiscipline
+        {
+            Discipline = await _disciplineRepository
+                .GetByIdAsync(studentDiscipline.DisciplineId)
+                .FirstOrDefaultAsync(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            Student = await _studentRepository
+                .GetByIdAsync(studentDiscipline.StudentId).FirstOrDefaultAsync()
+        };
+
+        try
         {
             await _studentDisciplineRepository.CreateAsync(studentDiscipline);
-
-            await _studentDisciplineRepository.SaveAllAsync();
-
             HttpContext.Session.Remove(SessionVarName);
-
+        }
+        catch
+        {
             return RedirectToAction(nameof(Index));
         }
 
@@ -341,21 +366,26 @@ public class StudentDisciplinesController : Controller
     /// <param name="id"></param>
     /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id, string? idGuid)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(StudentDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var studentDiscipline =
-            await _studentDisciplineRepository
+
+        var studentDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _studentDisciplineRepository
                 .GetStudentDisciplineById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _studentDisciplineRepository
+                .GetStudentDisciplineByIdGuid(idGuid.Value)
                 // .Include(s => s.Discipline)
                 // .Include(s => s.Student)
                 // .Include(s => s.CreatedBy)
                 // .Include(s => s.UpdatedBy)
-                .FirstOrDefaultAsync(m => m.StudentId == id);
+                .FirstOrDefaultAsync();
+
 
         if (studentDiscipline == null)
             return new NotFoundViewResult(
@@ -386,13 +416,15 @@ public class StudentDisciplinesController : Controller
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, string idGuid,
-        StudentDiscipline studentDiscipline)
+    public async Task<IActionResult> Edit(
+        int id, Guid idGuid, StudentDiscipline studentDiscipline)
     {
-        if (id != studentDiscipline.StudentId)
+        if (id != studentDiscipline.Id ||
+            idGuid != studentDiscipline.IdGuid)
             return new NotFoundViewResult(
                 nameof(StudentDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
+
 
         if (ModelState.IsValid)
         {
@@ -436,21 +468,31 @@ public class StudentDisciplinesController : Controller
     /// <param name="id"></param>
     /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id, string? idGuid)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(StudentDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var studentDiscipline =
-            await _studentDisciplineRepository
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
+            return new NotFoundViewResult(
+                nameof(StudentDisciplineNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
+
+
+        var studentDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _studentDisciplineRepository
                 .GetStudentDisciplineById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _studentDisciplineRepository
+                .GetStudentDisciplineByIdGuid(idGuid.Value)
                 // .Include(s => s.Discipline)
                 // .Include(s => s.Student)
                 // .Include(s => s.CreatedBy)
                 // .Include(s => s.UpdatedBy)
-                .FirstOrDefaultAsync(m => m.StudentId == id);
+                .FirstOrDefaultAsync();
+
 
         return studentDiscipline == null
             ? new NotFoundViewResult(
@@ -470,10 +512,20 @@ public class StudentDisciplinesController : Controller
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id, string idGuid)
+    public async Task<IActionResult> DeleteConfirmed(int id, Guid idGuid)
     {
-        var studentDiscipline = await _studentDisciplineRepository
-            .GetByIdAsync(id).FirstOrDefaultAsync();
+        var studentDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _studentDisciplineRepository
+                .GetStudentDisciplineById(id)
+                .FirstOrDefaultAsync()
+            : await _studentDisciplineRepository
+                .GetStudentDisciplineByIdGuid(idGuid)
+                // .Include(s => s.Discipline)
+                // .Include(s => s.Student)
+                // .Include(s => s.CreatedBy)
+                // .Include(s => s.UpdatedBy)
+                .FirstOrDefaultAsync();
+
 
         if (studentDiscipline == null)
             return new NotFoundViewResult(
@@ -601,13 +653,15 @@ public class StudentDisciplinesController : Controller
     )
     {
         ViewData[nameof(StudentDiscipline.DisciplineId)] =
-            new SelectList(_disciplineRepository.GetAll().AsEnumerable(),
+            new SelectList(
+                _disciplineRepository.GetDisciplines().Select(d =>
+                    new {d.Id, Description = $"{d.Code} - {d.Name}"}).ToList(),
                 nameof(Discipline.Id),
-                $"{nameof(Discipline.Code)} ({nameof(Discipline.Name)})",
+                "Description",
                 disciplineId);
 
         ViewData[nameof(StudentDiscipline.StudentId)] =
-            new SelectList(_studentRepository.GetAll().AsEnumerable(),
+            new SelectList(_studentRepository.GetAll().ToList(),
                 nameof(Student.Id),
                 nameof(Student.FullName),
                 studentId);
@@ -616,13 +670,13 @@ public class StudentDisciplinesController : Controller
         ViewData[nameof(StudentDiscipline.CreatedById)] =
             new SelectList(_userManager.Users,
                 nameof(AppUser.Id),
-                nameof(AppUser.FirstName),
+                nameof(AppUser.FullName),
                 createdById);
 
         ViewData[nameof(StudentDiscipline.UpdatedById)] =
             new SelectList(_userManager.Users,
                 nameof(AppUser.Id),
-                nameof(AppUser.FirstName),
+                nameof(AppUser.FullName),
                 updatedById);
     }
 }

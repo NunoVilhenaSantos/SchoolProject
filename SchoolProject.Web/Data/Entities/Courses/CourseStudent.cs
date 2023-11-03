@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using SchoolProject.Web.Data.Entities.Disciplines;
+using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.EntitiesOthers;
@@ -31,10 +33,10 @@ public class CourseStudent : IEntity, INotifyPropertyChanged
     public virtual required Course Course { get; set; }
 
 
-    ///// <summary>
-    /////     Foreign Guid Key for Course
-    ///// </summary>
-    //public Guid CourseGuidId => Discipline.IdGuid;
+    /// <summary>
+    ///     Foreign Guid Key for Course
+    /// </summary>
+    public Guid CourseGuidId => Course?.IdGuid ?? Guid.Empty;
 
 
     // --------------------------------------------------------------------- //
@@ -53,6 +55,27 @@ public class CourseStudent : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     public virtual required Student Student { get; set; }
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser Id")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser Id")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
 
 
     // --------------------------------------------------------------------- //
@@ -110,20 +133,61 @@ public class CourseStudent : IEntity, INotifyPropertyChanged
     // ---------------------------------------------------------------------- //
 
 
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser Id")]
-    [ForeignKey(nameof(CreatedBy))]
-    public  string CreatedById { get; set; }
+    ///// <summary>
+    ///// </summary>
+    //[NotMapped]
+    //public virtual HashSet<Enrollment>? Enrollments { get; set; }
+
+    ///// <summary>
+    /////     Returns the disciplines associated with this teacher
+    ///// </summary>
+    //[NotMapped]
+    //public IEnumerable<Student>? Students =>
+    //    Enrollments?.Select(sc => sc.Student).Distinct();
 
 
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser Id")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Students Count")]
+    //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    //public int StudentsCount => Students?.Count() ?? 0;
+
+
+    ///// <summary>
+    /////     Returns the disciplines associated with this teacher
+    ///// </summary>
+    //[NotMapped]
+    //public IEnumerable<Discipline>? Disciplines =>
+    //    Enrollments?.Select(sc => sc.Discipline).Distinct();
+
+
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Disciplines Count")]
+    //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    //public int DisciplinesCount => Disciplines?.Count() ?? 0;
+
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Total Students")]
+    //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    //public int TotalStudents => Enrollments?.Where(i => i.Id == Id).Count() ?? 0;
+
+
+    ///// <summary>
+    ///// </summary>
+    //[DisplayName("Total Disciplines")]
+    //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
+    //public int TotalDisciplines => Enrollments?.Where(i => i.Id == Id).Count(e => e.DisciplineId) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
 
 
     // ---------------------------------------------------------------------- //

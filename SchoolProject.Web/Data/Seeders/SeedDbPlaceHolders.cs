@@ -1,7 +1,6 @@
 ﻿namespace SchoolProject.Web.Data.Seeders;
 
 /// <summary>
-///
 /// </summary>
 public class SeedDbPlaceHolders
 {
@@ -13,7 +12,7 @@ public class SeedDbPlaceHolders
 
 
     /// <summary>
-    /// Add an initializer to receive IWebHostEnvironment hostingEnvironment
+    ///     Add an initializer to receive IWebHostEnvironment hostingEnvironment
     /// </summary>
     /// <param name="webHostEnvironment"></param>
     public static void Initialize(IWebHostEnvironment webHostEnvironment)

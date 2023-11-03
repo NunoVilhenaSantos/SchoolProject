@@ -6,12 +6,10 @@ using SchoolProject.Web.Data.Entities.Users;
 namespace SchoolProject.Web.Data.EntitiesOthers;
 
 /// <summary>
-///
 /// </summary>
 public interface IEntity
 {
     /// <summary>
-    ///
     /// </summary>
     [Column(Order = 0)]
     [Key]
@@ -19,7 +17,6 @@ public interface IEntity
     public int Id { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Column(Order = 1)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,7 +24,6 @@ public interface IEntity
 
 
     /// <summary>
-    ///
     /// </summary>
     [Column(Order = 20)]
     [Required]
@@ -36,7 +32,6 @@ public interface IEntity
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [Column(Order = 21)]
@@ -47,7 +42,6 @@ public interface IEntity
 
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     [Column(Order = 22)]
@@ -57,7 +51,6 @@ public interface IEntity
 
     // [Required]
     /// <summary>
-    ///
     /// </summary>
     [Column(Order = 23)]
     [DisplayName("Updated At")]
@@ -67,7 +60,6 @@ public interface IEntity
 
 
     /// <summary>
-    ///
     /// </summary>
     [Column(Order = 24)]
     [Required]

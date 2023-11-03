@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Disciplines;
@@ -29,14 +30,14 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Course Acronym")]
-    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Acronym { get; set; }
 
 
     /// <summary>
     /// </summary>
     [DisplayName("Course Name")]
-    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    [MaxLength(150, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Name { get; set; }
 
 
@@ -125,6 +126,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [Precision(10, 2)]
     [DataType(DataType.Currency)]
     [DisplayName("Price for Employed")]
+    [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
     public required decimal PriceForEmployed { get; set; } = 200;
 
 
@@ -134,6 +136,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [Precision(10, 2)]
     [DataType(DataType.Currency)]
     [DisplayName("Price for Unemployed")]
+    [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
     public required decimal PriceForUnemployed { get; set; }
 
 
@@ -145,6 +148,8 @@ public class Course : IEntity, INotifyPropertyChanged
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
     [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -187,30 +192,29 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
     public IEnumerable<Discipline>? Disciplines =>
         CourseDisciplines?.Select(cd => cd.Discipline).Distinct();
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Disciplines Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int CoursesCount => Disciplines?.Count() ?? 0;
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Course Total Credit Points")]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public double CourseCredits => Disciplines?.Sum(c => c.CreditPoints) ?? 0;
 
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Work Hour Load")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int WorkHourLoad =>
         CourseDisciplines?.Sum(c => c.Discipline?.Hours) ?? 0;
 
@@ -226,23 +230,23 @@ public class Course : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
     public IEnumerable<Student>? Students =>
         CourseStudents?.Select(cd => cd.Student).Distinct();
 
     /// <summary>
-    ///
     /// </summary>
     [DisplayName("Course CreditPoints")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int StudentsCount0 => Students?.Count() ?? 0;
 
 
     /// <summary>
-    /// This property calculates the number of distinct students associated with the course
+    ///     This property calculates the number of distinct students associated with the course
     /// </summary>
     [DisplayName("Students Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int StudentsCount =>
         CourseStudents?.Select(e => e.CourseId).Distinct().Count() ?? 0;
 
@@ -290,14 +294,12 @@ public class Course : IEntity, INotifyPropertyChanged
     public virtual HashSet<Enrollment>? Enrollments { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
     public IEnumerable<Student>? EStudentsList =>
         Enrollments?.Select(e => e.Student).Distinct();
 
     /// <summary>
-    ///
     /// </summary>
     [NotMapped]
     public IEnumerable<Discipline>? EDisciplinesList =>
@@ -309,6 +311,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [DisplayName("Class Average")]
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public decimal? ClassAverage =>
         Enrollments?.Where(e => e.Grade.HasValue)
             .Average(e => e.Grade);
@@ -319,6 +322,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [DisplayName("Highest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public decimal? HighestGrade =>
         Enrollments?.Where(e => e.Grade.HasValue)
             .Max(e => e.Grade);
@@ -329,6 +333,7 @@ public class Course : IEntity, INotifyPropertyChanged
     [DisplayName("Lowest Grade")]
     // [Column(TypeName = "decimal(18,2)")]
     [Precision(18, 2)]
+    [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
     public decimal? LowestGrade =>
         Enrollments?.Where(e => e.Grade.HasValue)
             .Min(e => e.Grade);
@@ -337,6 +342,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Disciplines Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int ECoursesCount =>
         Enrollments?.Select(e => e.Discipline).Distinct().Count() ?? 0;
 
@@ -344,6 +350,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Work Hour Load")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int EWorkHourLoad =>
         Enrollments?.Sum(e => e.Discipline?.Hours) ?? 0;
 
@@ -351,8 +358,28 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Students Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int EStudentsCount =>
         Enrollments?.Select(e => e.Student).Distinct().Count() ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //
@@ -401,25 +428,6 @@ public class Course : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

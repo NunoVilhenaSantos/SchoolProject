@@ -27,17 +27,11 @@ public class PaginationViewModel<T> where T : class
     };
 
 
-    // Lista de propriedades que são classes e devem ser tratadas como "Title"
-    private readonly List<string> _titleProperties = new()
-    {
-        "Book", "BookEdition", "BookStock"
-    };
-
-
     // Lista de propriedades que são classes e devem ser tratadas como "FirstName"
     private readonly List<string> _firstNameProperties = new()
     {
         "Employee", "Customer", "AppUser", "CreatedBy", "UpdatedBy", "Author",
+        "Student", "Teacher"
     };
 
 
@@ -45,8 +39,19 @@ public class PaginationViewModel<T> where T : class
     private readonly List<string> _nameProperties = new()
     {
         "Country", "Nationality", "City", "Gender", "CountryOfNationality",
-        "Category",
+        "Category", "Discipline", "Discipline"
     };
+
+
+    // Lista de propriedades que são classes e devem ser tratadas como "Title"
+    private readonly List<string> _titleProperties = new()
+    {
+        "Book", "BookEdition", "BookStock"
+    };
+
+
+    // Define a list of valid page sizes
+    private readonly List<int> validPageSizes = new() {10, 25, 50, 100};
 
 
     /// <summary>
@@ -74,11 +79,9 @@ public class PaginationViewModel<T> where T : class
 
         // Tamanho da página mínimo é 10
         if (!validPageSizes.Contains(pageSize))
-        {
             // If the provided pageSize is not in the list of valid page sizes,
             // set it to the minimum valid size, which is 10.
             pageSize = validPageSizes.Min();
-        }
 
 
         // Check if sortOrder is valid, default to "asc" if not
@@ -144,10 +147,6 @@ public class PaginationViewModel<T> where T : class
     ///     PageSize property.
     /// </summary>
     public int PageSize { get; set; }
-
-
-    // Define a list of valid page sizes
-    List<int> validPageSizes = new List<int> {10, 25, 50, 100};
 
 
     /// <summary>
@@ -486,8 +485,12 @@ public class PaginationViewModel<T> where T : class
 
         var orderByExp = Expression.Lambda(propertyAccess, parameter);
 
+        // var orderByMethod =
+        //     sortOrder == "asc" ? "OrderBy" : "OrderByDescending";
+
         var orderByMethod =
-            sortOrder == "asc" ? "OrderBy" : "OrderBy";
+            sortOrder == "desc" ? "OrderByDescending" : "OrderBy";
+
 
         var orderByCall = Expression.Call(
             typeof(Queryable),

@@ -17,15 +17,15 @@ public class StorageHelper : IStorageHelper
     internal const string AzureStoragePublicUrl =
         "https://supershop.blob.core.windows.net/";
 
+    internal static string NoImageUrl =
+        "https://supershop.blob.core.windows.net/placeholders/noimage.png";
+
 
     private readonly IConfiguration _configuration;
     // private readonly ILogger<CloudStorageService> _logger;
 
 
     private readonly GoogleCredential _googleCredentials;
-
-    internal static string NoImageUrl =
-        "https://supershop.blob.core.windows.net/placeholders/noimage.png";
 
 
     /// <summary>
@@ -69,7 +69,7 @@ public class StorageHelper : IStorageHelper
         // Get a reference to a blob named "sample-file"
         // in a container named "sample-container"
         var blobClient =
-            blobContainerClient.GetBlobClient(blobName.ToString());
+            blobContainerClient.GetBlobClient(blobName);
 
 
         // Check if the container already exists
@@ -307,17 +307,17 @@ public class StorageHelper : IStorageHelper
 
 
     /// <summary>
-    ///  UploadResult class.
+    ///     UploadResult class.
     /// </summary>
     public class UploadResult
     {
         /// <summary>
-        ///  UploadResult generated Guid.
+        ///     UploadResult generated Guid.
         /// </summary>
         public required Guid Guid { get; set; }
 
         /// <summary>
-        ///  UploadResult generated Uri.
+        ///     UploadResult generated Uri.
         /// </summary>
         public required Uri Uri { get; set; }
     }

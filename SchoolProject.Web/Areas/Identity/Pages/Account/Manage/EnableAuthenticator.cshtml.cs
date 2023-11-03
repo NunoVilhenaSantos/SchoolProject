@@ -144,7 +144,8 @@ public class EnableAuthenticatorModel : PageModel
         if (string.IsNullOrEmpty(unformattedKey))
         {
             await _userManager.ResetAuthenticatorKeyAsync(appUser);
-            unformattedKey = await _userManager.GetAuthenticatorKeyAsync(appUser);
+            unformattedKey =
+                await _userManager.GetAuthenticatorKeyAsync(appUser);
         }
 
         SharedKey = FormatKey(unformattedKey);

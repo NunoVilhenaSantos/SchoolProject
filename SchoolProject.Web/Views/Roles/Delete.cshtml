@@ -54,6 +54,8 @@
                     <button type="submit" class="btn btn-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
                     <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                 </form>
+
+                @Html.ValidationSummary("", new {@class = "text-danger"})
             </div>
         </div>
 

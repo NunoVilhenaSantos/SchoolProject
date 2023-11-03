@@ -1,15 +1,13 @@
 ﻿@if ((string) ViewData["Title"] == "Create")
 {
     <div class="col-auto">
-        <img alt="Image" class="img-thumbnail preview" height="auto"
-             src="~/images/PlaceHolders/4131088.webp" width="250"/>
+        <img alt="Image" class="img-thumbnail preview" src="~/images/PlaceHolders/4131088.webp" width="250"/>
     </div>
 }
 else
 {
     <div class="col-auto">
-        <img alt="Image" class="img-thumbnail preview" height="auto"
-             src="@Url.Content(Model.ProfilePhotoIdUrl)" width="250"/>
+        <img alt="Image" class="img-thumbnail preview" src="@Url.Content(Model.ProfilePhotoIdUrl)" width="250"/>
     </div>
 }
 

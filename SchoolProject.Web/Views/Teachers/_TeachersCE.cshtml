@@ -1,4 +1,3 @@
-@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Teachers.Teacher
 
 @* <!-- Outro conteúdo da página --> *@
@@ -92,11 +91,11 @@
     <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" onchange="previewImages(event)"/>
     <span asp-validation-for="ImageFile" class="text-danger"></span>
 </div>
-<div class="form-group">
+@* <div class="form-group">
     <label asp-for="ProfilePhotoId" class="control-label"></label>
     <input asp-for="ProfilePhotoId" class="form-control"/>
     <span asp-validation-for="ProfilePhotoId" class="text-danger"></span>
-</div>
+</div> *@
 <div class="form-group form-check">
     <label class="form-check-label">
         <input class="form-check-input" asp-for="WasDeleted"/>@Html.DisplayNameFor(model => model.WasDeleted)
@@ -109,7 +108,7 @@
 </div>
 
 
-<div class="col">
+@* <div class="col">
     <div class="form-group">
         <label asp-for="FirstName" class="control-label"></label>
         <input asp-for="FirstName" class="form-control"/>
@@ -266,6 +265,6 @@
         <label class="form-check-label">
             <input class="form-check-input" asp-for="WasDeleted"/>@Html.DisplayNameFor(model => model.WasDeleted)
         </label>
-    </div>
+    </div> *@
 
-</div>
+<script src="~/js/citiesAndCountriesList.js"></script>

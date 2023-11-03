@@ -1,5 +1,5 @@
-@using System.Reflection
 @* @model             SchoolProject.Web.Data.Entities.Genders.Gender *@
+@using System.Reflection
 @model IEnumerable<SchoolProject.Web.Data.Entities.Genders.Gender>
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Genders.Gender> *@
 
@@ -9,9 +9,9 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
@@ -57,7 +57,7 @@
         <tr>
             <td>
                 <img alt="Image" class="img-thumbnail" height="100"
-                        src="@Url.Content(item.ProfilePhotoIdUrl)" width="100" />
+                     src="@Url.Content(item.ProfilePhotoIdUrl)" width="100"/>
             </td>
             <td>@Html.DisplayFor(modelItem => item.Name) </td>
             @* <td>@Html.DisplayFor(modelItem => item.ProfilePhotoId) </td> *@
@@ -68,8 +68,8 @@
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
                 </div>
             </td>
         </tr>

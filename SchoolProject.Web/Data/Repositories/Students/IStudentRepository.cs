@@ -6,14 +6,12 @@ namespace SchoolProject.Web.Data.Repositories.Students;
 public interface IStudentRepository : IGenericRepository<Student>
 {
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     IOrderedQueryable<Student> GetStudents();
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

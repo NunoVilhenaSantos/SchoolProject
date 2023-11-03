@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Users;
@@ -23,6 +23,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("First Name")]
+    [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string FirstName { get; set; }
 
 
@@ -30,6 +31,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Last Name")]
+    [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string LastName { get; set; }
 
 
@@ -42,6 +44,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [Required]
+    [MaxLength(150, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Address { get; set; }
 
 
@@ -49,6 +52,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Postal Code")]
+    [MaxLength(10, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string PostalCode { get; set; }
 
 
@@ -64,7 +68,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    /// 
     /// </summary>
     // [Required]
     [ForeignKey(nameof(City))]
@@ -80,6 +83,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Mobile Phone")]
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string MobilePhone { get; set; }
 
 
@@ -87,6 +91,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DataType(DataType.EmailAddress)]
+    [MaxLength(200, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string Email { get; set; }
 
 
@@ -119,10 +124,12 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Identification Number")]
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string IdentificationNumber { get; set; }
 
     /// <summary>
     /// </summary>
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string IdentificationType { get; set; }
 
 
@@ -138,6 +145,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// </summary>
     [Required]
     [DisplayName("Tax Identification Number")]
+    [MaxLength(20, ErrorMessage = "The field {0} can contain {1} characters.")]
     public required string TaxIdentificationNumber { get; set; }
 
 
@@ -147,7 +155,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
     // [Required]
     /// <summary>
-    ///
     /// </summary>
     [ForeignKey(nameof(CountryOfNationality))]
     [DisplayName("Country Of Nationality")]
@@ -161,13 +168,11 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [ForeignKey(nameof(Birthplace))]
     public int BirthplaceId { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     [Required]
     public required Country Birthplace { get; set; }
@@ -182,7 +187,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///
     /// </summary>
     [ForeignKey(nameof(AppUser))]
     public string UserId { get; set; }
@@ -201,6 +205,8 @@ public class Teacher : IEntity, INotifyPropertyChanged
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
     [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -268,7 +274,7 @@ public class Teacher : IEntity, INotifyPropertyChanged
 
 
     /// <summary>
-    ///    Returns the disciplines associated with this teacher
+    ///     Returns the disciplines associated with this teacher
     /// </summary>
     [NotMapped]
     public IEnumerable<Discipline>? Disciplines =>
@@ -278,19 +284,41 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// <summary>
     /// </summary>
     [DisplayName("Disciplines Count")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int DisciplinesCount => TeacherDisciplines?.Count() ?? 0;
 
     /// <summary>
     /// </summary>
     [DisplayName("Total Work Hours")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int TotalWorkHours => TeacherDisciplines?
         .Sum(t => t.Discipline?.Hours) ?? 0;
 
     /// <summary>
     /// </summary>
     [DisplayName("Total Students")]
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int TotalStudents => TeacherDisciplines?
         .Sum(t => t.Discipline?.StudentsCount) ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
 
 
     // ---------------------------------------------------------------------- //
@@ -339,26 +367,6 @@ public class Teacher : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

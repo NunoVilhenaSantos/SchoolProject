@@ -1,5 +1,5 @@
-﻿@using System.Reflection
-@* @model             SchoolProject.Web.Data.Entities.Genders.Gender *@
+﻿@* @model             SchoolProject.Web.Data.Entities.Genders.Gender *@
+@using System.Reflection
 @model IEnumerable<SchoolProject.Web.Data.Entities.Genders.Gender>
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Genders.Gender> *@
 
@@ -9,9 +9,9 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
@@ -60,7 +60,7 @@
                                 @Html.DisplayNameFor(modelItem => item.ProfilePhotoId)<br />
                                 @Html.DisplayFor(modelItem => item.ProfilePhotoId)
                             </small> *@
-                            <br /><br />
+                            <br/><br/>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>

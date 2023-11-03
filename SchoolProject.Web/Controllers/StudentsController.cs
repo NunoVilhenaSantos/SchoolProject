@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.Disciplines;
-using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Teachers;
@@ -16,6 +13,7 @@ using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Data.Repositories.Genders;
 using SchoolProject.Web.Data.Repositories.Students;
+using SchoolProject.Web.Data.Seeders;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
@@ -32,40 +30,39 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "SuperUser,Functionary")]
 public class StudentsController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(Student.FullName);
     internal const string CurrentClass = nameof(Student);
     internal const string CurrentAction = nameof(Index);
 
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(StudentsController));
+    internal const string ClassRole = CurrentClass;
+
+    // Obtém o tipo da classe atual
+    internal static string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+    private readonly ICityRepository _cityRepository;
 
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+    private readonly ICountryRepository _countryRepository;
+    private readonly IGenderRepository _genderRepository;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
 
 
     //  repositories
     private readonly IStudentRepository _studentRepository;
-    private readonly ICountryRepository _countryRepository;
-    private readonly IGenderRepository _genderRepository;
+    private readonly IUserHelper _userHelper;
     private readonly UserManager<AppUser> _userManager;
-    private readonly ICityRepository _cityRepository;
 
     // data context
     // private readonly DataContextMySql _context;
@@ -95,7 +92,8 @@ public class StudentsController : Controller
         IConverterHelper converterHelper, IStorageHelper storageHelper,
         IUserHelper userHelper, IMailHelper mailHelper,
         IHttpContextAccessor httpContextAccessor,
-        ICountryRepository countryRepository, IGenderRepository genderRepository,
+        ICountryRepository countryRepository,
+        IGenderRepository genderRepository,
         ICityRepository cityRepository, UserManager<AppUser> userManager)
     {
         // _context = context;
@@ -114,8 +112,13 @@ public class StudentsController : Controller
     }
 
 
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(StudentsController));
+
+
     // Obtém o controlador atual
-    private string CurrentController
+    internal string CurrentController
     {
         get
         {
@@ -139,7 +142,7 @@ public class StudentsController : Controller
 
     private List<Student> GetStudentsList()
     {
-        return _studentRepository.GetStudents().ToList();
+        return _studentRepository.GetStudents().AsNoTracking().ToList();
 
         // return _studentRepository.GetAll()
         //     .Include(s => s.City)
@@ -167,6 +170,7 @@ public class StudentsController : Controller
         // E seus detalhes, se necessário
         // .Include(t => t.StudentDisciplines)
         // .ThenInclude(tc => tc.Discipline)
+        // .AsNoTracking()
         // .ToList();
     }
 
@@ -284,7 +288,7 @@ public class StudentsController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -292,7 +296,7 @@ public class StudentsController : Controller
                 CurrentController, nameof(Index));
 
         var student = await _studentRepository.GetStudentById(id.Value)
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync();
 
         return student == null
             ? new NotFoundViewResult(
@@ -327,9 +331,115 @@ public class StudentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Student student)
     {
-        if (!ModelState.IsValid) return View(student);
+        //if (!ModelState.IsValid) return View(student);
 
-        await _studentRepository.CreateAsync(student);
+        var user = await _userHelper.GetUserByEmailAsync(student.Email);
+
+        if (user != null)
+        {
+            ViewBag.UserMessage =
+                "Email has already been used to register an account.";
+            return View(student);
+        }
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var imageId = student.ProfilePhotoId;
+
+        if (student.ImageFile is {Length: > 0})
+            imageId =
+                await _storageHelper.UploadStorageAsync(
+                    student.ImageFile, BucketName);
+
+        student.ProfilePhotoId = imageId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+
+        //var subscription = await _subscriptionRepository
+        //    .GetByNameAsync("Free").FirstOrDefaultAsync();
+
+        var city = await _cityRepository
+            .GetCityAsync(student.CityId != 0 ? student.CityId : 1)
+            .FirstOrDefaultAsync();
+
+        user = new AppUser
+        {
+            FirstName = student.FirstName,
+            LastName = student.LastName,
+            PhoneNumber = student.MobilePhone,
+            ProfilePhotoId = student.ProfilePhotoId,
+            WasDeleted = student.WasDeleted,
+
+            Email = student.Email,
+            UserName = student.Email,
+            Address = student.Address
+
+            //CityId = city.Id,
+            //City = city,
+
+            //SubscriptionId = subscription.Id,
+            //Subscription = subscription,
+        };
+
+        // _converterHelper.AddUser(
+        //     customer.FirstName, customer.LastName,
+        //     customer.Address ?? string.Empty,
+        //     customer.Email,
+        //     customer.CellPhone, "Customer"
+        // );
+
+        await _userHelper.AddUserAsync(user, SeedDb.DefaultPassword);
+        await _userHelper.AddUserToRoleAsync(user, ClassRole);
+
+        var gender =
+            await _genderRepository.GetByIdAsync(1).FirstOrDefaultAsync();
+
+        var birthplace =
+            await _countryRepository.GetByIdAsync(1).FirstOrDefaultAsync();
+
+        var countryNationality =
+            await _countryRepository.GetByIdAsync(1).FirstOrDefaultAsync();
+
+        var student1 = new Student
+        {
+            FirstName = student.FirstName,
+            LastName = student.LastName,
+            MobilePhone = student.MobilePhone,
+            Email = student.Email,
+            Address = student.Address,
+            Gender = gender,
+            PostalCode = student.PostalCode,
+            Active = student.Active,
+            Birthplace = birthplace,
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            DateOfBirth = student.DateOfBirth,
+            CountryOfNationality = countryNationality,
+            EnrollDate = student.EnrollDate,
+            ExpirationDateIdentificationNumber =
+                student.ExpirationDateIdentificationNumber,
+            IdentificationNumber = student.IdentificationNumber,
+            IdentificationType = student.IdentificationType,
+            TaxIdentificationNumber = student.TaxIdentificationNumber,
+
+
+            City = city,
+            CityId = city.Id,
+            CountryId = city.CountryId,
+
+            ProfilePhotoId = student.ProfilePhotoId,
+
+            UserId = user.Id,
+            AppUser = user
+        };
+
+        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+        // Confirma o email para este AppUser
+        await _userHelper.ConfirmEmailAsync(user, token);
+
+        await _studentRepository.CreateAsync(student1);
 
         await _studentRepository.SaveAllAsync();
 
@@ -345,7 +455,7 @@ public class StudentsController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -383,19 +493,92 @@ public class StudentsController : Controller
                 nameof(StudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        if (!ModelState.IsValid) return View(student);
+        // if (!ModelState.IsValid) return View(student);
+
+        var student1 = await _studentRepository
+            .GetStudentById(id).FirstOrDefaultAsync();
+
+        if (student1 == null) return View(student);
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var profilePhotoId = student.ProfilePhotoId;
+
+        if (student.ImageFile is {Length: > 0})
+            profilePhotoId =
+                await _storageHelper.UploadStorageAsync(
+                    student.ImageFile, BucketName);
+
+        student.ProfilePhotoId = profilePhotoId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+
+        var city = await _cityRepository
+            .GetCityAsync(student.CityId != 0 ? student.CityId : 1)
+            .FirstOrDefaultAsync();
+
+        var gender =
+            await _genderRepository.GetByIdAsync(1).FirstOrDefaultAsync();
+
+        var birthplace =
+            await _countryRepository.GetByIdAsync(1).FirstOrDefaultAsync();
+
+        var countryNationality =
+            await _countryRepository.GetByIdAsync(1).FirstOrDefaultAsync();
+
+        student1.FirstName = student.FirstName;
+        student1.LastName = student.LastName;
+        student1.MobilePhone = student.MobilePhone;
+        student1.Email = student.Email;
+        student1.Address = student.Address;
+        student1.Gender = gender;
+        student1.PostalCode = student.PostalCode;
+        student1.Active = student.Active;
+        student1.Birthplace = birthplace;
+        student1.CreatedBy =
+            _authenticatedUserInApp.GetAuthenticatedUser().Result;
+        student1.DateOfBirth = student.DateOfBirth;
+        student1.CountryOfNationality = countryNationality;
+        student1.EnrollDate = student.EnrollDate;
+        student1.ExpirationDateIdentificationNumber =
+            student.ExpirationDateIdentificationNumber;
+        student1.IdentificationNumber = student.IdentificationNumber;
+        student1.IdentificationType = student.IdentificationType;
+        student1.TaxIdentificationNumber = student.TaxIdentificationNumber;
+
+        student1.City = city;
+        // customer1.CityId = customer.CityId;
+        student1.CountryId = city.CountryId;
+
+        //student1.City = city;
+        //student1.CityId = city.Id;
+        //student1.CountryId = city.CountryId;
+
+        student1.ProfilePhotoId = student.ProfilePhotoId;
+
+        //student1.UserId = user.Id;
+        //student1.AppUser = user;
+
+
+        // customer1.AppUser = await _userHelper.GetUserByIdAsync(customer.AppUserId);
+        // customer1.AppUserId = customer.AppUserId;
+        //student1.ImageId = customer.ImageId;
 
         try
         {
-            await _studentRepository.UpdateAsync(student);
+            await _studentRepository.UpdateAsync(student1);
+
+            await _studentRepository.SaveAllAsync();
 
             HttpContext.Session.Remove(SessionVarName);
 
-            await _studentRepository.SaveAllAsync();
+            return RedirectToAction(nameof(Index));
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!StudentExists(student.Id))
+            if (!await _studentRepository.ExistAsync(student.Id))
                 return new NotFoundViewResult(
                     nameof(StudentNotFound), CurrentClass, id.ToString(),
                     CurrentController, nameof(Index));
@@ -403,9 +586,45 @@ public class StudentsController : Controller
             throw;
         }
 
-        HttpContext.Session.Remove(SessionVarName);
+        //********************
 
-        return RedirectToAction(nameof(Index));
+        //if (id != student.Id)
+        //    return new NotFoundViewResult(
+        //        nameof(StudentNotFound), CurrentClass, id.ToString(),
+        //        CurrentController, nameof(Index));
+
+        //if (!ModelState.IsValid)
+        //{
+        //    student = await _studentRepository.GetStudentById(id)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+
+        //    return student == null
+        //        ? new NotFoundViewResult(
+        //            nameof(StudentNotFound), CurrentClass, id.ToString(),
+        //            CurrentController, nameof(Index))
+        //        : View(student);
+        //}
+
+
+        //try
+        //{
+        //    await _studentRepository.UpdateAsync(student);
+
+        //    await _studentRepository.SaveAllAsync();
+
+        //    HttpContext.Session.Remove(SessionVarName);
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+        //catch (DbUpdateConcurrencyException)
+        //{
+        //    if (!StudentExists(student.Id))
+        //        return new NotFoundViewResult(
+        //            nameof(StudentNotFound), CurrentClass, id.ToString(),
+        //            CurrentController, nameof(Index));
+
+        //    throw;
+        //}
     }
 
 
@@ -414,37 +633,22 @@ public class StudentsController : Controller
     ///     students delete
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
                 nameof(StudentNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var student = await _studentRepository.GetByIdAsync(id.Value)
-            .FirstOrDefaultAsync();
+        var student = await _studentRepository.GetStudentById(id.Value)
+            .FirstOrDefaultAsync(m => m.Id == id);
 
         return student == null
             ? new NotFoundViewResult(nameof(StudentNotFound), CurrentClass,
                 id.ToString(), CurrentController, nameof(Index))
             : View(student);
-
-        //**********************
-
-        //if (id == null)
-        //    return new NotFoundViewResult(
-        //        nameof(StudentNotFound), CurrentClass, id.ToString(),
-        //        CurrentController, nameof(Index));
-
-        //var student = await _context.Students
-        //    .FirstOrDefaultAsync(m => m.Id == id);
-
-        //return student == null
-        //    ? new NotFoundViewResult(
-        //        nameof(StudentNotFound), CurrentClass, id.ToString(),
-        //        CurrentController, nameof(Index))
-        //    : View(student);
     }
 
 

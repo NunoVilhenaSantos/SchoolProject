@@ -12,7 +12,6 @@ namespace SchoolProject.Web.Helpers.Users;
 public interface IUserHelper
 {
     /// <summary>
-    ///
     /// </summary>
     /// <param name="dataContextInUse"></param>
     /// <param name="userManager"></param>
@@ -21,7 +20,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///    Gets all appUser.
+    ///     Gets all appUser.
     /// </summary>
     /// <returns></returns>
     public Task<IEnumerable<AppUser>> GetAllUsersAsync();
@@ -75,7 +74,7 @@ public interface IUserHelper
     Task<IdentityResult> AddUserAsync(AppUser appUser, string password);
 
     /// <summary>
-    /// Creates a new appUser.
+    ///     Creates a new appUser.
     /// </summary>
     /// <param name="appUser"></param>
     /// <returns></returns>
@@ -83,7 +82,7 @@ public interface IUserHelper
 
 
     /// <summary>
-    /// deletes the appUser.
+    ///     deletes the appUser.
     /// </summary>
     /// <param name="appUser"></param>
     /// <returns></returns>
@@ -192,7 +191,6 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="rememberMe"></param>
@@ -204,7 +202,6 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="rememberMe"></param>
@@ -216,14 +213,12 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     bool IsUserAuthenticated();
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="isPersistent"></param>
@@ -234,14 +229,12 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <returns></returns>
     Task<string> GeneratePasswordResetTokenAsync(AppUser appUser);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="token"></param>
@@ -251,13 +244,11 @@ public interface IUserHelper
         AppUser appUser, string token, string password);
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     Task<IEnumerable<SelectListItem>> GetComboRolesAsync();
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="newRole"></param>
@@ -265,21 +256,18 @@ public interface IUserHelper
     Task SetUserRoleAsync(AppUser appUser, string newRole);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="roleName"></param>
     /// <returns></returns>
     Task<IEnumerable<AppUser>> GetUsersInRoleAsync(string roleName);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <returns></returns>
     Task<string> GetUserRoleAsync(AppUser appUser);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -287,7 +275,6 @@ public interface IUserHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     IOrderedQueryable<AppUser> GetUsersWithFullName();

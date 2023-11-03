@@ -47,23 +47,19 @@
             <div class="btn-group" role="group" aria-label="Basic example">
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><span class="fa-regular fa-floppy-disk"></span> Save </button>
-                    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                    <a asp-action="IndexCards1" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                 </div>
 
             </div>
         </form>
     </div>
 
-    @*
-    <div class="col-md-8">
-        <partial name="_DisplayImages" />
-    </div>
-    *@
+    @* <div class="col-md-6"> *@
+    @*     <partial name="_DisplayImages"/> *@
+    @* </div> *@
 
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

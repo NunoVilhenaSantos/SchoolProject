@@ -42,13 +42,14 @@
     <thead>
     <tr>
         <th>@Html.DisplayNameFor(model => model.ProfilePhotoId)</th>
+        @* <th>@Html.DisplayNameFor(model => model.Id)</th> *@
+        @* <th>@Html.DisplayNameFor(model => model.IdGuid)</th> *@
         <th>@Html.DisplayNameFor(model => model.Code)</th>
         <th>@Html.DisplayNameFor(model => model.Name)</th>
         <th>@Html.DisplayNameFor(model => model.Description)</th>
         <th>@Html.DisplayNameFor(model => model.Hours)</th>
         <th>@Html.DisplayNameFor(model => model.CreditPoints)</th>
-        
-        @* <th>@Html.DisplayNameFor(model => model.IdGuid)</th> *@
+
         <th>@Html.DisplayNameFor(model => model.WasDeleted)</th>
         <th>@Html.DisplayNameFor(model => model.CreatedAt) </th>
         <th>@Html.DisplayNameFor(model => model.UpdatedAt)</th>
@@ -61,15 +62,15 @@
     {
         <tr>
             <td>
-                <img alt="Image" class="img-thumbnail" height="100"
-                         src="@Url.Content(item.ProfilePhotoIdUrl)" width="100" />
+                <img alt="Image" class="img-thumbnail" height="100" src="@Url.Content(item.ProfilePhotoIdUrl)" width="100"/>
             </td>
+            @* <td>@Html.DisplayFor(modelItem => item.Id)</td> *@
+            @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
             <td>@Html.DisplayFor(modelItem => item.Code)</td>
             <td>@Html.DisplayFor(modelItem => item.Name)</td>
             <td>@Html.DisplayFor(modelItem => item.Description)</td>
             <td>@Html.DisplayFor(modelItem => item.Hours)</td>
             <td>@Html.DisplayFor(modelItem => item.CreditPoints)</td>
-            @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
             <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
             <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>

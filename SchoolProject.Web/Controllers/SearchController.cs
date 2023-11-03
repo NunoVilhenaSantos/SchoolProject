@@ -1,24 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 
 namespace SchoolProject.Web.Controllers;
 
 public class SearchController : Controller
 {
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(SearchController));
-
-
     /// <summary>
-    ///  Data repository
+    ///     Data repository
     /// </summary>
     // private readonly IBookEditionRepository _bookEditionRepository;
     private readonly DataContextMySql _dataContextMySql;
 
 
     /// <summary>
-    ///  Constructor
+    ///     Constructor
     /// </summary>
     /// <param name="dataContextMySql"></param>
     public SearchController(DataContextMySql dataContextMySql)
@@ -26,9 +21,12 @@ public class SearchController : Controller
         _dataContextMySql = dataContextMySql;
     }
 
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(SearchController));
+
 
     /// <summary>
-    ///  Gets the current controller name without the "Controller" suffix.
+    ///     Gets the current controller name without the "Controller" suffix.
     /// </summary>
     private string CurrentController
     {

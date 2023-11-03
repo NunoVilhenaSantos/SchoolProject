@@ -72,9 +72,13 @@ public class DisciplineRepository : GenericRepository<Discipline>,
     {
         return _dataContext.Disciplines
             .Include(s => s.CourseDisciplines)
+            .ThenInclude(s => s.Course)
             .Include(s => s.StudentDisciplines)
+            .ThenInclude(s => s.Student)
             .Include(s => s.TeacherDisciplines)
+            .ThenInclude(s => s.Teacher)
             .Include(s => s.Enrollments)
+            .ThenInclude(s => s.Student)
             .Include(s => s.CreatedBy)
             .Include(s => s.UpdatedBy)
             .Where(i => i.Id == id)

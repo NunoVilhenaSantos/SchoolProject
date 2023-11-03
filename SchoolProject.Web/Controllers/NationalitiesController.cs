@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.Entities.Countries;
-using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
@@ -21,17 +20,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class NationalitiesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CountriesController.BucketName;
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(Nationality.Name);
     internal const string CurrentClass = nameof(Nationality);
+
     internal const string CurrentAction = nameof(Index);
 
-
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(NationalitiesController));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CountriesController.BucketName;
 
 
     // A private field to get the authenticated user in app.
@@ -40,19 +36,19 @@ public class NationalitiesController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+    private readonly ICountryRepository _countryRepository;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMailHelper _mailHelper;
 
 
     // Repositories
     private readonly INationalityRepository _nationalityRepository;
-    private readonly ICountryRepository _countryRepository;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
 
 
     /// <summary>
@@ -88,6 +84,11 @@ public class NationalitiesController : Controller
     }
 
 
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(NationalitiesController));
+
+
     // Obtém o controlador atual
     internal string CurrentController
     {
@@ -103,7 +104,8 @@ public class NationalitiesController : Controller
 
     private List<Nationality> GetNationalitiesWithCountries()
     {
-        return _nationalityRepository.GetNationalitiesWithCountries().ToList();
+        return _nationalityRepository.GetNationalitiesWithCountries()
+            .AsNoTracking().ToList();
     }
 
 
@@ -214,7 +216,7 @@ public class NationalitiesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(nameof(NationalityNotFound),
@@ -275,7 +277,7 @@ public class NationalitiesController : Controller
         {
             Name = nationality.Name,
             Country = null,
-            CreatedBy = createdBy,
+            CreatedBy = createdBy
         };
 
         var country1 = new Country
@@ -283,7 +285,7 @@ public class NationalitiesController : Controller
             Name = nationality.Country.Name,
             Nationality = nationality1,
             ProfilePhotoId = nationality.Country.ProfilePhotoId,
-            CreatedBy = createdBy,
+            CreatedBy = createdBy
         };
 
         nationality1.Country = country1;
@@ -308,7 +310,7 @@ public class NationalitiesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(nameof(NationalityNotFound),
@@ -405,7 +407,7 @@ public class NationalitiesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(nameof(NationalityNotFound),
@@ -432,13 +434,38 @@ public class NationalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var nationality = await _nationalityRepository.GetByIdAsync(id)
-            .FirstOrDefaultAsync();
+        var nationality = await _nationalityRepository
+            .GetNationalityAsync(id).FirstOrDefaultAsync();
 
         if (nationality == null)
             return new NotFoundViewResult(
                 nameof(NationalityNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
+
+
+        if (nationality.Country is {Cities.Count: > 0})
+        {
+            var dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Foreign Key Constraint Violation",
+                ErrorMessage =
+                    "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                    $"The {nameof(Nationality)} with the ID " +
+                    $"{nationality.Id} - {nationality.Name} {nationality.IdGuid} " +
+                    "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                    "Try deleting possible dependencies and try again. ",
+                ItemClass = nameof(Nationality),
+                ItemId = nationality.Id.ToString(),
+                ItemGuid = nationality.IdGuid,
+                ItemName = nationality.Name
+            };
+
+            // Redirecione para o DatabaseError com os dados apropriados
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+
 
         try
         {

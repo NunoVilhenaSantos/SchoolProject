@@ -2,7 +2,6 @@
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Students;
-using SchoolProject.Web.Data.Entities.Teachers;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 
@@ -69,5 +68,28 @@ public class StudentDisciplineRepository
             .Include(scc => scc.UpdatedBy)
             .Where(i => i.Id == id)
             .OrderBy(o => o.Id);
+    }
+
+
+    /// <inheritdoc />
+    public IOrderedQueryable<StudentDiscipline>
+        GetStudentDisciplineByIdGuid(Guid idGuid)
+    {
+        return _dataContext.StudentDisciplines
+            .Include(scc => scc.Student)
+            .Include(scc => scc.Discipline)
+            .Include(scc => scc.CreatedBy)
+            .Include(scc => scc.UpdatedBy)
+            .Where(i => i.IdGuid == idGuid)
+            .OrderBy(o => o.Id);
+    }
+
+
+    /// <inheritdoc />
+    public Task DeleteRangeAsync(List<StudentDiscipline> studentDisciplines)
+    {
+        _dataContext.StudentDisciplines.RemoveRange(studentDisciplines);
+
+        return _dataContext.SaveChangesAsync();
     }
 }

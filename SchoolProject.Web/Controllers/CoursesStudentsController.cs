@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,11 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Enrollments;
 using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Courses;
+using SchoolProject.Web.Data.Repositories.Enrollments;
 using SchoolProject.Web.Data.Repositories.Students;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
@@ -19,6 +19,7 @@ using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
+using SchoolProject.Web.Models.Courses;
 using SchoolProject.Web.Models.Errors;
 
 namespace SchoolProject.Web.Controllers;
@@ -29,17 +30,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CoursesStudentsController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(CourseStudent.CourseId);
     internal const string CurrentClass = nameof(CourseStudent);
-    internal const string CurrentAction = nameof(Index);
 
+    internal const string CurrentAction = nameof(IndexCards1);
 
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(CoursesStudentsController));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -48,20 +46,21 @@ public class CoursesStudentsController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+    private readonly ICourseRepository _courseRepository;
+
+
+    //  repositories
+    private readonly ICourseStudentsRepository _courseStudentsRepository;
+    private readonly IEnrollmentRepository _enrollmentRepository;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-
-    //  repositories
-    private readonly ICourseStudentsRepository _courseStudentsRepository;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
     private readonly IStudentRepository _studentRepository;
-    private readonly ICourseRepository _courseRepository;
+    private readonly IUserHelper _userHelper;
     private readonly UserManager<AppUser> _userManager;
 
 
@@ -93,7 +92,8 @@ public class CoursesStudentsController : Controller
         IConverterHelper converterHelper, IStorageHelper storageHelper,
         IUserHelper userHelper, IMailHelper mailHelper,
         ICourseRepository courseRepository,
-        IStudentRepository studentRepository, UserManager<AppUser> userManager)
+        IStudentRepository studentRepository, UserManager<AppUser> userManager,
+        IEnrollmentRepository enrollmentRepository)
     {
         _courseStudentsRepository = courseStudentsRepository;
         _authenticatedUserInApp = authenticatedUserInApp;
@@ -101,6 +101,7 @@ public class CoursesStudentsController : Controller
         _hostingEnvironment = hostingEnvironment;
         _studentRepository = studentRepository;
         _userManager = userManager;
+        _enrollmentRepository = enrollmentRepository;
         _courseRepository = courseRepository;
         _converterHelper = converterHelper;
         _storageHelper = storageHelper;
@@ -108,6 +109,11 @@ public class CoursesStudentsController : Controller
         _mailHelper = mailHelper;
         // _context = context;
     }
+
+
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(CoursesStudentsController));
 
 
     // Obtém o controlador atual
@@ -133,28 +139,56 @@ public class CoursesStudentsController : Controller
     }
 
 
-    private List<CourseStudent> GetCoursesAndStudentsList()
+    private List<CourseStudentViewModel> GetCoursesAndStudentsList()
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
         var courseStudentList =
-            _courseStudentsRepository.GetCourseStudents().ToList();
+            _courseStudentsRepository.GetCourseStudents()
+                .Include(e => e.CreatedBy)
+                .Include(e => e.UpdatedBy)
+                .AsNoTracking()
+                .ToList();
+
+        var viewModelList = courseStudentList.Select(item =>
+            new CourseStudentViewModel
+            {
+                Id = item.Id,
+                IdGuid = item.IdGuid,
+                CourseId = item.Course.Id,
+                CourseIdGuid = item.Course.IdGuid,
+                CourseCode = item.Course.Code,
+                CourseAcronym = item.Course.Acronym,
+                CourseName = item.Course.Name,
+                StudentId = item.Student.Id,
+                StudentIdGuid = item.Student.IdGuid,
+                StudentFullName = item.Student.FullName,
+                StudentMobilePhone = item.Student.MobilePhone,
+                WasDeleted = item.WasDeleted,
+                CreatedAt = item.CreatedAt,
+                CreatedByFullName = item.CreatedBy.FullName,
+                UpdatedAt = item.UpdatedAt,
+                UpdatedByFullName = item.UpdatedBy?.FullName ?? string.Empty
+            }).ToList();
+
 
         stopwatch.Stop();
         var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-        Console.WriteLine("Tempo de execução: " +
-                          "GetSchoolClassesAndCourses " +
-                          $"{elapsedMilliseconds} ms");
+        Console.WriteLine(
+            "Tempo de execução: GetSchoolClassesAndCourses " +
+            $"{elapsedMilliseconds} ms");
 
-        return courseStudentList;
+
+        // return courseStudentList;
+        return viewModelList;
     }
 
 
-    private List<CourseStudent> SessionData<T>() where T : class
+    private List<CourseStudentViewModel> SessionData<T>() where T : class
     {
         // Obtém todos os registos
-        List<CourseStudent> recordsQuery;
+        List<CourseStudentViewModel> recordsQuery;
 
         // Tente obter a lista de professores da sessão
         if (HttpContext.Session.TryGetValue(SessionVarName, out var allData))
@@ -163,8 +197,9 @@ public class CoursesStudentsController : Controller
             var json = Encoding.UTF8.GetString(allData);
 
             recordsQuery =
-                JsonConvert.DeserializeObject<List<CourseStudent>>(json) ??
-                new List<CourseStudent>();
+                JsonConvert.DeserializeObject<List<CourseStudentViewModel>>(
+                    json) ??
+                new List<CourseStudentViewModel>();
         }
         else
         {
@@ -174,7 +209,7 @@ public class CoursesStudentsController : Controller
             // Inicialize a classe de paginação
             PaginationViewModel<T>.Initialize(_hostingEnvironment);
 
-            var json = PaginationViewModel<CourseStudent>
+            var json = PaginationViewModel<CourseStudentViewModel>
                 .StoreListToFileInJson(recordsQuery);
 
             // Armazene a lista na sessão para uso futuro
@@ -201,7 +236,7 @@ public class CoursesStudentsController : Controller
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
-        var recordsQuery = SessionData<CourseStudent>();
+        var recordsQuery = SessionData<CourseStudentViewModel>();
 
         return View(recordsQuery);
     }
@@ -222,7 +257,7 @@ public class CoursesStudentsController : Controller
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
-        var recordsQuery = SessionData<CourseStudent>();
+        var recordsQuery = SessionData<CourseStudentViewModel>();
 
         return View(recordsQuery);
     }
@@ -243,9 +278,9 @@ public class CoursesStudentsController : Controller
         // Envia o tipo da classe para a vista
         ViewData["CurrentClass"] = CurrentClass;
 
-        var recordsQuery = SessionData<CourseStudent>();
+        var recordsQuery = SessionData<CourseStudentViewModel>();
 
-        var model = new PaginationViewModel<CourseStudent>(
+        var model = new PaginationViewModel<CourseStudentViewModel>(
             recordsQuery,
             pageNumber, pageSize,
             recordsQuery.Count,
@@ -261,21 +296,29 @@ public class CoursesStudentsController : Controller
     ///     Details, details of a courseStudent
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
-        var courseStudent = await _courseStudentsRepository
-            .GetCourseStudentById(id.Value).FirstOrDefaultAsync();
+
+        var courseStudent = id != 0 || idGuid == Guid.Empty
+            ? await _courseStudentsRepository
+                .GetCourseStudentById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _courseStudentsRepository
+                .GetCourseStudentByIdGuid(idGuid.Value)
+                .FirstOrDefaultAsync();
+
 
         return courseStudent == null
             ? new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index))
+                CurrentController, nameof(IndexCards1))
             : View(courseStudent);
     }
 
@@ -287,10 +330,17 @@ public class CoursesStudentsController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
+        var courseStudent = new CourseStudent
+        {
+            CourseId = 0, Course = null, Student = null, StudentId = 0,
+            CreatedBy = null, CreatedById = null, CreatedAt = DateTime.Now
+        };
+
         FillViewLists();
 
-        return View();
+        return View(courseStudent);
     }
+
 
     // POST: CourseStudents/Create
     // To protect from over-posting attacks,
@@ -307,22 +357,69 @@ public class CoursesStudentsController : Controller
     public async Task<IActionResult> Create(
         CourseStudent courseStudent)
     {
-        if (ModelState.IsValid)
+        var student = await _studentRepository
+            .GetByIdAsync(courseStudent.StudentId)
+            .FirstOrDefaultAsync();
+
+        var course = await _courseRepository
+            .GetByIdAsync(courseStudent.CourseId)
+            .Include(o => o.CourseDisciplines)
+            .ThenInclude(o => o.Discipline)
+            .FirstOrDefaultAsync();
+
+        var user = await _authenticatedUserInApp.GetAuthenticatedUser();
+
+        var courseStudent1 = new CourseStudent
         {
-            await _courseStudentsRepository.CreateAsync(courseStudent);
+            CreatedBy = user, Course = course, Student = student
+        };
+
+
+        try
+        {
+            await _courseStudentsRepository.CreateAsync(courseStudent1);
+
+            foreach (var enrollment in course.CourseDisciplines.Select(
+                         disciplines => new Enrollment
+                         {
+                             Student = student,
+                             Discipline = disciplines.Discipline,
+                             CreatedBy = user
+                         })
+                    )
+                try
+                {
+                    await _enrollmentRepository.CreateAsync(enrollment);
+                }
+                catch (Exception e)
+                {
+                    var message = $"This student {student.FullName} " +
+                                  $"is already enrool in this course {course.Name}.";
+
+                    ModelState.AddModelError(string.Empty,
+                        message);
+
+                    Console.WriteLine(message + "\n" + e);
+                }
 
             await _courseStudentsRepository.SaveAllAsync();
 
             HttpContext.Session.Remove(SessionVarName);
 
-            HttpContext.Session.Remove(SessionVarName);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexCards1));
         }
+        catch (Exception e)
+        {
+            FillViewLists(
+                courseStudent1.CourseId, courseStudent1.StudentId,
+                courseStudent1.CreatedBy?.Id, courseStudent1.UpdatedBy?.Id);
 
-        FillViewLists();
+            ModelState.AddModelError(string.Empty,
+                $"This student {student.FullName} " +
+                $"is already enrool in this course {course.Name}.");
 
-        return View(courseStudent);
+            return View(courseStudent1);
+        }
     }
 
 
@@ -331,26 +428,35 @@ public class CoursesStudentsController : Controller
     ///     Edit, edit a courseStudent
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
-        var courseStudent = await _courseStudentsRepository
-            .GetCourseStudentById(id.Value).FirstOrDefaultAsync();
+
+        var courseStudent = id != 0 || idGuid == Guid.Empty
+            ? await _courseStudentsRepository
+                .GetCourseStudentById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _courseStudentsRepository
+                .GetCourseStudentByIdGuid(idGuid.Value)
+                .FirstOrDefaultAsync();
+
 
         if (courseStudent == null)
             return new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
         FillViewLists();
 
         return View(courseStudent);
     }
+
 
     // POST: CourseStudents/Edit/5
     // To protect from over-posting attacks,
@@ -361,45 +467,49 @@ public class CoursesStudentsController : Controller
     ///     Edit, edit a courseStudent
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <param name="courseStudent"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
-        int id, CourseStudent courseStudent)
+        int id, Guid idGuid, CourseStudent courseStudent)
     {
-        if (id != courseStudent.CourseId)
+        if (id != courseStudent.Id || idGuid != courseStudent.IdGuid)
             return new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
 
         if (!ModelState.IsValid)
         {
-            FillViewLists();
+            FillViewLists(
+                courseStudent.CourseId, courseStudent.StudentId,
+                courseStudent.CreatedById, courseStudent.UpdatedById);
 
             return View(courseStudent);
         }
+
 
         try
         {
             await _courseStudentsRepository.UpdateAsync(courseStudent);
 
             await _courseStudentsRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(IndexCards1));
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!SchoolClassStudentExists(courseStudent.CourseId))
+            if (!CourseStudentsExists(courseStudent.CourseId))
                 return new NotFoundViewResult(
                     nameof(CourseStudentNotFound), CurrentClass,
-                    id.ToString(), CurrentController, nameof(Index));
+                    id.ToString(), CurrentController, nameof(IndexCards1));
 
             throw;
         }
-
-        HttpContext.Session.Remove(SessionVarName);
-
-        return RedirectToAction(nameof(Index));
     }
 
 
@@ -408,21 +518,29 @@ public class CoursesStudentsController : Controller
     ///     Delete, delete a courseStudent
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
 
-        var courseStudent = await _courseStudentsRepository
-            .GetCourseStudentById(id.Value).FirstOrDefaultAsync();
+
+        var courseStudent = id != 0 || idGuid == Guid.Empty
+            ? await _courseStudentsRepository
+                .GetCourseStudentById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _courseStudentsRepository
+                .GetCourseStudentByIdGuid(idGuid.Value)
+                .FirstOrDefaultAsync();
+
 
         return courseStudent == null
             ? new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index))
+                CurrentController, nameof(IndexCards1))
             : View(courseStudent);
     }
 
@@ -432,19 +550,38 @@ public class CoursesStudentsController : Controller
     ///     DeleteConfirmed, delete a courseStudent
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id, Guid idGuid)
     {
-        var courseStudent = await _courseStudentsRepository
-            .GetCourseStudentById(id).FirstOrDefaultAsync();
+        var courseStudent = id != 0 || idGuid == Guid.Empty
+            ? await _courseStudentsRepository
+                .GetCourseStudentById(id)
+                .FirstOrDefaultAsync()
+            : await _courseStudentsRepository
+                .GetCourseStudentByIdGuid(idGuid)
+                .FirstOrDefaultAsync();
+
 
         if (courseStudent == null)
             return new NotFoundViewResult(
                 nameof(CourseStudentNotFound), CurrentClass, id.ToString(),
-                CurrentController, nameof(Index));
+                CurrentController, nameof(IndexCards1));
+
+
+        var studentEnrollments = _enrollmentRepository
+            .GetEnrollmentsByStudentId(courseStudent.StudentId)
+            .ToList();
+
+
+        var course = await _courseRepository
+            .GetByIdAsync(courseStudent.CourseId)
+            .Include(o => o.CourseDisciplines)
+            .ThenInclude(o => o.Discipline)
+            .FirstOrDefaultAsync();
 
 
         try
@@ -453,9 +590,15 @@ public class CoursesStudentsController : Controller
 
             await _courseStudentsRepository.SaveAllAsync();
 
+
+            await _enrollmentRepository.DeleteStudentByIdAsync(
+                courseStudent.StudentId, course.CourseDisciplines);
+
+            await _enrollmentRepository.SaveAllAsync();
+
             HttpContext.Session.Remove(SessionVarName);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexCards1));
         }
         catch (DbUpdateException ex)
         {
@@ -474,7 +617,7 @@ public class CoursesStudentsController : Controller
                     ErrorTitle = "Foreign Key Constraint Violation",
                     ErrorMessage =
                         "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
-                        $"The {nameof(CourseStudent)} with the ID " + //******* SERIA STUDENT OU COURSE???
+                        $"The {nameof(CourseStudent)} with the ID " +
                         $"{courseStudent.Id} - " +
                         $"{courseStudent.Course.Name} " +
                         $"{courseStudent.IdGuid} " +
@@ -503,8 +646,6 @@ public class CoursesStudentsController : Controller
                 ItemName = courseStudent.Course.Name
             };
 
-            HttpContext.Session.Remove(SessionVarName);
-
             // Redirecione para o DatabaseError com os dados apropriados
             return RedirectToAction(
                 "DatabaseError", "Errors", dbErrorViewModel);
@@ -512,8 +653,8 @@ public class CoursesStudentsController : Controller
         catch (InvalidOperationException ex)
         {
             // Handle the exception
-            Console.WriteLine("An InvalidOperationException occurred: " +
-                              ex.Message);
+            Console.WriteLine(
+                "An InvalidOperationException occurred: " + ex.Message);
 
             var dbErrorViewModel = new DbErrorViewModel
             {
@@ -548,23 +689,22 @@ public class CoursesStudentsController : Controller
                     "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                     $"The {nameof(CourseStudent)} with the ID " +
                     $"{courseStudent.Id} - {courseStudent.Student.FullName} " +
-                     $"{courseStudent.IdGuid}" +
+                    $"{courseStudent.IdGuid}" +
                     "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                     "Try deleting possible dependencies and try again. ",
                 ItemClass = nameof(CourseStudent),
                 ItemId = courseStudent.Id.ToString(),
-                ItemGuid = Guid.Empty,
+                ItemGuid = courseStudent.IdGuid,
                 ItemName = courseStudent.Student.FullName
             };
 
             return RedirectToAction(
                 "DatabaseError", "Errors", dbErrorViewModel);
         }
-
     }
 
 
-    private bool SchoolClassStudentExists(int id)
+    private bool CourseStudentsExists(int id)
     {
         return _courseStudentsRepository.ExistAsync(id).Result;
     }
@@ -575,20 +715,25 @@ public class CoursesStudentsController : Controller
         string? createdById = null, string? updatedById = null
     )
     {
+        var loggedUser = _authenticatedUserInApp.GetAuthenticatedUser().Result;
+
+
         ViewData[nameof(CourseDiscipline.CourseId)] =
-            new SelectList(_courseRepository.GetCourses(),
+            new SelectList(
+                _courseRepository.GetCourses().Select(c =>
+                        new {c.Id, Description = $"{c.Code} - {c.Name}"})
+                    .ToList(),
                 nameof(Course.Id),
-                // nameof(Course.Name),
-                $"{nameof(Course.Code)} ({nameof(Course.Acronym)})",
+                "Description",
                 courseId);
 
 
-        var test = _studentRepository.GetAll().ToList();
         ViewData[nameof(CourseStudent.StudentId)] =
-            new SelectList(test,
+            new SelectList(_studentRepository.GetAll().ToList(),
+                // _studentRepository.GetAll().Select(c => new { Id = c.Id, Description = $"{c.FirstName} - {c.LastName}" }).ToList(),
                 nameof(Student.Id),
-                // $"{nameof(Student.FirstName)} {nameof(Student.LastName)}",
                 nameof(Student.FullName),
+                // "Description",
                 studentId);
 
 
@@ -596,12 +741,12 @@ public class CoursesStudentsController : Controller
             new SelectList(_userManager.Users,
                 nameof(AppUser.Id),
                 nameof(AppUser.FullName),
-                createdById);
+                createdById != null ? createdById : loggedUser.Id);
 
         ViewData[nameof(CourseDiscipline.UpdatedById)] =
             new SelectList(_userManager.Users,
                 nameof(AppUser.Id),
                 nameof(AppUser.FullName),
-                updatedById);
+                updatedById != null ? updatedById : loggedUser.Id);
     }
 }

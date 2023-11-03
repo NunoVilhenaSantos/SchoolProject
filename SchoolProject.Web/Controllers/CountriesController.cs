@@ -21,36 +21,35 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class CountriesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(Country.Name);
     internal const string CurrentClass = nameof(Country);
+
     internal const string CurrentAction = nameof(Index);
 
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(CountriesController));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
+    private readonly ICityRepository _cityRepository;
 
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+    private readonly ICountryRepository _countryRepository;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IMailHelper _mailHelper;
 
 
     //  repositories
     private readonly INationalityRepository _nationalityRepository;
-    private readonly ICountryRepository _countryRepository;
-    private readonly ICityRepository _cityRepository;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
 
 
     /// <summary>
@@ -83,6 +82,9 @@ public class CountriesController : Controller
         _userHelper = userHelper;
         _storageHelper = storageHelper;
     }
+
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(CountriesController));
 
 
     // Obtém o controlador atual
@@ -128,7 +130,8 @@ public class CountriesController : Controller
 
     private List<Country> CountriesWithCities()
     {
-        return _countryRepository.GetCountriesWithCities().ToList();
+        return _countryRepository.GetCountriesWithCities()
+            .AsNoTracking().ToList();
     }
 
 
@@ -245,7 +248,7 @@ public class CountriesController : Controller
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -311,7 +314,7 @@ public class CountriesController : Controller
         {
             Name = country.Nationality.Name,
             Country = null,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
         };
 
 
@@ -320,7 +323,7 @@ public class CountriesController : Controller
             Name = country.Name,
             Nationality = nationality1,
             ProfilePhotoId = country.ProfilePhotoId,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
         };
 
         nationality1.Country = country1;
@@ -348,7 +351,7 @@ public class CountriesController : Controller
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -448,7 +451,7 @@ public class CountriesController : Controller
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
@@ -478,7 +481,8 @@ public class CountriesController : Controller
     // [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var country = await _countryRepository.GetByIdAsync(id).FirstOrDefaultAsync();
+        var country = await _countryRepository.GetByIdAsync(id)
+            .FirstOrDefaultAsync();
 
         if (country == null)
             return new NotFoundViewResult(

@@ -1,12 +1,12 @@
-﻿@using System.Reflection
-@using Microsoft.AspNetCore.Identity
-@using SchoolProject.Web.Data.Entities.Courses
-@using SchoolProject.Web.Data.Entities.Disciplines
-@using SchoolProject.Web.Data.Entities.Users
-
-@inject RoleManager<IdentityRole> RoleManager
+﻿@inject RoleManager<IdentityRole> RoleManager
 @inject UserManager<AppUser> UserManager
 
+@using System.Reflection
+@using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Controllers
+@using SchoolProject.Web.Data.Entities.Courses
+@using SchoolProject.Web.Data.Entities.Disciplines
 @model SchoolProject.Web.Data.Entities.Disciplines.Discipline
 
 @{
@@ -25,7 +25,7 @@
 }
 
 <br/>
-<h4>Courses</h4>
+<h4>@CoursesController.ControllerName</h4>
 @if (Model.Courses == null && !Model.Courses.Any())
 {
     <h5>No @nameof(Course) added yet to this @nameof(Discipline) | @Model.Code - @Model.Name</h5>
@@ -41,6 +41,8 @@ else
             <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().Name)</th>
             <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().QnqLevel)</th>
             <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().EqfLevel)</th>
+            <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().WorkHourLoad)</th>
+            <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().CourseCredits)</th>
             @* <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().StartDate)</th> *@
             @* <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().EndDate)</th> *@
             @* <th>@Html.DisplayNameFor(model => model.Courses.FirstOrDefault().StartHour)</th> *@
@@ -69,6 +71,8 @@ else
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.QnqLevel)</td>
                 <td>@Html.DisplayFor(modelItem => item.EqfLevel)</td>
+                <td>@Html.DisplayFor(modelItem => item.WorkHourLoad)</td>
+                <td>@Html.DisplayFor(modelItem => item.CourseCredits)</td>
                 @* <td>@Html.DisplayFor(modelItem => item.StartDate)</td> *@
                 @* <td>@Html.DisplayFor(modelItem => item.EndDate)</td> *@
                 @* <td>@Html.DisplayFor(modelItem => item.StartHour) </td> *@
@@ -94,11 +98,12 @@ else
         </tbody>
         <tfoot>
         <tr>
-            <td></td>
             <td>Total Lines:</td>
-            <td>@Model.Courses.Count().ToString("N")</td>
-            <td>@Model.Courses.Sum(e => e.WorkHourLoad).ToString()</td>
-            <td>@Model.Courses.Sum(e => e.CourseCredits)</td>
+            <td>@Model.Courses.Count().ToString("N0")</td>
+            <td></td>
+            <td>@Model.Courses.Sum(e => e.WorkHourLoad).ToString("N0")</td>
+            <td>@Model.Courses.Sum(e => e.CourseCredits).ToString("N")</td>
+            <td></td>
             <td></td>
         </tr>
         </tfoot>

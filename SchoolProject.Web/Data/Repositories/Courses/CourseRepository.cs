@@ -4,7 +4,6 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
-using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Data.Repositories.Courses;
 
@@ -122,7 +121,7 @@ public class CourseRepository
             PriceForUnemployed = model.PriceForUnemployed,
             ProfilePhotoId = model.ProfilePhotoId,
             WasDeleted = model.WasDeleted,
-            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser(),
+            CreatedBy = await _authenticatedUserInApp.GetAuthenticatedUser()
         };
 
         _dataContext.Courses.Update(course);

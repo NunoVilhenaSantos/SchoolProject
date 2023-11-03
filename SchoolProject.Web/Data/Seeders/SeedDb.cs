@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Transactions;
 using Microsoft.AspNetCore.Identity;
 using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Genders;
 using SchoolProject.Web.Data.Entities.Users;
@@ -25,6 +25,10 @@ public class SeedDb
     internal const string DefaultPassword = "Passw0rd=";
 
 
+    // configuration
+    private readonly IConfiguration _configuration;
+
+
     // data context
     //private readonly DataContextMsSql _dataContextInUse;
     private readonly DataContextMySql _dataContextInUse;
@@ -41,10 +45,6 @@ public class SeedDb
     private readonly DataContextSqLite _dataContextSqLite;
 
 
-    // configuration
-    private readonly IConfiguration _configuration;
-
-
     // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
 
@@ -55,20 +55,19 @@ public class SeedDb
     private readonly ILogger<SeedDbStudentsAndTeachers> _loggerSeedDbSTs;
     private readonly ILogger<SeedDbUsers> _loggerSeedDbUsers;
 
+    // appUser manager
+    private readonly RoleManager<IdentityRole> _roleManager;
+
 
     // service provider
     private readonly IServiceProvider _serviceProvider;
 
     // appUser helper
     private readonly IUserHelper _userHelper;
-
-    // appUser manager
-    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<AppUser> _userManager;
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="loggerSeedDbUsers"></param>
@@ -144,7 +143,7 @@ public class SeedDb
 
 
     /// <summary>
-    /// Seeder assíncrono
+    ///     Seeder assíncrono
     /// </summary>
     public async Task SeedAsync()
     {
@@ -358,7 +357,7 @@ public class SeedDb
 
 
         // ------------------------------------------------------------------ //
-        SaveToCsv.SaveTo(_dataContextInUse);
+        //SaveToCsv.SaveTo(_dataContextInUse); Todo csv berrou
         // ------------------------------------------------------------------ //
 
 
@@ -395,7 +394,7 @@ public class SeedDb
 
     private Task SeedDbGenerateCreateScript()
     {
-        string directory = ".\\data\\SQL\\";
+        var directory = ".\\data\\SQL\\";
 
         Directory.CreateDirectory(directory);
 
@@ -475,7 +474,16 @@ public class SeedDb
             // Registe a exceção ou faça o tratamento adequado aqui.
             _logger.LogError(ex,
                 "Ocorreu um erro durante a migração do banco de dados SQLite.");
-            throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+            // throw; // Re-lança a exceção para que o programa saiba que algo deu errado.
+
+            //
+            await _dataContextMySql.Database.EnsureDeletedAsync();
+
+            // Cria os Migrations ao correr o Seed
+            await _dataContextMySql.Database.MigrateAsync();
+
+            // Não cria os Migrations
+            await _dataContextMySql.Database.EnsureCreatedAsync();
         }
 
 
@@ -621,7 +629,7 @@ public class SeedDb
 
     private async Task SeedingRolesForUsers()
     {
-        var rolesToCreate = new System.Collections.Generic.List<string>
+        var rolesToCreate = new List<string>
         {
             "SuperUser", "Admin", "Functionary",
             "Student", "Teacher", "Parent",
@@ -694,11 +702,15 @@ public class SeedDb
     }
 
 
-    private Task CreateRole(string role) =>
-        _roleManager.CreateAsync(new IdentityRole(role));
+    private Task CreateRole(string role)
+    {
+        return _roleManager.CreateAsync(new IdentityRole(role));
+    }
 
-    private async Task CreateRoleAsync(string role) =>
+    private async Task CreateRoleAsync(string role)
+    {
         await _roleManager.CreateAsync(new IdentityRole(role));
+    }
 
 
     private Task AddClaimToRole(string roleName, string claimType)
@@ -896,7 +908,7 @@ public class SeedDb
 
 
     /// <summary>
-    /// Seeder síncrono
+    ///     Seeder síncrono
     /// </summary>
     public Task SeedSync()
     {
@@ -1194,10 +1206,8 @@ public class SeedDb
     {
         // Commit the changes to the database and use asynchronous commit
         if (_dataContextInUse.Database.CurrentTransaction != null)
-        {
             // Há uma transação ativa, você pode efetuar o commit.
             _dataContextInUse.Database.CommitTransaction();
-        }
 
 
         try
@@ -1280,12 +1290,9 @@ public class SeedDb
 
 
     private void PrintDebugInformation(
-        [System.Runtime.CompilerServices.CallerMemberName]
-        string memberName = "",
-        [System.Runtime.CompilerServices.CallerFilePath]
-        string sourceFilePath = "",
-        [System.Runtime.CompilerServices.CallerLineNumber]
-        int sourceLineNumber = 0
+        [CallerMemberName] string memberName = "",
+        [CallerFilePath] string sourceFilePath = "",
+        [CallerLineNumber] int sourceLineNumber = 0
     )
     {
         var className = GetType().Name;

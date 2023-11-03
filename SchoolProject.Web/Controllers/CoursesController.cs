@@ -2,10 +2,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
+using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Courses;
+using SchoolProject.Web.Data.Seeders;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
@@ -22,15 +22,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser")]
 public class CoursesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(Course.Name);
     internal const string CurrentClass = nameof(Course);
+
     internal const string CurrentAction = nameof(Index);
 
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(CoursesController));
+    // Obtém o tipo da classe atual
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -39,17 +38,17 @@ public class CoursesController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
-
-
-    // Host Environment
-    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     //  repositories
     private readonly ICourseRepository _courseRepository;
+
+
+    // Host Environment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
 
 
     /// <summary>
@@ -80,6 +79,9 @@ public class CoursesController : Controller
         _mailHelper = mailHelper;
     }
 
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(CoursesController));
+
 
     // Obtém o controlador atual
     private string CurrentController
@@ -106,7 +108,7 @@ public class CoursesController : Controller
 
     private List<Course> GetCoursesList()
     {
-        return _courseRepository.GetCourses().ToList();
+        return _courseRepository.GetCourses().AsNoTracking().ToList();
     }
 
 
@@ -226,20 +228,22 @@ public class CoursesController : Controller
     ///     Details of a school class, view.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(nameof(CourseNotFound),
                 CurrentClass, id.ToString(), CurrentController, nameof(Index));
 
-        var schoolClass = await _courseRepository
-            .GetCourseByIdAsync(id.Value).FirstOrDefaultAsync();
+        var course = await _courseRepository
+            .GetCourseByIdAsync(id.Value)
+            .FirstOrDefaultAsync();
 
-        return schoolClass == null
+        return course == null
             ? new NotFoundViewResult(nameof(CourseNotFound), CurrentClass,
                 id.ToString(), CurrentController, nameof(Index))
-            : View(schoolClass);
+            : View(course);
     }
 
 
@@ -263,19 +267,102 @@ public class CoursesController : Controller
     ///     Create a new school class, post.
     ///     validates and saves the new school class.
     /// </summary>
-    /// <param name="schoolClass"></param>
+    /// <param name="course"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Course schoolClass)
+    public async Task<IActionResult> Create(Course course)
     {
-        if (!ModelState.IsValid) return View(schoolClass);
+        //if (!ModelState.IsValid) return View(teacher);
 
-        await _courseRepository.AddCourseAsync(schoolClass);
+        var user = await _userHelper.GetUserByEmailAsync(course.Name);
+
+        if (user != null)
+        {
+            ViewBag.UserMessage =
+                "Email has already been used to register an account.";
+            return View(course);
+        }
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var imageId = course.ProfilePhotoId;
+
+        if (course.ImageFile is {Length: > 0})
+            imageId =
+                await _storageHelper.UploadStorageAsync(
+                    course.ImageFile, BucketName);
+
+        course.ProfilePhotoId = imageId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+
+        //var subscription = await _subscriptionRepository
+        //    .GetByNameAsync("Free").FirstOrDefaultAsync();
+
+        //var city = await _cityRepository.GetCityAsync(teacher.CityId).FirstOrDefaultAsync();
+
+        user = new AppUser
+        {
+            FirstName = course.Code,
+            LastName = course.Name,
+            ProfilePhotoId = course.ProfilePhotoId,
+            WasDeleted = course.WasDeleted
+        };
+
+        // _converterHelper.AddUser(
+        //     customer.FirstName, customer.LastName,
+        //     customer.Address ?? string.Empty,
+        //     customer.Email,
+        //     customer.CellPhone, "Customer"
+        // );
+
+        await _userHelper.AddUserAsync(user, SeedDb.DefaultPassword);
+        //await _userHelper.AddUserToRoleAsync(user, ClassRole);  //****** DESATIVO??? ************
+
+        var course1 = new Course
+        {
+            Code = course.Code,
+            Acronym = course.Acronym,
+            Name = course.Name,
+            QnqLevel = course.QnqLevel,
+            EqfLevel = course.EqfLevel,
+            StartDate = course.StartDate,
+            EndDate = course.EndDate,
+            StartHour = course.StartHour,
+            EndHour = course.EndHour,
+            ProfilePhotoId = course.ProfilePhotoId,
+            PriceForEmployed = course.PriceForEmployed,
+            PriceForUnemployed = course.PriceForUnemployed,
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result
+
+
+            //UserId = user.Id,
+            //AppUser = user,
+        };
+
+        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+        // Confirma o email para este AppUser
+        await _userHelper.ConfirmEmailAsync(user, token);
+
+        await _courseRepository.CreateAsync(course1);
+
+        await _courseRepository.SaveAllAsync();
 
         HttpContext.Session.Remove(SessionVarName);
 
         return RedirectToAction(nameof(Index));
+
+        //if (!ModelState.IsValid) return View(course);
+
+        //await _courseRepository.AddCourseAsync(course);
+
+        //HttpContext.Session.Remove(SessionVarName);
+
+        //return RedirectToAction(nameof(Index));
     }
 
 
@@ -284,8 +371,9 @@ public class CoursesController : Controller
     ///     Edit a school class, view.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass,
@@ -300,6 +388,7 @@ public class CoursesController : Controller
             : View(course);
     }
 
+
     // POST: Courses/Edit/5
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
@@ -310,39 +399,106 @@ public class CoursesController : Controller
     ///     validate and save the edited school class.
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="schoolClass"></param>
+    /// <param name="course"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Course course)
     {
         if (id != course.Id)
-            return new NotFoundViewResult(nameof(CourseNotFound),
-                CurrentClass, id.ToString(), CurrentController, nameof(Index));
+            return new NotFoundViewResult(
+                nameof(CourseNotFound), CurrentClass, id.ToString(),
+                CurrentController, nameof(Index));
 
-        if (!ModelState.IsValid) return View(course);
+        // if (!ModelState.IsValid) return View(course);
+
+        var course1 = await _courseRepository
+            .GetCourseByIdAsync(id).FirstOrDefaultAsync();
+
+        if (course1 == null) return View(course);
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var profilePhotoId = course.ProfilePhotoId;
+
+        if (course.ImageFile is {Length: > 0})
+            profilePhotoId =
+                await _storageHelper.UploadStorageAsync(
+                    course.ImageFile, BucketName);
+
+        course.ProfilePhotoId = profilePhotoId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+        //****** APENAS ESTES???
+
+        course1.Acronym = course.Acronym;
+        course1.WasDeleted = course.WasDeleted;
+        course1.CreatedAt = course.CreatedAt;
+        course1.ProfilePhotoId = course.ProfilePhotoId;
+        course1.CreatedBy =
+            _authenticatedUserInApp.GetAuthenticatedUser().Result;
+
 
         try
         {
-            await _courseRepository.UpdateAsync(course);
-
-            //_context.Update(schoolClass);            
+            await _courseRepository.UpdateAsync(course1);
 
             await _courseRepository.SaveAllAsync();
+
+            HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!await SchoolClassExists(course.Id))
-                return new NotFoundViewResult(nameof(CourseNotFound),
-                    CurrentClass, id.ToString(), CurrentController,
-                    nameof(Index));
+            if (!await _courseRepository.ExistAsync(course.Id))
+                return new NotFoundViewResult(
+                    nameof(CourseNotFound), CurrentClass, id.ToString(),
+                    CurrentController, nameof(Index));
 
             throw;
         }
 
-        HttpContext.Session.Remove(SessionVarName);
+        //********************
 
-        return RedirectToAction(nameof(Index));
+        //if (id != course.Id)
+        //    return new NotFoundViewResult(nameof(CourseNotFound),
+        //        CurrentClass, id.ToString(), CurrentController, nameof(Index));
+
+
+        //if (!ModelState.IsValid)
+        //{
+        //    course = await _courseRepository
+        //        .GetCourseByIdAsync(id).FirstAsync();
+
+        //    return course == null
+        //        ? new NotFoundViewResult(nameof(CourseNotFound), CurrentClass,
+        //            id.ToString(), CurrentController, nameof(Index))
+        //        : View(course);
+        //}
+
+
+        //try
+        //{
+        //    await _courseRepository.UpdateAsync(course);
+
+        //    await _courseRepository.SaveAllAsync();
+        //}
+        //catch (DbUpdateConcurrencyException)
+        //{
+        //    if (!await SchoolClassExists(course.Id))
+        //        return new NotFoundViewResult(nameof(CourseNotFound),
+        //            CurrentClass, id.ToString(), CurrentController,
+        //            nameof(Index));
+
+        //    throw;
+        //}
+
+        //HttpContext.Session.Remove(SessionVarName);
+
+        //return RedirectToAction(nameof(Index));
     }
 
 
@@ -352,7 +508,7 @@ public class CoursesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(nameof(CourseNotFound), CurrentClass,
@@ -381,8 +537,8 @@ public class CoursesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var course = await _courseRepository.GetCourseByIdAsync(id)
-            .FirstOrDefaultAsync();
+        var course = await _courseRepository
+            .GetCourseByIdAsync(id).FirstOrDefaultAsync();
 
         if (course == null)
             return new NotFoundViewResult(
@@ -449,10 +605,59 @@ public class CoursesController : Controller
             return RedirectToAction(
                 "DatabaseError", "Errors", dbErrorViewModel);
         }
+        catch (InvalidOperationException ex)
+        {
+            // Handle the exception
+            Console.WriteLine("An InvalidOperationException occurred: " +
+                              ex.Message);
+
+            var dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Foreign Key Constraint Violation",
+                ErrorMessage =
+                    "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                    $"The {nameof(Course)} with the ID " +
+                    $"{course.Id} - {course.Name} {course.IdGuid} " +
+                    "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                    "Try deleting possible dependencies and try again. ",
+                ItemClass = nameof(Course),
+                ItemId = course.Id.ToString(),
+                ItemGuid = course.IdGuid,
+                ItemName = course.Name
+            };
+
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
+        catch (Exception ex)
+        {
+            // Catch any other exceptions that might occur
+            Console.WriteLine("An error occurred: " + ex.Message);
+
+            var dbErrorViewModel = new DbErrorViewModel
+            {
+                DbUpdateException = true,
+                ErrorTitle = "Foreign Key Constraint Violation",
+                ErrorMessage =
+                    "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
+                    $"The {nameof(Course)} with the ID " +
+                    $"{course.Id} - {course.Name} {course.IdGuid} " +
+                    "cannot be deleted due to there being dependencies from other entities.</br></br>" +
+                    "Try deleting possible dependencies and try again. ",
+                ItemClass = nameof(Course),
+                ItemId = course.Id.ToString(),
+                ItemGuid = course.IdGuid,
+                ItemName = course.Name
+            };
+
+            return RedirectToAction(
+                "DatabaseError", "Errors", dbErrorViewModel);
+        }
     }
 
 
-    private async Task<bool> SchoolClassExists(int id)
+    private async Task<bool> CourseExists(int id)
     {
         // return _context.Courses.Any(e => e.Id == id);
         return await _courseRepository.ExistAsync(id);

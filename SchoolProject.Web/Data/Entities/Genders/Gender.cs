@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Controllers;
 using SchoolProject.Web.Data.Entities.Students;
@@ -18,7 +19,7 @@ public class Gender : IEntity, INotifyPropertyChanged
 {
     /// <summary>
     /// </summary>
-    [MaxLength(20,
+    [MaxLength(15,
         ErrorMessage =
             "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -33,6 +34,8 @@ public class Gender : IEntity, INotifyPropertyChanged
     ///     The image of the appUser file from the form to be inserted in the database.
     /// </summary>
     [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
@@ -49,48 +52,67 @@ public class Gender : IEntity, INotifyPropertyChanged
     ///     The profile photo of the appUser in URL format.
     /// </summary>
     [DisplayName("Profile Photo")]
-    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
-        ? StorageHelper.NoImageUrl
-        : StorageHelper.AzureStoragePublicUrl +
-          GendersController.BucketName +
-          "/" + ProfilePhotoId;
+    public string ProfilePhotoIdUrl =>
+        ProfilePhotoId == Guid.Empty || ProfilePhotoId == null
+            ? StorageHelper.NoImageUrl
+            : StorageHelper.AzureStoragePublicUrl +
+              GendersController.BucketName +
+              "/" + ProfilePhotoId;
 
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
+
 
     /// <summary>
-    ///
     /// </summary>
     public IEnumerable<AppUser>? AppUsers { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int AppUsersCount => AppUsers?.Count() ?? 0;
 
 
     /// <summary>
-    ///
     /// </summary>
     public IEnumerable<Teacher>? Teachers { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int TeachersCount => Teachers?.Count() ?? 0;
 
 
     /// <summary>
-    ///
     /// </summary>
     public IEnumerable<Student>? Students { get; set; }
 
 
     /// <summary>
-    ///
     /// </summary>
+    [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = false)]
     public int StudentsCount => Students?.Count() ?? 0;
+
+
+    // ---------------------------------------------------------------------- //
+    // ---------------------------------------------------------------------- //
+
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Created By AppUser")]
+    [ForeignKey(nameof(CreatedBy))]
+    public string CreatedById { get; set; }
+
+    /// <summary>
+    ///     Deve ser do mesmo tipo da propriedade Id de AppUser
+    /// </summary>
+    [DisplayName("Updated By AppUser")]
+    [ForeignKey(nameof(UpdatedBy))]
+    public string? UpdatedById { get; set; }
+
 
     // --------------------------------------------------------------------- //
     // --------------------------------------------------------------------- //
@@ -137,26 +159,6 @@ public class Gender : IEntity, INotifyPropertyChanged
     /// <inheritdoc />
     [DisplayName("Updated By")]
     public virtual AppUser? UpdatedBy { get; set; }
-
-
-
-    // ---------------------------------------------------------------------- //
-    // ---------------------------------------------------------------------- //
-
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Created By AppUser")]
-    [ForeignKey(nameof(CreatedBy))]
-    public string CreatedById { get; set; }
-
-    /// <summary>
-    /// Deve ser do mesmo tipo da propriedade Id de AppUser
-    /// </summary>
-    [DisplayName("Updated By AppUser")]
-    [ForeignKey(nameof(UpdatedBy))]
-    public string? UpdatedById { get; set; }
 
 
     // --------------------------------------------------------------------- //

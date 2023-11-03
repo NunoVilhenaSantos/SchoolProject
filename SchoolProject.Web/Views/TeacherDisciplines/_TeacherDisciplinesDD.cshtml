@@ -4,14 +4,14 @@
     <div class="col-md-8">
 
         <dl class="row">
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Id)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Id)</dd>
+            @* <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Id)</dt> *@
+            @* <dd class="col-sm-9">@Html.DisplayFor(model => model.Id)</dd> *@
+            @* <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IdGuid) </dt> *@
+            @* <dd class="col-sm-9">@Html.DisplayFor(model => model.IdGuid) </dd> *@
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Teacher)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.Teacher.Address)</dd>
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Discipline)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.Discipline.Code)</dd>
-            @* <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IdGuid) </dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.IdGuid) </dd> *@
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.WasDeleted)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.WasDeleted)</dd>
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedAt)</dt>

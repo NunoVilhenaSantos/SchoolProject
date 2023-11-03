@@ -1,16 +1,14 @@
-@using System.Reflection
 @model Microsoft.AspNetCore.Identity.IdentityRole
 @* @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole> *@
 @* @model PaginationViewModel<Microsoft.AspNetCore.Identity.IdentityRole> *@
 
-@* <!-- Outro conteúdo da página --> *@
+@* <!-- Outro conteÃºdo da pÃ¡gina --> *@
 <div>
     <h3>Errors:</h3>
     <ul>
-        <li>@Html.ValidationSummary(false, "", new { @class = "text-danger" })</li>
+        <li>@Html.ValidationSummary(false, "", new {@class = "text-danger"})</li>
     </ul>
 </div>
-
 
 
 <div class="form-group">
@@ -31,8 +29,8 @@
     <span asp-validation-for="NormalizedName" class="text-danger"></span>
 </div>
 
-    <div class="form-group"> 
-        <label asp-for="ConcurrencyStamp" class="control-label"></label> 
-        <input asp-for="ConcurrencyStamp" class="form-control"/> 
-        <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span> 
-    </div> 
+<div class="form-group">
+    <label asp-for="ConcurrencyStamp" class="control-label"></label>
+    <input asp-for="ConcurrencyStamp" class="form-control"/>
+    <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
+</div>

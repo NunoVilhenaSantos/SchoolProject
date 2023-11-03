@@ -35,22 +35,16 @@
         @* <partial name="_DisplayImages"/> *@
 
         <div class="col">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <form asp-action="Edit" enctype="multipart/form-data">
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="IdGuid"/>
                     <input type="hidden" asp-for="CourseId"/>
                     <input type="hidden" asp-for="StudentId"/>
 
                     <partial name="_CourseStudentsCE" for="@Model"/>
-
-
-                    <div class="form-group">
-                        <label asp-for="CreatedAt" class="control-label"></label>
-                        <input asp-for="CreatedAt" class="form-control"/>
-                        <span asp-validation-for="CreatedAt" class="text-danger"></span>
-                    </div>
 
                     <br/>
                     <div class="form-group">

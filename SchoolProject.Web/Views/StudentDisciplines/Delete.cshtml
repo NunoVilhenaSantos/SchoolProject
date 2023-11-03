@@ -38,13 +38,13 @@
 
         <div class="col">
             <div class="row">
-                <partial name="_StudentCoursesDD" for="@Model"/>
+                <partial name="_StudentDisciplinesDD" for="@Model"/>
 
                 <form asp-action="Delete">
                     <input type="hidden" asp-for="StudentId"/>
                     <input type="hidden" asp-for="DisciplineId"/>
                     <button type="submit" class="btn btn-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
-                    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                    <a asp-action="IndexCards1" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                 </form>
             </div>
         </div>

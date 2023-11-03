@@ -31,7 +31,7 @@
             <a asp-action="IndexCards" asp-area="" asp-controller="Disciplines"
                class="dropdown-item @(currentAction == "IndexCards" && currentController == "Disciplines" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @DisciplinesController.ControllerName Cards
+                @DisciplinesController.ControllerName Cards Search
             </a>
         </li>
         <li>
@@ -41,7 +41,7 @@
             <a asp-action="IndexCards1" asp-area="" asp-controller="Disciplines"
                class="dropdown-item @(currentAction == "IndexCards1" && currentController == "Disciplines" ? "active" : "")">
                 <span class="fas fa-person-through-window"></span>
-                @DisciplinesController.ControllerName 1
+                @DisciplinesController.ControllerName Cards Sorting
             </a>
         </li>
     </ul>

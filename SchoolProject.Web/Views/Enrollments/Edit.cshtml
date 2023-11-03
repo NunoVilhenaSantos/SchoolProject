@@ -26,26 +26,26 @@
 
 <h3>@actionName</h3>
 
-@*<h4>@controllerName</h4>*@
+<h4>@controllerName</h4>
 
-<hr />
+<hr/>
 
 <div class="row">
-    <partial name="_DisplayImages" />
+    @*<partial name="_DisplayImages" />*@
 
     <div class="col">
         <div class="col-md-4">
             <form asp-action="Edit" enctype="multipart/form-data">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id"/>
-            <input type="hidden" asp-for="IdGuid"/>
-            <input type="hidden" asp-for="StudentId"/> 
-            <input type="hidden" asp-for="DisciplineId"/> 
-                    
-            <partial name="_EnrollmentsCE" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="IdGuid"/>
+                <input type="hidden" asp-for="StudentId"/>
+                <input type="hidden" asp-for="DisciplineId"/>
 
-                <br />
+                <partial name="_EnrollmentsCE"/>
+
+                <br/>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Save</button>
                     <a asp-action="Index" class="btn btn-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>

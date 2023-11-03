@@ -45,6 +45,15 @@ public class TeacherDisciplineRepository
 
 
     /// <inheritdoc />
+    public Task DeleteRangeAsync(List<TeacherDiscipline> teacherDisciplines)
+    {
+        _dataContext.TeacherDisciplines.RemoveRange(teacherDisciplines);
+
+        return _dataContext.SaveChangesAsync();
+    }
+
+
+    /// <inheritdoc />
     public IOrderedQueryable<TeacherDiscipline> GetTeacherDisciplines()
     {
         return _dataContext.TeacherDisciplines
@@ -91,6 +100,20 @@ public class TeacherDisciplineRepository
             .Include(td => td.CreatedBy)
             .Include(td => td.UpdatedBy)
             .Where(i => i.Id == id)
-            .OrderBy(o => o.Id);
+            .OrderBy(o => o.Teacher.Id);
+    }
+
+
+    /// <inheritdoc />
+    public IOrderedQueryable<TeacherDiscipline>
+        GetTeacherDisciplinesByIdGuid(Guid idGuid)
+    {
+        return _dataContext.TeacherDisciplines
+            .Include(td => td.Discipline)
+            .Include(td => td.Teacher)
+            .Include(td => td.CreatedBy)
+            .Include(td => td.UpdatedBy)
+            .Where(i => i.IdGuid == idGuid)
+            .OrderBy(o => o.Teacher.Id);
     }
 }

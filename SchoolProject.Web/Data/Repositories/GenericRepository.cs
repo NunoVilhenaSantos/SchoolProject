@@ -65,7 +65,7 @@ public class GenericRepository<T> : IGenericRepository<T>
     {
         // return await _dataContext.Set<T>().FindAsync(id).AsTask();
         return _dataContext.Set<T>().AsQueryable()
-            .Where(e => e.Id == id).AsNoTracking();
+            .Where(e => e.Id == id);
     }
 
 
@@ -73,7 +73,7 @@ public class GenericRepository<T> : IGenericRepository<T>
     public IQueryable<T> GetByIdGuidAsync(Guid idGuid)
     {
         return _dataContext.Set<T>().AsQueryable()
-            .Where(e => e.IdGuid == idGuid).AsNoTracking();
+            .Where(e => e.IdGuid == idGuid);
     }
 
 

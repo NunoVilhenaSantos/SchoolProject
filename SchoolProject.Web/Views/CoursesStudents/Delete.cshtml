@@ -32,19 +32,21 @@
 
 <h3>Are you sure you want to delete this?</h3>
 
-<hr />
+<hr/>
 <div class="col-md-6">
     <div class="row">
         @* <partial name="_DisplayImages" /> *@
 
         <div class="col">
             <div class="row">
-                <partial name="_CourseStudentsDD" for="@Model" />
+                <partial name="_CourseStudentsDD" for="@Model"/>
 
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="IdGuid" />
                         <input type="hidden" asp-for="CourseId" />
-                        <input type="hidden" asp-for="StudentId" />
+                        <input type="hidden" asp-for="StudentId"/>
 
                         <button type="submit" class="btn btn-danger"> <span class="fa-regular fa-trash-can"></span> Delete</button>
                         <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
@@ -56,5 +58,3 @@
 
     </div>
 </div>
-
-            

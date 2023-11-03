@@ -16,7 +16,6 @@ using SchoolProject.Web.Models.Account;
 using SchoolProject.Web.Models.Errors;
 using SchoolProject.Web.Models.Users;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
@@ -28,7 +27,6 @@ public class UsersController : Controller
     // Obtém o tipo da classe atual
     // Obtém o nome do controlador atual
     internal const string CurrentClass = nameof(UserWithRolesViewModel);
-    internal static readonly string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string CurrentAction = nameof(Index);
     internal const string ClassRole = CurrentClass;
@@ -36,26 +34,25 @@ public class UsersController : Controller
     internal const string SortProperty =
         nameof(UserWithRolesViewModel.AppUser.FullName);
 
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(AppUsersController));
+    internal static readonly string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
+    // datacontexts
+    private readonly DataContextMySql _context;
+
+
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
 
     // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
-
-
-    // datacontexts
-    private readonly DataContextMySql _context;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
 
     // private readonly DataContextMySql _contextMySql;
     private readonly UserManager<AppUser> _userManager;
@@ -71,6 +68,7 @@ public class UsersController : Controller
     /// <param name="storageHelper"></param>
     /// <param name="context"></param>
     /// <param name="userManager"></param>
+    /// <param name="authenticatedUserInApp"></param>
     public UsersController(
         IMailHelper mailHelper,
         IUserHelper userHelper,
@@ -90,6 +88,9 @@ public class UsersController : Controller
         _userHelper = userHelper;
         _context = context;
     }
+
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(AppUsersController));
 
 
     // Obtém o controlador atual
@@ -144,6 +145,7 @@ public class UsersController : Controller
                         Role = userUserRole.UserRole,
                         Roles = roles.Select(role => role.Name).ToList()
                     })
+            .AsNoTracking()
             .ToList();
 
         return usersWithRoles;
@@ -421,7 +423,7 @@ public class UsersController : Controller
 
         if (user == null)
             return new NotFoundViewResult(nameof(UserNotFound), CurrentClass,
-                id.ToString(), CurrentController, nameof(Index));
+                id, CurrentController, nameof(Index));
 
         try
         {
@@ -673,7 +675,7 @@ public class UsersController : Controller
             var user = await _userHelper.GetUserByIdAsync(model.Id);
             if (user == null)
                 return new NotFoundViewResult(
-                    nameof(UserNotFound), CurrentClass, id.ToString(),
+                    nameof(UserNotFound), CurrentClass, id,
                     CurrentController, nameof(Index));
 
 
@@ -762,7 +764,7 @@ public class UsersController : Controller
         {
             if (!await _userHelper.UserExistsAsync(model.Id))
                 return new NotFoundViewResult(
-                    nameof(UserNotFound), CurrentClass, id.ToString(),
+                    nameof(UserNotFound), CurrentClass, id,
                     CurrentController, nameof(Index));
 
             throw;

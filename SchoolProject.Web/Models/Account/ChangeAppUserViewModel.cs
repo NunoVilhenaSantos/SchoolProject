@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.Entities.Users;
 
 namespace SchoolProject.Web.Models.Account;

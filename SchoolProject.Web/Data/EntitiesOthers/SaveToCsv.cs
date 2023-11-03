@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using SchoolProject.Web.Data.DataContexts.MySQL;
@@ -6,13 +7,16 @@ using SchoolProject.Web.Data.DataContexts.MySQL;
 namespace SchoolProject.Web.Data.EntitiesOthers;
 
 /// <summary>
-/// Salvar os dados em CSV
+///     Salvar os dados em CSV
 /// </summary>
 public static class SaveToCsv
 {
     // Set the base path here
     private const string FilePath = ".\\Data\\Csv\\";
     private static readonly DataContextMySql DataContext;
+
+
+    private static readonly object FileLock = new();
 
 
     /// <summary>
@@ -29,19 +33,18 @@ public static class SaveToCsv
         Directory.CreateDirectory(FilePath);
 
 
-            // Certifique-se de que dataContext.Cities contém dados válidos da classe City.
-            var cities = dataContext.Cities
-            .Include(c =>c.Country)
+        // Certifique-se de que dataContext.Cities contém dados válidos da classe City.
+        var cities = dataContext.Cities
+            .Include(c => c.Country)
             .Include(c => c.CreatedBy)
             .Include(c => c.UpdatedBy)
             .ToList();
 
-
         SaveEntitiesToCsv(cities, "Cities.csv", csvConfig);
-
-
-        SaveEntitiesToCsv(dataContext.Countries.ToList(),            "Countries.csv", csvConfig);
-        SaveEntitiesToCsv(dataContext.Nationalities.ToList(),            "Nationalities.csv", csvConfig);
+        SaveEntitiesToCsv(dataContext.Countries.ToList(),
+            "Countries.csv", csvConfig);
+        SaveEntitiesToCsv(dataContext.Nationalities.ToList(),
+            "Nationalities.csv", csvConfig);
 
 
         SaveEntitiesToCsv(dataContext.Genders, "Genders.csv", csvConfig);
@@ -88,7 +91,26 @@ public static class SaveToCsv
     }
 
 
-    private static readonly object fileLock = new object();
+    private static void SaveEntitiesToCsvOld<T>(IEnumerable<T> entities,
+        string fileName, CsvConfiguration csvConfig)
+    {
+        Directory.CreateDirectory(FilePath);
+
+        var filePath = Path.Combine(FilePath, fileName);
+
+        lock (FileLock)
+        {
+            using (var writer = new StreamWriter(filePath, false,
+                       Encoding.UTF8))
+            {
+                using (var csv = new CsvWriter(writer, csvConfig))
+                {
+                    var tableTemp = entities.ToList();
+                    csv.WriteRecords(tableTemp);
+                }
+            }
+        }
+    }
 
 
     private static void SaveEntitiesToCsv<T>(IEnumerable<T> entities,
@@ -98,15 +120,39 @@ public static class SaveToCsv
 
         var filePath = Path.Combine(FilePath, fileName);
 
-        lock (fileLock)
-        {
-            using (var writer = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
+        var fileAvailable = false;
+
+
+        while (!fileAvailable)
+            try
             {
-                using (var csv = new CsvWriter(writer, csvConfig))
+                // Tenta abrir o arquivo para verificar se ele está disponível.
+                using (var fileStream =
+                       File.Open(filePath, FileMode.Open,
+                           FileAccess.Read, FileShare.None))
                 {
-                    var tableTemp = entities.ToList();
-                    csv.WriteRecords(tableTemp);
+                    // Se conseguir abrir, o arquivo está disponível.
+                    fileAvailable = true;
                 }
+            }
+            catch (IOException)
+            {
+                // Se ocorrer uma exceção, o arquivo está em uso.
+                // Aguarde um pouco e tente novamente.
+                // Aguarda por 1 segundo antes de verificar novamente.
+                Thread.Sleep(1000);
+            }
+
+
+        // Agora que o arquivo não está mais em uso,
+        // você pode escrever nele com segurança.
+        using (var writer =
+               new StreamWriter(filePath, false, Encoding.UTF8))
+        {
+            using (var csv = new CsvWriter(writer, csvConfig))
+            {
+                var tableTemp = entities.ToList();
+                csv.WriteRecords(tableTemp);
             }
         }
     }

@@ -28,23 +28,23 @@
 
 <h4>@controllerName</h4>
 
-<hr />
+<hr/>
 <div class="row">
-    <partial name="_DisplayImages" />
-        <div class="row">
-            <div class="col-md-4">
-                <form asp-action="Create" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <partial name="_DisplayImages"/>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <partial name="_EnrollmentsCE" for="@Model" />
+                <partial name="_EnrollmentsCE" for="@Model"/>
 
-                <br />
+                <br/>
                 <div class="form-group">
                     <button type="submit" class="btn btn-outline-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
                     <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                 </div>
 
-                <br />
+                <br/>
                 <div class="text-danger">@ViewBag.UserMessage</div>
             </form>
 
@@ -52,4 +52,6 @@
     </div>
 </div>
 
-@section Scripts {    @{        await Html.RenderPartialAsync("_ValidationScriptsPartial");    }}
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

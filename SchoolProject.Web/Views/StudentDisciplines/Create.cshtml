@@ -35,18 +35,18 @@
 
 <div class="col-md-4">
     <div class="row">
-       @*  <partial name="_DisplayImages"/> *@
+        @*  <partial name="_DisplayImages"/> *@
 
         <div class="col">
             <div class="row">
                 <form asp-action="Create" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <partial name="_StudentCoursesCE" for="@Model"/>
+                    <partial name="_StudentDisciplinesCE" for="@Model"/>
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary"><span class="fa-solid fa-floppy-disk"></span> Create</button>
-                        <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                        <a asp-action="IndexCards1" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
                     </div>
                 </form>
             </div>

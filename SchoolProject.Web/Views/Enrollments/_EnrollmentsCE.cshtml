@@ -1,52 +1,56 @@
-@using System.Reflection
 @model SchoolProject.Web.Data.Entities.Enrollments.Enrollment
 
-@* <!-- Outro conteúdo da página --> *@
+@* <!-- Outro conteÃºdo da pÃ¡gina --> *@
 <div>
     <h3>Errors:</h3>
     <ul>
-        <li>@Html.ValidationSummary(false, "", new { @class = "text-danger" })</li>
+        <li>@Html.ValidationSummary(false, "", new {@class = "text-danger"})</li>
     </ul>
 </div>
 
 <div class="form-group">
     <label asp-for="StudentId" class="control-label"></label>
-    <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
+    <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId" disabled></select>
 </div>
 <div class="form-group">
     <label asp-for="DisciplineId" class="control-label"></label>
-    <select asp-for="DisciplineId" class="form-control" asp-items="ViewBag.CourseId"></select>
+    <select asp-for="DisciplineId" class="form-control" asp-items="ViewBag.DisciplineId" disabled></select>
 </div>
 <div class="form-group">
-    <label asp-for="Grade" class="control-label"></label>
-    <input asp-for="Grade" class="form-control"/>
+    <label asp-for="Grade" class="control-label" type="number"></label>
+    <input asp-for="Grade" class="form-control" />
     <span asp-validation-for="Grade" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Absences" class="control-label"></label>
+    <input asp-for="Absences" class="form-control" />
+    <span asp-validation-for="Absences" class="text-danger"></span>
 </div>
 
 <div class="form-group">
     <label asp-for="CreatedAt" class="control-label"></label>
-    <input asp-for="CreatedAt" class="form-control" disable/>
+    <input asp-for="CreatedAt" class="form-control" disabled/>
     <span asp-validation-for="CreatedAt" class="text-danger"></span>
 </div>
 <div class="form-group">
     <label asp-for="CreatedById" class="control-label"></label>
-    <select asp-for="CreatedById" class="form-control" asp-items="ViewBag.CreatedById" disable></select>
+    <select asp-for="CreatedById" class="form-control" asp-items="ViewBag.CreatedById" disabled></select>
     <span asp-validation-for="CreatedById" class="text-danger"></span>
 </div>
 
 <div class="form-group">
     <label asp-for="UpdatedAt" class="control-label"></label>
-    <input asp-for="UpdatedAt" class="form-control" disable/>
+    <input asp-for="UpdatedAt" class="form-control" disabled />
     <span asp-validation-for="UpdatedAt" class="text-danger"></span>
 </div>
 <div class="form-group">
     <label asp-for="UpdatedById" class="control-label"></label>
-    <select asp-for="UpdatedById" class="form-control" asp-items="ViewBag.UpdatedById"  disable></select>
+    <select asp-for="UpdatedById" class="form-control" asp-items="ViewBag.UpdatedById" disabled></select>
     <span asp-validation-for="UpdatedById" class="text-danger"></span>
 </div>
 
 <div class="form-group form-check">
     <label class="form-check-label">
-        <input class="form-check-input" asp-for="WasDeleted"/> @Html.DisplayNameFor(model => model.WasDeleted)
+        <input class="form-check-input" asp-for="WasDeleted" disabled /> @Html.DisplayNameFor(model => model.WasDeleted)
     </label>
 </div>

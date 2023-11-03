@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +13,10 @@ using SchoolProject.Web.Data.Entities.Students;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Countries;
 using SchoolProject.Web.Data.Repositories.Genders;
+using SchoolProject.Web.Data.Repositories.Students;
+using SchoolProject.Web.Data.Repositories.Teachers;
 using SchoolProject.Web.Helpers;
+using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
 using SchoolProject.Web.Helpers.Images;
 using SchoolProject.Web.Helpers.Storages;
@@ -19,11 +24,9 @@ using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Account;
 using Sentry;
 
-
 namespace SchoolProject.Web.Controllers;
 
 /// <summary>
-///
 /// </summary>
 public class AccountController : Controller
 {
@@ -36,39 +39,37 @@ public class AccountController : Controller
     internal const string SessionVarName = UsersController.SessionVarName;
     internal const string SortProperty = UsersController.SortProperty;
     internal static readonly string BucketName = UsersController.BucketName;
+    private readonly ICityRepository _cityRepository;
+    private readonly IConfiguration _configuration;
 
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(AccountController));
+
+    // helpers
+    private readonly IConverterHelper _converterHelper;
 
 
     // repositories
     private readonly ICountryRepository _countryRepository;
-    private readonly ICityRepository _cityRepository;
     private readonly IGenderRepository _genderRepository;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
 
     // auxiliaries
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IWebHostEnvironment _hostingEnvironment;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly SignInManager<AppUser> _signInManager;
+    private readonly IImageHelper _imageHelper;
     private readonly ILogger<AccountController> _logger;
-
-    private readonly IConfiguration _configuration;
+    private readonly IMailHelper _mailHelper;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     // private readonly ICombosHelper _combosHelper;
     private readonly IHub _sentryHub;
-
-
-    // helpers
+    private readonly SignInManager<AppUser> _signInManager;
     private readonly IStorageHelper _storageHelper;
+    private readonly IStudentRepository _studentRepository;
+    private readonly ITeacherRepository _teacherRepository;
     private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
-    private readonly IImageHelper _imageHelper;
 
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="userHelper"></param>
     /// <param name="mailHelper"></param>
@@ -84,6 +85,9 @@ public class AccountController : Controller
     /// <param name="roleManager"></param>
     /// <param name="cityRepository"></param>
     /// <param name="genderRepository"></param>
+    /// <param name="converterHelper"></param>
+    /// <param name="studentRepository"></param>
+    /// <param name="teacherRepository"></param>
     public AccountController(
         IUserHelper userHelper, IMailHelper mailHelper,
         IConfiguration configuration, IWebHostEnvironment hostingEnvironment,
@@ -93,7 +97,9 @@ public class AccountController : Controller
         IHttpContextAccessor httpContextAccessor,
         SignInManager<AppUser> signInManager,
         RoleManager<IdentityRole> roleManager,
-        ICityRepository cityRepository, IGenderRepository genderRepository)
+        ICityRepository cityRepository, IGenderRepository genderRepository,
+        IConverterHelper converterHelper, IStudentRepository studentRepository,
+        ITeacherRepository teacherRepository)
     {
         _userHelper = userHelper;
         _mailHelper = mailHelper;
@@ -109,7 +115,13 @@ public class AccountController : Controller
         _roleManager = roleManager;
         _cityRepository = cityRepository;
         _genderRepository = genderRepository;
+        _converterHelper = converterHelper;
+        _studentRepository = studentRepository;
+        _teacherRepository = teacherRepository;
     }
+
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(AccountController));
 
 
     // Obtém o controlador atual
@@ -127,7 +139,6 @@ public class AccountController : Controller
     // ------------------------------- ------ ------------------------------- //
 
     /// <summary>
-    /// 
     /// </summary>
     /// <returns></returns>
     [Authorize]
@@ -151,7 +162,7 @@ public class AccountController : Controller
             HasPhoto = user.ProfilePhotoId != Guid.Empty,
             ProfilePhotoId = user.ProfilePhotoId,
             Role = await _userHelper.GetUserRoleAsync(user),
-            WasDeleted = false,
+            WasDeleted = false
             // CityId = user.CityId,
             // City = user.City,
         };
@@ -161,7 +172,7 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///   Aqui o utilizador faz o login no sistema e é direcionado para a página inicial
+    ///     Aqui o utilizador faz o login no sistema e é direcionado para a página inicial
     /// </summary>
     /// <returns></returns>
     public IActionResult Login()
@@ -175,7 +186,6 @@ public class AccountController : Controller
 
     // Aqui é que de fato valida as informações
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -213,7 +223,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public async Task<IActionResult> Logout()
@@ -225,7 +234,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -267,7 +275,7 @@ public class AccountController : Controller
                     Value = g.Id.ToString()
                 })
                 .OrderBy(g => g.Text),
-            GenderId = null,
+            GenderId = null
         };
 
         FillViewLists();
@@ -278,7 +286,6 @@ public class AccountController : Controller
 
     // Aqui é que de fato valida as informações
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -319,7 +326,7 @@ public class AccountController : Controller
             Email = model.UserName,
             UserName = model.UserName,
             ProfilePhotoId = model.ProfilePhotoId,
-            WasDeleted = false,
+            WasDeleted = false
             // Country = model.Country,
             // CityId = model.CityId,
             // City = model.City,
@@ -338,10 +345,54 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var roleName = await _roleManager.FindByIdAsync(model.RoleId);
-        
-        await _userHelper.AddUserToRoleAsync(user, roleName.Name);
-        
+        var role = await _roleManager.FindByIdAsync(model.RoleId);
+
+        await _userHelper.AddUserToRoleAsync(user, role?.Name);
+
+
+        // ***** criação do Student or teacher via Account/Register *******
+
+
+        switch (role.Name)
+        {
+            case StudentsController.ClassRole:
+                try
+                {
+                    var student = _converterHelper.ToStudentFromUser(user);
+
+                    await _studentRepository.CreateAsync(student);
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError(string.Empty,
+                        "An Error has occurred. Try again later.");
+                    return View(model);
+                }
+
+                break;
+
+
+            case TeachersController.ClassRole:
+                try
+                {
+                    var teacher = _converterHelper.ToTeacherFromUser(user);
+
+                    await _teacherRepository.CreateAsync(teacher);
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError(string.Empty,
+                        "An Error has occurred. Try again later.");
+                    return View(model);
+                }
+
+                break;
+        }
+
+
+        // ***** FIM *** criação do Student or teacher via Account/Register ***
+
+
         // ***** Incluído por causa do Email de Confirmação *******
         var myToken =
             await _userHelper.GenerateEmailConfirmationTokenAsync(user);
@@ -391,10 +442,99 @@ public class AccountController : Controller
         return View(model);
     }
 
+    //Todo REGISTER NOVO
+    /*[HttpPost]
+    public async Task<IActionResult> Register(RegisterNewUserViewModel model)
+    {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.Username);
+
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.Username,
+                        UserName = model.Username,
+                        Address = model.Address,
+                        PhoneNumber = model.PhoneNumber,
+                        NIF = model.NIF,
+                        PostalCode = model.PostalCode,
+                        Location = model.Location,
+                    };
+
+                    var result = await _userHelper.AddUserAsync(user, model.Password);
+
+                    if (result != IdentityResult.Success)
+                    {
+                        ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+                        return View(model);
+                    }
+
+                    var role = await _userHelper.GetRoleNameByIdAsync(model.RoleId);
+
+                    await _userHelper.AddUserToRoleAsync(user, role.Name);
+
+                    if (role.Name == "Customer")
+                    {
+                        try
+                        {
+                            var customer = _converterHelper.ToCustomerFromUser(user);
+
+                            await _customerRepository.CreateAsync(customer);
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, "An Error has occurred. Try again later.");
+                            return View(model);
+                        }
+                    }
+                    if (role.Name == "Mechanic")
+                    {
+                        try
+                        {
+                            var mechanic = _converterHelper.ToMechanicFromUser(user);
+
+                            await _mechanicRepository.CreateAsync(mechanic);
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, "An Error has occurred. Try again later.");
+                            return View(model);
+                        }
+                    }
+
+                    string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+                    string tokenLink = Url.Action("ConfirmEmail", "Account", new
+                    {
+                        userid = user.Id,
+                        token = myToken
+                    }, protocol: HttpContext.Request.Scheme);
+
+                    Response response = _mailHelper.SendEmail(model.Username, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                        $"To allow the user, " +
+                        $"please click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a> <p><p/><p>Temp Password: {model.Password}<p/>");
+
+
+                    if (response.IsSuccess)
+                    {
+                        ViewBag.Message = "The instructions to allow your user have been sent to your email";
+                        return View(model);
+                    }
+
+                    ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
+                }
+            }
+
+            return View(model);
+    }*/
+
 
     // Aqui só aparece a View
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public async Task<IActionResult> ChangeUser()
@@ -416,7 +556,7 @@ public class AccountController : Controller
             Address = user.Address,
             PhoneNumber = user.PhoneNumber,
             WasDeleted = user.WasDeleted,
-            ProfilePhotoId = user.ProfilePhotoId,
+            ProfilePhotoId = user.ProfilePhotoId
 
             // CountryId = user.City.Country.Id,
             // CountriesList =
@@ -431,12 +571,12 @@ public class AccountController : Controller
     }
 
 
+    // Aqui é que de fato valida as informações
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    [HttpPost] // Aqui é que de fato valida as informações
+    [HttpPost]
     public async Task<IActionResult> ChangeUser(ChangeAppUserViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
@@ -486,7 +626,6 @@ public class AccountController : Controller
     // Aqui só aparece a View
     //"Botão Direito" -> AddView
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IActionResult ChangePassword()
@@ -497,7 +636,6 @@ public class AccountController : Controller
 
     // Aqui é que de fato valida as informações
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -537,7 +675,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -588,7 +725,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="token"></param>
@@ -622,7 +758,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IActionResult RecoverPassword()
@@ -632,7 +767,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -674,7 +808,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
@@ -685,7 +818,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -717,7 +849,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IActionResult ForgotPassword()
@@ -727,7 +858,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -800,7 +930,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IActionResult NotAuthorized()
@@ -810,7 +939,6 @@ public class AccountController : Controller
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IActionResult UserNotFound()
@@ -840,12 +968,12 @@ public class AccountController : Controller
             .FirstOrDefaultAsync();
 
         // Serialize the country object to JSON with ReferenceHandler.Preserve
-        var countryJson = System.Text.Json.JsonSerializer.Serialize(country,
-            new System.Text.Json.JsonSerializerOptions
+        var countryJson = JsonSerializer.Serialize(country,
+            new JsonSerializerOptions
             {
                 WriteIndented = true,
                 ReferenceHandler =
-                    System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    ReferenceHandler.Preserve
             });
 
         // Print the JSON representation to the console
@@ -923,8 +1051,8 @@ public class AccountController : Controller
     {
         ViewData[nameof(Student.CountryId)] =
             new SelectList(_countryRepository.GetAll()
-            .Include(w => w.Nationality)
-            .OrderBy(e => e.Name).ToList(),
+                    .Include(w => w.Nationality)
+                    .OrderBy(e => e.Name).ToList(),
                 nameof(Country.Id),
                 $"{nameof(Country.Name)} ({nameof(Country.Nationality.Name)})",
                 countryId);
@@ -932,8 +1060,8 @@ public class AccountController : Controller
         ViewData[nameof(Student.CityId)] =
             new SelectList(
                 _cityRepository.GetAll()
-                .Include(e => e.Country)
-                .OrderBy(e => e.Name).ToList(),
+                    .Include(e => e.Country)
+                    .OrderBy(e => e.Name).ToList(),
                 $"{nameof(City.Id)} ({nameof(City.Country.Name)})",
                 nameof(City.Name),
                 cityId);

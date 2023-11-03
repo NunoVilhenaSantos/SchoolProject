@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SchoolProject.Web.Data.DataContexts.MySQL;
-using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
 using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Data.Repositories.Disciplines;
+using SchoolProject.Web.Data.Seeders;
 using SchoolProject.Web.Helpers;
 using SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 using SchoolProject.Web.Helpers.Email;
@@ -25,17 +25,14 @@ namespace SchoolProject.Web.Controllers;
 [Authorize(Roles = "Admin,SuperUser,Functionary")]
 public class DisciplinesController : Controller
 {
-    // Obtém o tipo da classe atual
-    internal static string BucketName = CurrentClass.ToLower();
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(Discipline.Name);
     internal const string CurrentClass = nameof(Discipline);
+
     internal const string CurrentAction = nameof(Index);
 
-
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(DisciplinesController));
+    // Obtém o tipo da classe atual
+    internal static string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -44,18 +41,18 @@ public class DisciplinesController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+
+
+    //  repositories
+    private readonly IDisciplineRepository _disciplineRepository;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-
-    //  repositories
-    private readonly IDisciplineRepository _disciplineRepository;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IUserHelper _userHelper;
     private readonly UserManager<AppUser> _userManager;
 
     // data context
@@ -98,6 +95,11 @@ public class DisciplinesController : Controller
     }
 
 
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(DisciplinesController));
+
+
     // Obtém o controlador atual
     private string CurrentController
     {
@@ -113,7 +115,7 @@ public class DisciplinesController : Controller
 
     private List<Discipline> GetDisciplinesList()
     {
-        return _disciplineRepository.GetDisciplines().ToList();
+        return _disciplineRepository.GetDisciplines().AsNoTracking().ToList();
     }
 
 
@@ -203,6 +205,7 @@ public class DisciplinesController : Controller
     /// <param name="sortOrder"></param>
     /// <param name="sortProperty"></param>
     /// <returns></returns>
+    [AllowAnonymous]
     public IActionResult IndexCards1(int pageNumber = 1, int pageSize = 10,
         string sortOrder = "asc", string sortProperty = SortProperty)
     {
@@ -228,15 +231,15 @@ public class DisciplinesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
                 nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var discipline = await _disciplineRepository.GetByIdAsync(id.Value)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var discipline = await _disciplineRepository.GetDisciplineById(id.Value)
+            .FirstOrDefaultAsync();
 
         return discipline == null
             ? new NotFoundViewResult(
@@ -271,9 +274,90 @@ public class DisciplinesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Discipline discipline)
     {
-        if (!ModelState.IsValid) return View(discipline);
+        //if (!ModelState.IsValid) return View(discipline);
 
-        await _disciplineRepository.CreateAsync(discipline);
+        //await _disciplineRepository.CreateAsync(discipline);
+
+        //await _disciplineRepository.SaveAllAsync();
+
+        //HttpContext.Session.Remove(SessionVarName);
+
+        //return RedirectToAction(nameof(Index));
+
+        var user = await _userHelper.GetUserByEmailAsync(discipline.Name);
+
+        if (user != null)
+        {
+            ViewBag.UserMessage =
+                "Email has already been used to register an account.";
+            return View(discipline);
+        }
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var imageId = discipline.ProfilePhotoId;
+
+        if (discipline.ImageFile is {Length: > 0})
+            imageId =
+                await _storageHelper.UploadStorageAsync(
+                    discipline.ImageFile, BucketName);
+
+        discipline.ProfilePhotoId = imageId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+
+        //var subscription = await _subscriptionRepository
+        //    .GetByNameAsync("Free").FirstOrDefaultAsync();
+
+        //var city = await _cityRepository.GetCityAsync(discipline.CityId).FirstOrDefaultAsync();
+
+        user = new AppUser
+        {
+            FirstName = discipline.Code,
+            LastName = discipline.Name,
+            ProfilePhotoId = discipline.ProfilePhotoId,
+            WasDeleted = discipline.WasDeleted
+
+            //Email = student.Email,
+            //UserName = student.Email,
+            //Address = student.Address,
+
+            //CityId = city.Id,
+            //City = city,
+
+            //SubscriptionId = subscription.Id,
+            //Subscription = subscription,
+        };
+
+        // _converterHelper.AddUser(
+        //     customer.FirstName, customer.LastName,
+        //     customer.Address ?? string.Empty,
+        //     customer.Email,
+        //     customer.CellPhone, "Customer"
+        // );
+
+        await _userHelper.AddUserAsync(user, SeedDb.DefaultPassword);
+        //await _userHelper.AddUserToRoleAsync(user, ClassRole); //******DESATIVO ??? ************
+
+        var discipline1 = new Discipline
+        {
+            Code = discipline.Code,
+            Name = discipline.Name,
+            Description = discipline.Description,
+            Hours = discipline.Hours,
+            CreditPoints = discipline.CreditPoints,
+            ProfilePhotoId = discipline.ProfilePhotoId,
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result
+        };
+
+        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+        // Confirma o email para este AppUser
+        await _userHelper.ConfirmEmailAsync(user, token);
+
+        await _disciplineRepository.CreateAsync(discipline1);
 
         await _disciplineRepository.SaveAllAsync();
 
@@ -289,15 +373,16 @@ public class DisciplinesController : Controller
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
                 nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var discipline = await _disciplineRepository.GetByIdAsync(id.Value)
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var discipline = await _disciplineRepository
+            .GetDisciplineById(id.Value)
+            .FirstOrDefaultAsync();
 
         return discipline == null
             ? new NotFoundViewResult(
@@ -326,26 +411,83 @@ public class DisciplinesController : Controller
                 nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        if (!ModelState.IsValid) return View(discipline);
+        // if (!ModelState.IsValid) return View(student);
+
+        var discipline1 = await _disciplineRepository
+            .GetDisciplineById(id).FirstOrDefaultAsync();
+
+        if (discipline1 == null) return View(discipline);
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var profilePhotoId = discipline.ProfilePhotoId;
+
+        if (discipline.ImageFile is {Length: > 0})
+            profilePhotoId =
+                await _storageHelper.UploadStorageAsync(
+                    discipline.ImageFile, BucketName);
+
+        discipline.ProfilePhotoId = profilePhotoId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+        discipline1.Name = discipline.Name;
+        discipline1.Description = discipline.Description;
+        discipline1.Hours = discipline.Hours;
+        discipline1.CreditPoints = discipline.CreditPoints;
+        discipline1.ProfilePhotoId = discipline.ProfilePhotoId;
+        discipline1.CreatedBy =
+            _authenticatedUserInApp.GetAuthenticatedUser().Result;
 
         try
         {
-            await _disciplineRepository.UpdateAsync(discipline);
+            await _disciplineRepository.UpdateAsync(discipline1);
 
             await _disciplineRepository.SaveAllAsync();
 
             HttpContext.Session.Remove(SessionVarName);
+
+            return RedirectToAction(nameof(Index));
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!CourseExists(discipline.Id))
+            if (!await _disciplineRepository.ExistAsync(discipline.Id))
                 return new NotFoundViewResult(
                     nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                     CurrentController, nameof(Index));
+
             throw;
         }
 
-        return RedirectToAction(nameof(Index));
+        //**********************
+
+        //if (id != discipline.Id)
+        //    return new NotFoundViewResult(
+        //        nameof(DisciplineNotFound), CurrentClass, id.ToString(),
+        //        CurrentController, nameof(Index));
+
+        //if (!ModelState.IsValid) return View(discipline);
+
+        //try
+        //{
+        //    await _disciplineRepository.UpdateAsync(discipline);
+
+        //    await _disciplineRepository.SaveAllAsync();
+
+        //    HttpContext.Session.Remove(SessionVarName);
+        //}
+        //catch (DbUpdateConcurrencyException)
+        //{
+        //    if (!CourseExists(discipline.Id))
+        //        return new NotFoundViewResult(
+        //            nameof(DisciplineNotFound), CurrentClass, id.ToString(),
+        //            CurrentController, nameof(Index));
+
+        //    throw;
+        //}
+
+        //return RedirectToAction(nameof(Index));
     }
 
 
@@ -356,15 +498,17 @@ public class DisciplinesController : Controller
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
         if (id == null)
             return new NotFoundViewResult(
                 nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var discipline = await _disciplineRepository.GetByIdAsync(id.Value)
+        var discipline = await _disciplineRepository
+            .GetDisciplineById(id.Value)
             .FirstOrDefaultAsync();
+
 
         return discipline == null
             ? new NotFoundViewResult(

@@ -16,7 +16,6 @@ public class SeedDbUsers
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="userHelper"></param>
     /// <param name="logger"></param>
@@ -31,7 +30,6 @@ public class SeedDbUsers
 
     // Add a constructor to receive IUserHelper through dependency injection
     /// <summary>
-    ///
     /// </summary>
     /// <param name="userHelper"></param>
     /// <param name="logger"></param>
@@ -137,7 +135,7 @@ public class SeedDbUsers
                 Email = email,
                 PhoneNumber = phoneNumber,
                 WasDeleted = false,
-                ProfilePhotoId = default,
+                ProfilePhotoId = default
 
                 // City = city,
                 // CityId = city.Id,

@@ -1,11 +1,18 @@
-﻿@using System.Reflection
+﻿@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<AppUser> UserManager
 
+@using System.Reflection
+@using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users
+@using SchoolProject.Web.Controllers
+@using SchoolProject.Web.Data.Entities.Disciplines
+@using SchoolProject.Web.Data.Entities.Courses
 @model SchoolProject.Web.Data.Entities.Courses.Course
 
 @{
     // ViewData["Title"] = "Index";
     // ViewData["Title"] = "Owners List";
-    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " - " + ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
     var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
@@ -15,80 +22,83 @@
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
     var pageTitle = actionName + " - " + controllerName + " - " + assemblyName + " " + ViewData["vAssemblyVersion"];
-
-    var disciplinesList = Model.CourseDisciplines.Where(e => e.CourseId == Model.Id).OrderBy(c => c.Discipline.Name).ToList();
-    System.Diagnostics.Debug.Assert(disciplinesList != null, nameof(disciplinesList) + " != null");
 }
 
 <br/>
-<h4>@nameof(Model.CourseDisciplines)</h4>
-<h4>Disciplines</h4>
-@if (Model.CourseDisciplines == null || !Model.CourseDisciplines.Any())
+<h4>@DisciplinesController.ControllerName</h4>
+@if (Model.Disciplines == null && !Model.Disciplines.Any())
 {
-    <h5>No Disciplines added yet to this course</h5>
+    <h5>No @nameof(Discipline) added yet to this @nameof(Course) @Model.Code - @Model.Acronym - @Model.Name</h5>
 }
 else
 {
     <table class="table table-hover" sortable="True" id="sortableTable">
         <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.ProfilePhotoId)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Code)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Name)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Description)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.Hours)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.CreditPoints)</th>
-            @* <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.IdGuid)</th> *@
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.WasDeleted)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.CreatedAt) </th>
-            <th>@Html.DisplayNameFor(model => model.CourseDisciplines.FirstOrDefault().Discipline.UpdatedAt)</th>
+            @* <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().ProfilePhotoId)</th> *@
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().Code)</th>
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().Description)</th>
+
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().Hours)</th>
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().CreditPoints)</th>
+
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().TeachersCount0)</th>
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().TeachersCount1)</th>
+
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().StudentCount0)</th>
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().StudentCount1)</th>
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().StudentsCount)</th>
+
+            <th>@Html.DisplayNameFor(model => model.Disciplines.FirstOrDefault().CoursesCount)</th>
             <th></th>
         </tr>
         </thead>
-
         <tbody>
-        @foreach (var item in disciplinesList)
+        @foreach (var item in Model.Disciplines.OrderBy(c => c.Code))
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.Code)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.Hours)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreditPoints)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.TeachersCount0)</td>
+                <td>@Html.DisplayFor(modelItem => item.TeachersCount1)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.StudentCount0)</td>
+                <td>@Html.DisplayFor(modelItem => item.StudentCount1)</td>
+                <td>@Html.DisplayFor(modelItem => item.StudentsCount)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.CoursesCount)</td>
+                @* <td></td> *@
                 <td>
-                    <img alt="Image" class="img-thumbnail" height="100" src="@Url.Content(item.Discipline.ProfilePhotoIdUrl)" width="100"/>
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.Discipline.Code)</td>
-                <td>@Html.DisplayFor(modelItem => item.Discipline.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Discipline.Description)</td>
-                @* <td>@Html.DisplayFor(modelItem => item.Discipline.Hours)</td> *@
-                <td>@item.Discipline.Hours.ToString("N0")</td>
-                @* <td>@Html.DisplayFor(modelItem => item.Discipline.CreditPoints)</td> *@
-                <td>@item.Discipline.CreditPoints.ToString("N")</td>
-                @* <td>@Html.DisplayFor(modelItem => item.IdGuid)</td> *@
-                <td>@Html.DisplayFor(modelItem => item.WasDeleted)</td>
-                <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
-                <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
-                <td id="@item.Id">
-                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <div class="btn-group" role="group" aria-label="Basic example">
                         <a asp-controller="Disciplines" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                         <a asp-controller="Disciplines" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
-                        <a asp-controller="Disciplines" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Discipline.Code+@item.Discipline.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                        <a asp-controller="Disciplines" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
                     </div>
                 </td>
             </tr>
         }
         </tbody>
-
         <tfoot>
         <tr>
             <td></td>
             <td>Total Lines:</td>
-            <td>@disciplinesList.Count</td>
+            <td>@Model.Disciplines.Count()</td>
+            <td>@Model.Disciplines.Sum(e => e.Hours).ToString("N0")</td>
+            <td>@Model.Disciplines.Sum(e => e.CreditPoints).ToString("N")</td>
             <td></td>
-            <td>@disciplinesList.Sum(e => e.Discipline.Hours).ToString("N")</td>
-                <td>@disciplinesList.Sum(e => e.Discipline.CreditPoints).ToString("N")</td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
         </tr>
         </tfoot>
-
     </table>
 }

@@ -1,6 +1,6 @@
-@using System.Reflection
 @* @model IEnumerable<SchoolProject.Web.Data.Entities.Courses.CourseDiscipline> *@
 @* @model PaginationViewModel<SchoolProject.Web.Data.Entities.Courses.CourseDisciplines> *@
+@using System.Reflection
 @model IEnumerable<SchoolProject.Web.Models.Courses.CourseDisciplineViewModel>
 
 @{
@@ -47,6 +47,8 @@
         @* <th>@Html.DisplayNameFor(model => model.Course) </th> *@
         @* <th>@Html.DisplayNameFor(model => model.Course) </th> *@
         @* <th>@Html.DisplayNameFor(model => model.Course) </th> *@
+        <th>@Html.DisplayNameFor(model => model.CourseId) </th>
+        <th>@Html.DisplayNameFor(model => model.CourseIdGuid) </th>
         <th>@Html.DisplayNameFor(model => model.CourseCode) </th>
         <th>@Html.DisplayNameFor(model => model.CourseAcronym) </th>
         <th>@Html.DisplayNameFor(model => model.CourseName) </th>
@@ -54,6 +56,8 @@
         @* <th>@Html.DisplayNameFor(model => model.Discipline) </th> *@
         @* <th>@Html.DisplayNameFor(model => model.Discipline) </th> *@
         @* <th>@Html.DisplayNameFor(model => model.Discipline) </th> *@
+        <th>@Html.DisplayNameFor(model => model.DisciplineId) </th>
+        <th>@Html.DisplayNameFor(model => model.DisciplineIdGuid) </th>
         <th>@Html.DisplayNameFor(model => model.DisciplineCode) </th>
         <th>@Html.DisplayNameFor(model => model.DisciplineName) </th>
         <th>@Html.DisplayNameFor(model => model.DisciplineDescription) </th>
@@ -64,7 +68,6 @@
         <th>@Html.DisplayNameFor(model => model.CreatedByFullName) </th>
         <th>@Html.DisplayNameFor(model => model.UpdatedAt) </th>
         <th>@Html.DisplayNameFor(model => model.UpdatedByFullName) </th>
-        <th></th>
         <th></th>
     </tr>
     </thead>
@@ -79,6 +82,8 @@
             @* <td>@Html.DisplayFor(modelItem => item.Course.Code) </td> *@
             @* <td>@Html.DisplayFor(modelItem => item.Course.Acronym) </td> *@
             @* <td>@Html.DisplayFor(modelItem => item.Course.Name) </td> *@
+            <td>@Html.DisplayFor(modelItem => item.CourseId) </td>
+            <td>@Html.DisplayFor(modelItem => item.CourseIdGuid) </td>
             <td>@Html.DisplayFor(modelItem => item.CourseCode) </td>
             <td>@Html.DisplayFor(modelItem => item.CourseAcronym) </td>
             <td>@Html.DisplayFor(modelItem => item.CourseName) </td>
@@ -86,6 +91,8 @@
             @* <td>@Html.DisplayFor(modelItem => item.Discipline.Code) </td> *@
             @* <td>@Html.DisplayFor(modelItem => item.Discipline.Name) </td> *@
             @* <td>@Html.DisplayFor(modelItem => item.Discipline.Description) </td> *@
+            <td>@Html.DisplayFor(modelItem => item.DisciplineId) </td>
+            <td>@Html.DisplayFor(modelItem => item.DisciplineIdGuid) </td>
             <td>@Html.DisplayFor(modelItem => item.DisciplineCode) </td>
             <td>@Html.DisplayFor(modelItem => item.DisciplineName) </td>
             <td>@Html.DisplayFor(modelItem => item.DisciplineDescription) </td>
@@ -96,16 +103,17 @@
             <td>@Html.DisplayFor(modelItem => item.CreatedByFullName) </td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedAt) </td>
             <td>@Html.DisplayFor(modelItem => item.UpdatedByFullName) </td>
-            <td>
+            @*<td>
                 @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
                 @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
                 @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
-            </td>
+            </td>*@
             <td>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a asp-action="Edit" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
                     <a asp-action="Details" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Id" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                    @*<a asp-action="Delete" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Id" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>*@
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-idGuid="@item.IdGuid" class="btn btn-danger"><span class="fa-regular fa-trash-can"></span> Delete </a>
                 </div>
             </td>
         </tr>

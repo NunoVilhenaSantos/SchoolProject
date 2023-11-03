@@ -1,6 +1,6 @@
-﻿@using System.Reflection
-@* @model             SchoolProject.Web.Data.Entities.Genders.Gender *@
+﻿@* @model             SchoolProject.Web.Data.Entities.Genders.Gender *@
 @* @model IEnumerable<SchoolProject.Web.Data.Entities.Genders.Gender> *@
+@using System.Reflection
 @model PaginationViewModel<SchoolProject.Web.Data.Entities.Genders.Gender>
 
 @{
@@ -9,9 +9,9 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
     ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
 
-        var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
-        var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
-        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
 
     // Isso obtém o nome da classe do modelo atual
     var deleteClassName = ViewData["CurrentClass"]?.ToString() ?? string.Empty;
@@ -54,10 +54,10 @@
                         <div class="card-body pe-1">
                             <p class="card-text">@Html.DisplayFor(modelItem => item.Name)</p>
                             <small class="text-body-secondary">
-                                @Html.DisplayNameFor(modelItem => item.Id)<br />
+                                @Html.DisplayNameFor(modelItem => item.Id)<br/>
                                 @Html.DisplayFor(modelItem => item.Id)
                             </small>
-                            <br /><br />
+                            <br/><br/>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
@@ -89,9 +89,9 @@
                 @* <p> Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries </p> *@
                 Showing @(Math.Min((Model.PageNumber - 1) * Model.PageSize + 1, Model.TotalCount)) to @(Math.Min(Model.PageNumber * Model.PageSize, Model.TotalCount)) of @Model.TotalCount entries
             </div>
-             <div class="col justify-content-end">
+            <div class="col justify-content-end">
                 <partial model="Model" name="Pagination/_PageNavigationBottom"/>
-            </div> 
+            </div>
         </div>
     </div>
 }

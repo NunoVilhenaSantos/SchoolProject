@@ -127,7 +127,7 @@ public class SeedDbCoursesAndStudents
                         StudentId = student.Id,
                         Student = student,
                         CreatedBy = appUser,
-                        CreatedById = appUser.Id,
+                        CreatedById = appUser.Id
                     };
 
                     courseStudentDictionary.Add(courseStudentKey,
@@ -152,9 +152,10 @@ public class SeedDbCoursesAndStudents
                             Student = student,
                             // DisciplineId = courseDiscipline.Discipline.Id,
                             Discipline = courseDiscipline.Discipline,
-                            Absences = 0,
+                            Grade = random.Next(20),
+                            Absences = random.Next(5),
                             CreatedBy = appUser,
-                            CreatedById = appUser.Id,
+                            CreatedById = appUser.Id
                         };
 
                         enrollmentDictionary.Add(enrollmentKey, enrollment);

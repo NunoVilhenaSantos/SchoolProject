@@ -1,10 +1,10 @@
-﻿@using System.Reflection
-@using Microsoft.AspNetCore.Identity
-@using SchoolProject.Web.Data.Entities.Users
-
-@inject RoleManager<IdentityRole> RoleManager
+﻿@inject RoleManager<IdentityRole> RoleManager
 @inject UserManager<AppUser> UserManager
 
+@using System.Diagnostics
+@using System.Reflection
+@using Microsoft.AspNetCore.Identity
+@using SchoolProject.Web.Data.Entities.Users
 @model Microsoft.AspNetCore.Identity.IdentityRole
 
 @{
@@ -24,8 +24,8 @@
 
     // cria a lista de usuários para a role atual
     var appUserList = UserManager.GetUsersInRoleAsync(Model.Name).Result.ToList();
-   
-    System.Diagnostics.Debug.Assert(appUserList != null, nameof(appUserList) + " != null");
+
+    Debug.Assert(appUserList != null, nameof(appUserList) + " != null");
 }
 
 <br/>

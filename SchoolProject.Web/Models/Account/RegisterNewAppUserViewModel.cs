@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SchoolProject.Web.Data.Entities.Users;
 
@@ -69,7 +68,6 @@ public class RegisterNewAppUserViewModel : AppUser
 
 
     /// <summary>
-    ///
     /// </summary>
     [EmailAddress]
     [Required]

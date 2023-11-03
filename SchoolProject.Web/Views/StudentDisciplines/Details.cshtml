@@ -35,16 +35,20 @@
 @* <div class="container-md"> *@
 <div class="col-md-4">
     <div class="row">
-        <partial name="_DisplayImages"/>
+        @*<partial name="_DisplayImages"/>*@
 
         <div class="col">
             <div class="row">
-                <partial name="_StudentCoursesDD" for="@Model"/>
+                <partial name="_StudentDisciplinesDD" for="@Model"/>
 
-                <div>
-                    @Html.ActionLink("Edit", "Edit", new {/* id = Model.PrimaryKey */}) |
-                    <a asp-action="Index" class="btn btn-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a>
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-idGuid="@Model.IdGuid" class="btn btn-outline-warning"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a asp-action="Index" class="btn btn-outline-success"><i class="fa-solid fa-rotate-left"></i> Back to List</a>
                 </div>
+                @* <div> *@
+                @*     @Html.ActionLink("Edit", "Edit", new {/* id = Model.PrimaryKey */}) | *@
+                @*     <a asp-action="Index" class="btn btn-outline-success"><span class="fa-solid fa-rotate-left"></span> Back to List</a> *@
+                @* </div> *@
             </div>
         </div>
 

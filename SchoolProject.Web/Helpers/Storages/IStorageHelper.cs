@@ -129,7 +129,7 @@ public interface IStorageHelper
 
 
     /// <summary>
-    ///    Delete file from storage in Azure.
+    ///     Delete file from storage in Azure.
     /// </summary>
     /// <param name="blobName"></param>
     /// <param name="bucketName"></param>

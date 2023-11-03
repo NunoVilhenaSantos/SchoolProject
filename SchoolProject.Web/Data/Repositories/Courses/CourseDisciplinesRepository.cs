@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using SchoolProject.Web.Data.DataContexts;
+﻿using SchoolProject.Web.Data.DataContexts;
 using SchoolProject.Web.Data.DataContexts.MSSQL;
 using SchoolProject.Web.Data.DataContexts.MySQL;
 using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Data.Entities.Users;
 using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 
@@ -73,8 +71,8 @@ public class CourseDisciplinesRepository
 
 
     /// <inheritdoc />
-    public IOrderedQueryable<CourseDiscipline> GetCourseDisciplineByGuid(
-        Guid idGuid)
+    public IOrderedQueryable<CourseDiscipline>
+        GetCourseDisciplineByIdGuid(Guid idGuid)
     {
         return _dataContext.CourseDisciplines
             .Include(s => s.Discipline)

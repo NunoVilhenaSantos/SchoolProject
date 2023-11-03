@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using SchoolProject.Web.Data.Entities;
 using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Data.Entities.Courses;
 using SchoolProject.Web.Data.Entities.Disciplines;
@@ -27,27 +26,22 @@ namespace SchoolProject.Web.Controllers;
 /// </summary>
 public class HomeController : Controller
 {
+    // A private field to get the authenticated user in app.
+    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
     // private readonly IConnectivityChecker _connectivityChecker;
 
     // host environment
     private readonly IWebHostEnvironment _hostingEnvironment;
 
-    // http context accessor
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
     // html localizer
     private readonly IHtmlLocalizer<HomeController> _htmlLocalizer;
-    private readonly IStringLocalizer<HomeController> _stringLocalizer;
+
+    // http context accessor
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
 
     // logger
     private readonly ILogger<HomeController> _logger;
-
-    // sign in manager
-    private readonly SignInManager<AppUser> _signInManager;
-
-    // A private field to get the authenticated user in app.
-    private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
 
     // session variable names and types
@@ -61,7 +55,10 @@ public class HomeController : Controller
             {CitiesController.SessionVarName, typeof(City)},
             {CountriesController.SessionVarName, typeof(Country)},
             {CoursesController.SessionVarName, typeof(Course)},
-            {CoursesDisciplinesController.SessionVarName, typeof(CourseDiscipline)},
+            {
+                CoursesDisciplinesController.SessionVarName,
+                typeof(CourseDiscipline)
+            },
             {CoursesStudentsController.SessionVarName, typeof(CourseStudent)},
             // ---------- D ---------- //
             {DisciplinesController.SessionVarName, typeof(Discipline)},
@@ -74,15 +71,25 @@ public class HomeController : Controller
             // ---------- R ---------- //
             {RolesController.SessionVarName, typeof(IdentityRole)},
             // ---------- S ---------- //
-            {StudentDisciplinesController.SessionVarName, typeof(StudentDiscipline)},
+            {
+                StudentDisciplinesController.SessionVarName,
+                typeof(StudentDiscipline)
+            },
             {StudentsController.SessionVarName, typeof(Student)},
             // ---------- T ---------- //
-            {TeacherDisciplinesController.SessionVarName, typeof(TeacherDiscipline)},
+            {
+                TeacherDisciplinesController.SessionVarName,
+                typeof(TeacherDiscipline)
+            },
             {TeachersController.SessionVarName, typeof(Teacher)},
             // ---------- U ---------- //
             {UsersController.SessionVarName, typeof(UserWithRolesViewModel)}
             // Adicione mais nomes de variáveis de sessão aqui com os tipos correspondentes
         };
+
+    // sign in manager
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly IStringLocalizer<HomeController> _stringLocalizer;
 
 
     /// <summary>
@@ -370,7 +377,7 @@ public class HomeController : Controller
 
 
     /// <summary>
-    /// Splits a camelCase string into a list of words, separated by spaces.
+    ///     Splits a camelCase string into a list of words, separated by spaces.
     /// </summary>
     /// <param name="text">The camelCase string to split.</param>
     /// <returns>A list of words, separated by spaces.</returns>

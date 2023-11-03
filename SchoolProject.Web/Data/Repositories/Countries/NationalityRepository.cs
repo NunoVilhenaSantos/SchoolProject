@@ -5,7 +5,6 @@ using SchoolProject.Web.Data.Entities.Countries;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models.Countries;
 
-
 namespace SchoolProject.Web.Data.Repositories.Countries;
 
 /// <inheritdoc cref="SchoolProject.Web.Data.Repositories.Countries.INationalityRepository" />
@@ -15,8 +14,8 @@ public class NationalityRepository
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
 
     private readonly DataContextMySql _dataContext;
-    private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextMsSql _dataContextMsSql;
+    private readonly DataContextMySql _dataContextMySql;
     private readonly DataContextSqLite _dataContextSqLite;
 
 
@@ -38,7 +37,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public IOrderedQueryable<Nationality> GetNationalitiesWithCountries()
@@ -52,7 +50,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -67,7 +64,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>
@@ -83,7 +79,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     public async Task AddNationalityAsync(NationalityViewModel model)
@@ -108,7 +103,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="nationality"></param>
     public async Task AddNationalityAsync(Nationality nationality)
@@ -133,7 +127,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>
@@ -154,7 +147,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>
@@ -184,7 +176,6 @@ public class NationalityRepository
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="nationality"></param>
     /// <returns></returns>

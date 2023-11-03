@@ -6,7 +6,6 @@ using SchoolProject.Web.Data.Entities.Users;
 namespace SchoolProject.Web.Data.Seeders;
 
 /// <summary>
-///
 /// </summary>
 public class SeedDbTeachersWithDisciplines
 {
@@ -15,7 +14,7 @@ public class SeedDbTeachersWithDisciplines
 
 
     /// <summary>
-    /// code for fetching existing courses and disciplines
+    ///     code for fetching existing courses and disciplines
     /// </summary>
     /// <param name="dataContextInUse"></param>
     /// <param name="appUser"></param>
@@ -80,7 +79,7 @@ public class SeedDbTeachersWithDisciplines
                      DisciplineId = discipline.Id,
                      Discipline = discipline,
                      CreatedById = appUser.Id,
-                     CreatedBy = appUser,
+                     CreatedBy = appUser
                  })
 
             // Add the TeacherCourse association to the context

@@ -29,13 +29,8 @@ public class TeacherDisciplinesController : Controller
     internal const string SessionVarName = "ListOfAll" + CurrentClass;
     internal const string SortProperty = nameof(TeacherDiscipline.Id);
     internal const string CurrentClass = nameof(TeacherDiscipline);
-    internal static string BucketName = CurrentClass.ToLower();
     internal const string CurrentAction = nameof(Index);
-
-
-    // Obtém o nome do controlador atual
-    internal static string ControllerName =>
-        HomeController.SplitCamelCase(nameof(TeacherDisciplinesController));
+    internal static string BucketName = CurrentClass.ToLower();
 
 
     // A private field to get the authenticated user in app.
@@ -44,20 +39,20 @@ public class TeacherDisciplinesController : Controller
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly IStorageHelper _storageHelper;
-    private readonly IUserHelper _userHelper;
-    private readonly IMailHelper _mailHelper;
+    private readonly IDisciplineRepository _disciplineRepository;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMailHelper _mailHelper;
+    private readonly IStorageHelper _storageHelper;
 
 
     //  repositories
     private readonly ITeacherDisciplineRepository _teacherDisciplineRepository;
-    private readonly IDisciplineRepository _disciplineRepository;
     private readonly ITeacherRepository _teacherRepository;
+    private readonly IUserHelper _userHelper;
 
     // datacontext
     // private readonly DataContextMySql _context;
@@ -102,6 +97,11 @@ public class TeacherDisciplinesController : Controller
     }
 
 
+    // Obtém o nome do controlador atual
+    internal static string ControllerName =>
+        HomeController.SplitCamelCase(nameof(TeacherDisciplinesController));
+
+
     // Obtém o controlador atual
     private string CurrentController
     {
@@ -129,7 +129,7 @@ public class TeacherDisciplinesController : Controller
     {
         var teacherCoursesList = _teacherDisciplineRepository
             .GetTeacherDisciplines()
-            .ToList();
+            .AsNoTracking().ToList();
 
         return teacherCoursesList;
     }
@@ -249,17 +249,27 @@ public class TeacherDisciplinesController : Controller
     ///     Details method, for the details view.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(TeacherDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacherDiscipline = await _teacherDisciplineRepository
-            .GetTeacherDisciplinesById(id.Value)
-            .FirstOrDefaultAsync(m => m.TeacherId == id);
+
+        var teacherDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _teacherDisciplineRepository
+                .GetTeacherDisciplinesById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _teacherDisciplineRepository
+                .GetTeacherDisciplinesByIdGuid(idGuid.Value)
+                // .Include(s => s.Discipline)
+                // .Include(s => s.CreatedBy)
+                // .Include(s => s.UpdatedBy)
+                .FirstOrDefaultAsync();
+
 
         return teacherDiscipline == null
             ? new NotFoundViewResult(
@@ -267,6 +277,7 @@ public class TeacherDisciplinesController : Controller
                 CurrentController, nameof(Index))
             : View(teacherDiscipline);
     }
+
 
     // GET: TeacherDisciplines/Create
     /// <summary>
@@ -318,22 +329,33 @@ public class TeacherDisciplinesController : Controller
     ///     Edit method, for the edit view.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(TeacherDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacherDiscipline = await _teacherDisciplineRepository
-            .GetTeacherDisciplinesById(id.Value)
-            .FirstOrDefaultAsync(m => m.TeacherId == id);
+
+        var teacherDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _teacherDisciplineRepository
+                .GetTeacherDisciplinesById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _teacherDisciplineRepository
+                .GetTeacherDisciplinesByIdGuid(idGuid.Value)
+                // .Include(s => s.Discipline)
+                // .Include(s => s.CreatedBy)
+                // .Include(s => s.UpdatedBy)
+                .FirstOrDefaultAsync();
+
 
         if (teacherDiscipline == null)
             return new NotFoundViewResult(
                 nameof(TeacherDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
+
 
         FillViewDatas(
             teacherDiscipline.TeacherId, teacherDiscipline.DisciplineId,
@@ -352,17 +374,20 @@ public class TeacherDisciplinesController : Controller
     ///     Edit method, for the edit view.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <param name="teacherDiscipline"></param>
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        TeacherDiscipline teacherDiscipline)
+    public async Task<IActionResult> Edit(
+        int id, Guid idGuid, TeacherDiscipline teacherDiscipline)
     {
-        if (id != teacherDiscipline.TeacherId)
+        if (id != teacherDiscipline.Id ||
+            idGuid != teacherDiscipline.IdGuid)
             return new NotFoundViewResult(
                 nameof(TeacherDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
+
 
         if (ModelState.IsValid)
         {
@@ -404,17 +429,27 @@ public class TeacherDisciplinesController : Controller
     ///     Delete method, for the delete view.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, Guid? idGuid)
     {
-        if (id == null)
+        if (id == null || idGuid == null || idGuid == Guid.Empty)
             return new NotFoundViewResult(
                 nameof(TeacherDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        var teacherDiscipline = await _teacherDisciplineRepository
-            .GetTeacherDisciplinesById(id.Value)
-            .FirstOrDefaultAsync(m => m.TeacherId == id);
+
+        var teacherDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _teacherDisciplineRepository
+                .GetTeacherDisciplinesById(id.Value)
+                .FirstOrDefaultAsync()
+            : await _teacherDisciplineRepository
+                .GetTeacherDisciplinesByIdGuid(idGuid.Value)
+                // .Include(s => s.Discipline)
+                // .Include(s => s.CreatedBy)
+                // .Include(s => s.UpdatedBy)
+                .FirstOrDefaultAsync();
+
 
         return teacherDiscipline == null
             ? new NotFoundViewResult(
@@ -429,23 +464,34 @@ public class TeacherDisciplinesController : Controller
     ///     DeleteConfirmed method, for the delete view.
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="idGuid"></param>
     /// <returns></returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id, Guid idGuid)
     {
-        var teacherCourse = await _teacherDisciplineRepository.GetByIdAsync(id)
-            .FirstOrDefaultAsync();
+        var teacherDiscipline = id != 0 || idGuid == Guid.Empty
+            ? await _teacherDisciplineRepository
+                .GetTeacherDisciplinesById(id)
+                .FirstOrDefaultAsync()
+            : await _teacherDisciplineRepository
+                .GetTeacherDisciplinesByIdGuid(idGuid)
+                // .Include(s => s.Discipline)
+                // .Include(s => s.CreatedBy)
+                // .Include(s => s.UpdatedBy)
+                .FirstOrDefaultAsync();
 
-        if (teacherCourse == null)
+
+        if (teacherDiscipline == null)
             return new NotFoundViewResult(
                 nameof(TeacherDisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
+
         try
         {
-            await _teacherDisciplineRepository.DeleteAsync(teacherCourse);
+            await _teacherDisciplineRepository.DeleteAsync(teacherDiscipline);
 
             await _teacherDisciplineRepository.SaveAllAsync();
 
@@ -471,14 +517,14 @@ public class TeacherDisciplinesController : Controller
                     ErrorMessage =
                         "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                         $"The {nameof(TeacherDiscipline)} with the ID " +
-                        $"{teacherCourse.Id} - {teacherCourse.Teacher.FullName} " +
-                        $"{teacherCourse.IdGuid} +" +
+                        $"{teacherDiscipline.Id} - {teacherDiscipline.Teacher.FullName} " +
+                        $"{teacherDiscipline.IdGuid} +" +
                         "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                         "Try deleting possible dependencies and try again. ",
                     ItemClass = nameof(TeacherDiscipline),
-                    ItemId = teacherCourse.Id.ToString(),
-                    ItemGuid = teacherCourse.IdGuid,
-                    ItemName = teacherCourse.Teacher.FullName
+                    ItemId = teacherDiscipline.Id.ToString(),
+                    ItemGuid = teacherDiscipline.IdGuid,
+                    ItemName = teacherDiscipline.Teacher.FullName
                 };
 
                 // Redirecione para o DatabaseError com os dados apropriados
@@ -493,9 +539,9 @@ public class TeacherDisciplinesController : Controller
                 ErrorTitle = "Database Error",
                 ErrorMessage = "An error occurred while deleting the entity.",
                 ItemClass = nameof(TeacherDiscipline),
-                ItemId = teacherCourse.Id.ToString(),
-                ItemGuid = teacherCourse.IdGuid,
-                ItemName = teacherCourse.Teacher.FullName
+                ItemId = teacherDiscipline.Id.ToString(),
+                ItemGuid = teacherDiscipline.IdGuid,
+                ItemName = teacherDiscipline.Teacher.FullName
             };
 
             // Redirecione para o DatabaseError com os dados apropriados
@@ -515,14 +561,14 @@ public class TeacherDisciplinesController : Controller
                 ErrorMessage =
                     "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                     $"The {nameof(TeacherDiscipline)} with the ID " +
-                    $"{teacherCourse.Id} - {teacherCourse.Discipline.Name} " +
-                    // $"{reservation.IdGuid} +" +
+                    $"{teacherDiscipline.Id} - {teacherDiscipline.Discipline.Name} " +
+                    $"{teacherDiscipline.IdGuid} +" +
                     "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                     "Try deleting possible dependencies and try again. ",
                 ItemClass = nameof(TeacherDiscipline),
-                ItemId = teacherCourse.Id.ToString(),
-                ItemGuid = Guid.Empty,
-                ItemName = teacherCourse.Discipline.Name
+                ItemId = teacherDiscipline.Id.ToString(),
+                ItemGuid = teacherDiscipline.IdGuid,
+                ItemName = teacherDiscipline.Discipline.Name
             };
 
             return RedirectToAction(
@@ -540,14 +586,14 @@ public class TeacherDisciplinesController : Controller
                 ErrorMessage =
                     "</br></br>This entity is being used as a foreign key elsewhere.</br></br>" +
                     $"The {nameof(TeacherDiscipline)} with the ID " +
-                    $"{teacherCourse.Id} - {teacherCourse.Discipline.Name} " +
-                    // $"{reservation.IdGuid} +" +
+                    $"{teacherDiscipline.Id} - {teacherDiscipline.Discipline.Name} " +
+                    $"{teacherDiscipline.IdGuid} " +
                     "cannot be deleted due to there being dependencies from other entities.</br></br>" +
                     "Try deleting possible dependencies and try again. ",
                 ItemClass = nameof(TeacherDiscipline),
-                ItemId = teacherCourse.Id.ToString(),
-                ItemGuid = Guid.Empty,
-                ItemName = teacherCourse.Discipline.Name
+                ItemId = teacherDiscipline.Id.ToString(),
+                ItemGuid = teacherDiscipline.IdGuid,
+                ItemName = teacherDiscipline.Discipline.Name
             };
 
             return RedirectToAction(
@@ -568,9 +614,11 @@ public class TeacherDisciplinesController : Controller
     )
     {
         ViewData[nameof(TeacherDiscipline.DisciplineId)] =
-            new SelectList(_disciplineRepository.GetDisciplines(),
+            new SelectList(
+                _disciplineRepository.GetDisciplines().Select(d =>
+                    new {d.Id, Description = $"{d.Code} - {d.Name}"}).ToList(),
                 nameof(Discipline.Id),
-                $"{nameof(Discipline.Code)} ({nameof(Discipline.Name)})",
+                "Description",
                 disciplineId);
 
         ViewData[nameof(TeacherDiscipline.TeacherId)] =

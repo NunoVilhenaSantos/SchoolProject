@@ -1,7 +1,5 @@
-﻿@using System.Reflection;
-@using SchoolProject.Web.Controllers;
-@using SchoolProject.Web.Data.Entities.Countries;
-
+﻿@using System.Reflection
+@using SchoolProject.Web.Data.Entities.Countries
 @model SchoolProject.Web.Data.Entities.Countries.Country
 
 @{
@@ -48,15 +46,15 @@ else
                     <!-- Button trigger modal -->
                     <a asp-action="DeleteCity" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteCityModal" data-bs-toggle="modal" id="btnDeleteCity" type="button">Launch demo modal</a>
                 </td>
-                    <td id="@item.Id">
-                        <div class="btn-group" role="group" aria-label="Basic outlined example">
-                            <a asp-controller="Cities" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
-                            <a asp-controller="Cities" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
-                            <a asp-controller="Cities" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@nameof(City)" data-del-controller="Cities" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
-                            <!-- Button trigger modal "#deleteButton" -->
-                            @* <a asp-controller="Cities" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a> *@
-                        </div>
-                    </td>
+                <td id="@item.Id">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a asp-controller="Cities" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"> <span class="fa-regular fa-pen-to-square"></span> Edit </a>
+                        <a asp-controller="Cities" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <span class="fa-regular fa-file"></span> Details </a>
+                        <a asp-controller="Cities" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@nameof(City)" data-del-controller="Cities" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a>
+                        <!-- Button trigger modal "#deleteButton" -->
+                        @* <a asp-controller="Cities" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-bs-target="#deleteButton" data-bs-toggle="modal" data-del-action="Delete" data-del-class="@deleteClassName" data-del-controller="@controllerName" data-del-item-id="@item.Id" data-del-item-name="@item.Name" id="btnDelete" type="button"><span class="fa-regular fa-trash-can"></span> Delete </a> *@
+                    </div>
+                </td>
 
             </tr>
         }

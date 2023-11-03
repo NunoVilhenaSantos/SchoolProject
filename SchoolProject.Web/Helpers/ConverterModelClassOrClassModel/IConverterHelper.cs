@@ -15,7 +15,6 @@ using SchoolProject.Web.Models.Teachers;
 namespace SchoolProject.Web.Helpers.ConverterModelClassOrClassModel;
 
 /// <summary>
-///
 /// </summary>
 public interface IConverterHelper
 {
@@ -34,7 +33,6 @@ public interface IConverterHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="filePath"></param>
@@ -45,7 +43,6 @@ public interface IConverterHelper
         Guid fileStorageId, bool isNew);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="course"></param>
     /// <returns></returns>
@@ -54,7 +51,6 @@ public interface IConverterHelper
 
     // --- Disciplines ---- //
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="filePath"></param>
@@ -66,7 +62,6 @@ public interface IConverterHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="discipline"></param>
     /// <returns></returns>
@@ -77,7 +72,6 @@ public interface IConverterHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="studentViewModel"></param>
     /// <param name="filePath"></param>
@@ -88,7 +82,6 @@ public interface IConverterHelper
         Guid fileStorageId, bool isNew);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="student"></param>
     /// <returns></returns>
@@ -98,7 +91,6 @@ public interface IConverterHelper
     // --- Teacher ---- //
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="teacherViewModel"></param>
     /// <param name="filePath"></param>
@@ -110,7 +102,6 @@ public interface IConverterHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="teacher"></param>
     /// <returns></returns>
@@ -118,7 +109,6 @@ public interface IConverterHelper
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="isNew"></param>
@@ -126,7 +116,6 @@ public interface IConverterHelper
     AppUser ViewModelToUser(AppUserViewModel model, bool isNew);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="appUser"></param>
@@ -136,7 +125,6 @@ public interface IConverterHelper
         bool isNew);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="appUser"></param>
     /// <param name="role"></param>
@@ -144,7 +132,6 @@ public interface IConverterHelper
     AppUserViewModel UserToViewModel(AppUser appUser, string role);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <param name="imageId"></param>
@@ -153,14 +140,12 @@ public interface IConverterHelper
     Country ToCountry(CountryViewModel model, Guid imageId, bool isNew);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="country"></param>
     /// <returns></returns>
     CountryViewModel ToCountryViewModel(Country country);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="firstName"></param>
     /// <param name="lastName"></param>
@@ -174,4 +159,17 @@ public interface IConverterHelper
         string firstName, string lastName, string address,
         string email, string cellPhone, string role,
         string password = SeedDb.DefaultPassword);
+
+    /// <summary>
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    Teacher ToTeacherFromUser(AppUser user);
+
+
+    /// <summary>
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    Student ToStudentFromUser(AppUser user);
 }

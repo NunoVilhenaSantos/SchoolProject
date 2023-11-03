@@ -1,5 +1,4 @@
 ﻿using SchoolProject.Web.Data.Entities.Courses;
-using SchoolProject.Web.Models;
 
 namespace SchoolProject.Web.Data.Repositories.Courses;
 
@@ -7,14 +6,12 @@ namespace SchoolProject.Web.Data.Repositories.Courses;
 public interface ICourseRepository : IGenericRepository<Course>
 {
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     IOrderedQueryable<Course> GetCourses();
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -22,7 +19,6 @@ public interface ICourseRepository : IGenericRepository<Course>
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="course"></param>
     /// <returns></returns>
@@ -30,7 +26,6 @@ public interface ICourseRepository : IGenericRepository<Course>
 
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>

@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using CsvHelper.Configuration.Attributes;
 using SchoolProject.Web.Data.Entities.Countries;
 
 namespace SchoolProject.Web.Models.Countries;
 
 /// <summary>
-///
 /// </summary>
 public class CountryViewModel : Country
 {
@@ -39,8 +41,11 @@ public class CountryViewModel : Country
     public required string NationalityName { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
+    [Ignore]
+    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
+    [NotMapped]
     [DisplayName("Image")]
     public IFormFile? ImageFile { get; set; }
 }
