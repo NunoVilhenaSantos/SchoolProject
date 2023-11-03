@@ -42,8 +42,8 @@ public class StorageHelper : IStorageHelper
         var gcpStorageFileAccess =
             _configuration["Storage:GCPStorageAuthFile_Nuno"];
 
-        _googleCredentials =
-            GoogleCredential.FromFile(gcpStorageFileAccess);
+        //_googleCredentials =
+        //    GoogleCredential.FromFile(gcpStorageFileAccess);
 
 
         var uriBuilder =

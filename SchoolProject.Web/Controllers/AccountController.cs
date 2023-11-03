@@ -397,6 +397,7 @@ public class AccountController : Controller
         var myToken =
             await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
+
         var tokenLink = Url.Action(
             "ConfirmEmail", "Account",
             new
@@ -404,6 +405,7 @@ public class AccountController : Controller
                 userId = user.Id, token = myToken
             },
             HttpContext.Request.Scheme);
+
 
         var response = _mailHelper.SendEmail(model.UserName,
             "Email confirmation",
@@ -415,6 +417,15 @@ public class AccountController : Controller
             "</br></br>" +
             $"<p>Password temporária: {model.Password}</a>");
 
+        //var response = _mailHelper.SendEmail1(model.UserName,
+        //    "Email confirmation",
+        //    "<h2>Email Confirmation<h2>" +
+        //    "To allow the appUser, " +
+        //    "please click in this link:" +
+        //    "</br></br>" +
+        //    $"<a href = \"{tokenLink}\">Confirm Email</a>" +
+        //    "</br></br>" +
+        //    $"<p>Password temporária: {model.Password}</a>");
 
         if (response.IsSuccess)
         {

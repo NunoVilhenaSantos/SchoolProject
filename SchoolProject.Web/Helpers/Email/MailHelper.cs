@@ -15,11 +15,11 @@ public class MailHelper : IMailHelper
 
     public AppResponse SendEmail(string to, string subject, string body)
     {
-        var nameFrom = _configuration["Mail:NameFrom"];
-        var from = _configuration["Mail:From"];
-        var smtp = _configuration["Mail:Smtp"];
-        var port = _configuration["Mail:Port"];
-        var password = _configuration["Mail:Password"];
+        var nameFrom = _configuration["Email:NameFrom"];
+        var from = _configuration["Email:EmailFrom"];
+        var smtp = _configuration["Email:Smtp"];
+        var port = _configuration["Email:Port"];
+        var password = _configuration["Email:Password"];
 
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress(nameFrom, from));
@@ -58,11 +58,11 @@ public class MailHelper : IMailHelper
 
     public bool SendEmail1(string emailTo, string subject, string body)
     {
-        var nameFrom = _configuration["Mail:NameFrom"];
-        var emailFrom = _configuration["Mail:EmailFrom"];
-        var smtp = _configuration["Mail:Smtp"];
-        var port = _configuration["Mail:Port"];
-        var password = _configuration["Mail:Password"];
+        var nameFrom = _configuration["Email:NameFrom"];
+        var emailFrom = _configuration["Email:EmailFrom"];
+        var smtp = _configuration["Email:Smtp"];
+        var port = _configuration["Email:Port"];
+        var password = _configuration["Email:Password"];
 
         var length = emailTo.IndexOf("@");
         var nameTo = emailTo[..length];
