@@ -248,7 +248,17 @@ public class CitiesController : Controller
         ViewBag.CountryId =
             _countryRepository.GetComboCountries();
 
-        return View();
+        var city = new City
+        {
+            Country = null,
+            Name=null,
+            ProfilePhotoId = Guid.Empty,
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result,
+            CreatedAt = DateTime.Now,
+        };
+        
+
+        return View(city);
     }
 
 
@@ -305,6 +315,8 @@ public class CitiesController : Controller
         await _cityRepository.SaveAllAsync();
 
         HttpContext.Session.Remove(SessionVarName);
+        HttpContext.Session.Remove(CountriesController.SessionVarName);
+        HttpContext.Session.Remove(NationalitiesController.SessionVarName);
 
         return RedirectToAction(nameof(Index));
     }

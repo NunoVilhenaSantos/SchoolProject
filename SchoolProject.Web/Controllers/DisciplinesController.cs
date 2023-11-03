@@ -256,7 +256,19 @@ public class DisciplinesController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        return View();
+        var discipline = new Discipline
+        {
+            Code = null,
+            Name = null,
+            Description = null,
+            Hours = 25,
+            CreditPoints = 2.5,
+            ProfilePhotoId = default,
+            CreatedAt = DateTime.Now,
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result,
+        };
+
+        return View(discipline);
     }
 
 
@@ -276,23 +288,6 @@ public class DisciplinesController : Controller
     {
         //if (!ModelState.IsValid) return View(discipline);
 
-        //await _disciplineRepository.CreateAsync(discipline);
-
-        //await _disciplineRepository.SaveAllAsync();
-
-        //HttpContext.Session.Remove(SessionVarName);
-
-        //return RedirectToAction(nameof(Index));
-
-        var user = await _userHelper.GetUserByEmailAsync(discipline.Name);
-
-        if (user != null)
-        {
-            ViewBag.UserMessage =
-                "Email has already been used to register an account.";
-            return View(discipline);
-        }
-
 
         // *** INICIO PARA GRAVAR A IMAGEM ***
 
@@ -308,39 +303,6 @@ public class DisciplinesController : Controller
         // *** FIM PARA GRAVAR A IMAGEM ***
 
 
-        //var subscription = await _subscriptionRepository
-        //    .GetByNameAsync("Free").FirstOrDefaultAsync();
-
-        //var city = await _cityRepository.GetCityAsync(discipline.CityId).FirstOrDefaultAsync();
-
-        user = new AppUser
-        {
-            FirstName = discipline.Code,
-            LastName = discipline.Name,
-            ProfilePhotoId = discipline.ProfilePhotoId,
-            WasDeleted = discipline.WasDeleted
-
-            //Email = student.Email,
-            //UserName = student.Email,
-            //Address = student.Address,
-
-            //CityId = city.Id,
-            //City = city,
-
-            //SubscriptionId = subscription.Id,
-            //Subscription = subscription,
-        };
-
-        // _converterHelper.AddUser(
-        //     customer.FirstName, customer.LastName,
-        //     customer.Address ?? string.Empty,
-        //     customer.Email,
-        //     customer.CellPhone, "Customer"
-        // );
-
-        await _userHelper.AddUserAsync(user, SeedDb.DefaultPassword);
-        //await _userHelper.AddUserToRoleAsync(user, ClassRole); //******DESATIVO ??? ************
-
         var discipline1 = new Discipline
         {
             Code = discipline.Code,
@@ -352,10 +314,6 @@ public class DisciplinesController : Controller
             CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result
         };
 
-        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-
-        // Confirma o email para este AppUser
-        await _userHelper.ConfirmEmailAsync(user, token);
 
         await _disciplineRepository.CreateAsync(discipline1);
 
@@ -391,6 +349,7 @@ public class DisciplinesController : Controller
             : View(discipline);
     }
 
+
     // POST: Disciplines/Edit/5
     // To protect from over-posting attacks,
     // enable the specific properties you want to bind to.
@@ -410,6 +369,7 @@ public class DisciplinesController : Controller
             return new NotFoundViewResult(
                 nameof(DisciplineNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
+
 
         // if (!ModelState.IsValid) return View(student);
 
@@ -432,13 +392,18 @@ public class DisciplinesController : Controller
 
         // *** FIM PARA GRAVAR A IMAGEM ***
 
+
+        // discipline1.Code = discipline.Code;
         discipline1.Name = discipline.Name;
         discipline1.Description = discipline.Description;
         discipline1.Hours = discipline.Hours;
         discipline1.CreditPoints = discipline.CreditPoints;
         discipline1.ProfilePhotoId = discipline.ProfilePhotoId;
-        discipline1.CreatedBy =
+        // discipline1.CreatedBy = discipline.CreatedBy;
+        // discipline1.CreatedById =discipline.CreatedById;
+        discipline1.UpdatedBy =
             _authenticatedUserInApp.GetAuthenticatedUser().Result;
+
 
         try
         {
@@ -459,35 +424,6 @@ public class DisciplinesController : Controller
 
             throw;
         }
-
-        //**********************
-
-        //if (id != discipline.Id)
-        //    return new NotFoundViewResult(
-        //        nameof(DisciplineNotFound), CurrentClass, id.ToString(),
-        //        CurrentController, nameof(Index));
-
-        //if (!ModelState.IsValid) return View(discipline);
-
-        //try
-        //{
-        //    await _disciplineRepository.UpdateAsync(discipline);
-
-        //    await _disciplineRepository.SaveAllAsync();
-
-        //    HttpContext.Session.Remove(SessionVarName);
-        //}
-        //catch (DbUpdateConcurrencyException)
-        //{
-        //    if (!CourseExists(discipline.Id))
-        //        return new NotFoundViewResult(
-        //            nameof(DisciplineNotFound), CurrentClass, id.ToString(),
-        //            CurrentController, nameof(Index));
-
-        //    throw;
-        //}
-
-        //return RedirectToAction(nameof(Index));
     }
 
 

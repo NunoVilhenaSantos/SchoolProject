@@ -246,7 +246,28 @@ public class GendersController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        return View();
+        var user = _authenticatedUserInApp.GetAuthenticatedUser().Result;
+
+        var gender = new Gender
+        {
+            // Id = 0,
+            // IdGuid = default,
+            Name = null,
+            // ImageFile = null,
+            ProfilePhotoId = Guid.Empty,
+            // AppUsers = null,
+            // Teachers = null,
+            // Students = null,
+            WasDeleted = false,
+            CreatedAt = DateTime.Now,
+            CreatedBy = user,
+            CreatedById = user.Id,
+            UpdatedAt = DateTime.Today,
+            UpdatedBy = user,
+            UpdatedById = user.Id,
+        };
+
+        return View(gender);
     }
 
 
@@ -264,9 +285,33 @@ public class GendersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Gender gender)
     {
-        if (!ModelState.IsValid) return View(gender);
+        // if (!ModelState.IsValid) return View(gender);
 
-        await _genderRepository.CreateAsync(gender);
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var imageId = gender.ProfilePhotoId;
+
+        if (gender.ImageFile is {Length: > 0})
+            imageId =
+                await _storageHelper.UploadStorageAsync(
+                    gender.ImageFile, BucketName);
+
+        gender.ProfilePhotoId = imageId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+
+        var gender1 = new Gender
+        {
+            Name = gender.Name,
+            ProfilePhotoId = gender.ProfilePhotoId,
+            CreatedBy =
+                _authenticatedUserInApp.GetAuthenticatedUser().Result,
+            WasDeleted = false
+        };
+
+
+        await _genderRepository.CreateAsync(gender1);
 
         await _genderRepository.SaveAllAsync();
 
@@ -319,11 +364,45 @@ public class GendersController : Controller
                 nameof(GenderNotFound), CurrentClass, id.ToString(),
                 CurrentController, nameof(Index));
 
-        if (!ModelState.IsValid) return View(gender);
+        // if (!ModelState.IsValid) return View(gender);
+
+
+        // *** INICIO PARA GRAVAR A IMAGEM ***
+
+        var imageId = gender.ProfilePhotoId;
+
+        if (gender.ImageFile is {Length: > 0})
+            imageId =
+                await _storageHelper.UploadStorageAsync(
+                    gender.ImageFile, BucketName);
+
+        gender.ProfilePhotoId = imageId;
+
+        // *** FIM PARA GRAVAR A IMAGEM ***
+
+        var gender1 = await _genderRepository.GetByIdAsync(id)
+            .FirstOrDefaultAsync();
+
+
+        gender1.Name = gender.Name;
+        gender1.ProfilePhotoId = gender.ProfilePhotoId;
+        // gender1.CreatedBy = gender1.CreatedBy;
+        // gender1.CreatedById = gender1.CreatedById;
+        // gender1.CreatedAt = gender1.CreatedAt;
+        gender1.UpdatedBy =
+            _authenticatedUserInApp.GetAuthenticatedUser().Result;
+        // gender1.UpdatedById = gender1.UpdatedById;
+        gender1.UpdatedAt = DateTime.Now;
+
+        gender1.WasDeleted = gender.WasDeleted;
+
 
         try
         {
-            await _genderRepository.UpdateAsync(gender);
+            await _genderRepository.UpdateAsync(gender1);
+
+            HttpContext.Session.Remove(SessionVarName);
+
             await _genderRepository.SaveAllAsync();
         }
         catch (DbUpdateConcurrencyException)

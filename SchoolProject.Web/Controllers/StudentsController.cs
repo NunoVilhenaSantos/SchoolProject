@@ -21,6 +21,7 @@ using SchoolProject.Web.Helpers.Storages;
 using SchoolProject.Web.Helpers.Users;
 using SchoolProject.Web.Models;
 using SchoolProject.Web.Models.Errors;
+using ZstdSharp.Unsafe;
 
 namespace SchoolProject.Web.Controllers;
 
@@ -43,26 +44,27 @@ public class StudentsController : Controller
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
-    private readonly ICityRepository _cityRepository;
 
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly ICountryRepository _countryRepository;
-    private readonly IGenderRepository _genderRepository;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IMailHelper _mailHelper;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IMailHelper _mailHelper;
-    private readonly IStorageHelper _storageHelper;
 
 
     //  repositories
     private readonly IStudentRepository _studentRepository;
-    private readonly IUserHelper _userHelper;
+    private readonly ICountryRepository _countryRepository;
+    private readonly IGenderRepository _genderRepository;
     private readonly UserManager<AppUser> _userManager;
+    private readonly ICityRepository _cityRepository;
+    private readonly IUserHelper _userHelper;
+
 
     // data context
     // private readonly DataContextMySql _context;
@@ -313,7 +315,35 @@ public class StudentsController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        return View();
+        FillViewLists();
+
+        var student = new Student
+        {
+            CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser()
+                .Result,
+            FirstName = null,
+            LastName = null,
+            Address = null,
+            PostalCode = null,
+            CountryId = 0,
+            City = null,
+            MobilePhone = null,
+            Email = null,
+            Active = false,
+            Gender = null,
+            EnrollDate = DateTime.Now,
+            IdentificationNumber = null,
+            IdentificationType = null,
+            ExpirationDateIdentificationNumber = DateTime.Now,
+            TaxIdentificationNumber = null,
+            DateOfBirth = DateTime.Now,
+            CountryOfNationality = null,
+            Birthplace = null,
+            AppUser = null,
+            ProfilePhotoId = default
+        };
+
+        return View(student);
     }
 
 
@@ -357,9 +387,6 @@ public class StudentsController : Controller
         // *** FIM PARA GRAVAR A IMAGEM ***
 
 
-        //var subscription = await _subscriptionRepository
-        //    .GetByNameAsync("Free").FirstOrDefaultAsync();
-
         var city = await _cityRepository
             .GetCityAsync(student.CityId != 0 ? student.CityId : 1)
             .FirstOrDefaultAsync();
@@ -378,17 +405,8 @@ public class StudentsController : Controller
 
             //CityId = city.Id,
             //City = city,
-
-            //SubscriptionId = subscription.Id,
-            //Subscription = subscription,
         };
 
-        // _converterHelper.AddUser(
-        //     customer.FirstName, customer.LastName,
-        //     customer.Address ?? string.Empty,
-        //     customer.Email,
-        //     customer.CellPhone, "Customer"
-        // );
 
         await _userHelper.AddUserAsync(user, SeedDb.DefaultPassword);
         await _userHelper.AddUserToRoleAsync(user, ClassRole);
@@ -434,10 +452,60 @@ public class StudentsController : Controller
             AppUser = user
         };
 
-        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+        // ***** Incluído por causa do Email de Confirmação *******
+        var myToken =
+            await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+
+        var tokenLink = Url.Action(
+            "ConfirmEmail", "Account",
+            new
+            {
+                userId = user.Id, token = myToken
+            },
+            HttpContext.Request.Scheme);
+
+
+        var response = _mailHelper.SendEmail(user.UserName,
+            "Email confirmation",
+            "<h2>Email Confirmation<h2>" +
+            "To allow the appUser, " +
+            "please click in this link:" +
+            "</br></br>" +
+            $"<a href = \"{tokenLink}\">Confirm Email</a>" +
+            "</br></br>" +
+            $"<p>Password temporária: {SeedDb.DefaultPassword}</a>");
+
+        //var response = _mailHelper.SendEmail1(model.UserName,
+        //    "Email confirmation",
+        //    "<h2>Email Confirmation<h2>" +
+        //    "To allow the appUser, " +
+        //    "please click in this link:" +
+        //    "</br></br>" +
+        //    $"<a href = \"{tokenLink}\">Confirm Email</a>" +
+        //    "</br></br>" +
+        //    $"<p>Password temporária: {model.Password}</a>");
+
+        if (response.IsSuccess)
+        {
+            ViewBag.Message =
+                "The instructions to allow you appUser has been sent to email";
+
+            return View(student1);
+        }
+
+
+        ModelState.AddModelError(
+            string.Empty, "The AppUser couldn't be logged");
+
+
+        //*****Retirado por causa do Email de Confirmação*********
+
+        // var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
         // Confirma o email para este AppUser
-        await _userHelper.ConfirmEmailAsync(user, token);
+        // await _userHelper.ConfirmEmailAsync(user, token);
 
         await _studentRepository.CreateAsync(student1);
 

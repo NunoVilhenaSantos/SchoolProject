@@ -254,7 +254,25 @@ public class CoursesController : Controller
     /// <returns></returns>
     public IActionResult Create()
     {
-        return View();
+        var course = new Course
+        {
+            Code = null,
+            Acronym = null,
+            Name = null,
+            QnqLevel = 1,
+            EqfLevel = 1,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.AddYears(1),
+            StartHour = TimeSpan.FromHours(8),
+            EndHour = TimeSpan.FromHours(17),
+            PriceForEmployed = 100,
+            PriceForUnemployed = 0,
+            ProfilePhotoId = default,
+            CreatedAt = DateTime.Now,
+            CreatedBy = null,
+        };
+
+        return View(course);
     }
 
 
@@ -275,15 +293,6 @@ public class CoursesController : Controller
     {
         //if (!ModelState.IsValid) return View(teacher);
 
-        var user = await _userHelper.GetUserByEmailAsync(course.Name);
-
-        if (user != null)
-        {
-            ViewBag.UserMessage =
-                "Email has already been used to register an account.";
-            return View(course);
-        }
-
 
         // *** INICIO PARA GRAVAR A IMAGEM ***
 
@@ -298,29 +307,6 @@ public class CoursesController : Controller
 
         // *** FIM PARA GRAVAR A IMAGEM ***
 
-
-        //var subscription = await _subscriptionRepository
-        //    .GetByNameAsync("Free").FirstOrDefaultAsync();
-
-        //var city = await _cityRepository.GetCityAsync(teacher.CityId).FirstOrDefaultAsync();
-
-        user = new AppUser
-        {
-            FirstName = course.Code,
-            LastName = course.Name,
-            ProfilePhotoId = course.ProfilePhotoId,
-            WasDeleted = course.WasDeleted
-        };
-
-        // _converterHelper.AddUser(
-        //     customer.FirstName, customer.LastName,
-        //     customer.Address ?? string.Empty,
-        //     customer.Email,
-        //     customer.CellPhone, "Customer"
-        // );
-
-        await _userHelper.AddUserAsync(user, SeedDb.DefaultPassword);
-        //await _userHelper.AddUserToRoleAsync(user, ClassRole);  //****** DESATIVO??? ************
 
         var course1 = new Course
         {
@@ -337,16 +323,8 @@ public class CoursesController : Controller
             PriceForEmployed = course.PriceForEmployed,
             PriceForUnemployed = course.PriceForUnemployed,
             CreatedBy = _authenticatedUserInApp.GetAuthenticatedUser().Result
-
-
-            //UserId = user.Id,
-            //AppUser = user,
         };
 
-        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-
-        // Confirma o email para este AppUser
-        await _userHelper.ConfirmEmailAsync(user, token);
 
         await _courseRepository.CreateAsync(course1);
 

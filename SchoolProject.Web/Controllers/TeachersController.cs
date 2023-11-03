@@ -44,27 +44,28 @@ public class TeachersController : Controller
 
     // A private field to get the authenticated user in app.
     private readonly AuthenticatedUserInApp _authenticatedUserInApp;
-    private readonly ICityRepository _cityRepository;
 
 
     // Helpers
     private readonly IConverterHelper _converterHelper;
-    private readonly ICountryRepository _countryRepository;
-    private readonly IGenderRepository _genderRepository;
+    private readonly IStorageHelper _storageHelper;
+    private readonly IMailHelper _mailHelper;
 
 
     // Host Environment
     private readonly IWebHostEnvironment _hostingEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IMailHelper _mailHelper;
     private readonly SelectItensController _selectItensController;
-    private readonly IStorageHelper _storageHelper;
 
 
     //  repositories
     private readonly ITeacherRepository _teacherRepository;
-    private readonly IUserHelper _userHelper;
+    private readonly ICountryRepository _countryRepository;
+    private readonly IGenderRepository _genderRepository;
     private readonly UserManager<AppUser> _userManager;
+    private readonly ICityRepository _cityRepository;
+    private readonly IUserHelper _userHelper;
+
 
     // data context
     // private readonly DataContextMySql _context;
@@ -303,7 +304,34 @@ public class TeachersController : Controller
     public IActionResult Create()
     {
         FillViewLists();
-        return View();
+
+        var teacher = new Teacher
+        {
+            FirstName = null,
+            LastName = null,
+            Address = null,
+            PostalCode = null,
+            CountryId = 0,
+            City = null,
+            MobilePhone = null,
+            Email = null,
+            Active = false,
+            Gender = null,
+            DateOfBirth = default,
+            IdentificationNumber = null,
+            IdentificationType = null,
+            ExpirationDateIdentificationNumber = default,
+            TaxIdentificationNumber = null,
+            CountryOfNationality = null,
+            Birthplace = null,
+            EnrollDate = default,
+            AppUser = null,
+            ProfilePhotoId = default,
+            CreatedBy =
+                _authenticatedUserInApp.GetAuthenticatedUser().Result,
+        };
+
+        return View(teacher);
     }
 
 
@@ -347,9 +375,6 @@ public class TeachersController : Controller
         // *** FIM PARA GRAVAR A IMAGEM ***
 
 
-        //var subscription = await _subscriptionRepository
-        //    .GetByNameAsync("Free").FirstOrDefaultAsync();
-
         var city = await _cityRepository.GetCityAsync(teacher.CityId)
             .FirstOrDefaultAsync();
 
@@ -367,9 +392,6 @@ public class TeachersController : Controller
 
             //CityId = city.Id,
             //City = city,
-
-            //SubscriptionId = subscription.Id,
-            //Subscription = subscription,
         };
 
         // _converterHelper.AddUser(
@@ -413,10 +435,60 @@ public class TeachersController : Controller
             AppUser = user
         };
 
-        var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+        // ***** Incluído por causa do Email de Confirmação *******
+        var myToken =
+            await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+
+        var tokenLink = Url.Action(
+            "ConfirmEmail", "Account",
+            new
+            {
+                userId = user.Id, token = myToken
+            },
+            HttpContext.Request.Scheme);
+
+
+        var response = _mailHelper.SendEmail(user.UserName,
+            "Email confirmation",
+            "<h2>Email Confirmation<h2>" +
+            "To allow the appUser, " +
+            "please click in this link:" +
+            "</br></br>" +
+            $"<a href = \"{tokenLink}\">Confirm Email</a>" +
+            "</br></br>" +
+            $"<p>Password temporária: {SeedDb.DefaultPassword}</a>");
+
+        //var response = _mailHelper.SendEmail1(model.UserName,
+        //    "Email confirmation",
+        //    "<h2>Email Confirmation<h2>" +
+        //    "To allow the appUser, " +
+        //    "please click in this link:" +
+        //    "</br></br>" +
+        //    $"<a href = \"{tokenLink}\">Confirm Email</a>" +
+        //    "</br></br>" +
+        //    $"<p>Password temporária: {model.Password}</a>");
+
+        if (response.IsSuccess)
+        {
+            ViewBag.Message =
+                "The instructions to allow you appUser has been sent to email";
+
+            return View(teacher1);
+        }
+
+
+        ModelState.AddModelError(
+            string.Empty, "The AppUser couldn't be logged");
+
+
+        //*****Retirado por causa do Email de Confirmação*********
+
+        // var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
 
         // Confirma o email para este AppUser
-        await _userHelper.ConfirmEmailAsync(user, token);
+        // await _userHelper.ConfirmEmailAsync(user, token);
 
         await _teacherRepository.CreateAsync(teacher1);
 
