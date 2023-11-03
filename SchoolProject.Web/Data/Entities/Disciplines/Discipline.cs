@@ -117,6 +117,8 @@ public class Discipline : IEntity, INotifyPropertyChanged
     /// <summary>
     ///     Navigation property for the many-to-many relationship between Discipline and Discipline
     /// </summary>
+    // [JsonIgnore]
+    // [Newtonsoft.Json.JsonIgnore]
     public virtual HashSet<CourseDiscipline>? CourseDisciplines { get; set; }
 
     /// <summary>

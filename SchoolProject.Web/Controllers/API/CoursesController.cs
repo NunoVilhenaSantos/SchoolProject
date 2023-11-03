@@ -65,11 +65,14 @@ public class CoursesController : ControllerBase
 
             // School class courses include
             .Include(c => c.CourseDisciplines)
-            .ThenInclude(scc => scc.Discipline)
+            // .ThenInclude(scc => scc.Course)
+
+            .Include(c => c.CourseDisciplines)
+            // .ThenInclude(scc => scc.Discipline)
 
             // school class students include
             .Include(c => c.CourseStudents)
-            .ThenInclude(scs => scs.Student)
+            // .ThenInclude(scs => scs.Student)
             //.ThenInclude(s => s.Country)
             //.ThenInclude(s => s.Nationality)
 
@@ -128,28 +131,27 @@ public class CoursesController : ControllerBase
         var jsonMariconsoft =
             JsonSerializer.Serialize(schoolClasses, options);
 
-        // return Ok(jsonMariconsoft);
+        return Ok(jsonMariconsoft);
 
 
         // --------------------------------------------------------------------------- //
         // --------------------------------------------------------------------------- //
 
+        // Supondo que você obteve os cursos do banco de dados
+        var courses =_context.Courses.ToList(); 
 
-        var courses =
-            _context.Courses
-                .ToList(); // Supondo que você obteve os cursos do banco de dados
-
-        var courseDTOs = courses.Select(course => CourseDto.MapToDto(course))
+        var courseDTOs = courses
+            .Select(course => CourseDto.MapToDto(course))
             .ToList();
 
-        //var options = new System.Text.Json.JsonSerializerOptions
-        //{
-        //    ReferenceHandler = ReferenceHandler.Preserve,
-        //    WriteIndented = true,
-        //    MaxDepth = 10 // Defina a profundidade máxima, se necessário
-        //};
+        var options1 = new System.Text.Json.JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.Preserve,
+            WriteIndented = true,
+            MaxDepth = 10 // Defina a profundidade máxima, se necessário
+        };
 
-        var jsonMariconsoft1 = JsonSerializer.Serialize(courseDTOs, options);
+        var jsonMariconsoft1 = JsonSerializer.Serialize(courseDTOs, options1);
 
         return Ok(jsonMariconsoft1);
 
@@ -218,29 +220,65 @@ public class CoursesController : ControllerBase
     public IActionResult Get(int id)
     {
         var course = _context.Courses
+
+            .Include(c => c.CourseDisciplines)
+            .ThenInclude(scc => scc.Discipline)
+
+            .Include(c => c.CourseStudents)
+            .ThenInclude(scc => scc.Student)
+
+            .Include(c => c.Enrollments)
+
             .FirstOrDefaultAsync(m => m.Id == id);
+
+        
+        // ------------------------------------------------------------------------ //
+
+
+        // serialização usando System.Text.Json
+        var options = new JsonSerializerOptions
+        {
+            // Use ReferenceHandler.Preserve para preservar referências circulares
+            ReferenceHandler = ReferenceHandler.Preserve,
+
+            // Indent o JSON para melhor legibilidade
+            WriteIndented = true,
+
+            // Defina um valor adequado para limitar a profundidade da serialização.
+            MaxDepth = 10
+        };
 
 
         // converte em json para enviar aos pedidos da API
-        var json = JsonConvert.SerializeObject(course,
-            new JsonSerializerSettings
-            {
-                // A possible object cycle was detected.
-                //
-                // This can either be due to a cycle or
-                // if the object depth is larger than the maximum allowed depth of 32.
-                //
-                // Consider using ReferenceHandler.Preserve
-                // on JsonSerializerOptions to support cycles.
-                //
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        var jsonMariconsoft =
+            JsonSerializer.Serialize(course, options);
 
-                // Indent the JSON for readability
-                Formatting = Formatting.Indented
-            });
+        return Ok(jsonMariconsoft);
 
 
-        return Ok(course);
+        // ------------------------------------------------------------------------ //
+
+        // serialização usando Newtonsoft.Json 
+        //var settings = new JsonSerializerSettings
+        //{
+        //    // Use PreserveReferencesHandling para preservar referências circulares
+        //    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            
+        //    // Indent the JSON for readability
+        //    Formatting = Formatting.Indented,
+
+        //    // Defina um valor adequado para limitar a profundidade da serialização.
+        //    MaxDepth = 10,
+        //};
+
+        // converte em json para enviar aos pedidos da API
+        //var json = JsonConvert.SerializeObject(
+        //    course, settings);
+
+        //return Ok(json);
+
+
+        // return Ok(course);
     }
 
 

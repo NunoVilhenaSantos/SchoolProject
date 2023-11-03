@@ -208,7 +208,7 @@ public class Course : IEntity, INotifyPropertyChanged
     /// </summary>
     [DisplayName("Course Total Credit Points")]
     [DisplayFormat(DataFormatString = "{0:N}", ApplyFormatInEditMode = false)]
-    public double CourseCredits => Disciplines?.Sum(c => c.CreditPoints) ?? 0;
+    public double CourseCredits => Disciplines?.Sum(c => c?.CreditPoints) ?? 0;
 
 
     /// <summary>
